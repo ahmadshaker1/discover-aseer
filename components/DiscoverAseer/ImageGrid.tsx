@@ -62,8 +62,14 @@ const ImageGrid = ({ data }: ImageGridProps) => {
                     backgroundRepeat: isImage ? "no-repeat" : undefined,
                   }}
                 >
-                  {/* Semi-transparent dark overlay at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-4">
+                  {/* Gradient overlay from bottom to top */}
+                  <div
+                    className="absolute bottom-0 left-0 right-0 p-4"
+                    style={{
+                      background:
+                        "linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%)",
+                    }}
+                  >
                     <h3 className="text-white text-xl font-bold text-right">
                       {item.title}
                     </h3>
