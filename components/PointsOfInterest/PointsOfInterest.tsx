@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Button } from "@headlessui/react";
 import { useState } from "react";
 
 interface PointOfInterest {
@@ -116,31 +117,12 @@ const PointsOfInterest = () => {
         </div>
 
         {/* Carousel Preview Images - Lower Left */}
-        <div className="absolute bottom-12 left-12 md:bottom-24 md:left-24 flex items-center gap-4">
+        <div className="absolute bottom-12 left-12 md:bottom-24 md:left-24 flex flex-col items-end gap-4">
           {/* Navigation Arrows */}
-          <div className="flex flex-col gap-2">
-            <button
-              onClick={prevImage}
-              className="w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
-              aria-label="Previous image"
-            >
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-            <button
+          <div className="flex flex-row gap-2">
+            <Button
               onClick={nextImage}
-              className="w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
+              className="w-10 h-10 cursor-pointer rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
               aria-label="Next image"
             >
               <svg
@@ -156,19 +138,37 @@ const PointsOfInterest = () => {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </button>
+            </Button>
+            <Button
+              onClick={prevImage}
+              className="w-10 h-10 cursor-pointer rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
+              aria-label="Previous image"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </Button>
           </div>
-
           {/* Preview Images Carousel */}
           <div
             className="flex gap-3 overflow-x-auto hide-scrollbar"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {pointsOfInterest.map((point, index) => (
-              <button
+              <Button
                 key={point.id}
                 onClick={() => selectImage(index)}
-                className={`relative shrink-0 w-24 h-16 md:w-32 md:h-20 rounded-lg overflow-hidden transition-all duration-300 ${
+                className={`relative shrink-0 w-24 h-16 md:w-32 md:h-20 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer ${
                   index === currentIndex
                     ? "ring-4 ring-white scale-110"
                     : "opacity-70 hover:opacity-100 hover:scale-105"
@@ -184,7 +184,7 @@ const PointsOfInterest = () => {
                 {index === currentIndex && (
                   <div className="absolute inset-0 bg-white/20" />
                 )}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
