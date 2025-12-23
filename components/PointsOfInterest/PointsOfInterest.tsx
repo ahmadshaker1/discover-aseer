@@ -96,23 +96,22 @@ const PointsOfInterest = () => {
         {/* Text Overlay */}
         <div className="absolute inset-0 flex flex-col justify-between p-12 md:p-24">
           {/* Top Section - Title and Subtitle */}
-          <div className="text-right space-y-4 mt-8">
-            <h1 className="text-5xl md:text-6xl font-bold text-white">
+          <div className="text-right space-y-8 mt-8">
+            <h1 className="text-5xl md:text-6xl font-bold text-white border-b border-white pb-6 w-2/3">
               {currentPoint.title}
             </h1>
             <h2 className="text-2xl md:text-3xl font-light text-white/90">
               {currentPoint.subtitle}
             </h2>
-          </div>
-
-          {/* Bottom Section - Location and Description */}
-          <div className="text-right space-y-4 mb-8">
-            <h3 className="text-4xl md:text-5xl font-bold text-white">
-              {currentPoint.location}
-            </h3>
-            <p className="text-lg md:text-xl text-white/90 max-w-2xl ml-auto">
-              {currentPoint.description}
-            </p>
+            {/* Bottom Section - Location and Description */}
+            <div className="text-right space-y-4 mb-8 mt-36">
+              <h3 className="text-4xl md:text-5xl font-bold text-white">
+                {currentPoint.location}
+              </h3>
+              <p className="text-lg md:text-xl text-white/90 max-w-2xl ml-auto">
+                {currentPoint.description}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -122,20 +121,29 @@ const PointsOfInterest = () => {
           <div className="flex flex-row gap-2">
             <Button
               onClick={nextImage}
-              className="w-10 h-10 cursor-pointer rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
+              className="w-10 h-10 rotate-180 cursor-pointer rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
               aria-label="Next image"
             >
               <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
+                  d="M4.25 12.2744L19.25 12.2744"
+                  stroke="white"
+                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
+                />
+                <path
+                  d="M10.2998 18.2988L4.24981 12.2748L10.2998 6.24976"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </Button>
@@ -145,16 +153,25 @@ const PointsOfInterest = () => {
               aria-label="Previous image"
             >
               <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
+                  d="M4.25 12.2744L19.25 12.2744"
+                  stroke="white"
+                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
+                />
+                <path
+                  d="M10.2998 18.2988L4.24981 12.2748L10.2998 6.24976"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </Button>
