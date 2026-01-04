@@ -84,11 +84,11 @@ const ExperiencesFilter = () => {
   return (
     <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8 space-x-4">
         <h2 className="text-xl font-bold text-black">تصفية التجارب</h2>
         <Button
           onClick={handleReset}
-          className="px-4 py-2 text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
+          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
         >
           إعادة تعيين النتائج
         </Button>
@@ -106,14 +106,14 @@ const ExperiencesFilter = () => {
             return (
               <div
                 key={interest.id}
-                className="flex items-center justify-between hover:bg-gray-50 p-2 rounded transition-colors"
+                className="flex items-center justify-between p-2 rounded transition-colors"
               >
                 <div className="flex items-center gap-3 flex-row-reverse">
                   <span className="text-sm text-black">{interest.label}</span>
                   <Checkbox
                     checked={isChecked}
                     onChange={() => handleInterestToggle(interest.id)}
-                    className="group relative inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-[checked]:border-black data-[checked]:bg-black data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2"
+                    className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-[checked]:border-black data-[checked]:bg-black data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2"
                   >
                     <svg
                       className="h-3 w-3 stroke-white opacity-0 group-data-[checked]:opacity-100"
@@ -151,7 +151,7 @@ const ExperiencesFilter = () => {
               <Button
                 key={option.id}
                 onClick={() => handleCostSelect(option.id)}
-                className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 ${
+                className={`flex flex-col items-center justify-center cursor-pointer p-4 rounded-lg border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 ${
                   isSelected
                     ? "border-black bg-gray-50"
                     : "border-gray-200 hover:border-gray-300"
@@ -186,16 +186,14 @@ const ExperiencesFilter = () => {
               <Button
                 key={traveler.id}
                 onClick={() => handleTravelerToggle(traveler.id)}
-                className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 ${
+                className={`flex flex-row items-center justify-center px-2 py-1 space-x-1 cursor-pointer h-12 rounded-full border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 ${
                   isSelected
                     ? "border-black bg-gray-50"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <div
-                  className={`mb-2 ${
-                    isSelected ? "text-black" : "text-gray-400"
-                  }`}
+                  className={` ${isSelected ? "text-black" : "text-gray-400"}`}
                 >
                   {traveler.icon}
                 </div>
