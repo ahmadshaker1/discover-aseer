@@ -1,17 +1,35 @@
 import { Button } from "@headlessui/react";
+import {
+  EventsAndSeasonsIcon,
+  ActivitiesIcon,
+  PointsOfInterestIcon,
+  LivingInAseerIcon,
+  AseerCuisineIcon,
+  TouristicSitesIcon,
+} from "./Icons";
 
 const Hero = () => {
+  const gridItems = [
+    { text: "وجهات رئيسية", icon: <EventsAndSeasonsIcon /> },
+    { text: "التجارب", icon: <ActivitiesIcon /> },
+    { text: "الفعاليات و المواسم", icon: <EventsAndSeasonsIcon /> },
+    { text: "المعالم السياحية", icon: <TouristicSitesIcon /> },
+    { text: "المطبخ العسيري", icon: <AseerCuisineIcon /> },
+    { text: "الإقامة في عسير", icon: <LivingInAseerIcon /> },
+  ];
+
   return (
     <div
-      className="flex flex-col items-start justify-center h-screen w-screen px-24 space-y-16 overflow-hidden"
+      className="flex items-center justify-between h-screen w-screen px-48 overflow-hidden"
       style={{
         backgroundImage: `url('/assets/landing/discover-aseer-hero.jpg')`,
-        backgroundSize: "fill",
+        backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="relative py-8 px-12">
+      {/* Left side - Text content */}
+      <div className="relative py-8 px-12 w-1/2 z-10">
         <div
           className="absolute bg-black/10 backdrop-blur-xs"
           style={{
@@ -31,9 +49,22 @@ const Hero = () => {
           من الثقافة والمغامرة والجمال الذي لا مثيل له.
         </h3>
       </div>
-      <Button className="border-2 border-white text-white px-8 py-3 cursor-pointer rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all duration-300 shadow-lg">
-        شاهد الفيلم
-      </Button>
+
+      {/* Right side - Grid of buttons */}
+      <div className="grid grid-cols-3 grid-rows-2 gap-4 w-1/4 z-10">
+        {gridItems.map((item, index) => (
+          <Button
+            key={index}
+            className="flex flex-col items-start justify-end p-6 rounded-3xl bg-black/30 backdrop-blur-sm hover:bg-black/40 transition-all duration-300 text-white cursor-pointer border-[1.5px] border-[#818181] aspect-[2/3]"
+          >
+            <div className="w-8 h-12 mb-3 flex items-center justify-center">
+              {/* Icon placeholder - user will add icons here */}
+              {item.icon || <div className="w-8 h-8 bg-white/20 rounded"></div>}
+            </div>
+            <span className="text-sm font-medium text-right">{item.text}</span>
+          </Button>
+        ))}
+      </div>
     </div>
   );
 };
