@@ -44,7 +44,7 @@ const ExperienceCard = ({
         {/* Share Button - Top Left */}
         <ExperienceCardShareButton experienceId={id} title={title} />
         {/* Category Badge - Top Right */}
-        <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-1.5">
+        <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5">
           <span className="text-white text-xs font-medium">{category}</span>
         </div>
       </div>
@@ -69,15 +69,16 @@ const ExperienceCard = ({
         </div>
 
         {/* Price and Group Size */}
-        <div className="flex items-center justify-between mb-4 pb-4 ">
-          <div className="flex items-center gap-1.5">
-            <PersonIcon />
-            <span className="text-sm font-medium text-black">x{groupSize}</span>
-            <span className="text-sm text-black">مجموعة</span>
-          </div>
+        <div className="flex items-center justify-start mb-4 pb-4 ">
           <div className="flex items-center gap-1">
             <span className="text-xl font-bold text-black">{price}</span>
             <SaudiRiyalIcon />
+          </div>
+          /
+          <div className="flex items-center gap-1.5">
+            <span className="text-sm text-black">مجموعة</span>
+            <span className="text-sm font-medium text-black">x{groupSize}</span>
+            <PersonIcon />
           </div>
         </div>
 
