@@ -3,7 +3,7 @@ import { GlobeIcon, CrescentMoonIcon, LocationPinIcon } from "./Icons";
 import Link from "next/link";
 const Navbar = () => {
   return (
-    <div className="flex flex-row items-center justify-between absolute top-0 left-0 w-full h-24 z-50 bg-gradient-to-r from-[#191919]/40 via-[#2a1a3d]/40 to-[#1a2a1a]/40 backdrop-blur-md px-48">
+    <div className="flex flex-row items-center justify-between fixed top-0 left-0 w-full h-24 z-50 bg-gradient-to-r from-[#191919]/40 via-[#2a1a3d]/40 to-[#1a2a1a]/40 backdrop-blur-md px-48">
       {/* Right side - Logo */}
       <div className="flex flex-row items-center space-x-8">
         <AseerLogo />
