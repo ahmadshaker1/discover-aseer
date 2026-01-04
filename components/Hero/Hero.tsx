@@ -51,11 +51,11 @@ const Hero = () => {
       </div>
 
       {/* Right side - Grid of buttons */}
-      <div className="grid grid-cols-3 grid-rows-2 gap-4 w-1/4 z-10">
+      <div className="grid grid-cols-3 grid-rows-2 gap-4 w-1/3 z-10 justify-items-center items-center">
         {gridItems.map((item, index) => (
           <Button
             key={index}
-            className="flex flex-col items-start justify-end p-6 rounded-3xl bg-black/30 backdrop-blur-sm hover:bg-black/40 transition-all duration-300 text-white cursor-pointer border-[1.5px] border-[#818181] aspect-[2/3]"
+            className="flex flex-col items-start justify-end p-6 rounded-3xl bg-black/30 backdrop-blur-sm hover:bg-black/40 transition-all duration-300 text-white cursor-pointer border-[1.5px] border-[#818181] h-48 w-32 flex-shrink-0"
           >
             <div className="w-8 h-12 mb-3 flex items-center justify-center">
               {/* Icon placeholder - user will add icons here */}
