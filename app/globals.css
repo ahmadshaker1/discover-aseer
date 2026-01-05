@@ -4,3 +4,9 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Hide default Swiper navigation buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}

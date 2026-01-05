@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero/Hero";
 import DiscoverAseer from "@/components/DiscoverAseer/DiscoverAseer";
 import PointsOfInterest from "@/components/PointsOfInterest/PointsOfInterest";
-import TravelInfo from "@/components/TravelInfo/TravelInfo";
+import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <Hero />
       <DiscoverAseer />
       <PointsOfInterest />
-      <TravelInfo />
+      <EventsInfo />
     </div>
   );
 }
