@@ -20,7 +20,7 @@ const Navbar = () => {
           اكتشف عسير
         </Link>
         <Link
-          href="#"
+          href="/events"
           className="text-white text-base font-medium hover:opacity-80 transition-opacity whitespace-nowrap"
         >
           المواسم والفعاليات
