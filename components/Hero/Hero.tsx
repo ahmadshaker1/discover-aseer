@@ -20,7 +20,7 @@ const Hero = () => {
 
   return (
     <div
-      className="flex items-center justify-between h-screen w-screen px-48 overflow-hidden"
+      className="flex items-center justify-between h-screen w-screen px-48 overflow-hidden relative"
       style={{
         backgroundImage: `url('/assets/landing/discover-aseer-hero.jpg')`,
         backgroundSize: "cover",
@@ -28,19 +28,16 @@ const Hero = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
+      {/* Purple overlay gradient */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            "linear-gradient(to top right, rgba(115, 0, 205, 0.85) 0%, rgba(115, 0, 205, 0.85) 10%, rgba(0, 0, 0, 0.8) 100%)",
+        }}
+      ></div>
       {/* Left side - Text content */}
       <div className="relative py-8 px-12 w-1/2 z-10">
-        <div
-          className="absolute bg-black/10 backdrop-blur-xs"
-          style={{
-            borderRadius: "50%",
-            width: "1800px",
-            height: "1200px",
-            right: "-50%",
-            top: "-200%",
-            filter: "blur(1px)",
-          }}
-        ></div>
         <h1 className="relative text-8xl font-bold text-white z-10">
           ألف مرحبا بكم في عسير
         </h1>
