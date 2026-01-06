@@ -25,3 +25,4 @@ const EventsCarouselWrapper = ({
 
 export default EventsCarouselWrapper;
 
+
