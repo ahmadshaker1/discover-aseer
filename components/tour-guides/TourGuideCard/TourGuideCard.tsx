@@ -11,6 +11,10 @@ export interface TourGuideData {
   languages: Array<{ code: string; name: string; flag: string }>;
   whatsappUrl: string;
   description: string;
+  pricePerHour?: number;
+  maxPersons?: number;
+  transportation?: string;
+  availability?: string;
 }
 
 export interface TourGuideCardProps extends TourGuideData {

@@ -26,21 +26,19 @@ const TourGuidesPageContent = ({ guides }: TourGuidesPageContentProps) => {
     setSelectedGuide(null);
   };
 
-  // Mock data for modal - replace with actual data from API
   const getGuideDetails = (guide: TourGuideData) => {
     return {
-      about:
-        "مرشد سياحي معتمد من الهيئة السعودية للسياحة مع خبرة 7 سنوات في مجال الإرشاد السياحي. متخصص في الجولات التاريخية والتراثية في مدينة الرياض والمناطق المحيطة. حاصل على شهادة الإرشاد السياحي المتقدم وشهادة الإسعافات الأولية. أقدم تجربة سياحية مميزة تجمع بين المعرفة التاريخية والترفيه الراقي.",
+      about: guide.description || "مرشد سياحي محترف",
       experienceTags: [
         "تجارب تاريخية",
         "تجارب ترفيهية",
         "تجارب تراثية",
         "تجارب جبلية",
       ],
-      pricePerHour: 200,
-      maxPersons: 8,
-      transportation: "سيارة",
-      availability: "مرنة",
+      pricePerHour: guide.pricePerHour || 200,
+      maxPersons: guide.maxPersons || 8,
+      transportation: guide.transportation || "سيارة",
+      availability: guide.availability || "مرنة",
     };
   };
 
