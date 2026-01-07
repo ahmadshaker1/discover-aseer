@@ -311,7 +311,7 @@ const Footer = () => {
       {/* Bottom Footer - Copyright */}
       <div className="px-48 py-6">
         <p className="text-center text-white text-sm">
-          عسير @ 2024. جميع الحقوق محفوظة.
+          عسير @ 2026. جميع الحقوق محفوظة.
         </p>
       </div>
     </footer>
