@@ -109,23 +109,27 @@ const TourGuidesFilter = ({
   }, [filteredGuides]);
 
   return (
-    <div className="w-full max-w-xs bg-white p-6 rounded-lg shadow-sm">
+    <div className="w-full lg:max-w-xs bg-white p-4 sm:p-6 rounded-lg shadow-sm">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 space-x-4">
-        <h2 className="text-xl font-bold text-black">تصفية المرشدون</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <h2 className="text-lg sm:text-xl font-bold text-black">
+          تصفية المرشدون
+        </h2>
         <Button
           onClick={handleReset}
-          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
+          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2 self-start sm:self-auto"
         >
           إعادة تعيين النتائج
         </Button>
       </div>
 
       {/* Interests Section */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <div className="flex items-center gap-2 mb-4">
           <HeartIcon />
-          <h3 className="text-lg font-bold text-black">الاهتمامات</h3>
+          <h3 className="text-base sm:text-lg font-bold text-black">
+            الاهتمامات
+          </h3>
         </div>
         <div className="space-y-4">
           {interestsWithCounts.map((interest) => {
@@ -169,9 +173,9 @@ const TourGuidesFilter = ({
       <div>
         <div className="flex items-center gap-2 mb-4">
           <WalletIcon />
-          <h3 className="text-lg font-bold text-black">التكلفة</h3>
+          <h3 className="text-base sm:text-lg font-bold text-black">التكلفة</h3>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div className="flex-1">
             <label className="block text-sm text-gray-600 mb-2 text-right">
               من

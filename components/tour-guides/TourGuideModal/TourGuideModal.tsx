@@ -43,22 +43,22 @@ const TourGuideModal = ({
       <div className="fixed inset-0 bg-neutral-900/80" aria-hidden="true" />
 
       {/* Modal Container with Animation */}
-      <div className="fixed inset-0 flex items-end sm:items-center justify-center p-4">
+      <div className="fixed inset-0 flex items-end sm:items-center justify-center p-2 sm:p-4">
         <DialogPanel
           dir="rtl"
-          className="relative w-full max-w-2xl bg-white rounded-3xl shadow-xl max-h-[90vh] overflow-y-auto mx-4 modal-enter"
+          className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl shadow-xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-4 modal-enter"
         >
           {/* Close Button - on the left side for RTL */}
           <Button
             onClick={onClose}
-            className="absolute top-4 left-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <CloseIcon />
           </Button>
 
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {/* Profile Section */}
-            <div className="flex items-start gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row items-start gap-4 mb-4 sm:mb-6">
               {/* Profile Picture with Location Overlay */}
               <div className="relative w-24 h-24 flex-shrink-0">
                 {/* Purple gradient border wrapper */}
@@ -87,14 +87,14 @@ const TourGuideModal = ({
               </div>
 
               {/* Details Container */}
-              <div className="flex-1">
+              <div className="flex-1 w-full sm:w-auto">
                 {/* Name */}
-                <h2 className="text-2xl font-bold text-black mb-3">
+                <h2 className="text-xl sm:text-2xl font-bold text-black mb-2 sm:mb-3">
                   {guide.name}
                 </h2>
 
                 {/* Languages */}
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center flex-wrap gap-2 sm:gap-3 mb-2 sm:mb-3">
                   {guide.languages.map((lang) => (
                     <div key={lang.code} className="flex items-center gap-1.5">
                       <span className="text-sm">{lang.flag}</span>
@@ -106,7 +106,7 @@ const TourGuideModal = ({
                 {/* WhatsApp Button */}
                 <a
                   href={guide.whatsappUrl}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white border rounded-full hover:bg-gray-50 transition-colors text-sm font-medium"
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-white border rounded-full hover:bg-gray-50 transition-colors text-xs sm:text-sm font-medium"
                 >
                   <span className="text-green-600">
                     <WhatsAppIcon />
@@ -117,8 +117,8 @@ const TourGuideModal = ({
             </div>
 
             {/* About Section */}
-            <div className="mb-6">
-              <h3 className="text-xl font-bold text-black mb-3">
+            <div className="mb-4 sm:mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-black mb-2 sm:mb-3">
                 عن {guide.name.split(" ")[0]}
               </h3>
               <p className="text-sm text-gray-600 leading-relaxed mb-4">
@@ -142,15 +142,19 @@ const TourGuideModal = ({
 
             {/* Services Section */}
             <div>
-              <h3 className="text-xl font-bold text-black mb-4">الخدمات</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-gray-50 p-4 rounded-2xl">
+              <h3 className="text-lg sm:text-xl font-bold text-black mb-3 sm:mb-4">
+                الخدمات
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <ClockIcon />
-                    <span className="text-sm font-medium">السعر لكل ساعة</span>
+                    <span className="text-xs sm:text-sm font-medium">
+                      السعر لكل ساعة
+                    </span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <p className="text-lg font-bold text-black">
+                    <p className="text-base sm:text-lg font-bold text-black">
                       {pricePerHour}
                     </p>
                     <span className="text-purple-600">
@@ -158,30 +162,38 @@ const TourGuideModal = ({
                     </span>
                   </div>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-2xl">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <PeopleIcon />
-                    <span className="text-sm font-medium">
+                    <span className="text-xs sm:text-sm font-medium">
                       الحد الأعلى للأشخاص
                     </span>
                   </div>
-                  <p className="text-lg font-bold text-black">{maxPersons}</p>
+                  <p className="text-base sm:text-lg font-bold text-black">
+                    {maxPersons}
+                  </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-2xl">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <CarIcon />
-                    <span className="text-sm font-medium">وسيلة النقل</span>
+                    <span className="text-xs sm:text-sm font-medium">
+                      وسيلة النقل
+                    </span>
                   </div>
-                  <p className="text-lg font-bold text-black">
+                  <p className="text-base sm:text-lg font-bold text-black">
                     {transportation}
                   </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-2xl">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <CalendarIcon />
-                    <span className="text-sm font-medium">المواعيد</span>
+                    <span className="text-xs sm:text-sm font-medium">
+                      المواعيد
+                    </span>
                   </div>
-                  <p className="text-lg font-bold text-black">{availability}</p>
+                  <p className="text-base sm:text-lg font-bold text-black">
+                    {availability}
+                  </p>
                 </div>
               </div>
             </div>

@@ -41,10 +41,10 @@ const TourGuidesPageContent = ({ guides }: TourGuidesPageContentProps) => {
 
   return (
     <>
-      <div className="container mx-auto py-12">
-        <div className="flex gap-8">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Filter Sidebar */}
-          <aside className="flex-shrink-0">
+          <aside className="w-full lg:w-auto lg:flex-shrink-0">
             <TourGuidesFilter
               guides={guides}
               onFilterChange={setFilteredGuides}
@@ -52,7 +52,7 @@ const TourGuidesPageContent = ({ guides }: TourGuidesPageContentProps) => {
           </aside>
 
           {/* Guides Grid */}
-          <div className="flex-1">
+          <div className="flex-1 w-full">
             <TourGuidesGrid
               guides={filteredGuides}
               onGuideClick={handleGuideClick}

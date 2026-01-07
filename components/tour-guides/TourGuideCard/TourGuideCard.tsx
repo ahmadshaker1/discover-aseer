@@ -38,7 +38,7 @@ const TourGuideCard = ({
       className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
       onClick={onCardClick}
     >
-      <div className="p-6 flex flex-col items-center">
+      <div className="p-4 sm:p-6 flex flex-col items-center">
         {/* Profile Picture with Location Overlay */}
         <div className="relative w-24 h-24 mb-4">
           {/* Purple gradient border wrapper */}
