@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="flex flex-row items-center space-x-8">
         <AseerLogo />
         <Link
-          href="#"
+          href="/"
           className="text-white text-base font-medium hover:opacity-80 transition-opacity whitespace-nowrap"
         >
           الرئيسية
