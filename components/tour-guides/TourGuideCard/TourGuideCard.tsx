@@ -102,7 +102,7 @@ const TourGuideCard = ({
             e.stopPropagation();
             onCardClick();
           }}
-          className="text-sm text-black font-medium hover:underline"
+          className="text-sm text-black font-medium hover:underline cursor-pointer"
         >
           المزيد
         </Button>

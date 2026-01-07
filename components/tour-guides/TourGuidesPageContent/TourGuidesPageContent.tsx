@@ -15,6 +15,7 @@ const TourGuidesPageContent = ({ guides }: TourGuidesPageContentProps) => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filteredGuides, setFilteredGuides] = useState<TourGuideData[]>(guides);
 
   const handleGuideClick = (guide: TourGuideData) => {
     setSelectedGuide(guide);
@@ -44,12 +45,18 @@ const TourGuidesPageContent = ({ guides }: TourGuidesPageContentProps) => {
         <div className="flex gap-8">
           {/* Filter Sidebar */}
           <aside className="flex-shrink-0">
-            <TourGuidesFilter />
+            <TourGuidesFilter
+              guides={guides}
+              onFilterChange={setFilteredGuides}
+            />
           </aside>
 
           {/* Guides Grid */}
           <div className="flex-1">
-            <TourGuidesGrid guides={guides} onGuideClick={handleGuideClick} />
+            <TourGuidesGrid
+              guides={filteredGuides}
+              onGuideClick={handleGuideClick}
+            />
           </div>
         </div>
       </div>

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button, Checkbox } from "@headlessui/react";
 import { HeartIcon, WalletIcon } from "./Icons";
+import { TourGuideData } from "../TourGuideCard/TourGuideCard";
 
 interface FilterState {
   interests: string[];
@@ -10,19 +11,40 @@ interface FilterState {
   costTo: string;
 }
 
-const TourGuidesFilter = () => {
+interface TourGuidesFilterProps {
+  guides: TourGuideData[];
+  onFilterChange: (filteredGuides: TourGuideData[]) => void;
+}
+
+const TourGuidesFilter = ({
+  guides,
+  onFilterChange,
+}: TourGuidesFilterProps) => {
   const [filters, setFilters] = useState<FilterState>({
     interests: [],
     costFrom: "",
     costTo: "",
   });
 
+  // Define interest categories that map to specialties
   const interests = [
-    { id: "adventures", label: "المغامرات", count: 4 },
-    { id: "heritage", label: "التراث و الفنون", count: 3 },
-    { id: "culinary", label: "فنون الطهي", count: 3 },
-    { id: "nature", label: "الطبيعة", count: 3 },
+    { id: "المغامرات", label: "المغامرات" },
+    { id: "التراث و الفنون", label: "التراث و الفنون" },
+    { id: "فنون الطهي", label: "فنون الطهي" },
+    { id: "الطبيعة", label: "الطبيعة" },
   ];
+
+  // Calculate counts for each interest based on actual guides
+  const interestsWithCounts = useMemo(() => {
+    return interests.map((interest) => {
+      const count = guides.filter((guide) =>
+        guide.specialties?.some((specialty) =>
+          specialty.toLowerCase().includes(interest.id.toLowerCase())
+        )
+      ).length;
+      return { ...interest, count };
+    });
+  }, [guides]);
 
   const handleInterestToggle = (interestId: string) => {
     setFilters((prev) => ({
@@ -55,8 +77,39 @@ const TourGuidesFilter = () => {
     });
   };
 
+  // Filter guides based on current filter state
+  const filteredGuides = useMemo(() => {
+    return guides.filter((guide) => {
+      // Filter by interests (specialties)
+      if (filters.interests.length > 0) {
+        const hasMatchingInterest = filters.interests.some((interest) =>
+          guide.specialties?.some((specialty) =>
+            specialty.toLowerCase().includes(interest.toLowerCase())
+          )
+        );
+        if (!hasMatchingInterest) return false;
+      }
+
+      // Filter by price range
+      if (filters.costFrom && guide.pricePerHour) {
+        if (guide.pricePerHour < Number(filters.costFrom)) return false;
+      }
+      if (filters.costTo && guide.pricePerHour) {
+        if (guide.pricePerHour > Number(filters.costTo)) return false;
+      }
+
+      return true;
+    });
+  }, [guides, filters]);
+
+  // Notify parent when filtered guides change
+  useEffect(() => {
+    onFilterChange(filteredGuides);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredGuides]);
+
   return (
-    <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm">
+    <div className="w-full max-w-xs bg-white p-6 rounded-lg shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between mb-8 space-x-4">
         <h2 className="text-xl font-bold text-black">تصفية المرشدون</h2>
@@ -75,7 +128,7 @@ const TourGuidesFilter = () => {
           <h3 className="text-lg font-bold text-black">الاهتمامات</h3>
         </div>
         <div className="space-y-4">
-          {interests.map((interest) => {
+          {interestsWithCounts.map((interest) => {
             const isChecked = filters.interests.includes(interest.id);
             return (
               <div
@@ -120,7 +173,9 @@ const TourGuidesFilter = () => {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex-1">
-            <label className="block text-sm text-gray-600 mb-2 text-right">من</label>
+            <label className="block text-sm text-gray-600 mb-2 text-right">
+              من
+            </label>
             <input
               type="number"
               value={filters.costFrom}
@@ -130,7 +185,9 @@ const TourGuidesFilter = () => {
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm text-gray-600 mb-2 text-right">إلى</label>
+            <label className="block text-sm text-gray-600 mb-2 text-right">
+              إلى
+            </label>
             <div className="relative">
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 text-sm">
                 ر.س
@@ -151,4 +208,3 @@ const TourGuidesFilter = () => {
 };
 
 export default TourGuidesFilter;
-
