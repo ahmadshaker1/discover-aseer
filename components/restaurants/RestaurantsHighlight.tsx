@@ -18,8 +18,8 @@ const RestaurantsHighlight = () => {
   };
 
   return (
-    <section className="w-full flex flex-col items-center justify-center py-16">
-      <div className="w-full max-w-screen-2xl px-6 md:px-12 lg:px-24 space-y-10">
+    <section className="w-full flex flex-col items-center justify-center py-8 sm:py-12 md:py-16">
+      <div className="w-full max-w-screen-2xl px-4 sm:px-6 md:px-12 lg:px-24 space-y-6 sm:space-y-8 md:space-y-10">
         {/* Header */}
         <div className="flex flex-col items-end space-y-4 text-right w-full">
           <span className="h-px w-24 bg-gradient-to-l from-transparent via-black/40 to-transparent" />
@@ -32,14 +32,14 @@ const RestaurantsHighlight = () => {
         </div>
 
         {/* Restaurants row */}
-        <div className="flex justify-end">
-          <div className="flex gap-6">
+        <div className="flex justify-end w-full overflow-x-auto pb-4 hide-scrollbar">
+          <div className="flex gap-4 sm:gap-6 min-w-max">
             {restaurants.slice(0, 4).map((restaurant) => (
               <button
                 key={restaurant.id}
                 type="button"
                 onClick={() => handleRestaurantClick(restaurant.mapsUrl)}
-                className="group w-[280px] md:w-[320px] lg:w-[340px] h-[380px] md:h-[400px] lg:h-[420px] flex flex-col text-left rounded-3xl overflow-hidden bg-white shadow-[0_18px_30px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:-translate-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                className="group w-[260px] sm:w-[280px] md:w-[320px] lg:w-[340px] h-[360px] sm:h-[380px] md:h-[400px] lg:h-[420px] flex flex-col text-left rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-[0_18px_30px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:-translate-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 flex-shrink-0"
               >
                 <div className="relative h-56 md:h-64 w-full overflow-hidden">
                   <img

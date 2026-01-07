@@ -7,15 +7,13 @@ import RecipesSection from "@/components/recipes/RecipesSection";
 
 export default function Home() {
   return (
-    <>
-      <div className="flex flex-col items-center justify-center">
-        <Hero />
-        <LandmarksHighlight />
-        <RestaurantsHighlight />
-        <PointsOfInterest />
-        <RecipesSection />
-        <EventsInfo />
-      </div>
-    </>
+    <div className="flex flex-col items-center justify-center w-full overflow-x-hidden">
+      <Hero />
+      <LandmarksHighlight />
+      <RestaurantsHighlight />
+      <PointsOfInterest />
+      <RecipesSection />
+      <EventsInfo />
+    </div>
   );
 }

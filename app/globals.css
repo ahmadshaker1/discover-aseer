@@ -16,9 +16,14 @@ span {
   font-family: var(--font-ibm-plex-sans-arabic), sans-serif;
 }
 
-/* Hide scrollbar for webkit browsers */
+/* Hide scrollbar for all browsers */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Safari and Opera */
 }
 
 /* Hide default Swiper navigation buttons */

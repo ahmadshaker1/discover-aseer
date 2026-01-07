@@ -67,14 +67,14 @@ const RecipesSection = () => {
   };
 
   return (
-    <section className="w-full bg-white py-16">
-      <div className="max-w-screen-2xl mx-auto px-4 md:px-8">
+    <section className="w-full bg-white py-8 sm:py-12 md:py-16">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8">
         {/* Header */}
-        <div className="flex flex-col items-end mb-10 space-y-2">
-          <h2 className="text-3xl md:text-4xl font-bold text-right w-full text-black">
+        <div className="flex flex-col items-end mb-6 sm:mb-8 md:mb-10 space-y-2">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-right w-full text-black">
             المطبخ العسيري
           </h2>
-          <p className="text-sm text-neutral-500 text-right w-full">
+          <p className="text-xs sm:text-sm text-neutral-500 text-right w-full">
             زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب
           </p>
         </div>
@@ -90,9 +90,9 @@ const RecipesSection = () => {
               <Button
                 key={recipe.id}
                 as="div"
-                className="min-w-[260px] md:min-w-[320px] bg-white rounded-3xl shadow-lg overflow-hidden flex-shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED]"
+                className="min-w-[240px] sm:min-w-[260px] md:min-w-[320px] bg-white rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden flex-shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED]"
               >
-                <div className="relative h-52 md:h-60">
+                <div className="relative h-44 sm:h-52 md:h-60">
                   <Image
                     src={recipe.image}
                     alt={recipe.title}
@@ -106,9 +106,11 @@ const RecipesSection = () => {
                     <span>⭐</span>
                   </div>
                 </div>
-                <div className="flex flex-col items-end gap-2 px-6 py-4">
-                  <h3 className="text-lg font-semibold">{recipe.title}</h3>
-                  <div className="flex items-center gap-6 text-sm text-neutral-700">
+                <div className="flex flex-col items-end gap-2 px-4 sm:px-6 py-3 sm:py-4">
+                  <h3 className="text-base sm:text-lg font-semibold">
+                    {recipe.title}
+                  </h3>
+                  <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-neutral-700">
                     <div className="flex items-center gap-1">
                       <span>{recipe.type}</span>
                     </div>
@@ -122,20 +124,20 @@ const RecipesSection = () => {
           </div>
 
           {/* Navigation arrows */}
-          <div className="mt-6 flex justify-start gap-4">
+          <div className="mt-4 sm:mt-6 flex justify-start gap-3 sm:gap-4">
             <Button
               onClick={() => scroll("left")}
-              className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center hover:bg-neutral-100 transition cursor-pointer"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-neutral-300 flex items-center justify-center hover:bg-neutral-100 transition cursor-pointer"
               aria-label="السابق"
             >
-              <span className="text-xl">←</span>
+              <span className="text-lg sm:text-xl">←</span>
             </Button>
             <Button
               onClick={() => scroll("right")}
-              className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center hover:bg-neutral-100 transition cursor-pointer"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-neutral-300 flex items-center justify-center hover:bg-neutral-100 transition cursor-pointer"
               aria-label="التالي"
             >
-              <span className="text-xl">→</span>
+              <span className="text-lg sm:text-xl">→</span>
             </Button>
           </div>
         </div>

@@ -12,8 +12,8 @@ const LandmarksHighlight = () => {
   };
 
   return (
-    <section className="w-full flex flex-col items-center justify-center bg-white py-16">
-      <div className="w-full max-w-screen-2xl px-6 md:px-12 lg:px-24 space-y-10">
+    <section className="w-full flex flex-col items-center justify-center bg-white py-8 sm:py-12 md:py-16">
+      <div className="w-full max-w-screen-2xl px-4 sm:px-6 md:px-12 lg:px-24 space-y-6 sm:space-y-8 md:space-y-10">
         {/* Header */}
         <div className="flex flex-col items-end space-y-4 text-right w-full">
           <span className="h-px w-24 bg-gradient-to-l from-transparent via-black/40 to-transparent" />
@@ -24,29 +24,29 @@ const LandmarksHighlight = () => {
 
         {/* Filter pills row (static, visual only) */}
         <div className="flex justify-end w-full">
-          <div className="flex flex-wrap gap-4">
-            <button className="flex items-center gap-2 rounded-full bg-black text-white px-6 py-2 text-sm">
+          <div className="flex flex-wrap gap-2 sm:gap-4">
+            <button className="flex items-center gap-2 rounded-full bg-black text-white px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm">
               <span>مدة الزيارة</span>
             </button>
-            <button className="flex items-center gap-2 rounded-full bg-black text-white px-6 py-2 text-sm">
+            <button className="flex items-center gap-2 rounded-full bg-black text-white px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm">
               <span>الأسعار</span>
             </button>
-            <button className="flex items-center gap-2 rounded-full bg-black text-white px-6 py-2 text-sm">
+            <button className="flex items-center gap-2 rounded-full bg-black text-white px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm">
               <span>المسافرين</span>
             </button>
-            <button className="flex items-center gap-2 rounded-full bg-black text-white px-6 py-2 text-sm">
+            <button className="flex items-center gap-2 rounded-full bg-black text-white px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm">
               <span>الاهتمامات</span>
             </button>
           </div>
         </div>
 
         {/* Landmarks cards row */}
-        <div className="flex justify-end">
-          <div className="flex gap-6">
+        <div className="flex justify-end w-full overflow-x-auto pb-4 hide-scrollbar">
+          <div className="flex gap-4 sm:gap-6 min-w-max">
             {landmarks.slice(0, 4).map((landmark) => (
               <div
                 key={landmark.id}
-                className="group w-[280px] md:w-[320px] lg:w-[340px] h-[420px] md:h-[440px] lg:h-[460px] rounded-3xl overflow-hidden bg-black/90 shadow-[0_18px_30px_rgba(0,0,0,0.6)]"
+                className="group w-[260px] sm:w-[280px] md:w-[320px] lg:w-[340px] h-[380px] sm:h-[420px] md:h-[440px] lg:h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden bg-black/90 shadow-[0_18px_30px_rgba(0,0,0,0.6)] flex-shrink-0"
               >
                 <div className="relative h-full w-full">
                   <img
