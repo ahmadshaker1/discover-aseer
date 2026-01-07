@@ -187,7 +187,7 @@ const PointsOfInterest = () => {
                 onClick={() => selectImage(index)}
                 className={`relative shrink-0 w-24 h-16 md:w-32 md:h-20 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer ${
                   index === currentIndex
-                    ? "ring-4 ring-white scale-110"
+                    ? "scale-110"
                     : "opacity-70 hover:opacity-100 hover:scale-105"
                 }`}
                 aria-label={`Select ${point.title}`}
@@ -198,9 +198,7 @@ const PointsOfInterest = () => {
                   fill
                   className="object-cover"
                 />
-                {index === currentIndex && (
-                  <div className="absolute inset-0 bg-white/20" />
-                )}
+                {index === currentIndex && <div className="absolute inset-0" />}
               </Button>
             ))}
           </div>
