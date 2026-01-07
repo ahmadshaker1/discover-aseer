@@ -15,6 +15,7 @@ interface ApiTourGuide {
   maximum_number_of_people?: number;
   method_of_transportation?: string;
   appointments?: string;
+  specialties?: string[];
 }
 
 interface ApiResponse {
@@ -83,6 +84,10 @@ const transformTourGuide = (apiGuide: ApiTourGuide): TourGuideData => {
       ? availabilityMap[apiGuide.appointments.toLowerCase()] ||
         apiGuide.appointments
       : undefined,
+    specialties:
+      apiGuide.specialties && apiGuide.specialties.length > 0
+        ? apiGuide.specialties
+        : undefined,
   };
 };
 

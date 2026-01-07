@@ -16,6 +16,7 @@ export interface TourGuideData {
   maxPersons?: number;
   transportation?: string;
   availability?: string;
+  specialties?: string[];
 }
 
 export interface TourGuideCardProps extends TourGuideData {

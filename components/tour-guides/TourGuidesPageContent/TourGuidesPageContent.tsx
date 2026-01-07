@@ -29,12 +29,6 @@ const TourGuidesPageContent = ({ guides }: TourGuidesPageContentProps) => {
   const getGuideDetails = (guide: TourGuideData) => {
     return {
       about: guide.description || "مرشد سياحي محترف",
-      experienceTags: [
-        "تجارب تاريخية",
-        "تجارب ترفيهية",
-        "تجارب تراثية",
-        "تجارب جبلية",
-      ],
       pricePerHour: guide.pricePerHour || 200,
       maxPersons: guide.maxPersons || 8,
       transportation: guide.transportation || "سيارة",
@@ -67,7 +61,6 @@ const TourGuidesPageContent = ({ guides }: TourGuidesPageContentProps) => {
           onClose={handleCloseModal}
           guide={selectedGuide}
           about={guideDetails.about}
-          experienceTags={guideDetails.experienceTags}
           pricePerHour={guideDetails.pricePerHour}
           maxPersons={guideDetails.maxPersons}
           transportation={guideDetails.transportation}
