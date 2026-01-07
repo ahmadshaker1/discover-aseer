@@ -1,6 +1,4 @@
-import TourGuideCard, {
-  TourGuideData,
-} from "../TourGuideCard/TourGuideCard";
+import TourGuideCard, { TourGuideData } from "../TourGuideCard/TourGuideCard";
 
 interface TourGuidesGridProps {
   guides: TourGuideData[];
@@ -22,4 +20,3 @@ const TourGuidesGrid = ({ guides, onGuideClick }: TourGuidesGridProps) => {
 };
 
 export default TourGuidesGrid;
-

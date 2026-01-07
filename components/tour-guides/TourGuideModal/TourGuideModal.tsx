@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, DialogPanel } from "@headlessui/react";
+import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import Image from "next/image";
 import {
   CloseIcon,
@@ -47,12 +47,12 @@ const TourGuideModal = ({
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="relative w-full max-w-2xl bg-white rounded-lg shadow-xl max-h-[90vh] overflow-y-auto mx-4">
           {/* Close Button */}
-          <button
+          <Button
             onClick={onClose}
             className="absolute top-4 left-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <CloseIcon />
-          </button>
+          </Button>
 
           <div className="p-8">
             {/* Profile Section */}
@@ -86,9 +86,11 @@ const TourGuideModal = ({
                 </div>
                 <a
                   href={guide.whatsappUrl}
-                  className="inline-flex items-center gap-2 px-4 py-2 border-2 border-green-500 text-green-700 rounded-lg hover:bg-green-50 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-green-600 text-green-600 rounded-full hover:bg-green-50 transition-colors"
                 >
-                  <WhatsAppIcon />
+                  <span className="text-green-600">
+                    <WhatsAppIcon />
+                  </span>
                   <span className="text-sm font-medium">
                     تواصل عبر الواتساب
                   </span>

@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+
+const araHamah1964 = localFont({
+  src: "../public/fonts/Ara Hamah 1964 B Bold.ttf",
+  variable: "--font-ara-hamah-1964",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["arabic", "latin"],
+  variable: "--font-ibm-plex-sans-arabic",
 });
 
 export const metadata: Metadata = {
@@ -27,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} antialiased`}
       >
         <Navbar />
         {children}

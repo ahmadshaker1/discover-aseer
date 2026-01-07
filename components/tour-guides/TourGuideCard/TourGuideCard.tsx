@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { LocationIcon, WhatsAppIcon } from "./Icons";
+import { Button } from "@headlessui/react";
 
 export interface TourGuideData {
   id: string | number;
@@ -37,21 +38,31 @@ const TourGuideCard = ({
       onClick={onCardClick}
     >
       <div className="p-6 flex flex-col items-center">
-        {/* Profile Picture */}
+        {/* Profile Picture with Location Overlay */}
         <div className="relative w-24 h-24 mb-4">
-          <Image
-            src={profileImage}
-            alt={name}
-            fill
-            className="object-cover rounded-full"
-            sizes="96px"
-          />
-        </div>
-
-        {/* Location */}
-        <div className="flex items-center gap-1 mb-2">
-          <LocationIcon />
-          <span className="text-sm text-purple-600">{location}</span>
+          {/* Purple gradient border wrapper */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-[2px]">
+            <div className="relative w-full h-full rounded-full overflow-hidden">
+              <Image
+                src={profileImage}
+                alt={name}
+                fill
+                className="object-cover"
+                sizes="96px"
+              />
+            </div>
+          </div>
+          {/* Location Overlay at bottom */}
+          <div className="absolute bottom-[-2px] left-1/2 transform -translate-x-1/2 z-20 bg-white rounded-full px-2 py-1 shadow-md border border-gray-100">
+            <div className="flex items-center gap-1.5 justify-end">
+              <span className="text-purple-600">
+                <LocationIcon />
+              </span>
+              <span className="text-sm font-bold text-purple-600 capitalize">
+                {location}
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Name */}
@@ -71,9 +82,11 @@ const TourGuideCard = ({
         <a
           href={whatsappUrl}
           onClick={(e) => e.stopPropagation()}
-          className="w-full bg-green-100 hover:bg-green-200 text-green-700 rounded-lg px-4 py-2 flex items-center justify-center gap-2 transition-colors mb-4"
+          className="w-full bg-white border rounded-full px-4 py-2 flex items-center justify-center gap-2 transition-colors mb-4 hover:bg-gray-50"
         >
-          <WhatsAppIcon />
+          <span className="text-green-600">
+            <WhatsAppIcon />
+          </span>
           <span className="text-sm font-medium">تواصل عبر الواتساب</span>
         </a>
 
@@ -83,7 +96,7 @@ const TourGuideCard = ({
         </p>
 
         {/* More Link */}
-        <button
+        <Button
           onClick={(e) => {
             e.stopPropagation();
             onCardClick();
@@ -91,11 +104,10 @@ const TourGuideCard = ({
           className="text-sm text-black font-medium hover:underline"
         >
           المزيد
-        </button>
+        </Button>
       </div>
     </div>
   );
 };
 
 export default TourGuideCard;
-
