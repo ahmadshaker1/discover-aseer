@@ -46,7 +46,7 @@ const LandmarksHighlight = () => {
             {landmarks.slice(0, 4).map((landmark) => (
               <div
                 key={landmark.id}
-                className="group w-[260px] sm:w-[280px] md:w-[320px] lg:w-[340px] h-[380px] sm:h-[420px] md:h-[440px] lg:h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden bg-black/90 shadow-[0_18px_30px_rgba(0,0,0,0.6)] flex-shrink-0"
+                className="group w-[260px] sm:w-[280px] md:w-[320px] lg:w-[340px] h-[380px] sm:h-[420px] md:h-[440px] lg:h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden bg-black/90  flex-shrink-0"
               >
                 <div className="relative h-full w-full">
                   <img

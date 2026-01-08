@@ -48,17 +48,21 @@ const Hero = () => {
       </div>
 
       {/* Right side - Grid of buttons */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-3 sm:grid-rows-2 gap-3 sm:gap-4 w-full lg:w-1/2 z-10 justify-items-center items-center">
+      <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-3 sm:grid-rows-2 gap-2 sm:gap-3 w-full lg:w-2/5 xl:w-1/3 z-10 justify-items-center items-center">
         {gridItems.map((item, index) => (
           <Button
             key={index}
-            className="flex flex-col items-start justify-end p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-black/30 backdrop-blur-sm hover:bg-black/40 transition-all duration-300 text-white cursor-pointer border-[1.5px] border-[#818181] h-32 sm:h-40 md:h-44 lg:h-48 w-full sm:w-28 md:w-32 flex-shrink-0"
+            className="flex flex-col items-start justify-end p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-black/30 backdrop-blur-sm hover:bg-black/40 transition-all duration-300 text-white cursor-pointer border-[1.5px] border-[#818181] h-28 sm:h-36 md:h-40 lg:h-44 w-full sm:w-28 md:w-32 flex-shrink-0"
           >
             <div className="w-6 h-8 sm:w-8 sm:h-12 mb-2 sm:mb-3 flex items-center justify-center">
               {/* Icon placeholder - user will add icons here */}
-              {item.icon || <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded"></div>}
+              {item.icon || (
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded"></div>
+              )}
             </div>
-            <span className="text-xs sm:text-sm font-medium text-right">{item.text}</span>
+            <span className="text-xs sm:text-sm font-medium text-right">
+              {item.text}
+            </span>
           </Button>
         ))}
       </div>

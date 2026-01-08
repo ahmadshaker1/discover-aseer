@@ -39,7 +39,7 @@ const RestaurantsHighlight = () => {
                 key={restaurant.id}
                 type="button"
                 onClick={() => handleRestaurantClick(restaurant.mapsUrl)}
-                className="group w-[260px] sm:w-[280px] md:w-[320px] lg:w-[340px] h-[360px] sm:h-[380px] md:h-[400px] lg:h-[420px] flex flex-col text-left rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-[0_18px_30px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:-translate-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 flex-shrink-0"
+                className="group w-[260px] sm:w-[280px] md:w-[320px] lg:w-[340px] h-[360px] sm:h-[380px] md:h-[400px] lg:h-[420px] flex flex-col text-left rounded-2xl sm:rounded-3xl overflow-hidden bg-white transition-transform duration-300 hover:-translate-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 flex-shrink-0"
               >
                 <div className="relative h-56 md:h-64 w-full overflow-hidden">
                   <img
