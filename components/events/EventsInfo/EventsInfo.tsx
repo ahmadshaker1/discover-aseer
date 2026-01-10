@@ -54,7 +54,7 @@ const EventsInfo = ({ cards = defaultCards }: EventsInfoProps) => {
       />
 
       {/* Section Title */}
-      <div className="relative flex justify-end mb-6 sm:mb-8 md:mb-12 lg:mb-16">
+      <div className="relative flex justify-start mb-6 sm:mb-8 md:mb-12 lg:mb-16">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6027D2]">
           ابدأ رحلتك
         </h2>
@@ -115,4 +115,3 @@ const ChevronIcon = () => (
 );
 
 export default EventsInfo;
-
