@@ -1,9 +1,12 @@
 import RestaurantsGrid from "@/components/restaurants/RestaurantsGrid";
+import { fetchRestaurants } from "@/components/restaurants/data";
 
-const RestaurantsPage = () => {
+const RestaurantsPage = async () => {
+  const restaurants = await fetchRestaurants();
+
   return (
     <div className="flex flex-col w-full">
-      <RestaurantsGrid />
+      <RestaurantsGrid restaurants={restaurants} />
     </div>
   );
 };

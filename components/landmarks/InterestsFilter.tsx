@@ -5,16 +5,27 @@ import { Fragment } from "react";
 import { HeartIcon, ChevronDownIcon } from "./Icons";
 import { interestOptions } from "./filterOptions";
 
+interface FilterOption {
+  id: string;
+  label: string;
+}
+
 interface InterestsFilterProps {
   selectedInterests: string[];
   onToggle: (interestId: string) => void;
   onClear: () => void;
+  label?: string;
+  options?: FilterOption[];
+  icon?: React.ReactNode;
 }
 
 const InterestsFilter = ({
   selectedInterests,
   onToggle,
   onClear,
+  label = "الاهتمامات",
+  options = interestOptions,
+  icon = <HeartIcon />,
 }: InterestsFilterProps) => {
   return (
     <Menu as="div" className="relative">
@@ -22,10 +33,10 @@ const InterestsFilter = ({
         <ChevronDownIcon />
         <span>
           {selectedInterests.length > 0
-            ? `الاهتمامات (${selectedInterests.length})`
-            : "الاهتمامات"}
+            ? `${label} (${selectedInterests.length})`
+            : label}
         </span>
-        <HeartIcon />
+        {icon}
       </Menu.Button>
       <Transition
         as={Fragment}
@@ -36,9 +47,9 @@ const InterestsFilter = ({
         leaveFrom="opacity-100 scale-100 translate-y-0"
         leaveTo="opacity-0 scale-95 translate-y-1"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-64 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 max-h-80 overflow-y-auto">
-          <div className="py-1">
-            {interestOptions.map((option) => {
+      <Menu.Items className="absolute right-0 mt-2 w-64 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 max-h-80 overflow-y-auto">
+        <div className="py-1">
+          {options.map((option) => {
               const isSelected = selectedInterests.includes(option.id);
               return (
                 <Menu.Item key={option.id}>

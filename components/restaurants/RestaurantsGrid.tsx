@@ -1,10 +1,14 @@
 "use client";
 
 import { useCallback } from "react";
-import { restaurants } from "./data";
+import { Restaurant } from "./data";
 import { SaudiRiyalIcon } from "./Icons";
 
-const RestaurantsGrid = () => {
+interface RestaurantsGridProps {
+  restaurants: Restaurant[];
+}
+
+const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
   const handleRestaurantClick = useCallback((mapsUrl: string) => {
     window.open(mapsUrl, "_blank", "noopener,noreferrer");
   }, []);
@@ -13,9 +17,7 @@ const RestaurantsGrid = () => {
     <div className="container mx-auto py-16 px-6 md:px-12 lg:px-24">
       <div className="mb-10 flex flex-col items-end text-right space-y-3">
         <span className="h-px w-24 bg-gradient-to-l from-transparent via-black/40 to-transparent" />
-        <h1 className="text-4xl font-bold text-black">
-          المطاعم في عسير
-        </h1>
+        <h1 className="text-4xl font-bold text-black">المطاعم في عسير</h1>
         <p className="text-sm md:text-base text-gray-700 max-w-xl">
           استكشف مجموعة متنوعة من المطاعم في عسير واختر وجهتك المفضلة لتجربة
           أشهى المأكولات.
@@ -38,13 +40,17 @@ const RestaurantsGrid = () => {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/10" />
-              <div className="absolute top-4 left-4">
-                <span className="inline-flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
-                  <span>{`(${restaurant.reviewsCount})`}</span>
-                  <span>{`5/${restaurant.rating}`}</span>
-                  <span className="text-yellow-300">★</span>
-                </span>
-              </div>
+              {restaurant.rating > 0 && (
+                <div className="absolute top-4 left-4">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
+                    {restaurant.reviewsCount > 0 && (
+                      <span>{`(${restaurant.reviewsCount})`}</span>
+                    )}
+                    <span>{restaurant.rating.toFixed(1)}</span>
+                    <span className="text-yellow-300">★</span>
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col justify-between px-5 py-4 flex-1">
@@ -53,9 +59,13 @@ const RestaurantsGrid = () => {
                   {restaurant.name}
                 </h3>
                 <div className="flex items-center justify-end gap-1 text-xs text-gray-500">
-                  <span className="text-[10px]">كم</span>
-                  <span>{restaurant.distanceKm}</span>
-                  <span className="mx-1 text-gray-400">•</span>
+                  {restaurant.distanceKm > 0 && (
+                    <>
+                      <span className="text-[10px]">كم</span>
+                      <span>{restaurant.distanceKm}</span>
+                      <span className="mx-1 text-gray-400">•</span>
+                    </>
+                  )}
                   <span className="truncate">{restaurant.location}</span>
                 </div>
               </div>
@@ -65,14 +75,18 @@ const RestaurantsGrid = () => {
                   <SaudiRiyalIcon />
                   <span>{restaurant.priceRange}</span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gray-700" />
-                  <span>{restaurant.nationality}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-                  <span>{restaurant.category}</span>
-                </div>
+                {restaurant.nationality && (
+                  <div className="flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-700" />
+                    <span>{restaurant.nationality}</span>
+                  </div>
+                )}
+                {restaurant.category && (
+                  <div className="flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                    <span>{restaurant.category}</span>
+                  </div>
+                )}
               </div>
             </div>
           </button>
