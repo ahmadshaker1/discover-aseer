@@ -40,11 +40,11 @@ interface FilterHeaderProps {
 
 const FilterHeader = ({ onReset }: FilterHeaderProps) => {
   return (
-    <div className="flex items-center justify-between mb-8 space-x-4">
-      <h2 className="text-xl font-bold text-black">تصفية المطاعم</h2>
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-3 sm:gap-4 sm:space-x-4">
+      <h2 className="text-lg sm:text-xl font-bold text-black">تصفية المطاعم</h2>
       <Button
         onClick={onReset}
-        className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
+        className="px-3 sm:px-4 py-1.5 sm:py-2 cursor-pointer text-xs sm:text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
       >
         إعادة تعيين النتائج
       </Button>
@@ -65,9 +65,9 @@ const LocationFilter = ({
   const selectedCityOption = cityOptions.find((opt) => opt.id === selectedCity);
 
   return (
-    <div className="mb-8">
+    <div className="mb-6 sm:mb-8">
       <Menu as="div" className="relative">
-        <Menu.Button className="flex flex-row-reverse items-center gap-2 w-full rounded-lg bg-white text-black px-4 py-3 text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer">
+        <Menu.Button className="flex flex-row-reverse items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer">
           <ChevronDownIcon />
           <span className="flex-1 text-right">
             {selectedCityOption?.label || "المدينة"}
@@ -128,32 +128,32 @@ const RestaurantTypeFilter = ({
   onTypeToggle,
 }: RestaurantTypeFilterProps) => {
   return (
-    <div className="mb-8">
-      <div className="flex items-center gap-2 mb-4">
+    <div className="mb-6 sm:mb-8">
+      <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <RestaurantTypeIcon />
-        <h3 className="text-lg font-bold text-black">نوع المطعم</h3>
+        <h3 className="text-base sm:text-lg font-bold text-black">نوع المطعم</h3>
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {restaurantTypes.map((type) => {
           const isSelected = selectedTypes.includes(type.id);
           return (
             <Button
               key={type.id}
               onClick={() => onTypeToggle(type.id)}
-              className={`flex flex-col items-center justify-center cursor-pointer p-4 rounded-lg border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 ${
+              className={`flex flex-col items-center justify-center cursor-pointer p-3 sm:p-4 rounded-lg border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 ${
                 isSelected
                   ? "border-black bg-gray-50"
                   : "border-gray-200 hover:border-gray-300"
               }`}
             >
               <div
-                className={`mb-2 ${
+                className={`mb-1.5 sm:mb-2 ${
                   isSelected ? "text-black" : "text-gray-400"
                 }`}
               >
                 {type.icon}
               </div>
-              <span className="text-sm font-medium text-black">
+              <span className="text-xs sm:text-sm font-medium text-black">
                 {type.label}
               </span>
             </Button>
@@ -207,11 +207,11 @@ const CuisineTypeFilter = ({
 }: CuisineTypeFilterProps) => {
   return (
     <div>
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <CuisineIcon />
-        <h3 className="text-lg font-bold text-black">اختر نوع المطبخ</h3>
+        <h3 className="text-base sm:text-lg font-bold text-black">اختر نوع المطبخ</h3>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {cuisines.map((cuisine) => {
           const isChecked = selectedCuisines.includes(cuisine.id);
           return (
@@ -293,7 +293,7 @@ const RestaurantsFilterSidebar = () => {
   };
 
   return (
-    <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm">
+    <div className="w-full max-w-md lg:max-w-none bg-white p-4 sm:p-6 rounded-lg shadow-sm">
       <FilterHeader onReset={handleReset} />
       <LocationFilter
         selectedCity={filters.city}
