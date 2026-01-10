@@ -131,7 +131,9 @@ const RestaurantTypeFilter = ({
     <div className="mb-6 sm:mb-8">
       <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <RestaurantTypeIcon />
-        <h3 className="text-base sm:text-lg font-bold text-black">نوع المطعم</h3>
+        <h3 className="text-base sm:text-lg font-bold text-black">
+          نوع المطعم
+        </h3>
       </div>
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {restaurantTypes.map((type) => {
@@ -209,7 +211,9 @@ const CuisineTypeFilter = ({
     <div>
       <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <CuisineIcon />
-        <h3 className="text-base sm:text-lg font-bold text-black">اختر نوع المطبخ</h3>
+        <h3 className="text-base sm:text-lg font-bold text-black">
+          اختر نوع المطبخ
+        </h3>
       </div>
       <div className="space-y-3 sm:space-y-4">
         {cuisines.map((cuisine) => {
