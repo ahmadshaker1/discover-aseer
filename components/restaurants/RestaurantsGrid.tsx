@@ -14,17 +14,8 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
   }, []);
 
   return (
-    <div className="container mx-auto py-16 px-6 md:px-12 lg:px-24">
-      <div className="mb-10 flex flex-col items-end text-right space-y-3">
-        <span className="h-px w-24 bg-gradient-to-l from-transparent via-black/40 to-transparent" />
-        <h1 className="text-4xl font-bold text-black">المطاعم في عسير</h1>
-        <p className="text-sm md:text-base text-gray-700 max-w-xl">
-          استكشف مجموعة متنوعة من المطاعم في عسير واختر وجهتك المفضلة لتجربة
-          أشهى المأكولات.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    <div className="w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {restaurants.map((restaurant) => (
           <button
             key={restaurant.id}
@@ -42,7 +33,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/10" />
               {restaurant.rating > 0 && (
                 <div className="absolute top-4 left-4">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-black/70 px-3 py-1.5 text-sm font-medium text-white">
                     {restaurant.reviewsCount > 0 && (
                       <span>{`(${restaurant.reviewsCount})`}</span>
                     )}
@@ -55,13 +46,13 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
 
             <div className="flex flex-col justify-between px-5 py-4 flex-1">
               <div className="space-y-2">
-                <h3 className="text-lg md:text-xl font-bold text-right text-gray-900">
+                <h3 className="text-xl md:text-2xl font-bold text-right text-gray-900">
                   {restaurant.name}
                 </h3>
-                <div className="flex items-center justify-end gap-1 text-xs text-gray-500">
+                <div className="flex items-center justify-end gap-1 text-sm text-gray-500">
                   {restaurant.distanceKm > 0 && (
                     <>
-                      <span className="text-[10px]">كم</span>
+                      <span>كم</span>
                       <span>{restaurant.distanceKm}</span>
                       <span className="mx-1 text-gray-400">•</span>
                     </>
@@ -70,7 +61,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-between text-xs text-gray-700">
+              <div className="mt-4 flex items-center justify-between text-sm text-gray-700">
                 <div className="flex items-center gap-1">
                   <SaudiRiyalIcon />
                   <span>{restaurant.priceRange}</span>
@@ -97,5 +88,3 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
 };
 
 export default RestaurantsGrid;
-
-
