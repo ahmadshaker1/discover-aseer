@@ -1,5 +1,5 @@
 export interface Landmark {
-  id: number;
+  id: string;
   title: string;
   location: string;
   area: string;
@@ -8,57 +8,87 @@ export interface Landmark {
   image: string;
 }
 
-export const landmarks: Landmark[] = [
-  {
-    id: 1,
-    title: "سوق الثلاثاء",
-    location: "أبها، حديقة السودة",
-    area: "أبها",
-    description: "تسلق جبل سودة مع منسلق الجبال المحلي",
-    guideName: "فيصل",
-    image:
-      "https://images.pexels.com/photos/4606805/pexels-photo-4606805.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  },
-  {
-    id: 2,
-    title: "قرية رجال ألمع التراثية",
-    location: "رجال ألمع، عسير",
-    area: "رجال ألمع",
-    description: "تجربة فريدة بين البيوت الحجرية والأسواق الشعبية.",
-    guideName: "محمد",
-    image:
-      "https://images.pexels.com/photos/4606806/pexels-photo-4606806.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  },
-  {
-    id: 3,
-    title: "جبل السودة",
-    location: "السودة، أبها",
-    area: "السودة",
-    description: "إطلالات ساحرة على قمم الجبال والسهول المحيطة.",
-    guideName: "سلمان",
-    image:
-      "https://images.pexels.com/photos/4606804/pexels-photo-4606804.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  },
-  {
-    id: 4,
-    title: "القرية المعلقة",
-    location: "تنومة، عسير",
-    area: "تنومة",
-    description: "قرية جبلية مطلة على مناظر طبيعية خلابة.",
-    guideName: "نواف",
-    image:
-      "https://images.pexels.com/photos/4606803/pexels-photo-4606803.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  },
-  {
-    id: 5,
-    title: "منتزه السحاب",
-    location: "خميس مشيط، عسير",
-    area: "خميس مشيط",
-    description: "تجربة مميزة بين الغيوم مع إطلالات بانورامية.",
-    guideName: "أحمد",
-    image:
-      "https://images.pexels.com/photos/4606802/pexels-photo-4606802.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  },
-];
+export interface ApiLandmark {
+  id: string;
+  status: string;
+  sort: number | null;
+  user_created: string;
+  date_created: string;
+  user_updated: string | null;
+  date_updated: string | null;
+  title: string;
+  location: string;
+  description: string;
+  cover_image: string;
+  city: string | null;
+  traveller_types: string[] | null;
+  price_range_from: number | null;
+  price_range_to: number | null;
+}
+
+export interface ApiResponse {
+  data: ApiLandmark[];
+}
+
+export const transformLandmark = (
+  apiLandmark: ApiLandmark,
+  directusUrl: string
+): Landmark => {
+  const imageUrl = apiLandmark.cover_image
+    ? `${directusUrl}/assets/${apiLandmark.cover_image}`
+    : "/assets/experiences/experiences.png";
+
+  // Extract guide name from description if it contains one
+  // The description format seems to be: "تسلق جبل سودا مع متسلق الجبال المحلي فيصل"
+  // We'll try to extract the last word as guide name
+  let guideName = "";
+  if (apiLandmark.description) {
+    const descriptionParts = apiLandmark.description.trim().split(/\s+/);
+    // If description has multiple words, take the last one as guide name
+    if (descriptionParts.length > 1) {
+      guideName = descriptionParts[descriptionParts.length - 1];
+    }
+  }
+
+  // Use city if available, otherwise extract from location
+  const area = apiLandmark.city || apiLandmark.location?.split(",")[0]?.trim() || "";
+
+  return {
+    id: apiLandmark.id,
+    title: apiLandmark.title?.trim() || "",
+    location: apiLandmark.location?.trim() || "",
+    area: area,
+    description: apiLandmark.description?.trim() || "",
+    guideName: guideName,
+    image: imageUrl,
+  };
+};
+
+export const fetchLandmarks = async (): Promise<Landmark[]> => {
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
+
+  if (!directusUrl) {
+    console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
+    return [];
+  }
+
+  try {
+    const response = await fetch(`${directusUrl}/items/landmarks`, {
+      next: { revalidate: 3600 }, // Revalidate every hour
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch landmarks: ${response.statusText}`);
+    }
+
+    const apiData: ApiResponse = await response.json();
+    return apiData.data
+      .filter((landmark) => landmark.status === "published")
+      .map((landmark) => transformLandmark(landmark, directusUrl));
+  } catch (error) {
+    console.error("Error fetching landmarks:", error);
+    return [];
+  }
+};
 
 

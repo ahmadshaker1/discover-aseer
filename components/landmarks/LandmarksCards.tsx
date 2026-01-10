@@ -1,6 +1,10 @@
-import { landmarks } from "./data";
+import { Landmark } from "./data";
 
-const LandmarksCards = () => {
+interface LandmarksCardsProps {
+  landmarks: Landmark[];
+}
+
+const LandmarksCards = ({ landmarks }: LandmarksCardsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
       {landmarks.slice(0, 4).map((landmark) => (

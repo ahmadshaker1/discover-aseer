@@ -1,8 +1,8 @@
-"use client";
+import { fetchLandmarks } from "./data";
 
-import { landmarks } from "./data";
+const LandmarksGrid = async () => {
+  const landmarks = await fetchLandmarks();
 
-const LandmarksGrid = () => {
   return (
     <div className="container mx-auto py-16 px-6 md:px-12 lg:px-24">
       <div className="mb-10 flex flex-col items-end text-right space-y-3">
