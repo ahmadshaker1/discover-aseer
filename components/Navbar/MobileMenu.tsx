@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, Disclosure } from "@headlessui/react";
 import { Fragment } from "react";
 import Link from "next/link";
 import AseerLogo from "../Logo/AseerLogo";
@@ -51,23 +51,52 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                   {navigationLinks.map((link) => {
                     if (link.isDropdown) {
                       return (
-                        <div key={link.href} className="space-y-2">
-                          <div className="text-white text-lg sm:text-xl font-medium py-3 border-b border-white/10">
-                            {link.label}
-                          </div>
-                          <div className="pr-4 space-y-2">
-                            {discoverAseerLinks.map((item) => (
-                              <Link
-                                key={item.href}
-                                href={item.href}
-                                onClick={onClose}
-                                className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
+                        <Disclosure key={link.href} as="div">
+                          {({ open }) => (
+                            <>
+                              <Disclosure.Button className="w-full flex items-center justify-between text-white text-lg sm:text-xl font-medium py-3 border-b border-white/10 hover:opacity-80 transition-opacity">
+                                <span>{link.label}</span>
+                                <svg
+                                  className={`w-5 h-5 transition-transform duration-200 ${
+                                    open ? "rotate-180" : ""
+                                  }`}
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M19 9l-7 7-7-7"
+                                  />
+                                </svg>
+                              </Disclosure.Button>
+                              <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-200"
+                                enterFrom="opacity-0 max-h-0"
+                                enterTo="opacity-100 max-h-96"
+                                leave="transition ease-in duration-150"
+                                leaveFrom="opacity-100 max-h-96"
+                                leaveTo="opacity-0 max-h-0"
                               >
-                                {item.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
+                                <Disclosure.Panel className="pr-4 space-y-2 overflow-hidden">
+                                  {discoverAseerLinks.map((item) => (
+                                    <Link
+                                      key={item.href}
+                                      href={item.href}
+                                      onClick={onClose}
+                                      className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
+                                    >
+                                      {item.label}
+                                    </Link>
+                                  ))}
+                                </Disclosure.Panel>
+                              </Transition>
+                            </>
+                          )}
+                        </Disclosure>
                       );
                     }
                     return (
