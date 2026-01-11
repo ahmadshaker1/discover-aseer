@@ -4,7 +4,12 @@ import { useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import FilterDropdown from "../landmarks/FilterDropdown";
 import InterestsFilter from "../landmarks/InterestsFilter";
-import { LocationIcon, HeartIcon, ClockIcon, ChevronDownIcon } from "../landmarks/Icons";
+import {
+  LocationIcon,
+  HeartIcon,
+  ClockIcon,
+  ChevronDownIcon,
+} from "../landmarks/Icons";
 import { cityOptions, interestOptions } from "../landmarks/filterOptions";
 import { CalendarIcon } from "./Icons";
 
@@ -51,17 +56,17 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     // Prevent submission if already loading
     if (isLoading) {
       return;
     }
-    
+
     // Only submit if description is provided
     if (!description.trim()) {
       return;
     }
-    
+
     onSubmit({
       description,
       city: selectedCity,
@@ -102,9 +107,9 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
         </div>
 
         {/* Input fields row */}
-        <div className="flex flex-wrap gap-3 sm:gap-4 mb-6">
+        <div className="flex flex-row flex-wrap items-start gap-3 sm:gap-4 mb-6">
           {/* Interests */}
-          <div className="flex-1 min-w-[200px]">
+          <div>
             <InterestsFilter
               selectedInterests={selectedInterests}
               onToggle={(id) => {
@@ -122,7 +127,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
           </div>
 
           {/* Duration */}
-          <div className="flex-1 min-w-[200px]">
+          <div>
             <FilterDropdown
               icon={<ClockIcon />}
               label="فترة الخروج"
@@ -130,23 +135,24 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
               options={durationOptions}
               onSelect={setSelectedDuration}
               onClear={() => setSelectedDuration(null)}
-              width="w-full"
             />
           </div>
 
           {/* Date Range */}
-          <div className="flex-1 min-w-[200px]">
+          <div>
             <Menu as="div" className="relative">
-              <Menu.Button className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer w-full">
+              <Menu.Button className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer">
                 <ChevronDownIcon />
-                <span className="flex-1 text-right">
+                <span className="text-right whitespace-nowrap">
                   {arrivalDate && departureDate
-                    ? `${formatDate(arrivalDate)} - ${formatDate(departureDate)}`
+                    ? `${formatDate(arrivalDate)} - ${formatDate(
+                        departureDate
+                      )}`
                     : arrivalDate
-                      ? `من ${formatDate(arrivalDate)}`
-                      : departureDate
-                        ? `إلى ${formatDate(departureDate)}`
-                        : "اختر تاريخ الوصول والمغادرة"}
+                    ? `من ${formatDate(arrivalDate)}`
+                    : departureDate
+                    ? `إلى ${formatDate(departureDate)}`
+                    : "اختر تاريخ الوصول والمغادرة"}
                 </span>
                 <CalendarIcon />
               </Menu.Button>
@@ -201,7 +207,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
           </div>
 
           {/* City */}
-          <div className="flex-1 min-w-[200px]">
+          <div>
             <FilterDropdown
               icon={<LocationIcon />}
               label="المدينة"
@@ -209,7 +215,6 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
               options={cityOptions}
               onSelect={setSelectedCity}
               onClear={() => setSelectedCity(null)}
-              width="w-full"
             />
           </div>
         </div>
