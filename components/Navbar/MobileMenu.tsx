@@ -115,6 +115,28 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                   <div className="pt-4 space-y-4">
                     {actionLinks.map((link, index) => {
                       if (link.variant === "button") {
+                        // Handle booklet download
+                        if ((link as any).isBooklet) {
+                          const handleBookletDownload = (e: React.MouseEvent) => {
+                            e.preventDefault();
+                            const downloadLink = document.createElement("a");
+                            downloadLink.href = "/assets/booklet/booklet.pdf";
+                            downloadLink.download = "booklet.pdf";
+                            document.body.appendChild(downloadLink);
+                            downloadLink.click();
+                            document.body.removeChild(downloadLink);
+                            onClose();
+                          };
+                          return (
+                            <button
+                              key={index}
+                              onClick={handleBookletDownload}
+                              className="block w-full text-center text-white text-base sm:text-lg font-medium px-6 py-3 border border-white rounded-full hover:bg-white/10 transition-colors"
+                            >
+                              {link.label}
+                            </button>
+                          );
+                        }
                         return (
                           <Link
                             key={index}

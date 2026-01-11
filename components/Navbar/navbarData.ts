@@ -23,6 +23,7 @@ export const actionLinks = [
     href: "#",
     label: "دليل الانشطة الخارجية",
     variant: "button" as const,
+    isBooklet: true,
   },
   {
     href: "/interactive-map",
