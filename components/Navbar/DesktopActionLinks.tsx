@@ -48,7 +48,7 @@ const DesktopActionLinks = () => {
             className="text-white text-base font-medium hover:opacity-80 transition-opacity whitespace-nowrap flex flex-row items-center justify-center space-x-1"
           >
             <Icon />
-            <h3 className="text-white text-base font-medium">{link.label}</h3>
+            <span>{link.label}</span>
           </Link>
         );
       })}
