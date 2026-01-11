@@ -1,18 +1,10 @@
-import PageBanner from "@/components/PageBanner/PageBanner";
 import PlannerPageContent from "@/components/planner/PlannerPageContent";
+import PlannerBreadcrumb from "@/components/planner/PlannerBreadcrumb";
 
 const PlannerPage = () => {
   return (
-    <div className="flex flex-col w-full">
-      <PageBanner
-        breadcrumbs={[
-          { label: "الرئيسية", href: "/" },
-          { label: "مخطط الرحلات" },
-        ]}
-        title="مخطط الرحلات الذكي"
-        subtitle="خطط لرحلتك المثالية في عسير باستخدام الذكاء الاصطناعي"
-        backgroundImage="/assets/experiences/experiences.png"
-      />
+    <div className="flex flex-col w-full bg-white">
+      <PlannerBreadcrumb />
       <PlannerPageContent />
     </div>
   );

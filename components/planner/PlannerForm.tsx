@@ -50,6 +50,18 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    
+    // Prevent submission if already loading
+    if (isLoading) {
+      return;
+    }
+    
+    // Only submit if description is provided
+    if (!description.trim()) {
+      return;
+    }
+    
     onSubmit({
       description,
       city: selectedCity,
@@ -73,6 +85,16 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            onKeyDown={(e) => {
+              // Prevent form submission on Enter key
+              if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                // Allow Ctrl/Cmd+Enter to submit
+                return;
+              } else if (e.key === "Enter") {
+                // Allow normal Enter for new lines
+                return;
+              }
+            }}
             placeholder="اقتراح: خطط لرحلة لمدة 7 أيام إلى عسير مع استراحة إفطار في الساعة 10 صباحاً، واستراحة غداء في الساعة 3 مساءً، واستراحة عشاء في الساعة 8 مساءً."
             className="w-full h-40 sm:h-48 p-4 sm:p-6 rounded-xl bg-white border border-gray-300 text-right text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6027D2] focus:border-transparent resize-none"
             dir="rtl"
@@ -146,7 +168,11 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                       <input
                         type="date"
                         value={arrivalDate}
-                        onChange={(e) => setArrivalDate(e.target.value)}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          setArrivalDate(e.target.value);
+                        }}
+                        onClick={(e) => e.stopPropagation()}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-[#6027D2]"
                         dir="ltr"
                       />
@@ -158,7 +184,11 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                       <input
                         type="date"
                         value={departureDate}
-                        onChange={(e) => setDepartureDate(e.target.value)}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          setDepartureDate(e.target.value);
+                        }}
+                        onClick={(e) => e.stopPropagation()}
                         min={arrivalDate}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-[#6027D2]"
                         dir="ltr"

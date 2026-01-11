@@ -3,11 +3,13 @@
 import { useState } from "react";
 import PlannerForm from "./PlannerForm";
 import ScheduleDisplay from "./ScheduleDisplay";
+import { PlanResponse } from "./types";
 
 const PlannerPageContent = () => {
-  const [schedule, setSchedule] = useState<string | null>(null);
+  const [schedule, setSchedule] = useState<PlanResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (data: {
     description: string;
@@ -17,6 +19,12 @@ const PlannerPageContent = () => {
     duration: string | null;
     interests: string[];
   }) => {
+    // Prevent multiple simultaneous submissions
+    if (isLoading || isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
     setIsLoading(true);
     setError(null);
     setSchedule(null);
@@ -36,13 +44,20 @@ const PlannerPageContent = () => {
       }
 
       const result = await response.json();
-      setSchedule(result.schedule);
+      // Handle both old string format and new JSON format
+      if (typeof result.schedule === "string") {
+        // Legacy format - convert to new format or show error
+        setError("يرجى تحديث الصفحة والمحاولة مرة أخرى");
+      } else {
+        setSchedule(result.schedule as PlanResponse);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "حدث خطأ أثناء إنشاء الجدول"
       );
     } finally {
       setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
