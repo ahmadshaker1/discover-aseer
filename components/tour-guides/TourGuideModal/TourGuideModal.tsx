@@ -4,15 +4,21 @@ import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import Image from "next/image";
 import {
   CloseIcon,
-  LocationIcon,
   WhatsAppIcon,
   ClockIcon,
   PeopleIcon,
   CarIcon,
   CalendarIcon,
 } from "./Icons";
+import { ArabicFlagIcon, EnglishFlagIcon } from "../TourGuideCard/Icons";
 import { SaudiRiyalIcon } from "@/components/restaurants/Icons";
 import { TourGuideData } from "../TourGuideCard/TourGuideCard";
+
+const LanguageFlag = ({ code }: { code: string }) => {
+  if (code === "ar") return <ArabicFlagIcon />;
+  if (code === "en") return <EnglishFlagIcon />;
+  return null;
+};
 
 interface TourGuideModalProps {
   isOpen: boolean;
@@ -59,9 +65,8 @@ const TourGuideModal = ({
           <div className="p-4 sm:p-6">
             {/* Profile Section */}
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-4 sm:mb-6">
-              {/* Profile Picture with Location Overlay */}
+              {/* Profile Picture */}
               <div className="relative w-24 h-24 flex-shrink-0">
-                {/* Purple gradient border wrapper */}
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-[2px]">
                   <div className="relative w-full h-full rounded-full overflow-hidden bg-white">
                     <Image
@@ -71,17 +76,6 @@ const TourGuideModal = ({
                       className="object-cover"
                       sizes="96px"
                     />
-                  </div>
-                </div>
-                {/* Location Overlay at bottom */}
-                <div className="absolute bottom-[-2px] left-1/2 transform -translate-x-1/2 z-20 bg-white rounded-full px-2 py-1 shadow-md border border-gray-100">
-                  <div className="flex items-center gap-1.5 justify-end">
-                    <span className="text-purple-600">
-                      <LocationIcon />
-                    </span>
-                    <span className="text-xs font-bold text-purple-600">
-                      {guide.location}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -97,7 +91,7 @@ const TourGuideModal = ({
                 <div className="flex items-center flex-wrap gap-2 sm:gap-3 mb-2 sm:mb-3">
                   {guide.languages.map((lang) => (
                     <div key={lang.code} className="flex items-center gap-1.5">
-                      <span className="text-sm">{lang.flag}</span>
+                      <LanguageFlag code={lang.code} />
                       <span className="text-sm text-black">{lang.name}</span>
                     </div>
                   ))}
