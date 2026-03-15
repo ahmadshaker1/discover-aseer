@@ -1,6 +1,49 @@
 @import "tailwindcss";
 
-/* Hide scrollbar for webkit browsers */
+/* Apply Ara Hamah 1964 B Bold to all headers */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-ara-hamah-1964), sans-serif;
+}
+
+/* Apply IBM Sans Plex Arabic to paragraphs and spans */
+p,
+span {
+  font-family: var(--font-ibm-plex-sans-arabic), sans-serif;
+}
+
+/* Hide scrollbar for all browsers */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Hide default Swiper navigation buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+
+/* Modal fade-in from bottom animation */
+@keyframes modalFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-enter {
+  animation: modalFadeInUp 0.3s ease-out;
 }

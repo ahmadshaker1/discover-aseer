@@ -125,7 +125,7 @@ const travelInfoCards: TravelInfoCard[] = [
         <rect x="15" y="15" width="2" height="2" rx="0.5" fill="white" />
       </svg>
     ),
-    title: "Plan & Book Your Accomodation",
+    title: "Plan & Book Your Accommodation",
     description:
       "Diam ut venenatis tellus in metus vulputate eu scelerisque felis.",
   },
