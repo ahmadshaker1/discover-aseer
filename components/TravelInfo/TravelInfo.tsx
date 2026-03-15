@@ -12,44 +12,15 @@ const travelInfoCards: TravelInfoCard[] = [
     id: 1,
     icon: (
       <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
+        width="40"
+        height="40"
+        viewBox="0 0 40 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <rect
-          x="3"
-          y="5"
-          width="18"
-          height="14"
-          rx="2"
-          stroke="white"
-          strokeWidth="1.5"
-        />
         <path
-          d="M3 9H21"
-          stroke="white"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M7 13H10"
-          stroke="white"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M12 13H15"
-          stroke="white"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M7 16H10"
-          stroke="white"
-          strokeWidth="1.5"
-          strokeLinecap="round"
+          d="M1.66667 6.66675H38.3333V10.0001H1.66667V6.66675ZM1.66667 30.0001H38.3333V33.3334H1.66667V30.0001ZM32.7033 24.8567L32.4133 23.4067H29.165L28.6483 24.8451L26.045 24.8517C27.72 20.8401 28.9617 17.8684 29.7717 15.9351C29.9833 15.4317 30.36 15.1751 30.9133 15.1784C31.3367 15.1817 32.0283 15.1817 32.9883 15.1784L35 24.8534L32.7033 24.8584V24.8567ZM29.8967 21.4201H31.99L31.2067 17.7867L29.8967 21.4201ZM13.12 15.1767L15.7367 15.1801L11.6917 24.8567L9.04167 24.8551C8.14667 21.4051 7.48834 18.8451 7.06834 17.1801C6.94001 16.6684 6.68501 16.3117 6.19167 16.1434C5.75334 15.9934 5.02334 15.7601 4.00001 15.4451V15.1784H8.18167C8.90501 15.1784 9.32667 15.5284 9.46334 16.2451L10.4967 21.7267L13.12 15.1767ZM19.3317 15.1801L17.265 24.8551L14.7733 24.8517L16.84 15.1767L19.3317 15.1801ZM24.385 15.0001C25.1283 15.0001 26.0683 15.2301 26.6083 15.4451L26.1717 17.4517C25.6833 17.2551 24.88 16.9901 24.205 17.0017C23.2217 17.0167 22.615 17.4284 22.615 17.8234C22.615 18.4634 23.6683 18.7867 24.755 19.4884C25.9933 20.2884 26.155 21.0051 26.1417 21.7851C26.1233 23.4034 24.755 25.0001 21.8667 25.0001C20.5483 24.9801 20.0733 24.8701 19 24.4901L19.4533 22.3967C20.5467 22.8534 21.0117 22.9984 21.945 22.9984C22.8033 22.9984 23.5383 22.6534 23.545 22.0517C23.5483 21.6234 23.2867 21.4117 22.325 20.8817C21.3633 20.3534 20.015 19.6217 20.0333 18.1484C20.055 16.2651 21.8467 15.0001 24.385 15.0001Z"
+          fill="#7300CD"
         />
       </svg>
     ),
@@ -238,8 +209,8 @@ const TravelInfo = () => {
     <div className="w-full max-w-screen-2xl mx-auto px-12 md:px-24 py-16 md:py-24 bg-white">
       {/* Section Title */}
       <div className="flex justify-end mb-12 md:mb-16">
-        <h2 className="text-4xl md:text-5xl font-bold text-[#6027D2]">
-          معلومات السفر
+        <h2 className="text-4xl md:text-5xl font-bold text-right w-full">
+          معلومات <span className=" text-[#6027D2]"> السفر</span>
         </h2>
       </div>
 
@@ -251,7 +222,7 @@ const TravelInfo = () => {
             className="bg-white rounded-lg shadow-lg p-6 md:p-8 flex flex-col space-y-4 hover:shadow-xl transition-shadow duration-300"
           >
             {/* Icon */}
-            <div className="w-16 h-16 rounded-full bg-[#6027D2] flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-[#7300CD0A] flex items-center justify-center">
               {card.icon}
             </div>
 
