@@ -1,57 +1,15 @@
 import EventsBanner from "@/components/events/EventsBanner/EventsBanner";
-import EventsList from "@/components/events/EventsList/EventsList";
-import EventsCarouselWrapper from "@/components/events/EventsCarousel/EventsCarouselWrapper";
-import type { EventsCarouselItem } from "@/components/events/EventsCarousel/EventsCarousel";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
+import EventsCatalog from "@/components/events/EventsCatalog";
+import { DUMMY_EVENTS } from "@/components/events/dummyEvents";
 
-// Dummy data for carousel
-const carouselItems: EventsCarouselItem[] = [
-  {
-    id: 1,
-    imageUrl: "/assets/events/banner/image.png",
-    dateRange: "11 مارس - 11 ابريل",
-    title: "مهرجان صيف",
-    subtitle: "مهرجان الصيف 2022",
-    eventYear: "فعاليات رمضان 2025",
-    detailsUrl: "/events/1",
-  },
-  {
-    id: 2,
-    imageUrl: "/assets/events/banner/image.png",
-    dateRange: "11 مارس - 11 ابريل",
-    title: "أبها",
-    subtitle: "مهرجان الصيف 2022",
-    detailsUrl: "/events/2",
-  },
-  {
-    id: 3,
-    imageUrl: "/assets/events/banner/image.png",
-    dateRange: "11 مارس - 11 ابريل",
-    title: "رمضان",
-    subtitle: "رمضان الخير",
-    eventYear: "فعاليات رمضان 2025",
-    detailsUrl: "/events/3",
-  },
-  {
-    id: 4,
-    imageUrl: "/assets/events/banner/image.png",
-    dateRange: "11 مارس - 11 ابريل",
-    title: "رمضان",
-    subtitle: "رمضان الخير",
-    eventYear: "فعاليات رمضان 2024",
-    detailsUrl: "/events/4",
-  },
-];
-
+/** Swap `DUMMY_EVENTS` for API data mapped to `EventListingItem[]` — see `components/events/BACKEND.md`. */
 const EventsPage = () => {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <EventsBanner />
-      <div className="relative">
-        <EventsList />
+      <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-12">
+        <EventsCatalog events={DUMMY_EVENTS} />
       </div>
-      <EventsCarouselWrapper items={carouselItems} autoPlay={true} />
-      <EventsInfo />
     </div>
   );
 };

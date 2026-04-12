@@ -56,7 +56,7 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
               spaceBetween: 24,
             },
           }}
-          className="!overflow-visible"
+          className="overflow-visible"
         >
           {restaurants.map((restaurant) => (
             <SwiperSlide key={restaurant.id}>

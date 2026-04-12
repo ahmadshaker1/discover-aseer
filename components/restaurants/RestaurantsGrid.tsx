@@ -149,7 +149,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
               className="group flex w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white text-right transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 sm:rounded-3xl"
               dir="rtl"
             >
-              <div className="relative aspect-[4/3] w-full overflow-hidden">
+              <div className="relative aspect-4/3 w-full overflow-hidden">
                 <img
                   src={restaurant.image}
                   alt={restaurant.name}
@@ -157,7 +157,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   loading="lazy"
                   onError={handleImageError}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent" />
 
                 <div
                   className="absolute left-3 top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]"

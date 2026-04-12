@@ -97,7 +97,7 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
           <BackChevronIcon />
         </Link>
 
-        <div className="mx-auto mt-20 flex max-w-[590px] flex-col items-center gap-[33px] text-center sm:mt-24 lg:mt-[7.5rem] xl:mt-32">
+        <div className="mx-auto mt-20 flex max-w-[590px] flex-col items-center gap-[33px] text-center sm:mt-24 lg:mt-30 xl:mt-32">
           <h1
             id="tour-guide-register-hero-title"
             className="w-full text-right text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-[#280048]"

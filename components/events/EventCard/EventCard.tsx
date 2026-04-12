@@ -23,7 +23,7 @@ const EventCard = ({
   return (
     <div className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
       {/* Image Section */}
-      <div className="relative h-64 w-full flex-shrink-0">
+      <div className="relative h-64 w-full shrink-0">
         <Image
           src={imageUrl}
           alt={title}
@@ -40,7 +40,7 @@ const EventCard = ({
         )}
 
         {/* Title and Date Overlay - Bottom */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4">
+        <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 via-black/60 to-transparent p-4">
           <h3 className="text-white text-xl font-bold mb-1">{title}</h3>
           <p className="text-white/90 text-sm">{date}</p>
         </div>
