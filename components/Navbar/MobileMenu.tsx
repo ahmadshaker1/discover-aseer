@@ -26,7 +26,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             leaveFrom="opacity-100 translate-x-0"
             leaveTo="opacity-0 translate-x-full"
           >
-            <Dialog.Panel className="w-full h-full min-h-screen bg-gradient-to-b from-[#191919]/95 via-[#2a1a3d]/95 to-[#1a2a1a]/95 backdrop-blur-xl">
+            <Dialog.Panel className="w-full h-full min-h-screen bg-linear-to-b from-[#191919]/95 via-[#2a1a3d]/95 to-[#1a2a1a]/95 backdrop-blur-xl">
               <div className="flex flex-col h-full min-h-screen">
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/20">
@@ -52,9 +52,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                               <Disclosure.Button className="w-full flex items-center justify-between text-white text-lg sm:text-xl font-medium py-3 border-b border-white/10 hover:opacity-80 transition-opacity">
                                 <span>{link.label}</span>
                                 <svg
-                                  className={`w-5 h-5 transition-transform duration-200 ${
-                                    open ? "rotate-180" : ""
-                                  }`}
+                                  className={`w-5 h-5 transition-transform duration-200 ${open ? "rotate-180" : ""
+                                    }`}
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"

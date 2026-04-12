@@ -52,7 +52,7 @@ const Hero = () => {
         {gridItems.map((item, index) => (
           <Button
             key={index}
-            className="flex flex-col items-start justify-end p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-black/30 backdrop-blur-sm hover:bg-black/40 transition-all duration-300 text-white cursor-pointer border-[1.5px] border-[#818181] h-28 sm:h-36 md:h-40 lg:h-44 w-full sm:w-28 md:w-32 flex-shrink-0"
+            className="flex flex-col items-start justify-end p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-black/30 backdrop-blur-sm hover:bg-black/40 transition-all duration-300 text-white cursor-pointer border-[1.5px] border-[#818181] h-28 sm:h-36 md:h-40 lg:h-44 w-full sm:w-28 md:w-32 shrink-0"
           >
             <div className="w-6 h-8 sm:w-8 sm:h-12 mb-2 sm:mb-3 flex items-center justify-center">
               {/* Icon placeholder - user will add icons here */}

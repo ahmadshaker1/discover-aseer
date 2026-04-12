@@ -70,7 +70,7 @@ const TourGuidesBanner = () => {
         aria-hidden
       >
         <Image
-          src="/hero-pattern/pattern-diamons-tour-guides.png"
+          src="/hero-pattern/pattern-diamons.png"
           alt=""
           fill
           className="object-contain object-left"
