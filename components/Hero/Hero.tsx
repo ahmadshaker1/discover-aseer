@@ -20,7 +20,7 @@ const Hero = () => {
 
   return (
     <div
-      className="flex flex-col lg:flex-row items-center justify-between min-h-screen w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 2xl:px-48 py-20 md:py-24 lg:py-0 overflow-hidden relative"
+      className="relative flex min-h-[calc(100dvh-5rem)] w-full flex-col items-center justify-between overflow-hidden px-4 py-10 sm:px-6 md:min-h-[calc(100dvh-6rem)] md:px-8 md:py-14 lg:flex-row lg:px-12 lg:py-0 xl:px-24 2xl:px-48"
       style={{
         backgroundImage: `url('/assets/landing/discover-aseer-hero.jpg')`,
         backgroundSize: "cover",

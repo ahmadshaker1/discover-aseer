@@ -45,7 +45,7 @@ const TourGuideCard = ({
       <div className="p-4 sm:p-6 flex flex-col items-center">
         {/* Profile Picture */}
         <div className="relative w-24 h-24 mb-4">
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-[2px]">
+          <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
             <div className="relative w-full h-full rounded-full overflow-hidden">
               <Image
                 src={profileImage}

@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: "dmmo-website-asda.oss-me-central-1.aliyuncs.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
     ],
   },
   typescript: {

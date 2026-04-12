@@ -56,29 +56,40 @@ const CrescentMoonIcon = () => (
   </svg>
 );
 
-const LocationPinIcon = () => (
+const BookletIcon = () => (
   <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
+    width="39"
+    height="39"
+    viewBox="0 0 39 39"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M12.0833 8.75042C12.0833 7.59936 11.1506 6.66666 10.0004 6.66666C8.84935 6.66666 7.91666 7.59936 7.91666 8.75042C7.91666 9.90063 8.84935 10.8333 10.0004 10.8333C11.1506 10.8333 12.0833 9.90063 12.0833 8.75042Z"
+    <rect
+      x="0.5"
+      y="0.5"
+      width="38"
+      height="38"
+      rx="19"
       stroke="white"
-      strokeLinecap="round"
+      strokeOpacity="0.21"
+    />
+    <path
+      d="M13 11.5H21.5C23.9853 11.5 26 13.5147 26 16V27.5C26 25.567 24.433 24 22.5 24H13V11.5Z"
+      stroke="white"
+      strokeWidth="1.5"
       strokeLinejoin="round"
     />
     <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M9.99959 17.5C9.00086 17.5 3.75 13.2486 3.75 8.80274C3.75 5.3222 6.54758 2.5 9.99959 2.5C13.4516 2.5 16.25 5.3222 16.25 8.80274C16.25 13.2486 10.9983 17.5 9.99959 17.5Z"
+      d="M13 11.5H20.5C22.433 11.5 24 13.067 24 15V26.5C24 24.567 22.433 23 20.5 23H13V11.5Z"
       stroke="white"
-      strokeLinecap="round"
+      strokeWidth="1.5"
       strokeLinejoin="round"
+    />
+    <path
+      d="M16 15.5H21M16 18.5H21"
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinecap="round"
     />
   </svg>
 );
@@ -136,5 +147,10 @@ const HamburgerIcon = ({ isOpen }: { isOpen: boolean }) => (
     )}
   </svg>
 );
+const LocationPinIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-export { GlobeIcon, CrescentMoonIcon, LocationPinIcon, HamburgerIcon };
+  </svg>
+);
+
+export { GlobeIcon, CrescentMoonIcon, BookletIcon, HamburgerIcon, LocationPinIcon };

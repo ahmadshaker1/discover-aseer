@@ -1,7 +1,17 @@
 "use client";
 
+/**
+ * Left-side circular actions next to the logo.
+ *
+ * TODO
+ * ----
+ * - Globe + moon: still `href="#"` placeholders from navbarData — replace with real handlers
+ *   (locale + theme). See comment block in `navbarData.ts`.
+ * - Booklet: replace hardcoded `/assets/booklet/booklet.pdf` if CMS or CDN URL differs;
+ *   consider env e.g. NEXT_PUBLIC_BOOKLET_PDF_URL.
+ */
 import Link from "next/link";
-import { actionLinks, iconButtons } from "./navbarData";
+import { iconButtons } from "./navbarData";
 
 const DesktopActionLinks = () => {
   const handleBookletDownload = (e: React.MouseEvent) => {
@@ -16,44 +26,21 @@ const DesktopActionLinks = () => {
 
   return (
     <div className="hidden lg:flex flex-row items-center space-x-6">
-      {actionLinks.map((link, index) => {
-        if (link.variant === "button") {
-          // Handle booklet download
-          if ((link as any).isBooklet) {
-            return (
-              <button
-                key={index}
-                onClick={handleBookletDownload}
-                className="text-white text-base font-medium px-4 py-2 border border-white rounded-full hover:bg-white/10 transition-colors whitespace-nowrap"
-              >
-                {link.label}
-              </button>
-            );
-          }
-          return (
-            <Link
-              key={index}
-              href={link.href}
-              className="text-white text-base font-medium px-4 py-2 border border-white rounded-full hover:bg-white/10 transition-colors whitespace-nowrap"
-            >
-              {link.label}
-            </Link>
-          );
-        }
-        const Icon = link.icon!;
-        return (
-          <Link
-            key={index}
-            href={link.href}
-            className="text-white text-base font-medium hover:opacity-80 transition-opacity whitespace-nowrap flex flex-row items-center justify-center space-x-1"
-          >
-            <Icon />
-            <span>{link.label}</span>
-          </Link>
-        );
-      })}
       {iconButtons.map((item, index) => {
         const Icon = item.icon;
+        if ("isBooklet" in item && item.isBooklet) {
+          return (
+            <button
+              key={index}
+              type="button"
+              onClick={handleBookletDownload}
+              className="w-10 h-10 rounded-full border border-white/80 flex items-center justify-center hover:bg-white/10 transition-colors"
+              aria-label="تحميل الدليل"
+            >
+              <Icon />
+            </button>
+          );
+        }
         return (
           <Link
             key={index}

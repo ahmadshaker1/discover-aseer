@@ -58,7 +58,7 @@ const TourGuidesFilter = ({
         </h2>
         <Button
           onClick={onReset}
-          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2 self-start sm:self-auto"
+          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-focus:outline-none data-focus:ring-2 data-focus:ring-gray-500 data-focus:ring-offset-2 self-start sm:self-auto"
         >
           إعادة تعيين النتائج
         </Button>
@@ -86,10 +86,10 @@ const TourGuidesFilter = ({
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleSpecializationToggle(item.id)}
-                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-[checked]:border-black data-[checked]:bg-black data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2"
+                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-checked:border-black data-checked:bg-black data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2"
                     >
                       <svg
-                        className="h-3 w-3 stroke-white opacity-0 group-data-[checked]:opacity-100"
+                        className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
                         viewBox="0 0 14 14"
                         fill="none"
                       >
@@ -133,10 +133,10 @@ const TourGuidesFilter = ({
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleGenderToggle(item.id)}
-                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-[checked]:border-black data-[checked]:bg-black data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2"
+                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-checked:border-black data-checked:bg-black data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2"
                     >
                       <svg
-                        className="h-3 w-3 stroke-white opacity-0 group-data-[checked]:opacity-100"
+                        className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
                         viewBox="0 0 14 14"
                         fill="none"
                       >
@@ -175,7 +175,7 @@ const TourGuidesFilter = ({
                 key={option.id}
                 onClick={() => handleTransportationSelect(option.id)}
                 disabled={option.count === 0}
-                className={`cursor-pointer px-3 py-2 rounded-lg border-2 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 ${
+                className={`cursor-pointer px-3 py-2 rounded-lg border-2 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2 ${
                   isSelected
                     ? "border-black bg-gray-50 text-black"
                     : "border-gray-200 hover:border-gray-300 text-black"

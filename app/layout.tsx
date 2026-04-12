@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   const locale = "ar";
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
+    <html lang={locale} dir="ltr">
       <body
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} antialiased`}
       >

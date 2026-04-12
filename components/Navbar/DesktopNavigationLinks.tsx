@@ -9,7 +9,7 @@ const DesktopNavigationLinks = () => {
     <div className="hidden lg:flex flex-row items-center space-x-8">
       {navigationLinks.map((link) => {
         if (link.isDropdown) {
-          return <DiscoverAseerDropdown key={link.href} label={link.label} />;
+          return <DiscoverAseerDropdown key={link.label} label={link.label} />;
         }
         return (
           <Link

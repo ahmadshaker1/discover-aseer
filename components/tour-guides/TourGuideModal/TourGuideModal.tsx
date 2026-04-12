@@ -50,14 +50,10 @@ const TourGuideModal = ({
 
       {/* Modal Container with Animation */}
       <div className="fixed inset-0 flex items-end sm:items-center justify-center p-2 sm:p-4">
-        <DialogPanel
-          dir="rtl"
-          className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl shadow-xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-4 modal-enter"
-        >
-          {/* Close Button - on the left side for RTL */}
+        <DialogPanel className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl shadow-xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-4 modal-enter">
           <Button
             onClick={onClose}
-            className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="absolute top-3 sm:top-4 right-3 sm:right-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <CloseIcon />
           </Button>
@@ -66,8 +62,8 @@ const TourGuideModal = ({
             {/* Profile Section */}
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-4 sm:mb-6">
               {/* Profile Picture */}
-              <div className="relative w-24 h-24 flex-shrink-0">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-[2px]">
+              <div className="relative w-24 h-24 shrink-0">
+                <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
                   <div className="relative w-full h-full rounded-full overflow-hidden bg-white">
                     <Image
                       src={guide.profileImage}

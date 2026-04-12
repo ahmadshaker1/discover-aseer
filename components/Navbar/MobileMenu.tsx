@@ -5,12 +5,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import AseerLogo from "../Logo/AseerLogo";
 import { HamburgerIcon } from "./Icons";
-import {
-  navigationLinks,
-  discoverAseerLinks,
-  actionLinks,
-  iconButtons,
-} from "./navbarData";
+import { navigationLinks, discoverAseerLinks, iconButtons } from "./navbarData";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -51,7 +46,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                   {navigationLinks.map((link) => {
                     if (link.isDropdown) {
                       return (
-                        <Disclosure key={link.href} as="div">
+                        <Disclosure key={link.label} as="div">
                           {({ open }) => (
                             <>
                               <Disclosure.Button className="w-full flex items-center justify-between text-white text-lg sm:text-xl font-medium py-3 border-b border-white/10 hover:opacity-80 transition-opacity">
@@ -81,7 +76,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                 leaveFrom="opacity-100 max-h-96"
                                 leaveTo="opacity-0 max-h-0"
                               >
-                                <Disclosure.Panel className="pr-4 space-y-2 overflow-hidden">
+                                <Disclosure.Panel className="pl-4 space-y-2 overflow-hidden">
                                   {discoverAseerLinks.map((item) => (
                                     <Link
                                       key={item.href}
@@ -111,62 +106,32 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                     );
                   })}
 
-                  {/* Action Links */}
-                  <div className="pt-4 space-y-4">
-                    {actionLinks.map((link, index) => {
-                      if (link.variant === "button") {
-                        // Handle booklet download
-                        if ((link as any).isBooklet) {
-                          const handleBookletDownload = (e: React.MouseEvent) => {
-                            e.preventDefault();
-                            const downloadLink = document.createElement("a");
-                            downloadLink.href = "/assets/booklet/booklet.pdf";
-                            downloadLink.download = "booklet.pdf";
-                            document.body.appendChild(downloadLink);
-                            downloadLink.click();
-                            document.body.removeChild(downloadLink);
-                            onClose();
-                          };
-                          return (
-                            <button
-                              key={index}
-                              onClick={handleBookletDownload}
-                              className="block w-full text-center text-white text-base sm:text-lg font-medium px-6 py-3 border border-white rounded-full hover:bg-white/10 transition-colors"
-                            >
-                              {link.label}
-                            </button>
-                          );
-                        }
-                        return (
-                          <Link
-                            key={index}
-                            href={link.href}
-                            onClick={onClose}
-                            className="block text-center text-white text-base sm:text-lg font-medium px-6 py-3 border border-white rounded-full hover:bg-white/10 transition-colors"
-                          >
-                            {link.label}
-                          </Link>
-                        );
-                      }
-                      const Icon = link.icon!;
-                      return (
-                        <Link
-                          key={index}
-                          href={link.href}
-                          onClick={onClose}
-                          className="flex items-center justify-end gap-2 text-white text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-3"
-                        >
-                          <Icon />
-                          <span>{link.label}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-
                   {/* Icon Buttons */}
-                  <div className="flex items-center justify-end space-x-4 pt-6 border-t border-white/10">
+                  <div className="flex items-center justify-start gap-4 pt-6 border-t border-white/10">
                     {iconButtons.map((item, index) => {
                       const Icon = item.icon;
+                      if ("isBooklet" in item && item.isBooklet) {
+                        return (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const downloadLink = document.createElement("a");
+                              downloadLink.href = "/assets/booklet/booklet.pdf";
+                              downloadLink.download = "booklet.pdf";
+                              document.body.appendChild(downloadLink);
+                              downloadLink.click();
+                              document.body.removeChild(downloadLink);
+                              onClose();
+                            }}
+                            className="w-12 h-12 rounded-full border border-white/80 flex items-center justify-center hover:bg-white/10 transition-colors"
+                            aria-label="تحميل الدليل"
+                          >
+                            <Icon />
+                          </button>
+                        );
+                      }
                       return (
                         <Link
                           key={index}

@@ -83,17 +83,8 @@ const TourGuidesPageContent = ({
   return (
     <>
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <aside className="w-full lg:w-auto lg:shrink-0">
-            <TourGuidesFilter
-              filterOptions={filterOptions}
-              filters={filters}
-              onFiltersChange={setFilters}
-              onReset={() => setFilters(INITIAL_FILTERS)}
-            />
-          </aside>
-
-          <div className="flex-1 w-full">
+        <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+          <div className="w-full flex-1">
             <TourGuidesGrid
               guides={filteredGuides}
               onGuideClick={handleGuideClick}
@@ -104,6 +95,15 @@ const TourGuidesPageContent = ({
               </p>
             )}
           </div>
+
+          <aside className="w-full shrink-0 lg:w-auto">
+            <TourGuidesFilter
+              filterOptions={filterOptions}
+              filters={filters}
+              onFiltersChange={setFilters}
+              onReset={() => setFilters(INITIAL_FILTERS)}
+            />
+          </aside>
         </div>
       </div>
 
