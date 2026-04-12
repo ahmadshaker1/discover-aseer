@@ -203,7 +203,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   </div>
                   <CardPersonIcon />
                   <div className="flex items-center justify-start gap-1">
-                    <CardCurrencyIcon />
+
                     <span
                       className="text-right text-xs font-bold leading-none text-[#19171A]"
                       style={{ fontFamily: readex }}

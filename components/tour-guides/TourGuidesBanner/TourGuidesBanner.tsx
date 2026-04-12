@@ -4,6 +4,16 @@ import Link from "next/link";
 const TOUR_GUIDE_REGISTER_URL =
   process.env.NEXT_PUBLIC_TOUR_GUIDE_REGISTER_URL?.trim() || "";
 
+const INTERNAL_REGISTER_PATH = "/tour-guides/register";
+
+function resolveRegisterHref(): { href: string; external: boolean } {
+  const raw = TOUR_GUIDE_REGISTER_URL;
+  if (!raw) return { href: INTERNAL_REGISTER_PATH, external: false };
+  if (raw.startsWith("http://") || raw.startsWith("https://"))
+    return { href: raw, external: true };
+  return { href: raw.startsWith("/") ? raw : `/${raw}`, external: false };
+}
+
 function CtaArrow() {
   return (
     <span
@@ -30,7 +40,7 @@ function CtaArrow() {
 }
 
 const TourGuidesBanner = () => {
-  const registerHref = TOUR_GUIDE_REGISTER_URL || undefined;
+  const { href: registerHref, external: registerExternal } = resolveRegisterHref();
 
   return (
     <section
@@ -98,22 +108,16 @@ const TourGuidesBanner = () => {
           زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.
         </p>
 
-        {registerHref ? (
-          <Link
-            href={registerHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[#280048] px-8 py-3.5 text-base font-medium text-white shadow-lg transition-colors hover:bg-[#4d2a75] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            <CtaArrow />
-            التسجيل كمرشد سياحي
-          </Link>
-        ) : (
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#280048] px-8 py-3.5 text-base font-medium text-white/90">
-            <CtaArrow />
-            التسجيل كمرشد سياحي
-          </span>
-        )}
+        <Link
+          href={registerHref}
+          {...(registerExternal
+            ? { target: "_blank" as const, rel: "noopener noreferrer" }
+            : {})}
+          className="inline-flex items-center gap-2 rounded-full bg-[#280048] px-8 py-3.5 text-base font-medium text-white shadow-lg transition-colors hover:bg-[#4d2a75] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          <CtaArrow />
+          التسجيل كمرشد سياحي
+        </Link>
       </div>
     </section>
   );
