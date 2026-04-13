@@ -4,11 +4,11 @@ const AccommodationBanner = () => {
   return (
     <PageBanner
       breadcrumbs={[
+        { label: "أماكن الإقامة" },
         { label: "الصفحة الرئيسية", href: "/" },
-        { label: "الإقامة" },
       ]}
-      title="الإقامة"
-      subtitle="اكتشف أماكن الإقامة المميزة في عسير"
+      title="أماكن الإقامة"
+      subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
       backgroundImage="/assets/experiences/experiences.png"
     />
   );
