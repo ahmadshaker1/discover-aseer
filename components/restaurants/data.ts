@@ -11,7 +11,7 @@
  * │ Dummy rows to edit / remove         │ dummyRestaurants.ts → DUMMY_RESTAURANTS                  │
  * │ API JSON field names                │ ApiLocation + LocationsApiResponse in this file          │
  * │ API row → Restaurant card           │ transformLocationToRestaurant()                          │
- * │ List endpoint path                  │ RESTAURANTS_LOCATIONS_ITEMS_PATH → `/items/locations`    │
+ * │ List endpoint path                  │ RESTAURANTS_LOCATIONS_ITEMS_PATH → `/items/restaurants`  │
  * │ Google Drive images via proxy       │ /api/image-proxy + getProxiedImageUrl()                  │
  * │ Remote image hosts for dummy        │ next.config.ts → images.remotePatterns (e.g. Unsplash)   │
  * │ Page that loads data                │ app/restaurants/page.tsx → fetchRestaurants()            │
@@ -21,12 +21,12 @@
  * HTTP contract (live)
  * --------------------
  *   Method: GET
- *   URL:    `{NEXT_PUBLIC_RESTAURANTS_API_BASE || default}/items/locations`
+ *   URL:    `{NEXT_PUBLIC_RESTAURANTS_API_BASE || default}/items/restaurants`
  *   Body:   n/a
- *   JSON:   `{ "data": ApiLocation[] }` (Directus-style). Each item must include fields used in
- *           `transformLocationToRestaurant`; optional fields in `ApiLocation` fill the rich card.
- *   Filter: client keeps rows with status === "published", category_en === "Food & Beverage",
- *           and at least one of name_ar / name_en. Adjust `FOOD_BEVERAGE_CATEGORY` if CMS differs.
+ *   JSON:   `{ "data": ApiLocation[] }` (Directus-style). Supports old and new shapes
+ *           (`name_ar/name_en` or `title_ar/title_en`, `picture_url*` or `image`).
+ *   Filter: client keeps rows that are published (when status exists), match restaurant category,
+ *           and include at least one display name field.
  *
  * Switch from dummy to real data
  * ------------------------------
@@ -47,28 +47,38 @@ import type { Restaurant } from "./types";
 
 export type { Restaurant } from "./types";
 
-/** API shape from GET …/items/locations (Directus-style). */
+/** API shape from GET …/items/restaurants (Directus-style). */
 export interface ApiLocation {
   id: string;
-  status: string;
-  sort: number | null;
-  category_ar: string | null;
-  category_en: string | null;
-  type_ar: string | null;
-  type_en: string | null;
-  name_ar: string | null;
-  name_en: string | null;
-  city_ar: string | null;
-  city_en: string | null;
-  booking_info_ar: string | null;
-  booking_info_en: string | null;
-  description_ar: string | null;
-  description_en: string | null;
-  google_maps_url: string | null;
-  picture_url: string | null;
-  picture_note_ar: string | null;
-  picture_note_en: string | null;
-  picture_url_new: string | null;
+  status?: string | null;
+  sort?: number | null;
+  category_ar?: string | null;
+  category_en?: string | null;
+  type_ar?: string | null;
+  type_en?: string | null;
+  name_ar?: string | null;
+  name_en?: string | null;
+  city_ar?: string | null;
+  city_en?: string | null;
+  booking_info_ar?: string | null;
+  booking_info_en?: string | null;
+  description_ar?: string | null;
+  description_en?: string | null;
+  google_maps_url?: string | null;
+  picture_url?: string | null;
+  picture_note_ar?: string | null;
+  picture_note_en?: string | null;
+  picture_url_new?: string | null;
+  /** New endpoint fields (items/restaurants). */
+  content?: string | null;
+  image?: string | null;
+  location_map?: string | null;
+  type?: string | null;
+  city?: string | null;
+  tags?: string | null;
+  categories?: string | null;
+  title_en?: string | null;
+  title_ar?: string | null;
   /** Optional — maps to Restaurant.rating (0–5). */
   rating?: number | string | null;
   /** Optional — maps to Restaurant.reviewsCount. */
@@ -89,10 +99,11 @@ export interface LocationsApiResponse {
 }
 
 const FOOD_BEVERAGE_CATEGORY = "Food & Beverage";
+const FOOD_BEVERAGE_CATEGORY_AR = "مطاعم وكافيهات";
 const PLACEHOLDER_IMAGE = "/assets/experiences/experiences.png";
 
 /** Exported so backend/docs can reference the same path as the code. */
-export const RESTAURANTS_LOCATIONS_ITEMS_PATH = "/items/locations" as const;
+export const RESTAURANTS_LOCATIONS_ITEMS_PATH = "/items/restaurants" as const;
 
 const LOCATIONS_API_BASE =
   process.env.NEXT_PUBLIC_RESTAURANTS_API_BASE?.replace(/\/$/, "") ||
@@ -120,35 +131,76 @@ function getGoogleDriveFileId(pictureUrl: string | null): string | null {
     return null;
   if (
     pictureUrl.includes("لا يوجد صورة") ||
-    !pictureUrl.startsWith("https://drive.google.com/")
+    !pictureUrl.includes("drive.google.com")
   )
     return null;
-  const match = pictureUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  return match ? match[1] : null;
+  const pathMatch = pictureUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (pathMatch) return pathMatch[1];
+  const queryMatch = pictureUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  return queryMatch ? queryMatch[1] : null;
 }
 
-function getProxiedImageUrl(pictureUrl: string | null): string {
-  const fileId = getGoogleDriveFileId(pictureUrl);
+function getImageUrl(pictureUrl: string | null | undefined): string {
+  const clean = pictureUrl?.trim() || "";
+  if (!clean || clean.includes("لا يوجد صورة")) return PLACEHOLDER_IMAGE;
+
+  const fileId = getGoogleDriveFileId(clean);
   if (fileId) return `/api/image-proxy?id=${encodeURIComponent(fileId)}`;
+
+  if (/^https?:\/\//i.test(clean) || clean.startsWith("/")) return clean;
+
   return PLACEHOLDER_IMAGE;
 }
 
+function pickBestName(loc: ApiLocation): string {
+  return (
+    loc.name_ar ||
+    loc.title_en ||
+    loc.name_en ||
+    loc.title_ar ||
+    ""
+  ).trim();
+}
+
+function isPublished(item: ApiLocation): boolean {
+  if (!item.status) return true;
+  return item.status === "published";
+}
+
+function isRestaurantCategory(item: ApiLocation): boolean {
+  const legacyCategoryEn = (item.category_en || "").trim();
+  const legacyCategoryAr = (item.category_ar || "").trim();
+  const category = (item.categories || "").trim();
+  const type = (item.type || "").trim();
+
+  if (!legacyCategoryEn && !legacyCategoryAr && !category && !type) return true;
+
+  return (
+    legacyCategoryEn === FOOD_BEVERAGE_CATEGORY ||
+    category === FOOD_BEVERAGE_CATEGORY_AR ||
+    type === "المطاعم"
+  );
+}
+
 export const transformLocationToRestaurant = (loc: ApiLocation): Restaurant => {
-  const name = (loc.name_ar || loc.name_en || "").trim();
+  const name = pickBestName(loc);
   const location = loc.city_ar
     ? `${loc.city_ar}، عسير`
     : loc.city_en
       ? `${loc.city_en}، عسير`
+      : loc.city
+        ? `${loc.city}، عسير`
       : "عسير";
-  const pictureSource = loc.picture_url_new || loc.picture_url;
-  const image = getProxiedImageUrl(pictureSource);
+  const pictureSource = loc.picture_url_new || loc.picture_url || loc.image;
+  const image = getImageUrl(pictureSource);
   const mapsUrl =
     loc.google_maps_url?.trim() ||
+    loc.location_map?.trim() ||
     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
 
   const priceRangeRaw = (loc.price_range ?? "").trim();
   const priceBandRaw = (loc.price_band ?? "").trim();
-  const nationalityRaw = (loc.nationality_ar || loc.nationality_en || "").trim();
+  const nationalityRaw = (loc.nationality_ar || loc.nationality_en || loc.tags || "").trim();
 
   const restaurant: Restaurant = {
     id: loc.id,
@@ -159,7 +211,7 @@ export const transformLocationToRestaurant = (loc: ApiLocation): Restaurant => {
     reviewsCount: toNonNegativeInt(loc.reviews_count, 0),
     priceRange: priceRangeRaw || "غير محدد",
     nationality: nationalityRaw || "سعودي",
-    category: loc.category_ar || loc.category_en || "مطعم",
+    category: loc.category_ar || loc.category_en || loc.categories || loc.type || "مطعم",
     image,
     mapsUrl,
   };
@@ -188,20 +240,23 @@ export async function fetchRestaurants(): Promise<Restaurant[]> {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch locations: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch restaurants: ${response.status} ${response.statusText}`);
     }
 
     const apiData: LocationsApiResponse = await response.json();
     return apiData.data
       .filter(
         (item) =>
-          item.status === "published" &&
-          item.category_en === FOOD_BEVERAGE_CATEGORY &&
-          (item.name_ar != null || item.name_en != null)
+          isPublished(item) &&
+          isRestaurantCategory(item) &&
+          (item.name_ar != null ||
+            item.name_en != null ||
+            item.title_ar != null ||
+            item.title_en != null)
       )
       .map(transformLocationToRestaurant);
   } catch (error) {
-    console.error("Error fetching restaurants (locations):", error);
+    console.error("Error fetching restaurants:", error);
     if (
       process.env.NODE_ENV === "development" &&
       process.env.NEXT_PUBLIC_RESTAURANTS_USE_DUMMY !== "false"

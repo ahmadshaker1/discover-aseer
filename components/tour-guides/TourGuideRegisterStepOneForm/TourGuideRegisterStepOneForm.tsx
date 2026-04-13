@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
 
 const TOTAL_FIELDS = 7;
 
@@ -46,10 +46,18 @@ interface TourGuideRegisterStepOneFormProps {
   onCompletionChange: (completedCount: number) => void;
 }
 
-const TourGuideRegisterStepOneForm = ({ onCompletionChange }: TourGuideRegisterStepOneFormProps) => {
+const TourGuideRegisterStepOneForm = ({
+  onCompletionChange,
+}: TourGuideRegisterStepOneFormProps) => {
   const baseId = useId();
-  const [values, setValues] = useState<string[]>(() => Array.from({ length: FIELD_COUNT }, () => ""));
+  const [values, setValues] = useState<string[]>(() =>
+    Array.from({ length: FIELD_COUNT }, () => ""),
+  );
   const [files, setFiles] = useState<File[]>([]);
+  const [submitState, setSubmitState] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+  const [submitMessage, setSubmitMessage] = useState("");
 
   useEffect(() => {
     const selectsDone = values.filter((v) => v.trim() !== "").length;
@@ -58,6 +66,10 @@ const TourGuideRegisterStepOneForm = ({ onCompletionChange }: TourGuideRegisterS
   }, [values, files, onCompletionChange]);
 
   const setSelect = (index: number, value: string) => {
+    if (submitState !== "idle") {
+      setSubmitState("idle");
+      setSubmitMessage("");
+    }
     setValues((prev) => {
       const next = [...prev];
       next[index] = value;
@@ -66,6 +78,10 @@ const TourGuideRegisterStepOneForm = ({ onCompletionChange }: TourGuideRegisterS
   };
 
   const onFilesChange = (list: FileList | null) => {
+    if (submitState !== "idle") {
+      setSubmitState("idle");
+      setSubmitMessage("");
+    }
     if (!list?.length) {
       setFiles([]);
       return;
@@ -81,7 +97,7 @@ const TourGuideRegisterStepOneForm = ({ onCompletionChange }: TourGuideRegisterS
       { value: "21-50", label: "21 – 50" },
       { value: "51+", label: "51+" },
     ],
-    []
+    [],
   );
 
   const completedCount = useMemo(() => {
@@ -92,11 +108,51 @@ const TourGuideRegisterStepOneForm = ({ onCompletionChange }: TourGuideRegisterS
 
   const canGoNext = completedCount >= TOTAL_FIELDS;
 
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!canGoNext || submitState === "submitting") return;
+
+    setSubmitState("submitting");
+    setSubmitMessage("");
+
+    try {
+      const body = new FormData();
+      values.forEach((value) => body.append("answers[]", value.trim()));
+      files.forEach((file) => body.append("files", file));
+
+      const response = await fetch("/api/tour-guides/register", {
+        method: "POST",
+        body,
+      });
+
+      const json = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      if (!response.ok) {
+        throw new Error(json?.error || "تعذر إرسال النموذج.");
+      }
+
+      setSubmitState("success");
+      setSubmitMessage("تم إرسال طلب التسجيل بنجاح.");
+    } catch (error) {
+      setSubmitState("error");
+      setSubmitMessage(
+        error instanceof Error
+          ? error.message
+          : "حدث خطأ غير متوقع أثناء الإرسال.",
+      );
+    }
+  };
+
   return (
-    <div className="mx-auto w-full max-w-[1026px]">
+    <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit}>
       <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
         {employeeFieldLabels.map((label, i) => (
-          <div key={`${baseId}-f-${i}`} className="flex flex-col gap-2 text-right" dir="rtl">
+          <div
+            key={`${baseId}-f-${i}`}
+            className="flex flex-col gap-2 text-right"
+            dir="rtl"
+          >
             <label
               htmlFor={`${baseId}-select-${i}`}
               className="text-base font-bold text-[#1D1F1F]"
@@ -112,7 +168,11 @@ const TourGuideRegisterStepOneForm = ({ onCompletionChange }: TourGuideRegisterS
               style={{ fontFamily: ibm }}
             >
               {options.map((o) => (
-                <option key={o.value || "placeholder"} value={o.value} disabled={o.disabled}>
+                <option
+                  key={o.value || "placeholder"}
+                  value={o.value}
+                  disabled={o.disabled}
+                >
                   {o.label}
                 </option>
               ))}
@@ -160,7 +220,10 @@ const TourGuideRegisterStepOneForm = ({ onCompletionChange }: TourGuideRegisterS
             PDF, DOC, JPG, PNG
           </span>
           {files.length > 0 && (
-            <span className="mt-2 text-xs text-[#7300CD]" style={{ fontFamily: ibm }}>
+            <span
+              className="mt-2 text-xs text-[#7300CD]"
+              style={{ fontFamily: ibm }}
+            >
               {files.length} ملف محدد
             </span>
           )}
@@ -171,16 +234,27 @@ const TourGuideRegisterStepOneForm = ({ onCompletionChange }: TourGuideRegisterS
         className="mx-auto mt-12 w-full max-w-[962px] rounded-[12px] sm:mt-16 lg:mt-20"
         aria-label="إجراءات النموذج"
       >
+        {submitMessage ? (
+          <p
+            className={`mb-3 text-right text-sm ${
+              submitState === "success" ? "text-green-700" : "text-red-600"
+            }`}
+            style={{ fontFamily: ibm }}
+            role="status"
+          >
+            {submitMessage}
+          </p>
+        ) : null}
         <button
-          type="button"
-          disabled={!canGoNext}
+          type="submit"
+          disabled={!canGoNext || submitState === "submitting"}
           className="flex h-[62px] w-full items-center justify-center gap-[10px] rounded-[100px] bg-[#280048] px-[22px] py-[14px] text-lg font-bold text-white transition-colors hover:enabled:bg-[#3a0b5c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#280048] disabled:cursor-not-allowed disabled:opacity-45"
           style={{ fontFamily: araBold }}
         >
-          التالي
+          {submitState === "submitting" ? "جاري الإرسال..." : "إرسال الطلب"}
         </button>
       </section>
-    </div>
+    </form>
   );
 };
 
