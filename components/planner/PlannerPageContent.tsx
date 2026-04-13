@@ -53,7 +53,7 @@ const PlannerPageContent = () => {
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "حدث خطأ أثناء إنشاء الجدول"
+        err instanceof Error ? err.message : "حدث خطأ أثناء إنشاء الجدول",
       );
     } finally {
       setIsLoading(false);
