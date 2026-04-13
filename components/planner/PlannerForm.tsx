@@ -4,6 +4,9 @@ import { useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import FilterDropdown from "../landmarks/FilterDropdown";
 import InterestsFilter from "../landmarks/InterestsFilter";
+import { DayPicker } from "react-day-picker";
+import { ar } from "date-fns/locale";
+import "react-day-picker/dist/style.css";
 import {
   LocationIcon,
   HeartIcon,
@@ -20,14 +23,32 @@ const durationOptions = [
   { id: "full-day", label: "يوم كامل" },
 ];
 
+// Convert Date to YYYY-MM-DD using local calendar day (no UTC shift)
+const toLocalISODate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+// Parse YYYY-MM-DD as a local date (avoids timezone offset issues)
+const fromLocalISODate = (value: string) => {
+  const [year, month, day] = value.split("-").map(Number);
+  if (!year || !month || !day) {
+    return undefined;
+  }
+  return new Date(year, month - 1, day);
+};
+
 // Helper function to format dates in Arabic
 const formatDate = (dateString: string) => {
   try {
+    const [year, month, day] = dateString.split("-").map(Number);
+    if (year && month && day) {
+      return `${day}/${month}/${year}`;
+    }
     const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   } catch {
     return dateString;
   }
@@ -54,6 +75,15 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("Submitting form with data:", {
+      description,
+      city: selectedCity,
+      arrivalDate,
+      departureDate,
+      duration: selectedDuration,
+      interests: selectedInterests,
+    });
+
     e.preventDefault();
     e.stopPropagation();
 
@@ -107,22 +137,96 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
 
         {/* Input fields row */}
         <div className="flex flex-row flex-wrap items-start gap-3 sm:gap-4 mb-6">
-          {/* Interests */}
+          {/* City */}
           <div>
-            <InterestsFilter
-              selectedInterests={selectedInterests}
-              onToggle={(id) => {
-                setSelectedInterests((prev) =>
-                  prev.includes(id)
-                    ? prev.filter((interestId) => interestId !== id)
-                    : [...prev, id]
-                );
-              }}
-              onClear={() => setSelectedInterests([])}
-              label="الاهتمامات"
-              options={interestOptions}
-              icon={<HeartIcon />}
+            <FilterDropdown
+              icon={<LocationIcon />}
+              label="المدينة"
+              selectedValue={selectedCity}
+              options={cityOptions}
+              onSelect={setSelectedCity}
+              onClear={() => setSelectedCity(null)}
             />
+          </div>
+          {/* Date Range */}
+          <div>
+            <Menu as="div" className="relative">
+              <Menu.Button className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer">
+                <ChevronDownIcon />
+                <span className="text-right whitespace-nowrap">
+                  {arrivalDate && departureDate
+                    ? `${formatDate(arrivalDate)} - ${formatDate(
+                        departureDate,
+                      )}`
+                    : arrivalDate
+                      ? `من ${formatDate(arrivalDate)}`
+                      : departureDate
+                        ? `إلى ${formatDate(departureDate)}`
+                        : "اختر تاريخ الوصول والمغادرة"}
+                </span>
+                <CalendarIcon />
+              </Menu.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 scale-95 translate-y-1"
+                enterTo="opacity-100 scale-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 scale-100 translate-y-0"
+                leaveTo="opacity-0 scale-95 translate-y-1"
+              >
+                <Menu.Items className="absolute right-0 mt-2 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 p-4">
+                  <div className="flex flex-col gap-4" dir="rtl">
+                    {/* إضافة التقويم هنا */}
+                    <style>{`
+      /* هذي التعديلات البسيطة عشان نظبط ألوان الفيجما على التقويم */
+      .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
+        background-color: #7300CD1A !important;
+        color: white !important;
+        border-radius: 8px;
+      }
+      .rdp-day_range_middle {
+        background-color: #7300CD1A !important;
+        color: black !important;
+        border-radius: 0px !important;
+      }
+      .rdp-day_range_start {
+        border-top-left-radius: 0px !important;
+        border-bottom-left-radius: 0px !important;
+      }
+      .rdp-day_range_end {
+        border-top-right-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+      }
+    `}</style>
+
+                    <DayPicker
+                      mode="range"
+                      locale={ar} // تحويل التقويم للعربي
+                      selected={{
+                        from: arrivalDate
+                          ? fromLocalISODate(arrivalDate)
+                          : undefined,
+                        to: departureDate
+                          ? fromLocalISODate(departureDate)
+                          : undefined,
+                      }}
+                      onSelect={(range) => {
+                        // تحديث حالة الوصول والمغادرة بناءً على التحديد
+                        // إذا كان عندك طريقة معينة لحفظ التاريخ (مثلاً string) تقدر تعدلها هنا
+                        setArrivalDate(
+                          range?.from ? toLocalISODate(range.from) : "",
+                        );
+                        setDepartureDate(
+                          range?.to ? toLocalISODate(range.to) : "",
+                        );
+                      }}
+                      className="border-0 font-sans"
+                    />
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
           </div>
 
           {/* Duration */}
@@ -136,84 +240,21 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
               onClear={() => setSelectedDuration(null)}
             />
           </div>
-
-          {/* Date Range */}
+          {/* Interests */}
           <div>
-            <Menu as="div" className="relative">
-              <Menu.Button className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer">
-                <ChevronDownIcon />
-                <span className="text-right whitespace-nowrap">
-                  {arrivalDate && departureDate
-                    ? `${formatDate(arrivalDate)} - ${formatDate(
-                        departureDate
-                      )}`
-                    : arrivalDate
-                    ? `من ${formatDate(arrivalDate)}`
-                    : departureDate
-                    ? `إلى ${formatDate(departureDate)}`
-                    : "اختر تاريخ الوصول والمغادرة"}
-                </span>
-                <CalendarIcon />
-              </Menu.Button>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 scale-95 translate-y-1"
-                enterTo="opacity-100 scale-100 translate-y-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 scale-100 translate-y-0"
-                leaveTo="opacity-0 scale-95 translate-y-1"
-              >
-                <Menu.Items className="absolute right-0 mt-2 w-80 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 p-4">
-                  <div className="flex flex-col gap-4">
-                    <div>
-                      <label className="block text-right text-sm font-medium mb-2 text-gray-700">
-                        تاريخ الوصول
-                      </label>
-                      <input
-                        type="date"
-                        value={arrivalDate}
-                        onChange={(e) => {
-                          e.stopPropagation();
-                          setArrivalDate(e.target.value);
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-[#6027D2]"
-                        dir="ltr"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-right text-sm font-medium mb-2 text-gray-700">
-                        تاريخ المغادرة
-                      </label>
-                      <input
-                        type="date"
-                        value={departureDate}
-                        onChange={(e) => {
-                          e.stopPropagation();
-                          setDepartureDate(e.target.value);
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                        min={arrivalDate}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-[#6027D2]"
-                        dir="ltr"
-                      />
-                    </div>
-                  </div>
-                </Menu.Items>
-              </Transition>
-            </Menu>
-          </div>
-
-          {/* City */}
-          <div>
-            <FilterDropdown
-              icon={<LocationIcon />}
-              label="المدينة"
-              selectedValue={selectedCity}
-              options={cityOptions}
-              onSelect={setSelectedCity}
-              onClear={() => setSelectedCity(null)}
+            <InterestsFilter
+              selectedInterests={selectedInterests}
+              onToggle={(id) => {
+                setSelectedInterests((prev) =>
+                  prev.includes(id)
+                    ? prev.filter((interestId) => interestId !== id)
+                    : [...prev, id],
+                );
+              }}
+              onClear={() => setSelectedInterests([])}
+              label="الاهتمامات"
+              options={interestOptions}
+              icon={<HeartIcon />}
             />
           </div>
         </div>
