@@ -58,8 +58,8 @@ export default function ExperiencesWithFilter({
   const handleReset = () => setFilters(INITIAL_FILTERS);
 
   return (
-    <div className="flex gap-8">
-      <aside className="shrink-0">
+    <div className="flex flex-col gap-8 lg:flex-row-reverse">
+      <aside className="shrink-0 lg:self-start">
         <ExperiencesFilter
           filterOptions={filterOptions}
           filters={filters}
@@ -69,13 +69,13 @@ export default function ExperiencesWithFilter({
       </aside>
 
       <div className="flex-1">
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {filteredExperiences.map((experience) => (
             <ExperienceCard key={experience.id} {...experience} />
           ))}
         </div>
         {filteredExperiences.length === 0 && (
-          <p className="text-center text-gray-500 py-12">
+          <p className="py-12 text-center text-gray-500">
             لا توجد تجارب تطابق التصفية المحددة.
           </p>
         )}
