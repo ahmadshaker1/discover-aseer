@@ -3,9 +3,11 @@
 import { useCallback, useState } from "react";
 import TourGuideRegisterHero from "@/components/tour-guides/TourGuideRegisterHero/TourGuideRegisterHero";
 import TourGuideRegisterProgress from "@/components/tour-guides/TourGuideRegisterProgress/TourGuideRegisterProgress";
-import TourGuideRegisterStepOneForm from "@/components/tour-guides/TourGuideRegisterStepOneForm/TourGuideRegisterStepOneForm";
+import TourGuideRegisterStepOneForm, {
+  TOUR_GUIDE_REQUIRED_FIELDS_COUNT,
+} from "@/components/tour-guides/TourGuideRegisterStepOneForm/TourGuideRegisterStepOneForm";
 
-const TOTAL_TRACKED_FIELDS = 7;
+const TOTAL_TRACKED_FIELDS = TOUR_GUIDE_REQUIRED_FIELDS_COUNT;
 
 const TourGuideRegisterFlow = () => {
   const [completedCount, setCompletedCount] = useState(0);

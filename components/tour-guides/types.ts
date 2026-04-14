@@ -6,12 +6,15 @@ export interface ApiTouristGuide {
   name: string | null;
   name_en: string | null;
   image: string | null;
+  license_attachment?: string | null;
   phone_number: string | null;
   whatsapp: string | null;
+  email?: string | null;
   content: string | null;
   content_en: string | null;
   description: string | null;
   description_en: string | null;
+  other_languages?: string | null;
   website: string | null;
   instagram: string | null;
   x_platform: string | null;
@@ -22,7 +25,12 @@ export interface ApiTouristGuide {
   specializations: string | null;
   specializations_en: string | null;
   date: string | null;
+  national_id?: string | null;
+  license_number?: string | null;
   transportation: boolean | null;
+  commitment_1?: boolean | null;
+  commitment_2?: boolean | null;
+  commitment_3?: boolean | null;
   [key: string]: unknown;
 }
 
