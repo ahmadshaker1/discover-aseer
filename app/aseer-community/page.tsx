@@ -1,46 +1,88 @@
-import PageBanner from "@/components/PageBanner/PageBanner";
+import CommunityHero, {
+  type CommunityHeroData,
+} from "@/components/community/CommunityHero";
+import CommunityMainSlider, {
+  type CommunityMainSliderContent,
+} from "@/components/community/CommunityMainSlider";
+
+/**
+ * Backend handoff:
+ * - Keep components unchanged; only replace this object with API/CMS payload mapping.
+ * - `hero.backgroundImage` controls the full hero photo.
+ * - `hero.ribbonPatternImage` controls the right ribbon tile image.
+ * - `slider.slides[].image` controls all main slider images.
+ */
+const communityPageData: {
+  hero: CommunityHeroData;
+  slider: CommunityMainSliderContent;
+} = {
+  hero: {
+    // Requested breadcrumb: الرئيسية > الخدمات المساندة
+    breadcrumbs: [
+      { label: "الرئيسية", href: "/" },
+      { label: "الخدمات المساندة" },
+    ],
+    title: "مجتمع عسير",
+    // Backend: hero image + pattern from media/CMS.
+    backgroundImage: "/assets/community/hero-comunity-bg.png",
+    ribbonPatternImage: "/hero-pattern/ribbon.jpg",
+    // Backend: update only URLs/platform values here (or from API); no component edits needed.
+    socialLinks: [
+      { platform: "linkedin", url: "https://www.linkedin.com/" },
+      { platform: "x", url: "https://x.com/" },
+      { platform: "youtube", url: "https://www.youtube.com/" },
+      { platform: "instagram", url: "https://www.instagram.com/" },
+      { platform: "facebook", url: "https://www.facebook.com/" },
+    ],
+  },
+  slider: {
+    // Backend: restore/replace body title + sub text from CMS.
+    sectionTitle: "شكلان عسير",
+    sectionSubtitle:
+      "لكل قرية ومجتمع في عسير طابعه الخاص، لكن يجمعهم تراث غني وروح الضيافة الأصيلة.",
+    prevLabel: "السابق",
+    nextLabel: "التالي",
+    // Backend: add/remove/reorder slides freely from API response.
+    // Required fields per slide: id, image, title, description.
+    slides: [
+      {
+        id: "community-1",
+        image: "/assets/community/hero-comunity-bg.png",
+        title: "زراعة متوارثة بين الأجيال",
+        description:
+          "تعكس المزارع العسيرية علاقة المجتمع بالأرض، حيث تنتقل المعرفة الزراعية من جيل إلى آخر بروح التعاون والاعتزاز بالهوية المحلية.",
+      },
+      {
+        id: "community-2",
+        image: "/assets/community/hero-comunity-bg.png",
+        title: "مجالس عامرة بالضيافة",
+        description:
+          "تجسد المجالس في عسير قيم الكرم والتواصل الاجتماعي، وتبقى مساحة حية لتبادل القصص والعادات والموروث الثقافي.",
+      },
+      {
+        id: "community-3",
+        image: "/assets/community/hero-comunity-bg.png",
+        title: "حرف أصيلة بروح حديثة",
+        description:
+          "لا تزال الحرف اليدوية جزءاً أساسياً من المجتمع العسيري، مع حضور متجدد يربط بين الأصالة والابتكار في تفاصيل الحياة اليومية.",
+      },
+      {
+        id: "community-4",
+        image: "/assets/community/hero-comunity-bg.png",
+        title: "فعاليات تجمع المجتمع",
+        description:
+          "تمنح الفعاليات المحلية مساحة للاحتفاء بالتراث والفنون، وتؤكد على تماسك المجتمع وتنوع تجاربه في مختلف المواسم.",
+      },
+    ],
+  },
+};
 
 const AseerCommunityPage = () => {
   return (
     <div className="flex w-full flex-col">
-      <PageBanner
-        breadcrumbs={[
-          { label: "مجتمع عسير" },
-          { label: "الصفحة الرئيسية", href: "/" },
-        ]}
-        title="مجتمع عسير"
-        subtitle="قصص وعادات وتقاليد المجتمع العسيري."
-        backgroundImage="/assets/experiences/experiences.png"
-      />
-
-      <section className="bg-[#f6f6f6] px-4 py-14 sm:px-6 lg:px-12">
-        <div className="mx-auto max-w-[1120px] space-y-10" dir="rtl">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-[#2A0A44]">شكلان عسير</h2>
-            <p className="mx-auto mt-3 max-w-[760px] text-sm leading-7 text-[#666]">
-              لكل قرية ومجتمع في عسير طابعه الخاص، لكن يجمعهم تراث غني وروح الضيافة
-              الأصيلة.
-            </p>
-          </div>
-
-          <article className="overflow-hidden rounded-xl border border-black/10 bg-white">
-            <div className="relative h-[280px] w-full sm:h-[420px]">
-              <img
-                src="/assets/experiences/experiences.png"
-                alt="حياة مزدهرة"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
-              <div className="absolute bottom-0 right-0 p-6 text-right text-white sm:max-w-[55%]">
-                <h3 className="text-2xl font-bold">حياة مزدهرة</h3>
-                <p className="mt-2 text-sm leading-7 text-white/90">
-                  تتجسد حياة المجتمع العسيري في الفعاليات التراثية واللقاءات الاجتماعية
-                  التي تنقل تاريخ المنطقة للأجيال الجديدة.
-                </p>
-              </div>
-            </div>
-          </article>
-        </div>
+      <CommunityHero data={communityPageData.hero} />
+      <section className="bg-[#f6f6f6]">
+        <CommunityMainSlider content={communityPageData.slider} />
       </section>
     </div>
   );
