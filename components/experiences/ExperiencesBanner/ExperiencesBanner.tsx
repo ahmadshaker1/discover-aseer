@@ -4,11 +4,11 @@ const ExperiencesBanner = () => {
   return (
     <PageBanner
       breadcrumbs={[
-        { label: "الصفحة الرئيسية", href: "/" },
         { label: "التجارب" },
+        { label: "الصفحة الرئيسية", href: "/" },
       ]}
       title="تجارب تنتظرك في عسير"
-      subtitle="زيارة واحدة لا تكفى مع وفرة الخيارات من الانشطة والتجارب."
+      subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
       backgroundImage="/assets/experiences/experiences.png"
     />
   );

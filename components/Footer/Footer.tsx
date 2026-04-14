@@ -92,7 +92,7 @@ const Footer = () => {
 
       {/* Main Content Section */}
       <div className="border-b border-white/20 px-4 sm:px-6 md:px-12 lg:px-24 xl:px-48 py-8 sm:py-10 md:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
           {/* Column 1 - Discover Aseer */}
           <div className="flex flex-col gap-3 sm:gap-4">
             <h3 className="text-sm sm:text-base font-semibold">اكتشف عسير</h3>
@@ -308,6 +308,37 @@ const Footer = () => {
                 </button>
               </form>
             </div>
+          </div>
+
+          {/* Column 5 - Utilities */}
+          <div className="flex flex-col gap-3 sm:gap-4">
+            <h3 className="text-sm sm:text-base font-semibold">الأدوات</h3>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <Link
+                  href="/about-aseer"
+                  className="text-white/90 hover:text-white transition-colors text-sm"
+                >
+                  عن عسير
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/aseer-community"
+                  className="text-white/90 hover:text-white transition-colors text-sm"
+                >
+                  مجتمع عسير
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/travel-tips"
+                  className="text-white/90 hover:text-white transition-colors text-sm"
+                >
+                  معلومات أساسية
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

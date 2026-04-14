@@ -181,12 +181,136 @@ export interface FetchExperiencesResult {
   filterOptions: FilterOptions;
 }
 
+/**
+ * Temporary fallback data for `/experiences`.
+ *
+ * Required UI/filter data points for each item:
+ * - id: unique stable identifier for card key/share actions
+ * - imageUrl: hero image URL shown on card
+ * - category: top-right badge text
+ * - title: main card heading
+ * - duration: secondary heading under title
+ * - description: short body copy
+ * - provider: organizer/agency line
+ * - price + currency: pricing display and paid/free logic
+ * - groupSize: group capacity shown beside price
+ * - bookUrl: CTA target
+ * - filterInterests: interest tags used by sidebar filtering
+ * - isPaid: cost filter toggle source (paid/free)
+ * - filterTravelers: traveler audience tags for sidebar filtering
+ */
+export const DUMMY_EXPERIENCES: ExperienceWithFilterMeta[] = [
+  {
+    id: "exp-1",
+    imageUrl: "/assets/experiences/experiences.png",
+    category: "مغامرات",
+    title: "مغامرة دروب عسير",
+    duration: "5 ساعات",
+    description: "جولة خفيفة بين المسارات الجبلية مع نقاط توقف للتصوير والطبيعة.",
+    provider: "مغامرات عسير",
+    price: 180,
+    currency: "ر.س",
+    groupSize: 6,
+    bookUrl: "#",
+    filterInterests: ["مغامرات", "طبيعة"],
+    isPaid: true,
+    filterTravelers: ["groups", "individual"],
+  },
+  {
+    id: "exp-2",
+    imageUrl: "/assets/experiences/experiences.png",
+    category: "ثقافة",
+    title: "جولة تراثية في أبها",
+    duration: "3 ساعات",
+    description: "زيارة أبرز المعالم التراثية والتعرف على الموروث المحلي في عسير.",
+    provider: "مرشدون عسير",
+    price: 0,
+    currency: "ر.س",
+    groupSize: 10,
+    bookUrl: "#",
+    filterInterests: ["تراث", "ثقافة"],
+    isPaid: false,
+    filterTravelers: ["family", "groups"],
+  },
+  {
+    id: "exp-3",
+    imageUrl: "/assets/experiences/experiences.png",
+    category: "فن الطهي",
+    title: "تجربة مذاقات عسير",
+    duration: "2 ساعات",
+    description: "تذوق أطباق محلية مع شرح لطريقة التحضير والمكونات التقليدية.",
+    provider: "نكهات الجنوب",
+    price: 95,
+    currency: "ر.س",
+    groupSize: 4,
+    bookUrl: "#",
+    filterInterests: ["فنون الطهي", "ثقافة"],
+    isPaid: true,
+    filterTravelers: ["couple", "individual"],
+  },
+  {
+    id: "exp-4",
+    imageUrl: "/assets/experiences/experiences.png",
+    category: "طبيعة",
+    title: "رحلة شروق السودة",
+    duration: "4 ساعات",
+    description: "رحلة صباحية لمشاهدة الشروق في مرتفعات السودة مع مرشد محلي.",
+    provider: "قمم عسير",
+    price: 0,
+    currency: "ر.س",
+    groupSize: 8,
+    bookUrl: "#",
+    filterInterests: ["طبيعة"],
+    isPaid: false,
+    filterTravelers: ["family", "groups", "individual"],
+  },
+];
+
+function buildFilterOptionsFromExperiences(
+  experiences: ExperienceWithFilterMeta[]
+): FilterOptions {
+  const interestCounts = new Map<string, number>();
+  const travelerCounts = new Map<string, number>();
+  let paidCount = 0;
+  let freeCount = 0;
+
+  for (const exp of experiences) {
+    for (const interest of exp.filterInterests) {
+      interestCounts.set(interest, (interestCounts.get(interest) ?? 0) + 1);
+    }
+    for (const traveler of exp.filterTravelers) {
+      travelerCounts.set(traveler, (travelerCounts.get(traveler) ?? 0) + 1);
+    }
+    if (exp.isPaid) paidCount += 1;
+    else freeCount += 1;
+  }
+
+  const interests: FilterOptionWithCount[] = Array.from(interestCounts.entries())
+    .map(([id, count]) => ({ id, label: id, count }))
+    .sort((a, b) => b.count - a.count);
+
+  const costOptions: FilterOptionWithCount[] = [
+    { id: "paid", label: "مدفوعة", count: paidCount },
+    { id: "free", label: "مجانية", count: freeCount },
+  ];
+
+  const travelerTypes: FilterOptionWithCount[] = Array.from(travelerCounts.entries())
+    .map(([id, count]) => ({ id, label: TRAVELER_ID_TO_LABEL[id] ?? id, count }))
+    .sort((a, b) => b.count - a.count);
+
+  return { interests, costOptions, travelerTypes };
+}
+
 export async function fetchExperiences(): Promise<FetchExperiencesResult> {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
 
   if (!directusUrl) {
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
-    return { experiences: [], filterOptions: { interests: [], costOptions: [], travelerTypes: [] } };
+    // Fallback keeps page usable until backend/env is wired.
+    return {
+      experiences: DUMMY_EXPERIENCES,
+      filterOptions: buildFilterOptionsFromExperiences(DUMMY_EXPERIENCES),
+    };
   }
 
   try {
@@ -200,14 +324,29 @@ export async function fetchExperiences(): Promise<FetchExperiencesResult> {
 
     const apiData: ExperiencesApiResponse = await response.json();
     if (!Array.isArray(apiData.data)) {
-      return { experiences: [], filterOptions: { interests: [], costOptions: [], travelerTypes: [] } };
+      // Defensive fallback when API returns unexpected shape.
+      return {
+        experiences: DUMMY_EXPERIENCES,
+        filterOptions: buildFilterOptionsFromExperiences(DUMMY_EXPERIENCES),
+      };
     }
 
     const experiences = apiData.data.map(transformExperience);
+    if (experiences.length === 0) {
+      // Fallback when API is healthy but collection has no records yet.
+      return {
+        experiences: DUMMY_EXPERIENCES,
+        filterOptions: buildFilterOptionsFromExperiences(DUMMY_EXPERIENCES),
+      };
+    }
     const filterOptions = buildFilterOptions(apiData.data);
     return { experiences, filterOptions };
   } catch (error) {
     console.error("Error fetching experiences:", error);
-    return { experiences: [], filterOptions: { interests: [], costOptions: [], travelerTypes: [] } };
+    // Network/API fallback.
+    return {
+      experiences: DUMMY_EXPERIENCES,
+      filterOptions: buildFilterOptionsFromExperiences(DUMMY_EXPERIENCES),
+    };
   }
 }
