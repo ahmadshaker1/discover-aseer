@@ -9,11 +9,9 @@ Use these environment variables:
 - `DIRECTUS_WRITE_BASE_URL`: Directus base URL (no trailing slash).
 - `DIRECTUS_WRITE_TOKEN`: server-side token used for write operations.
 - `DIRECTUS_TOUR_GUIDE_APPLICATIONS_COLLECTION`: target collection for submissions.
-- `DIRECTUS_TOUR_GUIDE_ANSWERS_FIELD`: field name used to store step-one answers.
-- `DIRECTUS_TOUR_GUIDE_ATTACHMENTS_FIELD`: field name used to store uploaded file references.
-- `DIRECTUS_TOUR_GUIDE_ATTACHMENTS_FORMAT`: `ids` or `m2m`.
+- `DIRECTUS_TOUR_GUIDE_PROFILE_IMAGE_FIELD`: target field for profile image URL in collection.
+- `DIRECTUS_TOUR_GUIDE_LICENSE_ATTACHMENT_FIELD`: target field for license attachment URL in collection.
 - `TOUR_GUIDE_UPLOAD_MAX_MB`: max file size per uploaded file.
-- `TOUR_GUIDE_UPLOAD_ALLOWED_MIME_TYPES`: comma-separated allowed MIME types.
 
 ## API route
 
@@ -23,15 +21,22 @@ Use these environment variables:
 
 Expected fields:
 
-- `answers[]` (string, repeated): six required select answers from step one.
-- `files` (file, repeated): one or more attachments.
+- `name`, `name_en`, `gender`, `national_id`, `description`
+- `license_number`, `date`
+- `arabic_language_level`, `english_language_level`, `other_languages`
+- `transportation`, `specializations`
+- `email`, `phone_number`, `whatsapp`
+- `website`, `instagram`, `x_platform`, `tiktok`
+- `commitment_1`, `commitment_2`, `commitment_3`
+- `profile_image` (file)
+- `license_attachment` (file)
 
 ## Server-side flow
 
-1. Validate required answers and file constraints.
-2. Upload each file to Directus `/files`.
-3. Create one item in the applications collection.
-4. Save answers and uploaded file IDs in configured fields.
+1. Validate required fields, commitments, and license date.
+2. Upload profile image and license attachment to Directus `/files`.
+3. Convert uploaded file IDs to public asset URLs.
+4. Create one item directly in `tourist_guides`.
 
 ## Frontend submit point
 

@@ -20,6 +20,7 @@ export const discoverAseerLinks = [
   { href: "/experiences", label: "التجارب" },
   { href: "/tour-guides", label: "المرشدين السياحيين" },
   { href: "/accommodation", label: "الإقامة" },
+  { href: "/services-support", label: "الخدمات المساندة" },
   { href: "/interactive-map", label: "الخريطة التفاعلية" },
 ];
 
