@@ -83,7 +83,7 @@ const Footer = () => {
           </div>
 
           {/* Powered by - Left side in RTL */}
-          <div className="flex flex-col gap-3 flex-shrink-0 w-full lg:w-auto">
+          <div className="flex w-full shrink-0 flex-col gap-3 lg:w-auto">
             <h3 className="text-sm sm:text-base font-semibold">مدعوم من</h3>
             <PoweredByLogo />
           </div>
@@ -320,6 +320,14 @@ const Footer = () => {
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   عن عسير
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/aseer-cuisine"
+                  className="text-white/90 hover:text-white transition-colors text-sm"
+                >
+                  المطبخ العسيري
                 </Link>
               </li>
               <li>

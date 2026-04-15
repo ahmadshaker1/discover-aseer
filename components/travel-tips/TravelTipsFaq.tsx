@@ -64,7 +64,7 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                       type="button"
                       aria-expanded
                       onClick={() => toggle(item.id)}
-                      className="flex w-full items-center justify-between gap-3 text-right focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7300CD]"
+                      className="flex w-full items-center justify-between gap-3 text-right focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7300CD]"
                     >
                       <span
                         className="min-w-0 flex-1 text-[29px] font-bold leading-none text-black"
@@ -88,7 +88,7 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                     type="button"
                     aria-expanded={false}
                     onClick={() => toggle(item.id)}
-                    className="flex min-h-[67px] w-full items-center justify-between gap-3 rounded-lg border border-solid border-[#e0e0e0] bg-[#F8F8F8] p-4 text-right transition-colors hover:bg-[#efefef] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7300CD]"
+                    className="flex min-h-[67px] w-full items-center justify-between gap-3 rounded-lg border border-solid border-[#e0e0e0] bg-[#F8F8F8] p-4 text-right transition-colors hover:bg-[#efefef] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7300CD]"
                   >
                     <span
                       className="min-w-0 flex-1 text-[29px] font-bold leading-none text-black"
