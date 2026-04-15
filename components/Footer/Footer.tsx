@@ -186,7 +186,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/services-support"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   الخدمات المساندة

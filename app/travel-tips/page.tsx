@@ -1,9 +1,10 @@
 import PageBanner from "@/components/PageBanner/PageBanner";
 import TravelTipsEmergencySection from "@/components/travel-tips/TravelTipsEmergencySection";
-import TravelTipsFaq, { type TravelFaqItem } from "@/components/travel-tips/TravelTipsFaq";
+import TravelTipsFaq, {
+  type TravelFaqItem,
+} from "@/components/travel-tips/TravelTipsFaq";
 
-// Backend: replace static arrays with API data, e.g. `const [faq, emergency] = await Promise.all([fetchFaqs(), fetchEmergencyNumbers()]);`
-const faqItems: TravelFaqItem[] = [
+const DEFAULT_FAQ_ITEMS: TravelFaqItem[] = [
   {
     id: "1",
     question: 'بماذا تعدني "عسير" كوجهة سياحية؟',
@@ -24,6 +25,72 @@ const faqItems: TravelFaqItem[] = [
   },
 ];
 
+type ApiFaqQuestion = {
+  question_ar?: string | null;
+  answer_ar?: string | null;
+  question_en?: string | null;
+  answer_en?: string | null;
+};
+
+type ApiFaqItem = {
+  id?: string | number;
+  questions?: ApiFaqQuestion[];
+};
+
+type ApiFaqResponse = {
+  data?: ApiFaqItem[] | ApiFaqItem;
+};
+
+const FAQ_API_BASE_URL = "https://tool-portal.discoveraseer.com";
+
+async function fetchFaqItems(): Promise<TravelFaqItem[]> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.trim() || FAQ_API_BASE_URL;
+
+  try {
+    const response = await fetch(`${baseUrl}/items/faq`, {
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) {
+      return DEFAULT_FAQ_ITEMS;
+    }
+
+    const payload = (await response.json()) as ApiFaqResponse;
+    const records = Array.isArray(payload.data)
+      ? payload.data
+      : payload.data
+        ? [payload.data]
+        : [];
+
+    const mapped: TravelFaqItem[] = records.flatMap((record, recordIndex) => {
+      const questions = Array.isArray(record.questions) ? record.questions : [];
+
+      return questions
+        .map((item, questionIndex) => {
+          const question =
+            item.question_ar?.trim() || item.question_en?.trim() || "";
+          const answer = item.answer_ar?.trim() || item.answer_en?.trim() || "";
+
+          if (!question || !answer) {
+            return null;
+          }
+
+          return {
+            id: `${record.id ?? recordIndex}-${questionIndex}`,
+            question,
+            answer,
+          };
+        })
+        .filter((item): item is TravelFaqItem => item !== null);
+    });
+
+    return mapped.length > 0 ? mapped : DEFAULT_FAQ_ITEMS;
+  } catch {
+    return DEFAULT_FAQ_ITEMS;
+  }
+}
+
 // Backend: 8 rows { id?, title, number }; icons resolve from `title` in TravelTipsEmergencySection.
 const emergency = [
   { id: "e1", title: "شرطة", number: "911" },
@@ -36,7 +103,9 @@ const emergency = [
   { id: "e8", title: "الأمن العام", number: "911" },
 ];
 
-const TravelTipsPage = () => {
+const TravelTipsPage = async () => {
+  const faqItems = await fetchFaqItems();
+
   return (
     <div className="flex w-full flex-col">
       <PageBanner
