@@ -47,3 +47,14 @@ span {
 .modal-enter {
   animation: modalFadeInUp 0.3s ease-out;
 }
+
+.travel-section-title {
+  font-family: "Ara Hamah 1964 B", var(--font-ara-hamah-1964), sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 48px;
+  line-height: 96px;
+  letter-spacing: 0;
+  text-align: right;
+  vertical-align: middle;
+}
