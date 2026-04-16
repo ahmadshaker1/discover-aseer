@@ -99,7 +99,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-2">
               <li>
                 <Link
-                  href="#"
+                  href="/about-aseer"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   عن عسير
@@ -115,7 +115,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/attractions"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   المعالم السياحية
@@ -131,7 +131,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/aseer-cuisine"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   المطبخ العسيري
@@ -139,7 +139,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/aseer-community"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   مجتمعنا
@@ -154,7 +154,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-2">
               <li>
                 <Link
-                  href="#"
+                  href="/accommodation"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   الإقامة
@@ -162,7 +162,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/restaurants"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   المطاعم
@@ -178,7 +178,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/tour-guides"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   المرشدون السياحيون
@@ -194,7 +194,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/travel-tips"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   معلومات أساسية
@@ -211,7 +211,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-2">
               <li>
                 <Link
-                  href="#"
+                  href="/event-seasons"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   فعاليات رمضان
@@ -219,7 +219,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/event-seasons"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   فعاليات العيد
@@ -227,7 +227,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/event-seasons"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   موسم الجاكراندا
@@ -235,7 +235,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/event-seasons"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   موسم عسير الصيفي
@@ -243,7 +243,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/event-seasons"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   موسم عسير الشتوي
@@ -268,7 +268,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/tour-guides/register"
                     className="text-white/90 hover:text-white transition-colors text-sm"
                   >
                     تسجيل المرشد السياحي
@@ -328,6 +328,14 @@ const Footer = () => {
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   المطبخ العسيري
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/attractions"
+                  className="text-white/90 hover:text-white transition-colors text-sm"
+                >
+                  المعالم السياحية
                 </Link>
               </li>
               <li>

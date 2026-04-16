@@ -7,8 +7,22 @@ export interface EventsInfoCard {
   link?: string;
 }
 
+/**
+ * Backend handoff shape:
+ * - `icon_key` can be one of: visa | airplane | hotel | binoculars
+ * - `title_ar` should be Arabic text shown on card
+ * - `link` is optional destination route/url
+ */
+export interface EventsInfoBackendCard {
+  id: number;
+  icon_key?: "visa" | "airplane" | "hotel" | "binoculars" | string | null;
+  title_ar?: string | null;
+  link?: string | null;
+}
+
 interface EventsInfoProps {
   cards?: EventsInfoCard[];
+  backendCards?: EventsInfoBackendCard[];
 }
 
 const defaultCards: EventsInfoCard[] = [
@@ -34,57 +48,93 @@ const defaultCards: EventsInfoCard[] = [
   },
 ];
 
-const EventsInfo = ({ cards = defaultCards }: EventsInfoProps) => {
+const ara = "var(--font-ara-hamah-1964), sans-serif";
+
+const iconFromKey = (iconKey?: string | null): React.ReactNode => {
+  switch ((iconKey || "").toLowerCase()) {
+    case "visa":
+      return <VisaIcon />;
+    case "airplane":
+      return <AirplaneIcon />;
+    case "hotel":
+      return <HotelIcon />;
+    case "binoculars":
+      return <BinocularsIcon />;
+    default:
+      return <BinocularsIcon />;
+  }
+};
+
+const mapBackendCards = (rows: EventsInfoBackendCard[]): EventsInfoCard[] =>
+  rows.map((row, index) => ({
+    id: row.id ?? index + 1,
+    icon: iconFromKey(row.icon_key),
+    title: row.title_ar?.trim() || "عنوان البطاقة",
+    link: row.link?.trim() || undefined,
+  }));
+
+const EventsInfo = ({ cards = defaultCards, backendCards }: EventsInfoProps) => {
+  const displayCards =
+    backendCards && backendCards.length > 0 ? mapBackendCards(backendCards) : cards;
+
   return (
-    <div className="relative w-full max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-8 sm:py-12 md:py-16 lg:py-24 bg-white overflow-hidden">
-      {/* Background Pattern */}
-      <div
-        className="absolute top-0 right-0 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 opacity-10"
-        style={{
-          backgroundImage: `repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 20px,
-            #6027D2 20px,
-            #6027D2 40px
-          )`,
-          transform: "rotate(45deg)",
-          transformOrigin: "top right",
-        }}
+    <section className="relative mx-auto w-full max-w-[1440px] overflow-hidden bg-white px-4 py-12 sm:px-8 md:min-h-[533px] md:px-[58px]">
+      <img
+        src="/hero-pattern/pattern-diamons.png"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute right-0 top-0 h-[130px] w-[220px] object-cover opacity-10"
       />
 
-      {/* Section Title */}
-      <div className="relative flex justify-start mb-6 sm:mb-8 md:mb-12 lg:mb-16">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6027D2]">
-          ابدأ رحلتك
+      <div className="mb-10 flex items-center justify-end gap-8 md:mb-14" dir="rtl">
+        <h2
+          className="shrink-0 text-right text-[40px] font-bold leading-[100%] md:text-[48px]"
+          style={{ fontFamily: ara }}
+        >
+          <span className="text-[#1A1127]">ابدأ </span>
+          <span className="text-[#6027D2]">رحلتك</span>
         </h2>
+        <div className="hidden h-px w-[380px] bg-[#ECE8F2] md:block" />
       </div>
 
-      {/* Cards Grid */}
-      <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-        {cards.map((card) => (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4" dir="rtl">
+        {displayCards.map((card) => (
           <div
             key={card.id}
-            className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 flex flex-col items-start space-y-3 sm:space-y-4 hover:shadow-xl transition-shadow duration-300"
+            className="mx-auto flex h-[196px] w-full max-w-[295px] flex-col items-end justify-between rounded-[10px] border border-[#EEEAF3] bg-white px-5 py-6 shadow-[0_6px_16px_rgba(41,72,152,0.06)]"
           >
-            {/* Icon */}
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-[#6027D2] flex items-center justify-center flex-shrink-0">
+            <div className="mt-1 inline-flex h-8 w-8 items-center justify-center self-end text-[#6027D2]">
               {card.icon}
             </div>
 
-            {/* Title */}
-            <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 text-right w-full">
+            <h3
+              className="w-full text-right text-[30px] font-bold leading-[100%] text-[#1A1127]"
+              style={{ fontFamily: ara }}
+            >
               {card.title}
             </h3>
 
-            {/* CTA Button */}
-            <button className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#6027D2] flex items-center justify-center hover:bg-[#5022B8] transition-colors duration-200 mt-auto">
-              <ChevronIcon />
-            </button>
+            {card.link ? (
+              <a
+                href={card.link}
+                className="inline-flex h-[30px] w-[30px] items-center justify-center self-end rounded-full bg-[#6027D2] shadow-[0_2px_6px_rgba(0,0,0,0.18)] hover:opacity-90"
+                aria-label={card.title}
+              >
+                <ChevronIcon />
+              </a>
+            ) : (
+              <button
+                type="button"
+                className="inline-flex h-[30px] w-[30px] items-center justify-center self-end rounded-full bg-[#6027D2] shadow-[0_2px_6px_rgba(0,0,0,0.18)] hover:opacity-90"
+                aria-label={card.title}
+              >
+                <ChevronIcon />
+              </button>
+            )}
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
