@@ -1,121 +1,117 @@
-import AttractionsHero from "@/components/attractions/AttractionsHero";
-import AttractionsIntroSection from "@/components/attractions/AttractionsIntroSection";
-import AttractionsGuidesSection from "@/components/attractions/AttractionsGuidesSection";
-import AttractionsLandmarksSection from "@/components/attractions/AttractionsLandmarksSection";
-import AttractionsMapSection from "@/components/attractions/AttractionsMapSection";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
+import PageBanner from "@/components/PageBanner/PageBanner";
+import AttractionsMainPageContent from "@/components/attractions/AttractionsMainPageContent";
 import { fetchLandmarks, type Landmark } from "@/components/landmarks/data";
-import { fetchTourGuides } from "@/components/tour-guides/data";
-import type { TourGuideData } from "@/components/tour-guides/TourGuideCard/TourGuideCard";
 
-const FALLBACK_GUIDES: TourGuideData[] = [
+const FALLBACK_ATTRACTIONS: Landmark[] = [
   {
-    id: "g-1",
-    name: "أحمد عبدالله",
-    location: "أبها",
-    profileImage: "/assets/experiences/experiences.png",
-    languages: [{ code: "ar", name: "العربية", flag: "🇸🇦" }],
-    whatsappUrl: "#",
-    description: "مرشد سياحي محترف في أبرز معالم عسير.",
-  },
-  {
-    id: "g-2",
-    name: "سارة عبدالله",
-    location: "أبها",
-    profileImage: "/assets/experiences/experiences.png",
-    languages: [{ code: "ar", name: "العربية", flag: "🇸🇦" }],
-    whatsappUrl: "#",
-    description: "جولات تراثية وثقافية للزوار.",
-  },
-  {
-    id: "g-3",
-    name: "نورة عبدالله",
-    location: "خميس مشيط",
-    profileImage: "/assets/experiences/experiences.png",
-    languages: [{ code: "ar", name: "العربية", flag: "🇸🇦" }],
-    whatsappUrl: "#",
-    description: "تنظيم مسارات سياحية عائلية متنوعة.",
-  },
-  {
-    id: "g-4",
-    name: "محمد عبدالله",
-    location: "رجال ألمع",
-    profileImage: "/assets/experiences/experiences.png",
-    languages: [{ code: "ar", name: "العربية", flag: "🇸🇦" }],
-    whatsappUrl: "#",
-    description: "خبرة في المعالم الطبيعية والتاريخية.",
-  },
-];
-
-const FALLBACK_LANDMARKS: Landmark[] = [
-  {
-    id: "l-1",
+    id: "a-1",
     title: "سوق الثلاثاء",
     location: "أبها",
     area: "أبها",
-    description: "سوق تراثي يعكس ثقافة المنطقة ومنتجاتها المحلية.",
-    guideName: "أحمد",
+    description: "تسلق جبل سودا مع متسلق الجبال المحلي فيصل",
+    guideName: "فيصل",
     image: "/restaurant/img1.png",
+    cityId: "abha",
+    travelerTypes: ["solo", "couple"],
+    priceFrom: 0,
+    priceTo: 30,
+    interestTags: ["historical", "culture", "shopping"],
   },
   {
-    id: "l-2",
+    id: "a-2",
     title: "قرية رجال ألمع",
     location: "رجال ألمع",
-    area: "رجال ألمع",
-    description: "قرية تاريخية ذات طراز معماري فريد في عسير.",
+    area: "محايل عسير",
+    description: "استكشاف الفن المعماري التراثي في جولة ثقافية",
     guideName: "سارة",
     image: "/restaurant/img2.png",
+    cityId: "mahayil",
+    travelerTypes: ["couple", "family"],
+    priceFrom: 50,
+    priceTo: 120,
+    interestTags: ["historical", "culture"],
   },
   {
-    id: "l-3",
+    id: "a-3",
     title: "جبال السودة",
-    location: "السودة",
-    area: "السودة",
-    description: "وجهة طبيعية رائعة للاستمتاع بالأجواء المعتدلة.",
-    guideName: "نورة",
+    location: "حديقة السودة ، أبها",
+    area: "أبها",
+    description: "مغامرة مشي في الطبيعة واستمتاع بالإطلالة",
+    guideName: "محمد",
     image: "/restaurant/img3.png",
+    cityId: "abha",
+    travelerTypes: ["solo", "small-group", "large-group"],
+    priceFrom: 20,
+    priceTo: 220,
+    interestTags: ["nature", "adventure"],
   },
   {
-    id: "l-4",
-    title: "قصر أبو سراح",
+    id: "a-4",
+    title: "قصور آل أبو سراح",
+    location: "السودة",
+    area: "أبها",
+    description: "زيارة القصور التاريخية مع تجربة تراثية متكاملة",
+    guideName: "أحمد",
+    image: "/assets/attractions/attractions-hero.png",
+    cityId: "abha",
+    travelerTypes: ["family", "large-group"],
+    priceFrom: 60,
+    priceTo: 180,
+    interestTags: ["historical", "culture"],
+  },
+  {
+    id: "a-5",
+    title: "منتزه الحبلة",
+    location: "الحبلة",
+    area: "أبها",
+    description: "تجربة التلفريك والمناظر الجبلية الخلابة",
+    guideName: "نورة",
+    image: "/restaurant/img4.png",
+    cityId: "abha",
+    travelerTypes: ["couple", "family", "small-group"],
+    priceFrom: 70,
+    priceTo: 260,
+    interestTags: ["nature", "adventure"],
+  },
+  {
+    id: "a-6",
+    title: "منتزه أبو خيال",
     location: "أبها",
     area: "أبها",
-    description: "أحد أبرز المعالم التراثية التي تحكي تاريخ المنطقة.",
-    guideName: "محمد",
-    image: "/restaurant/img4.png",
+    description: "جلسات طبيعية وممرات للمشي وإطلالات بانورامية",
+    guideName: "ليان",
+    image: "/restaurant/img2.png",
+    cityId: "abha",
+    travelerTypes: ["family", "small-group"],
+    priceFrom: 0,
+    priceTo: 40,
+    interestTags: ["nature", "relaxation"],
   },
 ];
 
 const LandmarksPage = async () => {
   /**
    * Backend handoff:
-   * - Hero image is currently local: `/assets/attractions/attractions-hero.png`.
-   * - Tour guides data comes from `fetchTourGuides()` (Directus-ready in components/tour-guides/data.ts).
-   * - Landmarks data comes from `fetchLandmarks()` (Directus-ready in components/landmarks/data.ts).
-   * - Fallback arrays below keep UI visible if API returns empty.
+   * - This is the "عرض المزيد" listing page opened from `/attractions`.
+   * - Main attractions list uses Directus data from `fetchLandmarks()`.
+   * - `FALLBACK_ATTRACTIONS` keeps the UI available when API is empty.
    */
-  const [{ guides }, landmarks] = await Promise.all([fetchTourGuides(), fetchLandmarks()]);
-  const displayGuides = guides.length > 0 ? guides : FALLBACK_GUIDES;
-  const displayLandmarks = landmarks.length > 0 ? landmarks : FALLBACK_LANDMARKS;
+  const landmarks = await fetchLandmarks();
+  const displayLandmarks = landmarks.length > 0 ? landmarks : FALLBACK_ATTRACTIONS;
 
   return (
     <div className="flex w-full flex-col bg-white">
-      <AttractionsHero
+      <PageBanner
         breadcrumbs={[
           { label: "التجارب" },
           { label: "الصفحة الرئيسية", href: "/" },
         ]}
-        title="قصور آل أبو سراح"
+        title="المعالم السياحية"
         subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
         backgroundImage="/assets/attractions/attractions-hero.png"
       />
 
-      <AttractionsIntroSection imageUrl="/assets/attractions/attractions-hero.png" />
-      <AttractionsGuidesSection guides={displayGuides} />
-      <AttractionsLandmarksSection landmarks={displayLandmarks} />
-
-      <AttractionsMapSection />
-      <EventsInfo />
+      <AttractionsMainPageContent landmarks={displayLandmarks} />
     </div>
   );
 };
