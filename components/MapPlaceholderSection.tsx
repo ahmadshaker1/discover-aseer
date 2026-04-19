@@ -1,0 +1,42 @@
+const PLACEHOLDER_SRC = "/assets/attractions/map-placeholder-abha.png";
+
+const ara = "var(--font-ara-hamah-1964), sans-serif";
+
+export interface MapPlaceholderSectionProps {
+  ctaLabel: string;
+  /** Design width in px (187 destinations, 266 attractions) */
+  ctaWidthPx: 187 | 266;
+  mapHref: string;
+  imageAlt?: string;
+}
+
+const MapPlaceholderSection = ({
+  ctaLabel,
+  ctaWidthPx,
+  mapHref,
+  imageAlt = "معاينة خريطة",
+}: MapPlaceholderSectionProps) => {
+  return (
+    <section className="w-full bg-white py-12" dir="rtl">
+      <div className="mx-auto w-full max-w-[1437px] px-4 sm:px-6">
+        <div className="relative h-[468.7745056152344px] w-full max-w-[1437px] shrink-0 overflow-hidden self-center">
+          <img src={PLACEHOLDER_SRC} alt={imageAlt} className="h-full w-full object-cover object-center" />
+          <a
+            href={mapHref}
+            target="_blank"
+            rel="noreferrer"
+            className="absolute top-1/2 left-1/2 z-10 inline-flex h-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-[10px] overflow-hidden text-ellipsis whitespace-nowrap rounded-[55px] border border-solid border-[#FFFFFF54] bg-[#6027D2] px-4 py-[10px] text-center text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90"
+            style={{
+              fontFamily: ara,
+              width: `min(100% - 2rem, ${ctaWidthPx}px)`,
+            }}
+          >
+            {ctaLabel}
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default MapPlaceholderSection;

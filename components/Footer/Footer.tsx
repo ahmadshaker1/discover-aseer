@@ -107,7 +107,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/destinations"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   الوجهات

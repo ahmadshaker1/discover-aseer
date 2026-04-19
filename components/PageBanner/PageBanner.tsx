@@ -13,6 +13,13 @@ export interface PageBannerProps {
   title: string;
   subtitle: string;
   backgroundImage?: string;
+  /** `ltr` matches legacy banners; `rtl` for Arabic-first trails. */
+  breadcrumbDir?: "ltr" | "rtl";
+  /** Pill CTA rendered under the subtitle (e.g. destinations browse). */
+  primaryCta?: {
+    href: string;
+    label: string;
+  };
 }
 
 function BreadcrumbChevron() {
@@ -34,11 +41,22 @@ function BreadcrumbChevron() {
   );
 }
 
+function BrowseCtaArrowIcon() {
+  return (
+    <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M0.75 5.01743L11.375 5.01743" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5.03516 9.28471L0.749739 5.01771L5.03516 0.75" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 const PageBanner = ({
   breadcrumbs,
   title,
   subtitle,
   backgroundImage = "/assets/experiences/experiences.png",
+  breadcrumbDir = "ltr",
+  primaryCta,
 }: PageBannerProps) => {
   return (
     <div
@@ -115,6 +133,24 @@ const PageBanner = ({
         >
           {subtitle}
         </p>
+
+        {primaryCta ? (
+          <Link
+            href={primaryCta.href}
+            className="mt-2 inline-flex h-[42px] w-[185px] shrink-0 flex-row items-center justify-between gap-[10px] rounded-[100px] bg-[#280048] px-[10px] py-[10px] text-white transition-opacity hover:opacity-90"
+            dir="ltr"
+            style={{ boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)" }}
+          >
+            <BrowseCtaArrowIcon />
+            <span
+              dir="rtl"
+              className="min-w-0 flex-1 text-right text-[17px] font-bold leading-[100%]"
+              style={{ fontFamily: ara }}
+            >
+              {primaryCta.label}
+            </span>
+          </Link>
+        ) : null}
       </div>
     </div>
   );
