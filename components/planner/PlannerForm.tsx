@@ -144,7 +144,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
         </div>
 
         {/* Input fields row */}
-        <div className="flex  items-end gap-3 sm:gap-4 mb-6 text-right justify-end">
+        <div className="flex  items-end gap-3 sm:gap-4 mb-6 text-right justify-start">
           {/* City */}
           <div>
             <FilterDropdown
@@ -271,7 +271,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
         </div>
 
         {/* Submit button */}
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           <button
             type="submit"
             data-submit-plan="true"

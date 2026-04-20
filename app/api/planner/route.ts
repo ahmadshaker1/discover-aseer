@@ -145,11 +145,12 @@ export async function POST(request: NextRequest) {
 
     prompt += `\n--- CRITICAL INSTRUCTIONS ---\n`;
     prompt += `1. STRICT JSON ONLY: You must output a valid JSON object. No markdown, no introductions, no explanations.\n`;
-    prompt += `2. LANGUAGE RULE: All JSON Keys MUST be in English. All String Values (titles, types, descriptions, locations) MUST be in Arabic.\n`;
+    prompt += `2. LANGUAGE RULE: All JSON Keys MUST be in English. All String Values (titles, types, descriptions, locations) MUST be in Arabic, EXCEPT googleMapsUrl which MUST be in English.\n`;
     prompt += `3. LIMIT: Maximum 5 activities per day. Do not overpack the schedule.\n`;
     prompt += `4. REALISM: Use real, existing restaurants, cafes, and tourist attractions in ${cityName}.\n`;
     prompt += `5. LOGIC: Sort activities chronologically by time (e.g., Morning to Evening).\n`;
-    prompt += `6. DISTANCES: Calculate realistic "travelToNext" (duration and distance) between consecutive activities. The last activity of EVERY day MUST have "travelToNext": null.\n\n`;
+    prompt += `6. DISTANCES: Calculate realistic "travelToNext" (duration and distance) between consecutive activities. The last activity of EVERY day MUST have "travelToNext": null.\n`;
+    prompt += `7. GOOGLE MAPS URL: googleMapsUrl MUST be a real, valid Google Maps link using English place names only (Latin characters), and should open the exact place.\n\n`;
 
     prompt += `--- EXACT JSON SCHEMA REQUIRED ---\n`;
     prompt += `{
