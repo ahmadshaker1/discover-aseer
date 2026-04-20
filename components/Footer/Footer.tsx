@@ -74,7 +74,7 @@ const Footer = () => {
                 +966 9200000890
               </a>
               <Link
-                href="#"
+                href="/services-support"
                 className="text-white hover:opacity-80 transition-opacity text-xs sm:text-sm"
               >
                 مركز الاتصال الدولي
@@ -170,7 +170,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/planner"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
                   رحلات موصى بها
@@ -260,7 +260,7 @@ const Footer = () => {
               <ul className="flex flex-col gap-2">
                 <li>
                   <Link
-                    href="#"
+                  href="/services-support"
                     className="text-white/90 hover:text-white transition-colors text-sm"
                   >
                     اتصل بنا
@@ -276,7 +276,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                  href="/tour-guides"
                     className="text-white/90 hover:text-white transition-colors text-sm"
                   >
                     تسجيل دخول المرشد السياحي

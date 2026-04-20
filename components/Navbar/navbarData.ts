@@ -16,12 +16,22 @@
 import { GlobeIcon, CrescentMoonIcon, BookletIcon } from "./Icons";
 
 export const discoverAseerLinks = [
+  { href: "/destinations", label: "الوجهات" },
+  { href: "/destinations/browse", label: "تصفح الوجهات" },
+  { href: "/attractions", label: "المعالم السياحية" },
+  { href: "/landmarks", label: "جميع المعالم" },
+  { href: "/about-aseer", label: "عن عسير" },
+  { href: "/aseer-cuisine", label: "المطبخ العسيري" },
+  { href: "/aseer-community", label: "مجتمع عسير" },
   { href: "/restaurants", label: "المطاعم" },
   { href: "/experiences", label: "التجارب" },
   { href: "/tour-guides", label: "المرشدين السياحيين" },
+  { href: "/tour-guides/register", label: "تسجيل المرشدين السياحيين" },
   { href: "/accommodation", label: "الإقامة" },
   { href: "/Getting-here-and-around", label: "الوصول و التنقل" },
   { href: "/services-support", label: "الخدمات المساندة" },
+  { href: "/travel-tips", label: "معلومات أساسية" },
+  { href: "/event-seasons", label: "المواسم والفعاليات" },
   { href: "/interactive-map", label: "الخريطة التفاعلية" },
 ];
 

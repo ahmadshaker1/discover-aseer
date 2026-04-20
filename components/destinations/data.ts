@@ -180,11 +180,6 @@ export const fetchDestinationsWithFallback = async (): Promise<Destination[]> =>
   return rows.length > 0 ? rows : FALLBACK_DESTINATIONS;
 };
 
-export const getDestinationBySlug = async (slug: string): Promise<Destination | null> => {
-  const all = await fetchDestinationsWithFallback();
-  return all.find((d) => d.slug === slug) ?? null;
-};
-
 /** Maps a destination into `Landmark` shape for reuse of `AttractionsLandmarkCard` (design parity). */
 export const destinationToLandmark = (d: Destination): Landmark => ({
   id: d.id,
