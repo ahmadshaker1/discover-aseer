@@ -57,10 +57,10 @@ const EventsCatalog = ({ events }: EventsCatalogProps) => {
 
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-      <div className="w-full flex-1">
+      <div className="order-2 w-full flex-1 lg:order-1">
         <EventsListingGrid events={filtered} />
       </div>
-      <aside className="w-full shrink-0 lg:w-auto">
+      <aside className="order-1 w-full shrink-0 lg:order-2 lg:w-auto">
         <EventsFilterSidebar
           interestCounts={interestCounts}
           selectedInterests={selectedInterests}

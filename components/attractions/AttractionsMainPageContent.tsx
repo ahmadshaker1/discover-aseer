@@ -71,7 +71,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
     <section className="w-full bg-white py-12">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-          <div className="w-full flex-1 lg:max-w-[1033px]">
+          <div className="order-2 w-full flex-1 lg:order-1 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
               {visibleLandmarks.map((landmark) => (
                 <AttractionsLandmarkCard key={landmark.id} landmark={landmark} className="mx-auto" />
@@ -85,7 +85,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
             ) : null}
           </div>
 
-          <aside className="w-full lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-r lg:border-[#E6E6E6] lg:pt-6 lg:pr-8 lg:pl-8" dir="rtl">
+          <aside className="order-1 w-full lg:order-2 lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-r lg:border-[#E6E6E6] lg:pt-6 lg:pr-8 lg:pl-8" dir="rtl">
             <div className="flex h-full flex-col gap-6">
               <div className="flex h-8 w-full max-w-[256px] items-center justify-between">
                 <h3
