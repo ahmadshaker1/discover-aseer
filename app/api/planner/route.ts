@@ -1,23 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
 
+interface PlannerRequestBody {
+  description?: string;
+  city?: string | null;
+  arrivalDate?: string;
+  departureDate?: string;
+  duration?: string | null;
+  interests?: string[];
+}
+
+interface NetworkErrorLike {
+  code?: string;
+  hostname?: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    console.log("==========================================");
+    console.log("🚀 [1] STARTING PLANNER API ROUTE");
+    console.log("==========================================");
+
+    const body: PlannerRequestBody = await request.json();
+    console.log("📦 [2] RECEIVED BODY:", JSON.stringify(body, null, 2));
+
     const {
       description,
       city,
       arrivalDate,
       departureDate,
       duration,
-      interests,
+      interests = [],
     } = body;
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+
+    console.log("🔑 [3] CONFIGURATION:", {
+      hasApiKey: process.env.ANTHROPIC_API_KEY,
+    });
 
     if (!apiKey) {
+      console.error("❌ ERROR: ANTHROPIC_API_KEY is missing");
       return NextResponse.json(
-        { error: "OpenAI API key is not configured" },
-        { status: 500 }
+        { error: "ANTHROPIC_API_KEY is not configured" },
+        { status: 500 },
       );
     }
 
@@ -57,170 +82,283 @@ export async function POST(request: NextRequest) {
     };
 
     const durationText = duration ? durationOptions[duration] || duration : "";
-
     // Build the prompt
-    let prompt = `أنت مساعد ذكي لخطط السفر في منطقة عسير في المملكة العربية السعودية. قم بإنشاء جدول رحلة تفصيلي بناءً على المعلومات التالية:\n\n`;
-
-    if (description) {
-      prompt += `وصف الرحلة من المستخدم:\n${description}\n\n`;
-    }
-
-    prompt += `المدينة: ${cityName}\n`;
-
-    if (arrivalDate && departureDate) {
-      prompt += `تاريخ الوصول: ${arrivalDate}\n`;
-      prompt += `تاريخ المغادرة: ${departureDate}\n`;
-    }
-
-    if (durationText) {
-      prompt += `فترة الخروج: ${durationText}\n`;
-    }
-
-    if (selectedInterestsText) {
-      prompt += `الاهتمامات: ${selectedInterestsText}\n`;
-    }
-
-    // Calculate number of days and format dates
+    // ==========================================
+    // 1. Calculate number of days and format dates
+    // ==========================================
     let numberOfDays = 1;
     let startDateFormatted = "";
+
     if (arrivalDate && departureDate) {
       const arrival = new Date(arrivalDate);
       const departure = new Date(departureDate);
       const diffTime = Math.abs(departure.getTime() - arrival.getTime());
       numberOfDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-      
-      // Format date in Arabic
+
       const months = [
-        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+        "يناير",
+        "فبراير",
+        "مارس",
+        "أبريل",
+        "مايو",
+        "يونيو",
+        "يوليو",
+        "أغسطس",
+        "سبتمبر",
+        "أكتوبر",
+        "نوفمبر",
+        "ديسمبر",
       ];
       startDateFormatted = `${arrival.getDate()} ${months[arrival.getMonth()]}`;
     } else if (arrivalDate) {
       const arrival = new Date(arrivalDate);
       const months = [
-        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+        "يناير",
+        "فبراير",
+        "مارس",
+        "أبريل",
+        "مايو",
+        "يونيو",
+        "يوليو",
+        "أغسطس",
+        "سبتمبر",
+        "أكتوبر",
+        "نوفمبر",
+        "ديسمبر",
       ];
       startDateFormatted = `${arrival.getDate()} ${months[arrival.getMonth()]}`;
     }
 
-    prompt += `\nيرجى إنشاء جدول رحلة يومي تفصيلي لـ ${numberOfDays} ${numberOfDays === 1 ? "يوم" : "أيام"} يتضمن:\n`;
-    prompt += `- الأماكن السياحية والمعالم في ${cityName}\n`;
-    prompt += `- المطاعم والطعام المحلي\n`;
-    prompt += `- الأنشطة والجولات\n`;
-    prompt += `- أوقات الاستراحات (إفطار، غداء، عشاء)\n`;
-    prompt += `- التوصيات العملية\n\n`;
-    prompt += `يرجى تقديم الجدول بصيغة JSON فقط بدون أي نص إضافي. يجب أن يكون التنسيق كالتالي:\n\n`;
-    prompt += `{\n`;
-    prompt += `  "planDetails": {\n`;
-    prompt += `    "title": "خطتك",\n`;
-    prompt += `    "totalDays": ${numberOfDays}\n`;
-    prompt += `  },\n`;
-    prompt += `  "days": [\n`;
+    // ==========================================
+    // 2. Build the English Prompt
+    // ==========================================
+    let prompt = `You are an expert local travel guide for the Aseer region in Saudi Arabia. Your task is to create a realistic, well-paced daily itinerary.\n\n`;
+
+    prompt += `--- TRIP PARAMETERS ---\n`;
+    prompt += `Target City: ${cityName}\n`;
+    if (description) prompt += `User Request: ${description}\n`;
+    if (arrivalDate && departureDate)
+      prompt += `Dates: From ${arrivalDate} to ${departureDate} (${numberOfDays} days)\n`;
+    if (durationText) prompt += `Preferred Outing Time: ${durationText}\n`;
+    if (selectedInterestsText)
+      prompt += `User Interests: ${selectedInterestsText}\n`;
+
+    prompt += `\n--- CRITICAL INSTRUCTIONS ---\n`;
+    prompt += `1. STRICT JSON ONLY: You must output a valid JSON object. No markdown, no introductions, no explanations.\n`;
+    prompt += `2. LANGUAGE RULE: All JSON Keys MUST be in English. All String Values (titles, types, descriptions, locations) MUST be in Arabic.\n`;
+    prompt += `3. LIMIT: Maximum 5 activities per day. Do not overpack the schedule.\n`;
+    prompt += `4. REALISM: Use real, existing restaurants, cafes, and tourist attractions in ${cityName}.\n`;
+    prompt += `5. LOGIC: Sort activities chronologically by time (e.g., Morning to Evening).\n`;
+    prompt += `6. DISTANCES: Calculate realistic "travelToNext" (duration and distance) between consecutive activities. The last activity of EVERY day MUST have "travelToNext": null.\n\n`;
+
+    prompt += `--- EXACT JSON SCHEMA REQUIRED ---\n`;
+    prompt += `{
+      "planDetails": {
+        "title": "خطتك",
+        "totalDays": ${numberOfDays}
+      },
+      "days": [\n`;
+
     for (let i = 0; i < numberOfDays; i++) {
       const dayNumber = i + 1;
-      const dayLabels = ["الأول", "الثاني", "الثالث", "الرابع", "الخامس", "السادس", "السابع", "الثامن", "التاسع", "العاشر"];
-      const dayLabel = dayNumber <= 10 ? dayLabels[dayNumber - 1] : `رقم ${dayNumber}`;
-      
-      // Calculate date for this day
+      const dayLabels = [
+        "الأول",
+        "الثاني",
+        "الثالث",
+        "الرابع",
+        "الخامس",
+        "السادس",
+        "السابع",
+        "الثامن",
+        "التاسع",
+        "العاشر",
+      ];
+      const dayLabel =
+        dayNumber <= 10 ? dayLabels[dayNumber - 1] : `رقم ${dayNumber}`;
+
       let dayDate = startDateFormatted;
       if (arrivalDate && i > 0) {
         const arrival = new Date(arrivalDate);
         arrival.setDate(arrival.getDate() + i);
         const months = [
-          "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-          "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+          "يناير",
+          "فبراير",
+          "مارس",
+          "أبريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "أغسطس",
+          "سبتمبر",
+          "أكتوبر",
+          "نوفمبر",
+          "ديسمبر",
         ];
         dayDate = `${arrival.getDate()} ${months[arrival.getMonth()]}`;
       }
-      
-      prompt += `    {\n`;
-      prompt += `      "dayLabel": "اليوم ${dayLabel}",\n`;
-      prompt += `      "date": "${dayDate}",\n`;
-      prompt += `      "activities": [\n`;
-      prompt += `        {\n`;
-      prompt += `          "id": "activity-${i + 1}-1",\n`;
-      prompt += `          "name": "اسم المكان أو النشاط",\n`;
-      prompt += `          "type": { "label": "فطور" أو "فعالية" أو "تجربة" أو "غداء" أو "عشاء" },\n`;
-      prompt += `          "imageUrl": "/assets/experiences/experiences.png",\n`;
-      prompt += `          "rating": { "score": 4.8, "totalReviews": 233 },\n`;
-      prompt += `          "location": { "city": "${cityName}", "distanceKm": 12 },\n`;
-      prompt += `          "pricing": { "audience": "سعودي", "minPriceSAR": 50, "maxPriceSAR": 100 },\n`;
-      prompt += `          "travelInfoToNext": { "durationMinutes": 12, "distanceKm": 8 },\n`;
-      prompt += `          "directionsUrl": "https://www.google.com/maps/search/?api=1&query=اسم+المكان"\n`;
-      prompt += `        }\n`;
-      prompt += `      ]\n`;
-      prompt += `    }${i < numberOfDays - 1 ? "," : ""}\n`;
-    }
-    prompt += `  ]\n`;
-    prompt += `}\n\n`;
-    prompt += `ملاحظات مهمة:\n`;
-    prompt += `- استخدم أسماء أماكن حقيقية في ${cityName}\n`;
-    prompt += `- أضف معلومات السفر (travelInfoToNext) بين كل نشاطين متتاليين\n`;
-    prompt += `- استخدم أنواع الأنشطة: "فطور" للإفطار، "غداء" للغداء، "عشاء" للعشاء، "فعالية" للأنشطة، "تجربة" للتجارب\n`;
-    prompt += `- تأكد من أن جميع الحقول موجودة وأن JSON صحيح\n`;
-    prompt += `- استخدم اللغة العربية فقط في جميع النصوص\n`;
-    prompt += `- قم بإنشاء أنشطة واقعية ومناسبة للمدينة المختارة\n`;
 
-    // Call OpenAI API
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "system",
-            content:
-              "أنت مساعد ذكي متخصص في تخطيط الرحلات السياحية في منطقة عسير، المملكة العربية السعودية. قم بإنشاء جداول رحلات تفصيلية ومنظمة بصيغة JSON فقط. تأكد من أن JSON صحيح وصالح.",
-          },
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 4000,
-        response_format: { type: "json_object" },
-      }),
-    });
+      prompt += `        {
+          "dayLabel": "اليوم ${dayLabel}",
+          "date": "${dayDate}",
+          "activities": [
+            {
+              "type": "فطور", 
+              "time": "09:00 صباحاً",
+              "title": "اسم المكان الفعلي",
+              "rating": 4.8,
+              "reviewsCount": 233,
+              "locationText": "12 كم، ${cityName}",
+              "category": "تاريخي",
+              "priceRange": "50-100 ﷼",
+              "googleMapsUrl": "https://maps.google.com/...",
+              "travelToNext": {
+                "duration": "12 دقيقة",
+                "distance": "8 كيلومتر"
+              } 
+            }
+          ]
+        }${i < numberOfDays - 1 ? "," : ""}\n`;
+    }
+
+    prompt += `      ]
+    }`;
+
+    console.log("📝 [4] GENERATED PROMPT LENGTH:", prompt.length, "characters");
+
+    // Call Direct Anthropic API
+    let response: Response;
+    try {
+      console.log("🌐 [5] SENDING REQUEST DIRECTLY TO ANTHROPIC API...");
+
+      response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01", // هذا الهيدر إجباري من أنثروبك
+        },
+        body: JSON.stringify({
+          model: "claude-haiku-4-5-20251001", // استخدمت لك أحدث وأذكى نسخة
+          max_tokens: 8000,
+          temperature: 0.7,
+          system:
+            "أنت مساعد ذكي متخصص في تخطيط الرحلات السياحية في منطقة عسير، المملكة العربية السعودية. قم بإنشاء جداول رحلات تفصيلية ومنظمة بصيغة JSON فقط. تأكد من أن JSON صحيح وصالح.",
+          messages: [
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+        }),
+      });
+      console.log(
+        "✅ [6] RECEIVED RESPONSE FROM API. Status:",
+        response.status,
+      );
+    } catch (fetchError) {
+      console.error("❌ ERROR [5.1]: NETWORK FAILURE", fetchError);
+      return NextResponse.json(
+        { error: "Failed to connect to Anthropic API" },
+        { status: 503 },
+      );
+    }
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("OpenAI API error:", errorData);
+      const errorData = await response.json().catch(() => null);
+      console.error("❌ ERROR [6.1]: API RETURNED NON-OK STATUS", errorData);
       return NextResponse.json(
-        { error: "Failed to generate schedule" },
-        { status: response.status }
+        { error: errorData?.error?.message || "Failed to generate schedule" },
+        { status: response.status },
       );
     }
 
     const data = await response.json();
-    const content = data.choices[0]?.message?.content || "";
+    console.log(
+      "🧠 [7] RAW AI RESPONSE RECEIVED :",
+      JSON.stringify(data).substring(0, 100) + "...",
+    );
+
+    // أنثروبك ترجع النص داخل مصفوفة content
+    const content = data.content?.[0]?.text || "";
+    console.log("📄 [7.1] EXTRACTED CONTENT:", content);
+
+    if (!content.trim()) {
+      console.error("❌ ERROR [7.2]: EMPTY CONTENT FROM ANTHROPIC");
+      return NextResponse.json(
+        { error: "Anthropic API returned empty content" },
+        { status: 502 },
+      );
+    }
+
+    const isValidScheduleData = (
+      value: unknown,
+    ): value is { planDetails: unknown; days: unknown[] } => {
+      if (!value || typeof value !== "object") return false;
+
+      const candidate = value as {
+        planDetails?: unknown;
+        days?: unknown;
+      };
+
+      return (
+        candidate.planDetails !== undefined && Array.isArray(candidate.days)
+      );
+    };
 
     // Parse JSON response
-    let scheduleData;
+    let scheduleData: unknown;
     try {
+      console.log("⚙️ [8] PARSING JSON CONTENT...");
       scheduleData = JSON.parse(content);
+      console.log("✅ [9] JSON PARSED SUCCESSFULLY!");
     } catch (parseError) {
-      console.error("Failed to parse JSON response:", parseError);
-      // Try to extract JSON from markdown code blocks if present
-      const jsonMatch = content.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
-      if (jsonMatch) {
-        scheduleData = JSON.parse(jsonMatch[1]);
-      } else {
-        throw new Error("Invalid JSON response from AI");
+      console.warn(
+        "⚠️ [8.1] DIRECT PARSE FAILED, ATTEMPTING REGEX EXTRACTION...",
+      );
+
+      const jsonObjectMatch = content.match(/\{[\s\S]*\}/);
+      if (!jsonObjectMatch) {
+        console.error("❌ ERROR [8.2]: NO JSON OBJECT FOUND IN CONTENT");
+        return NextResponse.json(
+          { error: "Failed to parse JSON from AI response" },
+          { status: 502 },
+        );
+      }
+
+      try {
+        scheduleData = JSON.parse(jsonObjectMatch[0]);
+        console.log("✅ [9.1] JSON EXTRACTED AND PARSED SUCCESSFULLY!");
+      } catch (fallbackParseError) {
+        console.error(
+          "❌ ERROR [8.3]: REGEX EXTRACTION PARSE FAILED",
+          fallbackParseError,
+        );
+        return NextResponse.json(
+          { error: "AI response was not valid JSON" },
+          { status: 502 },
+        );
       }
     }
 
-    return NextResponse.json({ schedule: scheduleData });
+    if (!isValidScheduleData(scheduleData)) {
+      console.error("❌ ERROR [9.2]: INVALID SCHEDULE JSON STRUCTURE");
+      return NextResponse.json(
+        { error: "AI returned invalid schedule JSON structure" },
+        { status: 502 },
+      );
+    }
+
+    console.log(
+      "📤 [10] FINAL SCHEDULE RESPONSE OBJECT:",
+      JSON.stringify(scheduleData, null, 2),
+    );
+
+    return NextResponse.json(scheduleData, { status: 200 });
   } catch (error) {
-    console.error("Error generating schedule:", error);
+    console.error("❌ ERROR: UNEXPECTED FAILURE", error);
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+      { error: "An unexpected error occurred" },
+      { status: 500 },
     );
   }
 }

@@ -3,7 +3,7 @@ import PlannerBreadcrumb from "@/components/planner/PlannerBreadcrumb";
 
 const PlannerPage = () => {
   return (
-    <div className="flex flex-col w-full bg-white">
+    <div className="flex flex-col w-full bg-white mt-25">
       <PlannerBreadcrumb />
       <PlannerPageContent />
     </div>

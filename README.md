@@ -16,6 +16,17 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Cloudi Setup (Planner API)
+
+Add these variables to `.env.local`:
+
+```bash
+CLOUDI_API_KEY=your_cloudi_key
+CLOUDI_BASE_URL=https://your-cloudi-base-url
+```
+
+Then restart the dev server after changing env values.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

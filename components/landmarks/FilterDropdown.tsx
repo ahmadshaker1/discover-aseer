@@ -32,7 +32,10 @@ const FilterDropdown = ({
 
   return (
     <Menu as="div" className="relative">
-      <Menu.Button className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer">
+      <Menu.Button
+        type="button"
+        className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer"
+      >
         <ChevronDownIcon />
         <span>{selectedOption?.label || label}</span>
         {icon}
@@ -54,6 +57,7 @@ const FilterDropdown = ({
               <Menu.Item key={option.id}>
                 {({ active }) => (
                   <button
+                    type="button"
                     onClick={() => onSelect(option.id)}
                     className={`${
                       active ? "bg-[#6027D2]/10 text-[#6027D2]" : ""
@@ -71,6 +75,7 @@ const FilterDropdown = ({
             {selectedValue && (
               <Menu.Item>
                 <button
+                  type="button"
                   onClick={onClear}
                   className="block w-full text-right px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700 border-t border-gray-200 mt-1 cursor-pointer transition-colors duration-150"
                 >
