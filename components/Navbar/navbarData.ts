@@ -25,6 +25,7 @@ export const discoverAseerLinks = [
   { href: "/aseer-community", label: "مجتمع عسير" },
   { href: "/restaurants", label: "المطاعم" },
   { href: "/experiences", label: "التجارب" },
+  { href: "/film", label: "الأفلام" },
   { href: "/tour-guides", label: "المرشدين السياحيين" },
   { href: "/tour-guides/register", label: "تسجيل المرشدين السياحيين" },
   { href: "/accommodation", label: "الإقامة" },

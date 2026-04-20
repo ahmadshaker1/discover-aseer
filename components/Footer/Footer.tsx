@@ -131,6 +131,14 @@ const Footer = () => {
               </li>
               <li>
                 <Link
+                  href="/film"
+                  className="text-white/90 hover:text-white transition-colors text-sm"
+                >
+                  الأفلام
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/aseer-cuisine"
                   className="text-white/90 hover:text-white transition-colors text-sm"
                 >
