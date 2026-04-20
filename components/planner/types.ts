@@ -1,29 +1,17 @@
 export interface Activity {
-  id: string;
-  name: string;
-  type: {
-    label: string; // "فطور", "فعالية", "تجربة", "غداء", "عشاء"
-    icon?: string;
-  };
-  imageUrl: string;
-  rating: {
-    score: number;
-    totalReviews: number;
-  };
-  location: {
-    city: string;
-    distanceKm: number;
-  };
-  pricing: {
-    audience: string;
-    minPriceSAR?: number;
-    maxPriceSAR?: number;
-  };
-  travelInfoToNext?: {
-    durationMinutes: number;
-    distanceKm: number;
-  };
-  directionsUrl?: string;
+  type: string;
+  time: string;
+  title: string;
+  rating: number | string;
+  reviewsCount: number;
+  locationText: string;
+  category: string;
+  priceRange: string;
+  googleMapsUrl?: string;
+  travelToNext?: {
+    duration: string;
+    distance: string;
+  } | null;
 }
 
 export interface DayPlan {

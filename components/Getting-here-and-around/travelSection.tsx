@@ -91,7 +91,7 @@ export default function TravelSection() {
           الرحلات الداخليه
         </p>
         <div className="mt-6 flex flex-wrap justify-between gap-4">
-          <div className="flex min-h-[230px] w-full max-w-[420px] flex-col rounded-2xl border border-[#E4E4E4] bg-[#F8F8F8] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] lg:max-w-[360px]">
+          <div className="flex min-h-[230px] w-full flex-col rounded-2xl border border-[#E4E4E4] bg-[#F8F8F8] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] lg:max-w-[420px]">
             <div className="mb-6 flex items-start justify-between">
               <span className="flex h-[78px] w-[78px] items-center justify-center rounded-md bg-[#1F4695] text-[44px] font-bold leading-none text-[#6E8CD9]">
                 س

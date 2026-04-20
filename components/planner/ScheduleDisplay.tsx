@@ -1,162 +1,310 @@
-"use client";
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { PlanResponse } from "./types";
-import ScheduleCard from "./ScheduleCard";
 
-interface ScheduleDisplayProps {
-  schedule: PlanResponse;
-}
+type ScheduleDisplayProps = {
+  schedule?: PlanResponse;
+};
 
-const ScheduleDisplay = ({ schedule }: ScheduleDisplayProps) => {
-  const [currentDayIndex, setCurrentDayIndex] = useState(0);
-  const currentDay = schedule.days[currentDayIndex];
+// ==========================================
+// figma icons
+// ==========================================
+const PrintIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+    <rect x="6" y="14" width="12" height="8"></rect>
+  </svg>
+);
+const ShareIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="18" cy="5" r="3"></circle>
+    <circle cx="6" cy="12" r="3"></circle>
+    <circle cx="18" cy="19" r="3"></circle>
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+  </svg>
+);
+const DirectionIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+    <line x1="3" y1="22" x2="21" y2="22"></line>
+  </svg>
+);
+const StarIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="#FBB03B"
+    stroke="#FBB03B"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+  </svg>
+);
+const PinIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+    <circle cx="12" cy="10" r="3"></circle>
+  </svg>
+);
+const PeopleIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+    <circle cx="9" cy="7" r="4"></circle>
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+  </svg>
+);
+const BillIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+    <circle cx="12" cy="12" r="2"></circle>
+    <path d="M6 12h.01M18 12h.01"></path>
+  </svg>
+);
+const CarIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a2 2 0 0 0-1.6-.8H9.3a2 2 0 0 0-1.6.8L5 11l-5.16.86a1 1 0 0 0-.84.99V16h3m14 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM7 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"></path>
+  </svg>
+);
+const ActivityTypeIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="10"></circle>
+    <circle cx="12" cy="12" r="3"></circle>
+  </svg>
+);
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: schedule.planDetails.title,
-        text: `خطة رحلتي إلى عسير - ${currentDay.dayLabel}`,
-        url: window.location.href,
-      });
-    } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href);
-      alert("تم نسخ الرابط!");
-    }
-  };
+// ==========================================
+// Main Component
+// ==========================================
+export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
+  // حالة (State) لحفظ اليوم المحدد حالياً
+  const [activeDayIndex, setActiveDayIndex] = useState(0);
 
-  const handlePrint = () => {
-    window.print();
-  };
+  if (!schedule || !schedule.days || schedule.days.length === 0) return null;
 
-  const handleDirections = (url?: string) => {
-    if (url) {
-      window.open(url, "_blank", "noopener,noreferrer");
-    } else {
-      // Generate Google Maps URL from activity name
-      const activityName = currentDay.activities[0]?.name || "";
-      const encodedName = encodeURIComponent(activityName);
-      window.open(
-        `https://www.google.com/maps/search/?api=1&query=${encodedName}`,
-        "_blank",
-        "noopener,noreferrer"
-      );
-    }
-  };
+  const activeDay = schedule.days[activeDayIndex];
 
   return (
-    <div className="mt-8 bg-white rounded-2xl p-6 sm:p-8 lg:p-12 shadow-lg">
-      {/* Header */}
-      <div className="flex flex-row-reverse items-center justify-between mb-8">
-        <div className="text-right">
-          <h3 className="text-2xl sm:text-3xl font-bold text-black mb-2">
-            {schedule.planDetails.title}
-          </h3>
-          <div className="flex items-center gap-4 text-gray-600">
-            <span className="text-lg font-medium">{currentDay.dayLabel}</span>
-            <span className="text-base">{currentDay.date}</span>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-[#6027D2] transition-colors"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-              <polyline points="16 6 12 2 8 6" />
-              <line x1="12" y1="2" x2="12" y2="15" />
-            </svg>
-            <span className="text-sm font-medium">مشاركة</span>
+    <div className="mt-16 w-full max-w-5xl mx-auto" dir="rtl">
+      {/* 1. العنوان وأزرار المشاركة والطباعة */}
+      <div className="flex flex-col-reverse sm:flex-row justify-between items-center mb-10 gap-4">
+        <h2 className="text-[32px] sm:text-[40px] font-bold text-black">
+          خطتك {schedule.planDetails?.title || "خطتك"}
+        </h2>
+        <div className="flex gap-3">
+          <button className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full font-bold text-gray-700 hover:bg-gray-50 transition">
+            <ShareIcon />
+            مشاركة
           </button>
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-[#6027D2] transition-colors"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <polyline points="6 9 6 2 18 2 18 9" />
-              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-              <rect x="6" y="14" width="12" height="8" />
-            </svg>
-            <span className="text-sm font-medium">طباعة</span>
+          <button className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full font-bold text-gray-700 hover:bg-gray-50 transition">
+            <PrintIcon />
+            طباعة
           </button>
         </div>
       </div>
 
-      {/* Day Navigation */}
-      {schedule.days.length > 1 && (
-        <div className="flex flex-row-reverse gap-2 mb-6 overflow-x-auto pb-2">
-          {schedule.days.map((day, index) => (
+      {/* 2. شريط الأيام (التبويبات) */}
+      <div
+        className="flex gap-4 overflow-x-auto pb-4 mb-10 hide-scrollbar"
+        dir="rtl"
+        style={{ scrollbarWidth: "none" }}
+      >
+        {schedule.days.map((day, idx) => {
+          const isActive = idx === activeDayIndex;
+          return (
             <button
-              key={index}
-              onClick={() => setCurrentDayIndex(index)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                currentDayIndex === index
-                  ? "bg-[#6027D2] text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              key={idx}
+              onClick={() => setActiveDayIndex(idx)}
+              className={`flex-shrink-0 flex flex-col items-center justify-center w-[100px] h-[100px] rounded-[2rem] border-2 transition-all ${
+                isActive
+                  ? "border-[#7300CD] bg-[#F3EFFF]"
+                  : "border-[#E4E4E4] bg-white hover:border-gray-300"
               }`}
             >
-              {day.dayLabel}
+              <span
+                className={`text-[16px] font-bold mb-1 ${isActive ? "text-[#7300CD]" : "text-black"}`}
+              >
+                {day.dayLabel.replace("اليوم ", "اليوم\n")}
+              </span>
+              <span
+                className={`text-[12px] ${isActive ? "text-[#7300CD]" : "text-gray-500"}`}
+              >
+                {day.date}
+              </span>
             </button>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
 
-      {/* Activities List */}
-      <div className="space-y-6">
-        {currentDay.activities.map((activity, index) => (
-          <div key={activity.id}>
-            <ScheduleCard
-              activity={activity}
-              onDirectionsClick={handleDirections}
-            />
-            {/* Travel Info */}
-            {activity.travelInfoToNext &&
-              index < currentDay.activities.length - 1 && (
-                <div className="flex flex-row-reverse items-center gap-4 my-6 pr-4">
-                  <div className="relative">
-                    <div className="w-4 h-4 rounded-full bg-[#6027D2] flex items-center justify-center">
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="white"
-                        strokeWidth="2"
-                      >
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
+      {/* 3. التايم لاين لليوم المحدد */}
+      <div>
+        <h3 className="text-[20px] font-bold text-black mb-8 text-right">
+          {activeDay.dayLabel}
+        </h3>
+
+        <div className="relative">
+          {/* الخط المنقط العمودي */}
+          <div className="absolute right-[19px] top-8 bottom-0 w-0 border-r-[2px] border-dashed border-gray-300 z-0"></div>
+
+          {activeDay.activities.map((activity, index) => (
+            <div key={index} className="relative z-10 mb-2" dir="rtl">
+              {/* الرأس: الأيقونة + النوع والوقت */}
+              <div className="flex justify-start items-start gap-4 mb-4 mr-[10px]">
+                {/* الأيقونة بخلفية بيضاء لقطع الخط المنقط */}
+                <div className="bg-white py-2 z-10 text-[#7300CD]">
+                  <ActivityTypeIcon />
+                </div>
+                <div className="text-right pt-1">
+                  <p className="text-[#7300CD] font-bold text-[14px] mb-1">
+                    {activity.type}
+                  </p>
+                  <p className="text-black font-bold text-[18px]">
+                    {activity.time}
+                  </p>
+                </div>
+              </div>
+
+              {/* بطاقة الفعالية */}
+              <div
+                className="mr-14 bg-white border border-[#E4E4E4] rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col-reverse sm:flex-row justify-between items-center gap-6 transition-transform hover:-translate-y-1"
+                dir="rtl"
+              >
+                {/* تفاصيل الفعالية (يمين) */}
+                <div className="text-right w-full sm:w-auto ">
+                  <h4 className="text-[22px] font-bold text-black mb-3">
+                    {activity.title}
+                  </h4>
+
+                  <div className="flex flex-col gap-2">
+                    {/* التقييم */}
+                    <div className="flex items-center justify-start gap-2 text-[14px] text-gray-600">
+                      <StarIcon />
+                      <span>
+                        ({activity.reviewsCount}) {activity.rating}
+                      </span>
+                    </div>
+                    {/* الموقع */}
+                    <div className="flex items-center justify-start gap-2 text-[14px] text-gray-500">
+                      <PinIcon />
+                      <span>{activity.locationText}</span>
+                    </div>
+                    {/* التصنيف والسعر */}
+                    <div className="flex items-center justify-start gap-4 text-[14px] font-bold text-black mt-1">
+                      <div className="flex items-center gap-1.5">
+                        <span>{activity.priceRange}</span>
+                        <BillIcon />
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span>{activity.category}</span>
+                        <PeopleIcon />
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 text-gray-700 text-sm font-medium">
-                    <span>{activity.travelInfoToNext.durationMinutes} دقيقة</span>
-                    <span>{activity.travelInfoToNext.distanceKm} كيلومتر</span>
+                </div>
+                {/* زر الاتجاهات (يسار) */}
+                <a
+                  href={activity.googleMapsUrl || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 border border-[#EFE6F7] text-[#7300CD] px-6 py-2.5 rounded-full font-bold hover:bg-[#EFE6F7] transition-colors"
+                >
+                  <DirectionIcon />
+                  الاتجاهات
+                </a>
+              </div>
+
+              {/* التنقل للفعالية التالية (يظهر فقط إذا كان هناك travelToNext) */}
+              {activity.travelToNext && (
+                <div className="flex items-center justify-start gap-4 mt-4 mr-[10px] h-[80px] bg-[#FFFFFF]">
+                  <div className="text-right text-[13px] text-gray-500 leading-relaxed pt-2">
+                    <p>{activity.travelToNext.duration}</p>
+                    <p>{activity.travelToNext.distance}</p>
+                  </div>
+                  <div className="bg-white py-4 z-10 text-gray-400">
+                    <CarIcon />
                   </div>
                 </div>
               )}
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
-};
-
-export default ScheduleDisplay;
+}

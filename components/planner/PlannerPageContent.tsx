@@ -43,13 +43,17 @@ const PlannerPageContent = () => {
         throw new Error(errorData.error || "Failed to generate schedule");
       }
 
-      const result = await response.json();
-      // Handle both old string format and new JSON format
-      if (typeof result.schedule === "string") {
-        // Legacy format - convert to new format or show error
-        setError("يرجى تحديث الصفحة والمحاولة مرة أخرى");
+      const result: unknown = await response.json();
+
+      if (
+        result &&
+        typeof result === "object" &&
+        "days" in result &&
+        Array.isArray((result as { days: unknown }).days)
+      ) {
+        setSchedule(result as PlanResponse);
       } else {
-        setSchedule(result.schedule as PlanResponse);
+        setError("تعذر قراءة الخطة من الخادم، حاول مرة أخرى");
       }
     } catch (err) {
       setError(
@@ -62,7 +66,10 @@ const PlannerPageContent = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+    <div
+      className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12"
+      dir="rtl"
+    >
       <PlannerForm onSubmit={handleSubmit} isLoading={isLoading} />
 
       {error && (

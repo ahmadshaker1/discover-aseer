@@ -29,7 +29,10 @@ const InterestsFilter = ({
 }: InterestsFilterProps) => {
   return (
     <Menu as="div" className="relative">
-      <Menu.Button className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer">
+      <Menu.Button
+        type="button"
+        className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer"
+      >
         <ChevronDownIcon />
         <span>
           {selectedInterests.length > 0
@@ -47,14 +50,15 @@ const InterestsFilter = ({
         leaveFrom="opacity-100 scale-100 translate-y-0"
         leaveTo="opacity-0 scale-95 translate-y-1"
       >
-      <Menu.Items className="absolute right-0 mt-2 w-64 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 max-h-80 overflow-y-auto">
-        <div className="py-1">
-          {options.map((option) => {
+        <Menu.Items className="absolute right-0 mt-2 w-64 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 max-h-80 overflow-y-auto">
+          <div className="py-1">
+            {options.map((option) => {
               const isSelected = selectedInterests.includes(option.id);
               return (
                 <Menu.Item key={option.id}>
                   {({ active }) => (
                     <button
+                      type="button"
                       onClick={() => onToggle(option.id)}
                       className={`${
                         active ? "bg-[#6027D2]/10 text-[#6027D2]" : ""
@@ -76,6 +80,7 @@ const InterestsFilter = ({
             {selectedInterests.length > 0 && (
               <Menu.Item>
                 <button
+                  type="button"
                   onClick={onClear}
                   className="block w-full text-right px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700 border-t border-gray-200 mt-1 cursor-pointer transition-colors duration-150"
                 >

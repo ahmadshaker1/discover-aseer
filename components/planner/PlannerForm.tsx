@@ -74,7 +74,17 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
   const [selectedDuration, setSelectedDuration] = useState<string | null>(null);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Only allow submission from the explicit planner submit button.
+    const submitter = (e.nativeEvent as SubmitEvent)
+      .submitter as HTMLButtonElement | null;
+    if (!submitter || submitter.dataset.submitPlan !== "true") {
+      return;
+    }
+
     console.log("Submitting form with data:", {
       description,
       city: selectedCity,
@@ -83,9 +93,6 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
       duration: selectedDuration,
       interests: selectedInterests,
     });
-
-    e.preventDefault();
-    e.stopPropagation();
 
     // Prevent submission if already loading
     if (isLoading) {
@@ -118,6 +125,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
         {/* Main textarea */}
         <div className="mb-6">
           <textarea
+            dir="rtl"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             onKeyDown={(e) => {
@@ -131,12 +139,12 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
               }
             }}
             placeholder="اقتراح: خطط لرحلة لمدة 7 أيام إلى عسير مع استراحة إفطار في الساعة 10 صباحاً، واستراحة غداء في الساعة 3 مساءً، واستراحة عشاء في الساعة 8 مساءً."
-            className="w-full h-40 sm:h-48 p-4 sm:p-6 rounded-xl bg-white border border-gray-300 text-left text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6027D2] focus:border-transparent resize-none"
+            className="w-full h-40 sm:h-48 p-4 sm:p-6 rounded-xl bg-white border border-gray-300 text-right text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6027D2] focus:border-transparent resize-none"
           />
         </div>
 
         {/* Input fields row */}
-        <div className="flex flex-row flex-wrap items-start gap-3 sm:gap-4 mb-6">
+        <div className="flex  items-end gap-3 sm:gap-4 mb-6 text-right justify-start">
           {/* City */}
           <div>
             <FilterDropdown
@@ -151,7 +159,10 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
           {/* Date Range */}
           <div>
             <Menu as="div" className="relative">
-              <Menu.Button className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer">
+              <Menu.Button
+                type="button"
+                className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer"
+              >
                 <ChevronDownIcon />
                 <span className="text-right whitespace-nowrap">
                   {arrivalDate && departureDate
@@ -260,9 +271,10 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
         </div>
 
         {/* Submit button */}
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           <button
             type="submit"
+            data-submit-plan="true"
             disabled={isLoading || !description.trim()}
             className="px-8 py-3 bg-[#6027D2] text-white rounded-full font-semibold text-base hover:bg-[#5020B8] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >

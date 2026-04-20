@@ -370,23 +370,23 @@ export default function TravelLandSection() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {/* الكرت الأول: متطلبات التأشيرة */}
             <div className="flex flex-col justify-between h-[250px] rounded-[2rem] border border-[#E4E4E4] bg-white p-8 transition-shadow hover:shadow-lg">
-              <div className="flex justify-end">
-                <svg
-                  width="48"
-                  height="48"
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M20 35 L30 20 L40 35 Z" fill="#7300CD" />
-                  <path d="M35 30 L55 30 L45 45 Z" fill="#7300CD" />
-                </svg>
+              <div className="flex justify-start">
+                <Image
+                  src="/assets/Getting-here-and-around/evisa-logo-1707824671.png"
+                  alt="اختر وجهتك"
+                  width={70}
+                  height={50}
+                />
               </div>
               <h3 className="text-right text-[20px] font-bold text-black">
                 متطلبات التأشيرة والدخول
               </h3>
               <div className="flex justify-start">
-                <button className="flex h-12 w-12 items-center justify-center rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]">
+                <a
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]"
+                  href="https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations"
+                  target="_blank"
+                >
                   <svg
                     width="24"
                     height="24"
@@ -400,41 +400,29 @@ export default function TravelLandSection() {
                     <path d="M19 12H5" />
                     <path d="M12 19l-7-7 7-7" />
                   </svg>
-                </button>
+                </a>
               </div>
             </div>
 
             {/* الكرت الثاني: خطط إقامتك */}
             <div className="flex flex-col justify-between h-[250px] rounded-[2rem] border border-[#E4E4E4] bg-white p-8 transition-shadow hover:shadow-lg">
-              <div className="flex justify-end text-[#7300CD]">
-                <svg
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M4 22V2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v20" />
-                  <path d="M14 22v-4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v4" />
-                  <path d="M8 6h.01" />
-                  <path d="M16 6h.01" />
-                  <path d="M12 6h.01" />
-                  <path d="M12 10h.01" />
-                  <path d="M16 10h.01" />
-                  <path d="M8 10h.01" />
-                  <path d="M8 14h.01" />
-                  <path d="M12 14h.01" />
-                  <path d="M16 14h.01" />
-                </svg>
+              <div className="flex justify-start text-[#7300CD]">
+                <Image
+                  src="/assets/Getting-here-and-around/icon3346.svg"
+                  alt="اختر وجهتك"
+                  width={48}
+                  height={48}
+                />
               </div>
               <h3 className="text-right text-[20px] font-bold text-black">
                 خطط إقامتك
               </h3>
               <div className="flex justify-start">
-                <button className="flex h-12 w-12 items-center justify-center rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]">
+                <a
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]"
+                  href="/accommodation"
+                  target="_blank"
+                >
                   <svg
                     width="24"
                     height="24"
@@ -448,32 +436,19 @@ export default function TravelLandSection() {
                     <path d="M19 12H5" />
                     <path d="M12 19l-7-7 7-7" />
                   </svg>
-                </button>
+                </a>
               </div>
             </div>
 
             {/* الكرت الثالث: اختر وجهتك */}
             <div className="flex flex-col justify-between h-[250px] rounded-[2rem] border border-[#E4E4E4] bg-white p-8 transition-shadow hover:shadow-lg">
-              <div className="flex justify-end text-[#7300CD]">
-                <svg
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M10 10h4" />
-                  <path d="M19 7l-3-5-1.5 1.5 2 3.5" />
-                  <path d="M5 7l3-5 1.5 1.5-2 3.5" />
-                  <circle cx="6" cy="14" r="3" />
-                  <circle cx="18" cy="14" r="3" />
-                  <path d="M14 10a5 5 0 0 0-4 0" />
-                  <path d="M16.5 11l-1.5-4h-6l-1.5 4" />
-                  <path d="M9 16.5V19a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2.5" />
-                </svg>
+              <div className="flex justify-start text-[#7300CD]">
+                <Image
+                  src="/assets/Getting-here-and-around/Vector.svg"
+                  alt="اختر وجهتك"
+                  width={48}
+                  height={48}
+                />
               </div>
               <h3 className="text-right text-[20px] font-bold text-black">
                 اختر وجهتك
