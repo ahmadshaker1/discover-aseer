@@ -17,6 +17,8 @@ import AseerCuisineChefsVideoSection, {
   type AseerCuisineChefsVideoSectionData,
 } from "@/components/aseer-cuisine/AseerCuisineChefsVideoSection";
 import type { ExperienceCardProps } from "@/components/experiences/ExperienceCard/ExperienceCard";
+import { fetchExperiences } from "@/components/experiences/data";
+import { fetchRestaurants } from "@/components/restaurants/data";
 import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsCredibilitySection";
 
 /**
@@ -481,18 +483,68 @@ async function fetchAseerCuisinePageData(): Promise<AseerCuisinePageData> {
 }
 
 const AseerCuisinePage = async () => {
-  const aseerCuisinePageData = await fetchAseerCuisinePageData();
+  const [aseerCuisinePageData, restaurants, experiencesResult] = await Promise.all([
+    fetchAseerCuisinePageData(),
+    fetchRestaurants(),
+    fetchExperiences(),
+  ]);
+
+  const cuisineRestaurants = restaurants.slice(0, 6).map((restaurant) => ({
+    id: restaurant.id,
+    image: restaurant.image,
+    title: restaurant.name,
+    location: restaurant.location,
+    cuisineType: restaurant.category || "مطعم",
+    priceRange: restaurant.priceBand || restaurant.priceRange || "غير محدد",
+    rating: restaurant.rating > 0 ? restaurant.rating : 4.5,
+    reviewsCount: restaurant.reviewsCount ?? 0,
+  }));
+
+  const cuisineExperiences: ExperienceCardProps[] = experiencesResult.experiences
+    .slice(0, 6)
+    .map((experience) => ({
+      id: experience.id,
+      imageUrl: experience.imageUrl,
+      category: experience.category,
+      title: experience.title,
+      duration: experience.duration,
+      description: experience.description,
+      provider: experience.provider,
+      price: experience.price,
+      currency: experience.currency,
+      groupSize: experience.groupSize,
+      bookUrl: experience.bookUrl,
+    }));
+
+  const mergedData: AseerCuisinePageData = {
+    ...aseerCuisinePageData,
+    restaurantsSection:
+      cuisineRestaurants.length > 0
+        ? {
+            ...aseerCuisinePageData.restaurantsSection,
+            cards: cuisineRestaurants,
+            ctaHref: "/restaurants",
+          }
+        : aseerCuisinePageData.restaurantsSection,
+    cookingExperiencesSection:
+      cuisineExperiences.length > 0
+        ? {
+            ...aseerCuisinePageData.cookingExperiencesSection,
+            cards: cuisineExperiences,
+            ctaHref: "/experiences",
+          }
+        : aseerCuisinePageData.cookingExperiencesSection,
+  };
+
   return (
     <div className="flex w-full flex-col bg-[#f6f6f6]">
-      <AseerCuisineHero data={aseerCuisinePageData.hero} />
-      <AseerCuisineDishesSection data={aseerCuisinePageData.dishesSection} />
-      <AseerCuisineRestaurantsSection data={aseerCuisinePageData.restaurantsSection} />
-      <AseerCuisineLocalFlavorsSection data={aseerCuisinePageData.localFlavorsSection} />
-      <AseerCuisineCookingExperiencesSection
-        data={aseerCuisinePageData.cookingExperiencesSection}
-      />
+      <AseerCuisineHero data={mergedData.hero} />
+      <AseerCuisineDishesSection data={mergedData.dishesSection} />
+      <AseerCuisineRestaurantsSection data={mergedData.restaurantsSection} />
+      <AseerCuisineLocalFlavorsSection data={mergedData.localFlavorsSection} />
+      <AseerCuisineCookingExperiencesSection data={mergedData.cookingExperiencesSection} />
       <RestaurantsCredibilitySection />
-      <AseerCuisineChefsVideoSection data={aseerCuisinePageData.chefsVideoSection} />
+      <AseerCuisineChefsVideoSection data={mergedData.chefsVideoSection} />
     </div>
   );
 };

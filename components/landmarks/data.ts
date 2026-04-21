@@ -18,21 +18,24 @@ export interface Landmark {
 }
 
 export interface ApiLandmark {
-  id: string;
-  status: string;
-  sort: number | null;
-  user_created: string;
-  date_created: string;
-  user_updated: string | null;
-  date_updated: string | null;
-  title: string;
-  location: string;
-  description: string;
-  cover_image: string;
-  city: string | null;
-  traveller_types: string[] | null;
-  price_range_from: number | null;
-  price_range_to: number | null;
+  id: string | number;
+  status?: string | null;
+  title?: string | null;
+  title_ar?: string | null;
+  name?: string | null;
+  name_ar?: string | null;
+  location?: string | null;
+  address?: string | null;
+  description?: string | null;
+  content?: string | null;
+  cover_image?: string | null;
+  hero_image?: string | null;
+  destination_image?: string | null;
+  city?: string | null;
+  traveller_types?: string[] | null;
+  tags?: string | null;
+  price_range_from?: number | null;
+  price_range_to?: number | null;
   /**
    * Optional backend field for interests/categories.
    * If not present, frontend uses keyword-based fallback tags.
@@ -48,16 +51,30 @@ export const transformLandmark = (
   apiLandmark: ApiLandmark,
   directusUrl: string
 ): Landmark => {
-  const imageUrl = apiLandmark.cover_image
-    ? `${directusUrl}/assets/${apiLandmark.cover_image}`
+  const imageAsset =
+    apiLandmark.cover_image || apiLandmark.hero_image || apiLandmark.destination_image;
+  const imageUrl = imageAsset
+    ? imageAsset.startsWith("http://") || imageAsset.startsWith("https://")
+      ? imageAsset
+      : `${directusUrl}/assets/${imageAsset}`
     : "/assets/experiences/experiences.png";
+
+  const title =
+    apiLandmark.title?.trim() ||
+    apiLandmark.title_ar?.trim() ||
+    apiLandmark.name?.trim() ||
+    apiLandmark.name_ar?.trim() ||
+    "";
+  const location =
+    apiLandmark.location?.trim() || apiLandmark.address?.trim() || apiLandmark.city?.trim() || "";
+  const description = apiLandmark.description?.trim() || apiLandmark.content?.trim() || "";
 
   // Extract guide name from description if it contains one
   // The description format seems to be: "تسلق جبل سودا مع متسلق الجبال المحلي فيصل"
   // We'll try to extract the last word as guide name
   let guideName = "";
-  if (apiLandmark.description) {
-    const descriptionParts = apiLandmark.description.trim().split(/\s+/);
+  if (description) {
+    const descriptionParts = description.split(/\s+/);
     // If description has multiple words, take the last one as guide name
     if (descriptionParts.length > 1) {
       guideName = descriptionParts[descriptionParts.length - 1];
@@ -65,7 +82,7 @@ export const transformLandmark = (
   }
 
   // Use city if available, otherwise extract from location
-  const area = apiLandmark.city || apiLandmark.location?.split(",")[0]?.trim() || "";
+  const area = apiLandmark.city || location?.split(",")[0]?.trim() || "";
 
   const cityMap: Record<string, string> = {
     abha: "abha",
@@ -84,20 +101,27 @@ export const transformLandmark = (
   const cityId = cityMap[(apiLandmark.city || "").trim()] || undefined;
 
   // Fallback interests from title/description when backend tags are not provided.
-  const sourceText = `${apiLandmark.title ?? ""} ${apiLandmark.description ?? ""}`;
+  const sourceText = `${title} ${description}`;
   const fallbackInterests: string[] = [];
   if (/تاريخ|تراث|قصر|سوق/i.test(sourceText)) fallbackInterests.push("historical", "culture");
   if (/جبل|حديقة|طبيعة|منتزه|وادي|قمم|السودة/i.test(sourceText))
     fallbackInterests.push("nature", "adventure");
   if (/تسوق|سوق/i.test(sourceText)) fallbackInterests.push("shopping");
-  const interestTags = (apiLandmark.interest_tags ?? fallbackInterests).filter(Boolean);
+  const mappedTags =
+    apiLandmark.interest_tags ??
+    apiLandmark.tags
+      ?.split(/[،,]/)
+      .map((tag) => tag.trim())
+      .filter(Boolean) ??
+    fallbackInterests;
+  const interestTags = mappedTags.filter(Boolean);
 
   return {
-    id: apiLandmark.id,
-    title: apiLandmark.title?.trim() || "",
-    location: apiLandmark.location?.trim() || "",
+    id: String(apiLandmark.id),
+    title,
+    location,
     area: area,
-    description: apiLandmark.description?.trim() || "",
+    description,
     guideName: guideName,
     image: imageUrl,
     cityId,
@@ -109,7 +133,7 @@ export const transformLandmark = (
 };
 
 export const fetchLandmarks = async (): Promise<Landmark[]> => {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
 
   if (!directusUrl) {
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
@@ -117,7 +141,7 @@ export const fetchLandmarks = async (): Promise<Landmark[]> => {
   }
 
   try {
-    const response = await fetch(`${directusUrl}/items/landmarks`, {
+    const response = await fetch(`${directusUrl}/items/attractions`, {
       next: { revalidate: 3600 }, // Revalidate every hour
     });
 
@@ -127,7 +151,7 @@ export const fetchLandmarks = async (): Promise<Landmark[]> => {
 
     const apiData: ApiResponse = await response.json();
     return apiData.data
-      .filter((landmark) => landmark.status === "published")
+      .filter((landmark) => !landmark.status || landmark.status === "published")
       .map((landmark) => transformLandmark(landmark, directusUrl));
   } catch (error) {
     console.error("Error fetching landmarks:", error);

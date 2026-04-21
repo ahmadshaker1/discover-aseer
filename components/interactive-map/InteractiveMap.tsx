@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -16,39 +16,256 @@ interface InteractiveMapProps {
   onPinAdd?: (pin: LocationPin) => void;
 }
 
+interface MapPlace {
+  id: string;
+  title: string;
+  description: string;
+  latitude: number | null;
+  longitude: number | null;
+  hasCoordinates: boolean;
+  category: string;
+  city: string;
+  tag?: string;
+}
+
+const MAP_CENTER: [number, number] = [42.62, 18.25];
+
+const FALLBACK_PLACES: MapPlace[] = [
+  {
+    id: "place-1",
+    title: "فندق بيات",
+    description: "من أكثر الفنادق فخامةً في المنطقة يتميز فريق خدمة متعدد خيارات.",
+    latitude: 18.237,
+    longitude: 42.513,
+    category: "أماكن الإقامة",
+    city: "أبها",
+    tag: "خميس مشيط",
+  },
+  {
+    id: "place-2",
+    title: "منتزه السحاب الوطني",
+    description: "إطلالات بانورامية وتجارب تنزه عائلية وسط السحاب.",
+    latitude: 18.2406,
+    longitude: 42.5042,
+    category: "المعالم السياحية",
+    city: "أبها",
+    tag: "بيئة",
+  },
+  {
+    id: "place-3",
+    title: "قرية المفتاحة",
+    description: "وجهة فنية وثقافية تضم معارض ومقاهي وتجارب تفاعلية.",
+    latitude: 18.217,
+    longitude: 42.5059,
+    category: "التجارب السياحية",
+    city: "أبها",
+    tag: "فنون",
+  },
+  {
+    id: "place-4",
+    title: "ممشى الضباب",
+    description: "مسار شهير للمشي مع نقاط تصوير وإطلالة جبلية مميزة.",
+    latitude: 18.248,
+    longitude: 42.488,
+    category: "التجارب السياحية",
+    city: "أبها",
+    tag: "نشاط",
+  },
+  {
+    id: "place-5",
+    title: "سوق الثلاثاء الشعبي",
+    description: "تجربة تراثية للتسوق المحلي والحرف والمنتجات الموسمية.",
+    latitude: 18.2125,
+    longitude: 42.5122,
+    category: "استفسارات",
+    city: "أبها",
+    tag: "تراث",
+  },
+  {
+    id: "place-6",
+    title: "منتجع جبل السودة",
+    description: "منطقة مرتفعة بطقس لطيف ومغامرات خارجية لعشاق الطبيعة.",
+    latitude: 18.2704,
+    longitude: 42.357,
+    category: "أماكن الإقامة",
+    city: "السودة",
+    tag: "منتجع",
+  },
+  {
+    id: "place-7",
+    title: "مزرعة الورود",
+    description: "تجربة ريفية مع جولات تعريفية ومنتجات محلية متنوعة.",
+    latitude: 18.089,
+    longitude: 42.733,
+    category: "التجارب السياحية",
+    city: "خميس مشيط",
+    tag: "طبيعة",
+  },
+  {
+    id: "place-8",
+    title: "ممشى الوادي",
+    description: "موقع مناسب للعائلات مع جلسات ومطاعم قريبة.",
+    latitude: 18.296,
+    longitude: 42.724,
+    category: "مطاعم وكافيهات",
+    city: "خميس مشيط",
+    tag: "مطاعم",
+  },
+  {
+    id: "place-9",
+    title: "متحف الراقدي",
+    description: "يضم مقتنيات تاريخية نادرة تحكي إرث عسير الثقافي.",
+    latitude: 18.266,
+    longitude: 42.665,
+    category: "المعالم السياحية",
+    city: "أحد رفيدة",
+    tag: "متحف",
+  },
+  {
+    id: "place-10",
+    title: "ساحة الفعاليات",
+    description: "فعاليات موسمية وعروض ترفيهية وتجارب عائلية.",
+    latitude: 18.19,
+    longitude: 42.89,
+    category: "تقييم + مكافآت",
+    city: "محايل",
+    tag: "موسمي",
+  },
+  {
+    id: "place-11",
+    title: "بوابة عسير",
+    description: "نقطة استعلامات للزوار وخدمات مساعدة ميدانية.",
+    latitude: 18.17,
+    longitude: 42.55,
+    category: "استفسارات",
+    city: "أبها",
+    tag: "خدمة",
+  },
+  {
+    id: "place-12",
+    title: "إيكو لودج عسير",
+    description: "إقامة بيئية بتصميم محلي وتجربة هادئة.",
+    latitude: 18.34,
+    longitude: 42.61,
+    category: "أماكن الإقامة",
+    city: "رجال ألمع",
+    tag: "نُزُل",
+  },
+];
+
+const CATEGORY_CHIPS = [
+  { label: "استفسارات", icon: "ⓘ" },
+  { label: "التجارب السياحية", icon: "◉" },
+  { label: "المعالم السياحية", icon: "⌂" },
+  { label: "تقييم + مكافآت", icon: "★" },
+  { label: "مطاعم وكافيهات", icon: "☕" },
+  { label: "أماكن الإقامة", icon: "🏨" },
+] as const;
+
+const placesToGeoJSON = (places: MapPlace[]): GeoJSON.FeatureCollection<GeoJSON.Point> => ({
+  type: "FeatureCollection",
+  features: places.map((place) => ({
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [place.longitude as number, place.latitude as number],
+    },
+    properties: {
+      id: place.id,
+      title: place.title,
+      category: place.category,
+      city: place.city,
+    },
+  })),
+});
+
 const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const markersRef = useRef<mapboxgl.Marker[]>([]);
-  const initialPinsRef = useRef<string>("");
+  const mapRef = useRef<mapboxgl.Map | null>(null);
+  const mapLoadedRef = useRef(false);
+  const popupRef = useRef<mapboxgl.Popup | null>(null);
+  const placesRef = useRef<MapPlace[]>(FALLBACK_PLACES);
 
-  const addMarker = useCallback((pin: LocationPin) => {
-    if (!map.current) return;
+  const [activeCategory, setActiveCategory] = useState<string>("الكل");
+  const [selectedCity, setSelectedCity] = useState<string>("الكل");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
+  const [places, setPlaces] = useState<MapPlace[]>(FALLBACK_PLACES);
 
-    const el = document.createElement("div");
-    el.className = "custom-marker";
-    el.style.width = "30px";
-    el.style.height = "30px";
-    el.style.borderRadius = "50%";
-    el.style.backgroundColor = "#3b82f6";
-    el.style.border = "3px solid white";
-    el.style.cursor = "pointer";
-    el.style.boxShadow = "0 2px 4px rgba(0,0,0,0.3)";
+  const cities = useMemo(
+    () => ["الكل", ...Array.from(new Set(places.map((place) => place.city)))],
+    [places],
+  );
 
-    const marker = new mapboxgl.Marker(el)
-      .setLngLat([pin.longitude, pin.latitude])
-      .addTo(map.current);
+  const filteredPlaces = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    return places.filter((place) => {
+      const categoryMatch = activeCategory === "الكل" || place.category === activeCategory;
+      const cityMatch = selectedCity === "الكل" || place.city === selectedCity;
+      const searchMatch =
+        normalizedSearch.length === 0 ||
+        place.title.toLowerCase().includes(normalizedSearch) ||
+        place.description.toLowerCase().includes(normalizedSearch);
+      return categoryMatch && cityMatch && searchMatch;
+    });
+  }, [activeCategory, places, searchTerm, selectedCity]);
 
-    if (pin.title) {
-      const popup = new mapboxgl.Popup({ offset: 25 }).setText(pin.title);
-      marker.setPopup(popup);
+  const mappablePlaces = useMemo(
+    () => filteredPlaces.filter((place) => place.hasCoordinates && place.latitude != null && place.longitude != null),
+    [filteredPlaces],
+  );
+
+  useEffect(() => {
+    placesRef.current = places;
+  }, [places]);
+
+  useEffect(() => {
+    const loadLocations = async () => {
+      try {
+        const response = await fetch("/api/interactive-map/locations", { cache: "no-store" });
+        if (!response.ok) return;
+
+        const json: { data?: MapPlace[] } = await response.json();
+        if (!Array.isArray(json.data) || json.data.length === 0) return;
+
+        if (json.data.length > 0) {
+          setPlaces(json.data);
+        }
+      } catch (error) {
+        console.error("[interactive-map] Failed to load Directus locations", error);
+      }
+    };
+
+    loadLocations();
+  }, []);
+
+  const focusPlace = useCallback((place: MapPlace) => {
+    setSelectedPlaceId(place.id);
+    if (!mapRef.current || !place.hasCoordinates || place.latitude == null || place.longitude == null) {
+      popupRef.current?.remove();
+      return;
     }
+    mapRef.current.flyTo({
+      center: [place.longitude, place.latitude],
+      zoom: 12.5,
+      essential: true,
+    });
 
-    markersRef.current.push(marker);
+    popupRef.current?.remove();
+    popupRef.current = new mapboxgl.Popup({ offset: 18, closeButton: false })
+      .setLngLat([place.longitude, place.latitude])
+      .setHTML(
+        `<div style="font-family: Arial, sans-serif; direction: rtl; text-align: right;">
+          <strong>${place.title}</strong><br/>
+          <span style="font-size: 12px; opacity: 0.8;">${place.city}</span>
+        </div>`,
+      )
+      .addTo(mapRef.current);
   }, []);
 
   useEffect(() => {
     if (!mapContainer.current) return;
+    if (mapRef.current) return;
 
     const token = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
     if (!token) {
@@ -58,93 +275,290 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
     mapboxgl.accessToken = token;
 
-    // Initialize map centered on Aseer, Saudi Arabia
-    map.current = new mapboxgl.Map({
+    mapRef.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
-      center: [42.5000, 18.2167], // Aseer, Saudi Arabia [longitude, latitude]
-      zoom: 10,
+      center: MAP_CENTER,
+      zoom: 7.6,
+      attributionControl: false,
     });
 
-    // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
+    mapRef.current.addControl(new mapboxgl.NavigationControl(), "bottom-left");
 
-    // Add initial pins after map is loaded
-    map.current.on("load", () => {
-      if (initialPins.length > 0) {
-        initialPins.forEach((pin) => {
-          addMarker(pin);
-        });
-        initialPinsRef.current = JSON.stringify(initialPins);
-      }
-    });
+    mapRef.current.on("load", () => {
+      if (!mapRef.current) return;
+      mapLoadedRef.current = true;
 
-    // Cleanup
-    return () => {
-      // Remove all markers
-      markersRef.current.forEach((marker) => marker.remove());
-      markersRef.current = [];
-      
-      if (map.current) {
-        map.current.remove();
-      }
-    };
-  }, []);
-
-  // Handle initialPins changes (only when they actually change)
-  useEffect(() => {
-    if (!map.current) return;
-
-    const currentPinsString = JSON.stringify(initialPins);
-    // Only update if pins actually changed
-    if (currentPinsString === initialPinsRef.current) return;
-
-    // Clear existing markers
-    markersRef.current.forEach((marker) => marker.remove());
-    markersRef.current = [];
-
-    // Add new pins
-    if (initialPins.length > 0) {
-      initialPins.forEach((pin) => {
-        addMarker(pin);
+      mapRef.current.addSource("places", {
+        type: "geojson",
+        data: placesToGeoJSON(mappablePlaces),
+        cluster: true,
+        clusterMaxZoom: 14,
+        clusterRadius: 44,
       });
-    }
 
-    initialPinsRef.current = currentPinsString;
-  }, [initialPins, addMarker]);
+      mapRef.current.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "places",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": "#6C2BD9",
+          "circle-radius": [
+            "step",
+            ["get", "point_count"],
+            17,
+            10,
+            20,
+            30,
+            24,
+            60,
+            30,
+          ],
+          "circle-opacity": 0.95,
+        },
+      });
 
-  // Function to add a pin programmatically
-  const addPin = useCallback((latitude: number, longitude: number, title?: string) => {
-    const newPin: LocationPin = {
-      id: `pin-${Date.now()}`,
-      latitude,
-      longitude,
-      title,
-    };
-    addMarker(newPin);
-    if (onPinAdd) {
-      onPinAdd(newPin);
-    }
-  }, [addMarker, onPinAdd]);
+      mapRef.current.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "places",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": "{point_count_abbreviated}",
+          "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+          "text-size": 12,
+        },
+        paint: {
+          "text-color": "#FFFFFF",
+        },
+      });
 
-  // Expose addPin function via window for external use
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      (window as any).addMapPin = addPin;
-    }
+      mapRef.current.addLayer({
+        id: "unclustered-point",
+        type: "circle",
+        source: "places",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": "#7A2BDE",
+          "circle-radius": 8,
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#FFFFFF",
+        },
+      });
+
+      mapRef.current.on("click", "clusters", (event) => {
+        if (!mapRef.current) return;
+        const features = mapRef.current.queryRenderedFeatures(event.point, {
+          layers: ["clusters"],
+        });
+        const clusterId = features[0]?.properties?.cluster_id;
+        const source = mapRef.current.getSource("places") as mapboxgl.GeoJSONSource & {
+          getClusterExpansionZoom: (
+            clusterIdParam: number,
+            callback: (error: Error | null, zoom: number) => void,
+          ) => void;
+        };
+        source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+          if (err || !mapRef.current) return;
+          const feature = features[0];
+          const geometry = feature?.geometry as GeoJSON.Point;
+          mapRef.current.easeTo({
+            center: geometry.coordinates as [number, number],
+            zoom,
+          });
+        });
+      });
+
+      mapRef.current.on("click", "unclustered-point", (event) => {
+        const feature = event.features?.[0];
+        const placeId = feature?.properties?.id as string | undefined;
+        if (!placeId) return;
+        const place = placesRef.current.find((item) => item.id === placeId);
+        if (!place) return;
+        focusPlace(place);
+      });
+
+      mapRef.current.on("mouseenter", "clusters", () => {
+        if (mapRef.current) mapRef.current.getCanvas().style.cursor = "pointer";
+      });
+      mapRef.current.on("mouseleave", "clusters", () => {
+        if (mapRef.current) mapRef.current.getCanvas().style.cursor = "";
+      });
+      mapRef.current.on("mouseenter", "unclustered-point", () => {
+        if (mapRef.current) mapRef.current.getCanvas().style.cursor = "pointer";
+      });
+      mapRef.current.on("mouseleave", "unclustered-point", () => {
+        if (mapRef.current) mapRef.current.getCanvas().style.cursor = "";
+      });
+    });
+
     return () => {
-      if (typeof window !== "undefined") {
-        delete (window as any).addMapPin;
+      popupRef.current?.remove();
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
       }
     };
-  }, [addPin]);
+  }, [focusPlace, mappablePlaces]);
+
+  useEffect(() => {
+    if (!mapRef.current || !mapLoadedRef.current) return;
+    const source = mapRef.current.getSource("places") as mapboxgl.GeoJSONSource | undefined;
+    source?.setData(placesToGeoJSON(mappablePlaces));
+    if (selectedPlaceId && !filteredPlaces.some((place) => place.id === selectedPlaceId)) {
+      setSelectedPlaceId(null);
+      popupRef.current?.remove();
+    }
+  }, [filteredPlaces, mappablePlaces, selectedPlaceId]);
+
+  useEffect(() => {
+    if (!initialPins.length || !onPinAdd) return;
+    initialPins.forEach((pin) => onPinAdd(pin));
+  }, [initialPins, onPinAdd]);
+
+  const tokenExists = Boolean(process.env.NEXT_PUBLIC_MAPBOX_API_KEY);
 
   return (
-    <div
-      ref={mapContainer}
-      className="w-full h-full"
-      style={{ width: "100%", height: "100%" }}
-    />
+    <div className="flex h-full w-full bg-white" dir="rtl">
+      <div className="relative order-2 h-full flex-1">
+        <div ref={mapContainer} className="h-full w-full" />
+
+        <div className="absolute right-4 top-4 z-20 flex max-w-[78%] flex-wrap gap-2" dir="rtl">
+          <button
+            type="button"
+            onClick={() => setActiveCategory("الكل")}
+            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${
+              activeCategory === "الكل"
+                ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
+                : "border-[#E3E3E3] bg-white text-[#2D1A43]"
+            }`}
+          >
+            الكل
+          </button>
+          {CATEGORY_CHIPS.map((chip) => (
+            <button
+              key={chip.label}
+              type="button"
+              onClick={() => setActiveCategory(chip.label)}
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition ${
+                activeCategory === chip.label
+                  ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
+                  : "border-[#E3E3E3] bg-white text-[#2D1A43]"
+              }`}
+            >
+              <span>{chip.icon}</span>
+              <span>{chip.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <aside className="order-1 flex h-full w-[330px] flex-col bg-[#3D0075] text-white shadow-[-4px_0_18px_rgba(0,0,0,0.18)] md:w-[360px]">
+        <div className="border-b border-white/20 p-4">
+          <h1 className="mb-3 text-right text-[36px] font-bold leading-none">اكتشف عسير</h1>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="فلترة"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-transparent text-white"
+            >
+              ⌕
+            </button>
+            <div className="relative flex-1">
+              <input
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="البحث..."
+                className="h-9 w-full rounded-md border border-white/35 bg-white px-3 text-right text-[13px] text-[#3D0075] outline-none"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between border-b border-white/20 px-4 py-3">
+          <h2 className="text-[26px] font-bold">المواقع</h2>
+          <span className="text-[12px] text-white/75">
+            {filteredPlaces.length} نتيجة ({mappablePlaces.length} على الخريطة)
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 border-b border-white/20 p-3">
+          <select
+            value={selectedCity}
+            onChange={(event) => setSelectedCity(event.target.value)}
+            className="h-9 rounded-md border border-white/30 bg-[#4F1088] px-2 text-[12px] text-white outline-none"
+          >
+            {cities.map((city) => (
+              <option key={city} value={city} className="text-black">
+                {city}
+              </option>
+            ))}
+          </select>
+          <select
+            value={activeCategory}
+            onChange={(event) => setActiveCategory(event.target.value)}
+            className="h-9 rounded-md border border-white/30 bg-[#4F1088] px-2 text-[12px] text-white outline-none"
+          >
+            <option value="الكل" className="text-black">
+              كل الفئات
+            </option>
+            {CATEGORY_CHIPS.map((chip) => (
+              <option key={chip.label} value={chip.label} className="text-black">
+                {chip.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex-1 space-y-3 overflow-y-auto p-3">
+          {filteredPlaces.map((place) => (
+            <button
+              key={place.id}
+              type="button"
+              onClick={() => focusPlace(place)}
+              className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-right transition ${
+                selectedPlaceId === place.id
+                  ? "border-white bg-[#5B1997]"
+                  : "border-white/35 bg-[#4A0F85] hover:bg-[#552091]"
+              }`}
+            >
+              <img
+                src="/assets/travel-essentials/angledsquarepattern.png"
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute -bottom-8 -left-8 h-24 w-24 opacity-25"
+              />
+              <div className="relative z-10">
+                {place.tag ? (
+                  <span className="mb-2 inline-flex rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-semibold text-[#4A0F85]">
+                    {place.tag}
+                  </span>
+                ) : null}
+                <h3 className="text-[27px] font-bold leading-[1.1]">{place.title}</h3>
+                <p className="mt-2 text-[13px] leading-normal text-white/90">{place.description}</p>
+                {!place.hasCoordinates ? (
+                  <p className="mt-2 text-[11px] text-white/75">الموقع الجغرافي غير متوفر حالياً على الخريطة</p>
+                ) : null}
+              </div>
+            </button>
+          ))}
+          {filteredPlaces.length === 0 ? (
+            <div className="rounded-lg border border-white/30 bg-[#4A0F85] p-4 text-center text-sm text-white/85">
+              لا توجد نتائج مطابقة للبحث الحالي.
+            </div>
+          ) : null}
+        </div>
+      </aside>
+
+      {!tokenExists ? (
+        <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black/35">
+          <div className="rounded-xl bg-white px-5 py-4 text-sm font-medium text-[#3D0075]">
+            أضف `NEXT_PUBLIC_MAPBOX_API_KEY` في ملف البيئة لتشغيل الخريطة.
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 };
 

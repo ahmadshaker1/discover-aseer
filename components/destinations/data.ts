@@ -90,14 +90,22 @@ export const FALLBACK_DESTINATIONS: Destination[] = [
 ];
 
 export interface ApiDestination {
-  id: string;
+  id: string | number;
   status?: string;
-  title: string;
+  title?: string | null;
+  title_ar?: string | null;
+  name?: string | null;
+  name_ar?: string | null;
   slug?: string | null;
-  location: string;
-  description: string;
+  location?: string | null;
+  address?: string | null;
+  description?: string | null;
+  content?: string | null;
   cover_image?: string | null;
+  hero_image?: string | null;
+  destination_image?: string | null;
   city?: string | null;
+  tags?: string | null;
   interest_tags?: string[] | null;
 }
 
@@ -121,37 +129,49 @@ const cityMap: Record<string, string> = {
 };
 
 export const transformDestination = (row: ApiDestination, directusUrl: string): Destination => {
-  const imageUrl = row.cover_image
-    ? `${directusUrl}/assets/${row.cover_image}`
+  const imageAsset = row.cover_image || row.hero_image || row.destination_image;
+  const imageUrl = imageAsset
+    ? `${directusUrl}/assets/${imageAsset}`
     : "/assets/activities/points-of-interest.jpg";
+
+  const title = row.title?.trim() || row.title_ar?.trim() || row.name?.trim() || row.name_ar?.trim() || "";
+  const location = row.location?.trim() || row.address?.trim() || row.city?.trim() || "";
+  const description = row.description?.trim() || row.content?.trim() || "";
 
   const slug =
     row.slug?.trim() ||
-    row.title
+    title
       .trim()
       .toLowerCase()
       .replace(/\s+/g, "-")
       .replace(/[^\w\u0600-\u06FF-]+/g, "");
 
-  const area = row.city || row.location?.split(",")[0]?.trim() || "";
+  const area = row.city || location?.split(",")[0]?.trim() || "";
   const cityId = cityMap[(row.city || "").trim()] || undefined;
 
-  const sourceText = `${row.title ?? ""} ${row.description ?? ""}`;
+  const sourceText = `${title} ${description}`;
   const fallbackTags: string[] = [];
   if (/طبيعة|منتزه|جبل|وادي/i.test(sourceText)) fallbackTags.push("nature", "adventure");
   if (/تراث|قرية|تاريخ|ثقافة/i.test(sourceText)) fallbackTags.push("historical", "culture");
   if (/سوق|تسوق/i.test(sourceText)) fallbackTags.push("shopping");
+  const mappedTags =
+    row.interest_tags ??
+    row.tags
+      ?.split(/[،,]/)
+      .map((tag) => tag.trim())
+      .filter(Boolean) ??
+    fallbackTags;
 
   return {
-    id: row.id,
+    id: String(row.id),
     slug,
-    title: row.title?.trim() || "",
-    location: row.location?.trim() || "",
+    title,
+    location,
     area,
-    description: row.description?.trim() || "",
+    description,
     image: imageUrl,
     cityId,
-    interestTags: (row.interest_tags ?? fallbackTags).filter(Boolean),
+    interestTags: mappedTags.filter(Boolean),
   };
 };
 
@@ -162,7 +182,7 @@ export const fetchDestinations = async (): Promise<Destination[]> => {
     return [];
   }
   try {
-    const response = await fetch(`${directusUrl}/items/destinations`, {
+    const response = await fetch(`${directusUrl.replace(/\/$/, "")}/items/destination`, {
       next: { revalidate: 3600 },
     });
     if (!response.ok) return [];

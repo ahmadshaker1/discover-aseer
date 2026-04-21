@@ -63,8 +63,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
   const visibleLandmarks = useMemo(() => {
     return landmarks
       .filter((landmark) => includesCity(landmark, filters.city))
-      .filter((landmark) => includesInterests(landmark, selectedInterests))
-      .slice(0, 6);
+      .filter((landmark) => includesInterests(landmark, selectedInterests));
   }, [filters.city, landmarks, selectedInterests]);
 
   return (

@@ -9,18 +9,21 @@ export interface Recipe {
 }
 
 export interface ApiRecipe {
-  id: string;
-  status: string;
+  id: string | number;
+  status?: string | null;
   sort: number | null;
   user_created: string;
   date_created: string;
   user_updated: string | null;
   date_updated: string | null;
-  title: string;
-  time_to_prepare: number;
+  title?: string | null;
+  title_ar?: string | null;
+  time_to_prepare?: number | null;
   time_to_cook?: string;
-  main_ingredient: string;
-  thumbnail: string;
+  main_ingredient?: string | null;
+  cuisine_type?: string | null;
+  thumbnail?: string | null;
+  hero_image_url?: string | null;
   ingredients?: string[];
   content?: string;
 }
@@ -33,22 +36,25 @@ export const transformRecipe = (
   apiRecipe: ApiRecipe,
   directusUrl: string
 ): Recipe => {
-  const imageUrl = apiRecipe.thumbnail
-    ? `${directusUrl}/assets/${apiRecipe.thumbnail}`
+  const imageAsset = apiRecipe.thumbnail || apiRecipe.hero_image_url;
+  const imageUrl = imageAsset
+    ? imageAsset.startsWith("http")
+      ? imageAsset
+      : `${directusUrl}/assets/${imageAsset}`
     : "/assets/activities/aseer-cuisine.jpg"; // Default fallback image
 
   // Format time to prepare as "X دقيقة"
-  const timeToPrepare = apiRecipe.time_to_prepare || 0;
+  const timeToPrepare = apiRecipe.time_to_prepare || 30;
 
   // Default values for rating and reviews (not in API)
   const rating = 4.8;
   const reviews = 233;
 
   return {
-    id: apiRecipe.id,
-    title: apiRecipe.title?.trim() || "",
+    id: String(apiRecipe.id),
+    title: apiRecipe.title_ar?.trim() || apiRecipe.title?.trim() || "",
     timeToPrepare: timeToPrepare,
-    mainIngredient: apiRecipe.main_ingredient?.trim() || "",
+    mainIngredient: apiRecipe.main_ingredient?.trim() || apiRecipe.cuisine_type?.trim() || "مكونات محلية",
     image: imageUrl,
     rating: rating,
     reviews: reviews,
@@ -64,7 +70,7 @@ export const fetchRecipes = async (): Promise<Recipe[]> => {
   }
 
   try {
-    const response = await fetch(`${directusUrl}/items/recipes`, {
+    const response = await fetch(`${directusUrl.replace(/\/$/, "")}/items/cuisine`, {
       next: { revalidate: 3600 }, // Revalidate every hour
     });
 

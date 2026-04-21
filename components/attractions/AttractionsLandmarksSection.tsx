@@ -54,10 +54,12 @@ const AttractionsLandmarksSection = ({ landmarks }: AttractionsLandmarksSectionP
           </Link>
         </div>
 
-        <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {landmarks.slice(0, 8).map((landmark) => (
-            <AttractionsLandmarkCard key={landmark.id} landmark={landmark} />
-          ))}
+        <div className="mx-auto w-full max-w-[1320px] overflow-x-auto pb-2">
+          <div className="flex min-w-max flex-row gap-6">
+            {landmarks.slice(0, 6).map((landmark) => (
+              <AttractionsLandmarkCard key={landmark.id} landmark={landmark} className="w-[312px] shrink-0" />
+            ))}
+          </div>
         </div>
       </div>
     </section>
