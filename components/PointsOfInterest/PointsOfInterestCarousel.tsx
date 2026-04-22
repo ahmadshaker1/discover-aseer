@@ -40,17 +40,19 @@ export const PointsOfInterestCarousel = ({
   return (
     <div className="relative w-full min-h-screen max-w-screen-2xl mx-auto overflow-hidden">
       <BackgroundImage point={currentPoint} />
-      <TextOverlay point={currentPoint} />
-
-      {/* Carousel Preview Images - Lower Left */}
-      <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-12 md:left-12 lg:bottom-24 lg:left-24 flex flex-col items-end gap-2 sm:gap-3 md:gap-4">
-        <NavigationControls onNext={nextImage} onPrev={prevImage} />
-        <PreviewImages
-          points={points}
-          currentIndex={currentIndex}
-          onSelect={selectImage}
-        />
-      </div>
+      <TextOverlay
+        point={currentPoint}
+        carouselSlot={
+          <div className="flex flex-col items-end gap-4" dir="rtl">
+            <NavigationControls onNext={nextImage} onPrev={prevImage} />
+            <PreviewImages
+              points={points}
+              currentIndex={currentIndex}
+              onSelect={selectImage}
+            />
+          </div>
+        }
+      />
     </div>
   );
 };

@@ -2,31 +2,41 @@
 
 import { PointOfInterest } from "./data";
 import SafeHtml from "@/components/common/SafeHtml";
+import type { ReactNode } from "react";
 
 interface TextOverlayProps {
   point: PointOfInterest;
+  carouselSlot: ReactNode;
 }
 
-export const TextOverlay = ({ point }: TextOverlayProps) => {
+export const TextOverlay = ({ point, carouselSlot }: TextOverlayProps) => {
   return (
-    <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 md:p-12 lg:p-24">
+    <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 md:p-12 lg:p-24" dir="rtl">
       {/* Top Section - Title and Subtitle */}
-      <div className="text-right space-y-4 sm:space-y-6 md:space-y-8 mt-4 sm:mt-6 md:mt-8">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white border-b border-white pb-3 sm:pb-4 md:pb-6 w-full sm:w-4/5 md:w-2/3">
+      <div className="ml-auto mt-4 w-full max-w-[720px] text-right sm:mt-6 md:mt-8">
+        <h1 className="w-full pb-3 text-[32px] font-bold text-white sm:pb-4 sm:text-[44px] md:pb-6 md:text-[56px] lg:text-[64px]">
           {point.title}
         </h1>
-        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-white/90">
+        <h2 className="text-[18px] font-light text-white/90 sm:text-[22px] md:text-[28px]">
           {point.subtitle}
         </h2>
-        {/* Bottom Section - Location and Description */}
-        <div className="text-right space-y-2 sm:space-y-3 md:space-y-4 mb-4 sm:mb-6 md:mb-8 mt-8 sm:mt-12 md:mt-24 lg:mt-36">
-          <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+      </div>
+
+      {/* Bottom Section - description above carousel */}
+      <div className="mt-8 flex w-full flex-col gap-5 sm:mt-12 md:mt-16">
+        <div className="ml-auto flex w-full max-w-[397px] flex-col gap-4 text-right lg:h-[99px] lg:gap-[33px]">
+          <h3 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
             {point.location}
           </h3>
           <SafeHtml
             html={point.description}
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 max-w-full sm:max-w-xl md:max-w-2xl ml-auto"
+            className="ml-auto max-w-full text-sm text-white/90 sm:text-base md:text-lg lg:text-xl"
           />
+        </div>
+        <div className="w-full" dir="ltr">
+          <div className="w-full lg:w-[653px] lg:shrink-0">
+            {carouselSlot}
+          </div>
         </div>
       </div>
     </div>

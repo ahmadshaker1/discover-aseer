@@ -17,14 +17,15 @@ export const PreviewImages = ({
 }: PreviewImagesProps) => {
   return (
     <div
-      className="flex gap-2 sm:gap-3 overflow-x-auto hide-scrollbar"
+      className="flex h-[101px] w-full max-w-[653px] flex-row gap-[24px] overflow-x-auto hide-scrollbar lg:w-[653px]"
+      dir="rtl"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       {points.map((point, index) => (
         <Button
           key={point.id}
           onClick={() => onSelect(index)}
-          className={`relative shrink-0 w-20 h-14 sm:w-24 sm:h-16 md:w-32 md:h-20 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer ${
+          className={`relative h-[101px] w-[140px] shrink-0 overflow-hidden rounded-[12px] transition-all duration-300 cursor-pointer ${
             index === currentIndex
               ? "scale-110"
               : "opacity-70 hover:opacity-100 hover:scale-105"
