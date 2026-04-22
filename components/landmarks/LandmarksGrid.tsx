@@ -1,4 +1,5 @@
 import { fetchLandmarks } from "./data";
+import SafeHtml from "@/components/common/SafeHtml";
 
 const LandmarksGrid = async () => {
   const landmarks = await fetchLandmarks();
@@ -34,9 +35,7 @@ const LandmarksGrid = async () => {
                 <h3 className="text-lg md:text-xl font-bold">
                   {landmark.title}
                 </h3>
-                <p className="text-sm opacity-90 line-clamp-2">
-                  {landmark.description}
-                </p>
+                <SafeHtml html={landmark.description} className="text-sm opacity-90 line-clamp-2" />
                 <div className="text-xs opacity-80">{landmark.guideName}</div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import type { Landmark } from "@/components/landmarks/data";
+import SafeHtml from "@/components/common/SafeHtml";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -97,9 +98,10 @@ const AttractionsLandmarkCard = ({
           <h3 className="text-right text-[24px] font-bold leading-[119%]" style={{ fontFamily: ara }}>
             {landmark.title}
           </h3>
-          <p className="text-right text-[18px] font-bold leading-[130%] text-white/80" style={{ fontFamily: ara }}>
-            {landmark.description}
-          </p>
+          <SafeHtml
+            html={landmark.description}
+            className="line-clamp-2 text-right text-[18px] font-bold leading-[130%] text-white/80"
+          />
         </div>
       </div>
     </article>

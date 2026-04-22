@@ -1,4 +1,5 @@
 import { Landmark } from "./data";
+import SafeHtml from "@/components/common/SafeHtml";
 
 interface LandmarksCardsProps {
   landmarks: Landmark[];
@@ -24,9 +25,7 @@ const LandmarksCards = ({ landmarks }: LandmarksCardsProps) => {
             <div className="absolute bottom-6 left-0 right-0 px-6 text-right space-y-2 text-white">
               <div className="text-xs opacity-80">{landmark.location}</div>
               <h3 className="text-lg md:text-xl font-bold">{landmark.title}</h3>
-              <p className="text-sm opacity-90 line-clamp-2">
-                {landmark.description}
-              </p>
+              <SafeHtml html={landmark.description} className="text-sm opacity-90 line-clamp-2" />
               <div className="text-xs opacity-80">{landmark.guideName}</div>
             </div>
           </div>

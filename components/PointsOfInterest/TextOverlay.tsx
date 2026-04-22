@@ -1,6 +1,7 @@
 "use client";
 
 import { PointOfInterest } from "./data";
+import SafeHtml from "@/components/common/SafeHtml";
 
 interface TextOverlayProps {
   point: PointOfInterest;
@@ -22,9 +23,10 @@ export const TextOverlay = ({ point }: TextOverlayProps) => {
           <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             {point.location}
           </h3>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 max-w-full sm:max-w-xl md:max-w-2xl ml-auto">
-            {point.description}
-          </p>
+          <SafeHtml
+            html={point.description}
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 max-w-full sm:max-w-xl md:max-w-2xl ml-auto"
+          />
         </div>
       </div>
     </div>

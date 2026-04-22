@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import SafeHtml from "@/components/common/SafeHtml";
 
 interface LocationPin {
   id: string;
@@ -30,128 +31,7 @@ interface MapPlace {
 
 const MAP_CENTER: [number, number] = [42.62, 18.25];
 
-const FALLBACK_PLACES: MapPlace[] = [
-  {
-    id: "place-1",
-    title: "فندق بيات",
-    description: "من أكثر الفنادق فخامةً في المنطقة يتميز فريق خدمة متعدد خيارات.",
-    latitude: 18.237,
-    longitude: 42.513,
-    category: "أماكن الإقامة",
-    city: "أبها",
-    tag: "خميس مشيط",
-  },
-  {
-    id: "place-2",
-    title: "منتزه السحاب الوطني",
-    description: "إطلالات بانورامية وتجارب تنزه عائلية وسط السحاب.",
-    latitude: 18.2406,
-    longitude: 42.5042,
-    category: "المعالم السياحية",
-    city: "أبها",
-    tag: "بيئة",
-  },
-  {
-    id: "place-3",
-    title: "قرية المفتاحة",
-    description: "وجهة فنية وثقافية تضم معارض ومقاهي وتجارب تفاعلية.",
-    latitude: 18.217,
-    longitude: 42.5059,
-    category: "التجارب السياحية",
-    city: "أبها",
-    tag: "فنون",
-  },
-  {
-    id: "place-4",
-    title: "ممشى الضباب",
-    description: "مسار شهير للمشي مع نقاط تصوير وإطلالة جبلية مميزة.",
-    latitude: 18.248,
-    longitude: 42.488,
-    category: "التجارب السياحية",
-    city: "أبها",
-    tag: "نشاط",
-  },
-  {
-    id: "place-5",
-    title: "سوق الثلاثاء الشعبي",
-    description: "تجربة تراثية للتسوق المحلي والحرف والمنتجات الموسمية.",
-    latitude: 18.2125,
-    longitude: 42.5122,
-    category: "استفسارات",
-    city: "أبها",
-    tag: "تراث",
-  },
-  {
-    id: "place-6",
-    title: "منتجع جبل السودة",
-    description: "منطقة مرتفعة بطقس لطيف ومغامرات خارجية لعشاق الطبيعة.",
-    latitude: 18.2704,
-    longitude: 42.357,
-    category: "أماكن الإقامة",
-    city: "السودة",
-    tag: "منتجع",
-  },
-  {
-    id: "place-7",
-    title: "مزرعة الورود",
-    description: "تجربة ريفية مع جولات تعريفية ومنتجات محلية متنوعة.",
-    latitude: 18.089,
-    longitude: 42.733,
-    category: "التجارب السياحية",
-    city: "خميس مشيط",
-    tag: "طبيعة",
-  },
-  {
-    id: "place-8",
-    title: "ممشى الوادي",
-    description: "موقع مناسب للعائلات مع جلسات ومطاعم قريبة.",
-    latitude: 18.296,
-    longitude: 42.724,
-    category: "مطاعم وكافيهات",
-    city: "خميس مشيط",
-    tag: "مطاعم",
-  },
-  {
-    id: "place-9",
-    title: "متحف الراقدي",
-    description: "يضم مقتنيات تاريخية نادرة تحكي إرث عسير الثقافي.",
-    latitude: 18.266,
-    longitude: 42.665,
-    category: "المعالم السياحية",
-    city: "أحد رفيدة",
-    tag: "متحف",
-  },
-  {
-    id: "place-10",
-    title: "ساحة الفعاليات",
-    description: "فعاليات موسمية وعروض ترفيهية وتجارب عائلية.",
-    latitude: 18.19,
-    longitude: 42.89,
-    category: "تقييم + مكافآت",
-    city: "محايل",
-    tag: "موسمي",
-  },
-  {
-    id: "place-11",
-    title: "بوابة عسير",
-    description: "نقطة استعلامات للزوار وخدمات مساعدة ميدانية.",
-    latitude: 18.17,
-    longitude: 42.55,
-    category: "استفسارات",
-    city: "أبها",
-    tag: "خدمة",
-  },
-  {
-    id: "place-12",
-    title: "إيكو لودج عسير",
-    description: "إقامة بيئية بتصميم محلي وتجربة هادئة.",
-    latitude: 18.34,
-    longitude: 42.61,
-    category: "أماكن الإقامة",
-    city: "رجال ألمع",
-    tag: "نُزُل",
-  },
-];
+const EMPTY_PLACES: MapPlace[] = [];
 
 const CATEGORY_CHIPS = [
   { label: "استفسارات", icon: "ⓘ" },
@@ -184,13 +64,13 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const mapLoadedRef = useRef(false);
   const popupRef = useRef<mapboxgl.Popup | null>(null);
-  const placesRef = useRef<MapPlace[]>(FALLBACK_PLACES);
+  const placesRef = useRef<MapPlace[]>(EMPTY_PLACES);
 
   const [activeCategory, setActiveCategory] = useState<string>("الكل");
   const [selectedCity, setSelectedCity] = useState<string>("الكل");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
-  const [places, setPlaces] = useState<MapPlace[]>(FALLBACK_PLACES);
+  const [places, setPlaces] = useState<MapPlace[]>(EMPTY_PLACES);
 
   const cities = useMemo(
     () => ["الكل", ...Array.from(new Set(places.map((place) => place.city)))],
@@ -353,6 +233,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           layers: ["clusters"],
         });
         const clusterId = features[0]?.properties?.cluster_id;
+        if (typeof clusterId !== "number") return;
         const source = mapRef.current.getSource("places") as mapboxgl.GeoJSONSource & {
           getClusterExpansionZoom: (
             clusterIdParam: number,
@@ -363,9 +244,10 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           if (err || !mapRef.current) return;
           const feature = features[0];
           const geometry = feature?.geometry as GeoJSON.Point;
+          const safeZoom = typeof zoom === "number" ? zoom : mapRef.current.getZoom();
           mapRef.current.easeTo({
             center: geometry.coordinates as [number, number],
-            zoom,
+            zoom: safeZoom,
           });
         });
       });
@@ -428,11 +310,10 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           <button
             type="button"
             onClick={() => setActiveCategory("الكل")}
-            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${
-              activeCategory === "الكل"
+            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${activeCategory === "الكل"
                 ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
                 : "border-[#E3E3E3] bg-white text-[#2D1A43]"
-            }`}
+              }`}
           >
             الكل
           </button>
@@ -441,11 +322,10 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
               key={chip.label}
               type="button"
               onClick={() => setActiveCategory(chip.label)}
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition ${
-                activeCategory === chip.label
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition ${activeCategory === chip.label
                   ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
                   : "border-[#E3E3E3] bg-white text-[#2D1A43]"
-              }`}
+                }`}
             >
               <span>{chip.icon}</span>
               <span>{chip.label}</span>
@@ -478,9 +358,19 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
         <div className="flex items-center justify-between border-b border-white/20 px-4 py-3">
           <h2 className="text-[26px] font-bold">المواقع</h2>
-          <span className="text-[12px] text-white/75">
-            {filteredPlaces.length} نتيجة ({mappablePlaces.length} على الخريطة)
-          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setSearchTerm("");
+              setSelectedCity("الكل");
+              setActiveCategory("الكل");
+              setSelectedPlaceId(null);
+              popupRef.current?.remove();
+            }}
+            className="inline-flex items-center rounded-full border border-white/50 px-3 py-1 text-[12px] font-semibold text-white transition hover:bg-white/10"
+          >
+            مسح الفلاتر
+          </button>
         </div>
 
         <div className="grid grid-cols-2 gap-2 border-b border-white/20 p-3">
@@ -513,15 +403,12 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
         <div className="flex-1 space-y-3 overflow-y-auto p-3">
           {filteredPlaces.map((place) => (
-            <button
+            <div
               key={place.id}
-              type="button"
-              onClick={() => focusPlace(place)}
-              className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-right transition ${
-                selectedPlaceId === place.id
+              className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-right transition ${selectedPlaceId === place.id
                   ? "border-white bg-[#5B1997]"
                   : "border-white/35 bg-[#4A0F85] hover:bg-[#552091]"
-              }`}
+                }`}
             >
               <img
                 src="/assets/travel-essentials/angledsquarepattern.png"
@@ -536,12 +423,25 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
                   </span>
                 ) : null}
                 <h3 className="text-[27px] font-bold leading-[1.1]">{place.title}</h3>
-                <p className="mt-2 text-[13px] leading-normal text-white/90">{place.description}</p>
+                <SafeHtml
+                  html={place.description}
+                  className="mt-2 text-[13px] leading-normal text-white/90"
+                />
                 {!place.hasCoordinates ? (
                   <p className="mt-2 text-[11px] text-white/75">الموقع الجغرافي غير متوفر حالياً على الخريطة</p>
                 ) : null}
+                <div className="mt-3 flex justify-start">
+                  <button
+                    type="button"
+                    onClick={() => focusPlace(place)}
+                    disabled={!place.hasCoordinates}
+                    className="inline-flex items-center rounded-full border border-white/50 px-3 py-1 text-[12px] font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    عرض على الخريطة
+                  </button>
+                </div>
               </div>
-            </button>
+            </div>
           ))}
           {filteredPlaces.length === 0 ? (
             <div className="rounded-lg border border-white/30 bg-[#4A0F85] p-4 text-center text-sm text-white/85">
