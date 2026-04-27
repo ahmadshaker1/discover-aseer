@@ -1,6 +1,6 @@
 import type { TourGuideData } from "./TourGuideCard/TourGuideCard";
 
-/** Directus (or compatible REST) item shape for the tourist guides collection. */
+/** Directus (or compatiable REST) item shpe for the tourist guides collection. */
 export interface ApiTouristGuide {
   id: number;
   name: string | null;
