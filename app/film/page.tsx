@@ -13,16 +13,20 @@ const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 const FilmPage = async () => {
-  const [landscapes, whyAseerSlides, serviceCards, showcaseCards] = await Promise.all([
-    fetchFilmLandscapesWithFallback(),
-    fetchFilmWhyAseerSlidesWithFallback(),
-    fetchFilmServiceCardsWithFallback(),
-    fetchFilmShowcaseCardsWithFallback(),
-  ]);
+  const [landscapes, whyAseerSlides, serviceCards, showcaseCards] =
+    await Promise.all([
+      fetchFilmLandscapesWithFallback(),
+      fetchFilmWhyAseerSlidesWithFallback(),
+      fetchFilmServiceCardsWithFallback(),
+      fetchFilmShowcaseCardsWithFallback(),
+    ]);
 
   return (
     <div className="flex w-full flex-col bg-white">
-      <section className="mx-auto h-[809px] w-full max-w-[1440px] overflow-hidden" dir="ltr">
+      <section
+        className="mx-auto h-[809px] w-full max-w-[1440px] overflow-hidden"
+        dir="ltr"
+      >
         <img
           src="/assets/film/film-hero.png"
           alt="Film hero"
@@ -42,7 +46,11 @@ const FilmPage = async () => {
                   key={item.id}
                   className="relative h-[305px] w-[282px] shrink-0 overflow-hidden rounded-[10px] shadow-[0px_4.28px_3.37px_0px_rgba(41,72,152,0.01),0px_8.72px_6.97px_0px_rgba(41,72,152,0.02),0px_21.4px_13.91px_0px_rgba(41,72,152,0.02)]"
                 >
-                  <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-full w-full object-cover"
+                  />
                   <div className="absolute inset-x-0 bottom-0 h-[91px] rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
                     <h3
                       className="text-right text-[24px] font-bold leading-[119%] text-white"
@@ -56,20 +64,26 @@ const FilmPage = async () => {
             </div>
           </div>
 
-          <div className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-right lg:h-[265px]">
+          <div
+            className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-right lg:h-[265px]"
+            dir="ltr"
+          >
             <h2
               className="text-[44px] font-bold leading-[38px] text-black"
               style={{ fontFamily: ara }}
+              dir="rtl"
             >
-              انطلق في رحلة تصوير سينمائي ثرية بالتنوع، فريدة بالجمال.
+              {"انطلق في رحلة تصوير سينمائي ثرية بالتنوع، فريدة بالجمال."}
             </h2>
             <p
               className="text-[15px] font-light leading-[119%] text-[#252525]"
               style={{ fontFamily: ibm }}
+              dir="rtl"
             >
-              تتميز عسير بتنوع تضاريسها الطبيعية، فوق قمم الجبال و بين السهول، وصولاً إلى
-              الصحاري الشاسعة و السواحل الممتدة على البحر الأحمر، وبعدد أكثر من أربعة آلاف
-              قرية تراثية تعكس عراقة ثقافتها وتاريخها، وأصالة انسانها الطموح.
+              تتميز عسير بتنوع تضاريسها الطبيعية، فوق قمم الجبال و بين السهول،
+              وصولاً إلى الصحاري الشاسعة و السواحل الممتدة على البحر الأحمر،
+              وبعدد أكثر من أربعة آلاف قرية تراثية تعكس عراقة ثقافتها وتاريخها،
+              وأصالة انسانها الطموح.
             </p>
           </div>
         </div>
@@ -84,12 +98,14 @@ const FilmPage = async () => {
             <h3
               className="w-full max-w-[301px] text-right text-[32px] font-bold leading-[33.92px] text-white"
               style={{ fontFamily: ara }}
+              dir="rtl"
             >
               في عسير!
             </h3>
             <p
               className="w-full max-w-[301px] text-right text-[48px] font-bold leading-[33.92px] text-white"
               style={{ fontFamily: ara }}
+              dir="rtl"
             >
               نفزع لك باللي تحتاجه.
             </p>
@@ -112,11 +128,15 @@ const FilmPage = async () => {
         />
         <div className="absolute inset-0 bg-black/35" />
 
-        <div className="relative z-10 flex w-full max-w-[1241px] flex-col items-center text-center" dir="rtl">
+        <div
+          className="relative z-10 flex w-full max-w-[1241px] flex-col items-center text-center"
+          dir="rtl"
+        >
           <div className="mb-[30px] h-[47px] w-[251px]">
             <p
               className="text-right text-[24px] font-medium leading-[119%] text-white"
               style={{ fontFamily: ibm }}
+              dir="rtl"
             >
               الرجاء ملء الاستمارة أدناه.
             </p>
@@ -125,7 +145,11 @@ const FilmPage = async () => {
           <a
             href="/tour-guides/register"
             className="inline-flex h-[52px] w-[185px] items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
-            style={{ fontFamily: "Inter, sans-serif", paddingTop: 13.5, paddingBottom: 14.5 }}
+            style={{
+              fontFamily: "Inter, sans-serif",
+              paddingTop: 13.5,
+              paddingBottom: 14.5,
+            }}
           >
             سجل الان
           </a>
@@ -136,6 +160,7 @@ const FilmPage = async () => {
             <p
               className="whitespace-nowrap text-right text-[18px] font-light leading-[119%] text-white"
               style={{ fontFamily: ibm }}
+              dir="rtl"
             >
               أو مراسلتنا على البريد الالكتروني:
             </p>

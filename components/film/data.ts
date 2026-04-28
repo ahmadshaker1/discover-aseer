@@ -48,7 +48,7 @@ interface ApiFilmLandscapeResponse {
 const transformFilmLandscape = (
   row: ApiFilmLandscape,
   directusUrl: string,
-  fallbackTitle: string
+  fallbackTitle: string,
 ): FilmLandscape => {
   const image = row.cover_image
     ? `${directusUrl}/assets/${row.cover_image}`
@@ -80,15 +80,18 @@ export const fetchFilmLandscapes = async (): Promise<FilmLandscape[]> => {
         transformFilmLandscape(
           row,
           directusUrl,
-          FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length].title
-        )
+          FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length]
+            .title,
+        ),
       );
   } catch {
     return [];
   }
 };
 
-export const fetchFilmLandscapesWithFallback = async (): Promise<FilmLandscape[]> => {
+export const fetchFilmLandscapesWithFallback = async (): Promise<
+  FilmLandscape[]
+> => {
   const rows = await fetchFilmLandscapes();
   return rows.length > 0 ? rows : FALLBACK_FILM_LANDSCAPES;
 };
@@ -136,7 +139,7 @@ export const FALLBACK_FILM_WHY_ASEER_SLIDES: FilmWhyAseerSlide[] = [
   {
     id: "film-why-4",
     lane: "right",
-    title: "طبيعة مهيبة",
+    title: "تنوع طبيعي",
     description:
       "مزيج السحب والجبال والإضاءة الطبيعية يصنع كادرات بصرية قوية تناسب الإنتاجات السينمائية الكبرى.",
     image: "/assets/film/imghorizontal.png",
@@ -179,7 +182,7 @@ interface ApiFilmWhyAseerSlidesResponse {
 const transformFilmWhyAseerSlide = (
   row: ApiFilmWhyAseerSlide,
   directusUrl: string,
-  fallback: FilmWhyAseerSlide
+  fallback: FilmWhyAseerSlide,
 ): FilmWhyAseerSlide => {
   const image = row.cover_image
     ? `${directusUrl}/assets/${row.cover_image}`
@@ -187,15 +190,21 @@ const transformFilmWhyAseerSlide = (
 
   return {
     id: row.id,
-    lane: row.lane === "left" || row.lane === "right" ? row.lane : fallback.lane,
+    lane:
+      row.lane === "left" || row.lane === "right" ? row.lane : fallback.lane,
     title: row.title?.trim() || fallback.title,
     description: row.description?.trim() || fallback.description,
     image,
-    textTheme: row.text_theme === "light" || row.text_theme === "dark" ? row.text_theme : fallback.textTheme,
+    textTheme:
+      row.text_theme === "light" || row.text_theme === "dark"
+        ? row.text_theme
+        : fallback.textTheme,
   };
 };
 
-export const fetchFilmWhyAseerSlides = async (): Promise<FilmWhyAseerSlide[]> => {
+export const fetchFilmWhyAseerSlides = async (): Promise<
+  FilmWhyAseerSlide[]
+> => {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
   if (!directusUrl) return [];
 
@@ -214,15 +223,19 @@ export const fetchFilmWhyAseerSlides = async (): Promise<FilmWhyAseerSlide[]> =>
         transformFilmWhyAseerSlide(
           row,
           directusUrl,
-          FALLBACK_FILM_WHY_ASEER_SLIDES[index % FALLBACK_FILM_WHY_ASEER_SLIDES.length]
-        )
+          FALLBACK_FILM_WHY_ASEER_SLIDES[
+            index % FALLBACK_FILM_WHY_ASEER_SLIDES.length
+          ],
+        ),
       );
   } catch {
     return [];
   }
 };
 
-export const fetchFilmWhyAseerSlidesWithFallback = async (): Promise<FilmWhyAseerSlide[]> => {
+export const fetchFilmWhyAseerSlidesWithFallback = async (): Promise<
+  FilmWhyAseerSlide[]
+> => {
   const rows = await fetchFilmWhyAseerSlides();
   return rows.length > 0 ? rows : FALLBACK_FILM_WHY_ASEER_SLIDES;
 };
@@ -239,7 +252,7 @@ export interface FilmServiceCard {
 export const FALLBACK_FILM_SERVICE_CARDS: FilmServiceCard[] = [
   {
     id: "film-service-1",
-    title: "طاقم العمل",
+    title: ".طاقم العمل",
     description:
       "الدعم في الوصول الى الطاقات البشرية والكفاءات المتنوعة ف مجال انتاج الأفلام من المجتمع المحلي في منطقة عسير.",
     iconKey: "crew",
@@ -247,7 +260,8 @@ export const FALLBACK_FILM_SERVICE_CARDS: FilmServiceCard[] = [
   {
     id: "film-service-2",
     title: "مواقع التصوير",
-    description: "دعم وتسهيل التعرف والوصول إلى المواقع المناسبة للإنتاج وفق طبيعة ومتطلبات العمل الفني.",
+    description:
+      "دعم وتسهيل التعرف والوصول إلى المواقع المناسبة للإنتاج وفق طبيعة ومتطلبات العمل الفني.",
     iconKey: "locations",
   },
   {
@@ -271,14 +285,17 @@ interface ApiFilmServiceCardsResponse {
   data: ApiFilmServiceCard[];
 }
 
-const normalizeFilmServiceIconKey = (value: string | null | undefined): FilmServiceIconKey | null => {
-  if (value === "crew" || value === "locations" || value === "permits") return value;
+const normalizeFilmServiceIconKey = (
+  value: string | null | undefined,
+): FilmServiceIconKey | null => {
+  if (value === "crew" || value === "locations" || value === "permits")
+    return value;
   return null;
 };
 
 const transformFilmServiceCard = (
   row: ApiFilmServiceCard,
-  fallback: FilmServiceCard
+  fallback: FilmServiceCard,
 ): FilmServiceCard => {
   return {
     id: row.id,
@@ -306,15 +323,19 @@ export const fetchFilmServiceCards = async (): Promise<FilmServiceCard[]> => {
       .map((row, index) =>
         transformFilmServiceCard(
           row,
-          FALLBACK_FILM_SERVICE_CARDS[index % FALLBACK_FILM_SERVICE_CARDS.length]
-        )
+          FALLBACK_FILM_SERVICE_CARDS[
+            index % FALLBACK_FILM_SERVICE_CARDS.length
+          ],
+        ),
       );
   } catch {
     return [];
   }
 };
 
-export const fetchFilmServiceCardsWithFallback = async (): Promise<FilmServiceCard[]> => {
+export const fetchFilmServiceCardsWithFallback = async (): Promise<
+  FilmServiceCard[]
+> => {
   const rows = await fetchFilmServiceCards();
   return rows.length > 0 ? rows : FALLBACK_FILM_SERVICE_CARDS;
 };
@@ -394,7 +415,7 @@ interface ApiFilmShowcaseCardsResponse {
 
 const normalizeFilmShowcaseCategory = (
   value: string | null | undefined,
-  fallback: FilmShowcaseCategory
+  fallback: FilmShowcaseCategory,
 ): FilmShowcaseCategory => {
   if (value && FILM_SHOWCASE_FILTERS.includes(value as FilmShowcaseCategory)) {
     return value as FilmShowcaseCategory;
@@ -405,9 +426,11 @@ const normalizeFilmShowcaseCategory = (
 const transformFilmShowcaseCard = (
   row: ApiFilmShowcaseCard,
   directusUrl: string,
-  fallback: FilmShowcaseCard
+  fallback: FilmShowcaseCard,
 ): FilmShowcaseCard => {
-  const image = row.cover_image ? `${directusUrl}/assets/${row.cover_image}` : fallback.image;
+  const image = row.cover_image
+    ? `${directusUrl}/assets/${row.cover_image}`
+    : fallback.image;
   return {
     id: row.id,
     title: row.title?.trim() || fallback.title,
@@ -435,15 +458,19 @@ export const fetchFilmShowcaseCards = async (): Promise<FilmShowcaseCard[]> => {
         transformFilmShowcaseCard(
           row,
           directusUrl,
-          FALLBACK_FILM_SHOWCASE_CARDS[index % FALLBACK_FILM_SHOWCASE_CARDS.length]
-        )
+          FALLBACK_FILM_SHOWCASE_CARDS[
+            index % FALLBACK_FILM_SHOWCASE_CARDS.length
+          ],
+        ),
       );
   } catch {
     return [];
   }
 };
 
-export const fetchFilmShowcaseCardsWithFallback = async (): Promise<FilmShowcaseCard[]> => {
+export const fetchFilmShowcaseCardsWithFallback = async (): Promise<
+  FilmShowcaseCard[]
+> => {
   const rows = await fetchFilmShowcaseCards();
   return rows.length > 0 ? rows : FALLBACK_FILM_SHOWCASE_CARDS;
 };
