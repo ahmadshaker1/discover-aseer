@@ -15,16 +15,42 @@ interface FilmWhyAseerSectionProps {
 
 function LeftChevron({ stroke }: { stroke: string }) {
   return (
-    <svg width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M7.875 1.125L1.125 7.875L7.875 14.625" stroke={stroke} strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="9"
+      height="16"
+      viewBox="0 0 9 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M7.875 1.125L1.125 7.875L7.875 14.625"
+        stroke={stroke}
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function RightChevron({ stroke }: { stroke: string }) {
   return (
-    <svg width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M1.125 14.625L7.875 7.875L1.125 1.125" stroke={stroke} strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="9"
+      height="16"
+      viewBox="0 0 9 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M1.125 14.625L7.875 7.875L1.125 1.125"
+        stroke={stroke}
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -35,8 +61,14 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
     const left = source.filter((s) => s.lane === "left");
     const right = source.filter((s) => s.lane === "right");
     return {
-      left: left.length > 0 ? left : FALLBACK_FILM_WHY_ASEER_SLIDES.filter((s) => s.lane === "left"),
-      right: right.length > 0 ? right : FALLBACK_FILM_WHY_ASEER_SLIDES.filter((s) => s.lane === "right"),
+      left:
+        left.length > 0
+          ? left
+          : FALLBACK_FILM_WHY_ASEER_SLIDES.filter((s) => s.lane === "left"),
+      right:
+        right.length > 0
+          ? right
+          : FALLBACK_FILM_WHY_ASEER_SLIDES.filter((s) => s.lane === "right"),
     };
   }, [slides]);
 
@@ -49,7 +81,7 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
   const renderCard = (
     slide: FilmWhyAseerSlide,
     onPrev: () => void,
-    onNext: () => void
+    onNext: () => void,
   ) => {
     const lightText = slide.textTheme === "light";
     const textColor = lightText ? "text-white" : "text-[#111111]";
@@ -60,19 +92,23 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
 
     return (
       <article className="relative h-[803px] w-full max-w-[640px] shrink-0 overflow-hidden rounded-[10px]">
-        <img src={slide.image} alt={slide.title} className="h-full w-full object-cover" />
+        <img
+          src={slide.image}
+          alt={slide.title}
+          className="h-full w-full object-cover"
+        />
         <div className={`absolute inset-0 ${overlay}`} />
 
         <div className="absolute top-0 right-0 w-full max-w-[510px] p-8">
           <div className="space-y-[18px] p-5">
             <h3
-              className={`text-right text-[32px] font-bold leading-[48px] ${textColor}`}
+              className={`text-right text-[32px] font-bold leading-[1.5] ${textColor}`}
               style={{ fontFamily: ara }}
             >
               {slide.title}
             </h3>
             <p
-              className={`line-clamp-4 text-right text-[18px] font-light leading-[100%] ${textColor}`}
+              className={`line-clamp-4 text-right text-[18px] font-light leading-[1.5] ${textColor}`}
               style={{ fontFamily: ibm }}
             >
               {slide.description}
@@ -101,7 +137,10 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
   };
 
   return (
-    <section className="mx-auto h-auto w-full max-w-[1442px] px-4 py-[60px] sm:px-8 md:px-[68px]" dir="ltr">
+    <section
+      className="mx-auto h-auto w-full max-w-[1442px] px-4 py-[60px] sm:px-8 md:px-[68px]"
+      dir="ltr"
+    >
       <div className="mx-auto flex w-full max-w-[1306px] flex-col gap-16">
         <div className="w-full">
           <h2
@@ -112,16 +151,25 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
           </h2>
         </div>
 
-        <div className="flex w-full flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div
+          className="flex w-full flex-col gap-3 lg:flex-row lg:items-start lg:justify-between"
+          dir="ltr"
+        >
           {renderCard(
             leftSlide,
-            () => setLeftIndex((prev) => (prev - 1 + lanes.left.length) % lanes.left.length),
-            () => setLeftIndex((prev) => (prev + 1) % lanes.left.length)
+            () =>
+              setLeftIndex(
+                (prev) => (prev - 1 + lanes.left.length) % lanes.left.length,
+              ),
+            () => setLeftIndex((prev) => (prev + 1) % lanes.left.length),
           )}
           {renderCard(
             rightSlide,
-            () => setRightIndex((prev) => (prev - 1 + lanes.right.length) % lanes.right.length),
-            () => setRightIndex((prev) => (prev + 1) % lanes.right.length)
+            () =>
+              setRightIndex(
+                (prev) => (prev - 1 + lanes.right.length) % lanes.right.length,
+              ),
+            () => setRightIndex((prev) => (prev + 1) % lanes.right.length),
           )}
         </div>
       </div>
