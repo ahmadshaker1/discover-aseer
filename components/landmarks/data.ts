@@ -47,6 +47,28 @@ export interface ApiResponse {
   data: ApiLandmark[];
 }
 
+function normalizeText(value: string): string {
+  return value
+    .normalize("NFKC")
+    .replace(/ـ/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function mapInterestTokenToId(token: string): string | null {
+  const t = normalizeText(token);
+  if (!t) return null;
+  if (/مغام|هايكنج|تسلق|adventure/.test(t)) return "adventure";
+  if (/ثقاف|تراث|قرية|متحف|culture|heritage/.test(t)) return "culture";
+  if (/طبيع|منتزه|جبل|nature/.test(t)) return "nature";
+  if (/طعام|مطعم|اكل|food/.test(t)) return "food";
+  if (/استرخ|relax/.test(t)) return "relaxation";
+  if (/تسوق|سوق|shopping/.test(t)) return "shopping";
+  if (/تاريخ|اثري|معلم|histor/.test(t)) return "historical";
+  return null;
+}
+
 export const transformLandmark = (
   apiLandmark: ApiLandmark,
   directusUrl: string
@@ -87,6 +109,7 @@ export const transformLandmark = (
   const cityMap: Record<string, string> = {
     abha: "abha",
     "أبها": "abha",
+    السودة: "abha",
     "خميس مشيط": "khamis",
     khamis: "khamis",
     tanomah: "tanomah",
@@ -98,7 +121,11 @@ export const transformLandmark = (
     najran: "najran",
     "نجران": "najran",
   };
-  const cityId = cityMap[(apiLandmark.city || "").trim()] || undefined;
+  const citySource = `${apiLandmark.city || ""} ${location} ${area}`;
+  const cityId =
+    Object.entries(cityMap).find(([name]) =>
+      normalizeText(citySource).includes(normalizeText(name))
+    )?.[1] || undefined;
 
   // Fallback interests from title/description when backend tags are not provided.
   const sourceText = `${title} ${description}`;
@@ -107,14 +134,38 @@ export const transformLandmark = (
   if (/جبل|حديقة|طبيعة|منتزه|وادي|قمم|السودة/i.test(sourceText))
     fallbackInterests.push("nature", "adventure");
   if (/تسوق|سوق/i.test(sourceText)) fallbackInterests.push("shopping");
-  const mappedTags =
-    apiLandmark.interest_tags ??
-    apiLandmark.tags
-      ?.split(/[،,]/)
-      .map((tag) => tag.trim())
-      .filter(Boolean) ??
-    fallbackInterests;
-  const interestTags = mappedTags.filter(Boolean);
+  const rawInterestTags = Array.isArray(apiLandmark.interest_tags)
+    ? apiLandmark.interest_tags.map((tag) => String(tag).trim()).filter(Boolean)
+    : [];
+  const rawTagsField =
+    typeof apiLandmark.tags === "string"
+      ? apiLandmark.tags
+          .split(/[،,]/)
+          .map((tag) => tag.trim())
+          .filter(Boolean)
+      : [];
+  const rawTags = [...rawInterestTags, ...rawTagsField, ...fallbackInterests, sourceText];
+  const interestTags = Array.from(
+    new Set(
+      rawTags
+        .map((tag) => mapInterestTokenToId(tag) ?? tag)
+        .map((tag) => normalizeText(tag))
+        .filter((tag) =>
+          [
+            "adventure",
+            "culture",
+            "nature",
+            "food",
+            "relaxation",
+            "shopping",
+            "historical",
+          ].includes(tag)
+        )
+    )
+  );
+  if (interestTags.length === 0) {
+    interestTags.push("culture");
+  }
 
   return {
     id: String(apiLandmark.id),

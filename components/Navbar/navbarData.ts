@@ -19,7 +19,7 @@ export const discoverAseerLinks = [
   { href: "/destinations", label: "الوجهات" },
   { href: "/destinations/browse", label: "تصفح الوجهات" },
   { href: "/attractions", label: "المعالم السياحية" },
-  { href: "/landmarks", label: "جميع المعالم" },
+  { href: "/attractions/inner", label: "المعالم السياحية الداخلية" },
   { href: "/about-aseer", label: "عن عسير" },
   { href: "/aseer-cuisine", label: "المطبخ العسيري" },
   { href: "/aseer-community", label: "مجتمع عسير" },

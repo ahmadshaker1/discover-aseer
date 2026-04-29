@@ -21,7 +21,7 @@ export default function GettingHereAndAroundBanner() {
       />
 
       <div className="absolute inset-0 z-10 flex items-end md:items-center">
-        <div className="mx-auto w-full max-w-7xl px-6 pb-10 text-right text-white md:px-10 md:pb-0">
+        <div className="mx-auto w-full max-w-[1440px] px-6 pb-10 text-right text-white md:px-10 md:pb-0">
           <div className="mb-4 flex items-center justify-center gap-2 text-sm md:text-base">
             <a href="/" className="hover:underline">
               الصفحة الرئيسية

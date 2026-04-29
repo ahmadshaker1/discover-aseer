@@ -28,23 +28,25 @@ const ServicesSupportBanner = () => {
           />
         </div>
 
-        <div className="absolute inset-0 z-30 flex w-full flex-col items-center justify-center px-6 text-center text-white sm:px-10 md:px-16">
-          <div className="mb-4 flex flex-wrap items-center justify-center gap-2 text-sm font-medium sm:text-base">
-            <Link href="/" className="transition-opacity hover:opacity-80">
-              الرئيسية
-            </Link>
-            <span aria-hidden className="opacity-80">
-              /
-            </span>
-            <span>الخدمات المساندة</span>
-          </div>
+        <div className="absolute inset-0 z-30 flex w-full items-center justify-center">
+          <div className="mx-auto w-full max-w-[1440px] px-6 text-center text-white sm:px-10 md:px-16">
+            <div className="mb-4 flex flex-wrap items-center justify-center gap-2 text-sm font-medium sm:text-base">
+              <Link href="/" className="transition-opacity hover:opacity-80">
+                الرئيسية
+              </Link>
+              <span aria-hidden className="opacity-80">
+                /
+              </span>
+              <span>الخدمات المساندة</span>
+            </div>
 
-          <h1 className="mb-3 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
-            الخدمات المساندة
-          </h1>
-          <p className="max-w-3xl text-sm sm:text-base md:text-lg">
-            خدمات الأمن والسلامة والمساندة في مدن ومحافظات عسير
-          </p>
+            <h1 className="mb-3 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
+              الخدمات المساندة
+            </h1>
+            <p className="mx-auto max-w-3xl text-sm sm:text-base md:text-lg">
+              خدمات الأمن والسلامة والمساندة في مدن ومحافظات عسير
+            </p>
+          </div>
         </div>
       </div>
     </section>

@@ -150,39 +150,41 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
         ))}
       </div>
 
-      <div className="relative z-10 flex w-full max-w-[min(100%,680px)] flex-col items-center gap-5 px-6 py-10 text-center sm:gap-6 sm:px-10 md:px-12">
-        <div
-          className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-          dir="ltr"
-          style={{ fontFamily: ara }}
-        >
-          {data.breadcrumbs.map((crumb, index) => (
-            <span key={`${crumb.label}-${index}`} className="inline-flex items-center gap-1.5 sm:gap-2">
-              {crumb.href ? (
-                <Link
-                  href={crumb.href}
-                  className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
-                >
-                  {crumb.label}
-                </Link>
-              ) : (
-                <span className="text-[16px] font-normal leading-6 text-white">{crumb.label}</span>
-              )}
-              {index < data.breadcrumbs.length - 1 ? <BreadcrumbChevron /> : null}
-            </span>
-          ))}
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
+          <div
+            className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
+            dir="ltr"
+            style={{ fontFamily: ara }}
+          >
+            {data.breadcrumbs.map((crumb, index) => (
+              <span key={`${crumb.label}-${index}`} className="inline-flex items-center gap-1.5 sm:gap-2">
+                {crumb.href ? (
+                  <Link
+                    href={crumb.href}
+                    className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                  >
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span className="text-[16px] font-normal leading-6 text-white">{crumb.label}</span>
+                )}
+                {index < data.breadcrumbs.length - 1 ? <BreadcrumbChevron /> : null}
+              </span>
+            ))}
+          </div>
+
+          <h1
+            className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
+            style={{ fontFamily: ara }}
+          >
+            {data.title}
+          </h1>
+
+          <p className="w-full text-center text-[16px] font-normal leading-6 text-white/70" style={{ fontFamily: ara }}>
+            {data.subtitle}
+          </p>
         </div>
-
-        <h1
-          className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-          style={{ fontFamily: ara }}
-        >
-          {data.title}
-        </h1>
-
-        <p className="w-full text-center text-[16px] font-normal leading-6 text-white/70" style={{ fontFamily: ara }}>
-          {data.subtitle}
-        </p>
       </div>
     </section>
   );

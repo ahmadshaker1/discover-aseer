@@ -29,7 +29,7 @@ const INITIAL_FILTERS: FilterState = {
 const includesInterests = (landmark: Landmark, selectedInterests: string[]): boolean => {
   if (selectedInterests.length === 0) return true;
   const tags = landmark.interestTags ?? [];
-  if (tags.length === 0) return true;
+  if (tags.length === 0) return false;
   return selectedInterests.some((interest) => tags.includes(interest));
 };
 
@@ -51,20 +51,25 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
+  const cityScopedLandmarks = useMemo(
+    () => landmarks.filter((landmark) => includesCity(landmark, filters.city)),
+    [filters.city, landmarks]
+  );
+
   const interestCounts = useMemo(() => {
     return interestOptions.reduce<Record<string, number>>((acc, option) => {
-      acc[option.id] = landmarks.filter((landmark) =>
+      acc[option.id] = cityScopedLandmarks.filter((landmark) =>
         (landmark.interestTags ?? []).includes(option.id)
       ).length;
       return acc;
     }, {});
-  }, [landmarks]);
+  }, [cityScopedLandmarks]);
 
   const visibleLandmarks = useMemo(() => {
-    return landmarks
-      .filter((landmark) => includesCity(landmark, filters.city))
-      .filter((landmark) => includesInterests(landmark, selectedInterests));
-  }, [filters.city, landmarks, selectedInterests]);
+    return cityScopedLandmarks.filter((landmark) =>
+      includesInterests(landmark, selectedInterests)
+    );
+  }, [cityScopedLandmarks, selectedInterests]);
 
   return (
     <section className="w-full bg-white py-12">
@@ -91,7 +96,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
                   className="h-6 w-[102px] whitespace-nowrap text-right text-[24px] font-bold leading-6 tracking-[-0.31px] text-[#0A0A0A]"
                   style={{ fontFamily: ara }}
                 >
-                  تصفية التجارب
+                  تصفية المعالم
                 </h3>
                 <button
                   type="button"
@@ -99,10 +104,10 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
                     setFilters(INITIAL_FILTERS);
                     setSelectedInterests([]);
                   }}
-                  className="flex h-8 w-[120px] items-center justify-center rounded-[8px] border border-t border-[#0000001A] bg-white px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-[#0A0A0A] hover:opacity-80"
+                  className="flex h-8 w-auto whitespace-nowrap items-center justify-center rounded-[8px] border border-t border-[#0000001A] bg-white px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-[#0A0A0A] hover:opacity-80"
                   style={{ fontFamily: ara }}
                 >
-                  إعادة التعيين
+                  اعادة تعيين النتائج
                 </button>
               </div>
 

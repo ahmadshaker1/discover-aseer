@@ -21,10 +21,8 @@ const Hero = () => {
     <section className="w-full bg-[#070707]">
       {/* Hero banner */}
       <div
-        className="relative mx-auto overflow-hidden"
+        className="relative h-[756px] w-full overflow-hidden"
         style={{
-          width: "min(100%, 1440px)",
-          height: "756px",
           background:
             "url('/assets/landing/discover-aseer-hero.jpg') center / cover no-repeat",
         }}
@@ -44,32 +42,34 @@ const Hero = () => {
           className="absolute top-0 right-0 z-20 h-full w-[15px] object-cover"
         />
 
-        <div className="relative z-10 ml-auto flex h-full w-full flex-col justify-center pr-6 pl-6 text-right md:w-[616px] md:pr-[130px] md:pl-0">
-          <div className="flex w-full flex-col gap-[50px] md:h-[134px]">
-            <h1
-              className="text-white"
-              style={{
-                fontFamily: "var(--font-ara-hamah-1964), sans-serif",
-                fontWeight: 700,
-                fontSize: "clamp(44px, 5vw, 88px)",
-                lineHeight: "119%",
-              }}
-            >
-              ألف مرحبا بكم في عسير
-            </h1>
+        <div className="relative z-10 mx-auto h-full w-full max-w-[1440px] px-6 md:px-[130px]">
+          <div className="ml-auto flex h-full w-full flex-col justify-center text-right md:w-[616px]">
+            <div className="flex w-full flex-col gap-[50px] md:h-[134px]">
+              <h1
+                className="text-white"
+                style={{
+                  fontFamily: "var(--font-ara-hamah-1964), sans-serif",
+                  fontWeight: 700,
+                  fontSize: "clamp(44px, 5vw, 88px)",
+                  lineHeight: "119%",
+                }}
+              >
+                ألف مرحبا بكم في عسير
+              </h1>
 
-            <p
-              className="max-w-[501px] text-white"
-              style={{
-                fontFamily: "var(--font-ara-hamah-1964), sans-serif",
-                fontWeight: 700,
-                fontSize: "clamp(18px, 1.9vw, 24px)",
-                lineHeight: "133%",
-              }}
-            >
-              حيث تلتقي التقاليد الخالدة بالمناظر الطبيعية الخلابة. جرب مزيجا فريدا
-              من الثقافة والمغامرة والجمال الذي لا مثيل له.
-            </p>
+              <p
+                className="max-w-[501px] text-white"
+                style={{
+                  fontFamily: "var(--font-ara-hamah-1964), sans-serif",
+                  fontWeight: 700,
+                  fontSize: "clamp(18px, 1.9vw, 24px)",
+                  lineHeight: "133%",
+                }}
+              >
+                حيث تلتقي التقاليد الخالدة بالمناظر الطبيعية الخلابة. جرب مزيجا فريدا
+                من الثقافة والمغامرة والجمال الذي لا مثيل له.
+              </p>
+            </div>
           </div>
         </div>
       </div>

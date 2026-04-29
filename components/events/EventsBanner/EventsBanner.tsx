@@ -53,47 +53,49 @@ const EventsBanner = () => {
         aria-hidden
       />
 
-      <div className="relative z-10 flex w-full max-w-[min(100%,420px)] flex-col items-center gap-6 px-3 py-8 text-center sm:max-w-[460px] sm:gap-7 sm:px-4 sm:py-10">
-        {/* Breadcrumb — RTL: الفعاليات ← chevron ← الصفحة الرئيسية (same treatment as hero title) */}
-        <div
-          className="flex flex-wrap items-center justify-center gap-[9px]"
-          dir="rtl"
-          style={{ fontFamily: ara }}
-        >
-          <span className="text-right text-[16px] font-bold leading-[119%] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]">
-            الفعاليات
-          </span>
-          <BreadcrumbChevron />
-          <Link
-            href="/"
-            className="text-right text-[16px] font-bold leading-[119%] text-white transition-opacity [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] hover:opacity-85"
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-3 py-8 sm:px-4 sm:py-10">
+        <div className="mx-auto flex w-full max-w-[460px] flex-col items-center gap-6 text-center sm:gap-7">
+          {/* Breadcrumb — RTL: الفعاليات ← chevron ← الصفحة الرئيسية (same treatment as hero title) */}
+          <div
+            className="flex flex-wrap items-center justify-center gap-[9px]"
+            dir="rtl"
+            style={{ fontFamily: ara }}
           >
-            الصفحة الرئيسية
-          </Link>
+            <span className="text-right text-[16px] font-bold leading-[119%] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]">
+              الفعاليات
+            </span>
+            <BreadcrumbChevron />
+            <Link
+              href="/"
+              className="text-right text-[16px] font-bold leading-[119%] text-white transition-opacity [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] hover:opacity-85"
+            >
+              الصفحة الرئيسية
+            </Link>
+          </div>
+
+          <h1
+            className="w-full text-[clamp(2rem,7vw,70px)] font-bold leading-[119%] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]"
+            style={{ fontFamily: ara }}
+          >
+            الفعاليات
+          </h1>
+
+          <p
+            className="w-full text-[clamp(0.9375rem,3.2vw,24px)] font-bold leading-[119%] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.4)]"
+            style={{ fontFamily: ara }}
+          >
+            فعاليات فنية وثقافية وشعبية وتجارب بيئية ورياضية ضمن أنشطة وتجارب أخرى صممت لجميع
+            الاهتمامات على مدار العام.
+          </p>
+
+          <button
+            type="button"
+            className="inline-flex h-12 min-w-[229px] items-center justify-center gap-[10px] rounded-[20px] bg-[#6C2BD9] px-16 py-2 text-[20px] font-bold leading-none text-white transition-colors hover:bg-[#5b24b8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            style={{ fontFamily: ara }}
+          >
+            أضف فعاليتك
+          </button>
         </div>
-
-        <h1
-          className="w-full text-[clamp(2rem,7vw,70px)] font-bold leading-[119%] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]"
-          style={{ fontFamily: ara }}
-        >
-          الفعاليات
-        </h1>
-
-        <p
-          className="w-full text-[clamp(0.9375rem,3.2vw,24px)] font-bold leading-[119%] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.4)]"
-          style={{ fontFamily: ara }}
-        >
-          فعاليات فنية وثقافية وشعبية وتجارب بيئية ورياضية ضمن أنشطة وتجارب أخرى صممت لجميع
-          الاهتمامات على مدار العام.
-        </p>
-
-        <button
-          type="button"
-          className="inline-flex h-12 min-w-[229px] items-center justify-center gap-[10px] rounded-[20px] bg-[#6C2BD9] px-16 py-2 text-[20px] font-bold leading-none text-white transition-colors hover:bg-[#5b24b8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          style={{ fontFamily: ara }}
-        >
-          أضف فعاليتك
-        </button>
       </div>
     </div>
   );

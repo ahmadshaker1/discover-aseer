@@ -42,7 +42,7 @@ export default async function ExperienceDetailsPage({
           sizes="100vw"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/30 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-6xl px-4 pb-8 text-white md:px-6">
           <div className="mb-4 flex items-center justify-between gap-3 text-sm">
             <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur-sm">

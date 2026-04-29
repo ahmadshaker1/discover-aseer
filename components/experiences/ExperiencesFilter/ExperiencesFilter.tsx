@@ -107,7 +107,7 @@ const ExperiencesFilter = ({
       <div className="mb-8 flex items-center justify-between gap-4">
         <Button
           onClick={handleReset}
-          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
+          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-focus:outline-none data-focus:ring-2 data-focus:ring-gray-500 data-focus:ring-offset-2"
         >
           إعادة تعيين النتائج
         </Button>
@@ -181,10 +181,10 @@ const ExperiencesFilter = ({
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleInterestToggle(interest.id)}
-                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-[checked]:border-black data-[checked]:bg-black data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2"
+                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-checked:border-black data-checked:bg-black data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2"
                     >
                       <svg
-                        className="h-3 w-3 stroke-white opacity-0 group-data-[checked]:opacity-100"
+                        className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
                         viewBox="0 0 14 14"
                         fill="none"
                       >
@@ -221,7 +221,7 @@ const ExperiencesFilter = ({
                 key={option.id}
                 onClick={() => handleCostSelect(option.id)}
                 disabled={option.count === 0}
-                className={`flex flex-col items-center justify-center cursor-pointer p-4 rounded-lg border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`flex flex-col items-center justify-center cursor-pointer p-4 rounded-lg border-2 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
                   isSelected
                     ? "border-black bg-gray-50"
                     : "border-gray-200 hover:border-gray-300"
@@ -259,7 +259,7 @@ const ExperiencesFilter = ({
                   key={traveler.id}
                   onClick={() => handleTravelerToggle(traveler.id)}
                   disabled={traveler.count === 0}
-                  className={`flex flex-row items-center justify-center px-2 py-1 space-x-1 cursor-pointer h-12 rounded-full border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`flex flex-row items-center justify-center px-2 py-1 space-x-1 cursor-pointer h-12 rounded-full border-2 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
                     isSelected
                       ? "border-black bg-gray-50"
                       : "border-gray-200 hover:border-gray-300"

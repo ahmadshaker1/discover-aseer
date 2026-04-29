@@ -95,62 +95,64 @@ const PageBanner = ({
         />
       </div>
 
-      <div className="relative z-10 flex w-full max-w-[min(100%,680px)] flex-col items-center gap-5 px-6 py-10 text-center sm:gap-6 sm:px-10 md:px-12">
-        <div
-          className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-          dir="ltr"
-          style={{ fontFamily: ara }}
-        >
-          {breadcrumbs.map((crumb, index) => (
-            <span key={index} className="inline-flex items-center gap-1.5 sm:gap-2">
-              {crumb.href ? (
-                <Link
-                  href={crumb.href}
-                  className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
-                >
-                  {crumb.label}
-                </Link>
-              ) : (
-                <span className="text-[16px] font-normal leading-6 text-white">
-                  {crumb.label}
-                </span>
-              )}
-              {index < breadcrumbs.length - 1 ? <BreadcrumbChevron /> : null}
-            </span>
-          ))}
-        </div>
-
-        <h1
-          className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-          style={{ fontFamily: ara }}
-        >
-          {title}
-        </h1>
-
-        <p
-          className="w-full text-center text-[16px] font-normal leading-6 text-white/70"
-          style={{ fontFamily: ara }}
-        >
-          {subtitle}
-        </p>
-
-        {primaryCta ? (
-          <Link
-            href={primaryCta.href}
-            className="mt-2 inline-flex h-[42px] w-[185px] shrink-0 flex-row items-center justify-between gap-[10px] rounded-[100px] bg-[#280048] px-[10px] py-[10px] text-white transition-opacity hover:opacity-90"
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
+          <div
+            className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
             dir="ltr"
-            style={{ boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)" }}
+            style={{ fontFamily: ara }}
           >
-            <BrowseCtaArrowIcon />
-            <span
-              dir="rtl"
-              className="min-w-0 flex-1 text-right text-[17px] font-bold leading-[100%]"
-              style={{ fontFamily: ara }}
+            {breadcrumbs.map((crumb, index) => (
+              <span key={index} className="inline-flex items-center gap-1.5 sm:gap-2">
+                {crumb.href ? (
+                  <Link
+                    href={crumb.href}
+                    className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                  >
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span className="text-[16px] font-normal leading-6 text-white">
+                    {crumb.label}
+                  </span>
+                )}
+                {index < breadcrumbs.length - 1 ? <BreadcrumbChevron /> : null}
+              </span>
+            ))}
+          </div>
+
+          <h1
+            className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
+            style={{ fontFamily: ara }}
+          >
+            {title}
+          </h1>
+
+          <p
+            className="w-full text-center text-[16px] font-normal leading-6 text-white/70"
+            style={{ fontFamily: ara }}
+          >
+            {subtitle}
+          </p>
+
+          {primaryCta ? (
+            <Link
+              href={primaryCta.href}
+              className="mt-2 inline-flex h-[42px] w-[185px] shrink-0 flex-row items-center justify-between gap-[10px] rounded-[100px] bg-[#280048] px-[10px] py-[10px] text-white transition-opacity hover:opacity-90"
+              dir="ltr"
+              style={{ boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)" }}
             >
-              {primaryCta.label}
-            </span>
-          </Link>
-        ) : null}
+              <BrowseCtaArrowIcon />
+              <span
+                dir="rtl"
+                className="min-w-0 flex-1 text-right text-[17px] font-bold leading-[100%]"
+                style={{ fontFamily: ara }}
+              >
+                {primaryCta.label}
+              </span>
+            </Link>
+          ) : null}
+        </div>
       </div>
     </div>
   );

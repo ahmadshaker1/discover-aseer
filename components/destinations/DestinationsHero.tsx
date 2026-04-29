@@ -47,7 +47,7 @@ function WeatherIcon() {
 const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: DestinationsHeroProps) => {
   return (
     <section
-      className="relative mx-auto flex h-[687px] w-full max-w-[1440px] flex-col items-center justify-center overflow-hidden"
+      className="relative flex h-[687px] w-full flex-col items-center justify-center overflow-hidden"
       style={{
         backgroundImage: `url('${backgroundImage}')`,
         backgroundSize: "cover",
@@ -57,7 +57,7 @@ const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: Des
     >
       <div className="absolute inset-0 bg-black/25" />
 
-      <div className="relative z-10 flex w-full flex-col items-center justify-center px-4 lg:px-12">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center px-4 lg:px-12">
         <div className="flex w-full max-w-[610px] flex-col items-center gap-8">
           <div className="flex w-full flex-col items-center gap-[31px] text-center" dir="rtl">
             <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2" style={{ fontFamily: ara }}>

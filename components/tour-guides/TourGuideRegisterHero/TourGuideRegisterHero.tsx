@@ -78,14 +78,14 @@ function BreadcrumbChevronSmall() {
 const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
   return (
     <section
-      className="relative z-0 mx-auto w-full max-w-[1440px] min-h-[644px] -mt-[139px] pb-10"
+      className="relative z-0 w-full min-h-[644px] -mt-[139px] pb-10"
       style={{
         background:
           "linear-gradient(180deg, rgba(117, 32, 185, 0.24) 10.42%, rgba(117, 32, 185, 0) 100%)",
       }}
       aria-labelledby="tour-guide-register-hero-title"
     >
-      <div className="relative flex flex-col px-4 pt-[calc(139px+5rem)] sm:px-6 md:px-10 lg:px-8 lg:pt-[200px]">
+      <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-[calc(139px+5rem)] sm:px-6 md:px-10 lg:px-8 lg:pt-[200px]">
         <Link
           href="/tour-guides"
           dir="rtl"
