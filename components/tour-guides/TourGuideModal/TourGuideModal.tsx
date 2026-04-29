@@ -4,6 +4,7 @@ import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import Image from "next/image";
 import {
   CloseIcon,
+  LocationIcon,
   WhatsAppIcon,
   ClockIcon,
   PeopleIcon,
@@ -49,11 +50,15 @@ const TourGuideModal = ({
       <div className="fixed inset-0 bg-neutral-900/80" aria-hidden="true" />
 
       {/* Modal Container with Animation */}
-      <div className="fixed inset-0 flex items-end sm:items-center justify-center p-2 sm:p-4">
+      <div
+        className="fixed inset-0 flex items-end sm:items-center justify-center p-2 sm:p-4"
+        dir="rtl"
+      >
         <DialogPanel className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl shadow-xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-4 modal-enter">
           <Button
             onClick={onClose}
-            className="absolute top-3 sm:top-4 right-3 sm:right-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            dir="rtl"
           >
             <CloseIcon />
           </Button>
@@ -62,7 +67,7 @@ const TourGuideModal = ({
             {/* Profile Section */}
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-4 sm:mb-6">
               {/* Profile Picture */}
-              <div className="relative w-24 h-24 shrink-0">
+              <div className="relative w-24 h-24 shrink-0 overflow-visible">
                 <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
                   <div className="relative w-full h-full rounded-full overflow-hidden bg-white">
                     <Image
@@ -73,6 +78,12 @@ const TourGuideModal = ({
                       sizes="96px"
                     />
                   </div>
+                </div>
+                <div className="absolute -bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-medium text-[#61189F] shadow-sm backdrop-blur-sm">
+                  <LocationIcon />
+                  <span className="max-w-[88px] truncate font-bold">
+                    {guide.location}
+                  </span>
                 </div>
               </div>
 
@@ -88,7 +99,9 @@ const TourGuideModal = ({
                   {guide.languages.map((lang) => (
                     <div key={lang.code} className="flex items-center gap-1.5">
                       <LanguageFlag code={lang.code} />
-                      <span className="text-sm text-black">{lang.name}</span>
+                      <span className="text-sm text-black">
+                        {lang.code === "en" ? "الإنجليزية" : "العربية"}
+                      </span>
                     </div>
                   ))}
                 </div>

@@ -40,7 +40,8 @@ function CtaArrow() {
 }
 
 const TourGuidesBanner = () => {
-  const { href: registerHref, external: registerExternal } = resolveRegisterHref();
+  const { href: registerHref, external: registerExternal } =
+    resolveRegisterHref();
 
   return (
     <section
@@ -90,7 +91,10 @@ const TourGuidesBanner = () => {
 
       {/* Copy on top of the scene */}
       <div className="relative z-10 flex min-h-[calc(100dvh-5rem)] w-full flex-col items-center justify-center px-6 py-16 text-center sm:px-10 md:min-h-[calc(100dvh-6rem)] md:px-16 lg:px-24">
-        <div className="mb-6 flex flex-wrap items-center justify-center gap-2 text-base font-medium text-white">
+        <div
+          className="mb-6 flex flex-wrap items-center justify-center gap-2 text-base font-medium text-white"
+          dir="rtl"
+        >
           <Link href="/" className="hover:opacity-80 transition-opacity">
             الصفحة الرئيسية
           </Link>
@@ -104,7 +108,7 @@ const TourGuidesBanner = () => {
           المرشدون السياحيين
         </h1>
 
-        <p className="mb-10 max-w-2xl text-lg font-medium leading-relaxed text-white sm:text-xl md:text-2xl">
+        <p className="mb-10 max-w-2xl text-lg font-light leading-relaxed text-white sm:text-xl md:text-2xl opacity-75">
           زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.
         </p>
 
