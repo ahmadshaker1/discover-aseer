@@ -108,7 +108,7 @@ const AttractionsLandmarksSection = ({
 
           <Link
             href="/attractions"
-            className="inline-flex h-6 w-[98px] shrink-0 items-center justify-between gap-2 hover:opacity-80"
+            className="inline-flex h-6 w-[98px] shrink-0 cursor-pointer items-center justify-between gap-2 hover:opacity-80"
             style={{ fontFamily: ara }}
             dir="ltr"
           >
@@ -125,7 +125,7 @@ const AttractionsLandmarksSection = ({
               <select
                 value={city ?? ""}
                 onChange={(e) => setCity(e.target.value || null)}
-                className="h-[48px] w-[190px] shrink-0 rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
+                className="h-[48px] w-[190px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
                 <option value="">المدينة</option>
                 {cityOptions.map((opt) => (
@@ -137,7 +137,7 @@ const AttractionsLandmarksSection = ({
               <select
                 value={interest ?? ""}
                 onChange={(e) => setInterest(e.target.value || null)}
-                className="h-[48px] w-[230px] shrink-0 rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
+                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
                 <option value="">الاهتمامات</option>
                 {interestOptions.map((opt) => (
@@ -149,7 +149,7 @@ const AttractionsLandmarksSection = ({
               <select
                 value={traveler ?? ""}
                 onChange={(e) => setTraveler(e.target.value || null)}
-                className="h-[48px] w-[230px] shrink-0 rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
+                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
                 <option value="">المسافرين</option>
                 {travelerOptions.map((opt) => (
@@ -161,7 +161,7 @@ const AttractionsLandmarksSection = ({
               <select
                 value={price ?? ""}
                 onChange={(e) => setPrice((e.target.value as PriceFilterId) || null)}
-                className="h-[48px] w-[230px] shrink-0 rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
+                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
                 <option value="">السعر</option>
                 {priceOptions.map((opt) => (
@@ -178,7 +178,7 @@ const AttractionsLandmarksSection = ({
                   setTraveler(null);
                   setPrice(null);
                 }}
-                className="h-[48px] shrink-0 rounded-full border border-[#DCDCDC] bg-white px-5 text-sm text-[#535353] hover:bg-gray-50"
+                className="h-[48px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-5 text-sm text-[#535353] hover:bg-gray-50"
               >
                 اعادة تعيين النتائج
               </button>

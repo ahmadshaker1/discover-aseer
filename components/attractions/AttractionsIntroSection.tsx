@@ -27,19 +27,19 @@ const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => 
 
           <div className="flex h-8 w-full max-w-[218px] items-center justify-start gap-[15px]">
             <div className="flex items-center gap-2 text-black/70">
-              <a href="#" aria-label="Instagram" className="hover:opacity-80">
+              <a href="#" aria-label="Instagram" className="cursor-pointer hover:opacity-80">
                 <InstagramIcon />
               </a>
-              <a href="#" aria-label="YouTube" className="hover:opacity-80">
+              <a href="#" aria-label="YouTube" className="cursor-pointer hover:opacity-80">
                 <YouTubeIcon />
               </a>
-              <a href="#" aria-label="LinkedIn" className="hover:opacity-80">
+              <a href="#" aria-label="LinkedIn" className="cursor-pointer hover:opacity-80">
                 <LinkedInIcon />
               </a>
-              <a href="#" aria-label="Facebook" className="hover:opacity-80">
+              <a href="#" aria-label="Facebook" className="cursor-pointer hover:opacity-80">
                 <FacebookIcon />
               </a>
-              <a href="#" aria-label="X" className="hover:opacity-80">
+              <a href="#" aria-label="X" className="cursor-pointer hover:opacity-80">
                 <XIcon />
               </a>
             </div>

@@ -75,7 +75,7 @@ const AttractionsLandmarkCard = ({
         type="button"
         aria-label={`مشاركة ${landmark.title}`}
         onClick={handleShare}
-        className="absolute top-3 end-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-[3.5px]"
+        className="absolute top-3 end-3 z-20 inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full backdrop-blur-[3.5px]"
       >
         <ShareIcon />
       </button>

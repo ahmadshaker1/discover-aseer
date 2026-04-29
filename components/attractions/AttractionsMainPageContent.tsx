@@ -104,7 +104,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
                     setFilters(INITIAL_FILTERS);
                     setSelectedInterests([]);
                   }}
-                  className="flex h-8 w-auto whitespace-nowrap items-center justify-center rounded-[8px] border border-t border-[#0000001A] bg-white px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-[#0A0A0A] hover:opacity-80"
+                  className="flex h-8 w-auto cursor-pointer whitespace-nowrap items-center justify-center rounded-[8px] border border-t border-[#0000001A] bg-white px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-[#0A0A0A] hover:opacity-80"
                   style={{ fontFamily: ara }}
                 >
                   اعادة تعيين النتائج
