@@ -51,8 +51,14 @@ const TourGuidesFilter = ({
   };
 
   return (
-    <div className="w-full lg:max-w-xs bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
+    <div
+      className="w-full lg:max-w-xs bg-white p-4 sm:p-6 rounded-lg shadow-sm"
+      dir="rtl"
+    >
+      <div
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8"
+        dir="rtl"
+      >
         <h2 className="text-lg sm:text-xl font-bold text-black">
           تصفية المرشدون
         </h2>
@@ -70,7 +76,7 @@ const TourGuidesFilter = ({
           <div className="flex items-center gap-2 mb-4">
             <HeartIcon />
             <h3 className="text-base sm:text-lg font-bold text-black">
-              التخصصات
+              الأهتمامات
             </h3>
           </div>
           <div className="space-y-4">
@@ -116,9 +122,7 @@ const TourGuidesFilter = ({
       {gender.length > 0 && (
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <h3 className="text-base sm:text-lg font-bold text-black">
-              الجنس
-            </h3>
+            <h3 className="text-base sm:text-lg font-bold text-black">الجنس</h3>
           </div>
           <div className="space-y-4">
             {gender.map((item) => {
@@ -163,9 +167,7 @@ const TourGuidesFilter = ({
       <div>
         <div className="flex items-center gap-2 mb-4">
           <WalletIcon />
-          <h3 className="text-base sm:text-lg font-bold text-black">
-            النقل
-          </h3>
+          <h3 className="text-base sm:text-lg font-bold text-black">النقل</h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
           {transportation.map((option) => {

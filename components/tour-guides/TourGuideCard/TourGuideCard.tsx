@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ArabicFlagIcon, EnglishFlagIcon, WhatsAppIcon } from "./Icons";
 import { Button } from "@headlessui/react";
-
+import { LocationIcon } from "../TourGuideModal/Icons";
 export interface TourGuideData {
   id: string | number;
   name: string;
@@ -31,6 +31,7 @@ const LanguageFlag = ({ code }: { code: string }) => {
 
 const TourGuideCard = ({
   name,
+  location,
   profileImage,
   languages,
   whatsappUrl,
@@ -43,10 +44,9 @@ const TourGuideCard = ({
       onClick={onCardClick}
     >
       <div className="p-4 sm:p-6 flex flex-col items-center">
-        {/* Profile Picture */}
-        <div className="relative w-24 h-24 mb-4">
+        <div className="relative w-24 h-24 shrink-0 overflow-visible">
           <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
-            <div className="relative w-full h-full rounded-full overflow-hidden">
+            <div className="relative w-full h-full rounded-full overflow-hidden bg-white">
               <Image
                 src={profileImage}
                 alt={name}
@@ -56,17 +56,23 @@ const TourGuideCard = ({
               />
             </div>
           </div>
+          <div className="absolute -bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-medium text-[#61189F] shadow-sm backdrop-blur-sm">
+            <LocationIcon />
+            <span className="max-w-[88px] truncate font-bold">{location}</span>
+          </div>
         </div>
 
         {/* Name */}
-        <h3 className="text-xl font-bold text-black mb-3">{name}</h3>
+        <h3 className="text-xl font-bold text-black mb-3 mt-5">{name}</h3>
 
         {/* Languages */}
         <div className="flex items-center gap-3 mb-4 flex-wrap justify-center">
           {languages.map((lang) => (
             <div key={lang.code} className="flex items-center gap-1.5">
               <LanguageFlag code={lang.code} />
-              <span className="text-sm text-black">{lang.name}</span>
+              <span className="text-sm text-black font-bold">
+                {lang.code === "en" ? "الإنجليزية" : "العربية"}
+              </span>
             </div>
           ))}
         </div>
