@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -18,10 +19,6 @@ export interface CommunityMainSliderContent {
   sectionTitle: string;
   // Body subtext above the slider.
   sectionSubtitle: string;
-  // Previous button label.
-  prevLabel: string;
-  // Next button label.
-  nextLabel: string;
   // Slider dataset from backend/CMS.
   slides: CommunitySlide[];
 }
@@ -32,16 +29,16 @@ interface CommunityMainSliderProps {
 
 function ChevronRight() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M7.14453 4.5L11.6445 9L7.14453 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="27" height="44" viewBox="0 0 27 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M16.875 15.25L10.125 22L16.875 28.75" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
 function ChevronLeft() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M10.8555 4.5L6.35547 9L10.8555 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="27" height="44" viewBox="0 0 27 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M10.125 28.75L16.875 22L10.125 15.25" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -118,24 +115,41 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
             </div>
           </div>
 
-          {/* Backend: `prevLabel` and `nextLabel` are text-only config; button behavior stays unchanged. */}
-          <div className="flex h-12 w-[314px] items-center gap-6">
-            <button
-              type="button"
-              onClick={goPrev}
-              className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20"
+          {/* Prev/next controls rendered as links (not buttons). */}
+          <div className="flex h-12 w-[314px] items-center gap-6" dir="ltr">
+            <Link
+              href={`/aseer-community?slide=${activeIndex >= lastIndex ? 0 : activeIndex + 1}`}
+              onClick={(event) => {
+                event.preventDefault();
+                goNext();
+              }}
+              className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full text-white transition-colors hover:bg-white/20"
             >
               <ChevronRight />
-              <span style={{ fontFamily: ara }}>{content.prevLabel}</span>
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white opacity-80 transition-colors hover:bg-white/20"
+              <span
+                className="text-[18px] font-light leading-[100%] text-right"
+                style={{ fontFamily: ibm }}
+              >
+                مجتمع مترابط
+              </span>
+            </Link>
+            <Link
+              href={`/aseer-community?slide=${activeIndex <= 0 ? lastIndex : activeIndex - 1}`}
+              onClick={(event) => {
+                event.preventDefault();
+                goPrev();
+              }}
+              className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full  text-white opacity-80 transition-colors hover:bg-white/20"
             >
-              <span style={{ fontFamily: ara }}>{content.nextLabel}</span>
+              <span
+                className="text-[18px] font-light leading-[100%] text-right"
+                style={{ fontFamily: ibm }}
+              >
+
+                شيم عسير
+              </span>
               <ChevronLeft />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

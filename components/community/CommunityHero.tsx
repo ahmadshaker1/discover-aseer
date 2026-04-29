@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -15,8 +14,6 @@ export interface CommunityHeroData {
   title: string;
   // Full-bleed hero background image URL/path.
   backgroundImage: string;
-  // Ribbon tile image URL/path used in the right ribbon stack.
-  ribbonPatternImage: string;
   // Social icons + destination URLs.
   socialLinks: CommunityHeroSocialLink[];
 }
@@ -113,26 +110,13 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
       {/* Backend: changing `data.backgroundImage` updates the hero image without touching styles/markup. */}
       <div className="absolute inset-0 bg-black/30" />
 
-      {/* Backend: changing `data.ribbonPatternImage` updates all right ribbon tiles. */}
-      {/* Design: 5 fixed stacked tiles (143x15), rotated and clipped by overflow. */}
-      <div
-        className="pointer-events-none absolute right-0 top-[227px] z-20 hidden h-[715px] w-[15px] overflow-hidden md:flex md:flex-col"
+      {/* Right-edge ribbon, matching landing hero positioning/overflow behavior. */}
+      <img
+        src="/hero-pattern/ribbon_column.png"
+        alt=""
         aria-hidden
-      >
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index} className="relative h-[143px] w-[15px] overflow-hidden">
-            <div className="absolute left-0 top-0 origin-top-left rotate-90 translate-y-[-143px]">
-              <Image
-                src={data.ribbonPatternImage}
-                alt=""
-                width={143}
-                height={15}
-                className="block h-[15px] w-[143px] max-w-none"
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+        className="absolute top-0 right-0 z-20 hidden h-full w-[15px] object-cover md:block"
+      />
 
       <div
         className="pointer-events-none absolute right-0 top-0 z-2 hidden md:block"

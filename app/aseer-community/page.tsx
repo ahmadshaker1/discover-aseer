@@ -9,7 +9,6 @@ import CommunityMainSlider, {
  * Backend handoff:
  * - Keep components unchanged; only replace this object with API/CMS payload mapping.
  * - `hero.backgroundImage` controls the full hero photo.
- * - `hero.ribbonPatternImage` controls the right ribbon tile image.
  * - `slider.slides[].image` controls all main slider images.
  */
 const communityPageData: {
@@ -17,15 +16,14 @@ const communityPageData: {
   slider: CommunityMainSliderContent;
 } = {
   hero: {
-    // Requested breadcrumb: الرئيسية > الخدمات المساندة
+    // Requested breadcrumb flipped to match Figma.
     breadcrumbs: [
+      { label: "الخدمات المساندة", href: "/services-support" },
       { label: "الرئيسية", href: "/" },
-      { label: "الخدمات المساندة" },
     ],
     title: "مجتمع عسير",
-    // Backend: hero image + pattern from media/CMS.
+    // Backend: hero image from media/CMS.
     backgroundImage: "/assets/community/hero-comunity-bg.png",
-    ribbonPatternImage: "/hero-pattern/ribbon.jpg",
     // Backend: update only URLs/platform values here (or from API); no component edits needed.
     socialLinks: [
       { platform: "linkedin", url: "https://www.linkedin.com/" },
@@ -37,20 +35,18 @@ const communityPageData: {
   },
   slider: {
     // Backend: restore/replace body title + sub text from CMS.
-    sectionTitle: "شكلان عسير",
+    sectionTitle: "سكان عسير",
     sectionSubtitle:
-      "لكل قرية ومجتمع في عسير طابعه الخاص، لكن يجمعهم تراث غني وروح الضيافة الأصيلة.",
-    prevLabel: "السابق",
-    nextLabel: "التالي",
+      "تمتد عسير على مساحة جغرافية واسعة يرافقها كثافة سكانية تعد الأعلى بين مناطق المملكة الأخرى حيث يفوق عدد السكان المليوني نسمة.",
     // Backend: add/remove/reorder slides freely from API response.
     // Required fields per slide: id, image, title, description.
     slides: [
       {
         id: "community-1",
-        image: "/assets/community/hero-comunity-bg.png",
-        title: "زراعة متوارثة بين الأجيال",
+        image: "/assets/community/community-life.png",
+        title: "حياة مزدهرة",
         description:
-          "تعكس المزارع العسيرية علاقة المجتمع بالأرض، حيث تنتقل المعرفة الزراعية من جيل إلى آخر بروح التعاون والاعتزاز بالهوية المحلية.",
+          "فُطر مجتمع عسير على محبة الفن وتمثّله في كافة نواحي الحياة من مظاهر اللبس والعمارة، وأصناف الأكل، أو فنون الطرب أو الجزالة في الشعر والانفتاح على المعرفة والثقافة، أو في وسائل العيش وطرق كسب الرزق من تجارة أو فلاحة. وساهم تنوعها الجغرافي في تنوع هذه الفنون وتميزها بالحفاظ على الموروث والاعتزاز بالتراث.",
       },
       {
         id: "community-2",
