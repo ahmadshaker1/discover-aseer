@@ -11,6 +11,7 @@ import type {
 } from "@/components/experiences/data";
 
 const INITIAL_FILTERS: FilterState = {
+  city: null,
   interests: [],
   cost: null,
   travelers: [],
@@ -26,6 +27,7 @@ function applyFilters(
   filters: FilterState
 ): ExperienceWithFilterMeta[] {
   return experiences.filter((exp) => {
+    if (filters.city && exp.filterCity !== filters.city) return false;
     if (filters.interests.length > 0) {
       const hasInterest = exp.filterInterests.some((i) =>
         filters.interests.includes(i)

@@ -13,7 +13,14 @@ const ExperienceCardActions = ({
   bookUrl,
 }: ExperienceCardActionsProps) => {
   return (
-    <div className="flex items-center justify-start space-x-4">
+    <div className="flex items-center justify-between gap-4" dir="rtl">
+      <Link
+        href={`/experiences/${experienceId}`}
+        className="flex items-center gap-1 text-sm text-black transition-colors hover:text-gray-700"
+      >
+        <span>المزيد</span>
+        <ArrowLeftIcon />
+      </Link>
       <a
         href={bookUrl}
         target="_blank"
@@ -27,13 +34,6 @@ const ExperienceCardActions = ({
           </div>
         </div>
       </a>
-      <Link
-        href={`/experiences/${experienceId}`}
-        className="flex items-center gap-1 text-sm text-black hover:text-gray-700 transition-colors"
-      >
-        <span>المزيد</span>
-        <ArrowLeftIcon />
-      </Link>
     </div>
   );
 };
