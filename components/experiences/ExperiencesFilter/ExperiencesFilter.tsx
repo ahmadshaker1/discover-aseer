@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, Checkbox } from "@headlessui/react";
+import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 import {
   HeartIcon,
   WalletIcon,
@@ -16,6 +17,7 @@ import {
 import type { FilterOptions } from "@/components/experiences/data";
 
 export interface FilterState {
+  city: string | null;
   interests: string[];
   cost: string | null;
   travelers: string[];
@@ -36,13 +38,40 @@ const TRAVELER_ICONS: Record<string, React.ReactNode> = {
   family: <FamilyIcon />,
 };
 
+function ChevronDownIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path
+        d="M4 6L8 10L12 6"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function LocationIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M12 22C16 18.5 19 15.1 19 11A7 7 0 1 0 5 11C5 15.1 8 18.5 12 22Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+      <circle cx="12" cy="11" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
 const ExperiencesFilter = ({
   filterOptions,
   filters,
   onFiltersChange,
   onReset,
 }: ExperiencesFilterProps) => {
-  const { interests, costOptions, travelerTypes } = filterOptions;
+  const { cityOptions, interests, costOptions, travelerTypes } = filterOptions;
 
   const handleInterestToggle = (interestId: string) => {
     onFiltersChange({
@@ -75,21 +104,67 @@ const ExperiencesFilter = ({
 
   return (
     <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8 space-x-4">
-        <h2 className="text-xl font-bold text-black">تصفية التجارب</h2>
+      <div className="mb-8 flex items-center justify-between gap-4">
         <Button
           onClick={handleReset}
           className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
         >
           إعادة تعيين النتائج
         </Button>
+        <h2 className="text-xl font-bold text-black">تصفية التجارب</h2>
       </div>
 
-      {/* Interests Section - only show when we have options from backend */}
+      <div className="mb-4">
+        <Menu as="div" className="relative">
+          <Menu.Button className="flex flex-row-reverse items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer">
+            <ChevronDownIcon />
+            <span className="flex-1 text-right">
+              {cityOptions.find((city) => city.id === filters.city)?.label || "المدينة"}
+            </span>
+            <LocationIcon />
+          </Menu.Button>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 scale-95 translate-y-1"
+            enterTo="opacity-100 scale-100 translate-y-0"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 scale-100 translate-y-0"
+            leaveTo="opacity-0 scale-95 translate-y-1"
+          >
+            <Menu.Items className="absolute right-0 z-50 mt-2 w-full origin-top-right rounded-lg border border-gray-200 bg-white shadow-xl ring-1 ring-black/10 focus:outline-none">
+              <div className="py-1">
+                {cityOptions.map((city) => (
+                  <Menu.Item key={city.id}>
+                    {({ active }) => (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          onFiltersChange({
+                            ...filters,
+                            city: filters.city === city.id ? null : city.id,
+                          })
+                        }
+                        className={`${active ? "bg-[#6027D2]/10 text-[#6027D2]" : ""} ${
+                          filters.city === city.id
+                            ? "bg-[#6027D2]/5 text-[#6027D2] font-semibold"
+                            : "text-black"
+                        } block w-full text-right px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
+                      >
+                        {city.label} ({city.count})
+                      </button>
+                    )}
+                  </Menu.Item>
+                ))}
+              </div>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+      </div>
+
       {interests.length > 0 && (
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="mb-4 flex items-center justify-end gap-2">
             <HeartIcon />
             <h3 className="text-lg font-bold text-black">الاهتمامات</h3>
           </div>
@@ -132,9 +207,8 @@ const ExperiencesFilter = ({
         </div>
       )}
 
-      {/* Cost Section */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="mb-4 flex items-center justify-end gap-2">
           <WalletIcon />
           <h3 className="text-lg font-bold text-black">التكلفة</h3>
         </div>
@@ -170,12 +244,11 @@ const ExperiencesFilter = ({
         </div>
       </div>
 
-      {/* Travelers Section - only show when we have options from backend */}
       {travelerTypes.length > 0 && (
         <div>
-          <div className="flex items-center gap-2 mb-4">
+          <div className="mb-4 flex items-center justify-end gap-2">
             <SuitcaseIcon />
-            <h3 className="text-lg font-bold text-black">المسافرين</h3>
+            <h3 className="text-lg font-bold text-black">نوع المسافرين</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {travelerTypes.map((traveler) => {

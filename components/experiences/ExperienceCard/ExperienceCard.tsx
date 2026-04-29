@@ -50,31 +50,32 @@ const ExperienceCard = ({
       </div>
 
       {/* Content Section */}
-      <div className="p-5">
+      <div className="p-5 text-right" dir="rtl">
         {/* Title */}
-        <h3 className="text-xl font-bold text-black mb-1">{title}</h3>
+        <h3 className="mb-1 text-xl font-bold text-black">{title}</h3>
 
         {/* Duration */}
-        <p className="text-base font-bold text-black mb-3">{duration}</p>
+        <p className="mb-3 text-base font-bold text-black">{duration}</p>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-gray-600">
           {description}
         </p>
 
         {/* Provider */}
-        <div className="flex items-center gap-2 mb-4">
+        <div className="mb-4 flex items-center justify-end gap-2">
           <BuildingIcon />
           <span className="text-sm text-black">{provider}</span>
         </div>
 
         {/* Price and Group Size */}
-        <div className="flex items-center justify-start mb-4 pb-4 ">
+        <div className="mb-4 flex items-center justify-end gap-2 pb-4">
           <div className="flex items-center gap-1">
             <span className="text-xl font-bold text-black">{price}</span>
             <SaudiRiyalIcon />
+            <span className="text-xs text-gray-500">{currency}</span>
           </div>
-          /
+          <span>/</span>
           <div className="flex items-center gap-1.5">
             <span className="text-sm text-black">مجموعة</span>
             <span className="text-sm font-medium text-black">x{groupSize}</span>

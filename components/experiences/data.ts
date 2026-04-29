@@ -37,6 +37,7 @@ export interface FilterOptionWithCount {
 }
 
 export interface FilterOptions {
+  cityOptions: FilterOptionWithCount[];
   interests: FilterOptionWithCount[];
   costOptions: FilterOptionWithCount[];
   travelerTypes: FilterOptionWithCount[];
@@ -44,6 +45,7 @@ export interface FilterOptions {
 
 /** Experience card props plus fields used for filtering */
 export interface ExperienceWithFilterMeta extends ExperienceCardProps {
+  filterCity: string | null;
   filterInterests: string[];
   isPaid: boolean;
   filterTravelers: string[];
@@ -70,32 +72,54 @@ function parseGroupSize(value: string | null | undefined): number {
   return Number.isNaN(n) || n < 1 ? 1 : n;
 }
 
+function normalizeCityLabel(s: string): string {
+  return s.replace(/\s+/g, " ").trim();
+}
+
 /** Normalize interest/tag string for consistent id */
 function normalizeInterestLabel(s: string): string {
   return s.replace(/\s+/g, " ").trim();
 }
 
+function normalizeInterestKey(s: string): string {
+  return normalizeInterestLabel(s)
+    .normalize("NFKC")
+    .replace(/ـ/g, "")
+    .toLocaleLowerCase("ar");
+}
+
 /** Map target_audience Arabic labels to filter ids */
 const TRAVELER_LABEL_TO_ID: Record<string, string> = {
   فردي: "individual",
+  "رحلة فردية": "individual",
   زوجين: "couple",
+  زوج: "couple",
   مجموعات: "groups",
+  "رحلة جماعية": "groups",
   "عائلة وأطفال": "family",
   "عائلة و أطفال": "family",
+  "عائلة واطفال": "family",
   "فردي سيدات": "female",
+  "مسافرة منفردة": "female",
 };
-const TRAVELER_ID_TO_LABEL: Record<string, string> = {
-  individual: "فردي",
-  couple: "زوجين",
-  groups: "مجموعات",
-  family: "عائلة وأطفال",
-  female: "فردي سيدات",
-};
+const TRAVELER_TYPES = [
+  { id: "female", label: "مسافرة منفردة" },
+  { id: "individual", label: "رحلة فردية" },
+  { id: "couple", label: "زوج" },
+  { id: "family", label: "عائلة و أطفال" },
+  { id: "groups", label: "رحلة جماعية" },
+] as const;
 
 function parseFilterInterests(api: ApiExperience): string[] {
   const combined = [api.type, api.tags].filter(Boolean).join(",");
-  const tokens = combined.split(",").map((t) => normalizeInterestLabel(t)).filter(Boolean);
-  return [...new Set(tokens)];
+  const byKey = new Map<string, string>();
+  for (const token of combined.split(",")) {
+    const label = normalizeInterestLabel(token);
+    if (!label) continue;
+    const key = normalizeInterestKey(label);
+    if (!byKey.has(key)) byKey.set(key, label);
+  }
+  return Array.from(byKey.keys());
 }
 
 function parseFilterTravelers(api: ApiExperience): string[] {
@@ -120,6 +144,7 @@ export function transformExperience(api: ApiExperience): ExperienceWithFilterMet
   const groupSize = parseGroupSize(api.minimum_number_of_people);
   const provider = (api.tour_agency || "").trim() || "—";
   const duration = (api.duration || "").trim() || "—";
+  const filterCity = normalizeCityLabel(api.destination || "") || null;
   const filterInterests = parseFilterInterests(api);
   const isPaid = price > 0;
   const filterTravelers = parseFilterTravelers(api);
@@ -136,6 +161,7 @@ export function transformExperience(api: ApiExperience): ExperienceWithFilterMet
     currency: "ر.س",
     groupSize,
     bookUrl,
+    filterCity,
     filterInterests,
     isPaid,
     filterTravelers,
@@ -143,13 +169,24 @@ export function transformExperience(api: ApiExperience): ExperienceWithFilterMet
 }
 
 function buildFilterOptions(apiItems: ApiExperience[]): FilterOptions {
+  const cityCounts = new Map<string, number>();
   const interestCounts = new Map<string, number>();
+  const interestLabels = new Map<string, string>();
   let paidCount = 0;
   let freeCount = 0;
   const travelerCounts = new Map<string, number>();
 
   for (const api of apiItems) {
     const meta = transformExperience(api);
+    if (meta.filterCity) {
+      cityCounts.set(meta.filterCity, (cityCounts.get(meta.filterCity) ?? 0) + 1);
+    }
+    for (const token of [api.type, api.tags].filter(Boolean).join(",").split(",")) {
+      const label = normalizeInterestLabel(token);
+      if (!label) continue;
+      const key = normalizeInterestKey(label);
+      if (!interestLabels.has(key)) interestLabels.set(key, label);
+    }
     for (const id of meta.filterInterests) {
       interestCounts.set(id, (interestCounts.get(id) ?? 0) + 1);
     }
@@ -161,6 +198,10 @@ function buildFilterOptions(apiItems: ApiExperience[]): FilterOptions {
   }
 
   const interests: FilterOptionWithCount[] = Array.from(interestCounts.entries())
+    .map(([id, count]) => ({ id, label: interestLabels.get(id) ?? id, count }))
+    .sort((a, b) => b.count - a.count);
+
+  const cityOptions: FilterOptionWithCount[] = Array.from(cityCounts.entries())
     .map(([id, count]) => ({ id, label: id, count }))
     .sort((a, b) => b.count - a.count);
 
@@ -169,11 +210,15 @@ function buildFilterOptions(apiItems: ApiExperience[]): FilterOptions {
     { id: "free", label: "مجانية", count: freeCount },
   ];
 
-  const travelerTypes: FilterOptionWithCount[] = Array.from(travelerCounts.entries())
-    .map(([id, count]) => ({ id, label: TRAVELER_ID_TO_LABEL[id] ?? id, count }))
-    .sort((a, b) => b.count - a.count);
+  const travelerTypes: FilterOptionWithCount[] = TRAVELER_TYPES.map(
+    ({ id, label }) => ({
+      id,
+      label,
+      count: travelerCounts.get(id) ?? 0,
+    })
+  );
 
-  return { interests, costOptions, travelerTypes };
+  return { cityOptions, interests, costOptions, travelerTypes };
 }
 
 export interface FetchExperiencesResult {
@@ -269,12 +314,16 @@ export const DUMMY_EXPERIENCES: ExperienceWithFilterMeta[] = [
 function buildFilterOptionsFromExperiences(
   experiences: ExperienceWithFilterMeta[]
 ): FilterOptions {
+  const cityCounts = new Map<string, number>();
   const interestCounts = new Map<string, number>();
   const travelerCounts = new Map<string, number>();
   let paidCount = 0;
   let freeCount = 0;
 
   for (const exp of experiences) {
+    if (exp.filterCity) {
+      cityCounts.set(exp.filterCity, (cityCounts.get(exp.filterCity) ?? 0) + 1);
+    }
     for (const interest of exp.filterInterests) {
       interestCounts.set(interest, (interestCounts.get(interest) ?? 0) + 1);
     }
@@ -286,6 +335,10 @@ function buildFilterOptionsFromExperiences(
   }
 
   const interests: FilterOptionWithCount[] = Array.from(interestCounts.entries())
+    .map(([id, count]) => ({ id, label: normalizeInterestLabel(id), count }))
+    .sort((a, b) => b.count - a.count);
+
+  const cityOptions: FilterOptionWithCount[] = Array.from(cityCounts.entries())
     .map(([id, count]) => ({ id, label: id, count }))
     .sort((a, b) => b.count - a.count);
 
@@ -294,11 +347,15 @@ function buildFilterOptionsFromExperiences(
     { id: "free", label: "مجانية", count: freeCount },
   ];
 
-  const travelerTypes: FilterOptionWithCount[] = Array.from(travelerCounts.entries())
-    .map(([id, count]) => ({ id, label: TRAVELER_ID_TO_LABEL[id] ?? id, count }))
-    .sort((a, b) => b.count - a.count);
+  const travelerTypes: FilterOptionWithCount[] = TRAVELER_TYPES.map(
+    ({ id, label }) => ({
+      id,
+      label,
+      count: travelerCounts.get(id) ?? 0,
+    })
+  );
 
-  return { interests, costOptions, travelerTypes };
+  return { cityOptions, interests, costOptions, travelerTypes };
 }
 
 export async function fetchExperiences(): Promise<FetchExperiencesResult> {
