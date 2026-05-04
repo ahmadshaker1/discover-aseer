@@ -69,53 +69,48 @@ function ServiceTagIcon({ category }: { category: string }) {
 const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
   return (
     <article
-      className="flex min-h-[155px] w-full min-w-0 flex-col justify-between gap-2 rounded-[12px] border border-[#CCCCCC5E] bg-[#F8F8F8] p-3 sm:p-4 text-right"
-      dir="rtl"
+      className="flex h-full min-h-[155px] w-full min-w-0 flex-col justify-between rounded-[12px] border border-[#CCCCCC5E] bg-[#F8F8F8] p-4 text-right"
+      dir="ltr"
     >
-      <div className="flex shrink-0 justify-end">
-        <span
-          dir="rtl"
-          className="inline-grid max-w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-1 rounded-[20px] bg-[#B08DCB] px-2.5 py-1 text-[11px] font-bold text-white sm:min-h-7 sm:px-3 sm:text-xs"
-        >
-          <span className="min-w-0 truncate text-start">{service.category}</span>
-          <span className="flex shrink-0 items-center justify-center" aria-hidden>
+      <div className="mb-2 flex shrink-0 items-center justify-end">
+        <span className="inline-flex h-7 min-w-[95px] max-w-full items-center justify-center gap-1 rounded-[20px] bg-[#B08DCB] px-3 py-1 text-xs font-bold text-white">
+          <span className="min-w-0 truncate text-right">{service.category}</span>
+          <span className="shrink-0" aria-hidden>
             <ServiceTagIcon category={service.category} />
           </span>
         </span>
       </div>
 
       <h3
-        className="line-clamp-2 min-h-0 wrap-break-word text-right text-[clamp(16px,2.4vw,24px)] font-bold leading-[119%] text-[#1D1F1F]"
+        className="mb-2 line-clamp-1 text-right text-[24px] font-bold leading-[119%] text-[#1D1F1F]"
         style={{ fontFamily: "var(--font-ara-hamah-1964), sans-serif" }}
       >
         {service.title}
       </h3>
 
-      <div className="mt-auto flex min-w-0 flex-col gap-2">
+      <div className="mt-auto flex min-w-0 flex-col items-end gap-2">
         <a
           href={service.mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          dir="rtl"
-          className="grid min-h-5 w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-start text-[11px] font-bold leading-snug text-[#7300CD] underline underline-offset-2 sm:text-[12px] sm:leading-[100%] sm:underline-offset-[20.5%]"
+          className="flex min-w-0 max-w-full flex-row items-center justify-end gap-2 text-right text-[12px] font-bold leading-[100%] text-[#7300CD] underline underline-offset-[20.5%]"
           style={{ fontFamily: "var(--font-ibm-plex-sans-arabic), sans-serif" }}
         >
           <span className="min-w-0 wrap-break-word">{service.city}</span>
-          <span className="flex shrink-0 items-center justify-center" aria-hidden>
+          <span className="shrink-0" aria-hidden>
             <LocationIcon />
           </span>
         </a>
 
         <a
           href={`tel:${service.supportNumber}`}
-          dir="rtl"
-          className="grid min-h-5 w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-start text-[11px] font-bold leading-snug text-[#535353] sm:text-[12px] sm:leading-[100%]"
+          className="flex min-w-0 max-w-full flex-row items-center justify-end gap-2 text-right text-[12px] font-bold leading-[100%] text-[#535353]"
           style={{ fontFamily: "var(--font-ibm-plex-sans-arabic), sans-serif" }}
         >
           <span className="min-w-0 truncate" dir="ltr">
             {service.supportNumber}
           </span>
-          <span className="flex shrink-0 items-center justify-center" aria-hidden>
+          <span className="shrink-0" aria-hidden>
             <PhoneIcon />
           </span>
         </a>
