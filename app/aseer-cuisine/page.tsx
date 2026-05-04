@@ -12,7 +12,7 @@ import AseerCuisineLocalFlavorsSection, {
 } from "@/components/aseer-cuisine/AseerCuisineLocalFlavorsSection";
 import AseerCuisineCookingExperiencesSection, {
   type AseerCuisineCookingExperiencesSectionData,
-} from "@/components/aseer-cuisine/AseerCuisineCookingExperiencesSection";
+} from "@/components/experiences/AseerExperiencesSection";
 import AseerCuisineChefsVideoSection, {
   type AseerCuisineChefsVideoSectionData,
 } from "@/components/aseer-cuisine/AseerCuisineChefsVideoSection";
@@ -352,15 +352,15 @@ function mapAseerCuisineDataFromDirectus(
       description: asString(pick(dishesRaw, "description"), fallback.dishesSection.description),
       cards: asArray(pick(dishesRaw, "cards", "items")).length
         ? asArray(pick(dishesRaw, "cards", "items")).map((item, index) => {
-            const raw = isRecord(item) ? item : {};
-            const fallbackCard =
-              fallback.dishesSection.cards[index] ?? fallback.dishesSection.cards[0];
-            return {
-              id: asString(raw.id, `${fallbackCard.id}-${index}`),
-              title: asString(raw.title, fallbackCard.title),
-              image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
-            };
-          })
+          const raw = isRecord(item) ? item : {};
+          const fallbackCard =
+            fallback.dishesSection.cards[index] ?? fallback.dishesSection.cards[0];
+          return {
+            id: asString(raw.id, `${fallbackCard.id}-${index}`),
+            title: asString(raw.title, fallbackCard.title),
+            image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
+          };
+        })
         : fallback.dishesSection.cards,
     },
     restaurantsSection: {
@@ -375,29 +375,29 @@ function mapAseerCuisineDataFromDirectus(
       ),
       cards: asArray(pick(restaurantsRaw, "cards", "items")).length
         ? asArray(pick(restaurantsRaw, "cards", "items")).map((item, index) => {
-            const raw = isRecord(item) ? item : {};
-            const fallbackCard =
-              fallback.restaurantsSection.cards[index] ?? fallback.restaurantsSection.cards[0];
-            return {
-              id: asString(raw.id, `${fallbackCard.id}-${index}`),
-              image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
-              title: asString(pick(raw, "title"), fallbackCard.title),
-              location: asString(pick(raw, "location"), fallbackCard.location),
-              cuisineType: asString(
-                pick(raw, "cuisineType", "cuisine_type"),
-                fallbackCard.cuisineType
-              ),
-              priceRange: asString(
-                pick(raw, "priceRange", "price_range"),
-                fallbackCard.priceRange
-              ),
-              rating: asNumber(pick(raw, "rating"), fallbackCard.rating),
-              reviewsCount: asNumber(
-                pick(raw, "reviewsCount", "reviews_count"),
-                fallbackCard.reviewsCount
-              ),
-            };
-          })
+          const raw = isRecord(item) ? item : {};
+          const fallbackCard =
+            fallback.restaurantsSection.cards[index] ?? fallback.restaurantsSection.cards[0];
+          return {
+            id: asString(raw.id, `${fallbackCard.id}-${index}`),
+            image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
+            title: asString(pick(raw, "title"), fallbackCard.title),
+            location: asString(pick(raw, "location"), fallbackCard.location),
+            cuisineType: asString(
+              pick(raw, "cuisineType", "cuisine_type"),
+              fallbackCard.cuisineType
+            ),
+            priceRange: asString(
+              pick(raw, "priceRange", "price_range"),
+              fallbackCard.priceRange
+            ),
+            rating: asNumber(pick(raw, "rating"), fallbackCard.rating),
+            reviewsCount: asNumber(
+              pick(raw, "reviewsCount", "reviews_count"),
+              fallbackCard.reviewsCount
+            ),
+          };
+        })
         : fallback.restaurantsSection.cards,
     },
     localFlavorsSection: {
@@ -405,15 +405,15 @@ function mapAseerCuisineDataFromDirectus(
       subtitle: asString(pick(localFlavorsRaw, "subtitle"), fallback.localFlavorsSection.subtitle),
       cards: asArray(pick(localFlavorsRaw, "cards", "items")).length
         ? asArray(pick(localFlavorsRaw, "cards", "items")).map((item, index) => {
-            const raw = isRecord(item) ? item : {};
-            const fallbackCard =
-              fallback.localFlavorsSection.cards[index] ?? fallback.localFlavorsSection.cards[0];
-            return {
-              id: asString(raw.id, `${fallbackCard.id}-${index}`),
-              title: asString(pick(raw, "title"), fallbackCard.title),
-              image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
-            };
-          })
+          const raw = isRecord(item) ? item : {};
+          const fallbackCard =
+            fallback.localFlavorsSection.cards[index] ?? fallback.localFlavorsSection.cards[0];
+          return {
+            id: asString(raw.id, `${fallbackCard.id}-${index}`),
+            title: asString(pick(raw, "title"), fallbackCard.title),
+            image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
+          };
+        })
         : fallback.localFlavorsSection.cards,
     },
     cookingExperiencesSection: {
@@ -521,18 +521,18 @@ const AseerCuisinePage = async () => {
     restaurantsSection:
       cuisineRestaurants.length > 0
         ? {
-            ...aseerCuisinePageData.restaurantsSection,
-            cards: cuisineRestaurants,
-            ctaHref: "/restaurants",
-          }
+          ...aseerCuisinePageData.restaurantsSection,
+          cards: cuisineRestaurants,
+          ctaHref: "/restaurants",
+        }
         : aseerCuisinePageData.restaurantsSection,
     cookingExperiencesSection:
       cuisineExperiences.length > 0
         ? {
-            ...aseerCuisinePageData.cookingExperiencesSection,
-            cards: cuisineExperiences,
-            ctaHref: "/experiences",
-          }
+          ...aseerCuisinePageData.cookingExperiencesSection,
+          cards: cuisineExperiences,
+          ctaHref: "/experiences",
+        }
         : aseerCuisinePageData.cookingExperiencesSection,
   };
 

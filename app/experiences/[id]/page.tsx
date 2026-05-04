@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { fetchExperiences } from "@/components/experiences/data";
+import { fetchExperienceById } from "@/components/experiences/data";
 
 interface ExperienceDetailsPageProps {
   params: Promise<{ id: string }>;
@@ -19,8 +19,7 @@ export default async function ExperienceDetailsPage({
   params,
 }: ExperienceDetailsPageProps) {
   const { id } = await params;
-  const { experiences } = await fetchExperiences();
-  const experience = experiences.find((item) => String(item.id) === id);
+  const experience = await fetchExperienceById(id);
 
   if (!experience) {
     notFound();

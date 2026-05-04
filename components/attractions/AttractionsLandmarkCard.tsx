@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { Button } from "@headlessui/react";
 import type { Landmark } from "@/components/landmarks/data";
 import SafeHtml from "@/components/common/SafeHtml";
 
@@ -10,6 +12,8 @@ interface AttractionsLandmarkCardProps {
   landmark: Landmark;
   categoryLabel?: string;
   className?: string;
+  /** Full-card tap target; share control stays above this layer. */
+  cardHref?: string;
 }
 
 function ShareIcon() {
@@ -39,6 +43,7 @@ const AttractionsLandmarkCard = ({
   landmark,
   categoryLabel = "منتزهات طبيعية",
   className = "",
+  cardHref,
 }: AttractionsLandmarkCardProps) => {
   const handleShare = async () => {
     if (typeof window === "undefined") return;
@@ -69,24 +74,39 @@ const AttractionsLandmarkCard = ({
       dir="rtl"
       className={`relative h-[419px] w-full max-w-[326px] overflow-hidden rounded-[10px] bg-black shadow-[0_4.28px_3.37px_0_rgba(41,72,152,0.01),0_8.72px_6.97px_0_rgba(41,72,152,0.02),0_21.4px_13.91px_0_rgba(41,72,152,0.02)] ${className}`}
     >
+      {cardHref ? (
+        <Link
+          href={cardHref}
+          className="absolute inset-0 z-10"
+          aria-label={`انتقل إلى ${landmark.title}`}
+        />
+      ) : null}
+
       <img src={landmark.image} alt={landmark.title} className="h-full w-full object-cover" />
 
-      <button
+      <Button
         type="button"
         aria-label={`مشاركة ${landmark.title}`}
-        onClick={handleShare}
-        className="absolute top-3 end-3 z-20 inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full backdrop-blur-[3.5px]"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          void handleShare();
+        }}
+        className="absolute top-3 end-3 z-30 inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full backdrop-blur-[3.5px] data-focus:outline-none data-focus:ring-2 data-focus:ring-white/80 data-focus:ring-offset-2 data-focus:ring-offset-black/20"
       >
         <ShareIcon />
-      </button>
+      </Button>
 
-      <div className="absolute top-3 start-3 inline-flex h-7 items-center justify-center rounded-[20px] bg-[#000000AD] px-3 py-1">
+      <div className="pointer-events-none absolute top-3 start-3 z-20 inline-flex h-7 items-center justify-center rounded-[20px] bg-[#000000AD] px-3 py-1">
         <span className="text-right text-[12px] font-medium leading-[100%] text-white" style={{ fontFamily: ibm }}>
           {categoryLabel}
         </span>
       </div>
 
-      <div className="absolute end-0 start-0 bottom-0 flex h-[155px] flex-col items-start gap-5 bg-linear-to-b from-transparent to-black p-5 text-white">
+      <div
+        className={`absolute end-0 start-0 bottom-0 flex h-[155px] flex-col items-start gap-5 bg-linear-to-b from-transparent to-black p-5 text-white ${cardHref ? "pointer-events-none" : ""
+          }`}
+      >
         <div className="inline-flex w-fit flex-row items-center gap-1 rounded-[24.51px] text-right">
           <span className="text-[18px] font-bold leading-[100%]" style={{ fontFamily: ara }}>
             {landmark.location || "حديقة السودة ، أبها"}

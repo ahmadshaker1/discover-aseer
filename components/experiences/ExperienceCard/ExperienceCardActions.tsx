@@ -15,7 +15,7 @@ const ExperienceCardActions = ({
   return (
     <div className="flex items-center justify-between gap-4" dir="rtl">
       <Link
-        href={`/experiences/${experienceId}`}
+        href={`/experiences/${encodeURIComponent(String(experienceId))}`}
         className="flex items-center gap-1 text-sm text-black transition-colors hover:text-gray-700"
       >
         <span>المزيد</span>

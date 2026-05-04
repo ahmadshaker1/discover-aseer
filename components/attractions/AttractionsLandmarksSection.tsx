@@ -7,6 +7,15 @@ import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmar
 import type { Landmark } from "@/components/landmarks/data";
 import { cityOptions, interestOptions, priceOptions, travelerOptions } from "@/components/landmarks/filterOptions";
 
+function landmarkMatchesCity(landmark: Landmark, city: string | null): boolean {
+  if (!city) return true;
+  if (landmark.cityId) return landmark.cityId === city;
+  const label = cityOptions.find((o) => o.id === city)?.label ?? "";
+  if (!label) return true;
+  const haystack = `${landmark.location} ${landmark.area}`;
+  return haystack.includes(label);
+}
+
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface AttractionsLandmarksSectionProps {
@@ -15,6 +24,8 @@ interface AttractionsLandmarksSectionProps {
   description?: string;
   decorationImageSrc?: string;
   showFilters?: boolean;
+  /** When set, each card gets a full-card link (share stays clickable above it). */
+  landmarkCardHref?: string;
 }
 
 type PriceFilterId = "free" | "budget" | "mid-range" | "luxury" | null;
@@ -45,7 +56,8 @@ const AttractionsLandmarksSection = ({
   title = "اكتشف أشهر المعالم السياحية",
   description,
   decorationImageSrc,
-  showFilters = true,
+  showFilters = false,
+  landmarkCardHref,
 }: AttractionsLandmarksSectionProps) => {
   const [city, setCity] = useState<string | null>(null);
   const [interest, setInterest] = useState<string | null>(null);
@@ -54,10 +66,20 @@ const AttractionsLandmarksSection = ({
 
   const filteredLandmarks = useMemo(() => {
     return landmarks.filter((landmark) => {
-      if (city && landmark.cityId !== city) return false;
-      if (interest && !(landmark.interestTags ?? []).includes(interest)) return false;
-      if (traveler && !(landmark.travelerTypes ?? []).includes(traveler)) return false;
-      if (price) {
+      if (!landmarkMatchesCity(landmark, city)) return false;
+
+      if (interest) {
+        const tags = landmark.interestTags ?? [];
+        if (tags.length > 0 && !tags.includes(interest)) return false;
+      }
+
+      if (traveler) {
+        const types = landmark.travelerTypes ?? [];
+        if (types.length > 0 && !types.includes(traveler)) return false;
+      }
+
+      const hasPriceData = landmark.priceFrom != null || landmark.priceTo != null;
+      if (price && hasPriceData) {
         const from = landmark.priceFrom ?? 0;
         const to = landmark.priceTo ?? from;
         if (price === "free" && !(from === 0 && to === 0)) return false;
@@ -105,18 +127,6 @@ const AttractionsLandmarksSection = ({
               </p>
             ) : null}
           </div>
-
-          <Link
-            href="/attractions"
-            className="inline-flex h-6 w-[98px] shrink-0 cursor-pointer items-center justify-between gap-2 hover:opacity-80"
-            style={{ fontFamily: ara }}
-            dir="ltr"
-          >
-            <LeftArrowIcon />
-            <span className="h-6 w-[73px] whitespace-nowrap text-right text-[20px] font-bold leading-[100%] text-[#280048]">
-              عرض المزيد
-            </span>
-          </Link>
         </div>
 
         {showFilters ? (
@@ -189,9 +199,28 @@ const AttractionsLandmarksSection = ({
         <div className="mx-auto w-full max-w-[1320px] overflow-x-auto pb-2">
           <div className="flex min-w-max flex-row gap-6">
             {filteredLandmarks.map((landmark) => (
-              <AttractionsLandmarkCard key={landmark.id} landmark={landmark} className="w-[312px] shrink-0" />
+              <AttractionsLandmarkCard
+                key={landmark.id}
+                landmark={landmark}
+                className="w-[312px] shrink-0"
+                cardHref={landmarkCardHref}
+              />
             ))}
           </div>
+        </div>
+
+        <div className="mx-auto mt-8 flex w-full max-w-[1320px] justify-center">
+          <Link
+            href="/attractions"
+            className="inline-flex h-[52px] min-w-[161px] cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-[#6027D2]/30 bg-[#6027D2] px-8 text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90"
+            style={{ fontFamily: ara }}
+            dir="ltr"
+          >
+            <LeftArrowIcon />
+            <span className="whitespace-nowrap text-right text-[20px] font-bold leading-[100%]">
+              عرض المزيد
+            </span>
+          </Link>
         </div>
       </div>
     </section>

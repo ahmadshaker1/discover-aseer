@@ -358,6 +358,43 @@ function buildFilterOptionsFromExperiences(
   return { cityOptions, interests, costOptions, travelerTypes };
 }
 
+/**
+ * Load one experience by id (Directus single-item endpoint) with fallbacks to the
+ * list endpoint and dummy data so `/experiences/[id]` stays in sync with home cards.
+ */
+export async function fetchExperienceById(id: string): Promise<ExperienceWithFilterMeta | null> {
+  const trimmed = id.trim();
+  if (!trimmed) return null;
+
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
+
+  if (!directusUrl) {
+    return DUMMY_EXPERIENCES.find((e) => String(e.id) === trimmed) ?? null;
+  }
+
+  try {
+    const res = await fetch(`${directusUrl}/items/experiences/${encodeURIComponent(trimmed)}`, {
+      next: { revalidate: 3600 },
+    });
+    if (res.ok) {
+      const json: { data?: ApiExperience } = await res.json();
+      const item = json.data;
+      if (item && item.id != null) {
+        return transformExperience(item);
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching experience by id:", error);
+  }
+
+  try {
+    const { experiences } = await fetchExperiences();
+    return experiences.find((e) => String(e.id) === trimmed) ?? null;
+  } catch {
+    return DUMMY_EXPERIENCES.find((e) => String(e.id) === trimmed) ?? null;
+  }
+}
+
 export async function fetchExperiences(): Promise<FetchExperiencesResult> {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
 
