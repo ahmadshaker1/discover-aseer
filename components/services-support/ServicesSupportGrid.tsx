@@ -18,7 +18,7 @@ const ServicesSupportGrid = ({ services }: ServicesSupportGridProps) => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+    <div className="grid w-full min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 xl:grid-cols-3 xl:gap-5">
       {services.map((service) => (
         <ServicesSupportCard key={service.id} service={service} />
       ))}
