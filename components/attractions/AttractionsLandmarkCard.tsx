@@ -108,10 +108,11 @@ const AttractionsLandmarkCard = ({
           }`}
       >
         <div className="inline-flex w-fit flex-row items-center gap-1 rounded-[24.51px] text-right">
+          <LocationIcon />
           <span className="text-[18px] font-bold leading-[100%]" style={{ fontFamily: ara }}>
             {landmark.location || "حديقة السودة ، أبها"}
           </span>
-          <LocationIcon />
+
         </div>
 
         <div className="flex w-full max-w-[251px] flex-col gap-[18px] self-start text-right">
@@ -120,7 +121,7 @@ const AttractionsLandmarkCard = ({
           </h3>
           <SafeHtml
             html={landmark.description}
-            className="line-clamp-2 text-right text-[18px] font-bold leading-[130%] text-white/80"
+            className="line-clamp-2 text-right text-[18px]leading-[130%] text-white/80"
           />
         </div>
       </div>

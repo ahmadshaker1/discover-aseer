@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -13,6 +16,16 @@ interface DestinationsHeroProps {
   title: string;
   subtitle: string;
   backgroundImage: string;
+  weatherLat?: number;
+  weatherLon?: number;
+  weatherArea?: string;
+}
+
+interface WeatherState {
+  tempMin: number;
+  tempMax: number;
+  condition: string;
+  iconUrl?: string;
 }
 
 function BreadcrumbChevron() {
@@ -44,7 +57,61 @@ function WeatherIcon() {
   );
 }
 
-const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: DestinationsHeroProps) => {
+const DestinationsHero = ({
+  breadcrumbs,
+  title,
+  subtitle,
+  backgroundImage,
+  weatherLat = 18.2164,
+  weatherLon = 42.5053,
+  weatherArea = "أبها",
+}: DestinationsHeroProps) => {
+  const [weather, setWeather] = useState<WeatherState>({
+    tempMin: 18,
+    tempMax: 21,
+    condition: "أمطار",
+    iconUrl: "https://openweathermap.org/img/wn/10d@2x.png",
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadWeather = async () => {
+      try {
+        const query = new URLSearchParams({
+          lat: String(weatherLat),
+          lon: String(weatherLon),
+          area: weatherArea,
+        });
+        const res = await fetch(`/api/weather/current?${query.toString()}`, {
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled) return;
+        setWeather({
+          tempMin: Number.isFinite(data?.tempMin) ? data.tempMin : 18,
+          tempMax: Number.isFinite(data?.tempMax) ? data.tempMax : 21,
+          condition: String(data?.condition || "أمطار"),
+          iconUrl: String(
+            data?.iconUrl || "https://openweathermap.org/img/wn/10d@2x.png",
+          ),
+        });
+      } catch {
+        // Keep fallback values silently.
+      }
+    };
+    void loadWeather();
+    return () => {
+      cancelled = true;
+    };
+  }, [weatherArea, weatherLat, weatherLon]);
+
+  const tempRange = useMemo(() => {
+    const high = Math.max(weather.tempMin, weather.tempMax);
+    const low = Math.min(weather.tempMin, weather.tempMax);
+    return `${high}–${low}`;
+  }, [weather.tempMin, weather.tempMax]);
+
   return (
     <section
       className="relative flex h-[687px] w-full flex-col items-center justify-center overflow-hidden"
@@ -55,7 +122,7 @@ const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: Des
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="absolute inset-0 bg-black/25" />
+      <div className="absolute inset-0 bg-black/30" />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center px-4 lg:px-12">
         <div className="flex w-full max-w-[610px] flex-col items-center gap-8">
@@ -98,21 +165,32 @@ const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: Des
               gap: 8,
             }}
           >
-            <WeatherIcon />
+            {weather.iconUrl ? (
+              <img
+                src={weather.iconUrl}
+                alt={weather.condition}
+                className="h-6 w-6 object-contain"
+                loading="lazy"
+              />
+            ) : (
+              <WeatherIcon />
+            )}
             <div className="flex flex-col items-center gap-0.5 text-center">
               <span
                 className="whitespace-nowrap text-[35px] font-bold leading-[100%] tracking-normal text-white"
                 style={{ fontFamily: ara }}
               >
-                ١٨–٢١
-                <span className="align-super text-[0.55em]">°</span>
                 <span className="text-[0.5em]">م</span>
+                <span className="align-super text-[0.55em]">°</span>
+
+                {tempRange}
+
               </span>
               <span
                 className="text-center text-[14px] font-normal leading-[100%] tracking-normal text-white"
                 style={{ fontFamily: ibm }}
               >
-                أمطار
+                {weather.condition}
               </span>
             </div>
           </div>

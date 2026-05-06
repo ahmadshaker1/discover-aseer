@@ -21,12 +21,15 @@ const DestinationsPage = async () => {
         ]}
         title="أبها"
         subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
-        backgroundImage="/assets/activities/activities.jpg"
+        backgroundImage="/assets/destinations/hero-destinations.png"
+        weatherArea="أبها"
+        weatherLat={18.2164}
+        weatherLon={42.5053}
       />
 
       <DestinationsIntroSection
         title={DESTINATIONS_MAIN_INTRO_TITLE}
-        imageUrl="/assets/activities/activities.jpg"
+        imageUrl="/assets/destinations/hero-destinations.png"
         imageAlt=""
         paragraphs={DESTINATIONS_MAIN_INTRO_PARAGRAPHS}
       />

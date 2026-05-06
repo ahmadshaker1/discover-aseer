@@ -36,16 +36,19 @@ const defaultCards: EventsInfoCard[] = [
     id: 2,
     icon: <AirplaneIcon />,
     title: "السفر إلى عسير",
+    link: "/Getting-here-and-around",
   },
   {
     id: 3,
     icon: <HotelIcon />,
     title: "خطط إقامتك",
+    link: "/planner",
   },
   {
     id: 4,
     icon: <BinocularsIcon />,
     title: "اختر وجهتك",
+    link: "/destinations",
   },
 ];
 
@@ -66,16 +69,27 @@ const iconFromKey = (iconKey?: string | null): React.ReactNode => {
   }
 };
 
+const linkFallbackByIconKey = (iconKey?: string | null): string | undefined => {
+  switch ((iconKey || "").toLowerCase()) {
+    case "visa":
+      return "https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations";
+    case "airplane":
+      return "/Getting-here-and-around";
+    case "hotel":
+      return "/planner";
+    case "binoculars":
+      return "/destinations";
+    default:
+      return undefined;
+  }
+};
+
 const mapBackendCards = (rows: EventsInfoBackendCard[]): EventsInfoCard[] =>
   rows.map((row, index) => ({
     id: row.id ?? index + 1,
     icon: iconFromKey(row.icon_key),
     title: row.title_ar?.trim() || "عنوان البطاقة",
-    link:
-      row.link?.trim() ||
-      ((row.icon_key || "").toLowerCase() === "visa"
-        ? "https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations"
-        : undefined),
+    link: row.link?.trim() || linkFallbackByIconKey(row.icon_key),
   }));
 
 const EventsInfo = ({ cards = defaultCards, backendCards }: EventsInfoProps) => {
@@ -97,7 +111,7 @@ const EventsInfo = ({ cards = defaultCards, backendCards }: EventsInfoProps) => 
       <div className="relative z-10 mb-10 border-b border-[#E4E4E4] pb-4 md:mb-12">
         <h2 className="text-right text-[32px] font-bold text-black sm:text-[40px]" style={{ fontFamily: ara }}>
           <span className="text-black">ابدأ </span>
-          <span className="text-[#7300CD]">راحتك</span>
+          <span className="text-[#7300CD]">رحلتك</span>
         </h2>
       </div>
 
