@@ -110,11 +110,11 @@ const TravelTipsPage = async () => {
     <div className="flex w-full flex-col">
       <PageBanner
         breadcrumbs={[
-          { label: "معلومات أساسية" },
+          { label: "التجاربم" },
           { label: "الصفحة الرئيسية", href: "/" },
         ]}
         title="معلومات أساسية"
-        subtitle="كل ما تحتاجه لتخطيط رحلة مريحة في عسير."
+        subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
         backgroundImage="/assets/experiences/experiences.png"
       />
 

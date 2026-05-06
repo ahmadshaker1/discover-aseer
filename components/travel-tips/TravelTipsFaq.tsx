@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
+
 // Backend: GET FAQ list → map each row to { id, question, answer }. Pass the array as `items`.
 // `id` must be stable (API id or slug) for React keys and open-state tracking.
 export interface TravelFaqItem {
@@ -80,7 +81,9 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                       className="ms-0 me-auto w-full max-w-[1264px] bg-transparent pl-3 text-right text-[20px] font-bold leading-none text-[#838383]"
                       style={{ fontFamily: ara }}
                     >
-                      <p className="py-3 pr-3">{item.answer}</p>
+                      <p className="py-3 pr-3" style={{ fontFamily: ara }}>
+                        {item.answer}
+                      </p>
                     </div>
                   </div>
                 ) : (
