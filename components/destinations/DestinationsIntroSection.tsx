@@ -4,6 +4,7 @@ import {
   WhatsAppIcon,
   XIcon,
 } from "@/components/Footer/Icons";
+import SafeHtml from "@/components/common/SafeHtml";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -35,6 +36,10 @@ export interface DestinationsIntroSectionProps {
   imageAlt: string;
   /** One or more paragraphs (RTL). Backend: map from rich text or joined blocks. */
   paragraphs: string[];
+  /** Optional rich text body for destination slug pages. */
+  descriptionHtml?: string;
+  hideImage?: boolean;
+  centerContent?: boolean;
 }
 
 const DestinationsIntroSection = ({
@@ -42,13 +47,22 @@ const DestinationsIntroSection = ({
   imageUrl,
   imageAlt,
   paragraphs,
+  descriptionHtml,
+  hideImage = false,
+  centerContent = false,
 }: DestinationsIntroSectionProps) => {
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]" dir="rtl">
       <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:flex-row lg:items-start">
-        <div className="flex w-full max-w-[704px] flex-col gap-6 text-right">
+        <div
+          className={`flex w-full flex-col gap-6 ${
+            hideImage ? "max-w-[900px]" : "max-w-[704px]"
+          } ${centerContent ? "mx-auto items-center text-center" : "text-right"}`}
+        >
           <h2
-            className="w-full text-right text-[44px] font-bold leading-[180%] text-black"
+            className={`w-full text-[44px] font-bold leading-[180%] text-black ${
+              centerContent ? "text-center" : "text-right"
+            }`}
             style={{ fontFamily: ara }}
           >
             {title}
@@ -81,23 +95,31 @@ const DestinationsIntroSection = ({
           </div>
 
           <div
-            className="w-full text-right text-[15px] font-light leading-[130%] text-[#252525]"
+            className={`w-full text-[15px] font-light leading-[130%] text-[#252525] ${
+              centerContent ? "text-center" : "text-right"
+            }`}
             style={{ fontFamily: ibm }}
           >
-            {paragraphs.map((p, i) => (
-              <p key={i} className={i > 0 ? "mt-4" : ""}>
-                {p}
-              </p>
-            ))}
+            {descriptionHtml ? (
+              <SafeHtml html={descriptionHtml} className="space-y-4" />
+            ) : (
+              paragraphs.map((p, i) => (
+                <p key={i} className={i > 0 ? "mt-4" : ""}>
+                  {p}
+                </p>
+              ))
+            )}
           </div>
         </div>
 
-        <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
-          <div className="relative h-full w-full">
-            <img src="/assets/attractions/attractions-hero.png" alt={imageAlt} className="h-full w-full object-cover" />
-            <div className="pointer-events-none absolute inset-0 bg-black/15" />
+        {!hideImage ? (
+          <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
+            <div className="relative h-full w-full">
+              <img src="/assets/attractions/attractions-hero.png" alt={imageAlt} className="h-full w-full object-cover" />
+              <div className="pointer-events-none absolute inset-0 bg-black/15" />
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </section>
   );

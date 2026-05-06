@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@headlessui/react";
+import { useState } from "react";
 import type { Landmark } from "@/components/landmarks/data";
 import SafeHtml from "@/components/common/SafeHtml";
 
@@ -45,6 +46,8 @@ const AttractionsLandmarkCard = ({
   className = "",
   cardHref,
 }: AttractionsLandmarkCardProps) => {
+  const [imageFailed, setImageFailed] = useState(false);
+
   const handleShare = async () => {
     if (typeof window === "undefined") return;
     const shareUrl = `${window.location.origin}${window.location.pathname}?landmark=${encodeURIComponent(
@@ -82,7 +85,14 @@ const AttractionsLandmarkCard = ({
         />
       ) : null}
 
-      <img src={landmark.image} alt={landmark.title} className="h-full w-full object-cover" />
+      <img
+        src={landmark.image}
+        alt={landmark.title}
+        className="h-full w-full object-cover"
+        loading="lazy"
+        onError={() => setImageFailed(true)}
+      />
+      {imageFailed ? <div className="pointer-events-none absolute inset-0 z-1 bg-black/45" /> : null}
 
       <Button
         type="button"

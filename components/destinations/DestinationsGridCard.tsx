@@ -18,13 +18,14 @@ const DestinationsGridCard = ({
   cardHref,
 }: DestinationsGridCardProps) => {
   const landmark = destinationToLandmark(destination);
+  const resolvedCardHref = cardHref ?? `/destinations/${destination.slug}`;
 
   return (
     <AttractionsLandmarkCard
       landmark={landmark}
       categoryLabel={categoryLabel}
       className={className}
-      cardHref={cardHref}
+      cardHref={resolvedCardHref}
     />
   );
 };

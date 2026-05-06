@@ -15,6 +15,8 @@ export interface Destination {
   area: string;
   description: string;
   image: string;
+  lat?: number;
+  lon?: number;
   cityId?: string;
   interestTags?: string[];
 }
@@ -104,6 +106,10 @@ export interface ApiDestination {
   cover_image?: string | null;
   hero_image?: string | null;
   destination_image?: string | null;
+  lat?: number | string | null;
+  lon?: number | string | null;
+  latitude?: number | string | null;
+  longitude?: number | string | null;
   city?: string | null;
   tags?: string | null;
   interest_tags?: string[] | null;
@@ -128,6 +134,24 @@ const cityMap: Record<string, string> = {
   "نجران": "najran",
 };
 
+const fallbackCoordsBySlug: Record<string, { lat: number; lon: number }> = {
+  abha: { lat: 18.2164, lon: 42.5053 },
+  "al-soudah": { lat: 18.2676, lon: 42.3678 },
+  "rijal-almua": { lat: 18.2007, lon: 42.2236 },
+  "khamis-mushait": { lat: 18.3009, lon: 42.7292 },
+  tanomah: { lat: 27.0972, lon: 44.1277 },
+  bisha: { lat: 19.9844, lon: 42.6052 },
+};
+
+const toNumber = (value: number | string | null | undefined): number | undefined => {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim().length > 0) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return undefined;
+};
+
 export const transformDestination = (row: ApiDestination, directusUrl: string): Destination => {
   const imageAsset = row.cover_image || row.hero_image || row.destination_image;
   const imageUrl = imageAsset
@@ -148,6 +172,8 @@ export const transformDestination = (row: ApiDestination, directusUrl: string): 
 
   const area = row.city || location?.split(",")[0]?.trim() || "";
   const cityId = cityMap[(row.city || "").trim()] || undefined;
+  const lat = toNumber(row.lat ?? row.latitude);
+  const lon = toNumber(row.lon ?? row.longitude);
 
   const sourceText = `${title} ${description}`;
   const fallbackTags: string[] = [];
@@ -170,6 +196,8 @@ export const transformDestination = (row: ApiDestination, directusUrl: string): 
     area,
     description,
     image: imageUrl,
+    lat,
+    lon,
     cityId,
     interestTags: mappedTags.filter(Boolean),
   };
@@ -197,7 +225,17 @@ export const fetchDestinations = async (): Promise<Destination[]> => {
 
 export const fetchDestinationsWithFallback = async (): Promise<Destination[]> => {
   const rows = await fetchDestinations();
-  return rows.length > 0 ? rows : FALLBACK_DESTINATIONS;
+  const source = rows.length > 0 ? rows : FALLBACK_DESTINATIONS;
+  return source.map((d) => {
+    if (typeof d.lat === "number" && typeof d.lon === "number") return d;
+    const fallback = fallbackCoordsBySlug[d.slug];
+    return fallback ? { ...d, ...fallback } : d;
+  });
+};
+
+export const getDestinationBySlug = async (slug: string): Promise<Destination | null> => {
+  const rows = await fetchDestinationsWithFallback();
+  return rows.find((d) => d.slug === slug) ?? null;
 };
 
 /** Maps a destination into `Landmark` shape for reuse of `AttractionsLandmarkCard` (design parity). */

@@ -7,12 +7,7 @@ export interface EventsInfoCard {
   link?: string;
 }
 
-/**
- * Backend handoff shape:
- * - `icon_key` can be one of: visa | airplane | hotel | binoculars
- * - `title_ar` should be Arabic text shown on card
- * - `link` is optional destination route/url
- */
+
 export interface EventsInfoBackendCard {
   id: number;
   icon_key?: "visa" | "airplane" | "hotel" | "binoculars" | string | null;
