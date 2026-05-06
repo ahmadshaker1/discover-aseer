@@ -32,16 +32,42 @@ interface CommunityMainSliderProps {
 
 function ChevronRight() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M7.14453 4.5L11.6445 9L7.14453 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M7.14453 4.5L11.6445 9L7.14453 13.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function ChevronLeft() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M10.8555 4.5L6.35547 9L10.8555 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M10.8555 4.5L6.35547 9L10.8555 13.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -54,6 +80,12 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const activeSlide = useMemo(() => slides[activeIndex], [slides, activeIndex]);
+  const previousSlideTitle = hasSlides
+    ? slides[(activeIndex - 1 + slides.length) % slides.length]?.title
+    : content.prevLabel;
+  const nextSlideTitle = hasSlides
+    ? slides[(activeIndex + 1) % slides.length]?.title
+    : content.nextLabel;
 
   useEffect(() => {
     if (!hasSlides || isPaused) return;
@@ -72,13 +104,22 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
   };
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]" dir="rtl">
+    <section
+      className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]"
+      dir="rtl"
+    >
       {/* Backend: update `sectionTitle` + `sectionSubtitle` from API/CMS only. */}
       <div className="mx-auto mb-8 flex w-full max-w-[760px] flex-col items-center text-center">
-        <h2 className="text-[44px] font-bold leading-[180%] text-black" style={{ fontFamily: ara }}>
+        <h2
+          className="text-[44px] font-bold leading-[180%] text-black"
+          style={{ fontFamily: ara }}
+        >
           {content.sectionTitle}
         </h2>
-        <p className="text-[20px] font-bold leading-[140%] text-[#6f6f6f]" style={{ fontFamily: ara }}>
+        <p
+          className="text-[20px] font-bold leading-6 text-[#6f6f6f]"
+          style={{ fontFamily: ara }}
+        >
           {content.sectionSubtitle}
         </p>
       </div>
@@ -100,7 +141,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
         ) : null}
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
 
-        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-4 text-white sm:p-6 lg:p-8">
+        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-20 text-white">
           <div className="flex w-full max-w-[510px] flex-col gap-[18px] text-right sm:h-[187px]">
             <h3
               className="text-[26px] font-bold leading-[40px] text-white sm:h-[48px] sm:text-[32px] sm:leading-[48px]"
@@ -110,7 +151,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
             </h3>
             <div className="sm:h-[121px]">
               <p
-                className="text-[18px] font-light leading-[100%] text-white/95"
+                className="text-[18px] font-light leading-7 text-white/95"
                 style={{ fontFamily: ibm }}
               >
                 {activeSlide?.description}
@@ -118,22 +159,23 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
             </div>
           </div>
 
-          {/* Backend: `prevLabel` and `nextLabel` are text-only config; button behavior stays unchanged. */}
-          <div className="flex h-12 w-[314px] items-center gap-6">
+          <div className="flex w-full max-w-[510px] items-center justify-start gap-6 text-white/90">
             <button
               type="button"
               onClick={goPrev}
-              className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20"
+              className="inline-flex items-center gap-4 text-[18px] font-medium leading-none transition-opacity hover:opacity-100"
+              style={{ fontFamily: ara }}
             >
               <ChevronRight />
-              <span style={{ fontFamily: ara }}>{content.prevLabel}</span>
+              {previousSlideTitle}
             </button>
             <button
               type="button"
               onClick={goNext}
-              className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white opacity-80 transition-colors hover:bg-white/20"
+              className="inline-flex items-center gap-4 text-[18px] font-medium leading-none opacity-80 transition-opacity hover:opacity-100"
+              style={{ fontFamily: ara }}
             >
-              <span style={{ fontFamily: ara }}>{content.nextLabel}</span>
+              {nextSlideTitle}
               <ChevronLeft />
             </button>
           </div>
