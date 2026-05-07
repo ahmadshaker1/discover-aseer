@@ -2,7 +2,8 @@
 
 import { Dialog, Transition, Disclosure } from "@headlessui/react";
 import { Fragment } from "react";
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import AseerLogo from "../Logo/AseerLogo";
 import { HamburgerIcon } from "./Icons";
 import { navigationLinks, discoverAseerLinks, iconButtons } from "./navbarData";
@@ -13,6 +14,18 @@ interface MobileMenuProps {
 }
 
 const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
+  const t = useTranslations();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const switchLocale = () => {
+    const nextLocale = locale === "ar" ? "en" : "ar";
+    const normalizedPathname = pathname.replace(/^\/(ar|en)(?=\/|$)/, "") || "/";
+    router.replace(normalizedPathname, { locale: nextLocale });
+    onClose();
+  };
+
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog as="div" className="lg:hidden relative z-50" onClose={onClose}>
@@ -35,7 +48,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                     type="button"
                     className="p-2 rounded-lg hover:bg-white/10 transition-colors"
                     onClick={onClose}
-                    aria-label="Close menu"
+                    aria-label={t("nav.closeMenu")}
                   >
                     <HamburgerIcon isOpen={true} />
                   </button>
@@ -46,11 +59,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                   {navigationLinks.map((link) => {
                     if (link.isDropdown) {
                       return (
-                        <Disclosure key={link.label} as="div">
+                        <Disclosure key={link.labelKey} as="div">
                           {({ open }) => (
                             <>
                               <Disclosure.Button className="w-full flex items-center justify-between text-white text-lg sm:text-xl font-medium py-3 border-b border-white/10 hover:opacity-80 transition-opacity">
-                                <span>{link.label}</span>
+                                <span>{t(link.labelKey)}</span>
                                 <svg
                                   className={`w-5 h-5 transition-transform duration-200 ${open ? "rotate-180" : ""
                                     }`}
@@ -83,7 +96,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                       onClick={onClose}
                                       className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
                                     >
-                                      {item.label}
+                                      {locale === "ar" ? item.labelAr : item.labelEn}
                                     </Link>
                                   ))}
                                 </Disclosure.Panel>
@@ -100,7 +113,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                         onClick={onClose}
                         className="text-white text-lg sm:text-xl font-medium hover:opacity-80 transition-opacity py-3 border-b border-white/10"
                       >
-                        {link.label}
+                        {t(link.labelKey)}
                       </Link>
                     );
                   })}
@@ -125,7 +138,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                               onClose();
                             }}
                             className="w-12 h-12 rounded-full border border-white/80 flex items-center justify-center hover:bg-white/10 transition-colors"
-                            aria-label="تحميل الدليل"
+                            aria-label={t("nav.downloadGuide")}
                           >
                             <Icon />
                           </button>
@@ -135,8 +148,12 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                         <Link
                           key={index}
                           href={item.href}
-                          onClick={onClose}
+                          onClick={index === 0 ? (e) => {
+                            e.preventDefault();
+                            switchLocale();
+                          } : onClose}
                           className="w-12 h-12 rounded-full border border-white/80 flex items-center justify-center hover:bg-white/10 transition-colors"
+                          aria-label={index === 0 ? t("nav.languageSwitchLabel") : undefined}
                         >
                           <Icon />
                         </Link>

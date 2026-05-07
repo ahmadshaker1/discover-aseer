@@ -1,0 +1,33 @@
+{
+  "common": {
+    "home": "Home",
+    "discoverAseer": "Discover Aseer"
+  },
+  "nav": {
+    "planTrip": "Plan your trip",
+    "events": "Events",
+    "closeMenu": "Close menu",
+    "downloadGuide": "Download guide",
+    "languageSwitchLabel": "Switch language"
+  },
+  "footer": {
+    "discoverAseerTitle": "Discover Aseer",
+    "planYourTripTitle": "Plan your trip",
+    "bookletsTitle": "Booklets",
+    "contactTitle": "Contact",
+    "newsletterTitle": "Newsletter",
+    "subscribe": "Subscribe",
+    "startTrip": "Design your trip",
+    "tourGuideLogin": "Tour guides sign in/register",
+    "poweredBy": "Powered by",
+    "contactUs": "Contact us",
+    "internationalCallCenter": "International call center",
+    "followUs": "Follow us on social media",
+    "copyright": "Aseer @ 2026. All rights reserved.",
+    "privacy": "Privacy policy"
+  },
+  "pageBanner": {
+    "browseMore": "Browse more"
+  }
+}
+

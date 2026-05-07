@@ -6,6 +6,7 @@
  */
 
 import type { Landmark } from "@/components/landmarks/data";
+import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
 export interface Destination {
   id: string;
@@ -95,14 +96,20 @@ export interface ApiDestination {
   id: string | number;
   status?: string;
   title?: string | null;
+  title_en?: string | null;
   title_ar?: string | null;
   name?: string | null;
+  name_en?: string | null;
   name_ar?: string | null;
   slug?: string | null;
   location?: string | null;
   address?: string | null;
   description?: string | null;
+  description_en?: string | null;
+  description_ar?: string | null;
   content?: string | null;
+  content_en?: string | null;
+  content_ar?: string | null;
   cover_image?: string | null;
   hero_image?: string | null;
   destination_image?: string | null;
@@ -152,15 +159,25 @@ const toNumber = (value: number | string | null | undefined): number | undefined
   return undefined;
 };
 
-export const transformDestination = (row: ApiDestination, directusUrl: string): Destination => {
+export const transformDestination = (
+  row: ApiDestination,
+  directusUrl: string,
+  locale: LocaleCode = "ar",
+): Destination => {
   const imageAsset = row.cover_image || row.hero_image || row.destination_image;
   const imageUrl = imageAsset
     ? `${directusUrl}/assets/${imageAsset}`
     : "/assets/activities/points-of-interest.jpg";
 
-  const title = row.title?.trim() || row.title_ar?.trim() || row.name?.trim() || row.name_ar?.trim() || "";
+  const title =
+    pickLocalizedField(row, "title", locale) ||
+    pickLocalizedField(row, "name", locale) ||
+    "";
   const location = row.location?.trim() || row.address?.trim() || row.city?.trim() || "";
-  const description = row.description?.trim() || row.content?.trim() || "";
+  const description =
+    pickLocalizedField(row, "description", locale) ||
+    pickLocalizedField(row, "content", locale) ||
+    "";
 
   const slug =
     row.slug?.trim() ||
@@ -203,7 +220,7 @@ export const transformDestination = (row: ApiDestination, directusUrl: string): 
   };
 };
 
-export const fetchDestinations = async (): Promise<Destination[]> => {
+export const fetchDestinations = async (locale: LocaleCode = "ar"): Promise<Destination[]> => {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
   if (!directusUrl) {
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
@@ -217,14 +234,14 @@ export const fetchDestinations = async (): Promise<Destination[]> => {
     const apiData: ApiDestinationResponse = await response.json();
     return apiData.data
       .filter((d) => !d.status || d.status === "published")
-      .map((d) => transformDestination(d, directusUrl));
+      .map((d) => transformDestination(d, directusUrl, locale));
   } catch {
     return [];
   }
 };
 
-export const fetchDestinationsWithFallback = async (): Promise<Destination[]> => {
-  const rows = await fetchDestinations();
+export const fetchDestinationsWithFallback = async (locale: LocaleCode = "ar"): Promise<Destination[]> => {
+  const rows = await fetchDestinations(locale);
   const source = rows.length > 0 ? rows : FALLBACK_DESTINATIONS;
   return source.map((d) => {
     if (typeof d.lat === "number" && typeof d.lon === "number") return d;
@@ -233,8 +250,11 @@ export const fetchDestinationsWithFallback = async (): Promise<Destination[]> =>
   });
 };
 
-export const getDestinationBySlug = async (slug: string): Promise<Destination | null> => {
-  const rows = await fetchDestinationsWithFallback();
+export const getDestinationBySlug = async (
+  slug: string,
+  locale: LocaleCode = "ar",
+): Promise<Destination | null> => {
+  const rows = await fetchDestinationsWithFallback(locale);
   return rows.find((d) => d.slug === slug) ?? null;
 };
 

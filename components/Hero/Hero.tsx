@@ -1,4 +1,12 @@
-const Hero = () => {
+interface HeroProps {
+  title?: string;
+  subtitle?: string;
+}
+
+const Hero = ({
+  title = "ألف مرحبا بكم في عسير",
+  subtitle = "حيث تلتقي التقاليد الخالدة بالمناظر الطبيعية الخلابة. جرب مزيجا فريدا من الثقافة والمغامرة والجمال الذي لا مثيل له.",
+}: HeroProps) => {
   return (
     <section className="w-full bg-[#070707]">
       {/* Hero banner */}
@@ -30,12 +38,11 @@ const Hero = () => {
                   lineHeight: "119%",
                 }}
               >
-                ألف مرحبا بكم في عسير
+                {title}
               </h1>
 
               <p
-                className="m
- text-white"
+                className="text-white"
                 style={{
                   fontFamily: "var(--font-ara-hamah-1964), sans-serif",
                   fontWeight: 700,
@@ -43,8 +50,7 @@ const Hero = () => {
                   lineHeight: "133%",
                 }}
               >
-                حيث تلتقي التقاليد الخالدة بالمناظر الطبيعية الخلابة. جرب مزيجا فريدا
-                من الثقافة والمغامرة والجمال الذي لا مثيل له.
+                {subtitle}
               </p>
             </div>
           </div>

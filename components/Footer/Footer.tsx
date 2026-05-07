@@ -1,5 +1,8 @@
-import Link from "next/link";
+"use client";
+
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import AseerLogo from "../Logo/AseerLogo";
 import {
   XIcon,
@@ -14,6 +17,8 @@ import {
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const Footer = () => {
+  const t = useTranslations();
+
   return (
     <footer className="w-full bg-[linear-gradient(359.31deg,#280048_43.01%,#3B016B_99.52%)] text-white">
       <div className="mx-auto w-full max-w-[1440px] px-4 py-5 sm:px-8 md:px-16 lg:h-[647px] lg:px-[130px]">
@@ -24,11 +29,11 @@ const Footer = () => {
               <div className="flex h-[82px] w-[295px] items-start gap-3">
                 <div className="flex h-[82px] w-[100px] flex-col items-start gap-4">
                   <p className="text-right text-[16px] font-bold leading-[110%]">
-                    مشغل بواسطة
+                    {t("footer.poweredBy")}
                   </p>
                   <Image
                     src="/assets/footer/powerd-by.png"
-                    alt="مشغل بواسطة"
+                    alt={t("footer.poweredBy")}
                     width={100}
                     height={48}
                     className="h-[48px] w-[100px] object-contain"
@@ -50,7 +55,7 @@ const Footer = () => {
             >   {/* اكتشف عسير */}
               <div className="flex w-full justify-self-start flex-col items-end text-right" dir="rtl">
                 <h3 className="w-full text-right text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
-                  اكتشف عسير
+                  {t("footer.discoverAseerTitle")}
                 </h3>
 
                 <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }} dir="rtl">
@@ -66,7 +71,7 @@ const Footer = () => {
               {/* خطط لرحلتك */}
               <div className="flex w-full justify-self-start flex-col items-end text-right" dir="rtl">
                 <h3 className="w-full text-right text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
-                  خطط لرحلتك
+                  {t("footer.planYourTripTitle")}
                 </h3>
 
                 <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }} dir="rtl">
@@ -81,7 +86,7 @@ const Footer = () => {
               {/* كتيبات */}
               <div className="flex w-full justify-self-start flex-col items-end text-right" dir="rtl">
                 <h3 className="w-full text-right text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
-                  كتيبات
+                  {t("footer.bookletsTitle")}
                 </h3>
 
                 <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }} dir="rtl">
@@ -114,15 +119,15 @@ const Footer = () => {
               {/* التواصل */}
               <div className="flex w-full justify-self-start flex-col items-end gap-4 text-right" dir="rtl" >
                 <h3 className="w-full text-right text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
-                  التواصل
+                  {t("footer.contactTitle")}
                 </h3>
 
                 <Link href="/services-support" className="block w-full text-right text-[18px] font-bold leading-[197%] hover:opacity-80" style={{ fontFamily: ara }}>
-                  تواصل معنا
+                  {t("footer.contactUs")}
                 </Link>
 
                 <div className="w-full text-right text-sm text-white/80" style={{ fontFamily: ara }}>
-                  مركز الاتصال الدولي
+                  {t("footer.internationalCallCenter")}
                 </div>
 
                 <a href="tel:+9669200000890" dir="ltr" className="block w-full text-right text-lg hover:opacity-80">
@@ -130,7 +135,7 @@ const Footer = () => {
                 </a>
 
                 <div className="w-full text-right text-xs text-white/70" style={{ fontFamily: ara }}>
-                  تابعنا في وسائل التواصل الاجتماعية
+                  {t("footer.followUs")}
                 </div>
 
                 <div className="flex w-full flex-row items-center justify-end gap-3" dir="ltr">
@@ -156,7 +161,7 @@ const Footer = () => {
                     className="flex h-[51px] w-[102px] items-center justify-center rounded-[100px] bg-white px-8 py-[21px] text-[19px] font-bold leading-[119%] text-[#280048]"
                     style={{ fontFamily: ara }}
                   >
-                    اشترك
+                    {t("footer.subscribe")}
                   </button>
                   <input
                     type="email"
@@ -169,7 +174,7 @@ const Footer = () => {
                 {/* Newsletter text */}
                 <div className="flex h-[79px] w-[138px] flex-col items-end gap-4 text-right">
                   <p className="h-[18px] w-[100px] text-right text-[16px] font-bold leading-[110%]" style={{ fontFamily: ara }}>
-                    النشرة البريدية
+                    {t("footer.newsletterTitle")}
                   </p>
                   <p className="h-[45px] w-[138px] text-right text-[10px] font-normal leading-[100%] text-white">
                     اشترك في النشرة البريدية لدينا لمعرفة المزيد عن العروض الخصومات الخاصة.
@@ -213,7 +218,7 @@ const Footer = () => {
                 className="flex h-[39px] w-[168px] items-center justify-center whitespace-nowrap rounded-[44px] border border-white px-4 text-center text-[18px] font-bold leading-[119%] text-white"
                 style={{ fontFamily: ara }}
               >
-                تسجيل/دخول المرشدين
+                {t("footer.tourGuideLogin")}
               </Link>
             </div>
 
@@ -221,9 +226,9 @@ const Footer = () => {
             <div className="mt-4 border-t border-white/20 pt-4">
               <div className="flex w-full justify-start" dir="ltr">
                 <div className="flex h-[20px] w-[237px] items-center gap-6 text-[13px] font-bold leading-[150%]" style={{ fontFamily: ara }}>
-                  <span className="whitespace-nowrap">Aseer @ 2026. All rights reserved.</span>
+                  <span className="whitespace-nowrap">{t("footer.copyright")}</span>
                   <Link href="#" className="whitespace-nowrap hover:opacity-80">
-                    سياسة الخصوصية
+                    {t("footer.privacy")}
                   </Link>
                 </div>
               </div>

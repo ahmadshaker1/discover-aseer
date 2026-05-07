@@ -2,7 +2,8 @@
 
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import Link from "next/link";
+import { useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { discoverAseerLinks } from "./navbarData";
 
 interface DiscoverAseerDropdownProps {
@@ -30,6 +31,8 @@ const ChevronIcon = ({ className }: { className?: string }) => (
 );
 
 const DiscoverAseerDropdown = ({ label }: DiscoverAseerDropdownProps) => {
+  const locale = useLocale();
+
   return (
     <Menu as="div" className="relative">
       <Menu.Button
@@ -73,7 +76,7 @@ const DiscoverAseerDropdown = ({ label }: DiscoverAseerDropdownProps) => {
                       : "text-white/90"
                       } block px-4 py-3 text-base font-medium transition-colors hover:bg-white/10 hover:text-white`}
                   >
-                    {item.label}
+                    {locale === "ar" ? item.labelAr : item.labelEn}
                   </Link>
                 )}
               </Menu.Item>

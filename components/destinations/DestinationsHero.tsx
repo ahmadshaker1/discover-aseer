@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { useLocale } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -66,10 +67,11 @@ const DestinationsHero = ({
   weatherLon = 42.5053,
   weatherArea = "أبها",
 }: DestinationsHeroProps) => {
+  const locale = useLocale();
   const [weather, setWeather] = useState<WeatherState>({
     tempMin: 18,
     tempMax: 21,
-    condition: "أمطار",
+    condition: locale === "ar" ? "أمطار" : "Rain",
     iconUrl: "https://openweathermap.org/img/wn/10d@2x.png",
   });
 
@@ -91,7 +93,7 @@ const DestinationsHero = ({
         setWeather({
           tempMin: Number.isFinite(data?.tempMin) ? data.tempMin : 18,
           tempMax: Number.isFinite(data?.tempMax) ? data.tempMax : 21,
-          condition: String(data?.condition || "أمطار"),
+          condition: String(data?.condition || (locale === "ar" ? "أمطار" : "Rain")),
           iconUrl: String(
             data?.iconUrl || "https://openweathermap.org/img/wn/10d@2x.png",
           ),
@@ -104,7 +106,7 @@ const DestinationsHero = ({
     return () => {
       cancelled = true;
     };
-  }, [weatherArea, weatherLat, weatherLon]);
+  }, [locale, weatherArea, weatherLat, weatherLon]);
 
   const tempRange = useMemo(() => {
     const high = Math.max(weather.tempMin, weather.tempMax);

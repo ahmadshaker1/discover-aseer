@@ -1,5 +1,8 @@
-import Link from "next/link";
+"use client";
+
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -58,6 +61,8 @@ const PageBanner = ({
   breadcrumbDir = "ltr",
   primaryCta,
 }: PageBannerProps) => {
+  const t = useTranslations();
+
   return (
     <div
       className="relative flex min-h-[75vh] w-full flex-col items-center justify-center overflow-hidden md:min-h-[80vh]"
@@ -148,7 +153,7 @@ const PageBanner = ({
                 className="min-w-0 flex-1 text-right text-[17px] font-bold leading-[100%]"
                 style={{ fontFamily: ara }}
               >
-                {primaryCta.label}
+                {primaryCta.label || t("pageBanner.browseMore")}
               </span>
             </Link>
           ) : null}

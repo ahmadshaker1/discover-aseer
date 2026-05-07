@@ -1,3 +1,5 @@
+import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+
 export interface Landmark {
   id: string;
   title: string;
@@ -71,7 +73,8 @@ function mapInterestTokenToId(token: string): string | null {
 
 export const transformLandmark = (
   apiLandmark: ApiLandmark,
-  directusUrl: string
+  directusUrl: string,
+  locale: LocaleCode = "ar",
 ): Landmark => {
   const imageAsset =
     apiLandmark.cover_image || apiLandmark.hero_image || apiLandmark.destination_image;
@@ -82,14 +85,15 @@ export const transformLandmark = (
     : "/assets/experiences/experiences.png";
 
   const title =
-    apiLandmark.title?.trim() ||
-    apiLandmark.title_ar?.trim() ||
-    apiLandmark.name?.trim() ||
-    apiLandmark.name_ar?.trim() ||
+    pickLocalizedField(apiLandmark, "title", locale) ||
+    pickLocalizedField(apiLandmark, "name", locale) ||
     "";
   const location =
     apiLandmark.location?.trim() || apiLandmark.address?.trim() || apiLandmark.city?.trim() || "";
-  const description = apiLandmark.description?.trim() || apiLandmark.content?.trim() || "";
+  const description =
+    pickLocalizedField(apiLandmark, "description", locale) ||
+    pickLocalizedField(apiLandmark, "content", locale) ||
+    "";
 
   // Extract guide name from description if it contains one
   // The description format seems to be: "تسلق جبل سودا مع متسلق الجبال المحلي فيصل"
@@ -183,7 +187,7 @@ export const transformLandmark = (
   };
 };
 
-export const fetchLandmarks = async (): Promise<Landmark[]> => {
+export const fetchLandmarks = async (locale: LocaleCode = "ar"): Promise<Landmark[]> => {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
 
   if (!directusUrl) {
@@ -203,7 +207,7 @@ export const fetchLandmarks = async (): Promise<Landmark[]> => {
     const apiData: ApiResponse = await response.json();
     return apiData.data
       .filter((landmark) => !landmark.status || landmark.status === "published")
-      .map((landmark) => transformLandmark(landmark, directusUrl));
+      .map((landmark) => transformLandmark(landmark, directusUrl, locale));
   } catch (error) {
     console.error("Error fetching landmarks:", error);
     return [];

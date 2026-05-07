@@ -48,11 +48,13 @@ export interface LandingStoriesFromAseerSectionProps {
   stories?: LandingStoryFromAseer[] | null;
   /** Optional override for the section heading */
   title?: string;
+  playVideoLabelPrefix?: string;
 }
 
 export default function LandingStoriesFromAseerSection({
   stories,
   title = "قصص من عسير",
+  playVideoLabelPrefix = "تشغيل الفيديو",
 }: LandingStoriesFromAseerSectionProps) {
   const items =
     stories && stories.length > 0 ? stories.slice(0, 2) : DEFAULT_STORIES_FROM_ASEER;
@@ -102,7 +104,7 @@ export default function LandingStoriesFromAseerSection({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="pointer-events-auto inline-flex cursor-pointer rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/30"
-                    aria-label={`تشغيل الفيديو ${story.year}`}
+                    aria-label={`${playVideoLabelPrefix} ${story.year}`}
                   >
                     <PlayIcon43 />
                   </a>

@@ -1,0 +1,33 @@
+{
+  "common": {
+    "home": "الرئيسية",
+    "discoverAseer": "اكتشف عسير"
+  },
+  "nav": {
+    "planTrip": "خطط رحلتك",
+    "events": "الفعاليات",
+    "closeMenu": "إغلاق القائمة",
+    "downloadGuide": "تحميل الدليل",
+    "languageSwitchLabel": "تبديل اللغة"
+  },
+  "footer": {
+    "discoverAseerTitle": "اكتشف عسير",
+    "planYourTripTitle": "خطط لرحلتك",
+    "bookletsTitle": "كتيبات",
+    "contactTitle": "التواصل",
+    "newsletterTitle": "النشرة البريدية",
+    "subscribe": "اشترك",
+    "startTrip": "صمم رحلتك",
+    "tourGuideLogin": "تسجيل/دخول المرشدين",
+    "poweredBy": "مشغل بواسطة",
+    "contactUs": "تواصل معنا",
+    "internationalCallCenter": "مركز الاتصال الدولي",
+    "followUs": "تابعنا في وسائل التواصل الاجتماعية",
+    "copyright": "Aseer @ 2026. All rights reserved.",
+    "privacy": "سياسة الخصوصية"
+  },
+  "pageBanner": {
+    "browseMore": "عرض المزيد"
+  }
+}
+

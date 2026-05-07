@@ -1,3 +1,5 @@
+import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+
 export interface Accommodation {
   id: string;
   name: string;
@@ -239,6 +241,7 @@ const buildAssetUrl = (directusUrl: string, assetId?: string | null) => {
 export const transformAccommodation = (
   apiAccommodation: ApiAccommodation,
   directusUrl: string,
+  locale: LocaleCode = "ar",
 ): Accommodation => {
   const imageUrl = buildAssetUrl(
     directusUrl,
@@ -246,13 +249,12 @@ export const transformAccommodation = (
   );
 
   const name = String(
-    apiAccommodation.name_ar ||
+    pickLocalizedField(apiAccommodation, "name", locale) ||
       apiAccommodation.name ||
-      apiAccommodation.name_en ||
-      "مكان إقامة",
+      (locale === "ar" ? "مكان إقامة" : "Accommodation"),
   );
 
-  const city = String(apiAccommodation.city || "أبها");
+  const city = String(apiAccommodation.city || (locale === "ar" ? "أبها" : "Abha"));
 
   const locationValue = String(apiAccommodation.location || "").trim();
   const location =
@@ -282,7 +284,9 @@ export const transformAccommodation = (
       apiAccommodation.content ||
         apiAccommodation.short_description ||
         apiAccommodation.description ||
-        "إقامة مميزة بخدمات فندقية وتجربة مريحة.",
+        (locale === "ar"
+          ? "إقامة مميزة بخدمات فندقية وتجربة مريحة."
+          : "A premium stay with comfortable hospitality services."),
     ),
     image: imageUrl,
     rating: toNumber(apiAccommodation.average_rating, 4.5),
@@ -332,7 +336,9 @@ export function splitAccommodationLists(
   return { carousel, grid };
 }
 
-export const fetchAccommodations = async (): Promise<Accommodation[]> => {
+export const fetchAccommodations = async (
+  locale: LocaleCode = "ar",
+): Promise<Accommodation[]> => {
   if (shouldUseAccommodationDummy()) {
     return DUMMY_ACCOMMODATIONS;
   }
@@ -373,7 +379,7 @@ export const fetchAccommodations = async (): Promise<Accommodation[]> => {
           !accommodation.status || accommodation.status === "published",
       )
       .map((accommodation) =>
-        transformAccommodation(accommodation, directusUrl),
+        transformAccommodation(accommodation, directusUrl, locale),
       );
     return transformed.length > 0 ? transformed : DUMMY_ACCOMMODATIONS;
   } catch (error) {
