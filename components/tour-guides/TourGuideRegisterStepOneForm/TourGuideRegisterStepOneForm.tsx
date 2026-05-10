@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
 
-export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 18;
+export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 19;
 
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
@@ -23,52 +23,50 @@ const LANGUAGE_LEVEL_OPTIONS = [
 ] as const;
 
 type FormValues = {
-  nameAr: string;
-  nameEn: string;
+  name_ar: string;
+  name_en: string;
   gender: "" | "ذكر" | "أنثى";
-  nationalId: string;
-  bio: string;
-  licenseNumber: string;
-  licenseExpiryDate: string;
-  arabicLevel: "" | "beginner" | "intermediate" | "advanced";
-  englishLevel: "" | "beginner" | "intermediate" | "advanced";
-  otherLanguages: string;
-  hasTransportation: "" | "yes" | "no";
-  specializations: string[];
-  otherSpecialization: string;
-  email: string;
-  mobile: string;
-  whatsapp: string;
-  website: string;
-  instagram: string;
-  xPlatform: string;
-  tiktok: string;
+  National_ID_number: string;
+  About_me: string;
+  License_number: string;
+  License_expiry_date: string;
+  english_language: "" | "beginner" | "intermediate" | "advanced";
+  Arabic_language: "" | "beginner" | "intermediate" | "advanced";
+  Other_languages: string;
+  Specialization: string;
+  Email: string;
+  transportation: "" | "yes" | "no";
+  WhatsApp_number: string;
+  Mobile_number: string;
+  Instagram: string;
+  Website: string;
+  TikTok: string;
+  X_platform: string;
   commitment1: boolean;
   commitment2: boolean;
   commitment3: boolean;
 };
 
 const EMPTY_VALUES: FormValues = {
-  nameAr: "",
-  nameEn: "",
+  name_ar: "",
+  name_en: "",
   gender: "",
-  nationalId: "",
-  bio: "",
-  licenseNumber: "",
-  licenseExpiryDate: "",
-  arabicLevel: "",
-  englishLevel: "",
-  otherLanguages: "",
-  hasTransportation: "",
-  specializations: [],
-  otherSpecialization: "",
-  email: "",
-  mobile: "",
-  whatsapp: "",
-  website: "",
-  instagram: "",
-  xPlatform: "",
-  tiktok: "",
+  National_ID_number: "",
+  About_me: "",
+  License_number: "",
+  License_expiry_date: "",
+  english_language: "",
+  Arabic_language: "",
+  Other_languages: "",
+  Specialization: "",
+  Email: "",
+  transportation: "",
+  WhatsApp_number: "",
+  Mobile_number: "",
+  Instagram: "",
+  Website: "",
+  TikTok: "",
+  X_platform: "",
   commitment1: false,
   commitment2: false,
   commitment3: false,
@@ -111,11 +109,31 @@ function isLicenseDateValid(dateText: string): boolean {
   return picked.getTime() >= today.getTime();
 }
 
+function buildSpecializationValue(
+  selectedSpecializations: string[],
+  otherSpecialization: string,
+) {
+  const list = selectedSpecializations.filter((item) => item !== "أخرى");
+  if (selectedSpecializations.includes("أخرى")) {
+    const trimmedOther = otherSpecialization.trim();
+    if (trimmedOther) {
+      list.push(trimmedOther);
+    } else if (list.length === 0) {
+      list.push("أخرى");
+    }
+  }
+  return list.join(", ");
+}
+
 const TourGuideRegisterStepOneForm = ({
   onCompletionChange,
 }: TourGuideRegisterStepOneFormProps) => {
   const baseId = useId();
   const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
+  const [selectedSpecializations, setSelectedSpecializations] = useState<
+    string[]
+  >([]);
+  const [otherSpecialization, setOtherSpecialization] = useState("");
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [licenseAttachmentFile, setLicenseAttachmentFile] =
     useState<File | null>(null);
@@ -124,31 +142,41 @@ const TourGuideRegisterStepOneForm = ({
   >("idle");
   const [submitMessage, setSubmitMessage] = useState("");
 
-  useEffect(() => {
-    const completed = [
-      values.nameAr.trim() !== "",
-      values.nameEn.trim() !== "",
+  const specializationValue = useMemo(
+    () =>
+      buildSpecializationValue(selectedSpecializations, otherSpecialization),
+    [selectedSpecializations, otherSpecialization],
+  );
+
+  const completedCount = useMemo(() => {
+    return [
+      values.name_ar.trim() !== "",
+      values.name_en.trim() !== "",
       values.gender !== "",
-      values.nationalId.trim() !== "",
+      values.National_ID_number.trim() !== "",
       profileImageFile != null,
-      values.bio.trim() !== "",
-      values.licenseNumber.trim() !== "",
-      isLicenseDateValid(values.licenseExpiryDate),
+      values.About_me.trim() !== "",
+      values.License_number.trim() !== "",
+      isLicenseDateValid(values.License_expiry_date),
       licenseAttachmentFile != null,
-      values.arabicLevel !== "",
-      values.englishLevel !== "",
-      values.hasTransportation !== "",
-      values.specializations.length > 0,
-      values.email.trim() !== "",
-      values.mobile.trim() !== "",
-      values.whatsapp.trim() !== "",
+      values.Arabic_language !== "",
+      values.english_language !== "",
+      values.transportation !== "",
+      specializationValue.trim() !== "",
+      values.Email.trim() !== "",
+      values.Mobile_number.trim() !== "",
+      values.WhatsApp_number.trim() !== "",
       values.commitment1,
       values.commitment2,
       values.commitment3,
     ].filter(Boolean).length;
+  }, [values, profileImageFile, licenseAttachmentFile, specializationValue]);
 
-    onCompletionChange(completed);
-  }, [values, profileImageFile, licenseAttachmentFile, onCompletionChange]);
+  const canSubmit = completedCount >= TOUR_GUIDE_REQUIRED_FIELDS_COUNT;
+
+  useEffect(() => {
+    onCompletionChange(completedCount);
+  }, [completedCount, onCompletionChange]);
 
   const setField = <K extends keyof FormValues>(
     key: K,
@@ -177,67 +205,44 @@ const TourGuideRegisterStepOneForm = ({
     setLicenseAttachmentFile(list?.[0] ?? null);
   };
 
-  const completedCount = useMemo(() => {
-    return [
-      values.nameAr.trim() !== "",
-      values.nameEn.trim() !== "",
-      values.gender !== "",
-      values.nationalId.trim() !== "",
-      profileImageFile != null,
-      values.bio.trim() !== "",
-      values.licenseNumber.trim() !== "",
-      isLicenseDateValid(values.licenseExpiryDate),
-      licenseAttachmentFile != null,
-      values.arabicLevel !== "",
-      values.englishLevel !== "",
-      values.hasTransportation !== "",
-      values.specializations.length > 0,
-      values.email.trim() !== "",
-      values.mobile.trim() !== "",
-      values.whatsapp.trim() !== "",
-      values.commitment1,
-      values.commitment2,
-      values.commitment3,
-    ].filter(Boolean).length;
-  }, [values, profileImageFile, licenseAttachmentFile]);
-
-  const canSubmit = completedCount >= TOUR_GUIDE_REQUIRED_FIELDS_COUNT;
-
-  const specializationValue = useMemo(() => {
-    const list = values.specializations.filter((s) => s !== "أخرى");
-    if (
-      values.specializations.includes("أخرى") &&
-      values.otherSpecialization.trim()
-    ) {
-      list.push(values.otherSpecialization.trim());
-    }
-    return list.join(", ");
-  }, [values.specializations, values.otherSpecialization]);
-
   const toggleSpecialization = (value: string) => {
-    const exists = values.specializations.includes(value);
+    const exists = selectedSpecializations.includes(value);
     if (exists) {
-      const next = values.specializations.filter((x) => x !== value);
-      setField("specializations", next);
-      if (value === "أخرى") setField("otherSpecialization", "");
+      const next = selectedSpecializations.filter((item) => item !== value);
+      setSelectedSpecializations(next);
+      if (value === "أخرى") {
+        setOtherSpecialization("");
+      }
+      setField(
+        "Specialization",
+        buildSpecializationValue(
+          next,
+          value === "أخرى" ? "" : otherSpecialization,
+        ),
+      );
       return;
     }
-    setField("specializations", [...values.specializations, value]);
+
+    const next = [...selectedSpecializations, value];
+    setSelectedSpecializations(next);
+    setField(
+      "Specialization",
+      buildSpecializationValue(next, otherSpecialization),
+    );
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!canSubmit || submitState === "submitting") return;
+  const onOtherSpecializationChange = (value: string) => {
+    setOtherSpecialization(value);
+    setField(
+      "Specialization",
+      buildSpecializationValue(selectedSpecializations, value),
+    );
+  };
 
-    if (!isLicenseDateValid(values.licenseExpiryDate)) {
-      setSubmitState("error");
-      setSubmitMessage("تاريخ انتهاء الترخيص منتهي أو غير صالح.");
-      return;
-    }
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (!profileImageFile || !licenseAttachmentFile) {
-      setSubmitState("error");
-      setSubmitMessage("يرجى إرفاق الصورة الشخصية ورخصة الإرشاد السياحي.");
+    if (!canSubmit || submitState === "submitting") {
       return;
     }
 
@@ -245,60 +250,43 @@ const TourGuideRegisterStepOneForm = ({
     setSubmitMessage("");
 
     try {
-      const body = new FormData();
+      const formData = new FormData();
 
-      body.append("name", values.nameAr.trim());
-      body.append("name_en", values.nameEn.trim());
-      body.append("gender", values.gender);
-      body.append("national_id", values.nationalId.trim());
-      body.append("description", values.bio.trim());
-      body.append("license_number", values.licenseNumber.trim());
-      body.append("date", values.licenseExpiryDate);
-      body.append("arabic_language_level", values.arabicLevel);
-      body.append("english_language_level", values.englishLevel);
-      body.append("other_languages", values.otherLanguages.trim());
-      body.append(
-        "transportation",
-        values.hasTransportation === "yes" ? "true" : "false",
-      );
-      body.append("specializations", specializationValue);
-      body.append("email", values.email.trim());
-      body.append("phone_number", values.mobile.trim());
-      body.append("whatsapp", values.whatsapp.trim());
-      body.append("website", values.website.trim());
-      body.append("instagram", values.instagram.trim());
-      body.append("x_platform", values.xPlatform.trim());
-      body.append("tiktok", values.tiktok.trim());
-      body.append("commitment_1", values.commitment1 ? "true" : "false");
-      body.append("commitment_2", values.commitment2 ? "true" : "false");
-      body.append("commitment_3", values.commitment3 ? "true" : "false");
+      Object.entries(values).forEach(([key, value]) => {
+        formData.append(key, String(value));
+      });
 
-      body.append("profile_image", profileImageFile);
-      body.append("license_attachment", licenseAttachmentFile);
+      if (profileImageFile) {
+        formData.append("Personal_photo", profileImageFile);
+      }
+
+      if (licenseAttachmentFile) {
+        formData.append("Tourist_Guide_License", licenseAttachmentFile);
+      }
 
       const response = await fetch("/api/tour-guides/register", {
         method: "POST",
-        body,
+        body: formData,
       });
 
-      const json = (await response.json().catch(() => null)) as {
-        error?: string;
-      } | null;
       if (!response.ok) {
-        throw new Error(json?.error || "تعذر إرسال النموذج.");
+        const errorBody = await response.json().catch(() => null);
+        throw new Error(
+          errorBody?.error ?? "تعذر إرسال الطلب، حاول مرة أخرى لاحقاً.",
+        );
       }
 
       setSubmitState("success");
-      setSubmitMessage("تم إرسال طلب التسجيل بنجاح.");
+      setSubmitMessage("تم إرسال الطلب بنجاح.");
       setValues(EMPTY_VALUES);
+      setSelectedSpecializations([]);
+      setOtherSpecialization("");
       setProfileImageFile(null);
       setLicenseAttachmentFile(null);
     } catch (error) {
       setSubmitState("error");
       setSubmitMessage(
-        error instanceof Error
-          ? error.message
-          : "حدث خطأ غير متوقع أثناء الإرسال.",
+        error instanceof Error ? error.message : "حدث خطأ غير متوقع.",
       );
     }
   };
@@ -316,8 +304,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-name-ar`}
-            value={values.nameAr}
-            onChange={(e) => setField("nameAr", e.target.value)}
+            value={values.name_ar}
+            onChange={(e) => setField("name_ar", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           />
@@ -333,8 +321,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-name-en`}
-            value={values.nameEn}
-            onChange={(e) => setField("nameEn", e.target.value)}
+            value={values.name_en}
+            onChange={(e) => setField("name_en", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -374,8 +362,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-nid`}
-            value={values.nationalId}
-            onChange={(e) => setField("nationalId", e.target.value)}
+            value={values.National_ID_number}
+            onChange={(e) => setField("National_ID_number", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
             inputMode="numeric"
@@ -392,8 +380,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <textarea
             id={`${baseId}-bio`}
-            value={values.bio}
-            onChange={(e) => setField("bio", e.target.value)}
+            value={values.About_me}
+            onChange={(e) => setField("About_me", e.target.value)}
             className="min-h-[110px] w-full rounded-lg border border-[#E5E7EB] p-4 text-right"
             style={{ fontFamily: ibm }}
           />
@@ -409,8 +397,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-license-number`}
-            value={values.licenseNumber}
-            onChange={(e) => setField("licenseNumber", e.target.value)}
+            value={values.License_number}
+            onChange={(e) => setField("License_number", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           />
@@ -427,8 +415,8 @@ const TourGuideRegisterStepOneForm = ({
           <input
             id={`${baseId}-license-date`}
             type="date"
-            value={values.licenseExpiryDate}
-            onChange={(e) => setField("licenseExpiryDate", e.target.value)}
+            value={values.License_expiry_date}
+            onChange={(e) => setField("License_expiry_date", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4"
             style={{ fontFamily: ibm }}
           />
@@ -444,11 +432,11 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <select
             id={`${baseId}-arabic-level`}
-            value={values.arabicLevel}
+            value={values.Arabic_language}
             onChange={(e) =>
               setField(
-                "arabicLevel",
-                e.target.value as FormValues["arabicLevel"],
+                "Arabic_language",
+                e.target.value as FormValues["Arabic_language"],
               )
             }
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
@@ -473,11 +461,11 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <select
             id={`${baseId}-english-level`}
-            value={values.englishLevel}
+            value={values.english_language}
             onChange={(e) =>
               setField(
-                "englishLevel",
-                e.target.value as FormValues["englishLevel"],
+                "english_language",
+                e.target.value as FormValues["english_language"],
               )
             }
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
@@ -502,8 +490,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-other-languages`}
-            value={values.otherLanguages}
-            onChange={(e) => setField("otherLanguages", e.target.value)}
+            value={values.Other_languages}
+            onChange={(e) => setField("Other_languages", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
             placeholder="مثال: الفرنسية، الإسبانية"
@@ -531,16 +519,16 @@ const TourGuideRegisterStepOneForm = ({
                 </span>
                 <input
                   type="checkbox"
-                  checked={values.specializations.includes(item)}
+                  checked={selectedSpecializations.includes(item)}
                   onChange={() => toggleSpecialization(item)}
                 />
               </label>
             ))}
           </div>
-          {values.specializations.includes("أخرى") ? (
+          {selectedSpecializations.includes("أخرى") ? (
             <input
-              value={values.otherSpecialization}
-              onChange={(e) => setField("otherSpecialization", e.target.value)}
+              value={otherSpecialization}
+              onChange={(e) => onOtherSpecializationChange(e.target.value)}
               className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
               style={{ fontFamily: ibm }}
               placeholder="اذكر التخصص الآخر"
@@ -558,11 +546,11 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <select
             id={`${baseId}-transportation`}
-            value={values.hasTransportation}
+            value={values.transportation}
             onChange={(e) =>
               setField(
-                "hasTransportation",
-                e.target.value as FormValues["hasTransportation"],
+                "transportation",
+                e.target.value as FormValues["transportation"],
               )
             }
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
@@ -585,8 +573,8 @@ const TourGuideRegisterStepOneForm = ({
           <input
             id={`${baseId}-email`}
             type="email"
-            value={values.email}
-            onChange={(e) => setField("email", e.target.value)}
+            value={values.Email}
+            onChange={(e) => setField("Email", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -603,8 +591,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-mobile`}
-            value={values.mobile}
-            onChange={(e) => setField("mobile", e.target.value)}
+            value={values.Mobile_number}
+            onChange={(e) => setField("Mobile_number", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
             inputMode="tel"
@@ -621,8 +609,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-whatsapp`}
-            value={values.whatsapp}
-            onChange={(e) => setField("whatsapp", e.target.value)}
+            value={values.WhatsApp_number}
+            onChange={(e) => setField("WhatsApp_number", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
             inputMode="tel"
@@ -639,8 +627,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-website`}
-            value={values.website}
-            onChange={(e) => setField("website", e.target.value)}
+            value={values.Website}
+            onChange={(e) => setField("Website", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -657,8 +645,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-instagram`}
-            value={values.instagram}
-            onChange={(e) => setField("instagram", e.target.value)}
+            value={values.Instagram}
+            onChange={(e) => setField("Instagram", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -675,8 +663,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-x`}
-            value={values.xPlatform}
-            onChange={(e) => setField("xPlatform", e.target.value)}
+            value={values.X_platform}
+            onChange={(e) => setField("X_platform", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -693,8 +681,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <input
             id={`${baseId}-tiktok`}
-            value={values.tiktok}
-            onChange={(e) => setField("tiktok", e.target.value)}
+            value={values.TikTok}
+            onChange={(e) => setField("TikTok", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"

@@ -1,297 +1,102 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-const PROFILE_IMAGE_ALLOWED_MIME_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-] as const;
+async function uploadFileToDirectus(file: File) {
+  const fileData = new FormData();
+  fileData.append("file", file);
 
-const LICENSE_ALLOWED_MIME_TYPES = [
-  "application/pdf",
-  "image/jpeg",
-  "image/jpg",
-] as const;
+  console.log(`📤 جاري رفع الملف: ${file.name} ...`);
 
-function getEnv(name: string): string {
-  return (process.env[name] || "").trim();
-}
-
-function getMaxFileSizeBytes(): number {
-  const mbRaw = Number(getEnv("TOUR_GUIDE_UPLOAD_MAX_MB") || "10");
-  const mb = Number.isFinite(mbRaw) && mbRaw > 0 ? mbRaw : 10;
-  return Math.floor(mb * 1024 * 1024);
-}
-
-function getText(formData: FormData, name: string): string {
-  const value = formData.get(name);
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function getBoolean(formData: FormData, name: string): boolean {
-  const value = getText(formData, name).toLowerCase();
-  return value === "true" || value === "1" || value === "yes";
-}
-
-function getFile(formData: FormData, name: string): File | null {
-  const value = formData.get(name);
-  if (!(value instanceof File)) return null;
-  if (value.size <= 0) return null;
-  return value;
-}
-
-async function uploadFileToDirectus(
-  baseUrl: string,
-  token: string,
-  file: File,
-): Promise<string> {
-  const uploadBody = new FormData();
-  uploadBody.append("file", file, file.name);
-
-  const uploadResponse = await fetch(`${baseUrl}/files`, {
+  const response = await fetch("https://tool-portal.discoveraseer.com/files", {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: uploadBody,
+    body: fileData,
   });
 
-  if (!uploadResponse.ok) {
-    const text = await uploadResponse.text();
-    throw new Error(
-      `Upload failed (${uploadResponse.status}): ${text.slice(0, 200)}`,
-    );
+  const json = await response.json();
+
+  if (!response.ok) {
+    console.error("❌ خطأ من دايركتس أثناء رفع الملف:", json);
+    throw new Error(`Directus File Upload Error: ${JSON.stringify(json)}`);
   }
 
-  const uploadJson = (await uploadResponse.json()) as {
-    data?: { id?: string };
-  };
-  const fileId = uploadJson?.data?.id;
-  if (!fileId) {
-    throw new Error("Upload succeeded but response had no file id");
-  }
-
-  return fileId;
+  console.log(`✅ تم رفع الملف بنجاح، الـ ID: ${json.data.id}`);
+  return json.data.id;
 }
 
-function fileUrlFromId(baseUrl: string, fileId: string): string {
-  return `${baseUrl}/assets/${fileId}`;
-}
-
-function isLicenseDateValid(dateText: string): boolean {
-  if (!dateText) return false;
-  const picked = new Date(`${dateText}T00:00:00`);
-  if (Number.isNaN(picked.getTime())) return false;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return picked.getTime() >= today.getTime();
-}
-
-function normalizePhone(value: string): string {
-  return value.trim().replace(/\.0+$/, "").replace(/\D/g, "");
-}
-
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const directusWriteBase =
-      getEnv("DIRECTUS_WRITE_BASE_URL") ||
-      getEnv("NEXT_PUBLIC_DIRECTUS_APP_URL");
-    const directusToken = getEnv("DIRECTUS_WRITE_TOKEN");
-    const collection =
-      getEnv("DIRECTUS_TOUR_GUIDE_APPLICATIONS_COLLECTION") || "tourist_guides";
-    const profileImageField =
-      getEnv("DIRECTUS_TOUR_GUIDE_PROFILE_IMAGE_FIELD") || "image";
-    const licenseAttachmentField =
-      getEnv("DIRECTUS_TOUR_GUIDE_LICENSE_ATTACHMENT_FIELD") ||
-      "license_attachment";
-
-    if (!directusWriteBase || !directusToken) {
-      return NextResponse.json(
-        { error: "Tour guide submission is not configured" },
-        { status: 500 },
-      );
-    }
-
     const formData = await request.formData();
-    const name = getText(formData, "name");
-    const nameEn = getText(formData, "name_en");
-    const gender = getText(formData, "gender");
-    const nationalId = getText(formData, "national_id");
-    const description = getText(formData, "description");
-    const licenseNumber = getText(formData, "license_number");
-    const expiryDate = getText(formData, "date");
-    const arabicLevel = getText(formData, "arabic_language_level");
-    const englishLevel = getText(formData, "english_language_level");
-    const otherLanguages = getText(formData, "other_languages");
-    const transportation = getBoolean(formData, "transportation");
-    const specializations = getText(formData, "specializations");
-    const email = getText(formData, "email");
-    const phoneNumber = normalizePhone(getText(formData, "phone_number"));
-    const whatsapp = normalizePhone(getText(formData, "whatsapp"));
-    const website = getText(formData, "website");
-    const instagram = getText(formData, "instagram");
-    const xPlatform = getText(formData, "x_platform");
-    const tiktok = getText(formData, "tiktok");
+    console.log("📦 البيانات وصلت للسيرفر الداخلي بنجاح!");
 
-    const commitment1 = getBoolean(formData, "commitment_1");
-    const commitment2 = getBoolean(formData, "commitment_2");
-    const commitment3 = getBoolean(formData, "commitment_3");
+    const personalPhoto = formData.get("Personal_photo");
+    const touristLicense = formData.get("Tourist_Guide_License");
 
-    const profileImage = getFile(formData, "profile_image");
-    const licenseAttachment = getFile(formData, "license_attachment");
-
-    if (
-      !name ||
-      !nameEn ||
-      !gender ||
-      !nationalId ||
-      !description ||
-      !licenseNumber ||
-      !expiryDate ||
-      !arabicLevel ||
-      !englishLevel ||
-      !specializations ||
-      !email ||
-      !phoneNumber ||
-      !whatsapp
-    ) {
-      return NextResponse.json(
-        { error: "يرجى تعبئة جميع الحقول المطلوبة." },
-        { status: 400 },
-      );
+    // التأكد من أن الملفات حقيقية وليست نصوص
+    if (personalPhoto && typeof personalPhoto === "string") {
+      throw new Error("الصورة الشخصية وصلت كنص وليس كملف! تأكد من الواجهة.");
     }
 
-    if (!isLicenseDateValid(expiryDate)) {
-      return NextResponse.json(
-        { error: "تاريخ انتهاء الترخيص منتهي أو غير صالح." },
-        { status: 400 },
-      );
+    let photoId = null;
+    let licenseId = null;
+
+    if (personalPhoto instanceof File && personalPhoto.size > 0) {
+      photoId = await uploadFileToDirectus(personalPhoto);
     }
 
-    if (!profileImage || !licenseAttachment) {
-      return NextResponse.json(
-        { error: "يرجى إرفاق الصورة الشخصية ورخصة الإرشاد السياحي." },
-        { status: 400 },
-      );
+    if (touristLicense instanceof File && touristLicense.size > 0) {
+      licenseId = await uploadFileToDirectus(touristLicense);
     }
 
-    if (!commitment1 || !commitment2 || !commitment3) {
-      return NextResponse.json(
-        { error: "يجب الموافقة على جميع التعهدات." },
-        { status: 400 },
-      );
-    }
+    const finalData: Record<string, any> = {};
+    formData.forEach((value, key) => {
+      if (key !== "Personal_photo" && key !== "Tourist_Guide_License") {
+        finalData[key] = value;
+      }
+    });
 
-    const maxFileSizeBytes = getMaxFileSizeBytes();
+    if (photoId) finalData.Personal_photo = photoId;
+    if (licenseId) finalData.Tourist_Guide_License = licenseId;
 
-    if (
-      profileImage.size > maxFileSizeBytes ||
-      licenseAttachment.size > maxFileSizeBytes
-    ) {
-      return NextResponse.json(
-        {
-          error: `حجم الملف كبير جدا. الحد الأقصى ${(maxFileSizeBytes / (1024 * 1024)).toFixed(0)}MB.`,
-        },
-        { status: 400 },
-      );
-    }
+    console.log("🚀 جاري إرسال البيانات النهائية لجدول المرشدين:", finalData);
 
-    if (
-      !PROFILE_IMAGE_ALLOWED_MIME_TYPES.includes(
-        profileImage.type as (typeof PROFILE_IMAGE_ALLOWED_MIME_TYPES)[number],
-      )
-    ) {
-      return NextResponse.json(
-        { error: "الصورة الشخصية يجب أن تكون JPG أو PNG أو WEBP." },
-        { status: 400 },
-      );
-    }
-
-    if (
-      !LICENSE_ALLOWED_MIME_TYPES.includes(
-        licenseAttachment.type as (typeof LICENSE_ALLOWED_MIME_TYPES)[number],
-      )
-    ) {
-      return NextResponse.json(
-        { error: "مرفق الرخصة يجب أن يكون JPG أو JPEG أو PDF." },
-        { status: 400 },
-      );
-    }
-
-    const profileImageId = await uploadFileToDirectus(
-      directusWriteBase,
-      directusToken,
-      profileImage,
-    );
-
-    const licenseAttachmentId = await uploadFileToDirectus(
-      directusWriteBase,
-      directusToken,
-      licenseAttachment,
-    );
-
-    const payload: Record<string, unknown> = {
-      name,
-      name_en: nameEn,
-      gender,
-      national_id: nationalId,
-      description,
-      license_number: licenseNumber,
-      date: expiryDate,
-      arabic_language_level: arabicLevel,
-      english_language_level: englishLevel,
-      other_languages: otherLanguages || null,
-      transportation,
-      specializations,
-      email,
-      phone_number: phoneNumber,
-      whatsapp,
-      website: website || null,
-      instagram: instagram || null,
-      x_platform: xPlatform || null,
-      tiktok: tiktok || null,
-      commitment_1: commitment1,
-      commitment_2: commitment2,
-      commitment_3: commitment3,
-      [profileImageField]: fileUrlFromId(directusWriteBase, profileImageId),
-      [licenseAttachmentField]: fileUrlFromId(
-        directusWriteBase,
-        licenseAttachmentId,
-      ),
-    };
-
-    const createResponse = await fetch(
-      `${directusWriteBase}/items/${encodeURIComponent(collection)}`,
+    // 5. الإرسال لدايركتس
+    const directusResponse = await fetch(
+      "https://tool-portal.discoveraseer.com/items/tour_guides_form",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${directusToken}`,
-        },
-        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(finalData),
       },
     );
 
-    if (!createResponse.ok) {
-      const text = await createResponse.text();
+    // 🌟 التعديل السحري هنا: إذا كان الرد 204 يعني نجح بدون ما يرجع بيانات
+    if (directusResponse.status === 204) {
+      console.log("✅ تم حفظ البيانات في دايركتس بنجاح (رد 204)");
       return NextResponse.json(
-        { error: `تعذر حفظ الطلب في قاعدة البيانات. ${text.slice(0, 200)}` },
-        { status: 502 },
+        { success: true, message: "تم التسجيل بنجاح" },
+        { status: 200 },
       );
     }
 
-    const createJson = (await createResponse.json()) as {
-      data?: { id?: string | number };
-    };
+    // أما إذا كان الرد شيء ثاني (خطأ مثلاً)، نقرأه بأمان
+    const responseText = await directusResponse.text();
+    const directusResult = responseText ? JSON.parse(responseText) : {};
 
-    return NextResponse.json({
-      success: true,
-      applicationId: createJson?.data?.id ?? null,
-      uploadedFiles: 2,
-    });
-  } catch (error) {
-    console.error("Tour guide register API error:", error);
+    if (!directusResponse.ok) {
+      console.error("❌ Directus Form Error:", directusResult);
+      return NextResponse.json(
+        { error: "Directus rejected" },
+        { status: directusResponse.status },
+      );
+    }
+
     return NextResponse.json(
-      { error: "حدث خطأ غير متوقع أثناء إرسال النموذج." },
+      { success: true, data: directusResult },
+      { status: 200 },
+    );
+  } catch (error: any) {
+    console.error("🚨 Server Fatal Error:", error.message || error);
+    return NextResponse.json(
+      { error: error.message || "Internal Server Error" },
       { status: 500 },
     );
   }
