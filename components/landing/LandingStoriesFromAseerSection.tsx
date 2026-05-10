@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
 import type { LandingStoryFromAseer } from "@/components/landing/storiesFromAseerTypes";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -23,54 +26,60 @@ function PlayIcon43() {
   );
 }
 
-/** Fallback rows until CMS/video API is connected */
-export const DEFAULT_STORIES_FROM_ASEER: LandingStoryFromAseer[] = [
-  {
-    id: "story-1",
-    year: "2024",
-    posterSrc: "/assets/landing/videoPlaceholder.png",
-    videoUrl: null,
-    description:
-      "دعنا نذهب إلى عسير-مناطق الكلمات المحتملة / المرشحة لفن الطهو-الشرق الأوسط وشمال أفريقيا",
-  },
-  {
-    id: "story-2",
-    year: "2023",
-    posterSrc: "/assets/landing/videoPlaceholder.png",
-    videoUrl: null,
-    description:
-      "قصص من قلب عسير — تراث، طبيعة، وضيافة تجمع الماضي بالحاضر في تجربة بصرية تنقلك إلى الجنوب.",
-  },
-];
-
 export interface LandingStoriesFromAseerSectionProps {
-  /** Pass loaded CMS items; falls back to `DEFAULT_STORIES_FROM_ASEER` when omitted or empty */
+  /** Pass loaded CMS items; falls back to translated placeholders when omitted or empty */
   stories?: LandingStoryFromAseer[] | null;
   /** Optional override for the section heading */
   title?: string;
   playVideoLabelPrefix?: string;
 }
 
+function useDefaultStoriesFromAseer(): LandingStoryFromAseer[] {
+  const t = useTranslations("storiesFromAseer");
+  return [
+    {
+      id: "story-1",
+      year: "2024",
+      posterSrc: "/assets/landing/videoPlaceholder.png",
+      videoUrl: null,
+      description: t("story1"),
+    },
+    {
+      id: "story-2",
+      year: "2023",
+      posterSrc: "/assets/landing/videoPlaceholder.png",
+      videoUrl: null,
+      description: t("story2"),
+    },
+  ];
+}
+
 export default function LandingStoriesFromAseerSection({
   stories,
-  title = "قصص من عسير",
-  playVideoLabelPrefix = "تشغيل الفيديو",
+  title,
+  playVideoLabelPrefix,
 }: LandingStoriesFromAseerSectionProps) {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tHome = useTranslations("home");
+  const resolvedTitle = title ?? tHome("storiesTitle");
+  const resolvedPlayPrefix = playVideoLabelPrefix ?? tHome("playVideoPrefix");
+  const fallbackStories = useDefaultStoriesFromAseer();
   const items =
-    stories && stories.length > 0 ? stories.slice(0, 2) : DEFAULT_STORIES_FROM_ASEER;
+    stories && stories.length > 0 ? stories.slice(0, 2) : fallbackStories;
 
   return (
     <section
       className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 bg-white px-4 py-10 md:px-[120px] md:pb-14 md:pt-10"
-      dir="ltr"
+      dir={isRtl ? "rtl" : "ltr"}
     >
-      <div className="mx-auto flex w-full max-w-[1200px] min-h-[94px] flex-col items-end justify-center">
+      <div className={`mx-auto flex w-full max-w-[1200px] min-h-[94px] flex-col ${isRtl ? "items-end" : "items-start"} justify-center`}>
         <div className="flex w-full max-w-[319px] flex-col gap-[10px] border-b border-[#E4E4E4] pb-[10px] pt-[7px]">
           <h2
-            className="text-right text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-black"
+            className={`${isRtl ? "text-right" : "text-left"} text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-black`}
             style={{ fontFamily: ara }}
           >
-            {title}
+            {resolvedTitle}
           </h2>
         </div>
       </div>
@@ -81,7 +90,7 @@ export default function LandingStoriesFromAseerSection({
             <div className="relative h-[422px] w-full max-w-[584px] overflow-hidden rounded-[12px] bg-black md:max-w-none">
               <Image
                 src={story.posterSrc}
-                alt={`${title} — ${story.year}`}
+                alt={`${resolvedTitle} — ${story.year}`}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 584px"
@@ -104,7 +113,7 @@ export default function LandingStoriesFromAseerSection({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="pointer-events-auto inline-flex cursor-pointer rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/30"
-                    aria-label={`${playVideoLabelPrefix} ${story.year}`}
+                    aria-label={`${resolvedPlayPrefix} ${story.year}`}
                   >
                     <PlayIcon43 />
                   </a>

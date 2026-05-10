@@ -35,6 +35,7 @@ const DesktopActionLinks = () => {
     const nextLocale = locale === "ar" ? "en" : "ar";
     const normalizedPathname = pathname.replace(/^\/(ar|en)(?=\/|$)/, "") || "/";
     router.replace(normalizedPathname, { locale: nextLocale });
+    router.refresh();
   };
 
   return (

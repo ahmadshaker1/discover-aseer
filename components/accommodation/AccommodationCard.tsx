@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import type { Accommodation } from "./data";
 import { accommodationMapsHref } from "./data";
 
@@ -16,6 +19,7 @@ const AccommodationCard = ({
   layout = "grid",
   showExceptionalTag = false,
 }: AccommodationCardProps) => {
+  const t = useTranslations("common");
   const mapsHref = accommodationMapsHref(accommodation);
   const showBadge = showExceptionalTag || Boolean(accommodation.exceptional);
   const widthClass =
@@ -75,7 +79,7 @@ const AccommodationCard = ({
           dir="rtl"
           className="mt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-[#E9D9F2] px-4 py-2.5 text-[16px] font-bold text-[#6C2BD9] transition-colors hover:bg-[#dfc5ee]"
         >
-          <span className="text-right">الموقع</span>
+          <span className="text-right">{t("location")}</span>
           <img src={LOCATION_PIN} alt="" width={15} height={15} className="shrink-0" />
         </a>
       </div>

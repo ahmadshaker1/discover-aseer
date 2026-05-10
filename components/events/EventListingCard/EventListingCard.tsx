@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useLocale } from "next-intl";
 import type { EventListingItem } from "../types";
 
 const PLACEHOLDER = "/assets/experiences/experiences.png";
@@ -120,6 +121,8 @@ interface EventListingCardProps {
 }
 
 const EventListingCard = ({ event }: EventListingCardProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const [imageIndex, setImageIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
 
@@ -140,8 +143,8 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   const venue = event.venueLabel ?? event.title;
 
   const expandedPanel = (
-    <div className="flex flex-col gap-4 px-4 pb-4 pt-5 text-right sm:pt-6" dir="rtl">
-      <h3 className="w-full text-right text-2xl font-bold leading-none text-black" style={{ fontFamily: ara }}>
+    <div className={`flex flex-col gap-4 px-4 pb-4 pt-5 sm:pt-6 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
+      <h3 className={`w-full text-2xl font-bold leading-none text-black ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ara }}>
         {event.title}
       </h3>
 
@@ -155,7 +158,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             href={event.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-0.5 block text-right text-sm font-medium text-[#6027D2] underline"
+            className={`mt-0.5 block text-sm font-medium text-[#6027D2] underline ${isRtl ? "text-right" : "text-left"}`}
             style={{ fontFamily: ibm }}
           >
             {event.mapsLinkLabel}
@@ -165,9 +168,9 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
       <div className="flex w-full gap-3 text-[#9CA3AF]">
         <CalendarIcon className="shrink-0 text-[#9CA3AF]" />
-        <div className="min-w-0 text-right">
+        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
           <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
-            التاريخ
+            {isRtl ? "التاريخ" : "Date"}
           </p>
           <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
             {event.dateRange}
@@ -177,9 +180,9 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
       <div className="flex w-full gap-3 text-[#9CA3AF]">
         <ClockIcon className="shrink-0 text-[#9CA3AF]" />
-        <div className="min-w-0 text-right">
+        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
           <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
-            الوقت
+            {isRtl ? "الوقت" : "Time"}
           </p>
           <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
             {event.timeRange}
@@ -189,9 +192,9 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
       <div className="flex w-full gap-3">
         <CurrencyIcon className="mt-0.5 shrink-0 text-[#19171A]" />
-        <div className="min-w-0 text-right">
+        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
           <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
-            التذكرة
+            {isRtl ? "التذكرة" : "Ticket"}
           </p>
           <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
             {event.priceLabel}
@@ -204,7 +207,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   return (
     <div
       className="group/card relative z-0 mx-auto h-[357px] w-full max-w-[318px] justify-self-center hover:z-40 focus-within:z-40"
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
         setHovered(false);
@@ -230,8 +233,8 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           />
 
           <div
-            className="absolute left-2 top-2 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]"
-            dir="rtl"
+            className={`absolute top-2 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-2" : "right-2"}`}
+            dir={isRtl ? "rtl" : "ltr"}
           >
             <RatingStar />
             <span
@@ -243,7 +246,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           </div>
 
           <div
-            className="absolute right-2 top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-right text-[14px] font-bold leading-none text-white"
+            className={`absolute top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-[14px] font-bold leading-none text-white ${isRtl ? "right-2 text-right" : "left-2 text-left"}`}
             style={{ fontFamily: ara }}
           >
             {imageIndex + 1}/3

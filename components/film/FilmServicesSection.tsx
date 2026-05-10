@@ -1,4 +1,5 @@
 import type { FilmServiceCard } from "@/components/film/data";
+import { useLocale } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -50,15 +51,17 @@ const iconByKey = {
 };
 
 const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   return (
-    <section className="mx-auto h-auto w-full max-w-[1442px] p-[60px]" dir="ltr">
+    <section className="mx-auto h-auto w-full max-w-[1442px] p-[60px]" dir={isRtl ? "rtl" : "ltr"}>
       <div className="mx-auto flex w-full max-w-[1322px] flex-col gap-16">
         <div className="h-[22px] w-full">
           <h2
-            className="text-right text-[48px] font-bold leading-[38px] text-black"
+            className={`${isRtl ? "text-right" : "text-left"} text-[48px] font-bold leading-[38px] text-black`}
             style={{ fontFamily: ara }}
           >
-            الخدمات
+            {isRtl ? "الخدمات" : "Services"}
           </h2>
         </div>
 
@@ -66,21 +69,21 @@ const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
           {cards.slice(0, 3).map((card) => (
             <article
               key={card.id}
-              className="flex h-[290px] w-full max-w-[434.666687px] flex-col items-end gap-6 rounded-[13px] border border-[#E8E8E8] px-8 py-[50px]"
+              className={`flex h-[290px] w-full max-w-[434.666687px] flex-col gap-6 rounded-[13px] border border-[#E8E8E8] px-8 py-[50px] ${isRtl ? "items-end" : "items-start"}`}
             >
-              <div className="flex h-[73.026314px] w-[73.026314px] items-center justify-center self-end rounded-full border border-[#E8E8E8] bg-white">
+              <div className={`flex h-[73.026314px] w-[73.026314px] items-center justify-center rounded-full border border-[#E8E8E8] bg-white ${isRtl ? "self-end" : "self-start"}`}>
                 {iconByKey[card.iconKey]}
               </div>
 
-              <div className="flex w-full max-w-[370.666687px] flex-col gap-3 text-right">
+              <div className={`flex w-full max-w-[370.666687px] flex-col gap-3 ${isRtl ? "text-right" : "text-left"}`}>
                 <h3
-                  className="text-right text-[32px] font-bold leading-[30px] text-black"
+                  className={`text-[32px] font-bold leading-[30px] text-black ${isRtl ? "text-right" : "text-left"}`}
                   style={{ fontFamily: ara }}
                 >
                   {card.title}
                 </h3>
                 <p
-                  className="text-right text-[15px] font-light leading-[119%] text-[#252525]"
+                  className={`text-[15px] font-light leading-[119%] text-[#252525] ${isRtl ? "text-right" : "text-left"}`}
                   style={{ fontFamily: ibm }}
                 >
                   {card.description}

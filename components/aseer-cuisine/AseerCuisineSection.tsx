@@ -1,4 +1,7 @@
+ "use client";
+
 import Link from "next/link";
+import { useLocale } from "next-intl";
 import type { AseerCuisineDish } from "@/components/aseer-cuisine/data";
 
 interface AseerCuisineSectionProps {
@@ -35,25 +38,29 @@ function ClockIcon() {
 }
 
 const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const cards = dishes.slice(0, 6);
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] py-8" dir="rtl">
+    <section className="mx-auto w-full max-w-[1440px] py-8" dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex w-full flex-col gap-8">
         <div className="px-4 sm:px-8 xl:px-[120px]">
           <div className="flex w-full items-start justify-between">
-            <div className="flex min-h-[94px] flex-col items-end justify-end gap-2 pb-[10px] pt-[7px] text-right">
+            <div className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] ${isRtl ? "items-end justify-end text-right" : "items-start justify-start text-left"}`}>
               <h2
-                className="w-full text-right text-[64px] font-bold leading-[119%] text-black"
+                className={`w-full text-[64px] font-bold leading-[119%] text-black ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ara }}
               >
-                المطبخ العسيري
+                {isRtl ? "المطبخ العسيري" : "Aseeri cuisine"}
               </h2>
               <p
-                className="h-[7px] w-[610px] text-right text-[16px] font-bold leading-[24px] text-[#1D1F1F]/70"
+                className={`h-[7px] w-[610px] text-[16px] font-bold leading-[24px] text-[#1D1F1F]/70 ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ara }}
               >
-                زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.
+                {isRtl
+                  ? "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+                  : "One visit is never enough with all the activities and experiences on offer."}
               </p>
             </div>
 
@@ -62,7 +69,7 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
               className="flex h-[52px] w-[161px] items-center justify-center gap-2 rounded-[55px] border border-[#FFFFFF54] bg-[#6027D2] p-[10px] text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90"
               style={{ fontFamily: ara }}
             >
-              المطبخ العسيري
+              {isRtl ? "المطبخ العسيري" : "Aseeri cuisine"}
             </Link>
           </div>
         </div>
@@ -72,8 +79,8 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
             {cards.map((card) => (
               <article
                 key={card.id}
-                className="group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white text-right transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl"
-                dir="rtl"
+                className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl ${isRtl ? "text-right" : "text-left"}`}
+                dir={isRtl ? "rtl" : "ltr"}
               >
                 <div className="relative h-[190px] w-full overflow-hidden">
                   <img
@@ -82,9 +89,9 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute left-3 top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]" dir="ltr">
+                  <div className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-3" : "right-3"}`} dir="ltr">
                     <RatingStar />
-                    <span className="min-w-0 truncate text-right text-[11px] font-medium leading-none text-white">
+                    <span className="min-w-0 truncate text-[11px] font-medium leading-none text-white">
                       ({card.reviews}) {Number(card.rating).toFixed(1)}/5
                     </span>
                   </div>
@@ -102,7 +109,7 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
                     <div className="flex h-[16px] w-[73px] items-center gap-1">
                       <ClockIcon />
                       <span
-                        className="h-[8px] w-[53px] -translate-y-px text-right text-[18px] font-bold leading-[100%] text-black"
+                        className="h-[8px] w-[53px] -translate-y-px text-[18px] font-bold leading-[100%] text-black"
                         style={{ fontFamily: ara }}
                       >
                         {card.timeText}
@@ -112,7 +119,7 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
                     <div className="flex h-[16px] w-[42px] items-center gap-1">
                       <UtensilsIcon />
                       <span
-                        className="h-[8px] w-[22px] -translate-y-px text-right text-[18px] font-bold leading-[100%] text-black"
+                        className="h-[8px] w-[22px] -translate-y-px text-[18px] font-bold leading-[100%] text-black"
                         style={{ fontFamily: ara }}
                       >
                         {card.mainIngredient}

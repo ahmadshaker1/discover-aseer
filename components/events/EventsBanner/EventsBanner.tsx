@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -28,7 +29,10 @@ function BreadcrumbChevron() {
   );
 }
 
-const EventsBanner = () => {
+export default async function EventsBanner() {
+  const tEvents = await getTranslations("events");
+  const tCommon = await getTranslations("common");
+
   return (
     <div
       className="relative flex min-h-[75vh] w-full flex-col items-center justify-center overflow-hidden md:min-h-[80vh]"
@@ -55,21 +59,20 @@ const EventsBanner = () => {
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-3 py-8 sm:px-4 sm:py-10">
         <div className="mx-auto flex w-full max-w-[460px] flex-col items-center gap-6 text-center sm:gap-7">
-          {/* Breadcrumb — RTL: الفعاليات ← chevron ← الصفحة الرئيسية (same treatment as hero title) */}
           <div
             className="flex flex-wrap items-center justify-center gap-[9px]"
             dir="rtl"
             style={{ fontFamily: ara }}
           >
             <span className="text-right text-[16px] font-bold leading-[119%] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]">
-              الفعاليات
+              {tEvents("breadcrumb")}
             </span>
             <BreadcrumbChevron />
             <Link
               href="/"
               className="text-right text-[16px] font-bold leading-[119%] text-white transition-opacity [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] hover:opacity-85"
             >
-              الصفحة الرئيسية
+              {tCommon("breadcrumbHome")}
             </Link>
           </div>
 
@@ -77,15 +80,14 @@ const EventsBanner = () => {
             className="w-full text-[clamp(2rem,7vw,70px)] font-bold leading-[119%] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]"
             style={{ fontFamily: ara }}
           >
-            الفعاليات
+            {tEvents("title")}
           </h1>
 
           <p
             className="w-full text-[clamp(0.9375rem,3.2vw,24px)] font-bold leading-[119%] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.4)]"
             style={{ fontFamily: ara }}
           >
-            فعاليات فنية وثقافية وشعبية وتجارب بيئية ورياضية ضمن أنشطة وتجارب أخرى صممت لجميع
-            الاهتمامات على مدار العام.
+            {tEvents("subtitle")}
           </p>
 
           <button
@@ -93,12 +95,10 @@ const EventsBanner = () => {
             className="inline-flex h-12 min-w-[229px] items-center justify-center gap-[10px] rounded-[20px] bg-[#6C2BD9] px-16 py-2 text-[20px] font-bold leading-none text-white transition-colors hover:bg-[#5b24b8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             style={{ fontFamily: ara }}
           >
-            أضف فعاليتك
+            {tEvents("addYourEvent")}
           </button>
         </div>
       </div>
     </div>
   );
-};
-
-export default EventsBanner;
+}

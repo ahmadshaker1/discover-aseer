@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
 import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmarkCard";
 import type { Landmark } from "@/components/landmarks/data";
@@ -53,12 +54,16 @@ function LeftArrowIcon() {
 
 const AttractionsLandmarksSection = ({
   landmarks,
-  title = "اكتشف أشهر المعالم السياحية",
+  title,
   description,
   decorationImageSrc,
   showFilters = false,
   landmarkCardHref,
 }: AttractionsLandmarksSectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const t = useTranslations("common");
+  const sectionTitle = title ?? t("exploreAttractionsDefault");
   const [city, setCity] = useState<string | null>(null);
   const [interest, setInterest] = useState<string | null>(null);
   const [traveler, setTraveler] = useState<string | null>(null);
@@ -92,18 +97,18 @@ const AttractionsLandmarksSection = ({
   }, [city, interest, landmarks, price, traveler]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-white py-12" dir="rtl">
+    <section className="relative w-full overflow-hidden bg-white py-12" dir={isRtl ? "rtl" : "ltr"}>
       {decorationImageSrc ? (
         <div
           aria-hidden
-          className="pointer-events-none absolute right-0 top-1/2 z-1 h-[457px] w-[773px] -translate-y-1/2 bg-[#7300CD] opacity-40"
+          className={`pointer-events-none absolute top-1/2 z-1 h-[457px] w-[773px] -translate-y-1/2 bg-[#7300CD] opacity-40 ${isRtl ? "right-0" : "left-0"}`}
           style={{
             WebkitMaskImage: `url(${decorationImageSrc})`,
             maskImage: `url(${decorationImageSrc})`,
             WebkitMaskRepeat: "no-repeat",
             maskRepeat: "no-repeat",
-            WebkitMaskPosition: "right center",
-            maskPosition: "right center",
+            WebkitMaskPosition: isRtl ? "right center" : "left center",
+            maskPosition: isRtl ? "right center" : "left center",
             WebkitMaskSize: "contain",
             maskSize: "contain",
           }}
@@ -111,16 +116,16 @@ const AttractionsLandmarksSection = ({
       ) : null}
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
         <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-start justify-between gap-4">
-          <div className="space-y-2 text-right">
+          <div className={`space-y-2 ${isRtl ? "text-right" : "text-left"}`}>
             <h2
-              className="w-full max-w-[620px] text-right text-[48px] font-bold leading-[100%] text-[#280048]"
+              className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-[#280048] ${isRtl ? "text-right" : "text-left"}`}
               style={{ fontFamily: ara }}
             >
-              {title}
+              {sectionTitle}
             </h2>
             {description ? (
               <p
-                className="h-[11px] w-[430px] text-right text-[24px] font-bold leading-[119%] text-[#252525]/80"
+                className={`h-[11px] w-[430px] text-[24px] font-bold leading-[119%] text-[#252525]/80 ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ara }}
               >
                 {description}
@@ -131,13 +136,13 @@ const AttractionsLandmarksSection = ({
 
         {showFilters ? (
           <div className="mx-auto mb-8 w-full max-w-[1181px] overflow-x-auto pb-1">
-            <div className="flex min-w-max items-center justify-start gap-3 px-1">
+            <div className={`flex min-w-max items-center gap-3 px-1 ${isRtl ? "justify-start" : "justify-end"}`}>
               <select
                 value={city ?? ""}
                 onChange={(e) => setCity(e.target.value || null)}
                 className="h-[48px] w-[190px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">المدينة</option>
+                <option value="">{t("city")}</option>
                 {cityOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -149,7 +154,7 @@ const AttractionsLandmarksSection = ({
                 onChange={(e) => setInterest(e.target.value || null)}
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">الاهتمامات</option>
+                <option value="">{t("interests")}</option>
                 {interestOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -161,7 +166,7 @@ const AttractionsLandmarksSection = ({
                 onChange={(e) => setTraveler(e.target.value || null)}
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">المسافرين</option>
+                <option value="">{t("travelers")}</option>
                 {travelerOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -173,7 +178,7 @@ const AttractionsLandmarksSection = ({
                 onChange={(e) => setPrice((e.target.value as PriceFilterId) || null)}
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">السعر</option>
+                <option value="">{t("price")}</option>
                 {priceOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -190,7 +195,7 @@ const AttractionsLandmarksSection = ({
                 }}
                 className="h-[48px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-5 text-sm text-[#535353] hover:bg-gray-50"
               >
-                اعادة تعيين النتائج
+                {t("resetFilters")}
               </button>
             </div>
           </div>
@@ -214,11 +219,11 @@ const AttractionsLandmarksSection = ({
             href="/attractions"
             className="inline-flex h-[52px] min-w-[161px] cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-[#6027D2]/30 bg-[#6027D2] px-8 text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90"
             style={{ fontFamily: ara }}
-            dir="ltr"
+            dir={isRtl ? "ltr" : "rtl"}
           >
             <LeftArrowIcon />
-            <span className="whitespace-nowrap text-right text-[20px] font-bold leading-[100%]">
-              عرض المزيد
+            <span className={`whitespace-nowrap text-[20px] font-bold leading-[100%] ${isRtl ? "text-right" : "text-left"}`}>
+              {t("browseMore")}
             </span>
           </Link>
         </div>

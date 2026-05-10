@@ -16,6 +16,7 @@ interface DestinationSlugPageProps {
 const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
   const locale = (await getLocale()) as "ar" | "en";
   const t = await getTranslations();
+  const tDest = await getTranslations("destinations");
   const { slug } = await params;
   const destination = await getDestinationBySlug(slug, locale);
 
@@ -26,7 +27,7 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
       <DestinationsHero
         breadcrumbs={[
           { label: destination.title },
-          { label: locale === "ar" ? "الوجهات" : "Destinations", href: "/destinations" },
+          { label: tDest("breadcrumbDestinations"), href: "/destinations" },
           { label: t("common.home"), href: "/" },
         ]}
         title={destination.area || destination.title}

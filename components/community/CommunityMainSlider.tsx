@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useLocale } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -44,6 +45,8 @@ function ChevronLeft() {
 }
 
 const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   // Backend: pass `content.slides` from API; UI autoplay/controls work automatically.
   const slides = content.slides;
   const hasSlides = slides.length > 0;
@@ -69,7 +72,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
   };
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]" dir="rtl">
+    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]" dir={isRtl ? "rtl" : "ltr"}>
       {/* Backend: update `sectionTitle` + `sectionSubtitle` from API/CMS only. */}
       <div className="mx-auto mb-8 flex w-full max-w-[760px] flex-col items-center text-center">
         <h2 className="text-[44px] font-bold leading-[180%] text-black" style={{ fontFamily: ara }}>
@@ -98,7 +101,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
 
         <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-4 text-white sm:p-6 lg:p-8">
-          <div className="flex w-full max-w-[510px] flex-col gap-[18px] text-right sm:h-[187px]">
+          <div className={`flex w-full max-w-[510px] flex-col gap-[18px] ${isRtl ? "text-right" : "text-left"} sm:h-[187px]`}>
             <h3
               className="text-[26px] font-bold leading-[40px] text-white sm:h-[48px] sm:text-[32px] sm:leading-[48px]"
               style={{ fontFamily: ara }}
@@ -116,7 +119,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
           </div>
 
           {/* Prev/next controls rendered as links (not buttons). */}
-          <div className="flex h-12 w-[314px] items-center gap-6" dir="ltr">
+          <div className="flex h-12 w-[314px] items-center gap-6" dir={isRtl ? "ltr" : "rtl"}>
             <Link
               href={`/aseer-community?slide=${activeIndex >= lastIndex ? 0 : activeIndex + 1}`}
               onClick={(event) => {
@@ -125,9 +128,9 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
               }}
               className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full text-white transition-colors hover:bg-white/20"
             >
-              <ChevronRight />
+              <span className={isRtl ? "" : "rotate-180"}><ChevronRight /></span>
               <span
-                className="text-[18px] font-light leading-[100%] text-right"
+                className={`text-[18px] font-light leading-[100%] ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ibm }}
               >
                 مجتمع مترابط
@@ -142,13 +145,13 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
               className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full  text-white opacity-80 transition-colors hover:bg-white/20"
             >
               <span
-                className="text-[18px] font-light leading-[100%] text-right"
+                className={`text-[18px] font-light leading-[100%] ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ibm }}
               >
 
                 شيم عسير
               </span>
-              <ChevronLeft />
+              <span className={isRtl ? "" : "rotate-180"}><ChevronLeft /></span>
             </Link>
           </div>
         </div>

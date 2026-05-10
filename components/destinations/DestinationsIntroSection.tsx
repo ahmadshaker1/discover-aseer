@@ -7,7 +7,7 @@ import {
   XIcon,
 } from "@/components/Footer/Icons";
 import SafeHtml from "@/components/common/SafeHtml";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -54,7 +54,7 @@ const DestinationsIntroSection = ({
   hideImage = false,
   centerContent = false,
 }: DestinationsIntroSectionProps) => {
-  const locale = useLocale();
+  const t = useTranslations("common");
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]" dir="rtl">
       <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:flex-row lg:items-start">
@@ -77,7 +77,7 @@ const DestinationsIntroSection = ({
               className="shrink-0 text-[18px] font-bold leading-[180%] text-black"
               style={{ fontFamily: ara }}
             >
-              {locale === "ar" ? "شارك" : "Share"}
+              {t("share")}
             </span>
             <div className="flex items-center gap-2 text-black/70" dir="ltr">
               <a href="#" aria-label="WhatsApp" className="hover:opacity-80">

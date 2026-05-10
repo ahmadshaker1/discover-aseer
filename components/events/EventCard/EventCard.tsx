@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Button } from "@headlessui/react";
 import { ArrowLeftIcon } from "./Icons";
@@ -20,6 +23,7 @@ const EventCard = ({
   isHappeningNow = false,
   detailsUrl,
 }: EventCardProps) => {
+  const t = useTranslations("common");
   return (
     <div className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
       {/* Image Section */}
@@ -35,7 +39,7 @@ const EventCard = ({
         {/* "يحدث الان" (Happening Now) Tag - Top Right */}
         {isHappeningNow && (
           <div className="absolute top-3 right-3 bg-black/80 backdrop-blur-sm rounded-lg px-3 py-1.5">
-            <span className="text-white text-sm font-medium">يحدث الان</span>
+            <span className="text-white text-sm font-medium">{t("happeningNow")}</span>
           </div>
         )}
 
@@ -50,7 +54,7 @@ const EventCard = ({
       <div className="p-4 bg-white">
         <Link href={detailsUrl}>
           <Button className="w-full px-6 py-3 bg-[#7300CD] hover:bg-[#6027D2] text-white font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 flex items-center justify-center gap-2">
-            <span>عرض التفاصيل</span>
+            <span>{t("viewDetails")}</span>
             <ArrowLeftIcon />
           </Button>
         </Link>

@@ -59,12 +59,12 @@ const Footer = () => {
                 </h3>
 
                 <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }} dir="rtl">
-                  <Link href="/destinations" dir="rtl" className="block w-full text-right hover:opacity-80">الوجهات الرئيسية</Link>
-                  <Link href="/attractions" dir="rtl" className="block w-full text-right hover:opacity-80">المعالم السياحية</Link>
-                  <Link href="/experiences" dir="rtl" className="block w-full text-right hover:opacity-80">التجارب السياحية</Link>
-                  <Link href="/aseer-cuisine" dir="rtl" className="block w-full text-right hover:opacity-80">المطبخ العسيري</Link>
-                  <Link href="/aseer-community" dir="rtl" className="block w-full text-right hover:opacity-80">مجتمع عسير</Link>
-                  <Link href="/event-seasons" dir="rtl" className="mt-4 block w-full text-right hover:opacity-80">المواسم و الفعاليات</Link>
+                  <Link href="/destinations" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkMainDestinations")}</Link>
+                  <Link href="/attractions" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkAttractions")}</Link>
+                  <Link href="/experiences" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkExperiences")}</Link>
+                  <Link href="/aseer-cuisine" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkCuisine")}</Link>
+                  <Link href="/aseer-community" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkCommunity")}</Link>
+                  <Link href="/event-seasons" dir="rtl" className="mt-4 block w-full text-right hover:opacity-80">{t("footer.linkEventsSeasons")}</Link>
                 </div>
               </div>
 
@@ -75,11 +75,11 @@ const Footer = () => {
                 </h3>
 
                 <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }} dir="rtl">
-                  <Link href="/planner" dir="rtl" className="block w-full text-right hover:opacity-80">صمم رحلتك</Link>
-                  <Link href="/accommodation" dir="rtl" className="block w-full text-right hover:opacity-80">أماكن الإقامة</Link>
-                  <Link href="/restaurants" dir="rtl" className="block w-full text-right hover:opacity-80">المطاعم</Link>
-                  <Link href="/tour-guides" dir="rtl" className="block w-full text-right hover:opacity-80">المرشدين السياحيين</Link>
-                  <Link href="/travel-tips" dir="rtl" className="block w-full text-right hover:opacity-80">الوصول و التجول</Link>
+                  <Link href="/planner" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkPlanner")}</Link>
+                  <Link href="/accommodation" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkAccommodation")}</Link>
+                  <Link href="/restaurants" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkRestaurants")}</Link>
+                  <Link href="/tour-guides" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkTourGuides")}</Link>
+                  <Link href="/travel-tips" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkTravelTips")}</Link>
                 </div>
               </div>
 
@@ -96,7 +96,7 @@ const Footer = () => {
                         className="text-right text-[18px] font-bold leading-[197%]"
                         style={{ fontFamily: ara }}
                       >
-                        اكتشف عسير
+                        {t("footer.linkDiscoverBooklet")}
                       </span>
                       <BookletSmallArrowIcon />
                     </span>
@@ -108,7 +108,7 @@ const Footer = () => {
                         className="text-right text-[18px] font-bold leading-[197%]"
                         style={{ fontFamily: ara }}
                       >
-                        دليل الأنشطة الخارجية
+                        {t("footer.linkOutdoorGuide")}
                       </span>
                       <BookletSmallArrowIcon />
                     </span>
@@ -165,7 +165,7 @@ const Footer = () => {
                   </button>
                   <input
                     type="email"
-                    placeholder="Example @email.com"
+                    placeholder={t("common.emailPlaceholder")}
                     className="h-[52px] w-[283px] rounded-[100px] bg-[#7300CD29] px-6 py-[22px] text-[12px] font-medium leading-[119%] text-white placeholder:text-white/45 focus:outline-none"
                     style={{ fontFamily: "KoningDisplay Trial, sans-serif" }}
                   />
@@ -177,7 +177,7 @@ const Footer = () => {
                     {t("footer.newsletterTitle")}
                   </p>
                   <p className="h-[45px] w-[138px] text-right text-[10px] font-normal leading-[100%] text-white">
-                    اشترك في النشرة البريدية لدينا لمعرفة المزيد عن العروض الخصومات الخاصة.
+                    {t("common.newsletterDescription")}
                   </p>
                 </div>
               </div>
@@ -185,26 +185,26 @@ const Footer = () => {
               {/* Middle block */}
               <div className="flex h-[79px] w-[231px] flex-col items-end gap-3 text-right">
                 <p className="h-[18px] w-[231px] text-right text-[16px] font-bold leading-[110%] text-white" style={{ fontFamily: ara }}>
-                  عضو في
+                  {t("common.memberOf")}
                 </p>
                 <div className="flex h-[34px] w-[231px] items-center justify-between gap-4" dir="ltr">
                   <Image
                     src="/assets/footer/UN-tourism.png"
-                    alt="UN Tourism"
+                    alt={t("footer.altUnTourism")}
                     width={36}
                     height={34}
                     className="h-[34px] w-[36px] object-contain brightness-0 invert"
                   />
                   <Image
                     src="/assets/footer/PATA.png"
-                    alt="PATA"
+                    alt={t("footer.altPata")}
                     width={63}
                     height={34}
                     className="h-[34px] w-[63px] object-contain"
                   />
                   <Image
                     src="/assets/footer/GSTC.png"
-                    alt="GSTC"
+                    alt={t("footer.altGstc")}
                     width={100}
                     height={34}
                     className="h-[34px] w-[100px] object-contain"

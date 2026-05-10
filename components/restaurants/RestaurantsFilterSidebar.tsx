@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
@@ -39,14 +40,15 @@ interface FilterHeaderProps {
 }
 
 const FilterHeader = ({ onReset }: FilterHeaderProps) => {
+  const t = useTranslations("common");
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-3 sm:gap-4 sm:space-x-4">
-      <h2 className="text-lg sm:text-xl font-bold text-black">تصفية المطاعم</h2>
+      <h2 className="text-lg sm:text-xl font-bold text-black">{t("filterRestaurants")}</h2>
       <Button
         onClick={onReset}
         className="px-3 sm:px-4 py-1.5 sm:py-2 cursor-pointer text-xs sm:text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
       >
-        إعادة تعيين النتائج
+        {t("resetFilters")}
       </Button>
     </div>
   );
@@ -62,6 +64,7 @@ const LocationFilter = ({
   selectedCity,
   onCityChange,
 }: LocationFilterProps) => {
+  const t = useTranslations("common");
   const selectedCityOption = cityOptions.find((opt) => opt.id === selectedCity);
 
   return (
@@ -70,7 +73,7 @@ const LocationFilter = ({
         <Menu.Button className="flex flex-row-reverse items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer">
           <ChevronDownIcon />
           <span className="flex-1 text-right">
-            {selectedCityOption?.label || "المدينة"}
+            {selectedCityOption?.label || t("city")}
           </span>
           <LocationIcon />
         </Menu.Button>
@@ -127,12 +130,13 @@ const RestaurantTypeFilter = ({
   selectedTypes,
   onTypeToggle,
 }: RestaurantTypeFilterProps) => {
+  const t = useTranslations("common");
   return (
     <div className="mb-6 sm:mb-8">
       <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <RestaurantTypeIcon />
         <h3 className="text-base sm:text-lg font-bold text-black">
-          نوع المطعم
+          {t("restaurantType")}
         </h3>
       </div>
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
@@ -207,12 +211,13 @@ const CuisineTypeFilter = ({
   selectedCuisines,
   onCuisineToggle,
 }: CuisineTypeFilterProps) => {
+  const t = useTranslations("common");
   return (
     <div>
       <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <CuisineIcon />
         <h3 className="text-base sm:text-lg font-bold text-black">
-          اختر نوع المطبخ
+          {t("chooseCuisineType")}
         </h3>
       </div>
       <div className="space-y-3 sm:space-y-4">
@@ -243,6 +248,7 @@ const CuisineTypeFilter = ({
 
 // Main Component
 const RestaurantsFilterSidebar = () => {
+  const t = useTranslations("common");
   const [filters, setFilters] = useState<FilterState>({
     city: null,
     restaurantType: [],
@@ -250,17 +256,17 @@ const RestaurantsFilterSidebar = () => {
   });
 
   const restaurantTypes: RestaurantType[] = [
-    { id: "featured", label: "مميزة", icon: <StarIcon /> },
-    { id: "popular", label: "شعبية", icon: <BuildingIcon /> },
-    { id: "luxury", label: "فاخرة", icon: <DiamondIcon /> },
+    { id: "featured", label: t("featured"), icon: <StarIcon /> },
+    { id: "popular", label: t("popular"), icon: <BuildingIcon /> },
+    { id: "luxury", label: t("luxury"), icon: <DiamondIcon /> },
   ];
 
   // Sample cuisine counts - in real app, these would come from data
   const cuisinesWithCounts: CuisineOption[] = [
-    { id: "asian", label: "اسيوي", count: 4 },
-    { id: "american", label: "امريكي", count: 3 },
-    { id: "saudi", label: "سعودي", count: 3 },
-    { id: "middle-eastern", label: "شرق اوسطي", count: 3 },
+    { id: "asian", label: t("cuisineAsian"), count: 4 },
+    { id: "american", label: t("cuisineAmerican"), count: 3 },
+    { id: "saudi", label: t("cuisineSaudi"), count: 3 },
+    { id: "middle-eastern", label: t("cuisineMiddleEastern"), count: 3 },
   ];
 
   const handleRestaurantTypeToggle = (typeId: string) => {

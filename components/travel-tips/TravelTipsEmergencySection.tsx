@@ -1,4 +1,7 @@
+ "use client";
+
 import type { ReactNode } from "react";
+import { useLocale } from "next-intl";
 import {
   IconArrow,
   IconBell,
@@ -40,17 +43,19 @@ interface TravelTipsEmergencySectionProps {
 }
 
 const TravelTipsEmergencySection = ({ contacts }: TravelTipsEmergencySectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   return (
     <section
       className="mx-auto w-full max-w-[1440px] px-4 pb-12 sm:px-8 md:px-[60px]"
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         <h2
-          className="min-h-[47px] w-full text-right text-[44px] font-bold leading-[180%] text-black"
+          className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-black ${isRtl ? "text-right" : "text-left"}`}
           style={{ fontFamily: ara }}
         >
-          أرقام تهمك
+          {isRtl ? "أرقام تهمك" : "Emergency contacts"}
         </h2>
 
         <div

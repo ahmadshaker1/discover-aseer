@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import type { Accommodation } from "./data";
 import AccommodationCard from "./AccommodationCard";
 
@@ -10,6 +13,7 @@ const AccommodationHotelsGrid = ({
   items,
   showTopDivider,
 }: AccommodationHotelsGridProps) => {
+  const t = useTranslations("common");
   if (items.length === 0) return null;
 
   return (
@@ -22,7 +26,7 @@ const AccommodationHotelsGrid = ({
         dir="rtl"
         className="mb-4 text-right text-xl font-bold text-black sm:text-2xl [unicode-bidi:isolate]"
       >
-        الفنادق
+        {t("hotels")}
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {items.map((a) => (

@@ -1,7 +1,92 @@
 {
   "common": {
     "home": "Home",
-    "discoverAseer": "Discover Aseer"
+    "discoverAseer": "Discover Aseer",
+    "breadcrumbHome": "Home",
+    "subtitleOneVisit": "One visit is never enough with all the activities and experiences on offer.",
+    "browseMore": "Browse more",
+    "resetFilters": "Reset filters",
+    "city": "City",
+    "interests": "Interests",
+    "travelers": "Travelers",
+    "price": "Price",
+    "share": "Share",
+    "destinations": "Destinations",
+    "experiences": "Experiences",
+    "events": "Events",
+    "accommodation": "Accommodation",
+    "restaurants": "Restaurants",
+    "attractions": "Attractions",
+    "filterExperiences": "Filter experiences",
+    "filterEvents": "Filter events",
+    "filterRestaurants": "Filter restaurants",
+    "filterDestinations": "Filter destinations",
+    "date": "Date",
+    "cost": "Cost",
+    "free": "Free",
+    "paid": "Paid",
+    "more": "More",
+    "bookNow": "Book now",
+    "group": "Group",
+    "currencySar": "SAR",
+    "metadataTitle": "Discover Aseer",
+    "metadataDescription": "Discover Aseer region — heritage, nature and hospitality.",
+    "memberOf": "Member of",
+    "newsletterDescription": "Subscribe to our newsletter for offers and special discounts.",
+    "emailPlaceholder": "Example @email.com",
+    "noPointsOfInterest": "No points of interest available",
+    "weatherRain": "Rain",
+    "happeningNow": "Happening now",
+    "viewDetails": "View details",
+    "downloadEventsPdf": "Download events as PDF",
+    "datePlaceholder": "Select arrival and departure dates",
+    "starRating": "{stars} stars",
+    "hotelRating": "Hotel rating",
+    "exceptional": "Exceptional",
+    "hotels": "Hotels",
+    "exceptionalHotels": "Exceptional hotels",
+    "previous": "Previous",
+    "next": "Next",
+    "location": "Location",
+    "allCities": "All cities",
+    "noAccommodation": "No accommodation available right now",
+    "resultsCount": "Results: {count}",
+    "noAccommodationFilter": "No accommodation matches your filters.",
+    "noExperiencesFilter": "No experiences match your filters.",
+    "travelerTypes": "Traveler types",
+    "visitorSite": "Visit website",
+    "kmShort": "km",
+    "chooseCuisineType": "Choose cuisine type",
+    "restaurantType": "Restaurant type",
+    "cuisineType": "Cuisine type",
+    "priceRange": "Price range",
+    "dietaryOptions": "Dietary options",
+    "featured": "Featured",
+    "popular": "Popular",
+    "luxury": "Luxury",
+    "cuisineAsian": "Asian",
+    "cuisineAmerican": "American",
+    "cuisineSaudi": "Saudi",
+    "cuisineMiddleEastern": "Middle Eastern",
+    "fallbackCardTitle": "Card title",
+    "travelSeasonsEvents": "Seasons & events",
+    "planDesignTrip": "Plan your trip",
+    "travelGettingAround": "Getting around",
+    "activitiesGuide": "Outdoor activities guide",
+    "worldRegionTitle": "Main destinations",
+    "communityTitle": "Aseer community",
+    "cuisineNavTitle": "Aseeri cuisine",
+    "experiencesNavTitle": "Tourism experiences",
+    "attractionsNavTitle": "Attractions",
+    "eventsSeasonsNavTitle": "Events & seasons",
+    "stayInAseerCard": "Stay in Aseer",
+    "mainDestinationsCard": "Main destinations",
+    "eventsSeasonsCard": "Events & seasons",
+    "experiencesCard": "Experiences",
+    "attractionsCard": "Attractions",
+    "tourGuidesNav": "Tour guides",
+    "guideDiscoverAseer": "Discover Aseer",
+    "exploreAttractionsDefault": "Explore top attractions"
   },
   "nav": {
     "planTrip": "Plan your trip",
@@ -24,10 +109,176 @@
     "internationalCallCenter": "International call center",
     "followUs": "Follow us on social media",
     "copyright": "Aseer @ 2026. All rights reserved.",
-    "privacy": "Privacy policy"
+    "privacy": "Privacy policy",
+    "linkMainDestinations": "Main destinations",
+    "linkAttractions": "Attractions",
+    "linkExperiences": "Tourism experiences",
+    "linkCuisine": "Aseeri cuisine",
+    "linkCommunity": "Aseer community",
+    "linkEventsSeasons": "Seasons & events",
+    "linkPlanner": "Design your trip",
+    "linkAccommodation": "Accommodation",
+    "linkRestaurants": "Restaurants",
+    "linkTourGuides": "Tour guides",
+    "linkTravelTips": "Getting around",
+    "linkDiscoverBooklet": "Discover Aseer",
+    "linkOutdoorGuide": "Outdoor activities guide",
+    "altUnTourism": "UN Tourism",
+    "altPata": "PATA",
+    "altGstc": "GSTC"
   },
   "pageBanner": {
     "browseMore": "Browse more"
+  },
+  "home": {
+    "heroTitle": "A warm welcome to Aseer",
+    "heroSubtitle": "Where timeless traditions meet stunning landscapes, with a unique blend of culture, adventure and unmatched beauty.",
+    "welcomeTitle": "Discover Aseer",
+    "welcomeDescription": "Aseer unites mountain peaks with clear coastlines and golden dunes with green highlands. Nature here blends rain, warmth and mist in a singular landscape.",
+    "landmarksTitle": "Top attractions in Aseer",
+    "landmarksDescription": "Aseer is rich with attractions and experiences",
+    "experiencesTitle": "Experiences in Aseer",
+    "experiencesDescription": "Discover unique local experiences, mountain culture and authentic hospitality across Aseer.",
+    "experiencesCta": "View all",
+    "storiesTitle": "Stories from Aseer",
+    "playVideoPrefix": "Play video"
+  },
+  "storiesFromAseer": {
+    "story1": "Let's go to Aseer — culinary destinations shortlisted for the Middle East & North Africa.",
+    "story2": "Stories from the heart of Aseer — heritage, nature and hospitality blending past and present."
+  },
+  "destinations": {
+    "breadcrumbDestinations": "Destinations",
+    "heroTitleAbha": "Abha",
+    "heroSubtitleAbha": "One visit is never enough with all the activities and experiences on offer.",
+    "introTitle": "City of fog",
+    "introBody": "Aseer offers mountain landscapes, temperate weather and rich cultural depth.",
+    "mapViewOnMap": "View {area} on map",
+    "mapAlt": "{area} map"
+  },
+  "eventsInfo": {
+    "headingStart": "Start ",
+    "headingTrip": "your journey",
+    "cardVisa": "Visa & entry requirements",
+    "cardTravel": "Travel to Aseer",
+    "cardStay": "Plan your stay",
+    "cardDestination": "Choose your destination"
+  },
+  "events": {
+    "breadcrumb": "Events",
+    "title": "Events",
+    "subtitle": "Arts, culture, community and outdoor experiences designed for every interest year-round.",
+    "addYourEvent": "Add your event",
+    "interestAdventure": "Adventure",
+    "interestHeritage": "Heritage & arts",
+    "interestCulinary": "Culinary arts",
+    "interestNature": "Nature",
+    "seasonsPageTitle": "Seasons & events",
+    "seasonsPageBody": "Discover seasons and events throughout the year in Aseer."
+  },
+  "experiencesPage": {
+    "breadcrumb": "Experiences",
+    "title": "Experiences waiting for you in Aseer",
+    "subtitle": "One visit is never enough with all the activities and experiences on offer.",
+    "costSection": "Cost"
+  },
+  "accommodationPage": {
+    "breadcrumb": "Accommodation",
+    "title": "Accommodation",
+    "subtitle": "One visit is never enough with all the activities and experiences on offer."
+  },
+  "restaurantsPage": {
+    "breadcrumb": "Restaurants",
+    "title": "Restaurants",
+    "subtitle": "Aseer restaurants: delight the senses and satisfy your palate",
+    "credibilityLine": "Aseer — World Culinary Region 2024",
+    "headerSubtitle": "Aseer is rich with attractions and experiences"
+  },
+  "attractionsPage": {
+    "breadcrumb": "Attractions",
+    "title": "Attractions",
+    "subtitle": "One visit is never enough with all the activities and experiences on offer.",
+    "innerTitle": "Al Abu Sirah palaces",
+    "introTitle": "Al Abu Sirah palaces",
+    "introBody": "Aseer's historic and cultural landmarks blend authenticity with natural beauty.",
+    "browseTitle": "Main destinations",
+    "browseSubtitle": "One visit is never enough with all the activities and experiences on offer.",
+    "contributeDestinations": "Help enrich our destinations"
+  },
+  "travelTips": {
+    "breadcrumb": "Essentials",
+    "title": "Essentials",
+    "subtitle": "One visit is never enough with all the activities and experiences on offer.",
+    "emergencyPolice": "Police",
+    "emergencyCivilDefense": "Civil Defense",
+    "emergencyAmbulance": "Ambulance",
+    "emergencyRoadSecurity": "Road security",
+    "emergencyTraffic": "Traffic",
+    "emergencyTourism": "Tourism",
+    "emergencyFire": "Fire",
+    "emergencyGeneralSecurity": "General security"
+  },
+  "experiencesDetail": {
+    "backToExperiences": "Back to experiences",
+    "aboutExperience": "About the experience",
+    "providerLabel": "Provider",
+    "priceLabel": "Price",
+    "groupSizeLabel": "Group size",
+    "interestsHeading": "Matching interests",
+    "travelersHeading": "Suitable traveler types",
+    "bookingTitle": "Start booking",
+    "groupMinimum": "Minimum group size: x{size}",
+    "bookNow": "Book now",
+    "currencyFallback": "SAR",
+    "travelerFemale": "Solo female traveler",
+    "travelerIndividual": "Solo trip",
+    "travelerCouple": "Couple",
+    "travelerFamily": "Family with children",
+    "travelerGroups": "Group trip"
+  },
+  "aboutAseer": {
+    "title": "About Aseer",
+    "subtitle": "Learn about the region, heritage and nature."
+  },
+  "servicesSupport": {
+    "title": "Services & support",
+    "subtitle": "Information and assistance during your visit.",
+    "bannerCrumb": "Support services",
+    "bannerDescription": "Safety, security and support services across Aseer’s cities and governorates."
+  },
+  "tourGuides": {
+    "title": "Tour guides",
+    "subtitle": "Connect with certified guides for a richer trip."
+  },
+  "tourGuidesRegister": {
+    "title": "Guide registration",
+    "subtitle": "Join the Aseer guide network."
+  },
+  "aseerCommunity": {
+    "title": "Aseer community",
+    "subtitle": "Stories and activities from the local community."
+  },
+  "aseerCuisine": {
+    "title": "Aseeri cuisine",
+    "subtitle": "Authentic flavours from the south."
+  },
+  "planner": {
+    "title": "Plan your trip",
+    "subtitle": "Plan your visit with ease."
+  },
+  "interactiveMap": {
+    "title": "Interactive map",
+    "subtitle": "Explore destinations on the map."
+  },
+  "film": {
+    "title": "Aseer on screen",
+    "subtitle": "Video stories introducing the region."
+  },
+  "gettingHere": {
+    "title": "Getting here & around",
+    "subtitle": "Transport and roads in Aseer."
+  },
+  "landmarks": {
+    "redirectNote": "Redirect to attractions"
   }
 }
-

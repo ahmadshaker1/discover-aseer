@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { EventInterestId } from "./types";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -82,11 +83,11 @@ function DownloadFileIcon() {
   );
 }
 
-export const EVENT_INTEREST_ROWS: { id: EventInterestId; label: string }[] = [
-  { id: "adventure", label: "المغامرات" },
-  { id: "heritage", label: "التراث و الفنون" },
-  { id: "culinary", label: "فنون الطهي" },
-  { id: "nature", label: "الطبيعة" },
+const EVENT_INTEREST_ROWS = [
+  { id: "adventure" as const, labelKey: "interestAdventure" as const },
+  { id: "heritage" as const, labelKey: "interestHeritage" as const },
+  { id: "culinary" as const, labelKey: "interestCulinary" as const },
+  { id: "nature" as const, labelKey: "interestNature" as const },
 ];
 
 export interface EventsFilterSidebarProps {
@@ -110,6 +111,9 @@ const EventsFilterSidebar = ({
   onDateTextChange,
   onReset,
 }: EventsFilterSidebarProps) => {
+  const tEvents = useTranslations("events");
+  const tCommon = useTranslations("common");
+
   const toggleCost = (next: "free" | "paid") => {
     onCostChange(costFilter === next ? null : next);
   };
@@ -121,7 +125,7 @@ const EventsFilterSidebar = ({
     >
       <div className="mb-6 flex items-center justify-between gap-4 border-b border-gray-200 pb-6">
         <h2 className="text-lg font-bold text-black sm:text-xl" style={{ fontFamily: ara }}>
-          تصفية الفعاليات
+          {tCommon("filterEvents")}
         </h2>
         <button
           type="button"
@@ -129,7 +133,7 @@ const EventsFilterSidebar = ({
           className="shrink-0 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-black transition-colors hover:bg-gray-50 sm:text-sm"
           style={{ fontFamily: ibm }}
         >
-          إعادة تعيين النتائج
+          {tCommon("resetFilters")}
         </button>
       </div>
 
@@ -137,7 +141,7 @@ const EventsFilterSidebar = ({
         <div className="mb-3 flex items-center gap-2">
           <CalendarHeaderIcon />
           <h3 className="text-base font-bold text-black" style={{ fontFamily: ara }}>
-            التاريخ
+            {tCommon("date")}
           </h3>
         </div>
         <div className="relative">
@@ -145,7 +149,7 @@ const EventsFilterSidebar = ({
             type="text"
             value={dateText}
             onChange={(e) => onDateTextChange(e.target.value)}
-            placeholder="اختر تاريخ الوصول والمغادرة"
+            placeholder={tCommon("datePlaceholder")}
             className="w-full rounded-xl border border-gray-300 bg-white py-3 pl-11 pr-4 text-right text-sm text-black placeholder:text-gray-400 focus:border-[#7300CD] focus:outline-none focus:ring-2 focus:ring-[#7300CD]/20"
             style={{ fontFamily: ibm }}
           />
@@ -159,7 +163,7 @@ const EventsFilterSidebar = ({
         <div className="mb-3 flex items-center gap-2">
           <HeartIcon />
           <h3 className="text-base font-bold text-black" style={{ fontFamily: ara }}>
-            الاهتمامات
+            {tCommon("interests")}
           </h3>
         </div>
         <ul className="flex flex-col gap-1">
@@ -175,7 +179,7 @@ const EventsFilterSidebar = ({
                     className="h-4 w-4 shrink-0 rounded border-gray-300 text-[#7300CD] focus:ring-[#7300CD]"
                   />
                   <span className="min-w-0 flex-1 text-right text-sm font-bold text-black" style={{ fontFamily: ara }}>
-                    {row.label}
+                    {tEvents(row.labelKey)}
                   </span>
                   <span
                     className="shrink-0 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600"
@@ -194,7 +198,7 @@ const EventsFilterSidebar = ({
         <div className="mb-3 flex items-center gap-2">
           <WalletIcon />
           <h3 className="text-base font-bold text-black" style={{ fontFamily: ara }}>
-            التكلفة
+            {tCommon("cost")}
           </h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -209,7 +213,7 @@ const EventsFilterSidebar = ({
           >
             <NoMoneyIcon />
             <span className="text-sm font-bold text-[#09121F]" style={{ fontFamily: ara }}>
-              مجانية
+              {tCommon("free")}
             </span>
           </button>
           <button
@@ -223,7 +227,7 @@ const EventsFilterSidebar = ({
           >
             <PayingIcon />
             <span className="text-sm font-bold text-[#09121F]" style={{ fontFamily: ara }}>
-              مدفوعة
+              {tCommon("paid")}
             </span>
           </button>
         </div>
@@ -238,7 +242,7 @@ const EventsFilterSidebar = ({
         }}
       >
         <DownloadFileIcon />
-        تحميل الفعاليات لملف PDF
+        {tCommon("downloadEventsPdf")}
       </button>
     </div>
   );

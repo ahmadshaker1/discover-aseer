@@ -1,3 +1,4 @@
+import { getLocale, getTranslations } from "next-intl/server";
 import { VisaIcon, AirplaneIcon, HotelIcon, BinocularsIcon } from "./Icons";
 
 export interface EventsInfoCard {
@@ -7,11 +8,11 @@ export interface EventsInfoCard {
   link?: string;
 }
 
-
 export interface EventsInfoBackendCard {
   id: number;
   icon_key?: "visa" | "airplane" | "hotel" | "binoculars" | string | null;
   title_ar?: string | null;
+  title_en?: string | null;
   link?: string | null;
 }
 
@@ -19,33 +20,6 @@ interface EventsInfoProps {
   cards?: EventsInfoCard[];
   backendCards?: EventsInfoBackendCard[];
 }
-
-const defaultCards: EventsInfoCard[] = [
-  {
-    id: 1,
-    icon: <VisaIcon />,
-    title: "متطلبات التأشيرة والدخول",
-    link: "https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations",
-  },
-  {
-    id: 2,
-    icon: <AirplaneIcon />,
-    title: "السفر إلى عسير",
-    link: "/Getting-here-and-around",
-  },
-  {
-    id: 3,
-    icon: <HotelIcon />,
-    title: "خطط إقامتك",
-    link: "/planner",
-  },
-  {
-    id: 4,
-    icon: <BinocularsIcon />,
-    title: "اختر وجهتك",
-    link: "/destinations",
-  },
-];
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -64,10 +38,17 @@ const iconFromKey = (iconKey?: string | null): React.ReactNode => {
   }
 };
 
-const linkFallbackByIconKey = (iconKey?: string | null): string | undefined => {
+const linkFallbackByIconKey = (
+  iconKey?: string | null,
+  locale?: string,
+): string | undefined => {
+  const visa =
+    locale === "en"
+      ? "https://www.visitsaudi.com/en/plan-your-trip/visa-regulations"
+      : "https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations";
   switch ((iconKey || "").toLowerCase()) {
     case "visa":
-      return "https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations";
+      return visa;
     case "airplane":
       return "/Getting-here-and-around";
     case "hotel":
@@ -79,17 +60,65 @@ const linkFallbackByIconKey = (iconKey?: string | null): string | undefined => {
   }
 };
 
-const mapBackendCards = (rows: EventsInfoBackendCard[]): EventsInfoCard[] =>
-  rows.map((row, index) => ({
-    id: row.id ?? index + 1,
-    icon: iconFromKey(row.icon_key),
-    title: row.title_ar?.trim() || "عنوان البطاقة",
-    link: row.link?.trim() || linkFallbackByIconKey(row.icon_key),
-  }));
+function mapBackendCards(
+  rows: EventsInfoBackendCard[],
+  locale: string,
+  fallbackTitle: string,
+): EventsInfoCard[] {
+  return rows.map((row, index) => {
+    const ar = row.title_ar?.trim();
+    const en = row.title_en?.trim();
+    const title =
+      locale === "en"
+        ? en || ar || fallbackTitle
+        : ar || en || fallbackTitle;
+    return {
+      id: row.id ?? index + 1,
+      icon: iconFromKey(row.icon_key),
+      title,
+      link: row.link?.trim() || linkFallbackByIconKey(row.icon_key, locale),
+    };
+  });
+}
 
-const EventsInfo = ({ cards = defaultCards, backendCards }: EventsInfoProps) => {
+export default async function EventsInfo({ cards, backendCards }: EventsInfoProps) {
+  const locale = await getLocale();
+  const t = await getTranslations("eventsInfo");
+  const tCommon = await getTranslations("common");
+
+  const fallbackTitle = tCommon("fallbackCardTitle");
+
+  const defaultCards: EventsInfoCard[] = [
+    {
+      id: 1,
+      icon: <VisaIcon />,
+      title: t("cardVisa"),
+      link: linkFallbackByIconKey("visa", locale),
+    },
+    {
+      id: 2,
+      icon: <AirplaneIcon />,
+      title: t("cardTravel"),
+      link: linkFallbackByIconKey("airplane", locale),
+    },
+    {
+      id: 3,
+      icon: <HotelIcon />,
+      title: t("cardStay"),
+      link: linkFallbackByIconKey("hotel", locale),
+    },
+    {
+      id: 4,
+      icon: <BinocularsIcon />,
+      title: t("cardDestination"),
+      link: linkFallbackByIconKey("binoculars", locale),
+    },
+  ];
+
   const displayCards =
-    backendCards && backendCards.length > 0 ? mapBackendCards(backendCards) : cards;
+    backendCards && backendCards.length > 0
+      ? mapBackendCards(backendCards, locale, fallbackTitle)
+      : cards ?? defaultCards;
 
   return (
     <section
@@ -105,8 +134,8 @@ const EventsInfo = ({ cards = defaultCards, backendCards }: EventsInfoProps) => 
 
       <div className="relative z-10 mb-10 border-b border-[#E4E4E4] pb-4 md:mb-12">
         <h2 className="text-right text-[32px] font-bold text-black sm:text-[40px]" style={{ fontFamily: ara }}>
-          <span className="text-black">ابدأ </span>
-          <span className="text-[#7300CD]">رحلتك</span>
+          <span className="text-black">{t("headingStart")}</span>
+          <span className="text-[#7300CD]">{t("headingTrip")}</span>
         </h2>
       </div>
 
@@ -149,32 +178,11 @@ const EventsInfo = ({ cards = defaultCards, backendCards }: EventsInfoProps) => 
       </div>
     </section>
   );
-};
+}
 
-// Left arrow for RTL
 const ChevronIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M19 12H5"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M12 19L5 12L12 5"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M19 12H5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M12 19L5 12L12 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
-
-export default EventsInfo;

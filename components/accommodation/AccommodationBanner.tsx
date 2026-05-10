@@ -1,17 +1,16 @@
+import { getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 
-const AccommodationBanner = () => {
+export default async function AccommodationBanner() {
+  const t = await getTranslations("accommodationPage");
+  const tCommon = await getTranslations("common");
+
   return (
     <PageBanner
-      breadcrumbs={[
-        { label: "أماكن الإقامة" },
-        { label: "الصفحة الرئيسية", href: "/" },
-      ]}
-      title="أماكن الإقامة"
-      subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+      breadcrumbs={[{ label: t("breadcrumb") }, { label: tCommon("breadcrumbHome"), href: "/" }]}
+      title={t("title")}
+      subtitle={t("subtitle")}
       backgroundImage="/assets/experiences/experiences.png"
     />
   );
-};
-
-export default AccommodationBanner;
+}

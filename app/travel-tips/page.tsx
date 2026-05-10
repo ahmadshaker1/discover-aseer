@@ -1,10 +1,11 @@
+import { getLocale, getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import TravelTipsEmergencySection from "@/components/travel-tips/TravelTipsEmergencySection";
 import TravelTipsFaq, {
   type TravelFaqItem,
 } from "@/components/travel-tips/TravelTipsFaq";
 
-const DEFAULT_FAQ_ITEMS: TravelFaqItem[] = [
+const DEFAULT_FAQ_ITEMS_AR: TravelFaqItem[] = [
   {
     id: "1",
     question: 'بماذا تعدني "عسير" كوجهة سياحية؟',
@@ -22,6 +23,27 @@ const DEFAULT_FAQ_ITEMS: TravelFaqItem[] = [
     question: "ما الذي يجب اصطحابه معي خلال رحلتي إلى عسير؟",
     answer:
       "يُفضّل إحضار ملابس مناسبة لتقلبات الطقس بين الساحل والمرتفعات، وأحذية مريحة للمشي، وواقٍ من الشمس، والهوية الشخصية، مع التحقق من أي متطلبات خاصة بالفعاليات أو المواقع التي تنوي زيارتها.",
+  },
+];
+
+const DEFAULT_FAQ_ITEMS_EN: TravelFaqItem[] = [
+  {
+    id: "1",
+    question: 'What does Aseer offer as a tourism destination?',
+    answer:
+      "Aseer is one of Saudi Arabia’s standout regions, with varied landscapes—mountains, plains, wadis and coastlines—and different weather across seasons. It blends heritage architecture, festivals, modern urban hubs and cultural experiences across food, arts and fashion, with accommodation for many budgets and activities year-round.",
+  },
+  {
+    id: "2",
+    question: "When is the best time to visit Aseer?",
+    answer:
+      "Spring and summer bring milder weather in the highlands plus lively events. Winter can be cool and misty in the mountains; autumn often offers calm hiking conditions.",
+  },
+  {
+    id: "3",
+    question: "What should I pack for Aseer?",
+    answer:
+      "Pack layers for shifts between coast and mountains, comfortable shoes, sun protection and ID. Check any extra requirements for festivals or sites you plan to visit.",
   },
 ];
 
@@ -43,7 +65,7 @@ type ApiFaqResponse = {
 
 const FAQ_API_BASE_URL = "https://tool-portal.discoveraseer.com";
 
-async function fetchFaqItems(): Promise<TravelFaqItem[]> {
+async function fetchFaqItems(locale: string): Promise<TravelFaqItem[]> {
   const baseUrl =
     process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.trim() || FAQ_API_BASE_URL;
 
@@ -53,7 +75,7 @@ async function fetchFaqItems(): Promise<TravelFaqItem[]> {
     });
 
     if (!response.ok) {
-      return DEFAULT_FAQ_ITEMS;
+      return locale === "en" ? DEFAULT_FAQ_ITEMS_EN : DEFAULT_FAQ_ITEMS_AR;
     }
 
     const payload = (await response.json()) as ApiFaqResponse;
@@ -69,8 +91,13 @@ async function fetchFaqItems(): Promise<TravelFaqItem[]> {
       return questions
         .map((item, questionIndex) => {
           const question =
-            item.question_ar?.trim() || item.question_en?.trim() || "";
-          const answer = item.answer_ar?.trim() || item.answer_en?.trim() || "";
+            locale === "en"
+              ? item.question_en?.trim() || item.question_ar?.trim() || ""
+              : item.question_ar?.trim() || item.question_en?.trim() || "";
+          const answer =
+            locale === "en"
+              ? item.answer_en?.trim() || item.answer_ar?.trim() || ""
+              : item.answer_ar?.trim() || item.answer_en?.trim() || "";
 
           if (!question || !answer) {
             return null;
@@ -85,36 +112,42 @@ async function fetchFaqItems(): Promise<TravelFaqItem[]> {
         .filter((item): item is TravelFaqItem => item !== null);
     });
 
-    return mapped.length > 0 ? mapped : DEFAULT_FAQ_ITEMS;
+    return mapped.length > 0
+      ? mapped
+      : locale === "en"
+        ? DEFAULT_FAQ_ITEMS_EN
+        : DEFAULT_FAQ_ITEMS_AR;
   } catch {
-    return DEFAULT_FAQ_ITEMS;
+    return locale === "en" ? DEFAULT_FAQ_ITEMS_EN : DEFAULT_FAQ_ITEMS_AR;
   }
 }
 
-// Backend: 8 rows { id?, title, number }; icons resolve from `title` in TravelTipsEmergencySection.
-const emergency = [
-  { id: "e1", title: "شرطة", number: "911" },
-  { id: "e2", title: "الدفاع المدني", number: "998" },
-  { id: "e3", title: "الإسعاف", number: "997" },
-  { id: "e4", title: "أمن الطرق", number: "996" },
-  { id: "e5", title: "المرور", number: "993" },
-  { id: "e6", title: "السياحة", number: "930" },
-  { id: "e7", title: "الإطفاء", number: "998" },
-  { id: "e8", title: "الأمن العام", number: "911" },
-];
-
 const TravelTipsPage = async () => {
-  const faqItems = await fetchFaqItems();
+  const locale = await getLocale();
+  const faqItems = await fetchFaqItems(locale);
+  const t = await getTranslations("travelTips");
+  const tCommon = await getTranslations("common");
+
+  const emergency = [
+    { id: "e1", title: t("emergencyPolice"), number: "911" },
+    { id: "e2", title: t("emergencyCivilDefense"), number: "998" },
+    { id: "e3", title: t("emergencyAmbulance"), number: "997" },
+    { id: "e4", title: t("emergencyRoadSecurity"), number: "996" },
+    { id: "e5", title: t("emergencyTraffic"), number: "993" },
+    { id: "e6", title: t("emergencyTourism"), number: "930" },
+    { id: "e7", title: t("emergencyFire"), number: "998" },
+    { id: "e8", title: t("emergencyGeneralSecurity"), number: "911" },
+  ];
 
   return (
     <div className="flex w-full flex-col">
       <PageBanner
         breadcrumbs={[
-          { label: "التجاربم" },
-          { label: "الصفحة الرئيسية", href: "/" },
+          { label: t("breadcrumb") },
+          { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
-        title="معلومات أساسية"
-        subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+        title={t("title")}
+        subtitle={tCommon("subtitleOneVisit")}
         backgroundImage="/assets/experiences/experiences.png"
       />
 

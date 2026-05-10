@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import FilterDropdown from "../landmarks/FilterDropdown";
 import InterestsFilter from "../landmarks/InterestsFilter";
@@ -84,7 +85,7 @@ const RestaurantsFilters = () => {
       <div className="flex flex-wrap gap-2 sm:gap-4">
         <FilterDropdown
           icon={<LocationIcon />}
-          label="المدينة"
+          label={t("city")}
           selectedValue={selectedCity}
           options={cityOptions}
           onSelect={setSelectedCity}
@@ -94,7 +95,7 @@ const RestaurantsFilters = () => {
 
         <FilterDropdown
           icon={<RestaurantTypeIcon />}
-          label="نوع المطعم"
+          label={t("restaurantType")}
           selectedValue={selectedRestaurantType}
           options={restaurantTypeOptions}
           onSelect={setSelectedRestaurantType}
@@ -103,7 +104,7 @@ const RestaurantsFilters = () => {
 
         <FilterDropdown
           icon={<CuisineIcon />}
-          label="نوع المطبخ"
+          label={t("cuisineType")}
           selectedValue={selectedCuisineType}
           options={cuisineTypeOptions}
           onSelect={setSelectedCuisineType}
@@ -112,7 +113,7 @@ const RestaurantsFilters = () => {
 
         <FilterDropdown
           icon={<PriceIcon />}
-          label="الأسعار"
+          label={t("priceRange")}
           selectedValue={selectedPrice}
           options={priceOptions}
           onSelect={setSelectedPrice}
@@ -123,7 +124,7 @@ const RestaurantsFilters = () => {
           selectedInterests={selectedDietaryOptions}
           onToggle={handleDietaryToggle}
           onClear={() => setSelectedDietaryOptions([])}
-          label="الخيارات الغذائية"
+          label={t("dietaryOptions")}
           options={dietaryOptions}
           icon={<DietaryIcon />}
         />

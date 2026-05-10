@@ -1,12 +1,16 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 interface HeroProps {
   title?: string;
   subtitle?: string;
 }
 
-const Hero = ({
-  title = "ألف مرحبا بكم في عسير",
-  subtitle = "حيث تلتقي التقاليد الخالدة بالمناظر الطبيعية الخلابة. جرب مزيجا فريدا من الثقافة والمغامرة والجمال الذي لا مثيل له.",
-}: HeroProps) => {
+const Hero = ({ title, subtitle }: HeroProps) => {
+  const t = useTranslations("home");
+  const displayTitle = title ?? t("heroTitle");
+  const displaySubtitle = subtitle ?? t("heroSubtitle");
   return (
     <section className="w-full bg-[#070707]">
       {/* Hero banner */}
@@ -38,7 +42,7 @@ const Hero = ({
                   lineHeight: "119%",
                 }}
               >
-                {title}
+                {displayTitle}
               </h1>
 
               <p
@@ -50,7 +54,7 @@ const Hero = ({
                   lineHeight: "133%",
                 }}
               >
-                {subtitle}
+                {displaySubtitle}
               </p>
             </div>
           </div>

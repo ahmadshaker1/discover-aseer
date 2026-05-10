@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@headlessui/react";
+import { useLocale, useTranslations } from "next-intl";
 
 interface NavigationControlsProps {
   onNext: () => void;
@@ -8,12 +9,16 @@ interface NavigationControlsProps {
 }
 
 export const NavigationControls = ({ onNext, onPrev }: NavigationControlsProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const t = useTranslations("common");
+
   return (
     <div className="flex flex-row gap-1.5 sm:gap-2">
       <Button
         onClick={onNext}
-        className="w-8 h-8 sm:w-10 sm:h-10 rotate-180 cursor-pointer rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
-        aria-label="Next image"
+        className={`w-8 h-8 sm:w-10 sm:h-10 cursor-pointer rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110 ${isRtl ? "rotate-180" : ""}`}
+        aria-label={t("next")}
       >
         <svg
           width="24"
@@ -40,8 +45,8 @@ export const NavigationControls = ({ onNext, onPrev }: NavigationControlsProps) 
       </Button>
       <Button
         onClick={onPrev}
-        className="w-8 h-8 sm:w-10 sm:h-10 cursor-pointer rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
-        aria-label="Previous image"
+        className={`w-8 h-8 sm:w-10 sm:h-10 cursor-pointer rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 hover:scale-110 ${isRtl ? "" : "rotate-180"}`}
+        aria-label={t("previous")}
       >
         <svg
           width="24"

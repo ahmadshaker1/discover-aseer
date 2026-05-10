@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
+import { useTranslations } from "next-intl";
 import { Fragment } from "react";
 import {
   HeartIcon,
@@ -71,6 +72,8 @@ const ExperiencesFilter = ({
   onFiltersChange,
   onReset,
 }: ExperiencesFilterProps) => {
+  const tCommon = useTranslations("common");
+  const tExperiencesPage = useTranslations("experiencesPage");
   const { cityOptions, interests, costOptions, travelerTypes } = filterOptions;
 
   const handleInterestToggle = (interestId: string) => {
@@ -109,9 +112,9 @@ const ExperiencesFilter = ({
           onClick={handleReset}
           className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-focus:outline-none data-focus:ring-2 data-focus:ring-gray-500 data-focus:ring-offset-2"
         >
-          إعادة تعيين النتائج
+          {tCommon("resetFilters")}
         </Button>
-        <h2 className="text-xl font-bold text-black">تصفية التجارب</h2>
+        <h2 className="text-xl font-bold text-black">{tCommon("filterExperiences")}</h2>
       </div>
 
       <div className="mb-4">
@@ -119,7 +122,7 @@ const ExperiencesFilter = ({
           <Menu.Button className="flex flex-row-reverse items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer">
             <ChevronDownIcon />
             <span className="flex-1 text-right">
-              {cityOptions.find((city) => city.id === filters.city)?.label || "المدينة"}
+              {cityOptions.find((city) => city.id === filters.city)?.label || tCommon("city")}
             </span>
             <LocationIcon />
           </Menu.Button>
@@ -166,7 +169,7 @@ const ExperiencesFilter = ({
         <div className="mb-8">
           <div className="mb-4 flex items-center justify-end gap-2">
             <HeartIcon />
-            <h3 className="text-lg font-bold text-black">الاهتمامات</h3>
+            <h3 className="text-lg font-bold text-black">{tCommon("interests")}</h3>
           </div>
           <div className="space-y-4">
             {interests.map((interest) => {
@@ -210,7 +213,7 @@ const ExperiencesFilter = ({
       <div className="mb-8">
         <div className="mb-4 flex items-center justify-end gap-2">
           <WalletIcon />
-          <h3 className="text-lg font-bold text-black">التكلفة</h3>
+          <h3 className="text-lg font-bold text-black">{tExperiencesPage("costSection")}</h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
           {costOptions.map((option) => {
@@ -248,7 +251,7 @@ const ExperiencesFilter = ({
         <div>
           <div className="mb-4 flex items-center justify-end gap-2">
             <SuitcaseIcon />
-            <h3 className="text-lg font-bold text-black">نوع المسافرين</h3>
+            <h3 className="text-lg font-bold text-black">{tCommon("travelerTypes")}</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {travelerTypes.map((traveler) => {

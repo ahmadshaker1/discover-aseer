@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useLocale } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -15,8 +16,17 @@ interface AttractionsHeroProps {
 }
 
 function BreadcrumbChevron() {
+  const isRtl = useLocale() === "ar";
   return (
-    <svg width="5" height="10" viewBox="0 0 5 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg
+      width="5"
+      height="10"
+      viewBox="0 0 5 10"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      className={isRtl ? "" : "rotate-180"}
+    >
       <path
         d="M4.25184 0C4.35476 0 4.45767 0.0379143 4.53892 0.119164C4.69601 0.276247 4.69601 0.536248 4.53893 0.693332L1.00726 4.225C0.747259 4.485 0.747259 4.9075 1.00726 5.1675L4.53893 8.69916C4.69601 8.85625 4.69601 9.11625 4.53893 9.27333C4.38184 9.43041 4.12184 9.43041 3.96476 9.27333L0.433092 5.74167C0.156842 5.46542 -0.000241179 5.09166 -0.000241213 4.69625C-0.000241248 4.30083 0.151425 3.92708 0.433092 3.65083L3.96476 0.119165C4.04601 0.0433312 4.14893 0 4.25184 0Z"
         fill="white"
@@ -31,6 +41,8 @@ const AttractionsHero = ({
   subtitle,
   backgroundImage,
 }: AttractionsHeroProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   return (
     <section
       className="relative flex min-h-[75vh] w-full flex-col items-center justify-center overflow-hidden md:min-h-[80vh]"
@@ -47,7 +59,7 @@ const AttractionsHero = ({
         <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
           <div
             className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-            dir="ltr"
+            dir={isRtl ? "rtl" : "ltr"}
             style={{ fontFamily: ara }}
           >
             {breadcrumbs.map((crumb, index) => (

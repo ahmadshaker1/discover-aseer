@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import AttractionsMainPageContent from "@/components/attractions/AttractionsMainPageContent";
 import { fetchLandmarks, type Landmark } from "@/components/landmarks/data";
@@ -90,6 +91,8 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
 ];
 
 const AttractionsPage = async () => {
+  const t = await getTranslations("attractionsPage");
+  const tCommon = await getTranslations("common");
   /**
    * Backend handoff:
    * - This is the main attractions listing page opened from the navbar.
@@ -103,11 +106,11 @@ const AttractionsPage = async () => {
     <div className="flex w-full flex-col bg-white">
       <PageBanner
         breadcrumbs={[
-          { label: "المعالم السياحية" },
-          { label: "الصفحة الرئيسية", href: "/" },
+          { label: t("breadcrumb") },
+          { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
-        title="المعالم السياحية"
-        subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+        title={t("title")}
+        subtitle={tCommon("subtitleOneVisit")}
         backgroundImage="/assets/attractions/attractions-hero.png"
       />
 

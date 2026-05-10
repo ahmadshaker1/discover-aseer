@@ -1,4 +1,5 @@
 "use client";
+import { useLocale, useTranslations } from "next-intl";
 
 interface FilterOption {
   value: string;
@@ -110,6 +111,9 @@ const ServicesSupportFilterSidebar = ({
   onToggleType,
   onReset,
 }: ServicesSupportFilterSidebarProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
   const useCategoryFilter = categoryOptions.length > 0;
   const allTypeOptions = useCategoryFilter ? categoryOptions : typeOptions;
   const serviceTypesOrder = ["مراكز الشرطة", "مستشفيات", "المطارات"];
@@ -125,13 +129,13 @@ const ServicesSupportFilterSidebar = ({
     : onToggleType;
 
   return (
-    <aside className="w-full max-w-full rounded-2xl bg-[#FFFFFF] p-4 sm:p-5 lg:max-w-[320px]" dir="rtl">
+    <aside className="w-full max-w-full rounded-2xl bg-[#FFFFFF] p-4 sm:p-5 lg:max-w-[320px]" dir={isRtl ? "rtl" : "ltr"}>
       <div className="mb-6 flex w-full min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-2">
         <h2
           className="min-w-0 flex-1 text-right text-[clamp(18px,4vw,24px)] font-bold leading-6 tracking-[-0.31px] text-[#0A0A0A]"
           style={{ fontFamily: "Ara Hamah 1964 B" }}
         >
-          تصفية الخدمات
+          {isRtl ? "تصفية الخدمات" : "Filter services"}
         </h2>
         <button
           type="button"
@@ -139,7 +143,7 @@ const ServicesSupportFilterSidebar = ({
           className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-t border-[#0000001A] bg-white px-2 text-center text-[clamp(14px,3.5vw,18px)] font-bold leading-5 tracking-[-0.15px] text-[#0A0A0A] hover:opacity-80 sm:min-w-[156px] sm:px-3"
           style={{ fontFamily: ara }}
         >
-          إعادة تعيين النتائج
+          {tCommon("resetFilters")}
         </button>
       </div>
 
@@ -147,25 +151,25 @@ const ServicesSupportFilterSidebar = ({
         <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-[#9B9B9C] px-6 py-3">
           <select
             style={{ fontFamily: "Ara Hamah 1964 B" }}
-            aria-label="اختر وجهتك"
+            aria-label={isRtl ? "اختر وجهتك" : "Choose destination"}
             value={selectedCity ?? ""}
             onChange={(e) => onCityChange(e.target.value || null)}
             className="absolute inset-0 z-10 cursor-pointer opacity-0"
           >
-            <option value="">اختر وجهتك</option>
+            <option value="">{isRtl ? "اختر وجهتك" : "Choose destination"}</option>
             {cityOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.value}
               </option>
             ))}
           </select>
-          <div className="flex h-full min-w-0 items-center justify-between gap-2" dir="rtl">
+          <div className="flex h-full min-w-0 items-center justify-between gap-2" dir={isRtl ? "rtl" : "ltr"}>
             <div className="flex min-w-0 flex-1 items-center gap-2">
               <span className="shrink-0">
                 <LocationIcon />
               </span>
               <span className="truncate text-[14px] font-normal leading-5 tracking-[-0.15px] text-[#0A0A0A]">
-                {selectedCity ?? "اختر وجهتك"}
+                {selectedCity ?? (isRtl ? "اختر وجهتك" : "Choose destination")}
               </span>
             </div>
             <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -176,10 +180,10 @@ const ServicesSupportFilterSidebar = ({
         </div>
       </section>
       <div className="my-5 h-px w-full bg-[#D5D5D8]" />
-      <section dir="ltr">
+      <section dir={isRtl ? "rtl" : "ltr"}>
         <div className="mb-4 flex items-center justify-end gap-2 ">
           <h3 className="text-right text-[20px] font-bold leading-[119%] text-[#1B1D23]" style={{ fontFamily: ara }}>
-            اختر نوع الخدمة المساندة
+            {isRtl ? "اختر نوع الخدمة المساندة" : "Choose support service type"}
           </h3>
 
           <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -204,7 +208,7 @@ const ServicesSupportFilterSidebar = ({
 
       <section>
         <h3 className="mb-3 text-[15px] font-bold text-[#111318] text-right">
-          <span dir="ltr"> : مركز الاتصال الدولي </span>
+          <span dir="ltr">{isRtl ? " : مركز الاتصال الدولي " : "International call center: "}</span>
         </h3>
         <a
           href="tel:+966920000890"

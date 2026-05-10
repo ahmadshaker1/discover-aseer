@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLocale } from "next-intl";
 import { cityOptions, interestOptions, priceOptions } from "@/components/landmarks/filterOptions";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -182,6 +183,8 @@ function formatPriceBand(card: AseerCuisineRestaurantCard): string {
 }
 
 const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const [city, setCity] = useState<string | null>(null);
   const [interest, setInterest] = useState<string | null>(null);
   const [price, setPrice] = useState<PriceFilterId>(null);
@@ -209,20 +212,20 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
   }, [city, data.cards, interest, price]);
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] py-8" dir="rtl">
+    <section className="mx-auto w-full max-w-[1440px] py-8" dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex w-full flex-col gap-8">
         <div className="px-4 sm:px-8 xl:px-[120px]">
           <div className="flex w-full items-start justify-between">
-            <div className="flex min-h-[94px] flex-col items-end justify-end gap-2 pb-[10px] pt-[7px] text-right">
+            <div className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] ${isRtl ? "items-end justify-end text-right" : "items-start justify-start text-left"}`}>
               <h2
-                className="w-full text-right text-[64px] font-bold leading-[119%] text-black"
+                className={`w-full text-[64px] font-bold leading-[119%] text-black ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ara }}
               >
                 {data.title}
               </h2>
               {data.subtitle ? (
                 <p
-                  className="h-[11px] w-[224px] text-right text-[24px] font-bold leading-[119%] text-[#252525]/80"
+                  className={`h-[11px] w-[224px] text-[24px] font-bold leading-[119%] text-[#252525]/80 ${isRtl ? "text-right" : "text-left"}`}
                   style={{ fontFamily: ara }}
                 >
                   {data.subtitle}
@@ -242,13 +245,13 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
 
         {data.showFilters ? (
           <div className="mx-auto mb-2 w-full max-w-[1181px] overflow-x-auto pb-1">
-            <div className="flex min-w-max items-center justify-start gap-3 px-1">
+            <div className={`flex min-w-max items-center gap-3 px-1 ${isRtl ? "justify-start" : "justify-end"}`}>
               <select
                 value={city ?? ""}
                 onChange={(e) => setCity(e.target.value || null)}
                 className="h-[48px] w-[190px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">المدينة</option>
+                <option value="">{isRtl ? "المدينة" : "City"}</option>
                 {cityOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -260,7 +263,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                 onChange={(e) => setInterest(e.target.value || null)}
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">الاهتمامات</option>
+                <option value="">{isRtl ? "الاهتمامات" : "Interests"}</option>
                 {interestOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -272,7 +275,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                 onChange={(e) => setPrice((e.target.value as PriceFilterId) || null)}
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">السعر</option>
+                <option value="">{isRtl ? "السعر" : "Price"}</option>
                 {priceOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -288,7 +291,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                 }}
                 className="h-[48px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-5 text-sm text-[#535353] hover:bg-gray-50"
               >
-                اعادة تعيين النتائج
+                {isRtl ? "اعادة تعيين النتائج" : "Reset filters"}
               </button>
             </div>
           </div>
@@ -299,8 +302,8 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
             {filteredCards.map((card) => (
               <article
                 key={card.id}
-                className="group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white text-right transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl"
-                dir="rtl"
+                className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl ${isRtl ? "text-right" : "text-left"}`}
+                dir={isRtl ? "rtl" : "ltr"}
               >
                 <div className="relative h-[190px] w-full overflow-hidden">
                   <img
@@ -310,7 +313,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                     loading="lazy"
                   />
                   <div
-                    className="absolute left-3 top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]"
+                    className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-3" : "right-3"}`}
                     dir="ltr"
                   >
                     <RatingStar />
@@ -334,7 +337,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                   <div className="flex w-full items-center justify-start gap-1.5">
                     <CardPinIcon />
                     <span
-                      className="min-w-0 flex-1 truncate text-right text-[10px] font-bold leading-none text-[#1D1F1F]"
+                      className="min-w-0 flex-1 truncate text-[10px] font-bold leading-none text-[#1D1F1F]"
                       style={{ fontFamily: ibm }}
                     >
                       {card.location}
@@ -345,7 +348,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                     <div className="flex items-center justify-start gap-1">
                       <CardUtensilIcon />
                       <span
-                        className="text-right text-xs font-bold leading-none text-[#1D1F1F]"
+                        className="text-xs font-bold leading-none text-[#1D1F1F]"
                         style={{ fontFamily: ibm }}
                       >
                         {card.cuisineType}
@@ -354,7 +357,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                     <CardPersonIcon />
                     <div className="flex items-center justify-start gap-1">
                       <span
-                        className="text-right text-xs font-bold leading-none text-[#19171A]"
+                        className="text-xs font-bold leading-none text-[#19171A]"
                         style={{ fontFamily: ibm }}
                       >
                         {formatPriceBand(card)}

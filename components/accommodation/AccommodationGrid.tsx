@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import AccommodationExceptionalCarousel from "./AccommodationExceptionalCarousel";
@@ -13,6 +14,7 @@ interface AccommodationGridProps {
 }
 
 const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
+  const t = useTranslations("common");
   const [selectedCity, setSelectedCity] = useState<string>("all");
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
   const [onlyExceptional, setOnlyExceptional] = useState(false);
@@ -73,8 +75,8 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
   if (accommodations.length === 0) {
     return (
       <div className="w-full py-12 text-center" dir="rtl">
-        <p className="text-lg text-gray-600">لا توجد أماكن إقامة متاحة حالياً</p>
-        <p className="mt-2 text-sm text-gray-500">عدد النتائج: 0</p>
+        <p className="text-lg text-gray-600">{t("noAccommodation")}</p>
+        <p className="mt-2 text-sm text-gray-500">{t("resultsCount", { count: 0 })}</p>
       </div>
     );
   }
@@ -100,7 +102,7 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
           <AccommodationHotelsGrid items={grid} showTopDivider={carousel.length > 0} />
 
           {filtered.length === 0 ? (
-            <p className="py-12 text-center text-gray-500">لا توجد أماكن إقامة تطابق التصفية المحددة.</p>
+            <p className="py-12 text-center text-gray-500">{t("noAccommodationFilter")}</p>
           ) : null}
         </div>
       </div>

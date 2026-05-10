@@ -1,10 +1,7 @@
 "use client";
 
 import MapPlaceholderSection from "@/components/MapPlaceholderSection";
-import { useLocale } from "next-intl";
-
-const ABHA_MAPS_URL =
-  "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("أبها، السعودية");
+import { useLocale, useTranslations } from "next-intl";
 
 interface DestinationsMapSectionProps {
   areaLabel?: string;
@@ -12,23 +9,28 @@ interface DestinationsMapSectionProps {
   lon?: number;
 }
 
-const DestinationsMapSection = ({ areaLabel = "أبها", lat, lon }: DestinationsMapSectionProps) => {
+const DestinationsMapSection = ({ areaLabel, lat, lon }: DestinationsMapSectionProps) => {
   const locale = useLocale();
+  const tDest = useTranslations("destinations");
+  const resolvedArea = areaLabel ?? tDest("heroTitleAbha");
+
+  const abhaQuery =
+    locale === "en"
+      ? encodeURIComponent("Abha, Saudi Arabia")
+      : encodeURIComponent("أبها، السعودية");
+  const fallbackMapsUrl = `https://www.google.com/maps/search/?api=1&query=${abhaQuery}`;
+
   const mapHref =
     typeof lat === "number" && typeof lon === "number"
       ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${lat},${lon}`)}`
-      : ABHA_MAPS_URL;
+      : fallbackMapsUrl;
 
   return (
     <MapPlaceholderSection
-      ctaLabel={
-        locale === "ar"
-          ? `مشاهدة ${areaLabel} على الخريطة`
-          : `View ${areaLabel} on map`
-      }
+      ctaLabel={tDest("mapViewOnMap", { area: resolvedArea })}
       ctaWidthPx={220}
       mapHref={mapHref}
-      imageAlt={locale === "ar" ? `خريطة ${areaLabel}` : `${areaLabel} map`}
+      imageAlt={tDest("mapAlt", { area: resolvedArea })}
     />
   );
 };

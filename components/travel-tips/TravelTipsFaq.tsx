@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useLocale } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -35,6 +36,8 @@ interface TravelTipsFaqProps {
 }
 
 const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
 
   const toggle = useCallback((id: string) => {
@@ -44,14 +47,14 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
   return (
     <section
       className="w-full max-w-[1440px] mx-auto px-4 py-10 sm:px-8 md:px-[60px] md:py-12"
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="flex w-full max-w-[1320px] mx-auto flex-col gap-8">
         <h2
-          className="min-h-[47px] w-full text-right text-[44px] font-bold leading-[180%] text-black"
+          className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-black ${isRtl ? "text-right" : "text-left"}`}
           style={{ fontFamily: ara }}
         >
-          الأسئلة الشائعة
+          {isRtl ? "الأسئلة الشائعة" : "Frequently asked questions"}
         </h2>
 
         <div className="flex w-full flex-col gap-2">

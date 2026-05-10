@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@headlessui/react";
+import { useLocale, useTranslations } from "next-intl";
 import { PointOfInterest } from "./data";
 
 interface PreviewImagesProps {
@@ -15,10 +16,14 @@ export const PreviewImages = ({
   currentIndex,
   onSelect,
 }: PreviewImagesProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const t = useTranslations("common");
+
   return (
     <div
       className="flex h-[101px] w-full max-w-[653px] flex-row gap-[24px] overflow-x-auto hide-scrollbar lg:w-[653px]"
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       {points.map((point, index) => (
@@ -30,7 +35,7 @@ export const PreviewImages = ({
               ? "scale-110"
               : "opacity-70 hover:opacity-100 hover:scale-105"
           }`}
-          aria-label={`Select ${point.title}`}
+          aria-label={`${t("browseMore")} ${point.title}`}
         >
           <Image
             src={point.image}

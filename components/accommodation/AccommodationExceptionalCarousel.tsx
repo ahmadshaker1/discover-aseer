@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { Accommodation } from "./data";
@@ -99,7 +100,7 @@ const AccommodationExceptionalCarousel = ({
         dir="rtl"
         className="mb-4 text-right text-xl font-bold text-black sm:text-2xl [unicode-bidi:isolate]"
       >
-        الفنادق الاستثنائية
+        {t("exceptionalHotels")}
       </h2>
       <div className="rounded-2xl border border-black/6 bg-linear-to-b from-[#E9E9F3] to-white p-6">
         <div
@@ -123,7 +124,7 @@ const AccommodationExceptionalCarousel = ({
         >
           <button
             type="button"
-            aria-label="السابق"
+            aria-label={t("previous")}
             disabled={!canPrev}
             onClick={() => scrollByOne(-1)}
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-[#7300CD] shadow-md transition-[opacity,box-shadow] hover:bg-gray-50 hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
@@ -132,7 +133,7 @@ const AccommodationExceptionalCarousel = ({
           </button>
           <button
             type="button"
-            aria-label="التالي"
+            aria-label={t("next")}
             disabled={!canNext}
             onClick={() => scrollByOne(1)}
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-[#7300CD] shadow-md transition-[opacity,box-shadow] hover:bg-gray-50 hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"

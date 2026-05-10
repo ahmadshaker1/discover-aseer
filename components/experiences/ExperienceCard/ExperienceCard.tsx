@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import ExperienceCardShareButton from "./ExperienceCardShareButton";
 import ExperienceCardActions from "./ExperienceCardActions";
 import { BuildingIcon, PersonIcon, SaudiRiyalIcon } from "./Icons";
@@ -26,10 +29,12 @@ const ExperienceCard = ({
   description,
   provider,
   price,
-  currency = "إ.ر",
+  currency,
   groupSize,
   bookUrl,
 }: ExperienceCardProps) => {
+  const t = useTranslations("common");
+  const currencyLabel = currency ?? t("currencySar");
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       {/* Image Banner Section */}
@@ -73,11 +78,11 @@ const ExperienceCard = ({
           <div className="flex items-center gap-1">
             <span className="text-xl font-bold text-black">{price}</span>
             <SaudiRiyalIcon />
-            <span className="text-xs text-gray-500">{currency}</span>
+            <span className="text-xs text-gray-500">{currencyLabel}</span>
           </div>
           <span>/</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-sm text-black">مجموعة</span>
+            <span className="text-sm text-black">{t("group")}</span>
             <span className="text-sm font-medium text-black">x{groupSize}</span>
             <PersonIcon />
           </div>

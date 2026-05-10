@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { PointOfInterest } from "./data";
 import { BackgroundImage } from "./BackgroundImage";
@@ -14,6 +15,9 @@ interface PointsOfInterestCarouselProps {
 export const PointsOfInterestCarousel = ({
   points,
 }: PointsOfInterestCarouselProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const t = useTranslations("common");
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentPoint = points[currentIndex];
 
@@ -32,7 +36,7 @@ export const PointsOfInterestCarousel = ({
   if (points.length === 0) {
     return (
       <div className="relative w-full min-h-screen max-w-screen-2xl mx-auto overflow-hidden flex items-center justify-center">
-        <p className="text-white text-xl">لا توجد نقاط اهتمام متاحة</p>
+        <p className="text-white text-xl">{t("noPointsOfInterest")}</p>
       </div>
     );
   }
@@ -43,7 +47,10 @@ export const PointsOfInterestCarousel = ({
       <TextOverlay
         point={currentPoint}
         carouselSlot={
-          <div className="flex flex-col items-end gap-4" dir="rtl">
+          <div
+            className={`flex flex-col gap-4 ${isRtl ? "items-end" : "items-start"}`}
+            dir={isRtl ? "rtl" : "ltr"}
+          >
             <NavigationControls onNext={nextImage} onPrev={prevImage} />
             <PreviewImages
               points={points}

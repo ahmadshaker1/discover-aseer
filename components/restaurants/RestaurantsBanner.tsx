@@ -1,11 +1,14 @@
 import Image from "next/image";
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
 /**
- * Restaurants hero — same layering as tour guides: full-bleed photo, diagonal wash,
- * diamond pattern on the left (`/hero-pattern/pattern-diamons.png`), copy on top.
+ * Restaurants hero — full-bleed photo, diagonal wash, diamond pattern.
  */
-const RestaurantsBanner = () => {
+export default async function RestaurantsBanner() {
+  const t = await getTranslations("restaurantsPage");
+  const tCommon = await getTranslations("common");
+
   return (
     <section
       className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]"
@@ -52,26 +55,24 @@ const RestaurantsBanner = () => {
       <div className="relative z-10 flex min-h-[calc(100dvh-5rem)] w-full flex-col items-center justify-center md:min-h-[calc(100dvh-6rem)]">
         <div className="mx-auto w-full max-w-[1440px] px-6 py-16 text-center sm:px-10 md:px-16 lg:px-24">
           <div className="mb-6 flex flex-wrap items-center justify-center gap-2 text-base font-medium text-white">
-            <Link href="/" className="hover:opacity-80 transition-opacity">
-              الصفحة الرئيسية
+            <Link href="/" className="transition-opacity hover:opacity-80">
+              {tCommon("breadcrumbHome")}
             </Link>
             <span aria-hidden className="opacity-80">
               {" > "}
             </span>
-            <span>المطاعم</span>
+            <span>{t("breadcrumb")}</span>
           </div>
 
           <h1 className="mb-4 text-4xl font-bold text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            المطاعم
+            {t("title")}
           </h1>
 
           <p className="mx-auto max-w-2xl text-lg font-medium leading-relaxed text-white sm:text-xl md:text-2xl">
-            مطاعم عسير: إمتاع الحواس وإشباع الذائقة
+            {t("subtitle")}
           </p>
         </div>
       </div>
     </section>
   );
-};
-
-export default RestaurantsBanner;
+}

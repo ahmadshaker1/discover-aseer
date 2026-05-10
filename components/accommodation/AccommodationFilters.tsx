@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 const EXCEPTIONAL_FILTER_BADGE = "/assets/accommodation/exceptional-filter-badge.svg";
@@ -47,6 +48,7 @@ const AccommodationFilters = ({
   exceptionalFilterCount,
   onReset,
 }: AccommodationFiltersProps) => {
+  const t = useTranslations("common");
   const [cityOpen, setCityOpen] = useState(false);
   const cityWrapRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +60,7 @@ const AccommodationFilters = ({
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
-  const selectedCityLabel = selectedCity === "all" ? "جميع المدن" : selectedCity;
+  const selectedCityLabel = selectedCity === "all" ? t("allCities") : selectedCity;
 
   return (
     <aside
@@ -70,14 +72,14 @@ const AccommodationFilters = ({
           dir="rtl"
           className="text-right text-lg font-bold text-black sm:text-xl [unicode-bidi:isolate]"
         >
-          تصفية الوجهات
+          {t("filterDestinations")}
         </h2>
         <button
           type="button"
           onClick={onReset}
           className="shrink-0 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-black transition-colors hover:bg-gray-50 sm:text-sm"
         >
-          إعادة تعيين النتائج
+          {t("resetFilters")}
         </button>
       </div>
 
@@ -118,7 +120,7 @@ const AccommodationFilters = ({
                   className="flex w-full items-center justify-start gap-2 px-4 py-3 text-right text-sm text-black hover:bg-gray-50"
                 >
                   <CityPinIcon className="shrink-0 opacity-70" />
-                  <span className="min-w-0 truncate">جميع المدن</span>
+                  <span className="min-w-0 truncate">{t("allCities")}</span>
                 </button>
               </li>
               {cityOptions.map((city) => (
@@ -171,7 +173,7 @@ const AccommodationFilters = ({
           </div>
           <img
             src={EXCEPTIONAL_FILTER_BADGE}
-            alt="استثنائي"
+            alt={t("exceptional")}
             width={55}
             height={22}
             className="h-[22px] w-[55px] shrink-0 object-contain [unicode-bidi:isolate]"
@@ -195,7 +197,7 @@ const AccommodationFilters = ({
             dir="rtl"
             className="text-right text-base font-bold text-black [unicode-bidi:isolate]"
           >
-            تصنيف الفندق
+            {t("hotelRating")}
           </h3>
         </div>
         <div className="flex flex-col gap-2">
@@ -211,7 +213,7 @@ const AccommodationFilters = ({
                 className="h-4 w-4 shrink-0 rounded border-gray-300 text-[#7300CD] focus:ring-[#7300CD]"
               />
               <span className="min-w-0 flex-1 text-right text-sm font-normal text-black">
-                {stars} نجوم
+                {t("starRating", { stars })}
               </span>
               <span className="shrink-0 rounded-[8px] bg-[#ECEEF2] px-2 py-0.5 text-xs text-black">
                 {starsCount.get(stars) ?? 0}

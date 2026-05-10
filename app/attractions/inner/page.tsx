@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import AttractionsHero from "@/components/attractions/AttractionsHero";
 import AttractionsIntroSection from "@/components/attractions/AttractionsIntroSection";
 import AttractionsGuidesSection from "@/components/attractions/AttractionsGuidesSection";
@@ -33,6 +34,8 @@ const FALLBACK_LANDMARKS: Landmark[] = [
 ];
 
 const AttractionsInnerPage = async () => {
+  const t = await getTranslations("attractionsPage");
+  const tCommon = await getTranslations("common");
   const [{ guides }, landmarks] = await Promise.all([
     fetchTourGuides(),
     fetchLandmarks(),
@@ -44,11 +47,11 @@ const AttractionsInnerPage = async () => {
     <div className="flex w-full flex-col bg-white">
       <AttractionsHero
         breadcrumbs={[
-          { label: "المعالم السياحية" },
-          { label: "الصفحة الرئيسية", href: "/" },
+          { label: t("breadcrumb") },
+          { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
-        title="قصور آل أبو سراح"
-        subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+        title={t("innerTitle")}
+        subtitle={tCommon("subtitleOneVisit")}
         backgroundImage="/assets/attractions/attractions-hero.png"
       />
       <AttractionsIntroSection imageUrl="/assets/attractions/attractions-hero.png" />

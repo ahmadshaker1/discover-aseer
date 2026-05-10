@@ -1,7 +1,92 @@
 {
   "common": {
     "home": "الرئيسية",
-    "discoverAseer": "اكتشف عسير"
+    "discoverAseer": "اكتشف عسير",
+    "breadcrumbHome": "الصفحة الرئيسية",
+    "subtitleOneVisit": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.",
+    "browseMore": "عرض المزيد",
+    "resetFilters": "إعادة تعيين النتائج",
+    "city": "المدينة",
+    "interests": "الاهتمامات",
+    "travelers": "المسافرين",
+    "price": "السعر",
+    "share": "شارك",
+    "destinations": "الوجهات",
+    "experiences": "التجارب",
+    "events": "الفعاليات",
+    "accommodation": "أماكن الإقامة",
+    "restaurants": "المطاعم",
+    "attractions": "المعالم السياحية",
+    "filterExperiences": "تصفية التجارب",
+    "filterEvents": "تصفية الفعاليات",
+    "filterRestaurants": "تصفية المطاعم",
+    "filterDestinations": "تصفية الوجهات",
+    "date": "التاريخ",
+    "cost": "التكلفة",
+    "free": "مجانية",
+    "paid": "مدفوعة",
+    "more": "المزيد",
+    "bookNow": "احجز الآن",
+    "group": "مجموعة",
+    "currencySar": "إ.ر",
+    "metadataTitle": "اكتشف عسير",
+    "metadataDescription": "اكتشف منطقة عسير — التراث والطبيعة والضيافة.",
+    "memberOf": "عضو في",
+    "newsletterDescription": "اشترك في النشرة البريدية لدينا لمعرفة المزيد عن العروض الخصومات الخاصة.",
+    "emailPlaceholder": "Example @email.com",
+    "noPointsOfInterest": "لا توجد نقاط اهتمام متاحة",
+    "weatherRain": "أمطار",
+    "happeningNow": "يحدث الان",
+    "viewDetails": "عرض التفاصيل",
+    "downloadEventsPdf": "تحميل الفعاليات لملف PDF",
+    "datePlaceholder": "اختر تاريخ الوصول والمغادرة",
+    "starRating": "{stars} نجوم",
+    "hotelRating": "تصنيف الفندق",
+    "exceptional": "استثنائي",
+    "hotels": "الفنادق",
+    "exceptionalHotels": "الفنادق الاستثنائية",
+    "previous": "السابق",
+    "next": "التالي",
+    "location": "الموقع",
+    "allCities": "جميع المدن",
+    "noAccommodation": "لا توجد أماكن إقامة متاحة حالياً",
+    "resultsCount": "عدد النتائج: {count}",
+    "noAccommodationFilter": "لا توجد أماكن إقامة تطابق التصفية المحددة.",
+    "noExperiencesFilter": "لا توجد تجارب تطابق التصفية المحددة.",
+    "travelerTypes": "نوع المسافرين",
+    "visitorSite": "زياره الموقع",
+    "kmShort": "كم",
+    "chooseCuisineType": "اختر نوع المطبخ",
+    "restaurantType": "نوع المطعم",
+    "cuisineType": "نوع المطبخ",
+    "priceRange": "الأسعار",
+    "dietaryOptions": "الخيارات الغذائية",
+    "featured": "مميزة",
+    "popular": "شعبية",
+    "luxury": "فاخرة",
+    "cuisineAsian": "اسيوي",
+    "cuisineAmerican": "امريكي",
+    "cuisineSaudi": "سعودي",
+    "cuisineMiddleEastern": "شرق اوسطي",
+    "fallbackCardTitle": "عنوان البطاقة",
+    "travelSeasonsEvents": "المواسم و الفعاليات",
+    "planDesignTrip": "صمم رحلتك",
+    "travelGettingAround": "الوصول و التجول",
+    "activitiesGuide": "دليل الأنشطة الخارجية",
+    "worldRegionTitle": "الوجهات الرئيسية",
+    "communityTitle": "مجتمع عسير",
+    "cuisineNavTitle": "المطبخ العسيري",
+    "experiencesNavTitle": "التجارب السياحية",
+    "attractionsNavTitle": "المعالم السياحية",
+    "eventsSeasonsNavTitle": "الفعاليات و المواسم",
+    "stayInAseerCard": "الإقامة في عسير",
+    "mainDestinationsCard": "واجهات رئيسية",
+    "eventsSeasonsCard": "الفعاليات و المواسم",
+    "experiencesCard": "التجارب",
+    "attractionsCard": "المعالم السياحية",
+    "tourGuidesNav": "المرشدين السياحيين",
+    "guideDiscoverAseer": "اكتشف عسير",
+    "exploreAttractionsDefault": "اكتشف أشهر المعالم السياحية"
   },
   "nav": {
     "planTrip": "خطط رحلتك",
@@ -24,10 +109,176 @@
     "internationalCallCenter": "مركز الاتصال الدولي",
     "followUs": "تابعنا في وسائل التواصل الاجتماعية",
     "copyright": "Aseer @ 2026. All rights reserved.",
-    "privacy": "سياسة الخصوصية"
+    "privacy": "سياسة الخصوصية",
+    "linkMainDestinations": "الوجهات الرئيسية",
+    "linkAttractions": "المعالم السياحية",
+    "linkExperiences": "التجارب السياحية",
+    "linkCuisine": "المطبخ العسيري",
+    "linkCommunity": "مجتمع عسير",
+    "linkEventsSeasons": "المواسم و الفعاليات",
+    "linkPlanner": "صمم رحلتك",
+    "linkAccommodation": "أماكن الإقامة",
+    "linkRestaurants": "المطاعم",
+    "linkTourGuides": "المرشدين السياحيين",
+    "linkTravelTips": "الوصول و التجول",
+    "linkDiscoverBooklet": "اكتشف عسير",
+    "linkOutdoorGuide": "دليل الأنشطة الخارجية",
+    "altUnTourism": "سياحة الأمم المتحدة",
+    "altPata": "PATA",
+    "altGstc": "GSTC"
   },
   "pageBanner": {
     "browseMore": "عرض المزيد"
+  },
+  "home": {
+    "heroTitle": "ألف مرحبا بكم في عسير",
+    "heroSubtitle": "حيث تلتقي التقاليد الخالدة بالمناظر الطبيعية الخلابة. جرب مزيجا فريدا من الثقافة والمغامرة والجمال الذي لا مثيل له.",
+    "welcomeTitle": "اكتشف عسير",
+    "welcomeDescription": "في ثنائيات من البهاء؛ تلتقي قمم الجبال مع لؤلؤ الشطآن الصافية، وتصافح الرمال الذهبية الهضاب الخضراء. طبيعة يتماهى فيها المطر مع دفء السهول، ويختال فيها الضباب مع شموخ المكان.",
+    "landmarksTitle": "أشهر المعالم في عسير",
+    "landmarksDescription": "عسير.. ثروةٌ من المعالم والتجارب",
+    "experiencesTitle": "تجارب في عسير",
+    "experiencesDescription": "في المطبخ العسيري ستكتفي بكل ما يُشبع حواسك من منطقة واحدة، ستبدأ بشرب فنجان قهوتك من البن العسيري من أشجارها المعمرة على سفوح الجبال والمحمص بعناية ليأسر برائحته وطعمه ذائقتك مع حبات من تمر الصفري من نخيل بيشة الباسق. ثم جرب أطباقا من قمح جبالها",
+    "experiencesCta": "عرض الكل",
+    "storiesTitle": "قصص من عسير",
+    "playVideoPrefix": "تشغيل الفيديو"
+  },
+  "storiesFromAseer": {
+    "story1": "دعنا نذهب إلى عسير-مناطق الكلمات المحتملة / المرشحة لفن الطهي-الشرق الأوسط وشمال أفريقيا",
+    "story2": "قصص من قلب عسير — تراث، طبيعة، وضيافة تجمع الماضي بالحاضر في تجربة بصرية تنقلك إلى الجنوب."
+  },
+  "destinations": {
+    "breadcrumbDestinations": "الوجهات",
+    "heroTitleAbha": "أبها",
+    "heroSubtitleAbha": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.",
+    "introTitle": "مدينة الضباب",
+    "introBody": "على قمم جبال السروات في جنوب غرب المملكة تستقر أبها كتاج مُرصّع بالجواهر الثمينة على القمم المتدثرة بالضباب والجمال، محاطة ببهاء السحاب الذي يرافقها صيفا وشتاءً.",
+    "mapViewOnMap": "مشاهدة {area} على الخريطة",
+    "mapAlt": "خريطة {area}"
+  },
+  "eventsInfo": {
+    "headingStart": "ابدأ ",
+    "headingTrip": "رحلتك",
+    "cardVisa": "متطلبات التأشيرة والدخول",
+    "cardTravel": "السفر إلى عسير",
+    "cardStay": "خطط إقامتك",
+    "cardDestination": "اختر وجهتك"
+  },
+  "events": {
+    "breadcrumb": "الفعاليات",
+    "title": "الفعاليات",
+    "subtitle": "فعاليات فنية وثقافية وشعبية وتجارب بيئية ورياضية ضمن أنشطة وتجارب أخرى صممت لجميع الاهتمامات على مدار العام.",
+    "addYourEvent": "أضف فعاليتك",
+    "interestAdventure": "المغامرات",
+    "interestHeritage": "التراث و الفنون",
+    "interestCulinary": "فنون الطهي",
+    "interestNature": "الطبيعة",
+    "seasonsPageTitle": "المواسم والفعاليات",
+    "seasonsPageBody": "اكتشف المواسم والفعاليات على مدار العام في عسير."
+  },
+  "experiencesPage": {
+    "breadcrumb": "التجارب",
+    "title": "تجارب تنتظرك في عسير",
+    "subtitle": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.",
+    "costSection": "التكلفة"
+  },
+  "accommodationPage": {
+    "breadcrumb": "أماكن الإقامة",
+    "title": "أماكن الإقامة",
+    "subtitle": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+  },
+  "restaurantsPage": {
+    "breadcrumb": "المطاعم",
+    "title": "المطاعم",
+    "subtitle": "مطاعم عسير: إمتاع الحواس وإشباع الذائقة",
+    "credibilityLine": "عسير منطقة طهي عالمية 2024",
+    "headerSubtitle": "عسير.. ثروةٌ من المعالم والتجارب"
+  },
+  "attractionsPage": {
+    "breadcrumb": "المعالم السياحية",
+    "title": "المعالم السياحية",
+    "subtitle": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.",
+    "innerTitle": "قصور آل أبو سراح",
+    "introTitle": "قصور آل أبو سراح",
+    "introBody": "معالم عسير التاريخية والثقافية تجمع بين الأصالة والجمال الطبيعي.",
+    "browseTitle": "وجهات رئيسية.. تهوّل",
+    "browseSubtitle": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.",
+    "contributeDestinations": "ساهم في إثراء وجهاتنا"
+  },
+  "travelTips": {
+    "breadcrumb": "معلومات أساسية",
+    "title": "معلومات أساسية",
+    "subtitle": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.",
+    "emergencyPolice": "شرطة",
+    "emergencyCivilDefense": "الدفاع المدني",
+    "emergencyAmbulance": "الإسعاف",
+    "emergencyRoadSecurity": "أمن الطرق",
+    "emergencyTraffic": "المرور",
+    "emergencyTourism": "السياحة",
+    "emergencyFire": "الإطفاء",
+    "emergencyGeneralSecurity": "الأمن العام"
+  },
+  "experiencesDetail": {
+    "backToExperiences": "العودة إلى التجارب",
+    "aboutExperience": "عن التجربة",
+    "providerLabel": "الجهة المقدمة",
+    "priceLabel": "السعر",
+    "groupSizeLabel": "حجم المجموعة",
+    "interestsHeading": "الاهتمامات المناسبة",
+    "travelersHeading": "نوع المسافرين المناسب",
+    "bookingTitle": "ابدأ الحجز",
+    "groupMinimum": "الحد الأدنى للمجموعة: x{size}",
+    "bookNow": "احجز الآن",
+    "currencyFallback": "ر.س",
+    "travelerFemale": "مسافرة منفردة",
+    "travelerIndividual": "رحلة فردية",
+    "travelerCouple": "زوج",
+    "travelerFamily": "عائلة و أطفال",
+    "travelerGroups": "رحلة جماعية"
+  },
+  "aboutAseer": {
+    "title": "عن عسير",
+    "subtitle": "تعرّف على المنطقة وتراثها وطبيعتها."
+  },
+  "servicesSupport": {
+    "title": "الخدمات والدعم",
+    "subtitle": "نوفر لك المعلومات والمساندة أثناء زيارتك.",
+    "bannerCrumb": "الخدمات المساندة",
+    "bannerDescription": "خدمات الأمن والسلامة والمساندة في مدن ومحافظات عسير"
+  },
+  "tourGuides": {
+    "title": "المرشدين السياحيين",
+    "subtitle": "تواصل مع مرشدين معتمدين لرحلة أوضح وأغنى."
+  },
+  "tourGuidesRegister": {
+    "title": "تسجيل المرشدين",
+    "subtitle": "انضم إلى شبكة المرشدين في عسير."
+  },
+  "aseerCommunity": {
+    "title": "مجتمع عسير",
+    "subtitle": "قصص وفعاليات المجتمع المحلي."
+  },
+  "aseerCuisine": {
+    "title": "المطبخ العسيري",
+    "subtitle": "نكهات أصيلة من الجنوب."
+  },
+  "planner": {
+    "title": "صمم رحلتك",
+    "subtitle": "خطط زيارتك بسهولة."
+  },
+  "interactiveMap": {
+    "title": "الخريطة التفاعلية",
+    "subtitle": "استكشف الوجهات على الخريطة."
+  },
+  "film": {
+    "title": "عسير في السينما",
+    "subtitle": "محتوى مرئي يعرّفك بالمنطقة."
+  },
+  "gettingHere": {
+    "title": "الوصول والتنقل",
+    "subtitle": "معلومات النقل والطرق في عسير."
+  },
+  "landmarks": {
+    "redirectNote": "إعادة توجيه إلى المعالم"
   }
 }
-
