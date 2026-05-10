@@ -50,6 +50,24 @@ const iconByKey = {
   permits: <PermitsIcon />,
 };
 
+const EN_SERVICE_COPY: Record<FilmServiceCard["iconKey"], { title: string; description: string }> = {
+  crew: {
+    title: "Crew",
+    description:
+      "Support in connecting productions with local talent and skilled professionals across Asir.",
+  },
+  locations: {
+    title: "Locations",
+    description:
+      "Support and facilitation to identify and access locations that match production requirements.",
+  },
+  permits: {
+    title: "Permits",
+    description:
+      "Support and guidance through required approvals from official entities for filming in Asir.",
+  },
+};
+
 const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
   const locale = useLocale();
   const isRtl = locale === "ar";
@@ -66,7 +84,9 @@ const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
         </div>
 
         <div className="flex h-auto w-full flex-col justify-between gap-4 lg:h-[290px] lg:flex-row">
-          {cards.slice(0, 3).map((card) => (
+          {cards.slice(0, 3).map((card) => {
+            const localized = !isRtl ? EN_SERVICE_COPY[card.iconKey] : null;
+            return (
             <article
               key={card.id}
               className={`flex h-[290px] w-full max-w-[434.666687px] flex-col gap-6 rounded-[13px] border border-[#E8E8E8] px-8 py-[50px] ${isRtl ? "items-end" : "items-start"}`}
@@ -80,17 +100,17 @@ const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
                   className={`text-[32px] font-bold leading-[30px] text-black ${isRtl ? "text-right" : "text-left"}`}
                   style={{ fontFamily: ara }}
                 >
-                  {card.title}
+                  {localized?.title ?? card.title}
                 </h3>
                 <p
                   className={`text-[15px] font-light leading-[119%] text-[#252525] ${isRtl ? "text-right" : "text-left"}`}
                   style={{ fontFamily: ibm }}
                 >
-                  {card.description}
+                  {localized?.description ?? card.description}
                 </p>
               </div>
             </article>
-          ))}
+          );})}
         </div>
       </div>
     </section>

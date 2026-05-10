@@ -2,8 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useLocale } from "next-intl";
-import { cityOptions, interestOptions, priceOptions } from "@/components/landmarks/filterOptions";
+import { useLocale, useTranslations } from "next-intl";
+import {
+  getCityOptions,
+  getInterestOptions,
+  getPriceOptions,
+  inferCityIdFromLocation,
+  locationMatchesCityId,
+} from "@/components/landmarks/filterOptions";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -37,10 +43,7 @@ interface AseerCuisineRestaurantsSectionProps {
 type PriceFilterId = "free" | "budget" | "mid-range" | "luxury" | null;
 
 function inferCityId(card: AseerCuisineRestaurantCard): string | undefined {
-  for (const opt of cityOptions) {
-    if (card.location.includes(opt.label)) return opt.id;
-  }
-  return undefined;
+  return inferCityIdFromLocation(card.location);
 }
 
 function inferInterestTags(card: AseerCuisineRestaurantCard): string[] {
@@ -77,8 +80,7 @@ function cardMatchesCity(card: AseerCuisineRestaurantCard, city: string | null):
   if (!city) return true;
   const inferred = inferCityId(card);
   if (inferred) return inferred === city;
-  const label = cityOptions.find((o) => o.id === city)?.label ?? "";
-  return label ? card.location.includes(label) : true;
+  return locationMatchesCityId(card.location, city);
 }
 
 function CardPinIcon() {
@@ -185,6 +187,10 @@ function formatPriceBand(card: AseerCuisineRestaurantCard): string {
 const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSectionProps) => {
   const locale = useLocale();
   const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
+  const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
+  const interestOpts = useMemo(() => getInterestOptions(locale), [locale]);
+  const priceOpts = useMemo(() => getPriceOptions(locale), [locale]);
   const [city, setCity] = useState<string | null>(null);
   const [interest, setInterest] = useState<string | null>(null);
   const [price, setPrice] = useState<PriceFilterId>(null);
@@ -251,7 +257,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                 onChange={(e) => setCity(e.target.value || null)}
                 className="h-[48px] w-[190px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">{isRtl ? "المدينة" : "City"}</option>
+                <option value="">{tCommon("city")}</option>
                 {cityOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -263,8 +269,8 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                 onChange={(e) => setInterest(e.target.value || null)}
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
-                <option value="">{isRtl ? "الاهتمامات" : "Interests"}</option>
-                {interestOptions.map((opt) => (
+                <option value="">{tCommon("interests")}</option>
+                {interestOpts.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
                   </option>
@@ -291,7 +297,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                 }}
                 className="h-[48px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-5 text-sm text-[#535353] hover:bg-gray-50"
               >
-                {isRtl ? "اعادة تعيين النتائج" : "Reset filters"}
+                {tCommon("resetFilters")}
               </button>
             </div>
           </div>

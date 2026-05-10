@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import AttractionsMainPageContent from "@/components/attractions/AttractionsMainPageContent";
 import { fetchLandmarks, type Landmark } from "@/components/landmarks/data";
@@ -91,6 +91,7 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
 ];
 
 const AttractionsPage = async () => {
+  const locale = await getLocale();
   const t = await getTranslations("attractionsPage");
   const tCommon = await getTranslations("common");
   /**
@@ -112,6 +113,7 @@ const AttractionsPage = async () => {
         title={t("title")}
         subtitle={tCommon("subtitleOneVisit")}
         backgroundImage="/assets/attractions/attractions-hero.png"
+        breadcrumbDir={locale === "ar" ? "rtl" : "ltr"}
       />
 
       <AttractionsMainPageContent landmarks={displayLandmarks} />

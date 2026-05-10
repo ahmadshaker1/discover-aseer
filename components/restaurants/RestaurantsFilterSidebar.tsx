@@ -1,10 +1,11 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { cityOptions } from "./filterOptions";
+import { getCityOptions } from "@/components/landmarks/filterOptions";
+import type { RestaurantFilterState } from "@/components/restaurants/applyRestaurantFilters";
 import {
   LocationIcon,
   RestaurantTypeIcon,
@@ -14,13 +15,6 @@ import {
   DiamondIcon,
   ChevronDownIcon,
 } from "./Icons";
-
-// Types
-interface FilterState {
-  city: string | null;
-  restaurantType: string[];
-  cuisineTypes: string[];
-}
 
 interface RestaurantType {
   id: string;
@@ -46,7 +40,7 @@ const FilterHeader = ({ onReset }: FilterHeaderProps) => {
       <h2 className="text-lg sm:text-xl font-bold text-black">{t("filterRestaurants")}</h2>
       <Button
         onClick={onReset}
-        className="px-3 sm:px-4 py-1.5 sm:py-2 cursor-pointer text-xs sm:text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
+        className="px-3 sm:px-4 py-1.5 sm:py-2 cursor-pointer text-xs sm:text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-focus:outline-none data-focus:ring-2 data-focus:ring-gray-500 data-focus:ring-offset-2"
       >
         {t("resetFilters")}
       </Button>
@@ -56,26 +50,30 @@ const FilterHeader = ({ onReset }: FilterHeaderProps) => {
 
 // Location Filter Component
 interface LocationFilterProps {
+  isRtl: boolean;
   selectedCity: string | null;
   onCityChange: (cityId: string | null) => void;
 }
 
 const LocationFilter = ({
+  isRtl,
   selectedCity,
   onCityChange,
 }: LocationFilterProps) => {
+  const locale = useLocale();
   const t = useTranslations("common");
-  const selectedCityOption = cityOptions.find((opt) => opt.id === selectedCity);
+  const cityOpts = getCityOptions(locale);
+  const selectedCityOption = cityOpts.find((opt) => opt.id === selectedCity);
 
   return (
     <div className="mb-6 sm:mb-8">
       <Menu as="div" className="relative">
-        <Menu.Button className="flex flex-row-reverse items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer">
-          <ChevronDownIcon />
-          <span className="flex-1 text-right">
+        <Menu.Button className={`flex items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
+          <LocationIcon />
+          <span className="flex-1 text-start">
             {selectedCityOption?.label || t("city")}
           </span>
-          <LocationIcon />
+          <ChevronDownIcon />
         </Menu.Button>
         <Transition
           as={Fragment}
@@ -86,9 +84,9 @@ const LocationFilter = ({
           leaveFrom="opacity-100 scale-100 translate-y-0"
           leaveTo="opacity-0 scale-95 translate-y-1"
         >
-          <Menu.Items className="absolute right-0 mt-2 w-full origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200">
+          <Menu.Items className={`absolute mt-2 w-full rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 ${isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"}`}>
             <div className="py-1">
-              {cityOptions.map((option) => (
+              {cityOpts.map((option) => (
                 <Menu.Item key={option.id}>
                   {({ active }) => (
                     <button
@@ -103,7 +101,7 @@ const LocationFilter = ({
                         selectedCity === option.id
                           ? "bg-[#6027D2]/5 text-[#6027D2] font-semibold"
                           : "text-black"
-                      } block w-full text-right px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
+                      } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
                     >
                       {option.label}
                     </button>
@@ -146,7 +144,7 @@ const RestaurantTypeFilter = ({
             <Button
               key={type.id}
               onClick={() => onTypeToggle(type.id)}
-              className={`flex flex-col items-center justify-center cursor-pointer p-3 sm:p-4 rounded-lg border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 ${
+              className={`flex flex-col items-center justify-center cursor-pointer p-3 sm:p-4 rounded-lg border-2 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2 ${
                 isSelected
                   ? "border-black bg-gray-50"
                   : "border-gray-200 hover:border-gray-300"
@@ -181,10 +179,10 @@ const FilterCheckbox = ({ checked, onChange }: FilterCheckboxProps) => {
     <Checkbox
       checked={checked}
       onChange={onChange}
-      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-[checked]:border-black data-[checked]:bg-black data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2"
+      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-checked:border-black data-checked:bg-black data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2"
     >
       <svg
-        className="h-3 w-3 stroke-white opacity-0 group-data-[checked]:opacity-100"
+        className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
         viewBox="0 0 14 14"
         fill="none"
       >
@@ -201,12 +199,14 @@ const FilterCheckbox = ({ checked, onChange }: FilterCheckboxProps) => {
 
 // Cuisine Type Filter Component
 interface CuisineTypeFilterProps {
+  isRtl: boolean;
   cuisines: CuisineOption[];
   selectedCuisines: string[];
   onCuisineToggle: (cuisineId: string) => void;
 }
 
 const CuisineTypeFilter = ({
+  isRtl,
   cuisines,
   selectedCuisines,
   onCuisineToggle,
@@ -228,7 +228,7 @@ const CuisineTypeFilter = ({
               key={cuisine.id}
               className="flex items-center justify-between p-2 rounded transition-colors"
             >
-              <div className="flex items-center gap-3 flex-row-reverse">
+              <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
                 <span className="text-sm text-black">{cuisine.label}</span>
                 <FilterCheckbox
                   checked={isChecked}
@@ -246,14 +246,20 @@ const CuisineTypeFilter = ({
   );
 };
 
-// Main Component
-const RestaurantsFilterSidebar = () => {
+export interface RestaurantsFilterSidebarProps {
+  filters: RestaurantFilterState;
+  onFiltersChange: Dispatch<SetStateAction<RestaurantFilterState>>;
+  onReset: () => void;
+}
+
+const RestaurantsFilterSidebar = ({
+  filters,
+  onFiltersChange,
+  onReset,
+}: RestaurantsFilterSidebarProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const t = useTranslations("common");
-  const [filters, setFilters] = useState<FilterState>({
-    city: null,
-    restaurantType: [],
-    cuisineTypes: [],
-  });
 
   const restaurantTypes: RestaurantType[] = [
     { id: "featured", label: t("featured"), icon: <StarIcon /> },
@@ -270,7 +276,7 @@ const RestaurantsFilterSidebar = () => {
   ];
 
   const handleRestaurantTypeToggle = (typeId: string) => {
-    setFilters((prev) => ({
+    onFiltersChange((prev) => ({
       ...prev,
       restaurantType: prev.restaurantType.includes(typeId)
         ? prev.restaurantType.filter((id) => id !== typeId)
@@ -279,7 +285,7 @@ const RestaurantsFilterSidebar = () => {
   };
 
   const handleCuisineToggle = (cuisineId: string) => {
-    setFilters((prev) => ({
+    onFiltersChange((prev) => ({
       ...prev,
       cuisineTypes: prev.cuisineTypes.includes(cuisineId)
         ? prev.cuisineTypes.filter((id) => id !== cuisineId)
@@ -288,24 +294,17 @@ const RestaurantsFilterSidebar = () => {
   };
 
   const handleCityChange = (cityId: string | null) => {
-    setFilters((prev) => ({
+    onFiltersChange((prev) => ({
       ...prev,
       city: cityId,
     }));
   };
 
-  const handleReset = () => {
-    setFilters({
-      city: null,
-      restaurantType: [],
-      cuisineTypes: [],
-    });
-  };
-
   return (
-    <div className="w-full max-w-md lg:max-w-none bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-      <FilterHeader onReset={handleReset} />
+    <div className="w-full max-w-md lg:max-w-none bg-white p-4 sm:p-6 rounded-lg shadow-sm" dir={isRtl ? "rtl" : "ltr"}>
+      <FilterHeader onReset={onReset} />
       <LocationFilter
+        isRtl={isRtl}
         selectedCity={filters.city}
         onCityChange={handleCityChange}
       />
@@ -315,6 +314,7 @@ const RestaurantsFilterSidebar = () => {
         onTypeToggle={handleRestaurantTypeToggle}
       />
       <CuisineTypeFilter
+        isRtl={isRtl}
         cuisines={cuisinesWithCounts}
         selectedCuisines={filters.cuisineTypes}
         onCuisineToggle={handleCuisineToggle}

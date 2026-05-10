@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@headlessui/react";
 import { useState } from "react";
 import type { Landmark } from "@/components/landmarks/data";
@@ -42,10 +43,14 @@ function LocationIcon() {
 
 const AttractionsLandmarkCard = ({
   landmark,
-  categoryLabel = "منتزهات طبيعية",
+  categoryLabel,
   className = "",
   cardHref,
 }: AttractionsLandmarkCardProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
+  const resolvedCategory = categoryLabel ?? tCommon("landmarkCategoryDefault");
   const [imageFailed, setImageFailed] = useState(false);
 
   const handleShare = async () => {
@@ -74,14 +79,14 @@ const AttractionsLandmarkCard = ({
 
   return (
     <article
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
       className={`relative h-[419px] w-full max-w-[326px] overflow-hidden rounded-[10px] bg-black shadow-[0_4.28px_3.37px_0_rgba(41,72,152,0.01),0_8.72px_6.97px_0_rgba(41,72,152,0.02),0_21.4px_13.91px_0_rgba(41,72,152,0.02)] ${className}`}
     >
       {cardHref ? (
         <Link
           href={cardHref}
           className="absolute inset-0 z-10"
-          aria-label={`انتقل إلى ${landmark.title}`}
+          aria-label={tCommon("goToLandmark", { title: landmark.title })}
         />
       ) : null}
 
@@ -108,8 +113,8 @@ const AttractionsLandmarkCard = ({
       </Button>
 
       <div className="pointer-events-none absolute top-3 start-3 z-20 inline-flex h-7 items-center justify-center rounded-[20px] bg-[#000000AD] px-3 py-1">
-        <span className="text-right text-[12px] font-medium leading-[100%] text-white" style={{ fontFamily: ibm }}>
-          {categoryLabel}
+        <span className={`text-[12px] font-medium leading-[100%] text-white ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ibm }}>
+          {resolvedCategory}
         </span>
       </div>
 
@@ -117,21 +122,21 @@ const AttractionsLandmarkCard = ({
         className={`absolute end-0 start-0 bottom-0 flex h-[155px] flex-col items-start gap-5 bg-linear-to-b from-transparent to-black p-5 text-white ${cardHref ? "pointer-events-none" : ""
           }`}
       >
-        <div className="inline-flex w-fit flex-row items-center gap-1 rounded-[24.51px] text-right">
+        <div className={`inline-flex w-fit flex-row items-center gap-1 rounded-[24.51px] ${isRtl ? "text-right" : "text-left"}`}>
           <LocationIcon />
           <span className="text-[18px] font-bold leading-[100%]" style={{ fontFamily: ara }}>
-            {landmark.location || "حديقة السودة ، أبها"}
+            {landmark.location || tCommon("landmarkDefaultLocation")}
           </span>
 
         </div>
 
-        <div className="flex w-full max-w-[251px] flex-col gap-[18px] self-start text-right">
-          <h3 className="text-right text-[24px] font-bold leading-[119%]" style={{ fontFamily: ara }}>
+        <div className={`flex w-full max-w-[251px] flex-col gap-[18px] self-start ${isRtl ? "text-right" : "text-left"}`}>
+          <h3 className={`text-[24px] font-bold leading-[119%] ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ara }}>
             {landmark.title}
           </h3>
           <SafeHtml
             html={landmark.description}
-            className="line-clamp-2 text-right text-[18px]leading-[130%] text-white/80"
+            className={`line-clamp-2 text-[18px] leading-[130%] text-white/80 ${isRtl ? "text-right" : "text-left"}`}
           />
         </div>
       </div>

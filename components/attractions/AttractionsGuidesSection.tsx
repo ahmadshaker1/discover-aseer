@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import TourGuideCard, {
   type TourGuideData,
 } from "@/components/tour-guides/TourGuideCard/TourGuideCard";
@@ -33,26 +34,32 @@ function ChevronLeftIcon() {
 }
 
 const AttractionsGuidesSection = ({ guides }: AttractionsGuidesSectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
+  const tAttr = useTranslations("attractionsPage");
   return (
     <section className="w-full bg-white py-12">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
-        <div className="mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center justify-between" dir="rtl">
+        <div className="mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center justify-between" dir={isRtl ? "rtl" : "ltr"}>
           <h2
-            className="w-full max-w-[498px] text-right text-[48px] font-bold leading-[100%] text-[#280048]"
+            className={`w-full max-w-[498px] text-[48px] font-bold leading-[100%] text-[#280048] ${isRtl ? "text-right" : "text-left"}`}
             style={{ fontFamily: ara }}
           >
-            اختر مرشدك
+            {tAttr("chooseYourGuide")}
           </h2>
 
           <Link
             href="/tour-guides"
             className="inline-flex h-6 w-[98px] shrink-0 items-center justify-between gap-2 hover:opacity-80"
             style={{ fontFamily: ara }}
-            dir="ltr"
+            dir={isRtl ? "ltr" : "rtl"}
           >
-            <ChevronLeftIcon />
-            <span className="h-6 w-[73px] whitespace-nowrap text-right text-[20px] font-bold leading-[100%] text-[#280048]">
-              عرض المزيد
+            <span className={isRtl ? "" : "rotate-180"}>
+              <ChevronLeftIcon />
+            </span>
+            <span className={`h-6 w-[73px] whitespace-nowrap text-[20px] font-bold leading-[100%] text-[#280048] ${isRtl ? "text-right" : "text-left"}`}>
+              {tCommon("more")}
             </span>
           </Link>
         </div>

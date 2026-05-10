@@ -121,8 +121,8 @@ const TourGuidesBanner = async () => {
               : {})}
             className="inline-flex items-center gap-2 rounded-full bg-[#280048] px-8 py-3.5 text-base font-medium text-white shadow-lg transition-colors hover:bg-[#4d2a75] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <span className={isRtl ? "" : "rotate-180"}><CtaArrow /></span>
             {locale === "ar" ? "التسجيل كمرشد سياحي" : "Register as a tour guide"}
+            <span className={isRtl ? "" : "rotate-180"}><CtaArrow /></span>
           </Link>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import ExperienceCardShareButton from "./ExperienceCardShareButton";
 import ExperienceCardActions from "./ExperienceCardActions";
 import { BuildingIcon, PersonIcon, SaudiRiyalIcon } from "./Icons";
@@ -33,6 +33,8 @@ const ExperienceCard = ({
   groupSize,
   bookUrl,
 }: ExperienceCardProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const t = useTranslations("common");
   const currencyLabel = currency ?? t("currencySar");
   return (
@@ -46,16 +48,18 @@ const ExperienceCard = ({
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Share Button - Top Left */}
-        <ExperienceCardShareButton experienceId={id} title={title} />
-        {/* Category Badge - Top Right */}
-        <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5">
+        <ExperienceCardShareButton experienceId={id} title={title} isRtl={isRtl} />
+        <div
+          className={`absolute top-3 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5 ${
+            isRtl ? "right-3" : "left-3"
+          }`}
+        >
           <span className="text-white text-xs font-medium">{category}</span>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="p-5 text-right" dir="rtl">
+      <div className="p-5 text-start" dir={isRtl ? "rtl" : "ltr"}>
         {/* Title */}
         <h3 className="mb-1 text-xl font-bold text-black">{title}</h3>
 
@@ -68,13 +72,13 @@ const ExperienceCard = ({
         </p>
 
         {/* Provider */}
-        <div className="mb-4 flex items-center justify-end gap-2">
+        <div className="mb-4 flex items-center justify-start gap-2">
           <BuildingIcon />
           <span className="text-sm text-black">{provider}</span>
         </div>
 
         {/* Price and Group Size */}
-        <div className="mb-4 flex items-center justify-end gap-2 pb-4">
+        <div className="mb-4 flex flex-wrap items-center justify-start gap-2 pb-4">
           <div className="flex items-center gap-1">
             <span className="text-xl font-bold text-black">{price}</span>
             <SaudiRiyalIcon />

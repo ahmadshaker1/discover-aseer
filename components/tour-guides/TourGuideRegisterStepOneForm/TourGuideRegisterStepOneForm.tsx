@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
+import { useLocale } from "next-intl";
 
 export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 18;
 
@@ -21,6 +22,23 @@ const LANGUAGE_LEVEL_OPTIONS = [
   { value: "intermediate", label: "متوسط" },
   { value: "advanced", label: "متقدم" },
 ] as const;
+
+const EN_SPECIALIZATION_LABELS: Record<string, string> = {
+  "متخصص في التجارب والأنشطة البرية": "Specialist in land activities and experiences",
+  "متخصص في التجارب والأنشطة البحرية": "Specialist in marine activities and experiences",
+  "متخصص في التجارب والأنشطة الهوائية": "Specialist in air activities and experiences",
+  "متخصص في التجارب والأنشطة التراثية والثقافية":
+    "Specialist in heritage and cultural experiences",
+  "متخصص في سياحة الاستجمام": "Specialist in leisure tourism",
+  أخرى: "Other",
+};
+
+const levelLabel = (value: "beginner" | "intermediate" | "advanced", isRtl: boolean) => {
+  if (isRtl) return LANGUAGE_LEVEL_OPTIONS.find((o) => o.value === value)?.label ?? value;
+  if (value === "beginner") return "Beginner";
+  if (value === "intermediate") return "Intermediate";
+  return "Advanced";
+};
 
 type FormValues = {
   nameAr: string;
@@ -114,6 +132,8 @@ function isLicenseDateValid(dateText: string): boolean {
 const TourGuideRegisterStepOneForm = ({
   onCompletionChange,
 }: TourGuideRegisterStepOneFormProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const baseId = useId();
   const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
@@ -231,13 +251,19 @@ const TourGuideRegisterStepOneForm = ({
 
     if (!isLicenseDateValid(values.licenseExpiryDate)) {
       setSubmitState("error");
-      setSubmitMessage("تاريخ انتهاء الترخيص منتهي أو غير صالح.");
+      setSubmitMessage(
+        isRtl ? "تاريخ انتهاء الترخيص منتهي أو غير صالح." : "License expiry date is invalid or has passed.",
+      );
       return;
     }
 
     if (!profileImageFile || !licenseAttachmentFile) {
       setSubmitState("error");
-      setSubmitMessage("يرجى إرفاق الصورة الشخصية ورخصة الإرشاد السياحي.");
+      setSubmitMessage(
+        isRtl
+          ? "يرجى إرفاق الصورة الشخصية ورخصة الإرشاد السياحي."
+          : "Please attach a profile image and tour guide license document.",
+      );
       return;
     }
 
@@ -285,11 +311,13 @@ const TourGuideRegisterStepOneForm = ({
         error?: string;
       } | null;
       if (!response.ok) {
-        throw new Error(json?.error || "تعذر إرسال النموذج.");
+        throw new Error(json?.error || (isRtl ? "تعذر إرسال النموذج." : "Failed to submit the form."));
       }
 
       setSubmitState("success");
-      setSubmitMessage("تم إرسال طلب التسجيل بنجاح.");
+      setSubmitMessage(
+        isRtl ? "تم إرسال طلب التسجيل بنجاح." : "Your registration request was submitted successfully.",
+      );
       setValues(EMPTY_VALUES);
       setProfileImageFile(null);
       setLicenseAttachmentFile(null);
@@ -298,21 +326,23 @@ const TourGuideRegisterStepOneForm = ({
       setSubmitMessage(
         error instanceof Error
           ? error.message
-          : "حدث خطأ غير متوقع أثناء الإرسال.",
+          : isRtl
+            ? "حدث خطأ غير متوقع أثناء الإرسال."
+            : "An unexpected error occurred during submission.",
       );
     }
   };
 
   return (
-    <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit}>
+    <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit} dir={isRtl ? "rtl" : "ltr"} lang={locale}>
       <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className={`flex flex-col gap-2 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
           <label
             htmlFor={`${baseId}-name-ar`}
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            الاسم بالعربي *
+            {isRtl ? "الاسم بالعربي *" : "Name in Arabic *"}
           </label>
           <input
             id={`${baseId}-name-ar`}
@@ -323,13 +353,13 @@ const TourGuideRegisterStepOneForm = ({
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className={`flex flex-col gap-2 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
           <label
             htmlFor={`${baseId}-name-en`}
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            الاسم بالإنجليزي *
+            {isRtl ? "الاسم بالإنجليزي *" : "Name in English *"}
           </label>
           <input
             id={`${baseId}-name-en`}
@@ -341,13 +371,13 @@ const TourGuideRegisterStepOneForm = ({
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className={`flex flex-col gap-2 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
           <label
             htmlFor={`${baseId}-gender`}
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            الجنس *
+            {isRtl ? "الجنس *" : "Gender *"}
           </label>
           <select
             id={`${baseId}-gender`}
@@ -358,9 +388,9 @@ const TourGuideRegisterStepOneForm = ({
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           >
-            <option value="">اختر</option>
-            <option value="ذكر">ذكر</option>
-            <option value="أنثى">أنثى</option>
+            <option value="">{isRtl ? "اختر" : "Select"}</option>
+            <option value="ذكر">{isRtl ? "ذكر" : "Male"}</option>
+            <option value="أنثى">{isRtl ? "أنثى" : "Female"}</option>
           </select>
         </div>
 
@@ -370,7 +400,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            رقم الهوية الوطنية *
+            {isRtl ? "رقم الهوية الوطنية *" : "National ID number *"}
           </label>
           <input
             id={`${baseId}-nid`}
@@ -388,7 +418,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            نبذة عني (المرشد السياحي) *
+            {isRtl ? "نبذة عني (المرشد السياحي) *" : "About me (tour guide) *"}
           </label>
           <textarea
             id={`${baseId}-bio`}
@@ -405,7 +435,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            رقم الترخيص *
+            {isRtl ? "رقم الترخيص *" : "License number *"}
           </label>
           <input
             id={`${baseId}-license-number`}
@@ -422,7 +452,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            تاريخ انتهاء الترخيص *
+            {isRtl ? "تاريخ انتهاء الترخيص *" : "License expiry date *"}
           </label>
           <input
             id={`${baseId}-license-date`}
@@ -440,7 +470,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            اللغة العربية *
+            {isRtl ? "اللغة العربية *" : "Arabic language level *"}
           </label>
           <select
             id={`${baseId}-arabic-level`}
@@ -454,10 +484,10 @@ const TourGuideRegisterStepOneForm = ({
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           >
-            <option value="">اختر</option>
+            <option value="">{isRtl ? "اختر" : "Select"}</option>
             {LANGUAGE_LEVEL_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {levelLabel(o.value, isRtl)}
               </option>
             ))}
           </select>
@@ -469,7 +499,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            اللغة الإنجليزية *
+            {isRtl ? "اللغة الإنجليزية *" : "English language level *"}
           </label>
           <select
             id={`${baseId}-english-level`}
@@ -483,10 +513,10 @@ const TourGuideRegisterStepOneForm = ({
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           >
-            <option value="">اختر</option>
+            <option value="">{isRtl ? "اختر" : "Select"}</option>
             {LANGUAGE_LEVEL_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {levelLabel(o.value, isRtl)}
               </option>
             ))}
           </select>
@@ -498,7 +528,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            لغات أخرى
+            {isRtl ? "لغات أخرى" : "Other languages"}
           </label>
           <input
             id={`${baseId}-other-languages`}
@@ -506,7 +536,7 @@ const TourGuideRegisterStepOneForm = ({
             onChange={(e) => setField("otherLanguages", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
-            placeholder="مثال: الفرنسية، الإسبانية"
+            placeholder={isRtl ? "مثال: الفرنسية، الإسبانية" : "Example: French, Spanish"}
           />
         </div>
 
@@ -515,7 +545,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            التخصص *
+            {isRtl ? "التخصص *" : "Specialization *"}
           </p>
           <div className="grid grid-cols-1 gap-2">
             {SPECIALIZATION_OPTIONS.map((item) => (
@@ -527,7 +557,7 @@ const TourGuideRegisterStepOneForm = ({
                   className="text-sm text-right text-[#1D1F1F]"
                   style={{ fontFamily: ibm }}
                 >
-                  {item}
+                  {isRtl ? item : EN_SPECIALIZATION_LABELS[item] ?? item}
                 </span>
                 <input
                   type="checkbox"
@@ -543,7 +573,7 @@ const TourGuideRegisterStepOneForm = ({
               onChange={(e) => setField("otherSpecialization", e.target.value)}
               className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
               style={{ fontFamily: ibm }}
-              placeholder="اذكر التخصص الآخر"
+              placeholder={isRtl ? "اذكر التخصص الآخر" : "Specify the other specialization"}
             />
           ) : null}
         </div>
@@ -554,7 +584,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            هل تتوفر لديك وسيلة مواصلات؟ *
+            {isRtl ? "هل تتوفر لديك وسيلة مواصلات؟ *" : "Do you have transportation? *"}
           </label>
           <select
             id={`${baseId}-transportation`}
@@ -568,9 +598,9 @@ const TourGuideRegisterStepOneForm = ({
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           >
-            <option value="">اختر</option>
-            <option value="yes">نعم</option>
-            <option value="no">لا</option>
+            <option value="">{isRtl ? "اختر" : "Select"}</option>
+            <option value="yes">{isRtl ? "نعم" : "Yes"}</option>
+            <option value="no">{isRtl ? "لا" : "No"}</option>
           </select>
         </div>
 
@@ -580,7 +610,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            البريد الإلكتروني *
+            {isRtl ? "البريد الإلكتروني *" : "Email *"}
           </label>
           <input
             id={`${baseId}-email`}
@@ -599,7 +629,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            رقم الجوال *
+            {isRtl ? "رقم الجوال *" : "Mobile number *"}
           </label>
           <input
             id={`${baseId}-mobile`}
@@ -617,7 +647,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            رقم الواتس اب *
+            {isRtl ? "رقم الواتس اب *" : "WhatsApp number *"}
           </label>
           <input
             id={`${baseId}-whatsapp`}
@@ -635,7 +665,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            الموقع الإلكتروني
+            {isRtl ? "الموقع الإلكتروني" : "Website"}
           </label>
           <input
             id={`${baseId}-website`}
@@ -653,7 +683,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            انستقرام
+            {isRtl ? "انستقرام" : "Instagram"}
           </label>
           <input
             id={`${baseId}-instagram`}
@@ -671,7 +701,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            منصة X
+            {isRtl ? "منصة X" : "X platform"}
           </label>
           <input
             id={`${baseId}-x`}
@@ -689,7 +719,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            تيك توك
+            {isRtl ? "تيك توك" : "TikTok"}
           </label>
           <input
             id={`${baseId}-tiktok`}
@@ -706,12 +736,13 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            التعهدات *
+            {isRtl ? "التعهدات *" : "Commitments *"}
           </p>
           <label className="flex items-start justify-end gap-2">
             <span className="text-sm" style={{ fontFamily: ibm }}>
-              أقر أن جميع المعلومات المذكورة أعلاه والمستندات المرفقة صحيحة
-              ومتطابقة تماماً مع معلوماتي الشخصية وخبرتي في الإرشاد السياحي.
+              {isRtl
+                ? "أقر أن جميع المعلومات المذكورة أعلاه والمستندات المرفقة صحيحة ومتطابقة تماماً مع معلوماتي الشخصية وخبرتي في الإرشاد السياحي."
+                : "I confirm that all information and attachments above are accurate and match my personal profile and guiding experience."}
             </span>
             <input
               type="checkbox"
@@ -721,8 +752,9 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <label className="flex items-start justify-end gap-2">
             <span className="text-sm" style={{ fontFamily: ibm }}>
-              أوافق على استخدام المعلومات المذكورة أعلاه من قبل القنوات
-              الإلكترونية لتسويق عسير، وهيئة تطوير منطقة عسير.
+              {isRtl
+                ? "أوافق على استخدام المعلومات المذكورة أعلاه من قبل القنوات الإلكترونية لتسويق عسير، وهيئة تطوير منطقة عسير."
+                : "I agree that this information may be used by Discover Aseer channels and Aseer Development Authority for destination promotion."}
             </span>
             <input
               type="checkbox"
@@ -732,8 +764,9 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <label className="flex items-start justify-end gap-2">
             <span className="text-sm" style={{ fontFamily: ibm }}>
-              أتعهد بالالتزام التام بتقديم خدمات الإرشاد السياحي والرد
-              والاستجابة السريعة.
+              {isRtl
+                ? "أتعهد بالالتزام التام بتقديم خدمات الإرشاد السياحي والرد والاستجابة السريعة."
+                : "I commit to providing professional guiding services and timely responses."}
             </span>
             <input
               type="checkbox"
@@ -749,7 +782,7 @@ const TourGuideRegisterStepOneForm = ({
               className="mb-1 text-right text-base font-bold text-[#1D1F1F]"
               style={{ fontFamily: araBold }}
             >
-              صورة شخصية *
+              {isRtl ? "صورة شخصية *" : "Profile image *"}
             </p>
             <label
               htmlFor={`${baseId}-profile-image`}
@@ -772,7 +805,7 @@ const TourGuideRegisterStepOneForm = ({
                 className="text-center text-[14px] font-bold leading-[120%] text-[#7300CD]"
                 style={{ fontFamily: araBold }}
               >
-                تصفح الصورة
+                {isRtl ? "تصفح الصورة" : "Browse image"}
               </span>
               <span
                 className="text-xs text-[#6B7280]"
@@ -796,7 +829,7 @@ const TourGuideRegisterStepOneForm = ({
               className="mb-1 text-right text-base font-bold text-[#1D1F1F]"
               style={{ fontFamily: araBold }}
             >
-              رخصة الإرشاد السياحي *
+              {isRtl ? "رخصة الإرشاد السياحي *" : "Tour guide license *"}
             </p>
             <label
               htmlFor={`${baseId}-license-attachment`}
@@ -819,7 +852,7 @@ const TourGuideRegisterStepOneForm = ({
                 className="text-center text-[14px] font-bold leading-[120%] text-[#7300CD]"
                 style={{ fontFamily: araBold }}
               >
-                تصفح المرفق
+                {isRtl ? "تصفح المرفق" : "Browse attachment"}
               </span>
               <span
                 className="text-xs text-[#6B7280]"
@@ -861,7 +894,13 @@ const TourGuideRegisterStepOneForm = ({
           className="flex h-[62px] w-full items-center justify-center gap-[10px] rounded-[100px] bg-[#280048] px-[22px] py-[14px] text-lg font-bold text-white transition-colors hover:enabled:bg-[#3a0b5c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#280048] disabled:cursor-not-allowed disabled:opacity-45"
           style={{ fontFamily: araBold }}
         >
-          {submitState === "submitting" ? "جاري الإرسال..." : "إرسال الطلب"}
+          {submitState === "submitting"
+            ? isRtl
+              ? "جاري الإرسال..."
+              : "Submitting..."
+            : isRtl
+              ? "إرسال الطلب"
+              : "Submit request"}
         </button>
       </section>
     </form>

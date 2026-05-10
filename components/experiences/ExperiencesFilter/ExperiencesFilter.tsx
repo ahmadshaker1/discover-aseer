@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Fragment } from "react";
 import {
   HeartIcon,
@@ -72,9 +72,18 @@ const ExperiencesFilter = ({
   onFiltersChange,
   onReset,
 }: ExperiencesFilterProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
   const tExperiencesPage = useTranslations("experiencesPage");
   const { cityOptions, interests, costOptions, travelerTypes } = filterOptions;
+
+  const cityMenuButtonClass = `flex w-full items-center gap-2 rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer ${
+    isRtl ? "flex-row-reverse" : "flex-row"
+  }`;
+  const menuItemsClass = `absolute z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-xl ring-1 ring-black/10 focus:outline-none ${
+    isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"
+  }`;
 
   const handleInterestToggle = (interestId: string) => {
     onFiltersChange({
@@ -106,7 +115,10 @@ const ExperiencesFilter = ({
   };
 
   return (
-    <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm">
+    <div
+      className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm"
+      dir={isRtl ? "rtl" : "ltr"}
+    >
       <div className="mb-8 flex items-center justify-between gap-4">
         <Button
           onClick={handleReset}
@@ -119,12 +131,12 @@ const ExperiencesFilter = ({
 
       <div className="mb-4">
         <Menu as="div" className="relative">
-          <Menu.Button className="flex flex-row-reverse items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer">
-            <ChevronDownIcon />
-            <span className="flex-1 text-right">
+          <Menu.Button className={cityMenuButtonClass}>
+            <LocationIcon />
+            <span className="flex-1 text-start">
               {cityOptions.find((city) => city.id === filters.city)?.label || tCommon("city")}
             </span>
-            <LocationIcon />
+            <ChevronDownIcon />
           </Menu.Button>
           <Transition
             as={Fragment}
@@ -135,7 +147,7 @@ const ExperiencesFilter = ({
             leaveFrom="opacity-100 scale-100 translate-y-0"
             leaveTo="opacity-0 scale-95 translate-y-1"
           >
-            <Menu.Items className="absolute right-0 z-50 mt-2 w-full origin-top-right rounded-lg border border-gray-200 bg-white shadow-xl ring-1 ring-black/10 focus:outline-none">
+            <Menu.Items className={menuItemsClass}>
               <div className="py-1">
                 {cityOptions.map((city) => (
                   <Menu.Item key={city.id}>
@@ -152,7 +164,7 @@ const ExperiencesFilter = ({
                           filters.city === city.id
                             ? "bg-[#6027D2]/5 text-[#6027D2] font-semibold"
                             : "text-black"
-                        } block w-full text-right px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
+                        } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
                       >
                         {city.label} ({city.count})
                       </button>
@@ -167,7 +179,7 @@ const ExperiencesFilter = ({
 
       {interests.length > 0 && (
         <div className="mb-8">
-          <div className="mb-4 flex items-center justify-end gap-2">
+          <div className="mb-4 flex items-center justify-start gap-2">
             <HeartIcon />
             <h3 className="text-lg font-bold text-black">{tCommon("interests")}</h3>
           </div>
@@ -179,8 +191,7 @@ const ExperiencesFilter = ({
                   key={interest.id}
                   className="flex items-center justify-between p-2 rounded transition-colors"
                 >
-                  <div className="flex items-center gap-3 flex-row-reverse">
-                    <span className="text-sm text-black">{interest.label}</span>
+                  <div className="flex flex-row items-center gap-3">
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleInterestToggle(interest.id)}
@@ -199,6 +210,7 @@ const ExperiencesFilter = ({
                         />
                       </svg>
                     </Checkbox>
+                    <span className="text-sm text-black">{interest.label}</span>
                   </div>
                   <span className="text-sm text-gray-600 font-medium">
                     {interest.count}
@@ -211,7 +223,7 @@ const ExperiencesFilter = ({
       )}
 
       <div className="mb-8">
-        <div className="mb-4 flex items-center justify-end gap-2">
+        <div className="mb-4 flex items-center justify-start gap-2">
           <WalletIcon />
           <h3 className="text-lg font-bold text-black">{tExperiencesPage("costSection")}</h3>
         </div>
@@ -249,7 +261,7 @@ const ExperiencesFilter = ({
 
       {travelerTypes.length > 0 && (
         <div>
-          <div className="mb-4 flex items-center justify-end gap-2">
+          <div className="mb-4 flex items-center justify-start gap-2">
             <SuitcaseIcon />
             <h3 className="text-lg font-bold text-black">{tCommon("travelerTypes")}</h3>
           </div>

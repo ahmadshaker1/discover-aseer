@@ -86,7 +86,17 @@
     "attractionsCard": "Attractions",
     "tourGuidesNav": "Tour guides",
     "guideDiscoverAseer": "Discover Aseer",
-    "exploreAttractionsDefault": "Explore top attractions"
+    "exploreAttractionsDefault": "Explore top attractions",
+    "filterLandmarks": "Filter landmarks",
+    "noLandmarksMatchFilters": "No landmarks match your filters.",
+    "filterDestinationsLabel": "Filter destinations",
+    "noDestinationsMatchFilters": "No destinations match your filters.",
+    "landmarkCategoryDefault": "Natural parks",
+    "landmarkDefaultLocation": "Al Soudah Park, Abha",
+    "goToLandmark": "Go to {title}",
+    "shareLandmark": "Share {title}",
+    "restaurant": "Restaurant",
+    "notSpecified": "Not specified"
   },
   "nav": {
     "planTrip": "Plan your trip",
@@ -201,6 +211,12 @@
     "innerTitle": "Al Abu Sirah palaces",
     "introTitle": "Al Abu Sirah palaces",
     "introBody": "Aseer's historic and cultural landmarks blend authenticity with natural beauty.",
+    "innerIntroP1": "Al Abu Sirah palaces rise above the tranquil village of Al-Azizah among the villages of Al-Soudah, bringing together centuries of heritage and a sense of place you will not find elsewhere. The ensemble is made up of three adjacent fortified palaces, each with its own name and symbolism—reflected across dozens of rooms and more than thirty-two chambers where meaning follows naming in authentic Aseeri tradition. A shared eastern balcony on the fourth floor links two of the palaces, opening onto green farmland and towering peaks.",
+    "innerIntroP2": "The fortresses were built from mountain stone with thick protective walls engineered to endure raids and harsh weather. Clever layouts made them sanctuaries in peacetime and strongholds in conflict, crowned by a single grand gate that unifies the complex with quiet majesty.",
+    "innerIntroP3": "For visitors, Al Abu Sirah is a standout cultural landmark: QR trails at chamber entrances deepen the storytelling, exhibitions and intimate displays bring crafts and arts to life, and seasonal performances fill the courtyards. Pause for coffee beside the palaces or share a memorable meal amid calm mountain air.",
+    "chooseYourGuide": "Choose your guide",
+    "mapPalacesCta": "View Al Abu Sirah palaces on the map",
+    "mapPalacesAlt": "Map preview for Al Abu Sirah palaces",
     "browseTitle": "Main destinations",
     "browseSubtitle": "One visit is never enough with all the activities and experiences on offer.",
     "contributeDestinations": "Help enrich our destinations"

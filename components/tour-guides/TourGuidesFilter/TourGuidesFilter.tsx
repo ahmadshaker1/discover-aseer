@@ -3,6 +3,8 @@
 import { Button, Checkbox } from "@headlessui/react";
 import { HeartIcon, WalletIcon } from "./Icons";
 import type { TourGuidesFilterOptions } from "@/components/tour-guides/data";
+import { useLocale } from "next-intl";
+import { localizeTourGuideFilterLabel } from "@/components/tour-guides/tourGuideFilterLabels";
 
 export interface TourGuidesFilterState {
   specializations: string[];
@@ -23,6 +25,8 @@ const TourGuidesFilter = ({
   onFiltersChange,
   onReset,
 }: TourGuidesFilterProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const { specializations, gender, transportation } = filterOptions;
 
   const handleSpecializationToggle = (id: string) => {
@@ -51,16 +55,16 @@ const TourGuidesFilter = ({
   };
 
   return (
-    <div className="w-full lg:max-w-xs bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+    <div className="w-full lg:max-w-xs bg-white p-4 sm:p-6 rounded-lg shadow-sm" dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
         <h2 className="text-lg sm:text-xl font-bold text-black">
-          تصفية المرشدون
+          {isRtl ? "تصفية المرشدون" : "Filter guides"}
         </h2>
         <Button
           onClick={onReset}
           className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-focus:outline-none data-focus:ring-2 data-focus:ring-gray-500 data-focus:ring-offset-2 self-start sm:self-auto"
         >
-          إعادة تعيين النتائج
+          {isRtl ? "إعادة تعيين النتائج" : "Reset filters"}
         </Button>
       </div>
 
@@ -70,7 +74,7 @@ const TourGuidesFilter = ({
           <div className="flex items-center gap-2 mb-4">
             <HeartIcon />
             <h3 className="text-base sm:text-lg font-bold text-black">
-              التخصصات
+              {isRtl ? "التخصصات" : "Specializations"}
             </h3>
           </div>
           <div className="space-y-4">
@@ -81,8 +85,8 @@ const TourGuidesFilter = ({
                   key={item.id}
                   className="flex items-center justify-between p-2 rounded transition-colors"
                 >
-                  <div className="flex items-center gap-3 flex-row-reverse">
-                    <span className="text-sm text-black">{item.label}</span>
+                  <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
+                    <span className="text-sm text-black">{localizeTourGuideFilterLabel(item.label, locale)}</span>
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleSpecializationToggle(item.id)}
@@ -117,7 +121,7 @@ const TourGuidesFilter = ({
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center gap-2 mb-4">
             <h3 className="text-base sm:text-lg font-bold text-black">
-              الجنس
+              {isRtl ? "الجنس" : "Gender"}
             </h3>
           </div>
           <div className="space-y-4">
@@ -128,8 +132,8 @@ const TourGuidesFilter = ({
                   key={item.id}
                   className="flex items-center justify-between p-2 rounded transition-colors"
                 >
-                  <div className="flex items-center gap-3 flex-row-reverse">
-                    <span className="text-sm text-black">{item.label}</span>
+                  <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
+                    <span className="text-sm text-black">{localizeTourGuideFilterLabel(item.label, locale)}</span>
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleGenderToggle(item.id)}
@@ -164,7 +168,7 @@ const TourGuidesFilter = ({
         <div className="flex items-center gap-2 mb-4">
           <WalletIcon />
           <h3 className="text-base sm:text-lg font-bold text-black">
-            النقل
+            {isRtl ? "النقل" : "Transportation"}
           </h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -181,7 +185,11 @@ const TourGuidesFilter = ({
                     : "border-gray-200 hover:border-gray-300 text-black"
                 }`}
               >
-                {option.label}
+                {isRtl
+                  ? option.label
+                  : option.id === "yes"
+                    ? "Available"
+                    : "Not available"}
                 <span className="text-gray-500 mr-1">({option.count})</span>
               </Button>
             );

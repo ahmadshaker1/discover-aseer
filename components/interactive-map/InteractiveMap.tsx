@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import SafeHtml from "@/components/common/SafeHtml";
+import { useLocale } from "next-intl";
 
 interface LocationPin {
   id: string;
@@ -42,6 +43,35 @@ const CATEGORY_CHIPS = [
   { label: "أماكن الإقامة", icon: "🏨" },
 ] as const;
 
+const UI_COPY = {
+  ar: {
+    all: "الكل",
+    allCategories: "كل الفئات",
+    discover: "اكتشف عسير",
+    filterLabel: "فلترة",
+    search: "البحث...",
+    locations: "المواقع",
+    clearFilters: "مسح الفلاتر",
+    noGeo: "الموقع الجغرافي غير متوفر حالياً على الخريطة",
+    showOnMap: "عرض على الخريطة",
+    noResults: "لا توجد نتائج مطابقة للبحث الحالي.",
+    tokenHint: "أضف `NEXT_PUBLIC_MAPBOX_API_KEY` في ملف البيئة لتشغيل الخريطة.",
+  },
+  en: {
+    all: "All",
+    allCategories: "All categories",
+    discover: "Discover Aseer",
+    filterLabel: "Filter",
+    search: "Search...",
+    locations: "Locations",
+    clearFilters: "Clear filters",
+    noGeo: "Location coordinates are currently unavailable on the map.",
+    showOnMap: "Show on map",
+    noResults: "No places match the current search.",
+    tokenHint: "Add `NEXT_PUBLIC_MAPBOX_API_KEY` in the environment file to enable the map.",
+  },
+} as const;
+
 const placesToGeoJSON = (places: MapPlace[]): GeoJSON.FeatureCollection<GeoJSON.Point> => ({
   type: "FeatureCollection",
   features: places.map((place) => ({
@@ -60,28 +90,31 @@ const placesToGeoJSON = (places: MapPlace[]): GeoJSON.FeatureCollection<GeoJSON.
 });
 
 const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const ui = isRtl ? UI_COPY.ar : UI_COPY.en;
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const mapLoadedRef = useRef(false);
   const popupRef = useRef<mapboxgl.Popup | null>(null);
   const placesRef = useRef<MapPlace[]>(EMPTY_PLACES);
 
-  const [activeCategory, setActiveCategory] = useState<string>("الكل");
-  const [selectedCity, setSelectedCity] = useState<string>("الكل");
+  const [activeCategory, setActiveCategory] = useState<string>(ui.all);
+  const [selectedCity, setSelectedCity] = useState<string>(ui.all);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [places, setPlaces] = useState<MapPlace[]>(EMPTY_PLACES);
 
   const cities = useMemo(
-    () => ["الكل", ...Array.from(new Set(places.map((place) => place.city)))],
-    [places],
+    () => [ui.all, ...Array.from(new Set(places.map((place) => place.city)))],
+    [places, ui.all],
   );
 
   const filteredPlaces = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
     return places.filter((place) => {
-      const categoryMatch = activeCategory === "الكل" || place.category === activeCategory;
-      const cityMatch = selectedCity === "الكل" || place.city === selectedCity;
+      const categoryMatch = activeCategory === ui.all || place.category === activeCategory;
+      const cityMatch = selectedCity === ui.all || place.city === selectedCity;
       const searchMatch =
         normalizedSearch.length === 0 ||
         place.title.toLowerCase().includes(normalizedSearch) ||
@@ -102,7 +135,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
   useEffect(() => {
     const loadLocations = async () => {
       try {
-        const response = await fetch("/api/interactive-map/locations", { cache: "no-store" });
+        const response = await fetch(`/api/interactive-map/locations?locale=${locale}`, { cache: "no-store" });
         if (!response.ok) return;
 
         const json: { data?: MapPlace[] } = await response.json();
@@ -117,7 +150,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
     };
 
     loadLocations();
-  }, []);
+  }, [locale]);
 
   const focusPlace = useCallback((place: MapPlace) => {
     setSelectedPlaceId(place.id);
@@ -135,13 +168,13 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
     popupRef.current = new mapboxgl.Popup({ offset: 18, closeButton: false })
       .setLngLat([place.longitude, place.latitude])
       .setHTML(
-        `<div style="font-family: Arial, sans-serif; direction: rtl; text-align: right;">
+        `<div style="font-family: Arial, sans-serif; direction: ${isRtl ? "rtl" : "ltr"}; text-align: ${isRtl ? "right" : "left"};">
           <strong>${place.title}</strong><br/>
           <span style="font-size: 12px; opacity: 0.8;">${place.city}</span>
         </div>`,
       )
       .addTo(mapRef.current);
-  }, []);
+  }, [isRtl]);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -302,20 +335,20 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
   const tokenExists = Boolean(process.env.NEXT_PUBLIC_MAPBOX_API_KEY);
 
   return (
-    <div className="flex h-full w-full bg-white" dir="rtl">
+    <div className="flex h-full w-full bg-white" dir={isRtl ? "rtl" : "ltr"}>
       <div className="relative order-2 h-full flex-1">
         <div ref={mapContainer} className="h-full w-full" />
 
-        <div className="absolute right-4 top-4 z-20 flex max-w-[78%] flex-wrap gap-2" dir="rtl">
+        <div className={`absolute top-4 z-20 flex max-w-[78%] flex-wrap gap-2 ${isRtl ? "right-4" : "left-4"}`} dir={isRtl ? "rtl" : "ltr"}>
           <button
             type="button"
-            onClick={() => setActiveCategory("الكل")}
-            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${activeCategory === "الكل"
+            onClick={() => setActiveCategory(ui.all)}
+            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${activeCategory === ui.all
                 ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
                 : "border-[#E3E3E3] bg-white text-[#2D1A43]"
               }`}
           >
-            الكل
+            {ui.all}
           </button>
           {CATEGORY_CHIPS.map((chip) => (
             <button
@@ -336,11 +369,11 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
       <aside className="order-1 flex h-full w-[330px] flex-col bg-[#3D0075] text-white shadow-[-4px_0_18px_rgba(0,0,0,0.18)] md:w-[360px]">
         <div className="border-b border-white/20 p-4">
-          <h1 className="mb-3 text-right text-[36px] font-bold leading-none">اكتشف عسير</h1>
+          <h1 className={`mb-3 text-[36px] font-bold leading-none ${isRtl ? "text-right" : "text-left"}`}>{ui.discover}</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
-              aria-label="فلترة"
+              aria-label={ui.filterLabel}
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-transparent text-white"
             >
               ⌕
@@ -349,27 +382,27 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
               <input
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="البحث..."
-                className="h-9 w-full rounded-md border border-white/35 bg-white px-3 text-right text-[13px] text-[#3D0075] outline-none"
+                placeholder={ui.search}
+                className={`h-9 w-full rounded-md border border-white/35 bg-white px-3 text-[13px] text-[#3D0075] outline-none ${isRtl ? "text-right" : "text-left"}`}
               />
             </div>
           </div>
         </div>
 
         <div className="flex items-center justify-between border-b border-white/20 px-4 py-3">
-          <h2 className="text-[26px] font-bold">المواقع</h2>
+          <h2 className="text-[26px] font-bold">{ui.locations}</h2>
           <button
             type="button"
             onClick={() => {
               setSearchTerm("");
-              setSelectedCity("الكل");
-              setActiveCategory("الكل");
+              setSelectedCity(ui.all);
+              setActiveCategory(ui.all);
               setSelectedPlaceId(null);
               popupRef.current?.remove();
             }}
             className="inline-flex items-center rounded-full border border-white/50 px-3 py-1 text-[12px] font-semibold text-white transition hover:bg-white/10"
           >
-            مسح الفلاتر
+            {ui.clearFilters}
           </button>
         </div>
 
@@ -390,8 +423,8 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
             onChange={(event) => setActiveCategory(event.target.value)}
             className="h-9 rounded-md border border-white/30 bg-[#4F1088] px-2 text-[12px] text-white outline-none"
           >
-            <option value="الكل" className="text-black">
-              كل الفئات
+            <option value={ui.all} className="text-black">
+              {ui.allCategories}
             </option>
             {CATEGORY_CHIPS.map((chip) => (
               <option key={chip.label} value={chip.label} className="text-black">
@@ -428,7 +461,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
                   className="mt-2 text-[13px] leading-normal text-white/90"
                 />
                 {!place.hasCoordinates ? (
-                  <p className="mt-2 text-[11px] text-white/75">الموقع الجغرافي غير متوفر حالياً على الخريطة</p>
+                  <p className="mt-2 text-[11px] text-white/75">{ui.noGeo}</p>
                 ) : null}
                 <div className="mt-3 flex justify-start">
                   <button
@@ -437,7 +470,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
                     disabled={!place.hasCoordinates}
                     className="inline-flex items-center rounded-full border border-white/50 px-3 py-1 text-[12px] font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    عرض على الخريطة
+                    {ui.showOnMap}
                   </button>
                 </div>
               </div>
@@ -445,7 +478,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           ))}
           {filteredPlaces.length === 0 ? (
             <div className="rounded-lg border border-white/30 bg-[#4A0F85] p-4 text-center text-sm text-white/85">
-              لا توجد نتائج مطابقة للبحث الحالي.
+              {ui.noResults}
             </div>
           ) : null}
         </div>
@@ -454,7 +487,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
       {!tokenExists ? (
         <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black/35">
           <div className="rounded-xl bg-white px-5 py-4 text-sm font-medium text-[#3D0075]">
-            أضف `NEXT_PUBLIC_MAPBOX_API_KEY` في ملف البيئة لتشغيل الخريطة.
+            {ui.tokenHint}
           </div>
         </div>
       ) : null}

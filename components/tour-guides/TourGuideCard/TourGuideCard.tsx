@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ArabicFlagIcon, EnglishFlagIcon, WhatsAppIcon } from "./Icons";
 import { Button } from "@headlessui/react";
+import { useLocale } from "next-intl";
 
 export interface TourGuideData {
   id: string | number;
@@ -37,6 +38,8 @@ const TourGuideCard = ({
   description,
   onCardClick,
 }: TourGuideCardProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   return (
     <div
       className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
@@ -75,12 +78,14 @@ const TourGuideCard = ({
         <a
           href={whatsappUrl}
           onClick={(e) => e.stopPropagation()}
-          className="w-2/3 bg-white border-2  rounded-full px-4 py-2 flex items-center justify-center gap-2 transition-colors mb-4 hover:bg-gray-50"
+          className="w-2/3 bg-white border-2 rounded-full px-4 py-2 flex items-center justify-center gap-2 transition-colors mb-4 hover:bg-gray-50"
         >
           <span className="text-green-600">
             <WhatsAppIcon />
           </span>
-          <span className="text-sm font-bold">تواصل عبر الواتساب</span>
+          <span className="text-sm font-bold whitespace-nowrap">
+            {isRtl ? "تواصل عبر الواتساب" : "Contact on WhatsApp"}
+          </span>
         </a>
 
         {/* Description */}
@@ -96,7 +101,7 @@ const TourGuideCard = ({
           }}
           className="text-sm text-black font-medium hover:underline cursor-pointer"
         >
-          المزيد
+          {isRtl ? "المزيد" : "More"}
         </Button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import AboutAseerPage from "@/app/about-aseer/page";
 import AccommodationPage from "@/app/accommodation/page";
@@ -14,7 +14,6 @@ import ExperiencesPage from "@/app/experiences/page";
 import FilmPage from "@/app/film/page";
 import GettingHereAndAroundPage from "@/app/Getting-here-and-around/page";
 import InteractiveMapPage from "@/app/interactive-map/page";
-import LandmarksPage from "@/app/landmarks/page";
 import PlannerPage from "@/app/planner/page";
 import RestaurantsPage from "@/app/restaurants/page";
 import ServicesSupportPage from "@/app/services-support/page";
@@ -60,7 +59,7 @@ export default async function LocalizedCatchAllPage({
     case "interactive-map":
       return <InteractiveMapPage />;
     case "landmarks":
-      return <LandmarksPage />;
+      redirect("/attractions/inner");
     case "planner":
       return <PlannerPage />;
     case "restaurants":

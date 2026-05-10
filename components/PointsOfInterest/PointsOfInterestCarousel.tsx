@@ -1,15 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PointOfInterest } from "./data";
-import { BackgroundImage } from "./BackgroundImage";
 import { TextOverlay } from "./TextOverlay";
 import { NavigationControls } from "./NavigationControls";
 import { PreviewImages } from "./PreviewImages";
 
+const AUTO_ADVANCE_MS = 5000;
+
 interface PointsOfInterestCarouselProps {
   points: PointOfInterest[];
+}
+
+function mod(n: number, m: number) {
+  return ((n % m) + m) % m;
 }
 
 export const PointsOfInterestCarousel = ({
@@ -18,34 +24,124 @@ export const PointsOfInterestCarousel = ({
   const locale = useLocale();
   const isRtl = locale === "ar";
   const t = useTranslations("common");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const currentPoint = points[currentIndex];
 
-  const nextImage = () => {
-    setCurrentIndex((prev) => (prev + 1) % points.length);
-  };
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [incomingIndex, setIncomingIndex] = useState<number | null>(null);
+  const [incomingOpaque, setIncomingOpaque] = useState(false);
 
-  const prevImage = () => {
-    setCurrentIndex((prev) => (prev - 1 + points.length) % points.length);
-  };
+  const activeRef = useRef(activeIndex);
+  const incomingRef = useRef<number | null>(null);
+  const timerBlockedRef = useRef(false);
 
-  const selectImage = (index: number) => {
-    setCurrentIndex(index);
-  };
+  activeRef.current = activeIndex;
+  incomingRef.current = incomingIndex;
+
+  const activePoint = points[activeIndex];
+  const incomingPoint =
+    incomingIndex !== null ? points[incomingIndex] : null;
+
+  const displayIndex = incomingIndex ?? activeIndex;
+  const displayPoint =
+    incomingIndex !== null ? points[incomingIndex] : activePoint;
+
+  const commitIncoming = useCallback(() => {
+    const inc = incomingRef.current;
+    if (inc === null) return;
+    setActiveIndex(inc);
+    setIncomingIndex(null);
+    setIncomingOpaque(false);
+    timerBlockedRef.current = false;
+  }, []);
+
+  const beginCrossfadeTo = useCallback(
+    (target: number) => {
+      if (points.length === 0) return;
+      const i = mod(target, points.length);
+      if (incomingRef.current === i) return;
+      if (i === activeRef.current && incomingRef.current === null) return;
+
+      timerBlockedRef.current = true;
+      setIncomingOpaque(false);
+      setIncomingIndex(i);
+    },
+    [points.length],
+  );
+
+  const onIncomingLoadingComplete = useCallback(() => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setIncomingOpaque(true));
+    });
+  }, []);
+
+  const onIncomingTransitionEnd = useCallback(
+    (e: React.TransitionEvent<HTMLDivElement>) => {
+      if (e.propertyName !== "opacity") return;
+      if (!incomingOpaque) return;
+      commitIncoming();
+    },
+    [incomingOpaque, commitIncoming],
+  );
+
+  useEffect(() => {
+    if (points.length <= 1) return;
+    const id = window.setInterval(() => {
+      if (timerBlockedRef.current) return;
+      const base = activeRef.current;
+      beginCrossfadeTo(base + 1);
+    }, AUTO_ADVANCE_MS);
+    return () => window.clearInterval(id);
+  }, [points.length, beginCrossfadeTo]);
+
+  const nextImage = () => beginCrossfadeTo(activeIndex + 1);
+  const prevImage = () => beginCrossfadeTo(activeIndex - 1);
+  const selectImage = (index: number) => beginCrossfadeTo(index);
 
   if (points.length === 0) {
     return (
-      <div className="relative w-full min-h-screen max-w-screen-2xl mx-auto overflow-hidden flex items-center justify-center">
-        <p className="text-white text-xl">{t("noPointsOfInterest")}</p>
+      <div className="relative mx-auto flex min-h-screen max-w-screen-2xl items-center justify-center overflow-hidden">
+        <p className="text-xl text-white">{t("noPointsOfInterest")}</p>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full min-h-screen max-w-screen-2xl mx-auto overflow-hidden">
-      <BackgroundImage point={currentPoint} />
+    <div className="relative mx-auto min-h-screen w-full max-w-screen-2xl overflow-hidden bg-black">
+      {/* Bottom layer — always full opacity; never fades out to white. */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={activePoint.image}
+          alt={activePoint.title}
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+          priority={activeIndex === 0 && incomingIndex === null}
+          quality={90}
+        />
+        <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/40" />
+      </div>
+
+      {incomingPoint && incomingIndex !== null ? (
+        <div
+          key={incomingPoint.id}
+          className="absolute inset-0 z-10 transition-opacity duration-700 ease-in-out"
+          style={{ opacity: incomingOpaque ? 1 : 0 }}
+          onTransitionEnd={onIncomingTransitionEnd}
+        >
+          <Image
+            src={incomingPoint.image}
+            alt={incomingPoint.title}
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+            quality={90}
+            onLoadingComplete={onIncomingLoadingComplete}
+          />
+          <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/40" />
+        </div>
+      ) : null}
+
       <TextOverlay
-        point={currentPoint}
+        point={displayPoint}
         carouselSlot={
           <div
             className={`flex flex-col gap-4 ${isRtl ? "items-end" : "items-start"}`}
@@ -54,7 +150,7 @@ export const PointsOfInterestCarousel = ({
             <NavigationControls onNext={nextImage} onPrev={prevImage} />
             <PreviewImages
               points={points}
-              currentIndex={currentIndex}
+              currentIndex={displayIndex}
               onSelect={selectImage}
             />
           </div>

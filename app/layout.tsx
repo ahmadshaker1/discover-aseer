@@ -26,7 +26,7 @@ const readexPro = Readex_Pro({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations({ namespace: "common" });
+  const t = await getTranslations("common");
   return {
     title: t("metadataTitle"),
     description: t("metadataDescription"),

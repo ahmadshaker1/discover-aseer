@@ -1,6 +1,13 @@
 import Image from "next/image";
+import { getLocale } from "next-intl/server";
 
-export default function GettingHereAndAroundBanner() {
+import { resolveGettingHereContent } from "./gettingHerePageContent";
+
+export default async function GettingHereAndAroundBanner() {
+  const locale = await getLocale();
+  const isRtl = locale === "ar";
+  const { banner } = resolveGettingHereContent(locale);
+
   return (
     <section className="relative w-full min-h-[420px] h-[60vh] max-h-[720px] overflow-hidden">
       <Image
@@ -20,22 +27,29 @@ export default function GettingHereAndAroundBanner() {
         }}
       />
 
-      <div className="absolute inset-0 z-10 flex items-end md:items-center">
-        <div className="mx-auto w-full max-w-[1440px] px-6 pb-10 text-right text-white md:px-10 md:pb-0">
-          <div className="mb-4 flex items-center justify-center gap-2 text-sm md:text-base">
+      <div
+        className="absolute inset-0 z-10 flex items-end md:items-center"
+        dir={isRtl ? "rtl" : "ltr"}
+      >
+        <div
+          className={`mx-auto w-full max-w-[1440px] px-6 pb-10 text-white md:px-10 md:pb-0 ${isRtl ? "text-right" : "text-left"}`}
+        >
+          <div
+            className={`mb-4 flex items-center gap-2 text-sm md:text-base ${isRtl ? "justify-center" : "justify-center"}`}
+          >
             <a href="/" className="hover:underline">
-              الصفحة الرئيسية
+              {banner.home}
             </a>
             <span>/</span>
-            <p>التجارب</p>
+            <p>{banner.crumbExperiences}</p>
           </div>
 
-          <h1 className="flex mb-3 text-3xl font-bold leading-tight md:text-5xl items-center justify-center">
-            الوصول والتجول
+          <h1 className="mb-3 flex items-center justify-center text-3xl font-bold leading-tight md:text-5xl">
+            {banner.title}
           </h1>
 
-          <p className="flex mb-3 text-md font-bold leading-tight md:text-1xl items-center justify-center color-text-gray-300">
-            زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.
+          <p className="mb-3 flex items-center justify-center text-md font-bold leading-tight text-gray-300 md:text-1xl">
+            {banner.subtitle}
           </p>
         </div>
       </div>

@@ -1,18 +1,20 @@
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
 /**
  * Restaurants hero — full-bleed photo, diagonal wash, diamond pattern.
  */
 export default async function RestaurantsBanner() {
+  const locale = await getLocale();
+  const isRtl = locale === "ar";
   const t = await getTranslations("restaurantsPage");
   const tCommon = await getTranslations("common");
 
   return (
     <section
       className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]"
-      dir="ltr"
+      dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="absolute inset-0 z-0">
         <Image
@@ -40,14 +42,14 @@ export default async function RestaurantsBanner() {
       />
 
       <div
-        className="pointer-events-none absolute inset-y-0 left-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)]"
+        className={`pointer-events-none absolute inset-y-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)] ${isRtl ? "left-0" : "right-0"}`}
         aria-hidden
       >
         <Image
           src="/hero-pattern/pattern-diamons.png"
           alt=""
           fill
-          className="object-contain object-left"
+          className={`object-contain ${isRtl ? "object-left" : "object-right scale-x-[-1]"}`}
           sizes="(max-width: 768px) 55vw, 28rem"
         />
       </div>

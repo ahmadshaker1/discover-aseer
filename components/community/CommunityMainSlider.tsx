@@ -133,7 +133,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
                 className={`text-[18px] font-light leading-[100%] ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ibm }}
               >
-                مجتمع مترابط
+                {isRtl ? "مجتمع مترابط" : "Connected community"}
               </span>
             </Link>
             <Link
@@ -148,8 +148,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
                 className={`text-[18px] font-light leading-[100%] ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ibm }}
               >
-
-                شيم عسير
+                {isRtl ? "شيم عسير" : "Aseer values"}
               </span>
               <span className={isRtl ? "" : "rotate-180"}><ChevronLeft /></span>
             </Link>

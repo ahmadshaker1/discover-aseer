@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { useLocale } from "next-intl";
 import { Restaurant } from "./data";
 
 interface RestaurantsGridProps {
@@ -124,6 +125,8 @@ function formatPriceBand(r: Restaurant): string {
 }
 
 const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const handleRestaurantClick = useCallback((mapsUrl: string) => {
     window.open(mapsUrl, "_blank", "noopener,noreferrer");
   }, []);
@@ -146,8 +149,8 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
               key={restaurant.id}
               type="button"
               onClick={() => handleRestaurantClick(restaurant.mapsUrl)}
-              className="group flex w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white text-right transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 sm:rounded-3xl"
-              dir="rtl"
+              className={`group flex w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 sm:rounded-3xl ${isRtl ? "text-right" : "text-left"}`}
+              dir={isRtl ? "rtl" : "ltr"}
             >
               <div className="relative aspect-4/3 w-full overflow-hidden">
                 <img
@@ -160,12 +163,12 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                 <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent" />
 
                 <div
-                  className="absolute left-3 top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]"
+                  className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-3" : "right-3"}`}
                   dir="ltr"
                 >
                   <RatingStar />
                   <span
-                    className="min-w-0 truncate text-right text-[11px] font-medium leading-none text-white"
+                    className="min-w-0 truncate text-[11px] font-medium leading-none text-white"
                     style={{ fontFamily: ibm }}
                   >
                     {votesDisplay} {ratingDisplay}
@@ -184,7 +187,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                 <div className="flex w-full items-center justify-start gap-1.5">
                   <CardPinIcon />
                   <span
-                    className="min-w-0 flex-1 truncate text-right text-[10px] font-bold leading-none text-[#1D1F1F]"
+                    className="min-w-0 flex-1 truncate text-[10px] font-bold leading-none text-[#1D1F1F]"
                     style={{ fontFamily: ibm }}
                   >
                     {restaurant.location}
@@ -195,7 +198,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   <div className="flex items-center justify-start gap-1">
                     <CardUtensilIcon />
                     <span
-                      className="text-right text-xs font-bold leading-none text-[#1D1F1F]"
+                      className="text-xs font-bold leading-none text-[#1D1F1F]"
                       style={{ fontFamily: ibm }}
                     >
                       {restaurant.category}
@@ -205,7 +208,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   <div className="flex items-center justify-start gap-1">
 
                     <span
-                      className="text-right text-xs font-bold leading-none text-[#19171A]"
+                      className="text-xs font-bold leading-none text-[#19171A]"
                       style={{ fontFamily: readex }}
                     >
                       {formatPriceBand(restaurant)}

@@ -6,15 +6,18 @@ import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
 import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmarkCard";
 import type { Landmark } from "@/components/landmarks/data";
-import { cityOptions, interestOptions, priceOptions, travelerOptions } from "@/components/landmarks/filterOptions";
+import {
+  getCityOptions,
+  getInterestOptions,
+  getPriceOptions,
+  getTravelerOptions,
+  locationMatchesCityId,
+} from "@/components/landmarks/filterOptions";
 
 function landmarkMatchesCity(landmark: Landmark, city: string | null): boolean {
   if (!city) return true;
   if (landmark.cityId) return landmark.cityId === city;
-  const label = cityOptions.find((o) => o.id === city)?.label ?? "";
-  if (!label) return true;
-  const haystack = `${landmark.location} ${landmark.area}`;
-  return haystack.includes(label);
+  return locationMatchesCityId(`${landmark.location} ${landmark.area}`, city);
 }
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -31,19 +34,27 @@ interface AttractionsLandmarksSectionProps {
 
 type PriceFilterId = "free" | "budget" | "mid-range" | "luxury" | null;
 
-function LeftArrowIcon() {
+function LeftArrowIcon({ className }: { className?: string }) {
   return (
-    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 17 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden
+    >
       <path
         d="M3.01172 8.69438L13.6367 8.69438"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M7.29688 12.9616L3.01146 8.69459L7.29688 4.42688"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -64,6 +75,10 @@ const AttractionsLandmarksSection = ({
   const isRtl = locale === "ar";
   const t = useTranslations("common");
   const sectionTitle = title ?? t("exploreAttractionsDefault");
+  const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
+  const interestOpts = useMemo(() => getInterestOptions(locale), [locale]);
+  const travelerOpts = useMemo(() => getTravelerOptions(locale), [locale]);
+  const priceOpts = useMemo(() => getPriceOptions(locale), [locale]);
   const [city, setCity] = useState<string | null>(null);
   const [interest, setInterest] = useState<string | null>(null);
   const [traveler, setTraveler] = useState<string | null>(null);
@@ -155,7 +170,7 @@ const AttractionsLandmarksSection = ({
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
                 <option value="">{t("interests")}</option>
-                {interestOptions.map((opt) => (
+                {interestOpts.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
                   </option>
@@ -167,7 +182,7 @@ const AttractionsLandmarksSection = ({
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
                 <option value="">{t("travelers")}</option>
-                {travelerOptions.map((opt) => (
+                {travelerOpts.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
                   </option>
@@ -179,7 +194,7 @@ const AttractionsLandmarksSection = ({
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
               >
                 <option value="">{t("price")}</option>
-                {priceOptions.map((opt) => (
+                {priceOpts.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
                   </option>
@@ -221,7 +236,7 @@ const AttractionsLandmarksSection = ({
             style={{ fontFamily: ara }}
             dir={isRtl ? "ltr" : "rtl"}
           >
-            <LeftArrowIcon />
+            <LeftArrowIcon className={`text-white ${isRtl ? "" : "rotate-180"}`} />
             <span className={`whitespace-nowrap text-[20px] font-bold leading-[100%] ${isRtl ? "text-right" : "text-left"}`}>
               {t("browseMore")}
             </span>

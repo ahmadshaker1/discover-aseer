@@ -120,26 +120,34 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
       ? mapBackendCards(backendCards, locale, fallbackTitle)
       : cards ?? defaultCards;
 
+  const isRtl = locale === "ar";
+
   return (
     <section
       className="relative mx-auto w-full max-w-[1440px] overflow-hidden bg-white px-4 py-12 sm:px-8 md:px-[58px]"
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
     >
       <img
         src="/assets/travel-essentials/angledsquarepattern.png"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute right-[-12px] top-[18px] z-0 h-[240px] w-[240px] object-contain opacity-95 md:right-6 md:top-[-2px] md:h-[320px] md:w-[320px]"
+        className={`pointer-events-none absolute top-[18px] z-0 h-[240px] w-[240px] object-contain opacity-95 md:top-[-2px] md:h-[320px] md:w-[320px] ${isRtl ? "right-[-12px] md:right-6" : "left-[-12px] md:left-6"}`}
       />
 
       <div className="relative z-10 mb-10 border-b border-[#E4E4E4] pb-4 md:mb-12">
-        <h2 className="text-right text-[32px] font-bold text-black sm:text-[40px]" style={{ fontFamily: ara }}>
+        <h2
+          className={`text-[32px] font-bold text-black sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}
+          style={{ fontFamily: ara }}
+        >
           <span className="text-black">{t("headingStart")}</span>
           <span className="text-[#7300CD]">{t("headingTrip")}</span>
         </h2>
       </div>
 
-      <div className="relative z-10 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4" dir="rtl">
+      <div
+        className="relative z-10 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4"
+        dir={isRtl ? "rtl" : "ltr"}
+      >
         {displayCards.map((card) => (
           <div
             key={card.id}
@@ -150,7 +158,7 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
             </div>
 
             <h3
-              className="w-full text-right text-[20px] font-bold leading-[130%] text-black"
+              className={`w-full text-[20px] font-bold leading-[130%] text-black ${isRtl ? "text-right" : "text-left"}`}
               style={{ fontFamily: ara }}
             >
               {card.title}
@@ -162,7 +170,7 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
                 className="inline-flex h-12 w-12 items-center justify-center self-start rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]"
                 aria-label={card.title}
               >
-                <ChevronIcon />
+                <ChevronIcon mirror={!isRtl} />
               </a>
             ) : (
               <button
@@ -170,7 +178,7 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
                 className="inline-flex h-12 w-12 items-center justify-center self-start rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]"
                 aria-label={card.title}
               >
-                <ChevronIcon />
+                <ChevronIcon mirror={!isRtl} />
               </button>
             )}
           </div>
@@ -180,8 +188,15 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
   );
 }
 
-const ChevronIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+const ChevronIcon = ({ mirror }: { mirror?: boolean }) => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={mirror ? "scale-x-[-1]" : undefined}
+  >
     <path d="M19 12H5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M12 19L5 12L12 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>

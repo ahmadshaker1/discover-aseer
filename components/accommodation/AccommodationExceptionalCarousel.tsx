@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { Accommodation } from "./data";
@@ -50,6 +50,9 @@ function scrollStepPx(scroller: HTMLElement): number {
 const AccommodationExceptionalCarousel = ({
   items,
 }: AccommodationExceptionalCarouselProps) => {
+  const t = useTranslations("common");
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
@@ -95,10 +98,10 @@ const AccommodationExceptionalCarousel = ({
   if (items.length === 0) return null;
 
   return (
-    <section className="min-w-0" dir="rtl" lang="ar">
+    <section className="min-w-0" dir={isRtl ? "rtl" : "ltr"} lang={locale}>
       <h2
-        dir="rtl"
-        className="mb-4 text-right text-xl font-bold text-black sm:text-2xl [unicode-bidi:isolate]"
+        dir={isRtl ? "rtl" : "ltr"}
+        className={`mb-4 text-xl font-bold text-black sm:text-2xl [unicode-bidi:isolate] ${isRtl ? "text-right" : "text-left"}`}
       >
         {t("exceptionalHotels")}
       </h2>
