@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
+import AccessibilityWidget from "@/components/AccessibilityWidget/AccessibilityWidget";
 
 const araHamah1964 = localFont({
   src: "../public/fonts/Ara Hamah 1964 B Bold.ttf",
@@ -41,6 +42,7 @@ export default function RootLayout({
       >
         <Navbar />
         {children}
+        <AccessibilityWidget />
         <Footer />
       </body>
     </html>
