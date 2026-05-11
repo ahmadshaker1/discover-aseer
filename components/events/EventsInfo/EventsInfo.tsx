@@ -124,7 +124,7 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
 
   return (
     <section
-      className="relative mx-auto w-full max-w-[1440px] overflow-hidden bg-white px-4 py-12 sm:px-8 md:px-[58px]"
+      className="relative mx-auto w-full max-w-[1440px] overflow-hidden bg-background px-4 py-12 text-foreground sm:px-8 md:px-[58px]"
       dir={isRtl ? "rtl" : "ltr"}
     >
       <img
@@ -134,13 +134,13 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
         className={`pointer-events-none absolute top-[18px] z-0 h-[240px] w-[240px] object-contain opacity-95 md:top-[-2px] md:h-[320px] md:w-[320px] ${isRtl ? "right-[-12px] md:right-6" : "left-[-12px] md:left-6"}`}
       />
 
-      <div className="relative z-10 mb-10 border-b border-[#E4E4E4] pb-4 md:mb-12">
+      <div className="relative z-10 mb-10 border-b border-border pb-4 md:mb-12">
         <h2
-          className={`text-[32px] font-bold text-black sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}
+          className={`text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}
           style={{ fontFamily: ara }}
         >
-          <span className="text-black">{t("headingStart")}</span>
-          <span className="text-[#7300CD]">{t("headingTrip")}</span>
+          <span className="text-foreground">{t("headingStart")}</span>
+          <span className="text-primary">{t("headingTrip")}</span>
         </h2>
       </div>
 
@@ -151,14 +151,14 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
         {displayCards.map((card) => (
           <div
             key={card.id}
-            className="mx-auto flex h-[250px] w-full max-w-[320px] flex-col justify-between rounded-4xl border border-[#E4E4E4] bg-white p-8 transition-shadow hover:shadow-lg"
+            className="mx-auto flex h-[250px] w-full max-w-[320px] flex-col justify-between rounded-4xl border border-border bg-surface p-8 transition-shadow hover:shadow-lg"
           >
-            <div className="inline-flex h-16 w-16 items-center justify-center self-start text-[#7300CD]">
+            <div className="inline-flex h-16 w-16 items-center justify-center self-start text-primary">
               {card.icon}
             </div>
 
             <h3
-              className={`w-full text-[20px] font-bold leading-[130%] text-black ${isRtl ? "text-right" : "text-left"}`}
+              className={`w-full text-[20px] font-bold leading-[130%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
               style={{ fontFamily: ara }}
             >
               {card.title}
@@ -167,7 +167,7 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
             {card.link ? (
               <a
                 href={card.link}
-                className="inline-flex h-12 w-12 items-center justify-center self-start rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]"
+                className="inline-flex h-12 w-12 items-center justify-center self-start rounded-full bg-primary text-primary-foreground transition hover:opacity-90"
                 aria-label={card.title}
               >
                 <ChevronIcon mirror={!isRtl} />
@@ -175,7 +175,7 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
             ) : (
               <button
                 type="button"
-                className="inline-flex h-12 w-12 items-center justify-center self-start rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]"
+                className="inline-flex h-12 w-12 items-center justify-center self-start rounded-full bg-primary text-primary-foreground transition hover:opacity-90"
                 aria-label={card.title}
               >
                 <ChevronIcon mirror={!isRtl} />

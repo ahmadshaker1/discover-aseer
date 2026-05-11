@@ -29,18 +29,18 @@ const AseerCuisineDishesSection = ({ data }: AseerCuisineDishesSectionProps) => 
   const locale = useLocale();
   const isRtl = locale === "ar";
   return (
-    <section className="mx-auto w-full max-w-[1440px] py-12" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="mx-auto w-full max-w-[1440px] py-12 text-foreground" dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex w-full flex-col gap-[59px]">
         <div className="px-4 sm:px-8 md:px-[62px]">
           <div className="mx-auto flex w-full max-w-[1316px] flex-col items-center gap-5 text-center">
             <h2
-              className="w-full text-center text-[48px] font-bold leading-[100%] text-[#280048]"
+              className="w-full text-center text-[48px] font-bold leading-[100%] text-secondary"
               style={{ fontFamily: ara }}
             >
               {data.title}
             </h2>
             <p
-              className="w-full max-w-[704px] text-center text-[15px] font-light leading-[119%] text-[#252525]/80"
+              className="w-full max-w-[704px] text-center text-[15px] font-light leading-[119%] text-muted-foreground"
               style={{ fontFamily: ibm }}
             >
               {data.description}

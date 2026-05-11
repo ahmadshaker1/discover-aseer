@@ -34,7 +34,7 @@ const FilterDropdown = ({
     <Menu as="div" className="relative">
       <Menu.Button
         type="button"
-        className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer"
+        className="flex cursor-pointer flex-row-reverse items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 sm:px-6 sm:py-2 sm:text-sm"
       >
         <ChevronDownIcon />
         <span>{selectedOption?.label || label}</span>
@@ -50,7 +50,7 @@ const FilterDropdown = ({
         leaveTo="opacity-0 scale-95 translate-y-1"
       >
         <Menu.Items
-          className={`absolute right-0 mt-2 ${width} origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200`}
+          className={`absolute right-0 z-50 mt-2 ${width} origin-top-right rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none`}
         >
           <div className="py-1">
             {options.map((option) => (
@@ -60,11 +60,11 @@ const FilterDropdown = ({
                     type="button"
                     onClick={() => onSelect(option.id)}
                     className={`${
-                      active ? "bg-[#6027D2]/10 text-[#6027D2]" : ""
+                      active ? "bg-primary/10 text-primary" : ""
                     } ${
                       selectedValue === option.id
-                        ? "bg-[#6027D2]/5 text-[#6027D2] font-semibold"
-                        : "text-black"
+                        ? "bg-primary/5 font-semibold text-primary"
+                        : "text-foreground"
                     } block w-full text-right px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
                   >
                     {option.label}
@@ -77,7 +77,7 @@ const FilterDropdown = ({
                 <button
                   type="button"
                   onClick={onClear}
-                  className="block w-full text-right px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700 border-t border-gray-200 mt-1 cursor-pointer transition-colors duration-150"
+                  className="mt-1 block w-full cursor-pointer border-t border-border px-4 py-2 text-right text-sm text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-foreground"
                 >
                   إزالة التصفية
                 </button>

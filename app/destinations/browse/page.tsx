@@ -11,7 +11,7 @@ const DestinationsBrowsePage = async () => {
   const destinations = await fetchDestinationsWithFallback();
 
   return (
-    <div className="flex w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <PageBanner
         breadcrumbs={[
           { label: tCommon("destinations") },

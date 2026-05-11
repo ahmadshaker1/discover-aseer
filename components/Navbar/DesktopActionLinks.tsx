@@ -14,12 +14,14 @@ import { Link } from "@/i18n/navigation";
 import { iconButtons } from "./navbarData";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 const DesktopActionLinks = () => {
   const locale = useLocale();
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
+  const { toggleTheme } = useTheme();
 
   const handleBookletDownload = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -48,23 +50,32 @@ const DesktopActionLinks = () => {
               key={index}
               type="button"
               onClick={handleBookletDownload}
-              className="w-10 h-10 rounded-full border border-white/80 flex items-center justify-center hover:bg-white/10 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
               aria-label="تحميل الدليل"
             >
               <Icon />
             </button>
           );
         }
+        const isLocaleButton = index === 0;
+        const isThemeButton = index === 1;
         return (
           <Link
             key={index}
             href={item.href}
-            onClick={index === 0 ? (e) => {
-              e.preventDefault();
-              handleLocaleSwitch();
-            } : undefined}
-            className="w-10 h-10 rounded-full border border-white/80 flex items-center justify-center hover:bg-white/10 transition-colors"
-            aria-label={index === 0 ? t("nav.languageSwitchLabel") : undefined}
+            onClick={isLocaleButton
+              ? (e) => {
+                e.preventDefault();
+                handleLocaleSwitch();
+              }
+              : isThemeButton
+                ? (e) => {
+                  e.preventDefault();
+                  toggleTheme();
+                }
+                : undefined}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
+            aria-label={isLocaleButton ? t("nav.languageSwitchLabel") : isThemeButton ? "Toggle theme" : undefined}
           >
             <Icon />
           </Link>

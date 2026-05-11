@@ -37,10 +37,10 @@ const FilterHeader = ({ onReset }: FilterHeaderProps) => {
   const t = useTranslations("common");
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-3 sm:gap-4 sm:space-x-4">
-      <h2 className="text-lg sm:text-xl font-bold text-black">{t("filterRestaurants")}</h2>
+      <h2 className="text-lg font-bold text-foreground sm:text-xl">{t("filterRestaurants")}</h2>
       <Button
         onClick={onReset}
-        className="px-3 sm:px-4 py-1.5 sm:py-2 cursor-pointer text-xs sm:text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-focus:outline-none data-focus:ring-2 data-focus:ring-gray-500 data-focus:ring-offset-2"
+        className="cursor-pointer whitespace-nowrap rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:px-4 sm:py-2 sm:text-sm"
       >
         {t("resetFilters")}
       </Button>
@@ -68,7 +68,7 @@ const LocationFilter = ({
   return (
     <div className="mb-6 sm:mb-8">
       <Menu as="div" className="relative">
-        <Menu.Button className={`flex items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
+        <Menu.Button className={`flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
           <LocationIcon />
           <span className="flex-1 text-start">
             {selectedCityOption?.label || t("city")}
@@ -84,7 +84,7 @@ const LocationFilter = ({
           leaveFrom="opacity-100 scale-100 translate-y-0"
           leaveTo="opacity-0 scale-95 translate-y-1"
         >
-          <Menu.Items className={`absolute mt-2 w-full rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 ${isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"}`}>
+          <Menu.Items className={`absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none ${isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"}`}>
             <div className="py-1">
               {cityOpts.map((option) => (
                 <Menu.Item key={option.id}>
@@ -96,11 +96,11 @@ const LocationFilter = ({
                         )
                       }
                       className={`${
-                        active ? "bg-[#6027D2]/10 text-[#6027D2]" : ""
+                        active ? "bg-primary/10 text-primary" : ""
                       } ${
                         selectedCity === option.id
-                          ? "bg-[#6027D2]/5 text-[#6027D2] font-semibold"
-                          : "text-black"
+                          ? "bg-primary/5 font-semibold text-primary"
+                          : "text-foreground"
                       } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
                     >
                       {option.label}
@@ -133,7 +133,7 @@ const RestaurantTypeFilter = ({
     <div className="mb-6 sm:mb-8">
       <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <RestaurantTypeIcon />
-        <h3 className="text-base sm:text-lg font-bold text-black">
+        <h3 className="text-base font-bold text-foreground sm:text-lg">
           {t("restaurantType")}
         </h3>
       </div>
@@ -144,20 +144,20 @@ const RestaurantTypeFilter = ({
             <Button
               key={type.id}
               onClick={() => onTypeToggle(type.id)}
-              className={`flex flex-col items-center justify-center cursor-pointer p-3 sm:p-4 rounded-lg border-2 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2 ${
+              className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-3 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:p-4 ${
                 isSelected
-                  ? "border-black bg-gray-50"
-                  : "border-gray-200 hover:border-gray-300"
+                  ? "border-primary bg-muted"
+                  : "border-border hover:border-muted-foreground"
               }`}
             >
               <div
                 className={`mb-1.5 sm:mb-2 ${
-                  isSelected ? "text-black" : "text-gray-400"
+                  isSelected ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 {type.icon}
               </div>
-              <span className="text-xs sm:text-sm font-medium text-black">
+              <span className="text-xs font-medium text-foreground sm:text-sm">
                 {type.label}
               </span>
             </Button>
@@ -179,7 +179,7 @@ const FilterCheckbox = ({ checked, onChange }: FilterCheckboxProps) => {
     <Checkbox
       checked={checked}
       onChange={onChange}
-      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-checked:border-black data-checked:bg-black data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2"
+      className="group relative inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded border-2 border-border bg-surface transition data-checked:border-primary data-checked:bg-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
     >
       <svg
         className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
@@ -216,7 +216,7 @@ const CuisineTypeFilter = ({
     <div>
       <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <CuisineIcon />
-        <h3 className="text-base sm:text-lg font-bold text-black">
+        <h3 className="text-base font-bold text-foreground sm:text-lg">
           {t("chooseCuisineType")}
         </h3>
       </div>
@@ -229,13 +229,13 @@ const CuisineTypeFilter = ({
               className="flex items-center justify-between p-2 rounded transition-colors"
             >
               <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
-                <span className="text-sm text-black">{cuisine.label}</span>
+                <span className="text-sm text-foreground">{cuisine.label}</span>
                 <FilterCheckbox
                   checked={isChecked}
                   onChange={() => onCuisineToggle(cuisine.id)}
                 />
               </div>
-              <span className="text-sm text-gray-600 font-medium">
+              <span className="text-sm font-medium text-muted-foreground">
                 {cuisine.count}
               </span>
             </div>
@@ -301,7 +301,7 @@ const RestaurantsFilterSidebar = ({
   };
 
   return (
-    <div className="w-full max-w-md lg:max-w-none bg-white p-4 sm:p-6 rounded-lg shadow-sm" dir={isRtl ? "rtl" : "ltr"}>
+    <div className="w-full max-w-md rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-none" dir={isRtl ? "rtl" : "ltr"}>
       <FilterHeader onReset={onReset} />
       <LocationFilter
         isRtl={isRtl}

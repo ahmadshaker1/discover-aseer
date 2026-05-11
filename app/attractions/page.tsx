@@ -104,7 +104,7 @@ const AttractionsPage = async () => {
   const displayLandmarks = landmarks.length > 0 ? landmarks : FALLBACK_ATTRACTIONS;
 
   return (
-    <div className="flex w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <PageBanner
         breadcrumbs={[
           { label: t("breadcrumb") },

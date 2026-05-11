@@ -67,7 +67,7 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
               <button
                 type="button"
                 onClick={() => handleRestaurantClick(restaurant.mapsUrl)}
-                className={`group w-full h-[360px] sm:h-[380px] md:h-[400px] lg:h-[420px] flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${isRtl ? "text-right" : "text-left"}`}
+                className={`group flex h-[360px] w-full flex-col overflow-hidden rounded-2xl bg-surface text-foreground shadow-lg transition-transform duration-300 hover:-translate-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:h-[380px] sm:rounded-3xl md:h-[400px] lg:h-[420px] ${isRtl ? "text-right" : "text-left"}`}
               >
                 <div className="relative h-56 md:h-64 w-full overflow-hidden">
                   <img
@@ -92,35 +92,35 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
 
                 <div className="flex flex-col justify-between px-5 py-4 flex-1">
                   <div className="space-y-2">
-                    <h3 className="text-lg md:text-xl font-bold text-right text-gray-900">
+                    <h3 className="text-right text-lg font-bold text-foreground md:text-xl">
                       {restaurant.name}
                     </h3>
-                    <div className="flex items-center justify-end gap-1 text-xs text-gray-500">
+                    <div className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
                       {restaurant.distanceKm > 0 && (
                         <>
                           <span className="text-[10px]">{tCommon("kmShort")}</span>
                           <span>{restaurant.distanceKm}</span>
-                          <span className="mx-1 text-gray-400">•</span>
+                          <span className="mx-1 text-muted-foreground">•</span>
                         </>
                       )}
                       <span className="truncate">{restaurant.location}</span>
                     </div>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between text-xs text-gray-700">
+                  <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <SaudiRiyalIcon />
                       <span>{restaurant.priceRange}</span>
                     </div>
                     {restaurant.nationality && (
                       <div className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-gray-700" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground" />
                         <span>{restaurant.nationality}</span>
                       </div>
                     )}
                     {restaurant.category && (
                       <div className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/70" />
                         <span>{restaurant.category}</span>
                       </div>
                     )}
@@ -135,13 +135,13 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
         {restaurants.length > 4 && (
           <>
             <button
-              className={`swiper-button-prev-restaurants absolute top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 cursor-pointer ${isRtl ? "right-0" : "left-0"}`}
+              className={`swiper-button-prev-restaurants absolute top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-lg transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${isRtl ? "right-0" : "left-0"}`}
               aria-label={tCommon("previous")}
             >
               <span className={isRtl ? "" : "rotate-180"}><ChevronRightIcon /></span>
             </button>
             <button
-              className={`swiper-button-next-restaurants absolute top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 cursor-pointer ${isRtl ? "left-0" : "right-0"}`}
+              className={`swiper-button-next-restaurants absolute top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-lg transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${isRtl ? "left-0" : "right-0"}`}
               aria-label={tCommon("next")}
             >
               <span className={isRtl ? "" : "rotate-180"}><ChevronLeftIcon /></span>

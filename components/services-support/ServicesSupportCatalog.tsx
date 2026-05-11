@@ -104,7 +104,7 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
         <div className="order-2 min-w-0 flex-1 lg:order-1">
           {services.length === 0 ? (
             <div
-              className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-center text-gray-600"
+              className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-center text-muted-foreground"
               dir={isRtl ? "rtl" : "ltr"}
             >
               {isRtl

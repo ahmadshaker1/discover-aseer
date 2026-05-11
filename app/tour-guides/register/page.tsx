@@ -17,7 +17,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
 const TourGuideRegisterPage = () => {
   return (
-    <div className="flex min-h-0 w-full flex-col bg-white pb-4 sm:pb-6">
+    <div className="flex min-h-0 w-full flex-col bg-background pb-4 text-foreground sm:pb-6">
       <TourGuideRegisterFlow />
     </div>
   );

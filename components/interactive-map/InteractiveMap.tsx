@@ -335,7 +335,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
   const tokenExists = Boolean(process.env.NEXT_PUBLIC_MAPBOX_API_KEY);
 
   return (
-    <div className="flex h-full w-full bg-white" dir={isRtl ? "rtl" : "ltr"}>
+    <div className="flex h-full w-full bg-background text-foreground" dir={isRtl ? "rtl" : "ltr"}>
       <div className="relative order-2 h-full flex-1">
         <div ref={mapContainer} className="h-full w-full" />
 
@@ -345,7 +345,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
             onClick={() => setActiveCategory(ui.all)}
             className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${activeCategory === ui.all
                 ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
-                : "border-[#E3E3E3] bg-white text-[#2D1A43]"
+                : "border-border bg-surface text-foreground"
               }`}
           >
             {ui.all}
@@ -357,7 +357,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
               onClick={() => setActiveCategory(chip.label)}
               className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition ${activeCategory === chip.label
                   ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
-                  : "border-[#E3E3E3] bg-white text-[#2D1A43]"
+                  : "border-border bg-surface text-foreground"
                 }`}
             >
               <span>{chip.icon}</span>
@@ -367,14 +367,14 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
         </div>
       </div>
 
-      <aside className="order-1 flex h-full w-[330px] flex-col bg-[#3D0075] text-white shadow-[-4px_0_18px_rgba(0,0,0,0.18)] md:w-[360px]">
-        <div className="border-b border-white/20 p-4">
+      <aside className="order-1 flex h-full w-[330px] flex-col bg-surface text-foreground shadow-[-4px_0_18px_rgba(0,0,0,0.18)] md:w-[360px]">
+        <div className="border-b border-border p-4">
           <h1 className={`mb-3 text-[36px] font-bold leading-none ${isRtl ? "text-right" : "text-left"}`}>{ui.discover}</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
               aria-label={ui.filterLabel}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-transparent text-white"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-transparent text-foreground"
             >
               ⌕
             </button>
@@ -383,13 +383,13 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder={ui.search}
-                className={`h-9 w-full rounded-md border border-white/35 bg-white px-3 text-[13px] text-[#3D0075] outline-none ${isRtl ? "text-right" : "text-left"}`}
+                className={`h-9 w-full rounded-md border border-border bg-background px-3 text-[13px] text-foreground outline-none ${isRtl ? "text-right" : "text-left"}`}
               />
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between border-b border-white/20 px-4 py-3">
+        <div className="flex items-center justify-between border-b border-border px-4 py-3">
           <h2 className="text-[26px] font-bold">{ui.locations}</h2>
           <button
             type="button"
@@ -400,20 +400,20 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
               setSelectedPlaceId(null);
               popupRef.current?.remove();
             }}
-            className="inline-flex items-center rounded-full border border-white/50 px-3 py-1 text-[12px] font-semibold text-white transition hover:bg-white/10"
+            className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted"
           >
             {ui.clearFilters}
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 border-b border-white/20 p-3">
+        <div className="grid grid-cols-2 gap-2 border-b border-border p-3">
           <select
             value={selectedCity}
             onChange={(event) => setSelectedCity(event.target.value)}
-            className="h-9 rounded-md border border-white/30 bg-[#4F1088] px-2 text-[12px] text-white outline-none"
+            className="h-9 rounded-md border border-border bg-background px-2 text-[12px] text-foreground outline-none"
           >
             {cities.map((city) => (
-              <option key={city} value={city} className="text-black">
+              <option key={city} value={city} className="text-foreground">
                 {city}
               </option>
             ))}
@@ -421,13 +421,13 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           <select
             value={activeCategory}
             onChange={(event) => setActiveCategory(event.target.value)}
-            className="h-9 rounded-md border border-white/30 bg-[#4F1088] px-2 text-[12px] text-white outline-none"
+            className="h-9 rounded-md border border-border bg-background px-2 text-[12px] text-foreground outline-none"
           >
-            <option value={ui.all} className="text-black">
+            <option value={ui.all} className="text-foreground">
               {ui.allCategories}
             </option>
             {CATEGORY_CHIPS.map((chip) => (
-              <option key={chip.label} value={chip.label} className="text-black">
+              <option key={chip.label} value={chip.label} className="text-foreground">
                 {chip.label}
               </option>
             ))}
@@ -439,8 +439,8 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
             <div
               key={place.id}
               className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-right transition ${selectedPlaceId === place.id
-                  ? "border-white bg-[#5B1997]"
-                  : "border-white/35 bg-[#4A0F85] hover:bg-[#552091]"
+                  ? "border-primary bg-muted"
+                  : "border-border bg-surface hover:bg-muted"
                 }`}
             >
               <img
@@ -451,24 +451,21 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
               />
               <div className="relative z-10">
                 {place.tag ? (
-                  <span className="mb-2 inline-flex rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-semibold text-[#4A0F85]">
+                  <span className="mb-2 inline-flex rounded-full bg-background px-2 py-0.5 text-[10px] font-semibold text-foreground">
                     {place.tag}
                   </span>
                 ) : null}
                 <h3 className="text-[27px] font-bold leading-[1.1]">{place.title}</h3>
-                <SafeHtml
-                  html={place.description}
-                  className="mt-2 text-[13px] leading-normal text-white/90"
-                />
+                <SafeHtml html={place.description} className="mt-2 text-[13px] leading-normal text-muted-foreground" />
                 {!place.hasCoordinates ? (
-                  <p className="mt-2 text-[11px] text-white/75">{ui.noGeo}</p>
+                  <p className="mt-2 text-[11px] text-muted-foreground">{ui.noGeo}</p>
                 ) : null}
                 <div className="mt-3 flex justify-start">
                   <button
                     type="button"
                     onClick={() => focusPlace(place)}
                     disabled={!place.hasCoordinates}
-                    className="inline-flex items-center rounded-full border border-white/50 px-3 py-1 text-[12px] font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {ui.showOnMap}
                   </button>
@@ -477,7 +474,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
             </div>
           ))}
           {filteredPlaces.length === 0 ? (
-            <div className="rounded-lg border border-white/30 bg-[#4A0F85] p-4 text-center text-sm text-white/85">
+            <div className="rounded-lg border border-border bg-surface p-4 text-center text-sm text-muted-foreground">
               {ui.noResults}
             </div>
           ) : null}
@@ -486,7 +483,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
       {!tokenExists ? (
         <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black/35">
-          <div className="rounded-xl bg-white px-5 py-4 text-sm font-medium text-[#3D0075]">
+          <div className="rounded-xl bg-surface px-5 py-4 text-sm font-medium text-foreground">
             {ui.tokenHint}
           </div>
         </div>

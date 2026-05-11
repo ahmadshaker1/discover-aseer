@@ -144,14 +144,14 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
   const expandedPanel = (
     <div className={`flex flex-col gap-4 px-4 pb-4 pt-5 sm:pt-6 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
-      <h3 className={`w-full text-2xl font-bold leading-none text-black ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ara }}>
+      <h3 className={`w-full text-2xl font-bold leading-none text-foreground ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ara }}>
         {event.title}
       </h3>
 
-      <div className="flex w-full gap-3 text-[#9CA3AF]">
-        <MapPinIcon className="shrink-0 text-[#9CA3AF]" />
+      <div className="flex w-full gap-3 text-muted-foreground">
+        <MapPinIcon className="shrink-0 text-muted-foreground" />
         <div className="min-w-0 flex-1 text-right">
-          <p className="text-sm font-bold leading-tight text-black" style={{ fontFamily: ara }}>
+          <p className="text-sm font-bold leading-tight text-foreground" style={{ fontFamily: ara }}>
             {venue}
           </p>
           <a
@@ -166,37 +166,37 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
         </div>
       </div>
 
-      <div className="flex w-full gap-3 text-[#9CA3AF]">
-        <CalendarIcon className="shrink-0 text-[#9CA3AF]" />
+      <div className="flex w-full gap-3 text-muted-foreground">
+        <CalendarIcon className="shrink-0 text-muted-foreground" />
         <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
-          <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
             {isRtl ? "التاريخ" : "Date"}
           </p>
-          <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
+          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.dateRange}
           </p>
         </div>
       </div>
 
-      <div className="flex w-full gap-3 text-[#9CA3AF]">
-        <ClockIcon className="shrink-0 text-[#9CA3AF]" />
+      <div className="flex w-full gap-3 text-muted-foreground">
+        <ClockIcon className="shrink-0 text-muted-foreground" />
         <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
-          <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
             {isRtl ? "الوقت" : "Time"}
           </p>
-          <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
+          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.timeRange}
           </p>
         </div>
       </div>
 
       <div className="flex w-full gap-3">
-        <CurrencyIcon className="mt-0.5 shrink-0 text-[#19171A]" />
+        <CurrencyIcon className="mt-0.5 shrink-0 text-foreground" />
         <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
-          <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
             {isRtl ? "التذكرة" : "Ticket"}
           </p>
-          <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
+          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.priceLabel}
           </p>
         </div>
@@ -258,11 +258,11 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             </h3>
             <div className="flex w-full justify-start">
               <div
-                className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-[#9DDEDE] px-2 py-1 text-right text-black"
+                className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-surface/85 px-2 py-1 text-right text-foreground"
                 style={{ fontFamily: ara }}
               >
                 <span className="text-right text-sm font-bold leading-none">{event.priceLabel}</span>
-                <CurrencyIcon className="shrink-0 text-[#19171A]" />
+                <CurrencyIcon className="shrink-0 text-foreground" />
               </div>
             </div>
             <div className="flex w-full flex-col items-stretch gap-3 text-right">
@@ -302,7 +302,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
       </article>
 
       <div
-        className="pointer-events-none absolute inset-x-0 top-full z-1 -mt-4 max-h-0 origin-top -translate-y-1 overflow-hidden rounded-b-[20px] border-x border-b border-[#E5E5E5] bg-white opacity-0 shadow-[0_10px_28px_-12px_rgba(0,0,0,0.14)] transition-[max-height,opacity,transform] duration-300 ease-out group-hover/card:pointer-events-auto group-hover/card:max-h-[min(420px,70vh)] group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:max-h-[min(420px,70vh)] group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100"
+        className="pointer-events-none absolute inset-x-0 top-full z-1 -mt-4 max-h-0 origin-top -translate-y-1 overflow-hidden rounded-b-[20px] border-x border-b border-border bg-surface opacity-0 shadow-[0_10px_28px_-12px_rgba(0,0,0,0.14)] transition-[max-height,opacity,transform] duration-300 ease-out group-hover/card:pointer-events-auto group-hover/card:max-h-[min(420px,70vh)] group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:max-h-[min(420px,70vh)] group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100"
       >
         {expandedPanel}
       </div>

@@ -1,7 +1,14 @@
 import Image from "next/image";
+import { useLocale } from "next-intl";
+import { resolveGettingHereContent } from "./gettingHerePageContent";
+
 export default function TravelLandSection() {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const copy = resolveGettingHereContent(locale).land;
+
   return (
-    <section dir="rtl" className="py-12 text-right">
+    <section dir={isRtl ? "rtl" : "ltr"} className={`py-12 text-foreground ${isRtl ? "text-right" : "text-left"}`}>
       <div
         className="mt-12 h-[300px] w-full"
         style={{
@@ -12,19 +19,18 @@ export default function TravelLandSection() {
           backgroundRepeat: "no-repeat",
         }}
       />
-      <div className="container mx-auto px-6 mb-12" dir="rtl">
+      <div className="container mx-auto px-6 mb-12" dir={isRtl ? "rtl" : "ltr"}>
         {/* العنوان */}
-        <div className="border-b border-[#E4E4E4] pb-4 pt-6 mb-6">
-          <h2 className="text-[32px] sm:text-[40px] font-bold text-black text-right">
-            السفر برا
+        <div className="mb-6 border-b border-border pb-4 pt-6">
+          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}>
+            {copy.travelByRoad}
           </h2>
         </div>
 
         {/* الوصف (محدد العرض عشان يجي على اليمين زي الصورة) */}
         <div className="mb-8 flex justify-start">
-          <p className="text-[16px] sm:text-[18px] leading-[1.6] text-[#333] text-right max-w-2xl">
-            القيادة إلى عسير هي رحلة عبر تضاريس متغيرة. من السهول الساحلية إلى
-            المرتفعات الشاهقة، الطرق مجهزة بشكل جيد وتوفر إطلالات لا مثيل لها.
+          <p className={`max-w-2xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] ${isRtl ? "text-right" : "text-left"}`}>
+            {copy.roadLead}
           </p>
         </div>
 
@@ -33,9 +39,9 @@ export default function TravelLandSection() {
           {/* العمود الأيمن (قائمة المسافات) */}
           <div className="flex flex-col gap-4">
             {/* الرياض */}
-            <div className="flex items-center justify-between bg-[#F8F8F8] rounded-2xl p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#EFE6F7] text-[#7300CD]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
                   <svg
                     width="24"
                     height="24"
@@ -52,20 +58,20 @@ export default function TravelLandSection() {
                     <circle cx="17" cy="17" r="2" />
                   </svg>
                 </div>
-                <div className="text-right">
-                  <p className="text-[14px] text-gray-500 mb-0.5">من الرياض</p>
-                  <p className="text-[18px] font-bold text-black">950 كم</p>
+                <div className={isRtl ? "text-right" : "text-left"}>
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">{copy.fromRiyadh}</p>
+                  <p className="text-[18px] font-bold text-foreground">{copy.hours950}</p>
                 </div>
               </div>
               <div className="text-left">
-                <p className="text-[18px] font-bold text-black">9-10 ساعات</p>
+                <p className="text-[18px] font-bold text-foreground">{copy.time910}</p>
               </div>
             </div>
 
             {/* جدة */}
-            <div className="flex items-center justify-between bg-[#F8F8F8] rounded-2xl p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#EFE6F7] text-[#7300CD]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
                   <svg
                     width="24"
                     height="24"
@@ -82,20 +88,20 @@ export default function TravelLandSection() {
                     <circle cx="17" cy="17" r="2" />
                   </svg>
                 </div>
-                <div className="text-right">
-                  <p className="text-[14px] text-gray-500 mb-0.5">من جدة</p>
-                  <p className="text-[18px] font-bold text-black">630 كم</p>
+                <div className={isRtl ? "text-right" : "text-left"}>
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">{copy.fromJeddah}</p>
+                  <p className="text-[18px] font-bold text-foreground">{copy.hours630}</p>
                 </div>
               </div>
               <div className="text-left">
-                <p className="text-[18px] font-bold text-black">6-7 ساعات</p>
+                <p className="text-[18px] font-bold text-foreground">{copy.time67}</p>
               </div>
             </div>
 
             {/* الدمام */}
-            <div className="flex items-center justify-between bg-[#F8F8F8] rounded-2xl p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#EFE6F7] text-[#7300CD]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
                   <svg
                     width="24"
                     height="24"
@@ -112,23 +118,23 @@ export default function TravelLandSection() {
                     <circle cx="17" cy="17" r="2" />
                   </svg>
                 </div>
-                <div className="text-right">
-                  <p className="text-[14px] text-gray-500 mb-0.5">من الدمام</p>
-                  <p className="text-[18px] font-bold text-black">1,400 كم</p>
+                <div className={isRtl ? "text-right" : "text-left"}>
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">{copy.fromDammam}</p>
+                  <p className="text-[18px] font-bold text-foreground">{copy.hours1400}</p>
                 </div>
               </div>
               <div className="text-left">
-                <p className="text-[18px] font-bold text-black">13-14 ساعة</p>
+                <p className="text-[18px] font-bold text-foreground">{copy.time1314}</p>
               </div>
             </div>
           </div>
 
           {/* العمود الأيسر (بطاقة سابتكو) */}
-          <div className="flex flex-col justify-between rounded-[2rem] bg-[#333036] p-8 shadow-lg ">
+          <div className="flex flex-col justify-between rounded-4xl bg-[#333036] p-8 shadow-lg ">
             <div>
               <div className="mb-6 flex items-center justify-start gap-3">
                 <h3 className="text-[28px] font-bold text-white">
-                  حافلات سابتكو
+                  {copy.saptcoTitle}
                 </h3>
                 <div className="text-[#FBB03B]">
                   <svg
@@ -141,10 +147,8 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
               </div>
-              <p className="mb-8 text-right text-[16px] leading-[1.8] text-gray-300">
-                استمتع بتجربة سفر مريحة عبر البلاد مع خدمة الحافلات الرائدة في
-                المملكة العربية السعودية. توفر سابتكو رحلات منتظمة من جميع المدن
-                الرئيسية مباشرة إلى محطة أبها المركزية.
+              <p className={`mb-8 text-[16px] leading-[1.8] text-white/80 ${isRtl ? "text-right" : "text-left"}`}>
+                {copy.saptcoBody}
               </p>
             </div>
 
@@ -155,45 +159,45 @@ export default function TravelLandSection() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center rounded-xl bg-[#FBB03B] px-8 py-3 text-[16px] font-bold text-[#333036] transition hover:bg-[#e59e35]"
               >
-                احجز عبر الموقع
+                {copy.bookOnWebsite}
               </a>
               <a
                 href="https://play.google.com/store/apps/details?id=com.sat.passenger&hl=ar&pli=1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-xl bg-[#4A474E] px-8 py-3 text-[16px] font-bold text-white transition hover:bg-gray-600"
+                className="flex items-center justify-center rounded-xl bg-[#4A474E] px-8 py-3 text-[16px] font-bold text-white transition hover:brightness-110"
               >
-                تحميل التطبيق
+                {copy.downloadApp}
               </a>
             </div>
           </div>
         </div>
       </div>
       {/* قسم التنقل في عسير */}
-      <div className="container mx-auto px-6 mb-12" dir="rtl">
+      <div className="container mx-auto px-6 mb-12" dir={isRtl ? "rtl" : "ltr"}>
         {/* العنوان الرئيسي */}
-        <div className="border-b border-[#E4E4E4] pb-4 pt-6 mb-8">
-          <h2 className="text-[32px] sm:text-[40px] font-bold text-black text-right">
-            التنقل في عسير
+        <div className="mb-8 border-b border-border pb-4 pt-6">
+          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}>
+            {copy.gettingAroundTitle}
           </h2>
         </div>
 
         {/* محتوى القسم (شبكة من عمودين) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
           {/* العمود الأيمن: تاكسي المطار */}
-          <div className="relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-[2rem] shadow-md group">
+          <div className="group relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-4xl shadow-md">
             {/* الصورة الخلفية */}
             <img
               src="/assets/Getting-here-and-around/89fb030a28469fcdf2237c498d9867f61d4ab7f0.jpg"
-              alt="تاكسي المطار"
+              alt={copy.airportTaxiAlt}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             {/* تدرج لوني عشان النص يكون واضح */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent"></div>
 
             {/* المحتوى النصي */}
-            <div className="relative z-10 p-8 text-right">
-              <div className="mb-3 flex justify-end">
+            <div className={`relative z-10 p-8 ${isRtl ? "text-right" : "text-left"}`}>
+              <div className={`mb-3 flex ${isRtl ? "justify-end" : "justify-start"}`}>
                 {/* أيقونة سيارة أجرة */}
                 <svg
                   width="32"
@@ -213,110 +217,106 @@ export default function TravelLandSection() {
                 </svg>
               </div>
               <h3 className="mb-3 text-[24px] font-bold text-white">
-                تاكسي المطار
+                {copy.airportTaxiTitle}
               </h3>
-              <p className="text-[14px] leading-[1.8] text-gray-200">
-                متوفر خارج صالات الوصول. على الرغم من موثوقيتها، قد يكون توفرها
-                محدوداً خلال مواسم الذروة السياحية. عادة ما تطبق أسعار ثابتة
-                للانتقال إلى المدينة.
+              <p className="text-[14px] leading-[1.8] text-white/80">
+                {copy.airportTaxiBody}
               </p>
             </div>
           </div>
 
           {/* العمود الأيسر: تطبيقات التوصيل */}
-          <div className="flex flex-col justify-center rounded-[2rem] border border-[#E4E4E4] bg-white p-8 shadow-sm">
-            <h3 className="mb-6 text-right text-[20px] font-bold text-[#333]">
-              تطبيقات التوصيل
+          <div className="flex flex-col justify-center rounded-4xl border border-border bg-surface p-8 shadow-sm">
+            <h3 className={`mb-6 text-[20px] font-bold text-foreground ${isRtl ? "text-right" : "text-left"}`}>
+              {copy.rideAppsTitle}
             </h3>
 
             {/* شبكة كروت التطبيقات */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* كرت بولت */}
-              <div className="flex flex-col items-center justify-between rounded-2xl bg-[#F8F8F8] p-6 transition-all hover:shadow-md">
+              <div className="flex flex-col items-center justify-between rounded-2xl bg-muted p-6 transition-all hover:shadow-md">
                 <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-[#2EBA7F] text-[24px] font-bold text-white">
                   B
                 </div>
-                <p className="mb-4 text-[18px] font-bold text-[#2D1360]">
-                  بولت
+                <p className="mb-4 text-[18px] font-bold text-secondary">
+                  {copy.bolt}
                 </p>
                 <a
                   href="https://play.google.com/store/apps/details?id=ee.mtakso.client&hl=ar"
                   target="_blank"
-                  className="text-[14px] font-bold text-[#7300CD] hover:underline"
+                  className="text-[14px] font-bold text-primary hover:underline"
                 >
-                  تحميل التطبيق
+                  {copy.downloadAppShort}
                 </a>
               </div>
 
               {/* كرت كريم */}
-              <div className="flex flex-col items-center justify-between rounded-2xl bg-[#F8F8F8] p-6 transition-all hover:shadow-md">
+              <div className="flex flex-col items-center justify-between rounded-2xl bg-muted p-6 transition-all hover:shadow-md">
                 <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-[#48D52A] text-[24px] font-bold text-white">
                   C
                 </div>
-                <p className="mb-4 text-[18px] font-bold text-[#2D1360]">
-                  كريم
+                <p className="mb-4 text-[18px] font-bold text-secondary">
+                  {copy.careem}
                 </p>
                 <a
                   href="https://play.google.com/store/apps/details?id=com.careem.acma&hl=ar"
                   target="_blank"
-                  className="text-[14px] font-bold text-[#7300CD] hover:underline"
+                  className="text-[14px] font-bold text-primary hover:underline"
                 >
-                  تحميل التطبيق
+                  {copy.downloadAppShort}
                 </a>
               </div>
 
               {/* كرت أوبر */}
-              <div className="flex flex-col items-center justify-between rounded-2xl bg-[#F8F8F8] p-6 transition-all hover:shadow-md">
+              <div className="flex flex-col items-center justify-between rounded-2xl bg-muted p-6 transition-all hover:shadow-md">
                 <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-black text-[24px] font-bold text-white">
                   U
                 </div>
-                <p className="mb-4 text-[18px] font-bold text-[#2D1360]">
-                  أوبر
+                <p className="mb-4 text-[18px] font-bold text-secondary">
+                  {copy.uber}
                 </p>
                 <a
                   href="https://play.google.com/store/apps/details?id=com.ubercab&hl=ar"
                   target="_blank"
-                  className="text-[14px] font-bold text-[#7300CD] hover:underline"
+                  className="text-[14px] font-bold text-primary hover:underline"
                 >
-                  تحميل التطبيق
+                  {copy.downloadAppShort}
                 </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-6 mb-12" dir="rtl">
+      <div className="container mx-auto px-6 mb-12" dir={isRtl ? "rtl" : "ltr"}>
         {/* ================= قسم تأجير السيارات ================= */}
-        <div className="border-b border-[#E4E4E4] pb-4 pt-6 mb-6">
-          <h2 className="text-[32px] sm:text-[40px] font-bold text-black text-right">
-            تأجير السيارات
+        <div className="mb-6 border-b border-border pb-4 pt-6">
+          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}>
+            {copy.carRentalTitle}
           </h2>
         </div>
 
         <div className="mb-8 flex justify-start">
-          <p className="text-[16px] sm:text-[18px] leading-[1.6] text-[#333] text-right max-w-3xl">
-            للحصول على حرية مطلقة لاستكشاف القرى الجبلية والمطلات الخفية، يوصى
-            بشدة باستئجار سيارة. يعمل العديد من المزودين المحليين والدوليين في
-            المطار.
+          <p className={`max-w-3xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] ${isRtl ? "text-right" : "text-left"}`}>
+            {copy.carRentalLead}
           </p>
         </div>
 
         {/* كرت ذيب - كرت واحد كما طلبت */}
         <div className="mb-16 flex justify-start">
-          <div className="flex w-full md:w-[350px] flex-col rounded-[2rem] bg-[#F8F8F8] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] relative transition-transform hover:-translate-y-1">
+          <div className="relative flex w-full flex-col rounded-4xl bg-surface p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 md:w-[350px]">
             {/* أيقونة B في اليسار */}
-            <div className="absolute top-6 left-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2EBA7F] text-white font-bold">
+            <div className={`absolute top-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2EBA7F] text-white font-bold ${isRtl ? "left-6" : "right-6"}`}>
               B
             </div>
 
-            <div className="mt-8 text-right">
-              <h3 className="text-[24px] font-bold text-[#2D1360] mb-6">ذيب</h3>
+            <div className={`mt-8 ${isRtl ? "text-right" : "text-left"}`}>
+              <h3 className="mb-6 text-[24px] font-bold text-secondary">{copy.theebTitle}</h3>
 
               {/* رقم الجوال */}
-              <div className="flex items-center justify-end gap-3 mb-4 text-[#333] text-[14px] font-medium">
+              <div className={`mb-4 flex items-center gap-3 text-[14px] font-medium text-foreground ${isRtl ? "justify-end" : "justify-start"}`}>
                 <span dir="ltr">+966 9200000890</span>
                 <svg
-                  className="w-5 h-5 text-[#2D1360]"
+                  className="h-5 w-5 text-secondary"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -329,10 +329,10 @@ export default function TravelLandSection() {
               </div>
 
               {/* الموقع الإلكتروني */}
-              <div className="flex items-center justify-end gap-3 mb-8 text-[#2D1360] font-bold text-[14px]">
+              <div className={`mb-8 flex items-center gap-3 text-[14px] font-bold text-secondary ${isRtl ? "justify-end" : "justify-start"}`}>
                 <span>theeb.sa</span>
                 <svg
-                  className="w-5 h-5 text-[#2D1360]"
+                  className="h-5 w-5 text-secondary"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -349,9 +349,9 @@ export default function TravelLandSection() {
               {/* رابط التحميل */}
               <a
                 href="#"
-                className="text-[14px] font-bold text-[#7300CD] hover:underline flex justify-end"
+                className={`flex text-[14px] font-bold text-primary hover:underline ${isRtl ? "justify-end" : "justify-start"}`}
               >
-                تحميل التطبيق
+                {copy.downloadAppShort}
               </a>
             </div>
           </div>
@@ -360,30 +360,30 @@ export default function TravelLandSection() {
         {/* ================= قسم انظر أيضًا ================= */}
         <div className="relative mt-20 mb-8 pt-4">
           {/* عنوان القسم */}
-          <div className="relative z-10 border-b border-[#E4E4E4] pb-4 mb-10 flex justify-start items-end">
-            <h2 className="text-[32px] sm:text-[40px] font-bold text-black text-right inline-block bg-white pl-6 relative z-10">
-              انظر أيضًا
+          <div className="relative z-10 mb-10 flex items-end justify-start border-b border-border pb-4">
+            <h2 className={`relative z-10 inline-block bg-background pl-6 text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}>
+              {copy.seeAlso}
             </h2>
           </div>
 
           {/* شبكة الكروت السفلية */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {/* الكرت الأول: متطلبات التأشيرة */}
-            <div className="flex flex-col justify-between h-[250px] rounded-[2rem] border border-[#E4E4E4] bg-white p-8 transition-shadow hover:shadow-lg">
+            <div className="flex h-[250px] flex-col justify-between rounded-4xl border border-border bg-surface p-8 transition-shadow hover:shadow-lg">
               <div className="flex justify-start">
                 <Image
                   src="/assets/Getting-here-and-around/evisa-logo-1707824671.png"
-                  alt="اختر وجهتك"
+                  alt={copy.visaAlt}
                   width={70}
                   height={50}
                 />
               </div>
-              <h3 className="text-right text-[20px] font-bold text-black">
-                متطلبات التأشيرة والدخول
+              <h3 className={`text-[20px] font-bold text-foreground ${isRtl ? "text-right" : "text-left"}`}>
+                {copy.visaTitle}
               </h3>
               <div className="flex justify-start">
                 <a
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]"
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition hover:opacity-90"
                   href="https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations"
                   target="_blank"
                 >
@@ -405,21 +405,21 @@ export default function TravelLandSection() {
             </div>
 
             {/* الكرت الثاني: خطط إقامتك */}
-            <div className="flex flex-col justify-between h-[250px] rounded-[2rem] border border-[#E4E4E4] bg-white p-8 transition-shadow hover:shadow-lg">
-              <div className="flex justify-start text-[#7300CD]">
+            <div className="flex h-[250px] flex-col justify-between rounded-4xl border border-border bg-surface p-8 transition-shadow hover:shadow-lg">
+              <div className="flex justify-start text-primary">
                 <Image
                   src="/assets/Getting-here-and-around/icon3346.svg"
-                  alt="اختر وجهتك"
+                  alt={copy.planStayAlt}
                   width={48}
                   height={48}
                 />
               </div>
-              <h3 className="text-right text-[20px] font-bold text-black">
-                خطط إقامتك
+              <h3 className={`text-[20px] font-bold text-foreground ${isRtl ? "text-right" : "text-left"}`}>
+                {copy.planStayTitle}
               </h3>
               <div className="flex justify-start">
                 <a
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]"
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition hover:opacity-90"
                   href="/accommodation"
                   target="_blank"
                 >
@@ -441,20 +441,20 @@ export default function TravelLandSection() {
             </div>
 
             {/* الكرت الثالث: اختر وجهتك */}
-            <div className="flex flex-col justify-between h-[250px] rounded-[2rem] border border-[#E4E4E4] bg-white p-8 transition-shadow hover:shadow-lg">
-              <div className="flex justify-start text-[#7300CD]">
+            <div className="flex h-[250px] flex-col justify-between rounded-4xl border border-border bg-surface p-8 transition-shadow hover:shadow-lg">
+              <div className="flex justify-start text-primary">
                 <Image
                   src="/assets/Getting-here-and-around/Vector.svg"
-                  alt="اختر وجهتك"
+                  alt={copy.pickDestinationAlt}
                   width={48}
                   height={48}
                 />
               </div>
-              <h3 className="text-right text-[20px] font-bold text-black">
-                اختر وجهتك
+              <h3 className={`text-[20px] font-bold text-foreground ${isRtl ? "text-right" : "text-left"}`}>
+                {copy.pickDestinationTitle}
               </h3>
               <div className="flex justify-start">
-                <button className="flex h-12 w-12 items-center justify-center rounded-full bg-[#7300CD] text-white transition hover:bg-[#6027D2]">
+                <button className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition hover:opacity-90">
                   <svg
                     width="24"
                     height="24"

@@ -82,14 +82,14 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         {/* Backend: fill `sectionTitle`, `sectionSubtitle`, `sectionCaption` from API/CMS. */}
         <div className="mx-auto flex w-full max-w-[704px] flex-col items-center text-center">
-          <h2 className="text-[44px] font-bold leading-[180%] text-black" style={{ fontFamily: ara }}>
+          <h2 className="text-[44px] font-bold leading-[180%] text-foreground" style={{ fontFamily: ara }}>
             {content.sectionTitle}
           </h2>
-          <p className="text-[20px] font-bold leading-[140%] text-[#6f6f6f]" style={{ fontFamily: ara }}>
+          <p className="text-[20px] font-bold leading-[140%] text-muted-foreground" style={{ fontFamily: ara }}>
             {content.sectionSubtitle}
           </p>
           <h4
-            className="mt-2 w-full text-center text-[15px] font-medium leading-[119%] text-[#5A5A5A]"
+            className="mt-2 w-full text-center text-[15px] font-medium leading-[119%] text-muted-foreground"
             style={{ fontFamily: ibm }}
           >
             {content.sectionCaption}

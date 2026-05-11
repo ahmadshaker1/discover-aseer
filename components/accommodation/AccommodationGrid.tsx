@@ -75,8 +75,8 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
   if (accommodations.length === 0) {
     return (
       <div className="w-full py-12 text-center" dir="rtl">
-        <p className="text-lg text-gray-600">{t("noAccommodation")}</p>
-        <p className="mt-2 text-sm text-gray-500">{t("resultsCount", { count: 0 })}</p>
+        <p className="text-lg text-muted-foreground">{t("noAccommodation")}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{t("resultsCount", { count: 0 })}</p>
       </div>
     );
   }
@@ -102,7 +102,7 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
           <AccommodationHotelsGrid items={grid} showTopDivider={carousel.length > 0} />
 
           {filtered.length === 0 ? (
-            <p className="py-12 text-center text-gray-500">{t("noAccommodationFilter")}</p>
+            <p className="py-12 text-center text-muted-foreground">{t("noAccommodationFilter")}</p>
           ) : null}
         </div>
       </div>

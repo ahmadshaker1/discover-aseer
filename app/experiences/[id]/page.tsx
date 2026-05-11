@@ -37,7 +37,7 @@ export default async function ExperienceDetailsPage({
   const currency = experience.currency ?? t("currencyFallback");
 
   return (
-    <main className="pb-16" dir={locale === "ar" ? "rtl" : "ltr"}>
+    <main className="bg-background pb-16 text-foreground" dir={locale === "ar" ? "rtl" : "ltr"}>
       <section className="relative h-[360px] w-full overflow-hidden md:h-[500px]">
         <Image
           src={experience.imageUrl}
@@ -70,9 +70,9 @@ export default async function ExperienceDetailsPage({
       <div className="container mx-auto mt-10 px-4 md:px-6">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
           <article className="space-y-8">
-            <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-xl font-bold text-black">{t("aboutExperience")}</h2>
-              <div className="space-y-4 text-[15px] leading-8 text-gray-700">
+            <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
+              <h2 className="mb-4 text-xl font-bold text-foreground">{t("aboutExperience")}</h2>
+              <div className="space-y-4 text-[15px] leading-8 text-muted-foreground">
                 {(detailsParagraphs.length > 0
                   ? detailsParagraphs
                   : [experience.description]
@@ -83,30 +83,30 @@ export default async function ExperienceDetailsPage({
             </section>
 
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <p className="mb-1 text-sm text-gray-500">{t("providerLabel")}</p>
-                <p className="text-base font-semibold text-black">{experience.provider}</p>
+              <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <p className="mb-1 text-sm text-muted-foreground">{t("providerLabel")}</p>
+                <p className="text-base font-semibold text-foreground">{experience.provider}</p>
               </div>
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <p className="mb-1 text-sm text-gray-500">{t("priceLabel")}</p>
-                <p className="text-base font-semibold text-black">
+              <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <p className="mb-1 text-sm text-muted-foreground">{t("priceLabel")}</p>
+                <p className="text-base font-semibold text-foreground">
                   {experience.price} {currency}
                 </p>
               </div>
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <p className="mb-1 text-sm text-gray-500">{t("groupSizeLabel")}</p>
-                <p className="text-base font-semibold text-black">x{experience.groupSize}</p>
+              <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <p className="mb-1 text-sm text-muted-foreground">{t("groupSizeLabel")}</p>
+                <p className="text-base font-semibold text-foreground">x{experience.groupSize}</p>
               </div>
             </section>
 
             {experience.filterInterests.length > 0 ? (
-              <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
-                <h3 className="mb-4 text-lg font-bold text-black">{t("interestsHeading")}</h3>
+              <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
+                <h3 className="mb-4 text-lg font-bold text-foreground">{t("interestsHeading")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {experience.filterInterests.map((interest) => (
                     <span
                       key={interest}
-                      className="rounded-full border border-gray-300 px-3 py-1.5 text-sm text-black"
+                      className="rounded-full border border-border px-3 py-1.5 text-sm text-foreground"
                     >
                       {interest}
                     </span>
@@ -116,8 +116,8 @@ export default async function ExperienceDetailsPage({
             ) : null}
 
             {experience.filterTravelers.length > 0 ? (
-              <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
-                <h3 className="mb-4 text-lg font-bold text-black">{t("travelersHeading")}</h3>
+              <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
+                <h3 className="mb-4 text-lg font-bold text-foreground">{t("travelersHeading")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {experience.filterTravelers.map((traveler) => {
                     const msgKey = TRAVELER_MESSAGE_KEYS[traveler];
@@ -125,7 +125,7 @@ export default async function ExperienceDetailsPage({
                     return (
                       <span
                         key={traveler}
-                        className="rounded-full bg-[#CD8CFF24] px-3 py-1.5 text-sm text-[#5A18B5]"
+                        className="rounded-full bg-primary/15 px-3 py-1.5 text-sm text-primary"
                       >
                         {label}
                       </span>
@@ -137,19 +137,19 @@ export default async function ExperienceDetailsPage({
           </article>
 
           <aside className="lg:sticky lg:top-24 lg:h-fit">
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-              <p className="text-sm text-gray-500">{t("bookingTitle")}</p>
-              <p className="mt-2 text-2xl font-bold text-black">
+            <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+              <p className="text-sm text-muted-foreground">{t("bookingTitle")}</p>
+              <p className="mt-2 text-2xl font-bold text-foreground">
                 {experience.price} {currency}
               </p>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-muted-foreground">
                 {t("groupMinimum", { size: experience.groupSize })}
               </p>
               <a
                 href={experience.bookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-[#7300CD] px-8 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
               >
                 {t("bookNow")}
               </a>

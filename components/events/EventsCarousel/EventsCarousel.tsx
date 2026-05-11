@@ -31,11 +31,11 @@ const EventsCarousel = ({
   if (items.length === 0) return null;
 
   return (
-    <div className="relative w-full py-12 md:py-16 bg-white">
-      <div className="max-w-screen-2xl mx-auto px-12 md:px-24">
+    <div className="relative w-full bg-background py-12 text-foreground md:py-16">
+      <div className="mx-auto max-w-screen-2xl px-12 md:px-24">
         {/* Header */}
-        <div className="flex justify-end mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#6027D2]">
+        <div className="mb-8 flex justify-end">
+          <h2 className="text-3xl font-bold text-primary md:text-4xl">
             مواسم وفعاليات سابقة
           </h2>
         </div>
@@ -92,13 +92,13 @@ const EventsCarousel = ({
           {items.length > slidesPerView && (
             <>
               <button
-                className="swiper-button-prev-custom absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                className="swiper-button-prev-custom absolute right-0 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-lg transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 aria-label="Previous slide"
               >
                 <ChevronRightIcon />
               </button>
               <button
-                className="swiper-button-next-custom absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                className="swiper-button-next-custom absolute left-0 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-lg transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 aria-label="Next slide"
               >
                 <ChevronLeftIcon />

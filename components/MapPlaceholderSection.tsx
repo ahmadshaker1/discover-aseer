@@ -19,7 +19,7 @@ const MapPlaceholderSection = ({
   dir = "rtl",
 }: MapPlaceholderSectionProps) => {
   return (
-    <section className="w-full bg-white py-12" dir={dir}>
+    <section className="w-full bg-background py-12 text-foreground" dir={dir}>
       <div className="mx-auto w-full max-w-[1437px] px-4 sm:px-6">
         <div className="relative h-[468.7745056152344px] w-full max-w-[1437px] shrink-0 overflow-hidden self-center">
           <img src={PLACEHOLDER_SRC} alt={imageAlt} className="h-full w-full object-cover object-center" />

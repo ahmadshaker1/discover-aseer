@@ -23,7 +23,7 @@ const ExperienceCardActions = ({
     >
       <Link
         href={`/experiences/${encodeURIComponent(String(experienceId))}`}
-        className="flex items-center gap-1 text-sm text-black transition-colors hover:text-gray-700"
+        className="flex items-center gap-1 text-sm text-foreground transition-colors hover:text-muted-foreground"
       >
         <span>{t("more")}</span>
         <span className={isRtl ? "" : "inline-flex rotate-180"}>
@@ -34,7 +34,7 @@ const ExperienceCardActions = ({
         href={bookUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative flex items-center justify-center overflow-hidden hover:bg-[#7300CD] w-40 px-8 py-3 bg-[#CD8CFF3D] text-[#7300CD] hover:text-white rounded-full font-medium transition-[background-color,color] duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        className="group relative flex w-40 items-center justify-center overflow-hidden rounded-full bg-primary/20 px-8 py-3 font-medium text-primary transition-[background-color,color] duration-300 ease-in-out hover:bg-primary hover:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       >
         <div className="flex items-center gap-2 transition-transform duration-300 ease-in-out translate-x-4 group-hover:translate-x-0 rtl:-translate-x-4 rtl:group-hover:translate-x-0">
           <span className="whitespace-nowrap">{t("bookNow")}</span>

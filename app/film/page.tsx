@@ -24,7 +24,7 @@ const FilmPage = async () => {
   ]);
 
   return (
-    <div className="flex w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <section className="mx-auto h-[809px] w-full max-w-[1440px] overflow-hidden" dir={isRtl ? "rtl" : "ltr"}>
         <img
           src="/assets/film/film-hero.png"
@@ -34,7 +34,7 @@ const FilmPage = async () => {
       </section>
 
       <section
-        className="mx-auto h-auto w-full max-w-[1442px] bg-white px-4 py-[60px] sm:px-8 md:px-[62px]"
+        className="mx-auto h-auto w-full max-w-[1442px] bg-background px-4 py-[60px] sm:px-8 md:px-[62px]"
         dir={isRtl ? "rtl" : "ltr"}
       >
         <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
@@ -61,7 +61,7 @@ const FilmPage = async () => {
 
           <div className={`flex h-auto w-full max-w-[350px] flex-col gap-8 ${isRtl ? "text-right" : "text-left"} lg:h-[265px]`}>
             <h2
-              className="text-[44px] font-bold leading-[38px] text-black"
+              className="text-[44px] font-bold leading-[38px] text-foreground"
               style={{ fontFamily: ara }}
             >
               {isRtl
@@ -69,7 +69,7 @@ const FilmPage = async () => {
                 : "Start a cinematic journey rich in diversity and unique beauty."}
             </h2>
             <p
-              className="text-[15px] font-light leading-[119%] text-[#252525]"
+              className="text-[15px] font-light leading-[119%] text-muted-foreground"
               style={{ fontFamily: ibm }}
             >
               {isRtl

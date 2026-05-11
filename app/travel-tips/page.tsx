@@ -151,7 +151,7 @@ const TravelTipsPage = async () => {
         backgroundImage="/assets/experiences/experiences.png"
       />
 
-      <section className="bg-[#f6f6f6]">
+      <section className="bg-background text-foreground">
         <TravelTipsFaq items={faqItems} />
         <TravelTipsEmergencySection contacts={emergency} />
       </section>

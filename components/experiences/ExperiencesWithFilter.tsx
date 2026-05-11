@@ -84,7 +84,7 @@ export default function ExperiencesWithFilter({
           ))}
         </div>
         {filteredExperiences.length === 0 && (
-          <p className="py-12 text-center text-gray-500">
+          <p className="py-12 text-center text-muted-foreground">
             {tCommon("noExperiencesFilter")}
           </p>
         )}

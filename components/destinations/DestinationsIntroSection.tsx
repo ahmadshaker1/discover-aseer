@@ -64,7 +64,7 @@ const DestinationsIntroSection = ({
           } ${centerContent ? "mx-auto items-center text-center" : "text-right"}`}
         >
           <h2
-            className={`w-full text-[44px] font-bold leading-[180%] text-black ${
+            className={`w-full text-[44px] font-bold leading-[180%] text-foreground ${
               centerContent ? "text-center" : "text-right"
             }`}
             style={{ fontFamily: ara }}
@@ -74,12 +74,12 @@ const DestinationsIntroSection = ({
 
           <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]" dir="rtl">
             <span
-              className="shrink-0 text-[18px] font-bold leading-[180%] text-black"
+              className="shrink-0 text-[18px] font-bold leading-[180%] text-foreground"
               style={{ fontFamily: ara }}
             >
               {t("share")}
             </span>
-            <div className="flex items-center gap-2 text-black/70" dir="ltr">
+            <div className="flex items-center gap-2 text-foreground/70" dir="ltr">
               <a href="#" aria-label="WhatsApp" className="hover:opacity-80">
                 <WhatsAppIcon />
               </a>
@@ -99,7 +99,7 @@ const DestinationsIntroSection = ({
           </div>
 
           <div
-            className={`w-full text-[15px] font-light leading-[130%] text-[#252525] ${
+            className={`w-full text-[15px] font-light leading-[130%] text-muted-foreground ${
               centerContent ? "text-center" : "text-right"
             }`}
             style={{ fontFamily: ibm }}

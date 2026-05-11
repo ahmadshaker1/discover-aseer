@@ -146,14 +146,14 @@ const PageBanner = ({
           {primaryCta ? (
             <Link
               href={primaryCta.href}
-              className="mt-2 inline-flex h-[42px] w-[185px] shrink-0 flex-row items-center justify-between gap-[10px] rounded-[100px] bg-[#280048] px-[10px] py-[10px] text-white transition-opacity hover:opacity-90"
+              className="mt-2 inline-flex h-[42px] min-w-[185px] shrink-0 flex-row items-center justify-between gap-[10px] rounded-[100px] bg-[#280048] px-4 py-[10px] text-white transition-opacity hover:opacity-90"
               dir="ltr"
               style={{ boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)" }}
             >
               <span className={isRtl ? "" : "rotate-180"}><BrowseCtaArrowIcon /></span>
               <span
                 dir="rtl"
-                className="min-w-0 flex-1 text-right text-[17px] font-bold leading-[100%]"
+                className="min-w-0 flex-1 whitespace-nowrap text-right text-[17px] font-bold leading-[100%]"
                 style={{ fontFamily: ara }}
               >
                 {primaryCta.label || t("pageBanner.browseMore")}

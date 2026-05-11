@@ -6,6 +6,8 @@ import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { getThemeInitScript } from "@/lib/theme/runtime";
 
 const araHamah1964 = localFont({
   src: "../public/fonts/Ara Hamah 1964 B Bold.ttf",
@@ -47,14 +49,21 @@ async function RootLayoutContent({ children }: { children: React.ReactNode }) {
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir}>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <body
-        className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
+        className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} bg-background text-foreground antialiased transition-colors duration-300`}
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: getThemeInitScript(),
+          }}
+        />
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Navbar />
-          {children}
-          <Footer />
+          <ThemeProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>

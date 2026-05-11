@@ -20,7 +20,7 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
   if (!destination) notFound();
 
   return (
-    <div className="flex w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <DestinationsHero
         breadcrumbs={[
           { label: destination.title },

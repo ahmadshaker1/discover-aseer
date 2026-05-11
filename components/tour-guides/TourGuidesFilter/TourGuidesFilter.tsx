@@ -55,14 +55,14 @@ const TourGuidesFilter = ({
   };
 
   return (
-    <div className="w-full lg:max-w-xs bg-white p-4 sm:p-6 rounded-lg shadow-sm" dir={isRtl ? "rtl" : "ltr"}>
+    <div className="w-full rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-xs" dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
-        <h2 className="text-lg sm:text-xl font-bold text-black">
+        <h2 className="text-lg font-bold text-foreground sm:text-xl">
           {isRtl ? "تصفية المرشدون" : "Filter guides"}
         </h2>
         <Button
           onClick={onReset}
-          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-focus:outline-none data-focus:ring-2 data-focus:ring-gray-500 data-focus:ring-offset-2 self-start sm:self-auto"
+          className="self-start whitespace-nowrap rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:self-auto"
         >
           {isRtl ? "إعادة تعيين النتائج" : "Reset filters"}
         </Button>
@@ -73,7 +73,7 @@ const TourGuidesFilter = ({
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center gap-2 mb-4">
             <HeartIcon />
-            <h3 className="text-base sm:text-lg font-bold text-black">
+            <h3 className="text-base font-bold text-foreground sm:text-lg">
               {isRtl ? "التخصصات" : "Specializations"}
             </h3>
           </div>
@@ -86,11 +86,11 @@ const TourGuidesFilter = ({
                   className="flex items-center justify-between p-2 rounded transition-colors"
                 >
                   <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
-                    <span className="text-sm text-black">{localizeTourGuideFilterLabel(item.label, locale)}</span>
+                    <span className="text-sm text-foreground">{localizeTourGuideFilterLabel(item.label, locale)}</span>
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleSpecializationToggle(item.id)}
-                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-checked:border-black data-checked:bg-black data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2"
+                      className="group relative inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded border-2 border-border bg-surface transition data-checked:border-primary data-checked:bg-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
                     >
                       <svg
                         className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
@@ -106,7 +106,7 @@ const TourGuidesFilter = ({
                       </svg>
                     </Checkbox>
                   </div>
-                  <span className="text-sm text-gray-600 font-medium">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {item.count}
                   </span>
                 </div>
@@ -120,7 +120,7 @@ const TourGuidesFilter = ({
       {gender.length > 0 && (
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <h3 className="text-base sm:text-lg font-bold text-black">
+            <h3 className="text-base font-bold text-foreground sm:text-lg">
               {isRtl ? "الجنس" : "Gender"}
             </h3>
           </div>
@@ -133,11 +133,11 @@ const TourGuidesFilter = ({
                   className="flex items-center justify-between p-2 rounded transition-colors"
                 >
                   <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
-                    <span className="text-sm text-black">{localizeTourGuideFilterLabel(item.label, locale)}</span>
+                    <span className="text-sm text-foreground">{localizeTourGuideFilterLabel(item.label, locale)}</span>
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleGenderToggle(item.id)}
-                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-checked:border-black data-checked:bg-black data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2"
+                      className="group relative inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded border-2 border-border bg-surface transition data-checked:border-primary data-checked:bg-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
                     >
                       <svg
                         className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
@@ -153,7 +153,7 @@ const TourGuidesFilter = ({
                       </svg>
                     </Checkbox>
                   </div>
-                  <span className="text-sm text-gray-600 font-medium">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {item.count}
                   </span>
                 </div>
@@ -167,7 +167,7 @@ const TourGuidesFilter = ({
       <div>
         <div className="flex items-center gap-2 mb-4">
           <WalletIcon />
-          <h3 className="text-base sm:text-lg font-bold text-black">
+          <h3 className="text-base font-bold text-foreground sm:text-lg">
             {isRtl ? "النقل" : "Transportation"}
           </h3>
         </div>
@@ -179,10 +179,10 @@ const TourGuidesFilter = ({
                 key={option.id}
                 onClick={() => handleTransportationSelect(option.id)}
                 disabled={option.count === 0}
-                className={`cursor-pointer px-3 py-2 rounded-lg border-2 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed data-focus:outline-none data-focus:ring-2 data-focus:ring-black data-focus:ring-offset-2 ${
+                className={`cursor-pointer rounded-lg border-2 px-3 py-2 text-sm font-medium transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
                   isSelected
-                    ? "border-black bg-gray-50 text-black"
-                    : "border-gray-200 hover:border-gray-300 text-black"
+                    ? "border-primary bg-muted text-foreground"
+                    : "border-border text-foreground hover:border-muted-foreground"
                 }`}
               >
                 {isRtl
@@ -190,7 +190,7 @@ const TourGuidesFilter = ({
                   : option.id === "yes"
                     ? "Available"
                     : "Not available"}
-                <span className="text-gray-500 mr-1">({option.count})</span>
+                <span className="mr-1 text-muted-foreground">({option.count})</span>
               </Button>
             );
           })}

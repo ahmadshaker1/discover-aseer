@@ -12,7 +12,7 @@ const LocalizedDestinationsBrowsePage = async () => {
   const destinations = await fetchDestinationsWithFallback(locale);
 
   return (
-    <div className="flex w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <PageBanner
         breadcrumbs={[
           { label: tCommon("destinations") },

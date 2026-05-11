@@ -161,18 +161,18 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
   const activeDay = schedule.days[activeDayIndex];
 
   return (
-    <div className="mt-16 w-full max-w-5xl mx-auto" dir="rtl">
+    <div className="mx-auto mt-16 w-full max-w-5xl text-foreground" dir="rtl">
       {/* 1. العنوان وأزرار المشاركة والطباعة */}
       <div className="flex flex-col-reverse sm:flex-row justify-between items-center mb-10 gap-4">
-        <h2 className="text-[32px] sm:text-[40px] font-bold text-black">
+        <h2 className="text-[32px] font-bold text-foreground sm:text-[40px]">
           خطتك {schedule.planDetails?.title || "خطتك"}
         </h2>
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full font-bold text-gray-700 hover:bg-gray-50 transition">
+          <button className="flex items-center gap-2 rounded-full border border-border px-6 py-2 font-bold text-muted-foreground transition hover:bg-muted">
             <ShareIcon />
             مشاركة
           </button>
-          <button className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-full font-bold text-gray-700 hover:bg-gray-50 transition">
+          <button className="flex items-center gap-2 rounded-full border border-border px-6 py-2 font-bold text-muted-foreground transition hover:bg-muted">
             <PrintIcon />
             طباعة
           </button>
@@ -191,19 +191,19 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
             <button
               key={idx}
               onClick={() => setActiveDayIndex(idx)}
-              className={`flex-shrink-0 flex flex-col items-center justify-center w-[100px] h-[100px] rounded-[2rem] border-2 transition-all ${
+              className={`flex h-[100px] w-[100px] shrink-0 flex-col items-center justify-center rounded-4xl border-2 transition-all ${
                 isActive
                   ? "border-[#7300CD] bg-[#F3EFFF]"
-                  : "border-[#E4E4E4] bg-white hover:border-gray-300"
+                  : "border-border bg-surface hover:border-muted-foreground"
               }`}
             >
               <span
-                className={`text-[16px] font-bold mb-1 ${isActive ? "text-[#7300CD]" : "text-black"}`}
+                className={`mb-1 text-[16px] font-bold ${isActive ? "text-primary" : "text-foreground"}`}
               >
                 {day.dayLabel.replace("اليوم ", "اليوم\n")}
               </span>
               <span
-                className={`text-[12px] ${isActive ? "text-[#7300CD]" : "text-gray-500"}`}
+                className={`text-[12px] ${isActive ? "text-primary" : "text-muted-foreground"}`}
               >
                 {day.date}
               </span>
@@ -214,27 +214,27 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
 
       {/* 3. التايم لاين لليوم المحدد */}
       <div>
-        <h3 className="text-[20px] font-bold text-black mb-8 text-right">
+        <h3 className="mb-8 text-right text-[20px] font-bold text-foreground">
           {activeDay.dayLabel}
         </h3>
 
         <div className="relative">
           {/* الخط المنقط العمودي */}
-          <div className="absolute right-[19px] top-8 bottom-0 w-0 border-r-[2px] border-dashed border-gray-300 z-0"></div>
+          <div className="absolute bottom-0 right-[19px] top-8 z-0 w-0 border-r-2 border-dashed border-border"></div>
 
           {activeDay.activities.map((activity, index) => (
             <div key={index} className="relative z-10 mb-2" dir="rtl">
               {/* الرأس: الأيقونة + النوع والوقت */}
               <div className="flex justify-start items-start gap-4 mb-4 mr-[10px]">
                 {/* الأيقونة بخلفية بيضاء لقطع الخط المنقط */}
-                <div className="bg-white py-2 z-10 text-[#7300CD]">
+                <div className="z-10 bg-surface py-2 text-primary">
                   <ActivityTypeIcon />
                 </div>
                 <div className="text-right pt-1">
-                  <p className="text-[#7300CD] font-bold text-[14px] mb-1">
+                  <p className="mb-1 text-[14px] font-bold text-primary">
                     {activity.type}
                   </p>
-                  <p className="text-black font-bold text-[18px]">
+                  <p className="text-[18px] font-bold text-foreground">
                     {activity.time}
                   </p>
                 </div>
@@ -242,30 +242,30 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
 
               {/* بطاقة الفعالية */}
               <div
-                className="mr-14 bg-white border border-[#E4E4E4] rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col-reverse sm:flex-row justify-between items-center gap-6 transition-transform hover:-translate-y-1"
+                className="mr-14 flex flex-col-reverse items-center justify-between gap-6 rounded-3xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 sm:flex-row"
                 dir="rtl"
               >
                 {/* تفاصيل الفعالية (يمين) */}
                 <div className="text-right w-full sm:w-auto ">
-                  <h4 className="text-[22px] font-bold text-black mb-3">
+                  <h4 className="mb-3 text-[22px] font-bold text-foreground">
                     {activity.title}
                   </h4>
 
                   <div className="flex flex-col gap-2">
                     {/* التقييم */}
-                    <div className="flex items-center justify-start gap-2 text-[14px] text-gray-600">
+                    <div className="flex items-center justify-start gap-2 text-[14px] text-muted-foreground">
                       <StarIcon />
                       <span>
                         ({activity.reviewsCount}) {activity.rating}
                       </span>
                     </div>
                     {/* الموقع */}
-                    <div className="flex items-center justify-start gap-2 text-[14px] text-gray-500">
+                    <div className="flex items-center justify-start gap-2 text-[14px] text-muted-foreground">
                       <PinIcon />
                       <span>{activity.locationText}</span>
                     </div>
                     {/* التصنيف والسعر */}
-                    <div className="flex items-center justify-start gap-4 text-[14px] font-bold text-black mt-1">
+                    <div className="mt-1 flex items-center justify-start gap-4 text-[14px] font-bold text-foreground">
                       <div className="flex items-center gap-1.5">
                         <span>{activity.priceRange}</span>
                         <BillIcon />
@@ -282,7 +282,7 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
                   href={activity.googleMapsUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 border border-[#EFE6F7] text-[#7300CD] px-6 py-2.5 rounded-full font-bold hover:bg-[#EFE6F7] transition-colors"
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-primary/25 px-6 py-2.5 font-bold text-primary transition-colors hover:bg-primary/10 sm:w-auto"
                 >
                   <DirectionIcon />
                   الاتجاهات
@@ -291,12 +291,12 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
 
               {/* التنقل للفعالية التالية (يظهر فقط إذا كان هناك travelToNext) */}
               {activity.travelToNext && (
-                <div className="flex items-center justify-start gap-4 mt-4 mr-[10px] h-[80px] bg-[#FFFFFF]">
-                  <div className="text-right text-[13px] text-gray-500 leading-relaxed pt-2">
+                <div className="mr-[10px] mt-4 flex h-[80px] items-center justify-start gap-4 bg-surface">
+                  <div className="pt-2 text-right text-[13px] leading-relaxed text-muted-foreground">
                     <p>{activity.travelToNext.duration}</p>
                     <p>{activity.travelToNext.distance}</p>
                   </div>
-                  <div className="bg-white py-4 z-10 text-gray-400">
+                  <div className="z-10 bg-surface py-4 text-muted-foreground">
                     <CarIcon />
                   </div>
                 </div>

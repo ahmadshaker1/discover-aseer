@@ -7,6 +7,7 @@ import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import AseerLogo from "../Logo/AseerLogo";
 import { HamburgerIcon } from "./Icons";
 import { navigationLinks, discoverAseerLinks, iconButtons } from "./navbarData";
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const { toggleTheme } = useTheme();
 
   const switchLocale = () => {
     const nextLocale = locale === "ar" ? "en" : "ar";
@@ -138,7 +140,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                               document.body.removeChild(downloadLink);
                               onClose();
                             }}
-                            className="w-12 h-12 rounded-full border border-white/80 flex items-center justify-center hover:bg-white/10 transition-colors"
+                            className="flex h-12 w-12 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
                             aria-label={t("nav.downloadGuide")}
                           >
                             <Icon />
@@ -149,12 +151,20 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                         <Link
                           key={index}
                           href={item.href}
-                          onClick={index === 0 ? (e) => {
-                            e.preventDefault();
-                            switchLocale();
-                          } : onClose}
-                          className="w-12 h-12 rounded-full border border-white/80 flex items-center justify-center hover:bg-white/10 transition-colors"
-                          aria-label={index === 0 ? t("nav.languageSwitchLabel") : undefined}
+                          onClick={index === 0
+                            ? (e) => {
+                              e.preventDefault();
+                              switchLocale();
+                            }
+                            : index === 1
+                              ? (e) => {
+                                e.preventDefault();
+                                toggleTheme();
+                                onClose();
+                              }
+                              : onClose}
+                          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
+                          aria-label={index === 0 ? t("nav.languageSwitchLabel") : index === 1 ? "Toggle theme" : undefined}
                         >
                           <Icon />
                         </Link>

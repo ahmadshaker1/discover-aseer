@@ -78,7 +78,7 @@ const AseerCommunityPage = async () => {
   return (
     <div className="flex w-full flex-col">
       <CommunityHero data={communityPageData.hero} />
-      <section className="bg-[#f6f6f6]">
+      <section className="bg-background text-foreground">
         <CommunityMainSlider content={communityPageData.slider} />
       </section>
     </div>

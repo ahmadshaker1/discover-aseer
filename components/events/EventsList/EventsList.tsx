@@ -124,26 +124,26 @@ const EventsList = () => {
   }, [isOpen]);
 
   return (
-    <div className="relative -mt-24 mx-auto w-full max-w-[66.666667%] z-20">
-      <div className="bg-white rounded-3xl shadow-lg p-8 min-h-[75vh]">
+    <div className="relative z-20 mx-auto -mt-24 w-full max-w-[66.666667%]">
+      <div className="min-h-[75vh] rounded-3xl bg-surface p-8 text-foreground shadow-lg">
         {/* Header Section with Date Picker */}
         <div className="flex justify-center mb-8">
           <div className="relative" ref={popoverRef}>
             <Button
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             >
-              <CalendarIcon className="text-gray-700" />
-              <span className="text-base font-medium text-gray-700">
+              <CalendarIcon className="text-muted-foreground" />
+              <span className="text-base font-medium text-foreground">
                 {getDisplayText()}
               </span>
             </Button>
 
             {isOpen && (
-              <div className="absolute right-0 mt-2 z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-6 w-96">
+              <div className="absolute right-0 z-50 mt-2 w-96 rounded-lg border border-border bg-surface p-6 shadow-xl">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <label className="mb-2 block text-right text-sm font-medium text-foreground">
                       تاريخ الوصول
                     </label>
                     <input
@@ -151,11 +151,11 @@ const EventsList = () => {
                       value={arrivalDate}
                       onChange={handleArrivalDateChange}
                       min={today}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <label className="mb-2 block text-right text-sm font-medium text-foreground">
                       تاريخ المغادرة
                     </label>
                     <input
@@ -163,7 +163,7 @@ const EventsList = () => {
                       value={departureDate}
                       onChange={handleDepartureDateChange}
                       min={arrivalDate || today}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
                   {dateError && (

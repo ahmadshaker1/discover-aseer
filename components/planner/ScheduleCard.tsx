@@ -71,10 +71,10 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
+    <div className="mb-6 overflow-hidden rounded-2xl bg-surface text-foreground shadow-lg">
       <div className="flex flex-row-reverse">
         {/* Image Section */}
-        <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex-shrink-0">
+        <div className="relative h-48 w-48 shrink-0 sm:h-56 sm:w-56">
           <img
             src={activity.imageUrl || "/assets/experiences/experiences.png"}
             alt={activity.name}
@@ -92,17 +92,17 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
         {/* Content Section */}
         <div className="flex-1 flex flex-col justify-between p-4 sm:p-6">
           <div className="flex-1">
-            <h3 className="text-xl sm:text-2xl font-bold text-right mb-2 text-black">
+            <h3 className="mb-2 text-right text-xl font-bold text-foreground sm:text-2xl">
               {activity.name}
             </h3>
 
             {/* Rating */}
             <div className="flex items-center gap-1 text-right mb-2">
               <span className="text-yellow-400">★</span>
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-foreground">
                 {activity.rating.score.toFixed(1)}/5
               </span>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted-foreground">
                 ({activity.rating.totalReviews})
               </span>
             </div>
@@ -110,7 +110,7 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
             {/* Location */}
             <div className="flex items-center gap-2 text-right mb-2">
               <LocationIcon />
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-foreground">
                 {activity.location.distanceKm} كم، {activity.location.city}
               </span>
             </div>
@@ -122,14 +122,14 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
                 height="16"
                 viewBox="0 0 24 24"
                 fill="none"
-                className="text-gray-500"
+                className="text-muted-foreground"
               >
                 <path
                   d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
-                  fill="#9B9B9C"
+                  fill="currentColor"
                 />
               </svg>
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-foreground">
                 {activity.pricing.audience} • {formatPrice()}
               </span>
             </div>
@@ -140,7 +140,7 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
         <div className="flex items-center p-4">
           <button
             onClick={handleDirections}
-            className="bg-[#6027D2] hover:bg-[#5020B8] text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:opacity-90"
           >
             <svg
               width="16"

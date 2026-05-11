@@ -13,7 +13,7 @@ const EventsListingGrid = ({ events }: EventsListingGridProps) => {
   const isRtl = locale === "ar";
   if (events.length === 0) {
     return (
-      <div className={`mx-auto w-full max-w-[1009px] py-12 text-gray-600 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
+      <div className={`mx-auto w-full max-w-[1009px] py-12 text-muted-foreground ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
         {isRtl ? "لا توجد فعاليات مطابقة للتصفية." : "No events match your filters."}
       </div>
     );

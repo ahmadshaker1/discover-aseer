@@ -29,7 +29,7 @@ const AccommodationCard = ({
 
   return (
     <article
-      className={`overflow-hidden rounded-[16px] border border-[#D9D9D9] bg-white shadow-sm ${widthClass}`}
+      className={`overflow-hidden rounded-[16px] border border-border bg-surface text-foreground shadow-sm ${widthClass}`}
       dir="rtl"
       lang="ar"
     >
@@ -53,7 +53,7 @@ const AccommodationCard = ({
       <div className="space-y-2 p-4">
         <h3
           dir="rtl"
-          className="w-full min-w-0 text-right text-[28px] font-bold leading-tight text-black [unicode-bidi:plaintext]"
+          className="w-full min-w-0 text-right text-[28px] font-bold leading-tight text-foreground [unicode-bidi:plaintext]"
         >
           {accommodation.name}
           {showBadge ? (
@@ -68,7 +68,7 @@ const AccommodationCard = ({
         </h3>
         <p
           dir="rtl"
-          className="line-clamp-3 text-right text-[14px] leading-6 text-[#777] [unicode-bidi:plaintext]"
+          className="line-clamp-3 text-right text-[14px] leading-6 text-muted-foreground [unicode-bidi:plaintext]"
         >
           {accommodation.description}
         </p>
@@ -77,7 +77,7 @@ const AccommodationCard = ({
           target="_blank"
           rel="noopener noreferrer"
           dir="rtl"
-          className="mt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-[#E9D9F2] px-4 py-2.5 text-[16px] font-bold text-[#6C2BD9] transition-colors hover:bg-[#dfc5ee]"
+          className="mt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-primary/15 px-4 py-2.5 text-[16px] font-bold text-primary transition-colors hover:bg-primary/25"
         >
           <span className="text-right">{t("location")}</span>
           <img src={LOCATION_PIN} alt="" width={15} height={15} className="shrink-0" />

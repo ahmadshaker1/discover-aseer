@@ -12,7 +12,7 @@ const ServicesSupportGrid = ({ services }: ServicesSupportGridProps) => {
   if (services.length === 0) {
     return (
       <div
-        className="flex min-h-[240px] items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-center text-gray-600"
+        className="flex min-h-[240px] items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-center text-muted-foreground"
         dir={isRtl ? "rtl" : "ltr"}
       >
         {isRtl

@@ -8,7 +8,7 @@ interface RecipeCardProps {
 
 export const RecipeCard = ({ recipe }: RecipeCardProps) => {
   return (
-    <div className="min-w-[240px] sm:min-w-[260px] md:min-w-[320px] bg-white rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden flex-shrink-0 cursor-pointer hover:shadow-xl transition-shadow">
+    <div className="min-w-[240px] shrink-0 cursor-pointer overflow-hidden rounded-2xl bg-surface text-foreground shadow-lg transition-shadow hover:shadow-xl sm:min-w-[260px] sm:rounded-3xl md:min-w-[320px]">
       <RecipeCardImage
         image={recipe.image}
         alt={recipe.title}

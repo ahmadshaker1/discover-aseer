@@ -50,19 +50,19 @@ const LandingWelcomeSection = ({
 
   return (
     <section
-      className="mx-auto w-full max-w-[1440px] bg-white px-4 py-12 md:px-[130px] md:py-[86px]"
+      className="mx-auto w-full max-w-[1440px] bg-background px-4 py-12 text-foreground md:px-[130px] md:py-[86px]"
       dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="mx-auto flex w-full max-w-[1180px] flex-col items-center gap-12 md:gap-[48px]">
         <div className="flex w-full flex-col items-center gap-[50px]">
           <h2
-            className="w-full max-w-[258px] text-center text-[clamp(40px,5vw,64px)] font-bold leading-[119%] text-black"
+            className="w-full max-w-[258px] text-center text-[clamp(40px,5vw,64px)] font-bold leading-[119%] text-foreground"
             style={{ fontFamily: ara }}
           >
             {resolvedTitle}
           </h2>
           <p
-            className="w-full max-w-[744px] text-center text-[clamp(18px,2vw,24px)] font-bold leading-[119%] text-[#252525]/80"
+            className="w-full max-w-[744px] text-center text-[clamp(18px,2vw,24px)] font-bold leading-[119%] text-muted-foreground"
             style={{ fontFamily: ara }}
           >
             {resolvedDescription}
@@ -74,7 +74,7 @@ const LandingWelcomeSection = ({
             <Link
               key={card.href}
               href={card.href}
-              className="group relative block h-[266px] w-full max-w-[382.67px] overflow-hidden rounded-lg outline-none transition-transform duration-300 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[#6027D2] focus-visible:ring-offset-2 sm:max-w-none"
+              className="group relative block h-[266px] w-full max-w-[382.67px] overflow-hidden rounded-lg outline-none transition-transform duration-300 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:max-w-none"
               style={{ borderRadius: 8 }}
             >
               <Image

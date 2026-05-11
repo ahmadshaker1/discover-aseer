@@ -70,13 +70,13 @@ export default function LandingStoriesFromAseerSection({
 
   return (
     <section
-      className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 bg-white px-4 py-10 md:px-[120px] md:pb-14 md:pt-10"
+      className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 bg-background px-4 py-10 text-foreground md:px-[120px] md:pb-14 md:pt-10"
       dir={isRtl ? "rtl" : "ltr"}
     >
       <div className={`mx-auto flex w-full max-w-[1200px] min-h-[94px] flex-col ${isRtl ? "items-end" : "items-start"} justify-center`}>
-        <div className="flex w-full max-w-[319px] flex-col gap-[10px] border-b border-[#E4E4E4] pb-[10px] pt-[7px]">
+        <div className="flex w-full max-w-[319px] flex-col gap-[10px] border-b border-border pb-[10px] pt-[7px]">
           <h2
-            className={`${isRtl ? "text-right" : "text-left"} text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-black`}
+            className={`${isRtl ? "text-right" : "text-left"} text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-foreground`}
             style={{ fontFamily: ara }}
           >
             {resolvedTitle}
@@ -126,7 +126,7 @@ export default function LandingStoriesFromAseerSection({
             </div>
 
             <p
-              className="min-h-[27px] w-full text-center text-[18px] font-bold leading-[27px] text-black"
+              className="min-h-[27px] w-full text-center text-[18px] font-bold leading-[27px] text-foreground"
               style={{ fontFamily: ara }}
             >
               {story.description}

@@ -525,7 +525,7 @@ const AseerCuisinePage = async () => {
   };
 
   return (
-    <div className="flex w-full flex-col bg-[#f6f6f6]">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <AseerCuisineHero data={mergedData.hero} />
       <AseerCuisineDishesSection data={mergedData.dishesSection} />
       <AseerCuisineRestaurantsSection data={mergedData.restaurantsSection} />

@@ -27,14 +27,14 @@ const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => 
       <div className={`mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:h-[441px] lg:items-start ${isRtl ? "lg:flex-row" : "lg:flex-row-reverse"}`}>
         <div className={`flex h-full w-full max-w-[704px] flex-col gap-6 ${isRtl ? "text-right" : "text-left"}`}>
           <h2
-            className={`w-full text-[44px] font-bold leading-[180%] text-black ${isRtl ? "text-right" : "text-left"}`}
+            className={`w-full text-[44px] font-bold leading-[180%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
             style={{ fontFamily: ara }}
           >
             {t("introTitle")}
           </h2>
 
           <div className={`flex h-8 w-full max-w-[218px] items-center gap-[15px] ${isRtl ? "justify-start flex-row-reverse" : "justify-start flex-row"}`}>
-            <div className={`flex items-center gap-2 text-black/70 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
+            <div className={`flex items-center gap-2 text-foreground/70 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
               <a href="#" aria-label="Instagram" className="cursor-pointer hover:opacity-80">
                 <InstagramIcon />
               </a>
@@ -52,14 +52,14 @@ const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => 
               </a>
             </div>
             <span
-              className={`text-[18px] font-bold leading-[180%] text-black ${isRtl ? "text-right" : "text-left"}`}
+              className={`text-[18px] font-bold leading-[180%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
               style={{ fontFamily: ara }}
             >
               {tCommon("share")}
             </span>
           </div>
 
-          <div className={`w-full text-[15px] font-light leading-[119%] text-[#252525] ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ibm }}>
+          <div className={`w-full text-[15px] font-light leading-[119%] text-muted-foreground ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ibm }}>
             <p>{t("innerIntroP1")}</p>
             <p className="mt-4">{t("innerIntroP2")}</p>
             <p className="mt-4">{t("innerIntroP3")}</p>

@@ -18,13 +18,13 @@ const AccommodationHotelsGrid = ({
 
   return (
     <section
-      className={`min-w-0 ${showTopDivider ? "border-t border-gray-200 pt-10 lg:pt-12" : ""}`}
+      className={`min-w-0 ${showTopDivider ? "border-t border-border pt-10 lg:pt-12" : ""}`}
       dir="rtl"
       lang="ar"
     >
       <h2
         dir="rtl"
-        className="mb-4 text-right text-xl font-bold text-black sm:text-2xl [unicode-bidi:isolate]"
+        className="mb-4 text-right text-xl font-bold text-foreground sm:text-2xl [unicode-bidi:isolate]"
       >
         {t("hotels")}
       </h2>

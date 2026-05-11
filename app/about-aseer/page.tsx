@@ -94,7 +94,7 @@ const AboutAseerPage = async () => {
   return (
     <div className="flex w-full flex-col">
       <AboutAseerHero data={aboutPageData.hero} />
-      <section className="bg-[#f6f6f6]">
+      <section className="bg-background text-foreground">
         <AboutAseerStorySection content={aboutPageData.story} />
       </section>
     </div>

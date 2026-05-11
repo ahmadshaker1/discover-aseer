@@ -112,11 +112,11 @@ const AttractionsLandmarksSection = ({
   }, [city, interest, landmarks, price, traveler]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-white py-12" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="relative w-full overflow-hidden bg-background py-12 text-foreground" dir={isRtl ? "rtl" : "ltr"}>
       {decorationImageSrc ? (
         <div
           aria-hidden
-          className={`pointer-events-none absolute top-1/2 z-1 h-[457px] w-[773px] -translate-y-1/2 bg-[#7300CD] opacity-40 ${isRtl ? "right-0" : "left-0"}`}
+          className={`pointer-events-none absolute top-1/2 z-1 h-[457px] w-[773px] -translate-y-1/2 bg-primary opacity-40 ${isRtl ? "right-0" : "left-0"}`}
           style={{
             WebkitMaskImage: `url(${decorationImageSrc})`,
             maskImage: `url(${decorationImageSrc})`,
@@ -133,14 +133,14 @@ const AttractionsLandmarksSection = ({
         <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-start justify-between gap-4">
           <div className={`space-y-2 ${isRtl ? "text-right" : "text-left"}`}>
             <h2
-              className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-[#280048] ${isRtl ? "text-right" : "text-left"}`}
+              className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary ${isRtl ? "text-right" : "text-left"}`}
               style={{ fontFamily: ara }}
             >
               {sectionTitle}
             </h2>
             {description ? (
               <p
-                className={`h-[11px] w-[430px] text-[24px] font-bold leading-[119%] text-[#252525]/80 ${isRtl ? "text-right" : "text-left"}`}
+                className={`h-[11px] w-[430px] text-[24px] font-bold leading-[119%] text-muted-foreground ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ara }}
               >
                 {description}
@@ -155,7 +155,7 @@ const AttractionsLandmarksSection = ({
               <select
                 value={city ?? ""}
                 onChange={(e) => setCity(e.target.value || null)}
-                className="h-[48px] w-[190px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
+                className="h-[48px] w-[190px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
               >
                 <option value="">{t("city")}</option>
                 {cityOptions.map((opt) => (
@@ -167,7 +167,7 @@ const AttractionsLandmarksSection = ({
               <select
                 value={interest ?? ""}
                 onChange={(e) => setInterest(e.target.value || null)}
-                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
+                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
               >
                 <option value="">{t("interests")}</option>
                 {interestOpts.map((opt) => (
@@ -179,7 +179,7 @@ const AttractionsLandmarksSection = ({
               <select
                 value={traveler ?? ""}
                 onChange={(e) => setTraveler(e.target.value || null)}
-                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
+                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
               >
                 <option value="">{t("travelers")}</option>
                 {travelerOpts.map((opt) => (
@@ -191,7 +191,7 @@ const AttractionsLandmarksSection = ({
               <select
                 value={price ?? ""}
                 onChange={(e) => setPrice((e.target.value as PriceFilterId) || null)}
-                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-4 text-sm text-[#535353]"
+                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
               >
                 <option value="">{t("price")}</option>
                 {priceOpts.map((opt) => (
@@ -208,7 +208,7 @@ const AttractionsLandmarksSection = ({
                   setTraveler(null);
                   setPrice(null);
                 }}
-                className="h-[48px] shrink-0 cursor-pointer rounded-full border border-[#DCDCDC] bg-white px-5 text-sm text-[#535353] hover:bg-gray-50"
+                className="h-[48px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-5 text-sm text-foreground transition-colors hover:bg-muted"
               >
                 {t("resetFilters")}
               </button>
@@ -232,7 +232,7 @@ const AttractionsLandmarksSection = ({
         <div className="mx-auto mt-8 flex w-full max-w-[1320px] justify-center">
           <Link
             href="/attractions"
-            className="inline-flex h-[52px] min-w-[161px] cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-[#6027D2]/30 bg-[#6027D2] px-8 text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90"
+            className="inline-flex h-[52px] min-w-[161px] cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-primary/30 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
             style={{ fontFamily: ara }}
             dir={isRtl ? "ltr" : "rtl"}
           >

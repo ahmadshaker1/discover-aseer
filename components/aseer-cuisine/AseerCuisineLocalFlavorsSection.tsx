@@ -60,18 +60,18 @@ const AseerCuisineLocalFlavorsSection = ({ data }: AseerCuisineLocalFlavorsSecti
   const [leftTall, topLeft, topRight, bottomWide] = data.cards;
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] py-8" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="mx-auto w-full max-w-[1440px] py-8 text-foreground" dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex w-full flex-col gap-8">
         <div className="px-4 sm:px-8 xl:px-[120px]">
           <div className="mx-auto flex h-[116px] w-full max-w-[704px] flex-col items-center gap-3 text-center">
             <h2
-              className="w-full text-center text-[64px] font-bold leading-[119%] text-black"
+              className="w-full text-center text-[64px] font-bold leading-[119%] text-foreground"
               style={{ fontFamily: ara }}
             >
               {data.title}
             </h2>
             <p
-              className="w-full text-center text-[15px] font-light leading-[119%] text-[#252525]/80"
+              className="w-full text-center text-[15px] font-light leading-[119%] text-muted-foreground"
               style={{ fontFamily: ibm }}
             >
               {data.subtitle}

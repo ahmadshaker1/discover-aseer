@@ -44,7 +44,7 @@ const AttractionsInnerPage = async () => {
   const displayLandmarks = landmarks.length > 0 ? landmarks : FALLBACK_LANDMARKS;
 
   return (
-    <div className="flex w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <AttractionsHero
         breadcrumbs={[
           { label: t("breadcrumb") },

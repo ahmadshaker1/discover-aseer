@@ -37,7 +37,7 @@ function ChevronDownIcon() {
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
         d="M7 10L12 15L17 10"
-        stroke="#535353"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -51,12 +51,12 @@ function LocationIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
         d="M12 13.5C13.6569 13.5 15 12.1569 15 10.5C15 8.84315 13.6569 7.5 12 7.5C10.3431 7.5 9 8.84315 9 10.5C9 12.1569 10.3431 13.5 12 13.5Z"
-        stroke="#535353"
+        stroke="currentColor"
         strokeWidth="1.5"
       />
       <path
         d="M19.5 10.5C19.5 16.5 12 21 12 21C12 21 4.5 16.5 4.5 10.5C4.5 6.35786 7.85786 3 12 3C16.1421 3 19.5 6.35786 19.5 10.5Z"
-        stroke="#535353"
+        stroke="currentColor"
         strokeWidth="1.5"
       />
     </svg>
@@ -67,12 +67,12 @@ const CheckboxRow = ({ option, checked, onToggle }: CheckboxRowProps) => {
   return (
     <label className="flex w-full min-w-0 cursor-pointer items-center justify-between gap-2 py-1.5 sm:gap-3">
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-        <span className="inline-flex h-[22px] min-w-[26px] items-center justify-center rounded-[8px] border border-black bg-[#ECEEF2] px-2 py-[2px] text-[12px] font-bold leading-none text-[#2C2E33]">
+        <span className="inline-flex h-[22px] min-w-[26px] items-center justify-center rounded-[8px] border border-border bg-muted px-2 py-[2px] text-[12px] font-bold leading-none text-foreground">
           {option.count}
         </span>
       </div>
       <div
-        className="min-w-0 flex-1 text-right text-[clamp(15px,3.6vw,18px)] font-bold leading-[119%] text-[#1B1D23]"
+        className="min-w-0 flex-1 text-right text-[clamp(15px,3.6vw,18px)] font-bold leading-[119%] text-foreground"
         style={{ fontFamily: ara }}
         dir="rtl"
       >
@@ -83,7 +83,7 @@ const CheckboxRow = ({ option, checked, onToggle }: CheckboxRowProps) => {
           type="checkbox"
           checked={checked}
           onChange={() => onToggle(option.value)}
-          className="peer h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-[#0000001A] bg-[#F3F3F5] shadow-[0px_1px_2px_0px_#0000000D] checked:border-[#6027D2] checked:bg-[#6027D2]"
+          className="peer h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0px_1px_2px_0px_#0000000D] checked:border-primary checked:bg-primary"
         />
         <svg
           className="pointer-events-none absolute left-0 top-0 hidden h-4 w-4 peer-checked:block"
@@ -129,10 +129,10 @@ const ServicesSupportFilterSidebar = ({
     : onToggleType;
 
   return (
-    <aside className="w-full max-w-full rounded-2xl bg-[#FFFFFF] p-4 sm:p-5 lg:max-w-[320px]" dir={isRtl ? "rtl" : "ltr"}>
+    <aside className="w-full max-w-full rounded-2xl bg-surface p-4 text-foreground sm:p-5 lg:max-w-[320px]" dir={isRtl ? "rtl" : "ltr"}>
       <div className="mb-6 flex w-full min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-2">
         <h2
-          className="min-w-0 flex-1 text-right text-[clamp(18px,4vw,24px)] font-bold leading-6 tracking-[-0.31px] text-[#0A0A0A]"
+          className="min-w-0 flex-1 text-right text-[clamp(18px,4vw,24px)] font-bold leading-6 tracking-[-0.31px] text-foreground"
           style={{ fontFamily: "Ara Hamah 1964 B" }}
         >
           {isRtl ? "تصفية الخدمات" : "Filter services"}
@@ -140,7 +140,7 @@ const ServicesSupportFilterSidebar = ({
         <button
           type="button"
           onClick={onReset}
-          className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-t border-[#0000001A] bg-white px-2 text-center text-[clamp(14px,3.5vw,18px)] font-bold leading-5 tracking-[-0.15px] text-[#0A0A0A] hover:opacity-80 sm:min-w-[156px] sm:px-3"
+          className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-2 text-center text-[clamp(14px,3.5vw,18px)] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:min-w-[156px] sm:px-3"
           style={{ fontFamily: ara }}
         >
           {tCommon("resetFilters")}
@@ -148,7 +148,7 @@ const ServicesSupportFilterSidebar = ({
       </div>
 
       <section className="mb-6">
-        <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-[#9B9B9C] px-6 py-3">
+        <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-border px-6 py-3">
           <select
             style={{ fontFamily: "Ara Hamah 1964 B" }}
             aria-label={isRtl ? "اختر وجهتك" : "Choose destination"}
@@ -165,29 +165,29 @@ const ServicesSupportFilterSidebar = ({
           </select>
           <div className="flex h-full min-w-0 items-center justify-between gap-2" dir={isRtl ? "rtl" : "ltr"}>
             <div className="flex min-w-0 flex-1 items-center gap-2">
-              <span className="shrink-0">
+              <span className="shrink-0 text-muted-foreground">
                 <LocationIcon />
               </span>
-              <span className="truncate text-[14px] font-normal leading-5 tracking-[-0.15px] text-[#0A0A0A]">
+              <span className="truncate text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground">
                 {selectedCity ?? (isRtl ? "اختر وجهتك" : "Choose destination")}
               </span>
             </div>
-            <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 7.4L0 1.4L1.4 0L6 4.6L10.6 0L12 1.4L6 7.4Z" fill="#1D1B20" />
+            <svg className="text-foreground" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 7.4L0 1.4L1.4 0L6 4.6L10.6 0L12 1.4L6 7.4Z" fill="currentColor" />
             </svg>
 
           </div>
         </div>
       </section>
-      <div className="my-5 h-px w-full bg-[#D5D5D8]" />
+      <div className="my-5 h-px w-full bg-border" />
       <section dir={isRtl ? "rtl" : "ltr"}>
         <div className="mb-4 flex items-center justify-end gap-2 ">
-          <h3 className="text-right text-[20px] font-bold leading-[119%] text-[#1B1D23]" style={{ fontFamily: ara }}>
+          <h3 className="text-right text-[20px] font-bold leading-[119%] text-foreground" style={{ fontFamily: ara }}>
             {isRtl ? "اختر نوع الخدمة المساندة" : "Choose support service type"}
           </h3>
 
-          <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 18H22V20H0V18H2V1C2 0.734784 2.10536 0.48043 2.29289 0.292893C2.48043 0.105357 2.73478 0 3 0H19C19.2652 0 19.5196 0.105357 19.7071 0.292893C19.8946 0.48043 20 0.734784 20 1V18ZM18 18V2H4V18H18ZM7 9H10V11H7V9ZM7 5H10V7H7V5ZM7 13H10V15H7V13ZM12 13H15V15H12V13ZM12 9H15V11H12V9ZM12 5H15V7H12V5Z" fill="#9B9B9C" />
+          <svg className="text-muted-foreground" width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 18H22V20H0V18H2V1C2 0.734784 2.10536 0.48043 2.29289 0.292893C2.48043 0.105357 2.73478 0 3 0H19C19.2652 0 19.5196 0.105357 19.7071 0.292893C19.8946 0.48043 20 0.734784 20 1V18ZM18 18V2H4V18H18ZM7 9H10V11H7V9ZM7 5H10V7H7V5ZM7 13H10V15H7V13ZM12 13H15V15H12V13ZM12 9H15V11H12V9ZM12 5H15V7H12V5Z" fill="currentColor" />
           </svg>
 
         </div>
@@ -204,10 +204,10 @@ const ServicesSupportFilterSidebar = ({
         </div>
       </section>
 
-      <div className="my-5 h-px w-full bg-[#D5D5D8]" />
+      <div className="my-5 h-px w-full bg-border" />
 
       <section>
-        <h3 className="mb-3 text-[15px] font-bold text-[#111318] text-right">
+        <h3 className="mb-3 text-right text-[15px] font-bold text-foreground">
           <span dir="ltr">{isRtl ? " : مركز الاتصال الدولي " : "International call center: "}</span>
         </h3>
         <a

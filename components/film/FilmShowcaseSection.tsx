@@ -44,11 +44,11 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
   }, [cards, selected]);
 
   return (
-    <section className="mx-auto min-h-[839px] w-full max-w-[1442px] px-4 py-[60px] sm:px-8 md:px-[68px]" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="mx-auto min-h-[839px] w-full max-w-[1442px] bg-background px-4 py-[60px] text-foreground sm:px-8 md:px-[68px]" dir={isRtl ? "rtl" : "ltr"}>
       <div className="mx-auto flex w-full max-w-[1306px] flex-col gap-16">
         <header className="h-[96px] w-full">
           <h2
-            className={`${isRtl ? "text-right" : "text-left"} text-[64px] font-bold leading-[96px] text-black`}
+            className={`${isRtl ? "text-right" : "text-left"} text-[64px] font-bold leading-[96px] text-foreground`}
             style={{ fontFamily: ara }}
           >
             {isRtl ? "أعمال مصورة في عسير" : "Filmed works in Aseer"}
@@ -66,8 +66,8 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                   onClick={() => setSelected(filter)}
                   className={`h-[50px] min-w-[80px] shrink-0 border-b-2 px-2 text-center text-[16px] leading-6 ${
                     active
-                      ? "border-[#6C2BD9] text-[#6C2BD9]"
-                      : "border-transparent text-[#202020]"
+                      ? "border-primary text-primary"
+                      : "border-transparent text-foreground"
                   }`}
                   style={{ fontFamily: inter, paddingTop: 11.5, paddingBottom: 12.5 }}
                 >

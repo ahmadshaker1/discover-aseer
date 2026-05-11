@@ -42,7 +42,7 @@ const TourGuideCard = ({
   const isRtl = locale === "ar";
   return (
     <div
-      className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+      className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md"
       onClick={onCardClick}
     >
       <div className="p-4 sm:p-6 flex flex-col items-center">
@@ -62,14 +62,14 @@ const TourGuideCard = ({
         </div>
 
         {/* Name */}
-        <h3 className="text-xl font-bold text-black mb-3">{name}</h3>
+        <h3 className="mb-3 text-xl font-bold text-foreground">{name}</h3>
 
         {/* Languages */}
         <div className="flex items-center gap-3 mb-4 flex-wrap justify-center">
           {languages.map((lang) => (
             <div key={lang.code} className="flex items-center gap-1.5">
               <LanguageFlag code={lang.code} />
-              <span className="text-sm text-black">{lang.name}</span>
+              <span className="text-sm text-foreground">{lang.name}</span>
             </div>
           ))}
         </div>
@@ -78,18 +78,18 @@ const TourGuideCard = ({
         <a
           href={whatsappUrl}
           onClick={(e) => e.stopPropagation()}
-          className="w-2/3 bg-white border-2 rounded-full px-4 py-2 flex items-center justify-center gap-2 transition-colors mb-4 hover:bg-gray-50"
+          className="mb-4 flex w-full max-w-[240px] items-center justify-center gap-2 rounded-full border-2 border-border bg-surface px-4 py-2 text-center transition-colors hover:bg-muted"
         >
-          <span className="text-green-600">
+          <span className="shrink-0 text-green-600">
             <WhatsAppIcon />
           </span>
-          <span className="text-sm font-bold whitespace-nowrap">
+          <span className="text-sm font-bold leading-tight whitespace-normal">
             {isRtl ? "تواصل عبر الواتساب" : "Contact on WhatsApp"}
           </span>
         </a>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 text-center mb-4 line-clamp-3 leading-relaxed">
+        <p className="mb-4 line-clamp-3 text-center text-sm leading-relaxed text-muted-foreground">
           {description}
         </p>
 
@@ -99,7 +99,7 @@ const TourGuideCard = ({
             e.stopPropagation();
             onCardClick();
           }}
-          className="text-sm text-black font-medium hover:underline cursor-pointer"
+          className="cursor-pointer text-sm font-medium text-foreground hover:underline"
         >
           {isRtl ? "المزيد" : "More"}
         </Button>
