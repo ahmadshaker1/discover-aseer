@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
-import { useLocale } from "next-intl";
-import { UploadAreaIcon } from "./Icons";
 
-export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 18;
+export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 19;
 
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
@@ -24,74 +22,79 @@ const LANGUAGE_LEVEL_OPTIONS = [
   { value: "advanced", label: "متقدم" },
 ] as const;
 
-const EN_SPECIALIZATION_LABELS: Record<string, string> = {
-  "متخصص في التجارب والأنشطة البرية": "Specialist in land activities and experiences",
-  "متخصص في التجارب والأنشطة البحرية": "Specialist in marine activities and experiences",
-  "متخصص في التجارب والأنشطة الهوائية": "Specialist in air activities and experiences",
-  "متخصص في التجارب والأنشطة التراثية والثقافية":
-    "Specialist in heritage and cultural experiences",
-  "متخصص في سياحة الاستجمام": "Specialist in leisure tourism",
-  أخرى: "Other",
-};
-
-const levelLabel = (value: "beginner" | "intermediate" | "advanced", isRtl: boolean) => {
-  if (isRtl) return LANGUAGE_LEVEL_OPTIONS.find((o) => o.value === value)?.label ?? value;
-  if (value === "beginner") return "Beginner";
-  if (value === "intermediate") return "Intermediate";
-  return "Advanced";
-};
-
 type FormValues = {
-  nameAr: string;
-  nameEn: string;
+  name_ar: string;
+  name_en: string;
   gender: "" | "ذكر" | "أنثى";
-  nationalId: string;
-  bio: string;
-  licenseNumber: string;
-  licenseExpiryDate: string;
-  arabicLevel: "" | "beginner" | "intermediate" | "advanced";
-  englishLevel: "" | "beginner" | "intermediate" | "advanced";
-  otherLanguages: string;
-  hasTransportation: "" | "yes" | "no";
-  specializations: string[];
-  otherSpecialization: string;
-  email: string;
-  mobile: string;
-  whatsapp: string;
-  website: string;
-  instagram: string;
-  xPlatform: string;
-  tiktok: string;
+  National_ID_number: string;
+  About_me: string;
+  License_number: string;
+  License_expiry_date: string;
+  english_language: "" | "beginner" | "intermediate" | "advanced";
+  Arabic_language: "" | "beginner" | "intermediate" | "advanced";
+  Other_languages: string;
+  Specialization: string;
+  Email: string;
+  transportation: "" | "yes" | "no";
+  WhatsApp_number: string;
+  Mobile_number: string;
+  Instagram: string;
+  Website: string;
+  TikTok: string;
+  X_platform: string;
   commitment1: boolean;
   commitment2: boolean;
   commitment3: boolean;
 };
 
 const EMPTY_VALUES: FormValues = {
-  nameAr: "",
-  nameEn: "",
+  name_ar: "",
+  name_en: "",
   gender: "",
-  nationalId: "",
-  bio: "",
-  licenseNumber: "",
-  licenseExpiryDate: "",
-  arabicLevel: "",
-  englishLevel: "",
-  otherLanguages: "",
-  hasTransportation: "",
-  specializations: [],
-  otherSpecialization: "",
-  email: "",
-  mobile: "",
-  whatsapp: "",
-  website: "",
-  instagram: "",
-  xPlatform: "",
-  tiktok: "",
+  National_ID_number: "",
+  About_me: "",
+  License_number: "",
+  License_expiry_date: "",
+  english_language: "",
+  Arabic_language: "",
+  Other_languages: "",
+  Specialization: "",
+  Email: "",
+  transportation: "",
+  WhatsApp_number: "",
+  Mobile_number: "",
+  Instagram: "",
+  Website: "",
+  TikTok: "",
+  X_platform: "",
   commitment1: false,
   commitment2: false,
   commitment3: false,
 };
+
+function UploadAreaIcon() {
+  return (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 17 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8.50033 1.41667C7.68049 1.41659 6.87813 1.65359 6.18992 2.09911C5.50171 2.54464 4.95702 3.17968 4.62149 3.92771C4.57377 4.03496 4.52489 4.14168 4.47487 4.24787L4.4607 4.24858C4.41537 4.25 4.35374 4.25 4.25033 4.25C3.49888 4.25 2.77821 4.54851 2.24686 5.07986C1.7155 5.61122 1.41699 6.33189 1.41699 7.08333C1.41699 7.83478 1.7155 8.55545 2.24686 9.0868C2.77821 9.61816 3.49888 9.91667 4.25033 9.91667H4.37216L5.78883 8.5H4.25033C3.8746 8.5 3.51427 8.35074 3.24859 8.08507C2.98291 7.81939 2.83366 7.45906 2.83366 7.08333C2.83366 6.70761 2.98291 6.34728 3.24859 6.0816C3.51427 5.81592 3.8746 5.66667 4.25033 5.66667H4.29566C4.44299 5.66667 4.61441 5.66737 4.75608 5.63833C4.93222 5.60745 5.10065 5.54249 5.25191 5.44708C5.42262 5.33658 5.5402 5.19917 5.62945 5.07379C5.68417 4.99305 5.7318 4.90773 5.77183 4.81879C5.80937 4.74087 5.85541 4.63817 5.91066 4.51562L5.91349 4.50854C6.13691 4.00928 6.50004 3.58534 6.95905 3.28787C7.41806 2.9904 7.95335 2.83212 8.50033 2.83212C9.0473 2.83212 9.58259 2.9904 10.0416 3.28787C10.5006 3.58534 10.8637 4.00928 11.0872 4.50854L11.0907 4.51562C11.1452 4.63817 11.1913 4.74017 11.2288 4.81879C11.2614 4.8875 11.3096 4.98737 11.3712 5.07379C11.4605 5.19846 11.5773 5.33658 11.7487 5.44779C11.9202 5.55829 12.0937 5.60858 12.2446 5.63904C12.3862 5.66737 12.5577 5.66738 12.705 5.66738L12.7503 5.66667C13.126 5.66667 13.4864 5.81592 13.7521 6.0816C14.0177 6.34728 14.167 6.70761 14.167 7.08333C14.167 7.45906 14.0177 7.81939 13.7521 8.08507C13.4864 8.35074 13.126 8.5 12.7503 8.5H11.2118L12.6285 9.91667H12.7503C13.5018 9.91667 14.2224 9.61816 14.7538 9.0868C15.2851 8.55545 15.5837 7.83478 15.5837 7.08333C15.5837 6.33189 15.2851 5.61122 14.7538 5.07986C14.2224 4.54851 13.5018 4.25 12.7503 4.25C12.6469 4.25 12.5853 4.25 12.5399 4.24858H12.5258C12.2315 3.41731 11.6859 2.69815 10.9646 2.19075C10.2434 1.68335 9.38216 1.41283 8.50033 1.41667Z"
+        fill="#7300CD"
+      />
+      <path
+        d="M8.50014 8.5L7.99935 7.9992L8.50014 7.49841L9.00093 7.9992L8.50014 8.5ZM9.20847 14.875C9.20847 15.0629 9.13385 15.243 9.00101 15.3759C8.86817 15.5087 8.688 15.5833 8.50014 15.5833C8.31228 15.5833 8.13211 15.5087 7.99927 15.3759C7.86644 15.243 7.79181 15.0629 7.79181 14.875H9.20847ZM5.16602 10.8325L7.99935 7.9992L9.00093 9.00079L6.1676 11.8341L5.16602 10.8325ZM9.00093 7.9992L11.8343 10.8325L10.8327 11.8341L7.99935 9.00079L9.00093 7.9992ZM9.20847 8.5V14.875H7.79181V8.5H9.20847Z"
+        fill="#7300CD"
+      />
+    </svg>
+  );
+}
 
 interface TourGuideRegisterStepOneFormProps {
   onCompletionChange: (completedCount: number) => void;
@@ -106,13 +109,31 @@ function isLicenseDateValid(dateText: string): boolean {
   return picked.getTime() >= today.getTime();
 }
 
+function buildSpecializationValue(
+  selectedSpecializations: string[],
+  otherSpecialization: string,
+) {
+  const list = selectedSpecializations.filter((item) => item !== "أخرى");
+  if (selectedSpecializations.includes("أخرى")) {
+    const trimmedOther = otherSpecialization.trim();
+    if (trimmedOther) {
+      list.push(trimmedOther);
+    } else if (list.length === 0) {
+      list.push("أخرى");
+    }
+  }
+  return list.join(", ");
+}
+
 const TourGuideRegisterStepOneForm = ({
   onCompletionChange,
 }: TourGuideRegisterStepOneFormProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const baseId = useId();
   const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
+  const [selectedSpecializations, setSelectedSpecializations] = useState<
+    string[]
+  >([]);
+  const [otherSpecialization, setOtherSpecialization] = useState("");
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [licenseAttachmentFile, setLicenseAttachmentFile] =
     useState<File | null>(null);
@@ -121,31 +142,41 @@ const TourGuideRegisterStepOneForm = ({
   >("idle");
   const [submitMessage, setSubmitMessage] = useState("");
 
-  useEffect(() => {
-    const completed = [
-      values.nameAr.trim() !== "",
-      values.nameEn.trim() !== "",
+  const specializationValue = useMemo(
+    () =>
+      buildSpecializationValue(selectedSpecializations, otherSpecialization),
+    [selectedSpecializations, otherSpecialization],
+  );
+
+  const completedCount = useMemo(() => {
+    return [
+      values.name_ar.trim() !== "",
+      values.name_en.trim() !== "",
       values.gender !== "",
-      values.nationalId.trim() !== "",
+      values.National_ID_number.trim() !== "",
       profileImageFile != null,
-      values.bio.trim() !== "",
-      values.licenseNumber.trim() !== "",
-      isLicenseDateValid(values.licenseExpiryDate),
+      values.About_me.trim() !== "",
+      values.License_number.trim() !== "",
+      isLicenseDateValid(values.License_expiry_date),
       licenseAttachmentFile != null,
-      values.arabicLevel !== "",
-      values.englishLevel !== "",
-      values.hasTransportation !== "",
-      values.specializations.length > 0,
-      values.email.trim() !== "",
-      values.mobile.trim() !== "",
-      values.whatsapp.trim() !== "",
+      values.Arabic_language !== "",
+      values.english_language !== "",
+      values.transportation !== "",
+      specializationValue.trim() !== "",
+      values.Email.trim() !== "",
+      values.Mobile_number.trim() !== "",
+      values.WhatsApp_number.trim() !== "",
       values.commitment1,
       values.commitment2,
       values.commitment3,
     ].filter(Boolean).length;
+  }, [values, profileImageFile, licenseAttachmentFile, specializationValue]);
 
-    onCompletionChange(completed);
-  }, [values, profileImageFile, licenseAttachmentFile, onCompletionChange]);
+  const canSubmit = completedCount >= TOUR_GUIDE_REQUIRED_FIELDS_COUNT;
+
+  useEffect(() => {
+    onCompletionChange(completedCount);
+  }, [completedCount, onCompletionChange]);
 
   const setField = <K extends keyof FormValues>(
     key: K,
@@ -174,73 +205,44 @@ const TourGuideRegisterStepOneForm = ({
     setLicenseAttachmentFile(list?.[0] ?? null);
   };
 
-  const completedCount = useMemo(() => {
-    return [
-      values.nameAr.trim() !== "",
-      values.nameEn.trim() !== "",
-      values.gender !== "",
-      values.nationalId.trim() !== "",
-      profileImageFile != null,
-      values.bio.trim() !== "",
-      values.licenseNumber.trim() !== "",
-      isLicenseDateValid(values.licenseExpiryDate),
-      licenseAttachmentFile != null,
-      values.arabicLevel !== "",
-      values.englishLevel !== "",
-      values.hasTransportation !== "",
-      values.specializations.length > 0,
-      values.email.trim() !== "",
-      values.mobile.trim() !== "",
-      values.whatsapp.trim() !== "",
-      values.commitment1,
-      values.commitment2,
-      values.commitment3,
-    ].filter(Boolean).length;
-  }, [values, profileImageFile, licenseAttachmentFile]);
-
-  const canSubmit = completedCount >= TOUR_GUIDE_REQUIRED_FIELDS_COUNT;
-
-  const specializationValue = useMemo(() => {
-    const list = values.specializations.filter((s) => s !== "أخرى");
-    if (
-      values.specializations.includes("أخرى") &&
-      values.otherSpecialization.trim()
-    ) {
-      list.push(values.otherSpecialization.trim());
-    }
-    return list.join(", ");
-  }, [values.specializations, values.otherSpecialization]);
-
   const toggleSpecialization = (value: string) => {
-    const exists = values.specializations.includes(value);
+    const exists = selectedSpecializations.includes(value);
     if (exists) {
-      const next = values.specializations.filter((x) => x !== value);
-      setField("specializations", next);
-      if (value === "أخرى") setField("otherSpecialization", "");
+      const next = selectedSpecializations.filter((item) => item !== value);
+      setSelectedSpecializations(next);
+      if (value === "أخرى") {
+        setOtherSpecialization("");
+      }
+      setField(
+        "Specialization",
+        buildSpecializationValue(
+          next,
+          value === "أخرى" ? "" : otherSpecialization,
+        ),
+      );
       return;
     }
-    setField("specializations", [...values.specializations, value]);
+
+    const next = [...selectedSpecializations, value];
+    setSelectedSpecializations(next);
+    setField(
+      "Specialization",
+      buildSpecializationValue(next, otherSpecialization),
+    );
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!canSubmit || submitState === "submitting") return;
+  const onOtherSpecializationChange = (value: string) => {
+    setOtherSpecialization(value);
+    setField(
+      "Specialization",
+      buildSpecializationValue(selectedSpecializations, value),
+    );
+  };
 
-    if (!isLicenseDateValid(values.licenseExpiryDate)) {
-      setSubmitState("error");
-      setSubmitMessage(
-        isRtl ? "تاريخ انتهاء الترخيص منتهي أو غير صالح." : "License expiry date is invalid or has passed.",
-      );
-      return;
-    }
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (!profileImageFile || !licenseAttachmentFile) {
-      setSubmitState("error");
-      setSubmitMessage(
-        isRtl
-          ? "يرجى إرفاق الصورة الشخصية ورخصة الإرشاد السياحي."
-          : "Please attach a profile image and tour guide license document.",
-      );
+    if (!canSubmit || submitState === "submitting") {
       return;
     }
 
@@ -248,118 +250,92 @@ const TourGuideRegisterStepOneForm = ({
     setSubmitMessage("");
 
     try {
-      const body = new FormData();
+      const formData = new FormData();
 
-      body.append("name", values.nameAr.trim());
-      body.append("name_en", values.nameEn.trim());
-      body.append("gender", values.gender);
-      body.append("national_id", values.nationalId.trim());
-      body.append("description", values.bio.trim());
-      body.append("license_number", values.licenseNumber.trim());
-      body.append("date", values.licenseExpiryDate);
-      body.append("arabic_language_level", values.arabicLevel);
-      body.append("english_language_level", values.englishLevel);
-      body.append("other_languages", values.otherLanguages.trim());
-      body.append(
-        "transportation",
-        values.hasTransportation === "yes" ? "true" : "false",
-      );
-      body.append("specializations", specializationValue);
-      body.append("email", values.email.trim());
-      body.append("phone_number", values.mobile.trim());
-      body.append("whatsapp", values.whatsapp.trim());
-      body.append("website", values.website.trim());
-      body.append("instagram", values.instagram.trim());
-      body.append("x_platform", values.xPlatform.trim());
-      body.append("tiktok", values.tiktok.trim());
-      body.append("commitment_1", values.commitment1 ? "true" : "false");
-      body.append("commitment_2", values.commitment2 ? "true" : "false");
-      body.append("commitment_3", values.commitment3 ? "true" : "false");
+      Object.entries(values).forEach(([key, value]) => {
+        formData.append(key, String(value));
+      });
 
-      body.append("profile_image", profileImageFile);
-      body.append("license_attachment", licenseAttachmentFile);
+      if (profileImageFile) {
+        formData.append("Personal_photo", profileImageFile);
+      }
+
+      if (licenseAttachmentFile) {
+        formData.append("Tourist_Guide_License", licenseAttachmentFile);
+      }
 
       const response = await fetch("/api/tour-guides/register", {
         method: "POST",
-        body,
+        body: formData,
       });
 
-      const json = (await response.json().catch(() => null)) as {
-        error?: string;
-      } | null;
       if (!response.ok) {
-        throw new Error(json?.error || (isRtl ? "تعذر إرسال النموذج." : "Failed to submit the form."));
+        const errorBody = await response.json().catch(() => null);
+        throw new Error(
+          errorBody?.error ?? "تعذر إرسال الطلب، حاول مرة أخرى لاحقاً.",
+        );
       }
 
       setSubmitState("success");
-      setSubmitMessage(
-        isRtl ? "تم إرسال طلب التسجيل بنجاح." : "Your registration request was submitted successfully.",
-      );
+      setSubmitMessage("تم إرسال الطلب بنجاح.");
       setValues(EMPTY_VALUES);
+      setSelectedSpecializations([]);
+      setOtherSpecialization("");
       setProfileImageFile(null);
       setLicenseAttachmentFile(null);
     } catch (error) {
       setSubmitState("error");
       setSubmitMessage(
-        error instanceof Error
-          ? error.message
-          : isRtl
-            ? "حدث خطأ غير متوقع أثناء الإرسال."
-            : "An unexpected error occurred during submission.",
+        error instanceof Error ? error.message : "حدث خطأ غير متوقع.",
       );
     }
   };
 
   return (
-    <form
-      className="mx-auto w-full max-w-[1026px] [&_label]:text-white [&_p]:text-white [&_input]:border-border [&_input]:bg-surface [&_input]:text-foreground [&_select]:border-border [&_select]:bg-surface [&_select]:text-foreground [&_textarea]:border-border [&_textarea]:bg-surface [&_textarea]:text-foreground"
-      onSubmit={onSubmit}
-      dir={isRtl ? "rtl" : "ltr"}
-      lang={locale}
-    >
+    <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit}>
       <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
-        <div className={`flex flex-col gap-2 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
+        <div className="flex flex-col gap-2 text-right" dir="rtl">
           <label
             htmlFor={`${baseId}-name-ar`}
-            className="text-base font-bold text-white"
+            className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "الاسم بالعربي *" : "Name in Arabic *"}
+            الاسم بالعربي *
           </label>
           <input
             id={`${baseId}-name-ar`}
-            value={values.nameAr}
-            onChange={(e) => setField("nameAr", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-surface px-4 text-right text-foreground"
+            value={values.name_ar}
+            onChange={(e) => setField("name_ar", e.target.value)}
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           />
         </div>
 
-        <div className={`flex flex-col gap-2 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
+        <div className="flex flex-col gap-2 text-right" dir="rtl">
           <label
             htmlFor={`${baseId}-name-en`}
-            className="text-base font-bold text-white"
+            className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "الاسم بالإنجليزي *" : "Name in English *"}
+            الاسم بالإنجليزي *
           </label>
           <input
             id={`${baseId}-name-en`}
-            value={values.nameEn}
-            onChange={(e) => setField("nameEn", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-surface px-4 text-left text-foreground"
+            value={values.name_en}
+            onChange={(e) => setField("name_en", e.target.value)}
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className={`flex flex-col gap-2 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
+        <div className="flex flex-col gap-2 text-right" dir="rtl">
           <label
             htmlFor={`${baseId}-gender`}
-            className="text-base font-bold text-white"
+            className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "الجنس *" : "Gender *"}
+            الجنس *
           </label>
           <select
             id={`${baseId}-gender`}
@@ -367,28 +343,28 @@ const TourGuideRegisterStepOneForm = ({
             onChange={(e) =>
               setField("gender", e.target.value as FormValues["gender"])
             }
-            className="h-12 w-full rounded-lg border border-border bg-surface px-4 text-right text-foreground"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           >
-            <option value="">{isRtl ? "اختر" : "Select"}</option>
-            <option value="ذكر">{isRtl ? "ذكر" : "Male"}</option>
-            <option value="أنثى">{isRtl ? "أنثى" : "Female"}</option>
+            <option value="">اختر</option>
+            <option value="ذكر">ذكر</option>
+            <option value="أنثى">أنثى</option>
           </select>
         </div>
 
         <div className="flex flex-col gap-2 text-right" dir="rtl">
           <label
             htmlFor={`${baseId}-nid`}
-            className="text-base font-bold text-white"
+            className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "رقم الهوية الوطنية *" : "National ID number *"}
+            رقم الهوية الوطنية *
           </label>
           <input
             id={`${baseId}-nid`}
-            value={values.nationalId}
-            onChange={(e) => setField("nationalId", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-surface px-4 text-right text-foreground"
+            value={values.National_ID_number}
+            onChange={(e) => setField("National_ID_number", e.target.value)}
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
             inputMode="numeric"
           />
@@ -397,16 +373,16 @@ const TourGuideRegisterStepOneForm = ({
         <div className="md:col-span-2 flex flex-col gap-2 text-right" dir="rtl">
           <label
             htmlFor={`${baseId}-bio`}
-            className="text-base font-bold text-white"
+            className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "نبذة عني (المرشد السياحي) *" : "About me (tour guide) *"}
+            نبذة عني (المرشد السياحي) *
           </label>
           <textarea
             id={`${baseId}-bio`}
-            value={values.bio}
-            onChange={(e) => setField("bio", e.target.value)}
-            className="min-h-[110px] w-full rounded-lg border border-border bg-surface p-4 text-right text-foreground"
+            value={values.About_me}
+            onChange={(e) => setField("About_me", e.target.value)}
+            className="min-h-[110px] w-full rounded-lg border border-[#E5E7EB] p-4 text-right"
             style={{ fontFamily: ibm }}
           />
         </div>
@@ -417,12 +393,12 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "رقم الترخيص *" : "License number *"}
+            رقم الترخيص *
           </label>
           <input
             id={`${baseId}-license-number`}
-            value={values.licenseNumber}
-            onChange={(e) => setField("licenseNumber", e.target.value)}
+            value={values.License_number}
+            onChange={(e) => setField("License_number", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           />
@@ -434,13 +410,13 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "تاريخ انتهاء الترخيص *" : "License expiry date *"}
+            تاريخ انتهاء الترخيص *
           </label>
           <input
             id={`${baseId}-license-date`}
             type="date"
-            value={values.licenseExpiryDate}
-            onChange={(e) => setField("licenseExpiryDate", e.target.value)}
+            value={values.License_expiry_date}
+            onChange={(e) => setField("License_expiry_date", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4"
             style={{ fontFamily: ibm }}
           />
@@ -452,24 +428,24 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "اللغة العربية *" : "Arabic language level *"}
+            اللغة العربية *
           </label>
           <select
             id={`${baseId}-arabic-level`}
-            value={values.arabicLevel}
+            value={values.Arabic_language}
             onChange={(e) =>
               setField(
-                "arabicLevel",
-                e.target.value as FormValues["arabicLevel"],
+                "Arabic_language",
+                e.target.value as FormValues["Arabic_language"],
               )
             }
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           >
-            <option value="">{isRtl ? "اختر" : "Select"}</option>
+            <option value="">اختر</option>
             {LANGUAGE_LEVEL_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {levelLabel(o.value, isRtl)}
+                {o.label}
               </option>
             ))}
           </select>
@@ -481,24 +457,24 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "اللغة الإنجليزية *" : "English language level *"}
+            اللغة الإنجليزية *
           </label>
           <select
             id={`${baseId}-english-level`}
-            value={values.englishLevel}
+            value={values.english_language}
             onChange={(e) =>
               setField(
-                "englishLevel",
-                e.target.value as FormValues["englishLevel"],
+                "english_language",
+                e.target.value as FormValues["english_language"],
               )
             }
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           >
-            <option value="">{isRtl ? "اختر" : "Select"}</option>
+            <option value="">اختر</option>
             {LANGUAGE_LEVEL_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {levelLabel(o.value, isRtl)}
+                {o.label}
               </option>
             ))}
           </select>
@@ -510,15 +486,15 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "لغات أخرى" : "Other languages"}
+            لغات أخرى
           </label>
           <input
             id={`${baseId}-other-languages`}
-            value={values.otherLanguages}
-            onChange={(e) => setField("otherLanguages", e.target.value)}
+            value={values.Other_languages}
+            onChange={(e) => setField("Other_languages", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
-            placeholder={isRtl ? "مثال: الفرنسية، الإسبانية" : "Example: French, Spanish"}
+            placeholder="مثال: الفرنسية، الإسبانية"
           />
         </div>
 
@@ -527,7 +503,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "التخصص *" : "Specialization *"}
+            التخصص *
           </p>
           <div className="grid grid-cols-1 gap-2">
             {SPECIALIZATION_OPTIONS.map((item) => (
@@ -539,23 +515,23 @@ const TourGuideRegisterStepOneForm = ({
                   className="text-sm text-right text-[#1D1F1F]"
                   style={{ fontFamily: ibm }}
                 >
-                  {isRtl ? item : EN_SPECIALIZATION_LABELS[item] ?? item}
+                  {item}
                 </span>
                 <input
                   type="checkbox"
-                  checked={values.specializations.includes(item)}
+                  checked={selectedSpecializations.includes(item)}
                   onChange={() => toggleSpecialization(item)}
                 />
               </label>
             ))}
           </div>
-          {values.specializations.includes("أخرى") ? (
+          {selectedSpecializations.includes("أخرى") ? (
             <input
-              value={values.otherSpecialization}
-              onChange={(e) => setField("otherSpecialization", e.target.value)}
+              value={otherSpecialization}
+              onChange={(e) => onOtherSpecializationChange(e.target.value)}
               className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
               style={{ fontFamily: ibm }}
-              placeholder={isRtl ? "اذكر التخصص الآخر" : "Specify the other specialization"}
+              placeholder="اذكر التخصص الآخر"
             />
           ) : null}
         </div>
@@ -566,23 +542,23 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "هل تتوفر لديك وسيلة مواصلات؟ *" : "Do you have transportation? *"}
+            هل تتوفر لديك وسيلة مواصلات؟ *
           </label>
           <select
             id={`${baseId}-transportation`}
-            value={values.hasTransportation}
+            value={values.transportation}
             onChange={(e) =>
               setField(
-                "hasTransportation",
-                e.target.value as FormValues["hasTransportation"],
+                "transportation",
+                e.target.value as FormValues["transportation"],
               )
             }
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
           >
-            <option value="">{isRtl ? "اختر" : "Select"}</option>
-            <option value="yes">{isRtl ? "نعم" : "Yes"}</option>
-            <option value="no">{isRtl ? "لا" : "No"}</option>
+            <option value="">اختر</option>
+            <option value="yes">نعم</option>
+            <option value="no">لا</option>
           </select>
         </div>
 
@@ -592,13 +568,13 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "البريد الإلكتروني *" : "Email *"}
+            البريد الإلكتروني *
           </label>
           <input
             id={`${baseId}-email`}
             type="email"
-            value={values.email}
-            onChange={(e) => setField("email", e.target.value)}
+            value={values.Email}
+            onChange={(e) => setField("Email", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -611,12 +587,12 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "رقم الجوال *" : "Mobile number *"}
+            رقم الجوال *
           </label>
           <input
             id={`${baseId}-mobile`}
-            value={values.mobile}
-            onChange={(e) => setField("mobile", e.target.value)}
+            value={values.Mobile_number}
+            onChange={(e) => setField("Mobile_number", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
             inputMode="tel"
@@ -629,12 +605,12 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "رقم الواتس اب *" : "WhatsApp number *"}
+            رقم الواتس اب *
           </label>
           <input
             id={`${baseId}-whatsapp`}
-            value={values.whatsapp}
-            onChange={(e) => setField("whatsapp", e.target.value)}
+            value={values.WhatsApp_number}
+            onChange={(e) => setField("WhatsApp_number", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
             style={{ fontFamily: ibm }}
             inputMode="tel"
@@ -647,12 +623,12 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "الموقع الإلكتروني" : "Website"}
+            الموقع الإلكتروني
           </label>
           <input
             id={`${baseId}-website`}
-            value={values.website}
-            onChange={(e) => setField("website", e.target.value)}
+            value={values.Website}
+            onChange={(e) => setField("Website", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -665,12 +641,12 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "انستقرام" : "Instagram"}
+            انستقرام
           </label>
           <input
             id={`${baseId}-instagram`}
-            value={values.instagram}
-            onChange={(e) => setField("instagram", e.target.value)}
+            value={values.Instagram}
+            onChange={(e) => setField("Instagram", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -683,12 +659,12 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "منصة X" : "X platform"}
+            منصة X
           </label>
           <input
             id={`${baseId}-x`}
-            value={values.xPlatform}
-            onChange={(e) => setField("xPlatform", e.target.value)}
+            value={values.X_platform}
+            onChange={(e) => setField("X_platform", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -701,12 +677,12 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "تيك توك" : "TikTok"}
+            تيك توك
           </label>
           <input
             id={`${baseId}-tiktok`}
-            value={values.tiktok}
-            onChange={(e) => setField("tiktok", e.target.value)}
+            value={values.TikTok}
+            onChange={(e) => setField("TikTok", e.target.value)}
             className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
             style={{ fontFamily: ibm }}
             dir="ltr"
@@ -718,13 +694,12 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "التعهدات *" : "Commitments *"}
+            التعهدات *
           </p>
           <label className="flex items-start justify-end gap-2">
             <span className="text-sm" style={{ fontFamily: ibm }}>
-              {isRtl
-                ? "أقر أن جميع المعلومات المذكورة أعلاه والمستندات المرفقة صحيحة ومتطابقة تماماً مع معلوماتي الشخصية وخبرتي في الإرشاد السياحي."
-                : "I confirm that all information and attachments above are accurate and match my personal profile and guiding experience."}
+              أقر أن جميع المعلومات المذكورة أعلاه والمستندات المرفقة صحيحة
+              ومتطابقة تماماً مع معلوماتي الشخصية وخبرتي في الإرشاد السياحي.
             </span>
             <input
               type="checkbox"
@@ -734,9 +709,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <label className="flex items-start justify-end gap-2">
             <span className="text-sm" style={{ fontFamily: ibm }}>
-              {isRtl
-                ? "أوافق على استخدام المعلومات المذكورة أعلاه من قبل القنوات الإلكترونية لتسويق عسير، وهيئة تطوير منطقة عسير."
-                : "I agree that this information may be used by Discover Aseer channels and Aseer Development Authority for destination promotion."}
+              أوافق على استخدام المعلومات المذكورة أعلاه من قبل القنوات
+              الإلكترونية لتسويق عسير، وهيئة تطوير منطقة عسير.
             </span>
             <input
               type="checkbox"
@@ -746,9 +720,8 @@ const TourGuideRegisterStepOneForm = ({
           </label>
           <label className="flex items-start justify-end gap-2">
             <span className="text-sm" style={{ fontFamily: ibm }}>
-              {isRtl
-                ? "أتعهد بالالتزام التام بتقديم خدمات الإرشاد السياحي والرد والاستجابة السريعة."
-                : "I commit to providing professional guiding services and timely responses."}
+              أتعهد بالالتزام التام بتقديم خدمات الإرشاد السياحي والرد
+              والاستجابة السريعة.
             </span>
             <input
               type="checkbox"
@@ -764,11 +737,11 @@ const TourGuideRegisterStepOneForm = ({
               className="mb-1 text-right text-base font-bold text-[#1D1F1F]"
               style={{ fontFamily: araBold }}
             >
-              {isRtl ? "صورة شخصية *" : "Profile image *"}
+              صورة شخصية *
             </p>
             <label
               htmlFor={`${baseId}-profile-image`}
-              className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border bg-surface px-6 py-8 text-center transition-colors hover:border-primary/50 hover:bg-muted"
+              className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-[#D1D5DB] bg-[#FAFAFA] px-6 py-8 text-center transition-colors hover:border-[#7300CD]/50 hover:bg-[#F5F3FF]/30"
             >
               <input
                 id={`${baseId}-profile-image`}
@@ -787,9 +760,12 @@ const TourGuideRegisterStepOneForm = ({
                 className="text-center text-[14px] font-bold leading-[120%] text-[#7300CD]"
                 style={{ fontFamily: araBold }}
               >
-                {isRtl ? "تصفح الصورة" : "Browse image"}
+                تصفح الصورة
               </span>
-              <span className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+              <span
+                className="text-xs text-[#6B7280]"
+                style={{ fontFamily: ibm }}
+              >
                 JPG, JPEG, PNG, WEBP
               </span>
               {profileImageFile ? (
@@ -808,11 +784,11 @@ const TourGuideRegisterStepOneForm = ({
               className="mb-1 text-right text-base font-bold text-[#1D1F1F]"
               style={{ fontFamily: araBold }}
             >
-              {isRtl ? "رخصة الإرشاد السياحي *" : "Tour guide license *"}
+              رخصة الإرشاد السياحي *
             </p>
             <label
               htmlFor={`${baseId}-license-attachment`}
-              className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border bg-surface px-6 py-8 text-center transition-colors hover:border-primary/50 hover:bg-muted"
+              className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-[#D1D5DB] bg-[#FAFAFA] px-6 py-8 text-center transition-colors hover:border-[#7300CD]/50 hover:bg-[#F5F3FF]/30"
             >
               <input
                 id={`${baseId}-license-attachment`}
@@ -831,9 +807,12 @@ const TourGuideRegisterStepOneForm = ({
                 className="text-center text-[14px] font-bold leading-[120%] text-[#7300CD]"
                 style={{ fontFamily: araBold }}
               >
-                {isRtl ? "تصفح المرفق" : "Browse attachment"}
+                تصفح المرفق
               </span>
-              <span className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+              <span
+                className="text-xs text-[#6B7280]"
+                style={{ fontFamily: ibm }}
+              >
                 JPG, JPEG, PDF
               </span>
               {licenseAttachmentFile ? (
@@ -870,13 +849,7 @@ const TourGuideRegisterStepOneForm = ({
           className="flex h-[62px] w-full items-center justify-center gap-[10px] rounded-[100px] bg-[#280048] px-[22px] py-[14px] text-lg font-bold text-white transition-colors hover:enabled:bg-[#3a0b5c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#280048] disabled:cursor-not-allowed disabled:opacity-45"
           style={{ fontFamily: araBold }}
         >
-          {submitState === "submitting"
-            ? isRtl
-              ? "جاري الإرسال..."
-              : "Submitting..."
-            : isRtl
-              ? "إرسال الطلب"
-              : "Submit request"}
+          {submitState === "submitting" ? "جاري الإرسال..." : "إرسال الطلب"}
         </button>
       </section>
     </form>

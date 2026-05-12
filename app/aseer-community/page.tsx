@@ -1,4 +1,3 @@
-import { getLocale } from "next-intl/server";
 import CommunityHero, {
   type CommunityHeroData,
 } from "@/components/community/CommunityHero";
@@ -10,75 +9,72 @@ import CommunityMainSlider, {
  * Backend handoff:
  * - Keep components unchanged; only replace this object with API/CMS payload mapping.
  * - `hero.backgroundImage` controls the full hero photo.
+ * - `hero.ribbonPatternImage` controls the right ribbon tile image.
  * - `slider.slides[].image` controls all main slider images.
  */
-const AseerCommunityPage = async () => {
-  const locale = await getLocale();
-  const isRtl = locale === "ar";
-  const communityPageData: {
-    hero: CommunityHeroData;
-    slider: CommunityMainSliderContent;
-  } = {
-    hero: {
-      breadcrumbs: [
-        { label: isRtl ? "الخدمات المساندة" : "Support services", href: "/services-support" },
-        { label: isRtl ? "الرئيسية" : "Home", href: "/" },
-      ],
-      title: isRtl ? "مجتمع عسير" : "Aseer community",
-      backgroundImage: "/assets/community/hero-comunity-bg.png",
-      socialLinks: [
+const communityPageData: {
+  hero: CommunityHeroData;
+  slider: CommunityMainSliderContent;
+} = {
+  hero: {
+    // Requested breadcrumb: الرئيسية > الخدمات المساندة
+    breadcrumbs: [
+      { label: "الخدمات المساندة" },
+      { label: "الرئيسية", href: "/" },
+    ],
+    title: "مجتمع عسير",
+    // Backend: hero image + pattern from media/CMS.
+    backgroundImage: "/assets/community/hero-comunity-bg.png",
+    ribbonPatternImage: "/hero-pattern/ribbon.jpg",
+    // Backend: update only URLs/platform values here (or from API); no component edits needed.
+    socialLinks: [
       { platform: "linkedin", url: "https://www.linkedin.com/" },
       { platform: "x", url: "https://x.com/" },
       { platform: "youtube", url: "https://www.youtube.com/" },
       { platform: "instagram", url: "https://www.instagram.com/" },
       { platform: "facebook", url: "https://www.facebook.com/" },
-      ],
-    },
-    slider: {
-      sectionTitle: isRtl ? "سكان عسير" : "People of Aseer",
-      sectionSubtitle: isRtl
-        ? "تمتد عسير على مساحة جغرافية واسعة يرافقها كثافة سكانية تعد الأعلى بين مناطق المملكة الأخرى حيث يفوق عدد السكان المليوني نسمة."
-        : "Aseer spans a wide geography and has one of the highest population densities among Saudi regions, exceeding two million residents.",
-      slides: [
+    ],
+  },
+  slider: {
+    // Backend: restore/replace body title + sub text from CMS.
+    sectionTitle: "سُكان عسير",
+    sectionSubtitle:
+      "تمتد عسير على مساحة جعرافية واسعة يرافقها كثافة سكانية تعد الأعلى بين مناطق المملكة الأخرى حيث يفوق عدد السكان المليوني نسمة.",
+    prevLabel: "السابق",
+    nextLabel: "التالي",
+    // Backend: add/remove/reorder slides freely from API response.
+    // Required fields per slide: id, image, title, description.
+    slides: [
       {
         id: "community-1",
-        image: "/assets/community/community-life.png",
-        title: isRtl ? "حياة مزدهرة" : "A thriving life",
-        description: isRtl
-          ? "فُطر مجتمع عسير على محبة الفن وتمثّله في كافة نواحي الحياة من مظاهر اللبس والعمارة، وأصناف الأكل، أو فنون الطرب أو الجزالة في الشعر والانفتاح على المعرفة والثقافة، أو في وسائل العيش وطرق كسب الرزق من تجارة أو فلاحة. وساهم تنوعها الجغرافي في تنوع هذه الفنون وتميزها بالحفاظ على الموروث والاعتزاز بالتراث."
-          : "The Aseer community is rooted in art across daily life: attire, architecture, cuisine, music, poetry, knowledge, and livelihoods such as trade and farming.",
+        image: "/assets/community/hero-comunity-bg.png",
+        title: "شيم عسير",
+        description:
+          "اتساع النطاق السكني في عسير بين بيئات جبلية وساحلية وبدوية وحضرية لم يؤثر في المساس بالعادات والتقاليد العريقة وأصالة الطبائع الإنسانية التي تميز سكان هذه المنطقة، ولم يعارض انفتاحها على التطور والحداثة في مزيج متجانس تميز بخصال الشهامة والوفاء والطيبة مع التحضر والتطور المعرفي والمهني.",
       },
       {
         id: "community-2",
         image: "/assets/community/hero-comunity-bg.png",
-        title: isRtl ? "مجالس عامرة بالضيافة" : "Hospitality-rich gatherings",
-        description: isRtl
-          ? "تجسد المجالس في عسير قيم الكرم والتواصل الاجتماعي، وتبقى مساحة حية لتبادل القصص والعادات والموروث الثقافي."
-          : "Gatherings in Aseer embody generosity and social connection, preserving stories, customs and heritage.",
+        title: "مجتمع مترابط",
+        description:
+          "تُمثل العائلة نواة العلاقات الإنسانية في عسير، فالأسرة هي محضن التربية الأول الذي توليه اهتمامها بحُسن التنشئة على الأصالة والتطور، وتمتد هذه العلاقة الأصيلة للمجتمع من أقارب وأصدقاء تجمعهم الألفة والوفاء كما تجمعهم القهوة في ساعات الراحة وليالي السمر.",
       },
       {
         id: "community-3",
         image: "/assets/community/hero-comunity-bg.png",
-        title: isRtl ? "حرف أصيلة بروح حديثة" : "Authentic crafts with a modern spirit",
-        description: isRtl
-          ? "لا تزال الحرف اليدوية جزءاً أساسياً من المجتمع العسيري، مع حضور متجدد يربط بين الأصالة والابتكار في تفاصيل الحياة اليومية."
-          : "Handcrafts remain central in Aseer, blending authenticity with modern innovation in daily life.",
+        title: "حياة مزدهرة",
+        description:
+          "فُطر مجتمع عسير على محبة الفن وتمثّله في كافة نواحي الحياة من مظاهر اللبس والعمارة، وأصناف الأكل، أو فنون الطرب أو الجزالة في الشعر والانفتاح على المعرفة والثقافة، أو في وسائل العيش وطرق كسب الرزق من تجارة أو فلاحة. وساهم تنوعها الجغرافي في تنوع هذه الفنون وتميزها بالحفاظ على الموروث والاعتزاز بالتراث.",
       },
-      {
-        id: "community-4",
-        image: "/assets/community/hero-comunity-bg.png",
-        title: isRtl ? "فعاليات تجمع المجتمع" : "Community-connecting events",
-        description: isRtl
-          ? "تمنح الفعاليات المحلية مساحة للاحتفاء بالتراث والفنون، وتؤكد على تماسك المجتمع وتنوع تجاربه في مختلف المواسم."
-          : "Local events celebrate heritage and arts while reflecting community cohesion across seasons.",
-      },
-      ],
-    },
-  };
+    ],
+  },
+};
+
+const AseerCommunityPage = () => {
   return (
     <div className="flex w-full flex-col">
       <CommunityHero data={communityPageData.hero} />
-      <section className="bg-background text-foreground">
+      <section className="bg-[#f6f6f6]">
         <CommunityMainSlider content={communityPageData.slider} />
       </section>
     </div>
