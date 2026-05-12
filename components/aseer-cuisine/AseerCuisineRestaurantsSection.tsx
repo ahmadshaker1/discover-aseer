@@ -1,4 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import {
+  getCityOptions,
+  getInterestOptions,
+  getPriceOptions,
+  inferCityIdFromLocation,
+  locationMatchesCityId,
+} from "@/components/landmarks/filterOptions";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -10,21 +21,18 @@ export interface AseerCuisineRestaurantCard {
   location: string;
   cuisineType: string;
   priceRange: string;
+  /** Raw band from CMS when available, e.g. "80-120", used for price filtering. */
+  priceBand?: string;
   rating: number;
   reviewsCount: number;
 }
 
 export interface AseerCuisineRestaurantsSectionData {
-  // Backend (Directus): section heading text.
   title: string;
-  // Optional subtitle under the title.
   subtitle?: string;
-  // Backend (Directus): CTA button text and route.
   ctaLabel: string;
   ctaHref: string;
-  // Optional static filter row visibility.
   showFilters?: boolean;
-  // Backend (Directus): carousel cards dataset.
   cards: AseerCuisineRestaurantCard[];
 }
 
@@ -32,13 +40,48 @@ interface AseerCuisineRestaurantsSectionProps {
   data: AseerCuisineRestaurantsSectionData;
 }
 
-const filterItems = [
-  { key: "city", label: "المدينة", active: true },
-  { key: "interests", label: "الاهتمامات" },
-  { key: "travelers", label: "المسافرين" },
-  { key: "price", label: "السعر" },
-  { key: "duration", label: "مدة الزيارة" },
-];
+type PriceFilterId = "free" | "budget" | "mid-range" | "luxury" | null;
+
+function inferCityId(card: AseerCuisineRestaurantCard): string | undefined {
+  return inferCityIdFromLocation(card.location);
+}
+
+function inferInterestTags(card: AseerCuisineRestaurantCard): string[] {
+  const text = `${card.title} ${card.cuisineType} ${card.location}`;
+  const out = new Set<string>();
+  if (/مغام|تسلق|هايكنج|adventure/i.test(text)) out.add("adventure");
+  if (/ثقاف|تراث|قرية|متحف|culture|heritage/i.test(text)) out.add("culture");
+  if (/طبيع|منتزه|جبل|وادي|nature/i.test(text)) out.add("nature");
+  if (/طعام|مطعم|مأكولات|شواء|مطبخ|food/i.test(text)) out.add("food");
+  if (/استرخ|سبا|relax/i.test(text)) out.add("relaxation");
+  if (/تسوق|سوق|shopping/i.test(text)) out.add("shopping");
+  if (/تاريخ|اثري|histor/i.test(text)) out.add("historical");
+  if (out.size === 0) out.add("food");
+  return [...out];
+}
+
+function parsePriceBounds(card: AseerCuisineRestaurantCard): { from: number; to: number } | null {
+  const band = card.priceBand?.trim();
+  if (band && /^\d+\s*-\s*\d+$/.test(band)) {
+    const [a, b] = band.split("-").map((s) => Number(String(s).trim()));
+    if (Number.isFinite(a) && Number.isFinite(b)) {
+      return { from: Math.min(a, b), to: Math.max(a, b) };
+    }
+  }
+  const pr = card.priceRange?.trim();
+  if (pr === "$") return { from: 0, to: 49 };
+  if (pr === "$$") return { from: 50, to: 120 };
+  if (pr === "$$$") return { from: 120, to: 250 };
+  if (pr === "$$$$") return { from: 250, to: 9999 };
+  return null;
+}
+
+function cardMatchesCity(card: AseerCuisineRestaurantCard, city: string | null): boolean {
+  if (!city) return true;
+  const inferred = inferCityId(card);
+  if (inferred) return inferred === city;
+  return locationMatchesCityId(card.location, city);
+}
 
 function CardPinIcon() {
   return (
@@ -53,13 +96,13 @@ function CardPinIcon() {
     >
       <path
         d="M9.5 5C9.5 8.5 5 11.5 5 11.5C5 11.5 0.5 8.5 0.5 5C0.5 3.80653 0.974106 2.66193 1.81802 1.81802C2.66193 0.974106 3.80653 0.5 5 0.5C6.19347 0.5 7.33807 0.974106 8.18198 1.81802C9.02589 2.66193 9.5 3.80653 9.5 5Z"
-        stroke="#1D1F1F"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M5 6.5C5.82843 6.5 6.5 5.82843 6.5 5C6.5 4.17157 5.82843 3.5 5 3.5C4.17157 3.5 3.5 4.17157 3.5 5C3.5 5.82843 4.17157 6.5 5 6.5Z"
-        stroke="#1D1F1F"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -80,7 +123,7 @@ function CardUtensilIcon() {
     >
       <path
         d="M5.60907 4.20581L5.18207 4.63281L8.71757 8.16831L8.01057 8.87531L4.47507 5.34031L0.939573 8.87531L0.232573 8.16831L4.90207 3.49881C4.60807 2.77031 4.91207 1.72131 5.71207 0.920313C6.68857 -0.0556869 8.03407 -0.293187 8.71757 0.390313C9.40107 1.07381 9.16357 2.41931 8.18757 3.39531C7.38657 4.19631 6.33757 4.50031 5.60907 4.20581ZM0.586073 0.0368133L3.94457 3.39531L2.53057 4.80981L0.585573 2.86481C0.210631 2.48976 0 1.98114 0 1.45081C0 0.920485 0.210631 0.411869 0.585573 0.0368133H0.586073ZM7.48007 2.68781C8.10907 2.05931 8.23857 1.32481 8.01057 1.09681C7.78257 0.868813 7.04807 0.998313 6.41957 1.62681C5.79107 2.25581 5.66157 2.99031 5.88957 3.21831C6.11707 3.44581 6.85157 3.31631 7.48007 2.68781Z"
-        fill="#1D1F1F"
+        fill="currentColor"
       />
     </svg>
   );
@@ -99,7 +142,7 @@ function CardPersonIcon() {
     >
       <path
         d="M0 10.5C0 9.43913 0.421427 8.42172 1.17157 7.67157C1.92172 6.92143 2.93913 6.5 4 6.5C5.06087 6.5 6.07828 6.92143 6.82843 7.67157C7.57857 8.42172 8 9.43913 8 10.5H0ZM4 6C2.3425 6 1 4.6575 1 3C1 1.3425 2.3425 0 4 0C5.6575 0 7 1.3425 7 3C7 4.6575 5.6575 6 4 6Z"
-        fill="#1D1F1F"
+        fill="currentColor"
       />
     </svg>
   );
@@ -118,7 +161,7 @@ function CardCurrencyIcon() {
     >
       <path
         d="M11.5901 9.25373C11.8042 8.79435 11.9458 8.29561 12 7.7727L8.47005 8.49922V7.10259L11.59 6.46098C11.8041 6.0016 11.9457 5.50286 11.9999 4.97995L8.46994 5.70585V0.683132C7.92905 0.977024 7.44868 1.36823 7.0582 1.82967V5.99633L5.64645 6.28671V0C5.10556 0.293789 4.62519 0.685094 4.2347 1.14654V6.57699L1.07592 7.22655C0.861779 7.68593 0.720124 8.18467 0.665789 8.70758L4.2347 7.97362V9.73243L0.409913 10.519C0.195776 10.9784 0.0542281 11.4771 0 12L4.00349 11.1767C4.32939 11.1111 4.6095 10.9246 4.79161 10.668L5.52582 9.61467V9.61446C5.60204 9.50548 5.64645 9.37408 5.64645 9.23256V7.68324L7.0582 7.39286V10.1861L11.59 9.25353L11.5901 9.25373Z"
-        fill="#19171A"
+        fill="currentColor"
       />
     </svg>
   );
@@ -136,26 +179,59 @@ function RatingStar() {
 }
 
 function formatPriceBand(card: AseerCuisineRestaurantCard): string {
+  if (card.priceBand?.trim()) return card.priceBand.trim();
   if (card.priceRange?.trim()) return card.priceRange.trim();
   return "50-100";
 }
 
 const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
+  const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
+  const interestOpts = useMemo(() => getInterestOptions(locale), [locale]);
+  const priceOpts = useMemo(() => getPriceOptions(locale), [locale]);
+  const [city, setCity] = useState<string | null>(null);
+  const [interest, setInterest] = useState<string | null>(null);
+  const [price, setPrice] = useState<PriceFilterId>(null);
+
+  const filteredCards = useMemo(() => {
+    return data.cards.filter((card) => {
+      if (!cardMatchesCity(card, city)) return false;
+
+      if (interest) {
+        const tags = inferInterestTags(card);
+        if (tags.length > 0 && !tags.includes(interest)) return false;
+      }
+
+      const bounds = parsePriceBounds(card);
+      if (price && bounds) {
+        const from = bounds.from;
+        const to = bounds.to;
+        if (price === "free" && !(from === 0 && to === 0)) return false;
+        if (price === "budget" && from >= 50) return false;
+        if (price === "mid-range" && (to < 50 || from > 200)) return false;
+        if (price === "luxury" && to <= 200) return false;
+      }
+      return true;
+    });
+  }, [city, data.cards, interest, price]);
+
   return (
-    <section className="mx-auto w-full max-w-[1440px] py-8" dir="rtl">
+    <section className="mx-auto w-full max-w-[1440px] py-8 text-foreground" dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex w-full flex-col gap-8">
         <div className="px-4 sm:px-8 xl:px-[120px]">
           <div className="flex w-full items-start justify-between">
-            <div className="flex min-h-[94px] flex-col items-end justify-end gap-2 pb-[10px] pt-[7px] text-right">
+            <div className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] ${isRtl ? "items-end justify-end text-right" : "items-start justify-start text-left"}`}>
               <h2
-                className="w-full text-right text-[64px] font-bold leading-[119%] text-black"
+                className={`w-full text-[64px] font-bold leading-[119%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
                 style={{ fontFamily: ara }}
               >
                 {data.title}
               </h2>
               {data.subtitle ? (
                 <p
-                  className="h-[11px] w-[224px] text-right text-[24px] font-bold leading-[119%] text-[#252525]/80"
+                  className={`h-[11px] w-[224px] text-[24px] font-bold leading-[119%] text-muted-foreground ${isRtl ? "text-right" : "text-left"}`}
                   style={{ fontFamily: ara }}
                 >
                   {data.subtitle}
@@ -165,7 +241,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
 
             <Link
               href={data.ctaHref}
-              className="flex h-[52px] w-[161px] items-center justify-center gap-2 rounded-[55px] border border-[#FFFFFF54] bg-[#6027D2] p-[10px] text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90"
+              className="flex h-[52px] w-[161px] items-center justify-center gap-2 rounded-[55px] border border-primary/40 bg-primary p-[10px] text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
               style={{ fontFamily: ara }}
             >
               {data.ctaLabel}
@@ -175,83 +251,65 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
 
         {data.showFilters ? (
           <div className="mx-auto mb-2 w-full max-w-[1181px] overflow-x-auto pb-1">
-            <div className="flex min-w-max items-center justify-start gap-3 px-1">
-              {filterItems.map((item) => (
-                <button
-                  key={item.key}
-                  type="button"
-                  className={`h-[48px] shrink-0 rounded-full border px-4 ${
-                    item.active
-                      ? "w-[170px] border-[#DCDCDC] bg-white text-[#535353]"
-                      : "w-[230px] border-[#DCDCDC] bg-white text-[#9B9B9C]"
-                  }`}
-                  dir="rtl"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                  {item.key === "city" ? (
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden
-                    >
-                      <path
-                        d="M12 13.5C13.6569 13.5 15 12.1569 15 10.5C15 8.84315 13.6569 7.5 12 7.5C10.3431 7.5 9 8.84315 9 10.5C9 12.1569 10.3431 13.5 12 13.5Z"
-                        stroke={item.active ? "#535353" : "#9B9B9C"}
-                        strokeWidth="1.5"
-                      />
-                      <path
-                        d="M19.5 10.5C19.5 16.5 12 21 12 21C12 21 4.5 16.5 4.5 10.5C4.5 6.35786 7.85786 3 12 3C16.1421 3 19.5 6.35786 19.5 10.5Z"
-                        stroke={item.active ? "#535353" : "#9B9B9C"}
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  ) : item.key === "interests" ? (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M12 21L10.55 19.7C5.4 15.05 2 11.98 2 8.25C2 5.18 4.42 2.75 7.5 2.75C9.24 2.75 10.91 3.56 12 4.84C13.09 3.56 14.76 2.75 16.5 2.75C19.58 2.75 22 5.18 22 8.25C22 11.98 18.6 15.05 13.45 19.7L12 21Z" stroke={item.active ? "#535353" : "#9B9B9C"} strokeWidth="1.5" />
-                    </svg>
-                  ) : item.key === "travelers" ? (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M16 11C17.6569 11 19 9.65685 19 8C19 6.34315 17.6569 5 16 5C14.3431 5 13 6.34315 13 8C13 9.65685 14.3431 11 16 11Z" stroke={item.active ? "#535353" : "#9B9B9C"} strokeWidth="1.5" />
-                      <path d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z" stroke={item.active ? "#535353" : "#9B9B9C"} strokeWidth="1.5" />
-                      <path d="M2 19C2 16.7909 3.79086 15 6 15H10C12.2091 15 14 16.7909 14 19" stroke={item.active ? "#535353" : "#9B9B9C"} strokeWidth="1.5" />
-                      <path d="M13 19C13 17.3431 14.3431 16 16 16H18C20.2091 16 22 17.7909 22 20" stroke={item.active ? "#535353" : "#9B9B9C"} strokeWidth="1.5" />
-                    </svg>
-                  ) : item.key === "price" ? (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M12 4V20M16 8.5C16 7.11929 14.2091 6 12 6C9.79086 6 8 7.11929 8 8.5C8 9.88071 9.79086 11 12 11C14.2091 11 16 12.1193 16 13.5C16 14.8807 14.2091 16 12 16C9.79086 16 8 14.8807 8 13.5" stroke={item.active ? "#535353" : "#9B9B9C"} strokeWidth="1.5" />
-                    </svg>
-                  ) : (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M12 7V12L15.5 14" stroke={item.active ? "#535353" : "#9B9B9C"} strokeWidth="1.5" />
-                      <circle cx="12" cy="12" r="9" stroke={item.active ? "#535353" : "#9B9B9C"} strokeWidth="1.5" />
-                    </svg>
-                  )}
-                  <span className="text-[24px] font-bold leading-[100%]" style={{ fontFamily: ara }}>
-                    {item.label}
-                  </span>
-                    </div>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M7 10L12 15L17 10" stroke="#535353" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                </button>
-              ))}
+            <div className={`flex min-w-max items-center gap-3 px-1 ${isRtl ? "justify-start" : "justify-end"}`}>
+              <select
+                value={city ?? ""}
+                onChange={(e) => setCity(e.target.value || null)}
+                className="h-[48px] w-[190px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
+              >
+                <option value="">{tCommon("city")}</option>
+                {cityOptions.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={interest ?? ""}
+                onChange={(e) => setInterest(e.target.value || null)}
+                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
+              >
+                <option value="">{tCommon("interests")}</option>
+                {interestOpts.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={price ?? ""}
+                onChange={(e) => setPrice((e.target.value as PriceFilterId) || null)}
+                className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
+              >
+                <option value="">{isRtl ? "السعر" : "Price"}</option>
+                {priceOptions.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => {
+                  setCity(null);
+                  setInterest(null);
+                  setPrice(null);
+                }}
+                className="h-[48px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-5 text-sm text-foreground transition-colors hover:bg-muted"
+              >
+                {tCommon("resetFilters")}
+              </button>
             </div>
           </div>
         ) : null}
 
         <div className="h-[337px] w-full overflow-x-auto pb-5">
-          {/* Backend (Directus): cards control image/title/location/cuisine/price/rating and map 1:1 to existing restaurant card fields. */}
           <div className="flex min-w-max gap-6 px-4 sm:px-8 xl:px-[120px]">
-            {data.cards.map((card) => (
+            {filteredCards.map((card) => (
               <article
                 key={card.id}
-                className="group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white text-right transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl"
-                dir="rtl"
+                className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl ${isRtl ? "text-right" : "text-left"}`}
+                dir={isRtl ? "rtl" : "ltr"}
               >
                 <div className="relative h-[190px] w-full overflow-hidden">
                   <img
@@ -261,7 +319,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                     loading="lazy"
                   />
                   <div
-                    className="absolute left-3 top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]"
+                    className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-3" : "right-3"}`}
                     dir="ltr"
                   >
                     <RatingStar />
@@ -276,7 +334,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
 
                 <div className="flex h-[115px] flex-col justify-between gap-2 px-4 py-3 sm:px-5 sm:py-4">
                   <h3
-                    className="line-clamp-1 text-[24px] font-bold leading-[119%] text-black"
+                    className="line-clamp-1 text-[24px] font-bold leading-[119%] text-foreground"
                     style={{ fontFamily: ara }}
                   >
                     {card.title}
@@ -285,7 +343,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                   <div className="flex w-full items-center justify-start gap-1.5">
                     <CardPinIcon />
                     <span
-                      className="min-w-0 flex-1 truncate text-right text-[10px] font-bold leading-none text-[#1D1F1F]"
+                      className="min-w-0 flex-1 truncate text-[10px] font-bold leading-none text-foreground"
                       style={{ fontFamily: ibm }}
                     >
                       {card.location}
@@ -296,7 +354,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                     <div className="flex items-center justify-start gap-1">
                       <CardUtensilIcon />
                       <span
-                        className="text-right text-xs font-bold leading-none text-[#1D1F1F]"
+                        className="text-xs font-bold leading-none text-foreground"
                         style={{ fontFamily: ibm }}
                       >
                         {card.cuisineType}
@@ -305,7 +363,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                     <CardPersonIcon />
                     <div className="flex items-center justify-start gap-1">
                       <span
-                        className="text-right text-xs font-bold leading-none text-[#19171A]"
+                        className="text-xs font-bold leading-none text-foreground"
                         style={{ fontFamily: ibm }}
                       >
                         {formatPriceBand(card)}

@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
 import ExperienceCardShareButton from "./ExperienceCardShareButton";
 import ExperienceCardActions from "./ExperienceCardActions";
 import { BuildingIcon, PersonIcon, SaudiRiyalIcon } from "./Icons";
@@ -26,12 +29,16 @@ const ExperienceCard = ({
   description,
   provider,
   price,
-  currency = "إ.ر",
+  currency,
   groupSize,
   bookUrl,
 }: ExperienceCardProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const t = useTranslations("common");
+  const currencyLabel = currency ?? t("currencySar");
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div className="overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md">
       {/* Image Banner Section */}
       <div className="relative h-48 w-full">
         <Image
@@ -41,44 +48,46 @@ const ExperienceCard = ({
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Share Button - Top Left */}
-        <ExperienceCardShareButton experienceId={id} title={title} />
-        {/* Category Badge - Top Right */}
-        <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5">
+        <ExperienceCardShareButton experienceId={id} title={title} isRtl={isRtl} />
+        <div
+          className={`absolute top-3 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5 ${
+            isRtl ? "right-3" : "left-3"
+          }`}
+        >
           <span className="text-white text-xs font-medium">{category}</span>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="p-5 text-right" dir="rtl">
+      <div className="p-5 text-start" dir={isRtl ? "rtl" : "ltr"}>
         {/* Title */}
-        <h3 className="mb-1 text-xl font-bold text-black">{title}</h3>
+        <h3 className="mb-1 text-xl font-bold text-foreground">{title}</h3>
 
         {/* Duration */}
-        <p className="mb-3 text-base font-bold text-black">{duration}</p>
+        <p className="mb-3 text-base font-bold text-foreground">{duration}</p>
 
         {/* Description */}
-        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-gray-600">
+        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
           {description}
         </p>
 
         {/* Provider */}
-        <div className="mb-4 flex items-center justify-end gap-2">
+        <div className="mb-4 flex items-center justify-start gap-2">
           <BuildingIcon />
-          <span className="text-sm text-black">{provider}</span>
+          <span className="text-sm text-foreground">{provider}</span>
         </div>
 
         {/* Price and Group Size */}
-        <div className="mb-4 flex items-center justify-end gap-2 pb-4">
+        <div className="mb-4 flex flex-wrap items-center justify-start gap-2 pb-4">
           <div className="flex items-center gap-1">
-            <span className="text-xl font-bold text-black">{price}</span>
+            <span className="text-xl font-bold text-foreground">{price}</span>
             <SaudiRiyalIcon />
-            <span className="text-xs text-gray-500">{currency}</span>
+            <span className="text-xs text-muted-foreground">{currencyLabel}</span>
           </div>
           <span>/</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-sm text-black">مجموعة</span>
-            <span className="text-sm font-medium text-black">x{groupSize}</span>
+            <span className="text-sm text-foreground">{t("group")}</span>
+            <span className="text-sm font-medium text-foreground">x{groupSize}</span>
             <PersonIcon />
           </div>
         </div>

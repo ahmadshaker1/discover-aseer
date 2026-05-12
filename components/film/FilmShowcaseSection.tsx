@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useLocale } from "next-intl";
 import {
   FILM_SHOWCASE_FILTERS,
   type FilmShowcaseCard,
@@ -15,7 +16,27 @@ interface FilmShowcaseSectionProps {
 }
 
 const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const [selected, setSelected] = useState<FilmShowcaseCategory>("الكل");
+
+  const getFilterLabel = (filter: FilmShowcaseCategory) => {
+    if (isRtl) return filter;
+    switch (filter) {
+      case "الكل":
+        return "All";
+      case "أفلام":
+        return "Films";
+      case "أﻓﻼم ﺗﺮوﻳﺠﻴﺔ":
+        return "Promotional films";
+      case "ﻣﺴﻠﺴﻼت":
+        return "Series";
+      case "أفلام ﻣﻮﺳﻴﻘﻴﺔ":
+        return "Music films";
+      default:
+        return filter;
+    }
+  };
 
   const visibleCards = useMemo(() => {
     if (selected === "الكل") return cards.slice(0, 6);
@@ -23,19 +44,19 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
   }, [cards, selected]);
 
   return (
-    <section className="mx-auto min-h-[839px] w-full max-w-[1442px] px-4 py-[60px] sm:px-8 md:px-[68px]" dir="ltr">
+    <section className="mx-auto min-h-[839px] w-full max-w-[1442px] bg-background px-4 py-[60px] text-foreground sm:px-8 md:px-[68px]" dir={isRtl ? "rtl" : "ltr"}>
       <div className="mx-auto flex w-full max-w-[1306px] flex-col gap-16">
         <header className="h-[96px] w-full">
           <h2
-            className="text-right text-[64px] font-bold leading-[96px] text-black"
+            className={`${isRtl ? "text-right" : "text-left"} text-[64px] font-bold leading-[96px] text-foreground`}
             style={{ fontFamily: ara }}
           >
-            أعمال مصورة في عسير
+            {isRtl ? "أعمال مصورة في عسير" : "Filmed works in Aseer"}
           </h2>
         </header>
 
         <div className="flex w-full flex-col gap-8">
-          <div className="flex h-[50px] w-full items-center justify-start gap-4 overflow-x-auto" dir="rtl">
+          <div className="flex h-[50px] w-full items-center justify-start gap-4 overflow-x-auto" dir={isRtl ? "rtl" : "ltr"}>
             {FILM_SHOWCASE_FILTERS.map((filter) => {
               const active = selected === filter;
               return (
@@ -45,12 +66,12 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                   onClick={() => setSelected(filter)}
                   className={`h-[50px] min-w-[80px] shrink-0 border-b-2 px-2 text-center text-[16px] leading-6 ${
                     active
-                      ? "border-[#6C2BD9] text-[#6C2BD9]"
-                      : "border-transparent text-[#202020]"
+                      ? "border-primary text-primary"
+                      : "border-transparent text-foreground"
                   }`}
                   style={{ fontFamily: inter, paddingTop: 11.5, paddingBottom: 12.5 }}
                 >
-                  {filter}
+                  {getFilterLabel(filter)}
                 </button>
               );
             })}
@@ -66,7 +87,7 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                   <img src={card.image} alt={card.title} className="h-full w-full object-cover" />
                   <div className="absolute inset-x-0 bottom-0 h-[120px] bg-linear-to-b from-transparent to-black/80" />
                   <h3
-                    className="absolute right-6 bottom-6 text-right text-[20px] font-bold leading-[30px] text-white"
+                    className={`absolute bottom-6 ${isRtl ? "right-6 text-right" : "left-6 text-left"} text-[20px] font-bold leading-[30px] text-white`}
                     style={{ fontFamily: ara }}
                   >
                     {card.title}

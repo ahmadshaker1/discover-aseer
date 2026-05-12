@@ -44,6 +44,7 @@
 
 import { DUMMY_RESTAURANTS } from "./dummyRestaurants";
 import type { Restaurant } from "./types";
+import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
 export type { Restaurant } from "./types";
 
@@ -152,12 +153,10 @@ function getImageUrl(pictureUrl: string | null | undefined): string {
   return PLACEHOLDER_IMAGE;
 }
 
-function pickBestName(loc: ApiLocation): string {
+function pickBestName(loc: ApiLocation, locale: LocaleCode): string {
   return (
-    loc.name_ar ||
-    loc.title_en ||
-    loc.name_en ||
-    loc.title_ar ||
+    pickLocalizedField(loc, "name", locale) ||
+    pickLocalizedField(loc, "title", locale) ||
     ""
   ).trim();
 }
@@ -182,15 +181,20 @@ function isRestaurantCategory(item: ApiLocation): boolean {
   );
 }
 
-export const transformLocationToRestaurant = (loc: ApiLocation): Restaurant => {
-  const name = pickBestName(loc);
+export const transformLocationToRestaurant = (
+  loc: ApiLocation,
+  locale: LocaleCode = "ar",
+): Restaurant => {
+  const name = pickBestName(loc, locale);
   const location = loc.city_ar
     ? `${loc.city_ar}، عسير`
     : loc.city_en
       ? `${loc.city_en}، عسير`
       : loc.city
         ? `${loc.city}، عسير`
-      : "عسير";
+      : locale === "ar"
+        ? "عسير"
+        : "Aseer";
   const pictureSource = loc.picture_url_new || loc.picture_url || loc.image;
   const image = getImageUrl(pictureSource);
   const mapsUrl =
@@ -204,14 +208,19 @@ export const transformLocationToRestaurant = (loc: ApiLocation): Restaurant => {
 
   const restaurant: Restaurant = {
     id: loc.id,
-    name: name || "بدون اسم",
+    name: name || (locale === "ar" ? "بدون اسم" : "Untitled"),
     location,
     distanceKm: toFiniteNumber(loc.distance_km, 0),
     rating: clampRating(loc.rating),
     reviewsCount: toNonNegativeInt(loc.reviews_count, 0),
-    priceRange: priceRangeRaw || "غير محدد",
-    nationality: nationalityRaw || "سعودي",
-    category: loc.category_ar || loc.category_en || loc.categories || loc.type || "مطعم",
+    priceRange: priceRangeRaw || (locale === "ar" ? "غير محدد" : "Not specified"),
+    nationality: nationalityRaw || (locale === "ar" ? "سعودي" : "Saudi"),
+    category:
+      loc.category_ar ||
+      loc.category_en ||
+      loc.categories ||
+      loc.type ||
+      (locale === "ar" ? "مطعم" : "Restaurant"),
     image,
     mapsUrl,
   };
@@ -228,7 +237,7 @@ function shouldUseRestaurantDummy(): boolean {
   return process.env.NODE_ENV === "development";
 }
 
-export async function fetchRestaurants(): Promise<Restaurant[]> {
+export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Restaurant[]> {
   if (shouldUseRestaurantDummy()) {
     return DUMMY_RESTAURANTS;
   }
@@ -254,7 +263,7 @@ export async function fetchRestaurants(): Promise<Restaurant[]> {
             item.title_ar != null ||
             item.title_en != null)
       )
-      .map(transformLocationToRestaurant);
+      .map((item) => transformLocationToRestaurant(item, locale));
   } catch (error) {
     console.error("Error fetching restaurants:", error);
     if (

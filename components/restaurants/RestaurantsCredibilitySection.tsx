@@ -1,16 +1,18 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const IGCAT_WEBSITE_URL =
   process.env.NEXT_PUBLIC_IGCAT_WEBSITE_URL?.trim() || "https://igcat.org";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
-/**
- * IGCAT credibility block (Figma: ~1440×448, purple wash #CD8CFF @ 24% alpha).
- * Logo white blends into section via multiply; link: NEXT_PUBLIC_IGCAT_WEBSITE_URL.
- */
 const RestaurantsCredibilitySection = () => {
+  const t = useTranslations("restaurantsPage");
+  const tCommon = useTranslations("common");
+
   return (
     <section
       className="flex w-full justify-center bg-[#CD8CFF3D] py-5"
@@ -31,7 +33,7 @@ const RestaurantsCredibilitySection = () => {
           className="w-full max-w-[428px] text-center text-[40px] font-bold leading-[119%] text-black"
           style={{ fontFamily: ara }}
         >
-          عسير منطقة طهي عالمية 2024
+          {t("credibilityLine")}
         </h2>
 
         <Link
@@ -41,7 +43,7 @@ const RestaurantsCredibilitySection = () => {
           className="inline-flex h-[52px] min-w-[161px] items-center justify-center rounded-[55px] border border-[#6027D2] bg-[#6027D2] px-[10px] py-[10px] text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6027D2]"
           style={{ fontFamily: ara }}
         >
-          زياره الموقع
+          {tCommon("visitorSite")}
         </Link>
       </div>
     </section>

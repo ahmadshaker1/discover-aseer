@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useState, useMemo } from "react";
 import ExperienceCard from "@/components/experiences/ExperienceCard/ExperienceCard";
 import ExperiencesFilter, {
@@ -50,6 +51,9 @@ export default function ExperiencesWithFilter({
   experiences,
   filterOptions,
 }: ExperiencesWithFilterProps) {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
 
   const filteredExperiences = useMemo(
@@ -60,7 +64,10 @@ export default function ExperiencesWithFilter({
   const handleReset = () => setFilters(INITIAL_FILTERS);
 
   return (
-    <div className="flex flex-col gap-8 lg:flex-row-reverse">
+    <div
+      className="flex flex-col gap-8 lg:flex-row"
+      dir={isRtl ? "rtl" : "ltr"}
+    >
       <aside className="shrink-0 lg:self-start">
         <ExperiencesFilter
           filterOptions={filterOptions}
@@ -77,8 +84,8 @@ export default function ExperiencesWithFilter({
           ))}
         </div>
         {filteredExperiences.length === 0 && (
-          <p className="py-12 text-center text-gray-500">
-            لا توجد تجارب تطابق التصفية المحددة.
+          <p className="py-12 text-center text-muted-foreground">
+            {tCommon("noExperiencesFilter")}
           </p>
         )}
       </div>

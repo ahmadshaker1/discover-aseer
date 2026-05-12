@@ -80,6 +80,7 @@ const buildMapPlace = (
   row: DirectusRow,
   source: CollectionName,
   index: number,
+  locale: "ar" | "en",
 ): MapPlace => {
   const sourceId = String(row.id ?? index + 1);
   const lat = asNumberOrNull(row.latitude);
@@ -88,32 +89,44 @@ const buildMapPlace = (
 
   const title = pickFirstText(
     row,
-    ["name_ar", "title", "title_ar", "name_en", "title_en"],
-    `موقع ${index + 1}`,
+    locale === "en"
+      ? ["name_en", "title_en", "title", "name_ar", "title_ar"]
+      : ["name_ar", "title", "title_ar", "name_en", "title_en"],
+    locale === "en" ? `Place ${index + 1}` : `موقع ${index + 1}`,
   );
 
   const description = pickFirstText(
     row,
     [
-      "description_ar",
-      "description",
       "content",
-      "description_en",
+      ...(locale === "en"
+        ? (["description_en", "description", "description_ar"] as string[])
+        : (["description_ar", "description", "description_en"] as string[])),
       "booking_info_ar",
       "booking_info_en",
     ],
-    "موقع سياحي",
+    locale === "en" ? "Tourism location" : "موقع سياحي",
   );
 
   const category = pickFirstText(
     row,
-    ["category_ar", "categories", "type_ar", "type", "category_en", "type_en"],
-    "استفسارات",
+    locale === "en"
+      ? ["category_en", "type_en", "categories", "type", "category_ar", "type_ar"]
+      : ["category_ar", "categories", "type_ar", "type", "category_en", "type_en"],
+    locale === "en" ? "Information" : "استفسارات",
   );
 
-  const city = pickFirstText(row, ["city_ar", "city", "city_en"], "عسير");
+  const city = pickFirstText(
+    row,
+    locale === "en" ? ["city_en", "city", "city_ar"] : ["city_ar", "city", "city_en"],
+    locale === "en" ? "Aseer" : "عسير",
+  );
   const tag =
-    pickFirstText(row, ["type_ar", "type", "type_en", "tags"], "") || undefined;
+    pickFirstText(
+      row,
+      locale === "en" ? ["type_en", "type", "type_ar", "tags"] : ["type_ar", "type", "type_en", "tags"],
+      "",
+    ) || undefined;
 
   return {
     id: `${source}:${sourceId}`,
@@ -161,7 +174,9 @@ const fetchCollection = async (
   return Array.isArray(json.data) ? json.data : [];
 };
 
-export async function GET() {
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const locale = url.searchParams.get("locale") === "en" ? "en" : "ar";
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(
     /\/$/,
     "",
@@ -195,7 +210,7 @@ export async function GET() {
       const mapped = result.value
         .filter((row) => isPublished(row))
         .filter((row) => !isHiddenFromMap(row.hide_from_interactive_map))
-        .map((row, index) => buildMapPlace(row, collection, index));
+        .map((row, index) => buildMapPlace(row, collection, index, locale));
 
       merged.push(...mapped);
     }

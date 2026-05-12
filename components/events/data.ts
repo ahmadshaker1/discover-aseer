@@ -1,5 +1,6 @@
 import { DUMMY_EVENTS } from "./dummyEvents";
 import type { EventInterestId, EventListingItem } from "./types";
+import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
 export type { EventListingItem } from "./types";
 
@@ -108,36 +109,48 @@ function buildImages(apiEvent: ApiEvent): [string, string, string] {
   return [images[0], images[1], images[2]];
 }
 
-function formatDate(dateInput: string | null | undefined): string | null {
+function formatDate(dateInput: string | null | undefined, locale: LocaleCode): string | null {
   const clean = (dateInput || "").trim();
   if (!clean) return null;
   const date = new Date(clean);
   if (Number.isNaN(date.getTime())) return clean;
-  return new Intl.DateTimeFormat("ar-SA", {
+  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
     day: "numeric",
     month: "long",
   }).format(date);
 }
 
-function buildDateRange(startDate: string | null | undefined, endDate: string | null | undefined): string {
-  const start = formatDate(startDate);
-  const end = formatDate(endDate);
+function buildDateRange(
+  startDate: string | null | undefined,
+  endDate: string | null | undefined,
+  locale: LocaleCode,
+): string {
+  const start = formatDate(startDate, locale);
+  const end = formatDate(endDate, locale);
   if (start && end) return start === end ? start : `${start} - ${end}`;
-  return start || end || "غير محدد";
+  return start || end || (locale === "ar" ? "غير محدد" : "Not specified");
 }
 
-function buildTimeRange(startTime: string | null | undefined, endTime: string | null | undefined): string {
+function buildTimeRange(
+  startTime: string | null | undefined,
+  endTime: string | null | undefined,
+  locale: LocaleCode,
+): string {
   const start = (startTime || "").trim();
   const end = (endTime || "").trim();
   if (start && end) return `${start} - ${end}`;
-  return start || end || "غير محدد";
+  return start || end || (locale === "ar" ? "غير محدد" : "Not specified");
 }
 
-function toPriceLabel(isFree: boolean, price: string | number | null | undefined): string {
-  if (isFree) return "مجاني";
+function toPriceLabel(
+  isFree: boolean,
+  price: string | number | null | undefined,
+  locale: LocaleCode,
+): string {
+  if (isFree) return locale === "ar" ? "مجاني" : "Free";
   if (typeof price === "number" && Number.isFinite(price)) return `${price} ريال`;
   const clean = typeof price === "string" ? price.trim() : "";
-  if (!clean) return "غير محدد";
+  if (!clean) return locale === "ar" ? "غير محدد" : "Not specified";
   if (clean.includes("ريال") || clean.includes("SAR")) return clean;
   if (/^\d+(\.\d+)?$/.test(clean)) return `${clean} ريال`;
   return clean;
@@ -161,8 +174,11 @@ function isClickableEvent(flag: string | boolean | null | undefined): boolean {
   return !["true", "1", "yes"].includes(value);
 }
 
-export function transformApiEventToListingItem(apiEvent: ApiEvent): EventListingItem {
-  const title = (apiEvent.title || apiEvent.title_en || "").trim() || "فعالية بدون عنوان";
+export function transformApiEventToListingItem(
+  apiEvent: ApiEvent,
+  locale: LocaleCode = "ar",
+): EventListingItem {
+  const title = pickLocalizedField(apiEvent, "title", locale) || (locale === "ar" ? "فعالية بدون عنوان" : "Untitled event");
   const city = (apiEvent.city || "").trim();
 
   const freeFromFlag = parseIsFree(apiEvent.free_event);
@@ -180,17 +196,17 @@ export function transformApiEventToListingItem(apiEvent: ApiEvent): EventListing
     images: buildImages(apiEvent),
     rating: 4.5,
     reviewsCount: 0,
-    priceLabel: toPriceLabel(isFree, apiEvent.price),
-    locationLine: city ? `${city}، عسير` : "عسير",
+    priceLabel: toPriceLabel(isFree, apiEvent.price, locale),
+    locationLine: city ? `${city}، عسير` : locale === "ar" ? "عسير" : "Aseer",
     mapsUrl: toMapsUrl(apiEvent.map, title),
     mapsLinkLabel: city ? `${city}، عسير` : title,
-    dateRange: buildDateRange(apiEvent.start_date, apiEvent.end_date),
-    timeRange: buildTimeRange(apiEvent.start_time, apiEvent.end_time),
+    dateRange: buildDateRange(apiEvent.start_date, apiEvent.end_date, locale),
+    timeRange: buildTimeRange(apiEvent.start_time, apiEvent.end_time, locale),
     venueLabel: title,
   };
 }
 
-export async function fetchEvents(): Promise<EventListingItem[]> {
+export async function fetchEvents(locale: LocaleCode = "ar"): Promise<EventListingItem[]> {
   if (shouldUseEventsDummy()) {
     return DUMMY_EVENTS;
   }
@@ -208,7 +224,7 @@ export async function fetchEvents(): Promise<EventListingItem[]> {
 
     return apiData.data
       .filter((item) => isPublishedEvent(item.event_status) && isClickableEvent(item.unclickable))
-      .map(transformApiEventToListingItem);
+      .map((item) => transformApiEventToListingItem(item, locale));
   } catch (error) {
     console.error("Error fetching events:", error);
     if (

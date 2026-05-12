@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
+import { useLocale, useTranslations } from "next-intl";
 import { Fragment } from "react";
 import {
   HeartIcon,
@@ -71,7 +72,18 @@ const ExperiencesFilter = ({
   onFiltersChange,
   onReset,
 }: ExperiencesFilterProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
+  const tExperiencesPage = useTranslations("experiencesPage");
   const { cityOptions, interests, costOptions, travelerTypes } = filterOptions;
+
+  const cityMenuButtonClass = `flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm ${
+    isRtl ? "flex-row-reverse" : "flex-row"
+  }`;
+  const menuItemsClass = `absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none ${
+    isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"
+  }`;
 
   const handleInterestToggle = (interestId: string) => {
     onFiltersChange({
@@ -103,25 +115,28 @@ const ExperiencesFilter = ({
   };
 
   return (
-    <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm">
+    <div
+      className="w-full max-w-md rounded-lg bg-surface p-6 text-foreground shadow-sm"
+      dir={isRtl ? "rtl" : "ltr"}
+    >
       <div className="mb-8 flex items-center justify-between gap-4">
         <Button
           onClick={handleReset}
-          className="px-4 py-2 cursor-pointer text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-gray-500 data-[focus]:ring-offset-2"
+          className="cursor-pointer whitespace-nowrap rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
         >
-          إعادة تعيين النتائج
+          {tCommon("resetFilters")}
         </Button>
-        <h2 className="text-xl font-bold text-black">تصفية التجارب</h2>
+        <h2 className="text-xl font-bold text-foreground">{tCommon("filterExperiences")}</h2>
       </div>
 
       <div className="mb-4">
         <Menu as="div" className="relative">
-          <Menu.Button className="flex flex-row-reverse items-center gap-2 w-full rounded-full bg-white text-black px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 cursor-pointer">
-            <ChevronDownIcon />
-            <span className="flex-1 text-right">
-              {cityOptions.find((city) => city.id === filters.city)?.label || "المدينة"}
-            </span>
+          <Menu.Button className={cityMenuButtonClass}>
             <LocationIcon />
+            <span className="flex-1 text-start">
+              {cityOptions.find((city) => city.id === filters.city)?.label || tCommon("city")}
+            </span>
+            <ChevronDownIcon />
           </Menu.Button>
           <Transition
             as={Fragment}
@@ -132,7 +147,7 @@ const ExperiencesFilter = ({
             leaveFrom="opacity-100 scale-100 translate-y-0"
             leaveTo="opacity-0 scale-95 translate-y-1"
           >
-            <Menu.Items className="absolute right-0 z-50 mt-2 w-full origin-top-right rounded-lg border border-gray-200 bg-white shadow-xl ring-1 ring-black/10 focus:outline-none">
+            <Menu.Items className={menuItemsClass}>
               <div className="py-1">
                 {cityOptions.map((city) => (
                   <Menu.Item key={city.id}>
@@ -145,11 +160,11 @@ const ExperiencesFilter = ({
                             city: filters.city === city.id ? null : city.id,
                           })
                         }
-                        className={`${active ? "bg-[#6027D2]/10 text-[#6027D2]" : ""} ${
+                        className={`${active ? "bg-primary/10 text-primary" : ""} ${
                           filters.city === city.id
-                            ? "bg-[#6027D2]/5 text-[#6027D2] font-semibold"
-                            : "text-black"
-                        } block w-full text-right px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
+                            ? "bg-primary/5 font-semibold text-primary"
+                            : "text-foreground"
+                        } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
                       >
                         {city.label} ({city.count})
                       </button>
@@ -164,9 +179,9 @@ const ExperiencesFilter = ({
 
       {interests.length > 0 && (
         <div className="mb-8">
-          <div className="mb-4 flex items-center justify-end gap-2">
+          <div className="mb-4 flex items-center justify-start gap-2">
             <HeartIcon />
-            <h3 className="text-lg font-bold text-black">الاهتمامات</h3>
+            <h3 className="text-lg font-bold text-foreground">{tCommon("interests")}</h3>
           </div>
           <div className="space-y-4">
             {interests.map((interest) => {
@@ -176,15 +191,14 @@ const ExperiencesFilter = ({
                   key={interest.id}
                   className="flex items-center justify-between p-2 rounded transition-colors"
                 >
-                  <div className="flex items-center gap-3 flex-row-reverse">
-                    <span className="text-sm text-black">{interest.label}</span>
+                  <div className="flex flex-row items-center gap-3">
                     <Checkbox
                       checked={isChecked}
                       onChange={() => handleInterestToggle(interest.id)}
-                      className="group relative cursor-pointer inline-flex h-4 w-4 items-center justify-center rounded border-2 border-gray-300 bg-white transition data-[checked]:border-black data-[checked]:bg-black data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2"
+                      className="group relative inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded border-2 border-border bg-surface transition data-checked:border-primary data-checked:bg-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
                     >
                       <svg
-                        className="h-3 w-3 stroke-white opacity-0 group-data-[checked]:opacity-100"
+                        className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
                         viewBox="0 0 14 14"
                         fill="none"
                       >
@@ -196,8 +210,9 @@ const ExperiencesFilter = ({
                         />
                       </svg>
                     </Checkbox>
+                    <span className="text-sm text-foreground">{interest.label}</span>
                   </div>
-                  <span className="text-sm text-gray-600 font-medium">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {interest.count}
                   </span>
                 </div>
@@ -208,9 +223,9 @@ const ExperiencesFilter = ({
       )}
 
       <div className="mb-8">
-        <div className="mb-4 flex items-center justify-end gap-2">
+        <div className="mb-4 flex items-center justify-start gap-2">
           <WalletIcon />
-          <h3 className="text-lg font-bold text-black">التكلفة</h3>
+          <h3 className="text-lg font-bold text-foreground">{tExperiencesPage("costSection")}</h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
           {costOptions.map((option) => {
@@ -221,23 +236,23 @@ const ExperiencesFilter = ({
                 key={option.id}
                 onClick={() => handleCostSelect(option.id)}
                 disabled={option.count === 0}
-                className={`flex flex-col items-center justify-center cursor-pointer p-4 rounded-lg border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-4 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
                   isSelected
-                    ? "border-black bg-gray-50"
-                    : "border-gray-200 hover:border-gray-300"
+                    ? "border-primary bg-muted"
+                    : "border-border hover:border-muted-foreground"
                 }`}
               >
                 <div
                   className={`mb-2 ${
-                    isSelected ? "text-black" : "text-gray-400"
+                    isSelected ? "text-foreground" : "text-muted-foreground"
                   }`}
                 >
                   {icon}
                 </div>
-                <span className="text-sm font-medium text-black">
+                <span className="text-sm font-medium text-foreground">
                   {option.label}
                 </span>
-                <span className="text-xs text-gray-500">({option.count})</span>
+                <span className="text-xs text-muted-foreground">({option.count})</span>
               </Button>
             );
           })}
@@ -246,9 +261,9 @@ const ExperiencesFilter = ({
 
       {travelerTypes.length > 0 && (
         <div>
-          <div className="mb-4 flex items-center justify-end gap-2">
+          <div className="mb-4 flex items-center justify-start gap-2">
             <SuitcaseIcon />
-            <h3 className="text-lg font-bold text-black">نوع المسافرين</h3>
+            <h3 className="text-lg font-bold text-foreground">{tCommon("travelerTypes")}</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {travelerTypes.map((traveler) => {
@@ -259,21 +274,21 @@ const ExperiencesFilter = ({
                   key={traveler.id}
                   onClick={() => handleTravelerToggle(traveler.id)}
                   disabled={traveler.count === 0}
-                  className={`flex flex-row items-center justify-center px-2 py-1 space-x-1 cursor-pointer h-12 rounded-full border-2 transition-all data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-black data-[focus]:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`flex h-12 cursor-pointer flex-row items-center justify-center space-x-1 rounded-full border-2 px-2 py-1 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
                     isSelected
-                      ? "border-black bg-gray-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-primary bg-muted"
+                      : "border-border hover:border-muted-foreground"
                   }`}
                 >
                   <div
-                    className={` ${isSelected ? "text-black" : "text-gray-400"}`}
+                    className={` ${isSelected ? "text-foreground" : "text-muted-foreground"}`}
                   >
                     {icon}
                   </div>
-                  <span className="text-xs font-medium text-black text-center">
+                  <span className="text-center text-xs font-medium text-foreground">
                     {traveler.label}
                   </span>
-                  <span className="text-xs text-gray-500">({traveler.count})</span>
+                  <span className="text-xs text-muted-foreground">({traveler.count})</span>
                 </Button>
               );
             })}

@@ -17,7 +17,7 @@ const data = [
     {
         background: "/assets/activities/landmarks.jpg",
         title: "المعالم السياحية",
-        link: "/activities",
+        link: "/attractions",
     },
     {
         background: "/assets/activities/aseer-cuisine.jpg",

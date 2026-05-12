@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import FilterDropdown from "./FilterDropdown";
 import InterestsFilter from "./InterestsFilter";
 import { ClockIcon, PriceIcon, PeopleIcon, LocationIcon } from "./Icons";
@@ -12,6 +13,9 @@ import {
 } from "./filterOptions";
 
 const LandmarksFilters = () => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
   const [selectedDuration, setSelectedDuration] = useState<string | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<string | null>(null);
   const [selectedTravelers, setSelectedTravelers] = useState<string | null>(
@@ -29,11 +33,11 @@ const LandmarksFilters = () => {
   };
 
   return (
-    <div className="flex justify-start w-full">
+    <div className={`flex w-full ${isRtl ? "justify-start" : "justify-end"}`} dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex flex-wrap gap-2 sm:gap-4">
         <FilterDropdown
           icon={<ClockIcon />}
-          label="مدة الزيارة"
+          label={isRtl ? "مدة الزيارة" : "Visit duration"}
           selectedValue={selectedDuration}
           options={durationOptions}
           onSelect={setSelectedDuration}
@@ -42,7 +46,7 @@ const LandmarksFilters = () => {
 
         <FilterDropdown
           icon={<PriceIcon />}
-          label="الأسعار"
+          label={isRtl ? "الأسعار" : "Prices"}
           selectedValue={selectedPrice}
           options={priceOptions}
           onSelect={setSelectedPrice}
@@ -51,7 +55,7 @@ const LandmarksFilters = () => {
 
         <FilterDropdown
           icon={<PeopleIcon />}
-          label="المسافرين"
+          label={tCommon("travelers")}
           selectedValue={selectedTravelers}
           options={travelerOptions}
           onSelect={setSelectedTravelers}
@@ -66,7 +70,7 @@ const LandmarksFilters = () => {
 
         <FilterDropdown
           icon={<LocationIcon />}
-          label="المدينة"
+          label={tCommon("city")}
           selectedValue={selectedCity}
           options={cityOptions}
           onSelect={setSelectedCity}

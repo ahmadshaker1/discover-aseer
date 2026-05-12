@@ -6,6 +6,7 @@
  */
 
 import type { Landmark } from "@/components/landmarks/data";
+import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
 export interface Destination {
   id: string;
@@ -15,6 +16,8 @@ export interface Destination {
   area: string;
   description: string;
   image: string;
+  lat?: number;
+  lon?: number;
   cityId?: string;
   interestTags?: string[];
 }
@@ -93,17 +96,27 @@ export interface ApiDestination {
   id: string | number;
   status?: string;
   title?: string | null;
+  title_en?: string | null;
   title_ar?: string | null;
   name?: string | null;
+  name_en?: string | null;
   name_ar?: string | null;
   slug?: string | null;
   location?: string | null;
   address?: string | null;
   description?: string | null;
+  description_en?: string | null;
+  description_ar?: string | null;
   content?: string | null;
+  content_en?: string | null;
+  content_ar?: string | null;
   cover_image?: string | null;
   hero_image?: string | null;
   destination_image?: string | null;
+  lat?: number | string | null;
+  lon?: number | string | null;
+  latitude?: number | string | null;
+  longitude?: number | string | null;
   city?: string | null;
   tags?: string | null;
   interest_tags?: string[] | null;
@@ -128,15 +141,43 @@ const cityMap: Record<string, string> = {
   "نجران": "najran",
 };
 
-export const transformDestination = (row: ApiDestination, directusUrl: string): Destination => {
+const fallbackCoordsBySlug: Record<string, { lat: number; lon: number }> = {
+  abha: { lat: 18.2164, lon: 42.5053 },
+  "al-soudah": { lat: 18.2676, lon: 42.3678 },
+  "rijal-almua": { lat: 18.2007, lon: 42.2236 },
+  "khamis-mushait": { lat: 18.3009, lon: 42.7292 },
+  tanomah: { lat: 27.0972, lon: 44.1277 },
+  bisha: { lat: 19.9844, lon: 42.6052 },
+};
+
+const toNumber = (value: number | string | null | undefined): number | undefined => {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim().length > 0) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return undefined;
+};
+
+export const transformDestination = (
+  row: ApiDestination,
+  directusUrl: string,
+  locale: LocaleCode = "ar",
+): Destination => {
   const imageAsset = row.cover_image || row.hero_image || row.destination_image;
   const imageUrl = imageAsset
     ? `${directusUrl}/assets/${imageAsset}`
     : "/assets/activities/points-of-interest.jpg";
 
-  const title = row.title?.trim() || row.title_ar?.trim() || row.name?.trim() || row.name_ar?.trim() || "";
+  const title =
+    pickLocalizedField(row, "title", locale) ||
+    pickLocalizedField(row, "name", locale) ||
+    "";
   const location = row.location?.trim() || row.address?.trim() || row.city?.trim() || "";
-  const description = row.description?.trim() || row.content?.trim() || "";
+  const description =
+    pickLocalizedField(row, "description", locale) ||
+    pickLocalizedField(row, "content", locale) ||
+    "";
 
   const slug =
     row.slug?.trim() ||
@@ -148,6 +189,8 @@ export const transformDestination = (row: ApiDestination, directusUrl: string): 
 
   const area = row.city || location?.split(",")[0]?.trim() || "";
   const cityId = cityMap[(row.city || "").trim()] || undefined;
+  const lat = toNumber(row.lat ?? row.latitude);
+  const lon = toNumber(row.lon ?? row.longitude);
 
   const sourceText = `${title} ${description}`;
   const fallbackTags: string[] = [];
@@ -170,12 +213,14 @@ export const transformDestination = (row: ApiDestination, directusUrl: string): 
     area,
     description,
     image: imageUrl,
+    lat,
+    lon,
     cityId,
     interestTags: mappedTags.filter(Boolean),
   };
 };
 
-export const fetchDestinations = async (): Promise<Destination[]> => {
+export const fetchDestinations = async (locale: LocaleCode = "ar"): Promise<Destination[]> => {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
   if (!directusUrl) {
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
@@ -189,15 +234,28 @@ export const fetchDestinations = async (): Promise<Destination[]> => {
     const apiData: ApiDestinationResponse = await response.json();
     return apiData.data
       .filter((d) => !d.status || d.status === "published")
-      .map((d) => transformDestination(d, directusUrl));
+      .map((d) => transformDestination(d, directusUrl, locale));
   } catch {
     return [];
   }
 };
 
-export const fetchDestinationsWithFallback = async (): Promise<Destination[]> => {
-  const rows = await fetchDestinations();
-  return rows.length > 0 ? rows : FALLBACK_DESTINATIONS;
+export const fetchDestinationsWithFallback = async (locale: LocaleCode = "ar"): Promise<Destination[]> => {
+  const rows = await fetchDestinations(locale);
+  const source = rows.length > 0 ? rows : FALLBACK_DESTINATIONS;
+  return source.map((d) => {
+    if (typeof d.lat === "number" && typeof d.lon === "number") return d;
+    const fallback = fallbackCoordsBySlug[d.slug];
+    return fallback ? { ...d, ...fallback } : d;
+  });
+};
+
+export const getDestinationBySlug = async (
+  slug: string,
+  locale: LocaleCode = "ar",
+): Promise<Destination | null> => {
+  const rows = await fetchDestinationsWithFallback(locale);
+  return rows.find((d) => d.slug === slug) ?? null;
 };
 
 /** Maps a destination into `Landmark` shape for reuse of `AttractionsLandmarkCard` (design parity). */

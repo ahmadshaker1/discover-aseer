@@ -1,5 +1,5 @@
-import Link from "next/link";
-import Image from "next/image";
+import { useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -15,15 +15,22 @@ export interface CommunityHeroData {
   title: string;
   // Full-bleed hero background image URL/path.
   backgroundImage: string;
-  // Ribbon tile image URL/path used in the right ribbon stack.
-  ribbonPatternImage: string;
   // Social icons + destination URLs.
   socialLinks: CommunityHeroSocialLink[];
 }
 
 function BreadcrumbChevron() {
+  const isRtl = useLocale() === "ar";
   return (
-    <svg width="5" height="10" viewBox="0 0 5 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg
+      width="5"
+      height="10"
+      viewBox="0 0 5 10"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      className={isRtl ? "" : "rotate-180"}
+    >
       <path
         d="M4.25184 0C4.35476 0 4.45767 0.0379143 4.53892 0.119164C4.69601 0.276247 4.69601 0.536248 4.53893 0.693332L1.00726 4.225C0.747259 4.485 0.747259 4.9075 1.00726 5.1675L4.53893 8.69916C4.69601 8.85625 4.69601 9.11625 4.53893 9.27333C4.38184 9.43041 4.12184 9.43041 3.96476 9.27333L0.433092 5.74167C0.156842 5.46542 -0.000241179 5.09166 -0.000241213 4.69625C-0.000241248 4.30083 0.151425 3.92708 0.433092 3.65083L3.96476 0.119165C4.04601 0.0433312 4.14893 0 4.25184 0Z"
         fill="white"
@@ -100,6 +107,8 @@ function SocialIcon({ platform }: { platform: CommunityHeroSocialLink["platform"
 }
 
 const CommunityHero = ({ data }: CommunityHeroProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   return (
     <section
       className="relative flex h-[360px] w-full flex-col items-center justify-center overflow-hidden md:h-[481px]"
@@ -113,35 +122,22 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
       {/* Backend: changing `data.backgroundImage` updates the hero image without touching styles/markup. */}
       <div className="absolute inset-0 bg-black/30" />
 
-      {/* Backend: changing `data.ribbonPatternImage` updates all right ribbon tiles. */}
-      {/* Design: 5 fixed stacked tiles (143x15), rotated and clipped by overflow. */}
-      <div
-        className="pointer-events-none absolute right-0 top-[227px] z-20 hidden h-[715px] w-[15px] overflow-hidden md:flex md:flex-col"
+      {/* Right-edge ribbon, matching landing hero positioning/overflow behavior. */}
+      <img
+        src="/hero-pattern/ribbon_column.png"
+        alt=""
         aria-hidden
-      >
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index} className="relative h-[143px] w-[15px] overflow-hidden">
-            <div className="absolute left-0 top-0 origin-top-left rotate-90 translate-y-[-143px]">
-              <Image
-                src={data.ribbonPatternImage}
-                alt=""
-                width={143}
-                height={15}
-                className="block h-[15px] w-[143px] max-w-none"
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+        className={`absolute top-0 z-20 hidden h-full w-[15px] object-cover md:block ${isRtl ? "right-0" : "left-0 scale-x-[-1]"}`}
+      />
 
       <div
-        className="pointer-events-none absolute right-0 top-0 z-2 hidden md:block"
+        className={`pointer-events-none absolute top-0 z-2 hidden md:block ${isRtl ? "right-0" : "left-0"}`}
         aria-hidden
         style={{
           width: "553px",
           height: "187px",
-          transform: "rotate(90deg) translateY(-120px)",
-          transformOrigin: "top right",
+          transform: isRtl ? "rotate(90deg) translateY(-120px)" : "rotate(-90deg) translateY(120px)",
+          transformOrigin: isRtl ? "top right" : "top left",
           backdropFilter: "blur(400px)",
         }}
       >
@@ -149,7 +145,7 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
       </div>
 
       {/* Backend: `data.socialLinks` drives icon links; keep supported platforms in `CommunityHeroSocialLink`. */}
-      <div className="absolute right-12 top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex">
+      <div className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex ${isRtl ? "right-12" : "left-12"}`}>
         {data.socialLinks.map((social) => (
           <Link
             key={social.platform}
@@ -164,35 +160,37 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
         ))}
       </div>
 
-      <div className="relative z-10 flex w-full max-w-[min(100%,680px)] flex-col items-center gap-5 px-6 py-10 text-center sm:gap-6 sm:px-10 md:px-12">
-        <div
-          className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-          dir="ltr"
-          style={{ fontFamily: ara }}
-        >
-          {data.breadcrumbs.map((crumb, index) => (
-            <span key={`${crumb.label}-${index}`} className="inline-flex items-center gap-1.5 sm:gap-2">
-              {crumb.href ? (
-                <Link
-                  href={crumb.href}
-                  className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
-                >
-                  {crumb.label}
-                </Link>
-              ) : (
-                <span className="text-[16px] font-normal leading-6 text-white">{crumb.label}</span>
-              )}
-              {index < data.breadcrumbs.length - 1 ? <BreadcrumbChevron /> : null}
-            </span>
-          ))}
-        </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
+          <div
+            className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
+            dir={isRtl ? "rtl" : "ltr"}
+            style={{ fontFamily: ara }}
+          >
+            {data.breadcrumbs.map((crumb, index) => (
+              <span key={`${crumb.label}-${index}`} className="inline-flex items-center gap-1.5 sm:gap-2">
+                {crumb.href ? (
+                  <Link
+                    href={crumb.href}
+                    className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                  >
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span className="text-[16px] font-normal leading-6 text-white">{crumb.label}</span>
+                )}
+                {index < data.breadcrumbs.length - 1 ? <BreadcrumbChevron /> : null}
+              </span>
+            ))}
+          </div>
 
-        <h1
-          className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-          style={{ fontFamily: ara }}
-        >
-          {data.title}
-        </h1>
+          <h1
+            className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
+            style={{ fontFamily: ara }}
+          >
+            {data.title}
+          </h1>
+        </div>
       </div>
     </section>
   );

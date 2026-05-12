@@ -1,38 +1,43 @@
 import Image from "next/image";
-import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
-import { fetchExperiences } from "@/components/experiences/data";
+import { fetchExperienceById } from "@/components/experiences/data";
 
 interface ExperienceDetailsPageProps {
   params: Promise<{ id: string }>;
 }
 
-const travelerLabels: Record<string, string> = {
-  female: "مسافرة منفردة",
-  individual: "رحلة فردية",
-  couple: "زوج",
-  family: "عائلة و أطفال",
-  groups: "رحلة جماعية",
+const TRAVELER_MESSAGE_KEYS: Record<string, "travelerFemale" | "travelerIndividual" | "travelerCouple" | "travelerFamily" | "travelerGroups"> = {
+  female: "travelerFemale",
+  individual: "travelerIndividual",
+  couple: "travelerCouple",
+  family: "travelerFamily",
+  groups: "travelerGroups",
 };
 
 export default async function ExperienceDetailsPage({
   params,
 }: ExperienceDetailsPageProps) {
   const { id } = await params;
-  const { experiences } = await fetchExperiences();
-  const experience = experiences.find((item) => String(item.id) === id);
+  const locale = await getLocale();
+  const t = await getTranslations("experiencesDetail");
+  const experience = await fetchExperienceById(id);
 
   if (!experience) {
     notFound();
   }
 
+  const splitRegex = locale === "en" ? /[.!?]+/ : /[.!?؟]+/;
   const detailsParagraphs = experience.description
-    .split(/[.!؟]/)
+    .split(splitRegex)
     .map((part) => part.trim())
     .filter(Boolean);
 
+  const currency = experience.currency ?? t("currencyFallback");
+
   return (
-    <main className="pb-16" dir="rtl">
+    <main className="bg-background pb-16 text-foreground" dir={locale === "ar" ? "rtl" : "ltr"}>
       <section className="relative h-[360px] w-full overflow-hidden md:h-[500px]">
         <Image
           src={experience.imageUrl}
@@ -42,7 +47,7 @@ export default async function ExperienceDetailsPage({
           sizes="100vw"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/30 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-6xl px-4 pb-8 text-white md:px-6">
           <div className="mb-4 flex items-center justify-between gap-3 text-sm">
             <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur-sm">
@@ -52,7 +57,7 @@ export default async function ExperienceDetailsPage({
               href="/experiences"
               className="rounded-full border border-white/60 px-4 py-2 transition-colors hover:bg-white/10"
             >
-              العودة إلى التجارب
+              {t("backToExperiences")}
             </Link>
           </div>
           <h1 className="text-3xl font-bold leading-tight md:text-5xl">
@@ -65,9 +70,9 @@ export default async function ExperienceDetailsPage({
       <div className="container mx-auto mt-10 px-4 md:px-6">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
           <article className="space-y-8">
-            <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-xl font-bold text-black">عن التجربة</h2>
-              <div className="space-y-4 text-[15px] leading-8 text-gray-700">
+            <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
+              <h2 className="mb-4 text-xl font-bold text-foreground">{t("aboutExperience")}</h2>
+              <div className="space-y-4 text-[15px] leading-8 text-muted-foreground">
                 {(detailsParagraphs.length > 0
                   ? detailsParagraphs
                   : [experience.description]
@@ -78,30 +83,30 @@ export default async function ExperienceDetailsPage({
             </section>
 
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <p className="mb-1 text-sm text-gray-500">الجهة المقدمة</p>
-                <p className="text-base font-semibold text-black">{experience.provider}</p>
+              <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <p className="mb-1 text-sm text-muted-foreground">{t("providerLabel")}</p>
+                <p className="text-base font-semibold text-foreground">{experience.provider}</p>
               </div>
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <p className="mb-1 text-sm text-gray-500">السعر</p>
-                <p className="text-base font-semibold text-black">
-                  {experience.price} {experience.currency ?? "ر.س"}
+              <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <p className="mb-1 text-sm text-muted-foreground">{t("priceLabel")}</p>
+                <p className="text-base font-semibold text-foreground">
+                  {experience.price} {currency}
                 </p>
               </div>
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <p className="mb-1 text-sm text-gray-500">حجم المجموعة</p>
-                <p className="text-base font-semibold text-black">x{experience.groupSize}</p>
+              <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <p className="mb-1 text-sm text-muted-foreground">{t("groupSizeLabel")}</p>
+                <p className="text-base font-semibold text-foreground">x{experience.groupSize}</p>
               </div>
             </section>
 
             {experience.filterInterests.length > 0 ? (
-              <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
-                <h3 className="mb-4 text-lg font-bold text-black">الاهتمامات المناسبة</h3>
+              <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
+                <h3 className="mb-4 text-lg font-bold text-foreground">{t("interestsHeading")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {experience.filterInterests.map((interest) => (
                     <span
                       key={interest}
-                      className="rounded-full border border-gray-300 px-3 py-1.5 text-sm text-black"
+                      className="rounded-full border border-border px-3 py-1.5 text-sm text-foreground"
                     >
                       {interest}
                     </span>
@@ -111,38 +116,42 @@ export default async function ExperienceDetailsPage({
             ) : null}
 
             {experience.filterTravelers.length > 0 ? (
-              <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
-                <h3 className="mb-4 text-lg font-bold text-black">نوع المسافرين المناسب</h3>
+              <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
+                <h3 className="mb-4 text-lg font-bold text-foreground">{t("travelersHeading")}</h3>
                 <div className="flex flex-wrap gap-2">
-                  {experience.filterTravelers.map((traveler) => (
-                    <span
-                      key={traveler}
-                      className="rounded-full bg-[#CD8CFF24] px-3 py-1.5 text-sm text-[#5A18B5]"
-                    >
-                      {travelerLabels[traveler] ?? traveler}
-                    </span>
-                  ))}
+                  {experience.filterTravelers.map((traveler) => {
+                    const msgKey = TRAVELER_MESSAGE_KEYS[traveler];
+                    const label = msgKey ? t(msgKey) : traveler;
+                    return (
+                      <span
+                        key={traveler}
+                        className="rounded-full bg-primary/15 px-3 py-1.5 text-sm text-primary"
+                      >
+                        {label}
+                      </span>
+                    );
+                  })}
                 </div>
               </section>
             ) : null}
           </article>
 
           <aside className="lg:sticky lg:top-24 lg:h-fit">
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-              <p className="text-sm text-gray-500">ابدأ الحجز</p>
-              <p className="mt-2 text-2xl font-bold text-black">
-                {experience.price} {experience.currency ?? "ر.س"}
+            <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+              <p className="text-sm text-muted-foreground">{t("bookingTitle")}</p>
+              <p className="mt-2 text-2xl font-bold text-foreground">
+                {experience.price} {currency}
               </p>
-              <p className="mt-1 text-sm text-gray-500">
-                الحد الأدنى للمجموعة: x{experience.groupSize}
+              <p className="mt-1 text-sm text-muted-foreground">
+                {t("groupMinimum", { size: experience.groupSize })}
               </p>
               <a
                 href={experience.bookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-[#7300CD] px-8 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
               >
-                احجز الآن
+                {t("bookNow")}
               </a>
             </div>
           </aside>

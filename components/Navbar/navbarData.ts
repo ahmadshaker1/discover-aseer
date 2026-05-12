@@ -16,32 +16,32 @@
 import { GlobeIcon, CrescentMoonIcon, BookletIcon } from "./Icons";
 
 export const discoverAseerLinks = [
-  { href: "/destinations", label: "الوجهات" },
-  { href: "/destinations/browse", label: "تصفح الوجهات" },
-  { href: "/attractions", label: "المعالم السياحية" },
-  { href: "/landmarks", label: "جميع المعالم" },
-  { href: "/about-aseer", label: "عن عسير" },
-  { href: "/aseer-cuisine", label: "المطبخ العسيري" },
-  { href: "/aseer-community", label: "مجتمع عسير" },
-  { href: "/restaurants", label: "المطاعم" },
-  { href: "/experiences", label: "التجارب" },
-  { href: "/film", label: "الأفلام" },
-  { href: "/tour-guides", label: "المرشدين السياحيين" },
-  { href: "/tour-guides/register", label: "تسجيل المرشدين السياحيين" },
-  { href: "/accommodation", label: "الإقامة" },
-  { href: "/Getting-here-and-around", label: "الوصول و التنقل" },
-  { href: "/services-support", label: "الخدمات المساندة" },
-  { href: "/travel-tips", label: "معلومات أساسية" },
-  { href: "/event-seasons", label: "المواسم والفعاليات" },
-  { href: "/interactive-map", label: "الخريطة التفاعلية" },
+  { href: "/destinations", labelAr: "الوجهات", labelEn: "Destinations" },
+  { href: "/destinations/browse", labelAr: "تصفح الوجهات", labelEn: "Browse destinations" },
+  { href: "/attractions", labelAr: "المعالم السياحية", labelEn: "Attractions" },
+  { href: "/attractions/inner", labelAr: "المعالم السياحية الداخلية", labelEn: "Indoor attractions" },
+  { href: "/about-aseer", labelAr: "عن عسير", labelEn: "About Aseer" },
+  { href: "/aseer-cuisine", labelAr: "المطبخ العسيري", labelEn: "Aseer cuisine" },
+  { href: "/aseer-community", labelAr: "مجتمع عسير", labelEn: "Aseer community" },
+  { href: "/restaurants", labelAr: "المطاعم", labelEn: "Restaurants" },
+  { href: "/experiences", labelAr: "التجارب", labelEn: "Experiences" },
+  { href: "/film", labelAr: "الأفلام", labelEn: "Film" },
+  { href: "/tour-guides", labelAr: "المرشدين السياحيين", labelEn: "Tour guides" },
+  { href: "/tour-guides/register", labelAr: "تسجيل المرشدين السياحيين", labelEn: "Tour guide registration" },
+  { href: "/accommodation", labelAr: "الإقامة", labelEn: "Accommodation" },
+  { href: "/Getting-here-and-around", labelAr: "الوصول و التنقل", labelEn: "Getting here and around" },
+  { href: "/services-support", labelAr: "الخدمات المساندة", labelEn: "Support services" },
+  { href: "/travel-tips", labelAr: "معلومات أساسية", labelEn: "Travel tips" },
+  { href: "/event-seasons", labelAr: "المواسم والفعاليات", labelEn: "Seasons and events" },
+  { href: "/interactive-map", labelAr: "الخريطة التفاعلية", labelEn: "Interactive map" },
 ];
 
 /** LTR: left → right in the nav bar */
 export const navigationLinks = [
-  { href: "/", label: "الرئيسية" },
-  { href: "#", label: "اكتشف عسير", isDropdown: true },
-  { href: "/planner", label: "خطط رحلتك" },
-  { href: "/events", label: "الفعاليات" },
+  { href: "/", labelKey: "common.home" },
+  { href: "#", labelKey: "common.discoverAseer", isDropdown: true },
+  { href: "/planner", labelKey: "nav.planTrip" },
+  { href: "/events", labelKey: "nav.events" },
 ];
 
 export const iconButtons = [

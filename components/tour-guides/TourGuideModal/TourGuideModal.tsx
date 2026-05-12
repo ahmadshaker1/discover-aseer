@@ -4,7 +4,6 @@ import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import Image from "next/image";
 import {
   CloseIcon,
-  LocationIcon,
   WhatsAppIcon,
   ClockIcon,
   PeopleIcon,
@@ -50,15 +49,11 @@ const TourGuideModal = ({
       <div className="fixed inset-0 bg-neutral-900/80" aria-hidden="true" />
 
       {/* Modal Container with Animation */}
-      <div
-        className="fixed inset-0 flex items-end sm:items-center justify-center p-2 sm:p-4"
-        dir="rtl"
-      >
-        <DialogPanel className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl shadow-xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-2 sm:mx-4 modal-enter">
+      <div className="fixed inset-0 flex items-end sm:items-center justify-center p-2 sm:p-4">
+        <DialogPanel className="relative mx-2 w-full max-w-2xl max-h-[95vh] overflow-y-auto rounded-2xl bg-surface text-foreground shadow-xl sm:mx-4 sm:max-h-[90vh] sm:rounded-3xl modal-enter">
           <Button
             onClick={onClose}
-            className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
-            dir="rtl"
+            className="absolute top-3 right-3 z-10 rounded-full p-2 transition-colors hover:bg-muted sm:top-4 sm:right-4"
           >
             <CloseIcon />
           </Button>
@@ -67,9 +62,9 @@ const TourGuideModal = ({
             {/* Profile Section */}
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-4 sm:mb-6">
               {/* Profile Picture */}
-              <div className="relative w-24 h-24 shrink-0 overflow-visible">
+              <div className="relative w-24 h-24 shrink-0">
                 <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
-                  <div className="relative w-full h-full rounded-full overflow-hidden bg-white">
+                  <div className="relative h-full w-full overflow-hidden rounded-full bg-surface">
                     <Image
                       src={guide.profileImage}
                       alt={guide.name}
@@ -79,18 +74,12 @@ const TourGuideModal = ({
                     />
                   </div>
                 </div>
-                <div className="absolute -bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-medium text-[#61189F] shadow-sm backdrop-blur-sm">
-                  <LocationIcon />
-                  <span className="max-w-[88px] truncate font-bold">
-                    {guide.location}
-                  </span>
-                </div>
               </div>
 
               {/* Details Container */}
               <div className="flex-1 w-full sm:w-auto">
                 {/* Name */}
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-2 sm:mb-3">
+                <h2 className="mb-2 text-xl font-bold text-foreground sm:mb-3 sm:text-2xl">
                   {guide.name}
                 </h2>
 
@@ -99,9 +88,7 @@ const TourGuideModal = ({
                   {guide.languages.map((lang) => (
                     <div key={lang.code} className="flex items-center gap-1.5">
                       <LanguageFlag code={lang.code} />
-                      <span className="text-sm text-black">
-                        {lang.code === "en" ? "الإنجليزية" : "العربية"}
-                      </span>
+                      <span className="text-sm text-foreground">{lang.name}</span>
                     </div>
                   ))}
                 </div>
@@ -109,7 +96,7 @@ const TourGuideModal = ({
                 {/* WhatsApp Button */}
                 <a
                   href={guide.whatsappUrl}
-                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-white border rounded-full hover:bg-gray-50 transition-colors text-xs sm:text-sm font-medium"
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-2 text-xs font-medium transition-colors hover:bg-muted sm:px-4 sm:text-sm"
                 >
                   <span className="text-green-600">
                     <WhatsAppIcon />
@@ -121,10 +108,10 @@ const TourGuideModal = ({
 
             {/* About Section */}
             <div className="mb-4 sm:mb-6">
-              <h3 className="text-lg sm:text-xl font-bold text-black mb-2 sm:mb-3">
+              <h3 className="mb-2 text-lg font-bold text-foreground sm:mb-3 sm:text-xl">
                 عن {guide.name.split(" ")[0]}
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-4">
+              <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
                 {about}
               </p>
 
@@ -134,7 +121,7 @@ const TourGuideModal = ({
                   {guide.specialties.map((specialty, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1.5 border border-purple-200 text-purple-600 rounded-full text-sm bg-white"
+                      className="rounded-full border border-primary/30 bg-surface px-3 py-1.5 text-sm text-primary"
                     >
                       {specialty}
                     </span>
@@ -145,11 +132,11 @@ const TourGuideModal = ({
 
             {/* Services Section */}
             <div>
-              <h3 className="text-lg sm:text-xl font-bold text-black mb-3 sm:mb-4">
+              <h3 className="mb-3 text-lg font-bold text-foreground sm:mb-4 sm:text-xl">
                 الخدمات
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
+                <div className="rounded-xl bg-muted p-3 sm:rounded-2xl sm:p-4">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <ClockIcon />
                     <span className="text-xs sm:text-sm font-medium">
@@ -157,7 +144,7 @@ const TourGuideModal = ({
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <p className="text-base sm:text-lg font-bold text-black">
+                    <p className="text-base font-bold text-foreground sm:text-lg">
                       {pricePerHour}
                     </p>
                     <span className="text-purple-600">
@@ -165,36 +152,36 @@ const TourGuideModal = ({
                     </span>
                   </div>
                 </div>
-                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
+                <div className="rounded-xl bg-muted p-3 sm:rounded-2xl sm:p-4">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <PeopleIcon />
                     <span className="text-xs sm:text-sm font-medium">
                       الحد الأعلى للأشخاص
                     </span>
                   </div>
-                  <p className="text-base sm:text-lg font-bold text-black">
+                  <p className="text-base font-bold text-foreground sm:text-lg">
                     {maxPersons}
                   </p>
                 </div>
-                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
+                <div className="rounded-xl bg-muted p-3 sm:rounded-2xl sm:p-4">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <CarIcon />
                     <span className="text-xs sm:text-sm font-medium">
                       وسيلة النقل
                     </span>
                   </div>
-                  <p className="text-base sm:text-lg font-bold text-black">
+                  <p className="text-base font-bold text-foreground sm:text-lg">
                     {transportation}
                   </p>
                 </div>
-                <div className="bg-gray-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl">
+                <div className="rounded-xl bg-muted p-3 sm:rounded-2xl sm:p-4">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <CalendarIcon />
                     <span className="text-xs sm:text-sm font-medium">
                       المواعيد
                     </span>
                   </div>
-                  <p className="text-base sm:text-lg font-bold text-black">
+                  <p className="text-base font-bold text-foreground sm:text-lg">
                     {availability}
                   </p>
                 </div>

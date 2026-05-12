@@ -7,18 +7,26 @@ interface DestinationsGridCardProps {
   destination: Destination;
   categoryLabel?: string;
   className?: string;
+  cardHref?: string;
 }
 
-/** Same visual design as `AttractionsLandmarkCard`; static content only (no card-level link). */
+/** Same visual design as `AttractionsLandmarkCard`; optional full-card link. */
 const DestinationsGridCard = ({
   destination,
   categoryLabel = "وجهة سياحية",
   className,
+  cardHref,
 }: DestinationsGridCardProps) => {
   const landmark = destinationToLandmark(destination);
+  const resolvedCardHref = cardHref ?? `/destinations/${destination.slug}`;
 
   return (
-    <AttractionsLandmarkCard landmark={landmark} categoryLabel={categoryLabel} className={className} />
+    <AttractionsLandmarkCard
+      landmark={landmark}
+      categoryLabel={categoryLabel}
+      className={className}
+      cardHref={resolvedCardHref}
+    />
   );
 };
 

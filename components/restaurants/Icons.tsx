@@ -87,7 +87,7 @@ export const StarIcon = () => (
     <g clipPath="url(#clip0_1102_9954)">
       <path
         d="M9.00018 13.695L3.71043 16.656L4.89168 10.71L0.44043 6.594L6.46068 5.88L9.00018 0.375L11.5397 5.88L17.5599 6.594L13.1087 10.71L14.2899 16.656L9.00018 13.695ZM9.00018 11.976L12.1854 13.7587L11.4737 10.179L14.1534 7.70025L10.5287 7.2705L9.00018 3.95625L7.47168 7.27125L3.84693 7.70025L6.52668 10.179L5.81493 13.7587L9.00018 11.976V11.976Z"
-        fill="#09121F"
+        fill="currentColor"
       />
     </g>
     <defs>
@@ -109,63 +109,63 @@ export const BuildingIcon = () => (
     <g clipPath="url(#clip0_1114_10717)">
       <path
         d="M16.5 15V8.25H1.5V15C1.5 15.3978 1.65804 15.7794 1.93934 16.0607C2.22064 16.342 2.60218 16.5 3 16.5H15C15.3978 16.5 15.7794 16.342 16.0607 16.0607C16.342 15.7794 16.5 15.3978 16.5 15Z"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M13.5 8.25V3H4.5V8.25"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M11.25 16.5V13.5C11.25 12.9033 11.0129 12.331 10.591 11.909C10.169 11.4871 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.4871 7.40901 11.909C6.98705 12.331 6.75 12.9033 6.75 13.5V16.5"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M16.5 8.25V6.75"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M1.5 8.25V6.75"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M4.5 3V1.5"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M13.5 3V1.5"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M7.5 3V1.5"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M10.5 3V1.5"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -190,7 +190,7 @@ export const DiamondIcon = () => (
     <g clipPath="url(#clip0_1113_9491)">
       <path
         d="M3.65453 2.25H14.345C14.4634 2.24998 14.58 2.27797 14.6855 2.33168C14.7909 2.38538 14.8822 2.46328 14.9518 2.559L17.819 6.501C17.87 6.57114 17.8951 6.65678 17.89 6.74334C17.885 6.8299 17.8501 6.91203 17.7913 6.97575L9.27503 16.2015C9.20756 16.2744 9.1139 16.3176 9.01463 16.3215C8.91535 16.3255 8.81857 16.2899 8.74553 16.2225C8.74028 16.218 5.89553 13.1362 0.208281 6.97575C0.149484 6.91203 0.114586 6.8299 0.109526 6.74334C0.104467 6.65678 0.129558 6.57114 0.180531 6.501L3.04778 2.559C3.11737 2.46328 3.20861 2.38538 3.31407 2.33168C3.41952 2.27797 3.53619 2.24998 3.65453 2.25ZM4.03703 3.75L1.93703 6.6375L8.99978 14.2875L16.0625 6.6375L13.9625 3.75H4.03703Z"
-        fill="#09121F"
+        fill="currentColor"
       />
     </g>
     <defs>

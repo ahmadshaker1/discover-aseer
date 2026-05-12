@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useLocale } from "next-intl";
 import type { EventListingItem } from "../types";
 
 const PLACEHOLDER = "/assets/experiences/experiences.png";
@@ -120,6 +121,8 @@ interface EventListingCardProps {
 }
 
 const EventListingCard = ({ event }: EventListingCardProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const [imageIndex, setImageIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
 
@@ -140,22 +143,22 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   const venue = event.venueLabel ?? event.title;
 
   const expandedPanel = (
-    <div className="flex flex-col gap-4 px-4 pb-4 pt-5 text-right sm:pt-6" dir="rtl">
-      <h3 className="w-full text-right text-2xl font-bold leading-none text-black" style={{ fontFamily: ara }}>
+    <div className={`flex flex-col gap-4 px-4 pb-4 pt-5 sm:pt-6 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
+      <h3 className={`w-full text-2xl font-bold leading-none text-foreground ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ara }}>
         {event.title}
       </h3>
 
-      <div className="flex w-full gap-3 text-[#9CA3AF]">
-        <MapPinIcon className="shrink-0 text-[#9CA3AF]" />
+      <div className="flex w-full gap-3 text-muted-foreground">
+        <MapPinIcon className="shrink-0 text-muted-foreground" />
         <div className="min-w-0 flex-1 text-right">
-          <p className="text-sm font-bold leading-tight text-black" style={{ fontFamily: ara }}>
+          <p className="text-sm font-bold leading-tight text-foreground" style={{ fontFamily: ara }}>
             {venue}
           </p>
           <a
             href={event.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-0.5 block text-right text-sm font-medium text-[#6027D2] underline"
+            className={`mt-0.5 block text-sm font-medium text-[#6027D2] underline ${isRtl ? "text-right" : "text-left"}`}
             style={{ fontFamily: ibm }}
           >
             {event.mapsLinkLabel}
@@ -163,37 +166,37 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
         </div>
       </div>
 
-      <div className="flex w-full gap-3 text-[#9CA3AF]">
-        <CalendarIcon className="shrink-0 text-[#9CA3AF]" />
-        <div className="min-w-0 text-right">
-          <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
-            التاريخ
+      <div className="flex w-full gap-3 text-muted-foreground">
+        <CalendarIcon className="shrink-0 text-muted-foreground" />
+        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+            {isRtl ? "التاريخ" : "Date"}
           </p>
-          <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
+          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.dateRange}
           </p>
         </div>
       </div>
 
-      <div className="flex w-full gap-3 text-[#9CA3AF]">
-        <ClockIcon className="shrink-0 text-[#9CA3AF]" />
-        <div className="min-w-0 text-right">
-          <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
-            الوقت
+      <div className="flex w-full gap-3 text-muted-foreground">
+        <ClockIcon className="shrink-0 text-muted-foreground" />
+        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+            {isRtl ? "الوقت" : "Time"}
           </p>
-          <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
+          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.timeRange}
           </p>
         </div>
       </div>
 
       <div className="flex w-full gap-3">
-        <CurrencyIcon className="mt-0.5 shrink-0 text-[#19171A]" />
-        <div className="min-w-0 text-right">
-          <p className="text-xs text-[#9CA3AF]" style={{ fontFamily: ibm }}>
-            التذكرة
+        <CurrencyIcon className="mt-0.5 shrink-0 text-foreground" />
+        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+            {isRtl ? "التذكرة" : "Ticket"}
           </p>
-          <p className="text-sm font-medium text-black" style={{ fontFamily: ibm }}>
+          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.priceLabel}
           </p>
         </div>
@@ -204,7 +207,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   return (
     <div
       className="group/card relative z-0 mx-auto h-[357px] w-full max-w-[318px] justify-self-center hover:z-40 focus-within:z-40"
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
         setHovered(false);
@@ -230,8 +233,8 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           />
 
           <div
-            className="absolute left-2 top-2 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]"
-            dir="rtl"
+            className={`absolute top-2 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-2" : "right-2"}`}
+            dir={isRtl ? "rtl" : "ltr"}
           >
             <RatingStar />
             <span
@@ -243,7 +246,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           </div>
 
           <div
-            className="absolute right-2 top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-right text-[14px] font-bold leading-none text-white"
+            className={`absolute top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-[14px] font-bold leading-none text-white ${isRtl ? "right-2 text-right" : "left-2 text-left"}`}
             style={{ fontFamily: ara }}
           >
             {imageIndex + 1}/3
@@ -255,11 +258,11 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             </h3>
             <div className="flex w-full justify-start">
               <div
-                className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-[#9DDEDE] px-2 py-1 text-right text-black"
+                className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-surface/85 px-2 py-1 text-right text-foreground"
                 style={{ fontFamily: ara }}
               >
                 <span className="text-right text-sm font-bold leading-none">{event.priceLabel}</span>
-                <CurrencyIcon className="shrink-0 text-[#19171A]" />
+                <CurrencyIcon className="shrink-0 text-foreground" />
               </div>
             </div>
             <div className="flex w-full flex-col items-stretch gap-3 text-right">
@@ -299,7 +302,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
       </article>
 
       <div
-        className="pointer-events-none absolute inset-x-0 top-full z-1 -mt-4 max-h-0 origin-top -translate-y-1 overflow-hidden rounded-b-[20px] border-x border-b border-[#E5E5E5] bg-white opacity-0 shadow-[0_10px_28px_-12px_rgba(0,0,0,0.14)] transition-[max-height,opacity,transform] duration-300 ease-out group-hover/card:pointer-events-auto group-hover/card:max-h-[min(420px,70vh)] group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:max-h-[min(420px,70vh)] group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100"
+        className="pointer-events-none absolute inset-x-0 top-full z-1 -mt-4 max-h-0 origin-top -translate-y-1 overflow-hidden rounded-b-[20px] border-x border-b border-border bg-surface opacity-0 shadow-[0_10px_28px_-12px_rgba(0,0,0,0.14)] transition-[max-height,opacity,transform] duration-300 ease-out group-hover/card:pointer-events-auto group-hover/card:max-h-[min(420px,70vh)] group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:max-h-[min(420px,70vh)] group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100"
       >
         {expandedPanel}
       </div>

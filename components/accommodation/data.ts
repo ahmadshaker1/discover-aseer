@@ -1,3 +1,5 @@
+import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+
 export interface Accommodation {
   id: string;
   name: string;
@@ -9,6 +11,10 @@ export interface Accommodation {
   reviewsCount: number;
   stars: number;
   bookingUrl: string;
+  /** Featured / exceptional property — shown in horizontal strip + badge */
+  exceptional?: boolean;
+  /** Maps link for "الموقع" CTA; falls back to Google search from name/city/location */
+  mapsUrl?: string | null;
 }
 
 export interface ApiAccommodation {
@@ -30,6 +36,10 @@ export interface ApiAccommodation {
   reviews_count?: number | string | null;
   stars?: number | string | null;
   booking_link?: string | null;
+  maps_url?: string | null;
+  google_maps_url?: string | null;
+  exceptional?: boolean | null;
+  is_exceptional?: boolean | null;
   [key: string]: unknown;
 }
 
@@ -57,8 +67,13 @@ const u = (id: string) =>
  * - rating: numeric rating (shown as 4.8/5)
  * - reviewsCount: numeric reviews count (shown in rating pill)
  * - stars: hotel class (3/4/5) used by right filter
- * - bookingUrl: destination URL for "احجز الآن" button
+ * - bookingUrl: legacy / external booking reference if needed
+ * - exceptional: featured strip + badge
+ * - mapsUrl: explicit maps link, else derived in UI
  */
+const maps = (q: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+
 export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
   {
     id: "a1",
@@ -72,6 +87,8 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     reviewsCount: 233,
     stars: 5,
     bookingUrl: "https://www.booking.com",
+    exceptional: true,
+    mapsUrl: maps("قصر أبها أبها طريق الملك فهد"),
   },
   {
     id: "a2",
@@ -85,6 +102,8 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     reviewsCount: 233,
     stars: 4,
     bookingUrl: "https://www.booking.com",
+    exceptional: false,
+    mapsUrl: maps("بيات أبها حي السد"),
   },
   {
     id: "a3",
@@ -98,6 +117,8 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     reviewsCount: 188,
     stars: 5,
     bookingUrl: "https://www.booking.com",
+    exceptional: true,
+    mapsUrl: maps("قصر أبها سكاي أبها"),
   },
   {
     id: "a4",
@@ -111,6 +132,8 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     reviewsCount: 120,
     stars: 4,
     bookingUrl: "https://www.booking.com",
+    exceptional: false,
+    mapsUrl: maps("منتجع السودة"),
   },
   {
     id: "a5",
@@ -124,6 +147,8 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     reviewsCount: 97,
     stars: 3,
     bookingUrl: "https://www.booking.com",
+    exceptional: false,
+    mapsUrl: maps("فندق خميس بارك خميس مشيط"),
   },
   {
     id: "a6",
@@ -137,6 +162,50 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     reviewsCount: 76,
     stars: 3,
     bookingUrl: "https://www.booking.com",
+    exceptional: false,
+    mapsUrl: maps("أجنحة عسير أبها"),
+  },
+  {
+    id: "a7",
+    name: "فندق لولوة أبها",
+    city: "أبها",
+    location: "حي الموظفين، أبها",
+    description: "فندق بخدمات راقية وموقع مميز قرب المطار وطريق الملك فهد.",
+    image: u("1618773928121-ec2e2058ed99"),
+    rating: 4.9,
+    reviewsCount: 312,
+    stars: 5,
+    bookingUrl: "https://www.booking.com",
+    exceptional: true,
+    mapsUrl: maps("فندق لولوة أبها"),
+  },
+  {
+    id: "a8",
+    name: "نُزل الضباب",
+    city: "السودة",
+    location: "قرية رجال ألمع",
+    description: "إقامة تراثية فاخرة مع إطلالة جبلية وضباب الصباح.",
+    image: u("1582719478250-c89cae4dc85b"),
+    rating: 4.85,
+    reviewsCount: 156,
+    stars: 4,
+    bookingUrl: "https://www.booking.com",
+    exceptional: true,
+    mapsUrl: maps("نزل الضباب السودة"),
+  },
+  {
+    id: "a9",
+    name: "فيلا الجبل الذهبي",
+    city: "خميس مشيط",
+    location: "طريق الملك عبدالله",
+    description: "فيلا فندقية بمسبح داخلي وخدمة خاصة للعائلات الكبيرة.",
+    image: u("1571896349842-33c89424de2d"),
+    rating: 4.75,
+    reviewsCount: 201,
+    stars: 5,
+    bookingUrl: "https://www.booking.com",
+    exceptional: true,
+    mapsUrl: maps("فيلا الجبل الذهبي خميس مشيط"),
   },
 ];
 
@@ -172,6 +241,7 @@ const buildAssetUrl = (directusUrl: string, assetId?: string | null) => {
 export const transformAccommodation = (
   apiAccommodation: ApiAccommodation,
   directusUrl: string,
+  locale: LocaleCode = "ar",
 ): Accommodation => {
   const imageUrl = buildAssetUrl(
     directusUrl,
@@ -179,13 +249,12 @@ export const transformAccommodation = (
   );
 
   const name = String(
-    apiAccommodation.name_ar ||
+    pickLocalizedField(apiAccommodation, "name", locale) ||
       apiAccommodation.name ||
-      apiAccommodation.name_en ||
-      "مكان إقامة",
+      (locale === "ar" ? "مكان إقامة" : "Accommodation"),
   );
 
-  const city = String(apiAccommodation.city || "أبها");
+  const city = String(apiAccommodation.city || (locale === "ar" ? "أبها" : "Abha"));
 
   const locationValue = String(apiAccommodation.location || "").trim();
   const location =
@@ -193,6 +262,18 @@ export const transformAccommodation = (
     String(apiAccommodation.area || city || DEFAULT_LOCATION);
 
   const hotelRating = toNumber(apiAccommodation.hotel_rating, 4);
+
+  const mapsUrlRaw = String(
+    apiAccommodation.maps_url ||
+      apiAccommodation.google_maps_url ||
+      "",
+  ).trim();
+  const mapsUrl =
+    mapsUrlRaw && isHttpUrl(mapsUrlRaw) ? mapsUrlRaw : undefined;
+
+  const exceptional = Boolean(
+    apiAccommodation.exceptional ?? apiAccommodation.is_exceptional,
+  );
 
   return {
     id: String(apiAccommodation.id),
@@ -203,7 +284,9 @@ export const transformAccommodation = (
       apiAccommodation.content ||
         apiAccommodation.short_description ||
         apiAccommodation.description ||
-        "إقامة مميزة بخدمات فندقية وتجربة مريحة.",
+        (locale === "ar"
+          ? "إقامة مميزة بخدمات فندقية وتجربة مريحة."
+          : "A premium stay with comfortable hospitality services."),
     ),
     image: imageUrl,
     rating: toNumber(apiAccommodation.average_rating, 4.5),
@@ -212,10 +295,50 @@ export const transformAccommodation = (
     bookingUrl: String(
       apiAccommodation.booking_link || "https://www.booking.com",
     ),
+    exceptional,
+    mapsUrl,
   };
 };
 
-export const fetchAccommodations = async (): Promise<Accommodation[]> => {
+export function accommodationMapsHref(a: Accommodation): string {
+  const raw = a.mapsUrl?.trim();
+  if (raw && isHttpUrl(raw)) return raw;
+  const q = `${a.name} ${a.city} ${a.location}`.trim();
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+}
+
+/**
+ * Splits filtered hotels into carousel vs grid.
+ * When CMS never sets `exceptional`, the first five matches populate the carousel
+ * so the strip is still visible; those same items are omitted from the grid to avoid duplicates.
+ */
+export function splitAccommodationLists(
+  filtered: Accommodation[],
+  onlyExceptional: boolean,
+): { carousel: Accommodation[]; grid: Accommodation[] } {
+  const flagged = filtered.filter((a) => a.exceptional);
+  if (flagged.length > 0) {
+    const carousel = flagged;
+    const grid = onlyExceptional ? [] : filtered.filter((a) => !a.exceptional);
+    return { carousel, grid };
+  }
+
+  if (onlyExceptional) {
+    return {
+      carousel: filtered.slice(0, Math.min(5, filtered.length)),
+      grid: [],
+    };
+  }
+
+  const carousel = filtered.slice(0, Math.min(5, filtered.length));
+  const carouselIds = new Set(carousel.map((a) => a.id));
+  const grid = filtered.filter((a) => !carouselIds.has(a.id));
+  return { carousel, grid };
+}
+
+export const fetchAccommodations = async (
+  locale: LocaleCode = "ar",
+): Promise<Accommodation[]> => {
   if (shouldUseAccommodationDummy()) {
     return DUMMY_ACCOMMODATIONS;
   }
@@ -256,7 +379,7 @@ export const fetchAccommodations = async (): Promise<Accommodation[]> => {
           !accommodation.status || accommodation.status === "published",
       )
       .map((accommodation) =>
-        transformAccommodation(accommodation, directusUrl),
+        transformAccommodation(accommodation, directusUrl, locale),
       );
     return transformed.length > 0 ? transformed : DUMMY_ACCOMMODATIONS;
   } catch (error) {

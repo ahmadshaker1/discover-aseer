@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import { useLocale } from "next-intl";
 import ServicesSupportFilterSidebar from "./ServicesSupportFilterSidebar";
 import ServicesSupportGrid from "./ServicesSupportGrid";
 import ServicesSupportPagination from "./ServicesSupportPagination";
@@ -11,7 +12,8 @@ interface ServicesSupportCatalogProps {
   services: SupportService[];
 }
 
-const ITEMS_PER_PAGE = 9;
+/** 3 columns × 4 rows on large screens */
+const ITEMS_PER_PAGE = 12;
 
 interface FilterOption {
   value: string;
@@ -32,7 +34,9 @@ function buildOptions(values: string[]): FilterOption[] {
 }
 
 const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
-  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -54,8 +58,7 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
 
   const filteredServices = useMemo(() => {
     return services.filter((service) => {
-      const cityMatch =
-        selectedCities.length === 0 || selectedCities.includes(service.city);
+      const cityMatch = !selectedCity || selectedCity === service.city;
       const categoryMatch =
         selectedCategories.length === 0 ||
         selectedCategories.includes(service.category);
@@ -64,7 +67,7 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
 
       return cityMatch && categoryMatch && typeMatch;
     });
-  }, [services, selectedCities, selectedCategories, selectedTypes]);
+  }, [services, selectedCity, selectedCategories, selectedTypes]);
 
   const totalPages = Math.max(
     1,
@@ -89,23 +92,24 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
   };
 
   const resetFilters = () => {
-    setSelectedCities([]);
+    setSelectedCity(null);
     setSelectedCategories([]);
     setSelectedTypes([]);
     setCurrentPage(1);
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
-        <div className="order-2 w-full flex-1 lg:order-1">
+    <div className="mx-auto w-full max-w-[1440px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+      <div className="flex w-full min-w-0 flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+        <div className="order-2 min-w-0 flex-1 lg:order-1">
           {services.length === 0 ? (
             <div
-              className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-center text-gray-600"
-              dir="rtl"
+              className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-center text-muted-foreground"
+              dir={isRtl ? "rtl" : "ltr"}
             >
-              لا توجد بيانات خدمات متاحة حاليًا. يرجى التحقق من إعدادات الـ API
-              أو المحاولة لاحقًا.
+              {isRtl
+                ? "لا توجد بيانات خدمات متاحة حاليًا. يرجى التحقق من إعدادات الـ API أو المحاولة لاحقًا."
+                : "No support services data is available right now. Please check the API settings or try again later."}
             </div>
           ) : (
             <ServicesSupportGrid services={paginatedServices} />
@@ -117,15 +121,18 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
           />
         </div>
 
-        <div className="order-1 w-full max-w-[300px] lg:order-2 lg:w-[300px] lg:shrink-0">
+        <div className="order-1 w-full shrink-0 lg:order-2 lg:w-[min(100%,320px)] lg:max-w-[320px]">
           <ServicesSupportFilterSidebar
             cityOptions={cityOptions}
             categoryOptions={categoryOptions}
             typeOptions={typeOptions}
-            selectedCities={selectedCities}
+            selectedCity={selectedCity}
             selectedCategories={selectedCategories}
             selectedTypes={selectedTypes}
-            onToggleCity={(value) => toggleInList(setSelectedCities, value)}
+            onCityChange={(value) => {
+              setSelectedCity(value);
+              setCurrentPage(1);
+            }}
             onToggleCategory={(value) =>
               toggleInList(setSelectedCategories, value)
             }

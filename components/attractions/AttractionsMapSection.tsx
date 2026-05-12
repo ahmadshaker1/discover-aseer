@@ -1,15 +1,28 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
 import MapPlaceholderSection from "@/components/MapPlaceholderSection";
 
-const PALACES_MAPS_URL =
-  "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("قصور آل أبو سراح");
+const AttractionsMapSection = () => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const t = useTranslations("attractionsPage");
+  const query =
+    locale === "en"
+      ? "Al Abu Sirah palaces, Asir, Saudi Arabia"
+      : "قصور آل أبو سراح";
+  const palacesMapsUrl =
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
-const AttractionsMapSection = () => (
-  <MapPlaceholderSection
-    ctaLabel="مشاهدة قصور آل أبو سراح على الخريطة"
-    ctaWidthPx={266}
-    mapHref={PALACES_MAPS_URL}
-    imageAlt="خريطة قصور آل أبو سراح"
-  />
-);
+  return (
+    <MapPlaceholderSection
+      ctaLabel={t("mapPalacesCta")}
+      ctaWidthPx={266}
+      mapHref={palacesMapsUrl}
+      imageAlt={t("mapPalacesAlt")}
+      dir={isRtl ? "rtl" : "ltr"}
+    />
+  );
+};
 
 export default AttractionsMapSection;

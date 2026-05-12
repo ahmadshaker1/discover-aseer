@@ -1,3 +1,4 @@
+import { getLocale, getTranslations } from "next-intl/server";
 import DestinationsHero from "@/components/destinations/DestinationsHero";
 import DestinationsIntroSection from "@/components/destinations/DestinationsIntroSection";
 import DestinationsLandmarksSection from "@/components/destinations/DestinationsLandmarksSection";
@@ -10,25 +11,31 @@ import { fetchDestinationsWithFallback } from "@/components/destinations/data";
 import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
 
 const DestinationsPage = async () => {
+  const locale = await getLocale();
+  const tCommon = await getTranslations("common");
+  const tDest = await getTranslations("destinations");
   const destinations = await fetchDestinationsWithFallback();
 
   return (
-    <div className="flex w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <DestinationsHero
         breadcrumbs={[
-          { label: "التجارب" },
-          { label: "الصفحة الرئيسية", href: "/" },
+          { label: tDest("breadcrumbDestinations") },
+          { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
-        title="أبها"
-        subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
-        backgroundImage="/assets/activities/activities.jpg"
+        title={tDest("heroTitleAbha")}
+        subtitle={tDest("heroSubtitleAbha")}
+        backgroundImage="/assets/destinations/hero-destinations.png"
+        weatherArea={tDest("heroTitleAbha")}
+        weatherLat={18.2164}
+        weatherLon={42.5053}
       />
 
       <DestinationsIntroSection
-        title={DESTINATIONS_MAIN_INTRO_TITLE}
-        imageUrl="/assets/activities/activities.jpg"
+        title={tDest("introTitle")}
+        imageUrl="/assets/destinations/hero-destinations.png"
         imageAlt=""
-        paragraphs={DESTINATIONS_MAIN_INTRO_PARAGRAPHS}
+        paragraphs={locale === "ar" ? DESTINATIONS_MAIN_INTRO_PARAGRAPHS : [tDest("introBody")]}
       />
 
       <DestinationsLandmarksSection destinations={destinations} />

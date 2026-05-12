@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@headlessui/react";
+import { useLocale, useTranslations } from "next-intl";
 import { PointOfInterest } from "./data";
 
 interface PreviewImagesProps {
@@ -15,22 +16,26 @@ export const PreviewImages = ({
   currentIndex,
   onSelect,
 }: PreviewImagesProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const t = useTranslations("common");
+
   return (
     <div
-      className="flex h-[101px] w-full max-w-[653px] flex-row gap-[24px] overflow-x-auto hide-scrollbar lg:w-[653px]"
-      dir="rtl"
+      className="flex h-[101px] w-full max-w-[653px] flex-row items-center gap-[24px] overflow-x-auto hide-scrollbar lg:w-[653px]"
+      dir={isRtl ? "rtl" : "ltr"}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       {points.map((point, index) => (
         <Button
           key={point.id}
           onClick={() => onSelect(index)}
-          className={`relative h-[101px] w-[140px] shrink-0 overflow-hidden rounded-[12px] transition-all duration-300 cursor-pointer ${
+          className={`relative h-[101px] w-[140px] shrink-0 overflow-hidden rounded-[12px] transition-opacity duration-300 cursor-pointer ${
             index === currentIndex
-              ? "scale-110"
-              : "opacity-70 hover:opacity-100 hover:scale-105"
+              ? "z-[1] opacity-100 ring-2 ring-white ring-offset-2 ring-offset-black/40"
+              : "opacity-70 hover:opacity-100"
           }`}
-          aria-label={`Select ${point.title}`}
+          aria-label={`${t("browseMore")} ${point.title}`}
         >
           <Image
             src={point.image}

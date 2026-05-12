@@ -2,10 +2,11 @@
 
 import { useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import { useLocale, useTranslations } from "next-intl";
 import FilterDropdown from "../landmarks/FilterDropdown";
 import InterestsFilter from "../landmarks/InterestsFilter";
 import { DayPicker } from "react-day-picker";
-import { ar } from "date-fns/locale";
+import { ar, enUS } from "date-fns/locale";
 import "react-day-picker/dist/style.css";
 import {
   LocationIcon,
@@ -67,6 +68,10 @@ interface PlannerFormProps {
 }
 
 const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
+  const tPlanner = useTranslations("planner");
   const [description, setDescription] = useState("");
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [arrivalDate, setArrivalDate] = useState("");
@@ -116,16 +121,16 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="bg-gray-100 rounded-2xl p-6 sm:p-8 lg:p-12">
+      <div className="rounded-2xl bg-surface p-6 text-foreground sm:p-8 lg:p-12">
         {/* Title */}
-        <h2 className="text-2xl sm:text-3xl font-bold text-right mb-6 sm:mb-8">
-          اكتب وصفاً لرحلتك
+        <h2 className={`text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 ${isRtl ? "text-right" : "text-left"}`}>
+          {isRtl ? "اكتب وصفاً لرحلتك" : "Write a description of your trip"}
         </h2>
 
         {/* Main textarea */}
         <div className="mb-6">
           <textarea
-            dir="rtl"
+            dir={isRtl ? "rtl" : "ltr"}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             onKeyDown={(e) => {
@@ -138,18 +143,22 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                 return;
               }
             }}
-            placeholder="اقتراح: خطط لرحلة لمدة 7 أيام إلى عسير مع استراحة إفطار في الساعة 10 صباحاً، واستراحة غداء في الساعة 3 مساءً، واستراحة عشاء في الساعة 8 مساءً."
-            className="w-full h-40 sm:h-48 p-4 sm:p-6 rounded-xl bg-white border border-gray-300 text-right text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6027D2] focus:border-transparent resize-none"
+            placeholder={
+              isRtl
+                ? "اقتراح: خطط لرحلة لمدة 7 أيام إلى عسير مع استراحة إفطار في الساعة 10 صباحاً، واستراحة غداء في الساعة 3 مساءً، واستراحة عشاء في الساعة 8 مساءً."
+                : "Suggestion: Plan a 7-day trip to Aseer with breakfast at 10 AM, lunch at 3 PM, and dinner at 8 PM."
+            }
+            className={`h-40 w-full resize-none rounded-xl border border-border bg-background p-4 text-sm placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary sm:h-48 sm:p-6 sm:text-base ${isRtl ? "text-right" : "text-left"}`}
           />
         </div>
 
         {/* Input fields row */}
-        <div className="flex  items-end gap-3 sm:gap-4 mb-6 text-right justify-start">
+        <div className={`flex items-end gap-3 sm:gap-4 mb-6 ${isRtl ? "text-right justify-start" : "text-left justify-end"}`}>
           {/* City */}
           <div>
             <FilterDropdown
               icon={<LocationIcon />}
-              label="المدينة"
+              label={tCommon("city")}
               selectedValue={selectedCity}
               options={cityOptions}
               onSelect={setSelectedCity}
@@ -161,7 +170,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
             <Menu as="div" className="relative">
               <Menu.Button
                 type="button"
-                className="flex flex-row-reverse items-center gap-2 rounded-full bg-white text-black px-3 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 hover:border-[#6027D2] hover:bg-[#6027D2]/5 transition-all duration-200 cursor-pointer"
+                className={`flex cursor-pointer items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs text-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 sm:px-6 sm:py-2 sm:text-sm ${isRtl ? "flex-row-reverse" : "flex-row"}`}
               >
                 <ChevronDownIcon />
                 <span className="text-right whitespace-nowrap">
@@ -170,10 +179,10 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                         departureDate,
                       )}`
                     : arrivalDate
-                      ? `من ${formatDate(arrivalDate)}`
+                      ? `${isRtl ? "من" : "From"} ${formatDate(arrivalDate)}`
                       : departureDate
-                        ? `إلى ${formatDate(departureDate)}`
-                        : "اختر تاريخ الوصول والمغادرة"}
+                        ? `${isRtl ? "إلى" : "To"} ${formatDate(departureDate)}`
+                        : tCommon("datePlaceholder")}
                 </span>
                 <CalendarIcon />
               </Menu.Button>
@@ -186,8 +195,8 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                 leaveFrom="opacity-100 scale-100 translate-y-0"
                 leaveTo="opacity-0 scale-95 translate-y-1"
               >
-                <Menu.Items className="absolute right-0 mt-2 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/10 focus:outline-none z-50 border border-gray-200 p-4">
-                  <div className="flex flex-col gap-4" dir="rtl">
+                <Menu.Items className={`absolute z-50 mt-2 rounded-lg border border-border bg-surface p-4 shadow-xl ring-1 ring-border focus:outline-none ${isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"}`}>
+                  <div className="flex flex-col gap-4" dir={isRtl ? "rtl" : "ltr"}>
                     {/* إضافة التقويم هنا */}
                     <style>{`
       /* هذي التعديلات البسيطة عشان نظبط ألوان الفيجما على التقويم */
@@ -213,7 +222,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
 
                     <DayPicker
                       mode="range"
-                      locale={ar} // تحويل التقويم للعربي
+                      locale={isRtl ? ar : enUS}
                       selected={{
                         from: arrivalDate
                           ? fromLocalISODate(arrivalDate)
@@ -244,7 +253,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
           <div>
             <FilterDropdown
               icon={<ClockIcon />}
-              label="فترة الخروج"
+              label={isRtl ? "فترة الخروج" : "Time period"}
               selectedValue={selectedDuration}
               options={durationOptions}
               onSelect={setSelectedDuration}
@@ -263,7 +272,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                 );
               }}
               onClear={() => setSelectedInterests([])}
-              label="الاهتمامات"
+              label={tCommon("interests")}
               options={interestOptions}
               icon={<HeartIcon />}
             />
@@ -271,14 +280,14 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
         </div>
 
         {/* Submit button */}
-        <div className="flex justify-start">
+        <div className={`flex ${isRtl ? "justify-start" : "justify-end"}`}>
           <button
             type="submit"
             data-submit-plan="true"
             disabled={isLoading || !description.trim()}
             className="px-8 py-3 bg-[#6027D2] text-white rounded-full font-semibold text-base hover:bg-[#5020B8] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "جاري التخطيط..." : "إنشاء الخطة"}
+            {isLoading ? (isRtl ? "جاري التخطيط..." : "Planning...") : (isRtl ? "إنشاء الخطة" : tPlanner("title"))}
           </button>
         </div>
       </div>

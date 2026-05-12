@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "next-intl";
 import PlannerForm from "./PlannerForm";
 import ScheduleDisplay from "./ScheduleDisplay";
 import { PlanResponse } from "./types";
 
 const PlannerPageContent = () => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const [schedule, setSchedule] = useState<PlanResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,11 +56,19 @@ const PlannerPageContent = () => {
       ) {
         setSchedule(result as PlanResponse);
       } else {
-        setError("تعذر قراءة الخطة من الخادم، حاول مرة أخرى");
+        setError(
+          isRtl
+            ? "تعذر قراءة الخطة من الخادم، حاول مرة أخرى"
+            : "Unable to parse the plan from server, please try again."
+        );
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "حدث خطأ أثناء إنشاء الجدول",
+        err instanceof Error
+          ? err.message
+          : isRtl
+            ? "حدث خطأ أثناء إنشاء الجدول"
+            : "An error occurred while generating the schedule",
       );
     } finally {
       setIsLoading(false);
@@ -68,12 +79,12 @@ const PlannerPageContent = () => {
   return (
     <div
       className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12"
-      dir="rtl"
+      dir={isRtl ? "rtl" : "ltr"}
     >
       <PlannerForm onSubmit={handleSubmit} isLoading={isLoading} />
 
       {error && (
-        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-right">
+        <div className={`mt-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 ${isRtl ? "text-right" : "text-left"}`}>
           {error}
         </div>
       )}

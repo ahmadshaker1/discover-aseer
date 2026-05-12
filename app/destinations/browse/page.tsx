@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import DestinationsMainPageContent from "@/components/destinations/DestinationsMainPageContent";
 import { fetchDestinationsWithFallback } from "@/components/destinations/data";
@@ -5,22 +6,24 @@ import { fetchDestinationsWithFallback } from "@/components/destinations/data";
 const TOUR_GUIDE_REGISTER_HREF = "/tour-guides/register";
 
 const DestinationsBrowsePage = async () => {
+  const t = await getTranslations("attractionsPage");
+  const tCommon = await getTranslations("common");
   const destinations = await fetchDestinationsWithFallback();
 
   return (
-    <div className="flex w-full flex-col bg-white">
+    <div className="flex w-full flex-col bg-background text-foreground">
       <PageBanner
         breadcrumbs={[
-          { label: "التجارب" },
-          { label: "الصفحة الرئيسية", href: "/" },
+          { label: tCommon("destinations") },
+          { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
         breadcrumbDir="rtl"
-        title="وجهات رئيسية.. تهوّل"
-        subtitle="زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+        title={t("browseTitle")}
+        subtitle={tCommon("subtitleOneVisit")}
         backgroundImage="/assets/activities/activities.jpg"
         primaryCta={{
           href: TOUR_GUIDE_REGISTER_HREF,
-          label: "ساهم في إثراء وجهاتنا",
+          label: t("contributeDestinations"),
         }}
       />
 

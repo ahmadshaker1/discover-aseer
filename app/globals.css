@@ -1,5 +1,56 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1d1f1f;
+  --surface: #f8f8f8;
+  --muted: #f2f2f2;
+  --muted-foreground: #6b7280;
+  --border: #e4e4e4;
+  --primary: #7300cd;
+  --primary-foreground: #ffffff;
+  --secondary: #280048;
+  --secondary-foreground: #ffffff;
+}
+
+html[data-theme="dark"] {
+  --background: #14091f;
+  --foreground: #f3edf9;
+  --surface: #1c0f2a;
+  --muted: #251538;
+  --muted-foreground: #b8a8c9;
+  --border: #34204a;
+  --primary: #b983ff;
+  --primary-foreground: #14091f;
+  --secondary: #8a47dc;
+  --secondary-foreground: #f3edf9;
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  color-scheme: light;
+}
+
+html[data-theme="dark"],
+html.dark {
+  color-scheme: dark;
+}
+
 /* Apply Ara Hamah 1964 B Bold to all headers */
 h1,
 h2,
@@ -46,6 +97,20 @@ span {
 
 .modal-enter {
   animation: modalFadeInUp 0.3s ease-out;
+}
+
+/* Points of interest hero: fade only (no Y movement) */
+@keyframes poi-bg-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.poi-bg-fade-in {
+  animation: poi-bg-fade 700ms ease-out both;
 }
 
 .travel-section-title {

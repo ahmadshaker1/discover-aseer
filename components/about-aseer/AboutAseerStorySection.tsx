@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { useLocale } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -50,6 +51,8 @@ function ChevronLeft() {
 }
 
 const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const slides = content.slides;
   const lastIndex = slides.length - 1;
   const hasSlides = slides.length > 0;
@@ -75,18 +78,18 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
   };
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]" dir="rtl">
+    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]" dir={isRtl ? "rtl" : "ltr"}>
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         {/* Backend: fill `sectionTitle`, `sectionSubtitle`, `sectionCaption` from API/CMS. */}
         <div className="mx-auto flex w-full max-w-[704px] flex-col items-center text-center">
-          <h2 className="text-[44px] font-bold leading-[180%] text-black" style={{ fontFamily: ara }}>
+          <h2 className="text-[44px] font-bold leading-[180%] text-foreground" style={{ fontFamily: ara }}>
             {content.sectionTitle}
           </h2>
-          <p className="text-[20px] font-bold leading-[140%] text-[#6f6f6f]" style={{ fontFamily: ara }}>
+          <p className="text-[20px] font-bold leading-[140%] text-muted-foreground" style={{ fontFamily: ara }}>
             {content.sectionSubtitle}
           </p>
           <h4
-            className="mt-2 w-full text-center text-[15px] font-medium leading-[119%] text-[#5A5A5A]"
+            className="mt-2 w-full text-center text-[15px] font-medium leading-[119%] text-muted-foreground"
             style={{ fontFamily: ibm }}
           >
             {content.sectionCaption}
@@ -110,7 +113,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                 />
                 <div className="absolute inset-x-0 bottom-0 h-[51px] bg-[linear-gradient(179.54deg,rgba(0,0,0,0)_0.39%,#000000_99.6%)] px-5 py-4">
                   <p
-                    className="line-clamp-1 text-right text-[16px] font-bold leading-[120%] text-white"
+                  className={`line-clamp-1 text-[16px] font-bold leading-[120%] text-white ${isRtl ? "text-right" : "text-left"}`}
                     style={{ fontFamily: ara }}
                   >
                     {card.title}
@@ -141,7 +144,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
           </div>
 
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 p-5 text-white sm:p-6 lg:p-8">
-            <div className="max-w-[510px] text-right">
+            <div className={`max-w-[510px] ${isRtl ? "text-right" : "text-left"}`}>
               <h3 className="text-[32px] font-bold leading-[150%]" style={{ fontFamily: ara }}>
                 {activeSlide?.title}
               </h3>
@@ -157,7 +160,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                   onClick={goPrev}
                   className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20"
                 >
-                  <ChevronRight />
+                  <span className={isRtl ? "" : "rotate-180"}><ChevronRight /></span>
                   <span style={{ fontFamily: ara }}>{content.prevLabel}</span>
                 </button>
                 <button
@@ -166,7 +169,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                   className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white opacity-80 transition-colors hover:bg-white/20"
                 >
                   <span style={{ fontFamily: ara }}>{content.nextLabel}</span>
-                  <ChevronLeft />
+                  <span className={isRtl ? "" : "rotate-180"}><ChevronLeft /></span>
                 </button>
               </div>
             </div>

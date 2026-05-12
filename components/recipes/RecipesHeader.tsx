@@ -10,16 +10,16 @@ export const RecipesHeader = ({
   buttonText = "المطبخ العسيري",
 }: RecipesHeaderProps) => {
   return (
-    <div className="flex flex-col sm:flex-row items-start justify-between mb-6 sm:mb-8 md:mb-10 gap-4 sm:gap-6">
-      <div className="flex flex-col items-start space-y-4 flex-1">
-        <h2 className="text-3xl md:text-7xl font-bold text-right w-full text-black">
+    <div className="mb-6 flex flex-col items-start justify-between gap-4 text-foreground sm:mb-8 sm:flex-row sm:gap-6 md:mb-10">
+      <div className="flex flex-1 flex-col items-start space-y-4">
+        <h2 className="w-full text-right text-3xl font-bold text-foreground md:text-7xl">
           {title}
         </h2>
-        <span className="h-px w-24 bg-gradient-to-l from-transparent via-black/40 to-transparent" />
-        <p className="text-base md:text-lg text-gray-700 text-right max-w-2xl">
+        <span className="h-px w-24 bg-linear-to-l from-transparent via-foreground/40 to-transparent" />
+        <p className="max-w-2xl text-right text-base text-muted-foreground md:text-lg">
           {subtitle}
         </p>
-        <button className="px-6 sm:px-8 md:px-10 py-3 cursor-pointer bg-[#6027D2] text-white rounded-full font-semibold text-sm sm:text-base hover:bg-[#6D28D9] transition-colors whitespace-nowrap">
+        <button className="cursor-pointer whitespace-nowrap rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:opacity-90 sm:px-8 sm:text-base md:px-10">
           {buttonText}
         </button>
       </div>

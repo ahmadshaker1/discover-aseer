@@ -1,4 +1,8 @@
-import Link from "next/link";
+"use client";
+
+import { Link } from "@/i18n/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -13,11 +17,30 @@ interface DestinationsHeroProps {
   title: string;
   subtitle: string;
   backgroundImage: string;
+  weatherLat?: number;
+  weatherLon?: number;
+  weatherArea?: string;
+}
+
+interface WeatherState {
+  tempMin: number;
+  tempMax: number;
+  condition: string;
+  iconUrl?: string;
 }
 
 function BreadcrumbChevron() {
+  const isRtl = useLocale() === "ar";
   return (
-    <svg width="5" height="10" viewBox="0 0 5 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg
+      width="5"
+      height="10"
+      viewBox="0 0 5 10"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      className={isRtl ? "" : "rotate-180"}
+    >
       <path
         d="M4.25184 0C4.35476 0 4.45767 0.0379143 4.53892 0.119164C4.69601 0.276247 4.69601 0.536248 4.53893 0.693332L1.00726 4.225C0.747259 4.485 0.747259 4.9075 1.00726 5.1675L4.53893 8.69916C4.69601 8.85625 4.69601 9.11625 4.53893 9.27333C4.38184 9.43041 4.12184 9.43041 3.96476 9.27333L0.433092 5.74167C0.156842 5.46542 -0.000241179 5.09166 -0.000241213 4.69625C-0.000241248 4.30083 0.151425 3.92708 0.433092 3.65083L3.96476 0.119165C4.04601 0.0433312 4.14893 0 4.25184 0Z"
         fill="white"
@@ -44,10 +67,66 @@ function WeatherIcon() {
   );
 }
 
-const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: DestinationsHeroProps) => {
+const DestinationsHero = ({
+  breadcrumbs,
+  title,
+  subtitle,
+  backgroundImage,
+  weatherLat = 18.2164,
+  weatherLon = 42.5053,
+  weatherArea = "أبها",
+}: DestinationsHeroProps) => {
+  const locale = useLocale();
+  const tCommon = useTranslations("common");
+  const [weather, setWeather] = useState<WeatherState>({
+    tempMin: 18,
+    tempMax: 21,
+    condition: tCommon("weatherRain"),
+    iconUrl: "https://openweathermap.org/img/wn/10d@2x.png",
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadWeather = async () => {
+      try {
+        const query = new URLSearchParams({
+          lat: String(weatherLat),
+          lon: String(weatherLon),
+          area: weatherArea,
+        });
+        const res = await fetch(`/api/weather/current?${query.toString()}`, {
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled) return;
+        setWeather({
+          tempMin: Number.isFinite(data?.tempMin) ? data.tempMin : 18,
+          tempMax: Number.isFinite(data?.tempMax) ? data.tempMax : 21,
+          condition: String(data?.condition || tCommon("weatherRain")),
+          iconUrl: String(
+            data?.iconUrl || "https://openweathermap.org/img/wn/10d@2x.png",
+          ),
+        });
+      } catch {
+        // Keep fallback values silently.
+      }
+    };
+    void loadWeather();
+    return () => {
+      cancelled = true;
+    };
+  }, [locale, weatherArea, weatherLat, weatherLon]);
+
+  const tempRange = useMemo(() => {
+    const high = Math.max(weather.tempMin, weather.tempMax);
+    const low = Math.min(weather.tempMin, weather.tempMax);
+    return `${high}–${low}`;
+  }, [weather.tempMin, weather.tempMax]);
+
   return (
     <section
-      className="relative mx-auto flex h-[687px] w-full max-w-[1440px] flex-col items-center justify-center overflow-hidden"
+      className="relative flex h-[687px] w-full flex-col items-center justify-center overflow-hidden"
       style={{
         backgroundImage: `url('${backgroundImage}')`,
         backgroundSize: "cover",
@@ -55,11 +134,11 @@ const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: Des
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="absolute inset-0 bg-black/25" />
+      <div className="absolute inset-0 bg-black/30" />
 
-      <div className="relative z-10 flex w-full flex-col items-center justify-center px-4 lg:px-12">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center px-4 lg:px-12">
         <div className="flex w-full max-w-[610px] flex-col items-center gap-8">
-          <div className="flex w-full flex-col items-center gap-[31px] text-center" dir="rtl">
+          <div className="flex w-full flex-col items-center gap-[31px] text-center" dir={locale === "ar" ? "rtl" : "ltr"}>
             <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2" style={{ fontFamily: ara }}>
               {breadcrumbs.map((crumb, index) => (
                 <span key={`${crumb.label}-${index}`} className="inline-flex items-center gap-1.5 sm:gap-2">
@@ -89,7 +168,7 @@ const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: Des
 
           <div
             className="flex h-[118px] w-[142px] shrink-0 flex-col items-center justify-center rounded-[20px] border border-solid border-[#FFFFFF54]"
-            dir="rtl"
+            dir={locale === "ar" ? "rtl" : "ltr"}
             style={{
               paddingTop: 16,
               paddingRight: 12,
@@ -98,21 +177,32 @@ const DestinationsHero = ({ breadcrumbs, title, subtitle, backgroundImage }: Des
               gap: 8,
             }}
           >
-            <WeatherIcon />
+            {weather.iconUrl ? (
+              <img
+                src={weather.iconUrl}
+                alt={weather.condition}
+                className="h-6 w-6 object-contain"
+                loading="lazy"
+              />
+            ) : (
+              <WeatherIcon />
+            )}
             <div className="flex flex-col items-center gap-0.5 text-center">
               <span
                 className="whitespace-nowrap text-[35px] font-bold leading-[100%] tracking-normal text-white"
                 style={{ fontFamily: ara }}
               >
-                ١٨–٢١
-                <span className="align-super text-[0.55em]">°</span>
                 <span className="text-[0.5em]">م</span>
+                <span className="align-super text-[0.55em]">°</span>
+
+                {tempRange}
+
               </span>
               <span
                 className="text-center text-[14px] font-normal leading-[100%] tracking-normal text-white"
                 style={{ fontFamily: ibm }}
               >
-                أمطار
+                {weather.condition}
               </span>
             </div>
           </div>

@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { ArabicFlagIcon, EnglishFlagIcon, WhatsAppIcon } from "./Icons";
 import { Button } from "@headlessui/react";
-import { LocationIcon } from "../TourGuideModal/Icons";
+import { useLocale } from "next-intl";
+
 export interface TourGuideData {
   id: string | number;
   name: string;
@@ -31,22 +32,24 @@ const LanguageFlag = ({ code }: { code: string }) => {
 
 const TourGuideCard = ({
   name,
-  location,
   profileImage,
   languages,
   whatsappUrl,
   description,
   onCardClick,
 }: TourGuideCardProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   return (
     <div
-      className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+      className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md"
       onClick={onCardClick}
     >
       <div className="p-4 sm:p-6 flex flex-col items-center">
-        <div className="relative w-24 h-24 shrink-0 overflow-visible">
+        {/* Profile Picture */}
+        <div className="relative w-24 h-24 mb-4">
           <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
-            <div className="relative w-full h-full rounded-full overflow-hidden bg-white">
+            <div className="relative w-full h-full rounded-full overflow-hidden">
               <Image
                 src={profileImage}
                 alt={name}
@@ -56,23 +59,17 @@ const TourGuideCard = ({
               />
             </div>
           </div>
-          <div className="absolute -bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-medium text-[#61189F] shadow-sm backdrop-blur-sm">
-            <LocationIcon />
-            <span className="max-w-[88px] truncate font-bold">{location}</span>
-          </div>
         </div>
 
         {/* Name */}
-        <h3 className="text-xl font-bold text-black mb-3 mt-5">{name}</h3>
+        <h3 className="mb-3 text-xl font-bold text-foreground">{name}</h3>
 
         {/* Languages */}
         <div className="flex items-center gap-3 mb-4 flex-wrap justify-center">
           {languages.map((lang) => (
             <div key={lang.code} className="flex items-center gap-1.5">
               <LanguageFlag code={lang.code} />
-              <span className="text-sm text-black font-bold">
-                {lang.code === "en" ? "الإنجليزية" : "العربية"}
-              </span>
+              <span className="text-sm text-foreground">{lang.name}</span>
             </div>
           ))}
         </div>
@@ -81,16 +78,18 @@ const TourGuideCard = ({
         <a
           href={whatsappUrl}
           onClick={(e) => e.stopPropagation()}
-          className="w-2/3 bg-white border-2  rounded-full px-4 py-2 flex items-center justify-center gap-2 transition-colors mb-4 hover:bg-gray-50"
+          className="mb-4 flex w-full max-w-[240px] items-center justify-center gap-2 rounded-full border-2 border-border bg-surface px-4 py-2 text-center transition-colors hover:bg-muted"
         >
-          <span className="text-green-600">
+          <span className="shrink-0 text-green-600">
             <WhatsAppIcon />
           </span>
-          <span className="text-sm font-bold">تواصل عبر الواتساب</span>
+          <span className="text-sm font-bold leading-tight whitespace-normal">
+            {isRtl ? "تواصل عبر الواتساب" : "Contact on WhatsApp"}
+          </span>
         </a>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 text-center mb-4 line-clamp-3 leading-relaxed">
+        <p className="mb-4 line-clamp-3 text-center text-sm leading-relaxed text-muted-foreground">
           {description}
         </p>
 
@@ -100,9 +99,9 @@ const TourGuideCard = ({
             e.stopPropagation();
             onCardClick();
           }}
-          className="text-sm text-black font-medium hover:underline cursor-pointer"
+          className="cursor-pointer text-sm font-medium text-foreground hover:underline"
         >
-          المزيد
+          {isRtl ? "المزيد" : "More"}
         </Button>
       </div>
     </div>
