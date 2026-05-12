@@ -20,12 +20,19 @@ const NotFoundPage = () => {
           <AseerLogo />
         </div>
 
-        <h1 className="text-[36px] font-bold leading-[1.2] text-secondary" style={{ fontFamily: ara }}>
+        <h1
+          className="text-[36px] font-bold leading-[1.2] text-[#280048]"
+          style={{ fontFamily: ara }}
+        >
           عذراً، الصفحة غير موجودة
         </h1>
 
-        <p className="mx-auto mt-4 max-w-[520px] text-[18px] leading-normal text-muted-foreground" style={{ fontFamily: ibm }}>
-          يمكنك العودة إلى الصفحة السابقة التي كنت عليها، أو الرجوع إلى الصفحة الرئيسية.
+        <p
+          className="mx-auto mt-4 max-w-[520px] text-[18px] leading-normal text-[#4A405A]"
+          style={{ fontFamily: ibm }}
+        >
+          يمكنك العودة إلى الصفحة السابقة التي كنت عليها، أو الرجوع إلى الصفحة
+          الرئيسية.
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">

@@ -16,16 +16,20 @@ const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 const FilmPage = async () => {
   const locale = await getLocale();
   const isRtl = locale === "ar";
-  const [landscapes, whyAseerSlides, serviceCards, showcaseCards] = await Promise.all([
-    fetchFilmLandscapesWithFallback(),
-    fetchFilmWhyAseerSlidesWithFallback(),
-    fetchFilmServiceCardsWithFallback(),
-    fetchFilmShowcaseCardsWithFallback(),
-  ]);
+  const [landscapes, whyAseerSlides, serviceCards, showcaseCards] =
+    await Promise.all([
+      fetchFilmLandscapesWithFallback(),
+      fetchFilmWhyAseerSlidesWithFallback(),
+      fetchFilmServiceCardsWithFallback(),
+      fetchFilmShowcaseCardsWithFallback(),
+    ]);
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <section className="mx-auto h-[809px] w-full max-w-[1440px] overflow-hidden" dir={isRtl ? "rtl" : "ltr"}>
+      <section
+        className="mx-auto h-[809px] w-full max-w-[1440px] overflow-hidden"
+        dir={isRtl ? "rtl" : "ltr"}
+      >
         <img
           src="/assets/film/film-hero.png"
           alt="Film hero"
@@ -45,7 +49,11 @@ const FilmPage = async () => {
                   key={item.id}
                   className="relative h-[305px] w-[282px] shrink-0 overflow-hidden rounded-[10px] shadow-[0px_4.28px_3.37px_0px_rgba(41,72,152,0.01),0px_8.72px_6.97px_0px_rgba(41,72,152,0.02),0px_21.4px_13.91px_0px_rgba(41,72,152,0.02)]"
                 >
-                  <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-full w-full object-cover"
+                  />
                   <div className="absolute inset-x-0 bottom-0 h-[91px] rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
                     <h3
                       className={`${isRtl ? "text-right" : "text-left"} text-[24px] font-bold leading-[119%] text-white`}
@@ -59,10 +67,13 @@ const FilmPage = async () => {
             </div>
           </div>
 
-          <div className={`flex h-auto w-full max-w-[350px] flex-col gap-8 ${isRtl ? "text-right" : "text-left"} lg:h-[265px]`}>
+          <div
+            className={`flex h-auto w-full max-w-[350px] flex-col gap-8 ${isRtl ? "text-right" : "text-left"} lg:h-[265px]`}
+          >
             <h2
               className="text-[44px] font-bold leading-[38px] text-foreground"
               style={{ fontFamily: ara }}
+              dir="rtl"
             >
               {isRtl
                 ? "انطلق في رحلة تصوير سينمائي ثرية بالتنوع، فريدة بالجمال."
@@ -71,6 +82,7 @@ const FilmPage = async () => {
             <p
               className="text-[15px] font-light leading-[119%] text-muted-foreground"
               style={{ fontFamily: ibm }}
+              dir="rtl"
             >
               {isRtl
                 ? "تتميز عسير بتنوع تضاريسها الطبيعية، فوق قمم الجبال و بين السهول، وصولاً إلى الصحاري الشاسعة و السواحل الممتدة على البحر الأحمر، وبعدد أكثر من أربعة آلاف قرية تراثية تعكس عراقة ثقافتها وتاريخها، وأصالة انسانها الطموح."
@@ -80,7 +92,10 @@ const FilmPage = async () => {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1442px]" dir={isRtl ? "rtl" : "ltr"}>
+      <section
+        className="mx-auto w-full max-w-[1442px]"
+        dir={isRtl ? "rtl" : "ltr"}
+      >
         <div
           className="flex h-[343px] w-full items-center justify-end bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/assets/film/imghorizontal.png')" }}
@@ -89,14 +104,18 @@ const FilmPage = async () => {
             <h3
               className="w-full max-w-[301px] text-right text-[32px] font-bold leading-[33.92px] text-white"
               style={{ fontFamily: ara }}
+              dir="rtl"
             >
               {isRtl ? "في عسير!" : "In Aseer!"}
             </h3>
             <p
               className="w-full max-w-[301px] text-right text-[48px] font-bold leading-[33.92px] text-white"
               style={{ fontFamily: ara }}
+              dir="rtl"
             >
-              {isRtl ? "نفزع لك باللي تحتاجه." : "We are here with what you need."}
+              {isRtl
+                ? "نفزع لك باللي تحتاجه."
+                : "We are here with what you need."}
             </p>
           </div>
         </div>
@@ -117,20 +136,30 @@ const FilmPage = async () => {
         />
         <div className="absolute inset-0 bg-black/35" />
 
-        <div className="relative z-10 flex w-full max-w-[1241px] flex-col items-center text-center" dir={isRtl ? "rtl" : "ltr"}>
+        <div
+          className="relative z-10 flex w-full max-w-[1241px] flex-col items-center text-center"
+          dir={isRtl ? "rtl" : "ltr"}
+        >
           <div className="mb-[30px] h-[47px] w-[251px]">
             <p
               className="text-right text-[24px] font-medium leading-[119%] text-white"
               style={{ fontFamily: ibm }}
+              dir="rtl"
             >
-              {isRtl ? "الرجاء ملء الاستمارة أدناه." : "Please fill in the form below."}
+              {isRtl
+                ? "الرجاء ملء الاستمارة أدناه."
+                : "Please fill in the form below."}
             </p>
           </div>
 
           <a
             href="/tour-guides/register"
             className="inline-flex h-[52px] w-[185px] items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
-            style={{ fontFamily: "Inter, sans-serif", paddingTop: 13.5, paddingBottom: 14.5 }}
+            style={{
+              fontFamily: "Inter, sans-serif",
+              paddingTop: 13.5,
+              paddingBottom: 14.5,
+            }}
           >
             {isRtl ? "سجل الان" : "Register now"}
           </a>
@@ -141,6 +170,7 @@ const FilmPage = async () => {
             <p
               className="whitespace-nowrap text-right text-[18px] font-light leading-[119%] text-white"
               style={{ fontFamily: ibm }}
+              dir="rtl"
             >
               {isRtl ? "أو مراسلتنا على البريد الالكتروني:" : "Or email us at:"}
             </p>
