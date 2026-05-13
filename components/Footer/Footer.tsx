@@ -210,15 +210,6 @@ const Footer = () => {
                   />
                 </div>
               </div>
-
-              {/* Right button */}
-              <Link
-                href="/tour-guides"
-                className="flex h-[39px] w-[168px] items-center justify-center whitespace-nowrap rounded-[44px] border border-white px-4 text-center text-[18px] font-bold leading-[119%] text-white"
-                style={{ fontFamily: ara }}
-              >
-                {t("footer.tourGuideLogin")}
-              </Link>
             </div>
 
             {/* Copyright row below single divider */}
