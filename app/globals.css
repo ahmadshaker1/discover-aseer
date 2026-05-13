@@ -48,6 +48,16 @@ body {
   font-family: var(--font-ara-hamah-1964), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Global: hide scrollbars while keeping overflow scrollable */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 button,
 input,
 textarea,
