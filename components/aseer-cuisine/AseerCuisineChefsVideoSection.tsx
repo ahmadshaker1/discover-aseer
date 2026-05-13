@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-const ara = "var(--font-ara-hamah-1964), sans-serif";
+import AseerCuisineVideoPlayer from "./AseerCuisineVideoPlayer";const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export interface AseerCuisineChefsVideoSectionData {
@@ -20,6 +20,8 @@ interface AseerCuisineChefsVideoSectionProps {
 }
 
 const AseerCuisineChefsVideoSection = ({ data }: AseerCuisineChefsVideoSectionProps) => {
+  const videoSrc = data.videoUrl?.trim() ?? "";
+
   return (
     <section className="mx-auto w-full max-w-[1440px] bg-background py-8 text-foreground">
       <div className="flex w-full flex-col gap-8">
@@ -40,9 +42,17 @@ const AseerCuisineChefsVideoSection = ({ data }: AseerCuisineChefsVideoSectionPr
           </div>
         </div>
 
-        {/* Placeholder mode: showing poster image now. Keep `videoUrl` in data for future switch back to video. */}
-        <div className="h-[811px] w-full overflow-hidden">
-          <Image src={data.posterImage} alt={data.title} width={1440} height={811} className="h-full w-full object-cover" />
+        <div className="relative h-[811px] w-full overflow-hidden">
+          {videoSrc ? (
+            <AseerCuisineVideoPlayer src={videoSrc} poster={data.posterImage} ariaLabel={data.title} />
+          ) : (            <Image
+              src={data.posterImage}
+              alt={data.title}
+              width={1440}
+              height={811}
+              className="h-full w-full object-cover"
+            />
+          )}
         </div>
       </div>
     </section>

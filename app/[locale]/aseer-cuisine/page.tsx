@@ -344,15 +344,28 @@ const AseerCuisinePage = async () => {
         : aseerCuisinePageData.cookingExperiencesSection,
   };
 
+  const cuisineCookingVideo = "/videos/cooking.mp4";
+  const pageData: AseerCuisinePageData = {
+    ...mergedData,
+    hero: {
+      ...mergedData.hero,
+      videoUrl: cuisineCookingVideo,
+    },
+    chefsVideoSection: {
+      ...mergedData.chefsVideoSection,
+      videoUrl: cuisineCookingVideo,
+    },
+  };
+
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <AseerCuisineHero data={mergedData.hero} />
-      <AseerCuisineDishesSection data={mergedData.dishesSection} />
-      <AseerCuisineRestaurantsSection data={mergedData.restaurantsSection} />
-      <AseerCuisineLocalFlavorsSection data={mergedData.localFlavorsSection} />
-      <AseerCuisineCookingExperiencesSection data={mergedData.cookingExperiencesSection} />
+      <AseerCuisineHero data={pageData.hero} />
+      <AseerCuisineDishesSection data={pageData.dishesSection} />
+      <AseerCuisineRestaurantsSection data={pageData.restaurantsSection} />
+      <AseerCuisineLocalFlavorsSection data={pageData.localFlavorsSection} />
+      <AseerCuisineCookingExperiencesSection data={pageData.cookingExperiencesSection} />
       <RestaurantsCredibilitySection />
-      <AseerCuisineChefsVideoSection data={mergedData.chefsVideoSection} />
+      <AseerCuisineChefsVideoSection data={pageData.chefsVideoSection} />
     </div>
   );
 };

@@ -9,11 +9,13 @@ export function buildAseerCuisineFallback(
   t: CuisineTranslator,
   currency: string
 ): AseerCuisinePageData {
+  const cookingVideo = "/videos/cooking.mp4";
+  const cookingPoster = "/assets/community/hero-comunity-bg.png";
+
   return {
     hero: {
-      /** Empty until `public/assets/videos/aseer-cuisine-hero.mp4` exists; poster shows instead. */
-      videoUrl: "",
-      posterImage: "/assets/community/hero-comunity-bg.png",
+      videoUrl: cookingVideo,
+      posterImage: cookingPoster,
     },
     dishesSection: {
       title: t("dishesSection.title"),
@@ -92,9 +94,8 @@ export function buildAseerCuisineFallback(
     chefsVideoSection: {
       title: t("chefsVideoSection.title"),
       subtitle: t("chefsVideoSection.subtitle"),
-      /** Empty until `public/assets/videos/aseer-cuisine-chefs.mp4` exists. */
-      videoUrl: "",
-      posterImage: "/assets/restaurant/img4.png",
+      videoUrl: cookingVideo,
+      posterImage: cookingPoster,
     },
   };
 }
