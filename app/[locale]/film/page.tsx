@@ -9,6 +9,8 @@ import {
   fetchFilmLandscapesWithFallback,
   fetchFilmWhyAseerSlidesWithFallback,
 } from "@/components/film/data";
+import { Link } from "@/i18n/navigation";
+import Image from "next/image";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -25,17 +27,23 @@ const FilmPage = async () => {
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <section className="mx-auto h-[809px] w-full max-w-[1440px] overflow-hidden">
-        <img
+      <section className="relative h-[420px] w-full overflow-hidden sm:h-[560px] md:h-[809px]">
+        <Image
           src="/assets/film/film-hero.png"
           alt="Film hero"
-          className="h-full w-full object-cover"
+          fill
+          priority
+          className="object-fill object-center"
+          sizes="100vw"
         />
       </section>
 
       <section className="mx-auto h-auto w-full max-w-[1442px] bg-background px-4 py-[60px] sm:px-8 md:px-[62px]">
         <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-          <div className="w-full flex-1 overflow-x-auto" dir="ltr">
+          <div
+            className="hide-scrollbar w-full flex-1 overflow-x-auto overflow-y-hidden"
+            dir="ltr"
+          >
             <div className="flex min-w-max items-start gap-6 pb-2">
               {landscapes.slice(0, 4).map((item) => (
                 <article
@@ -77,24 +85,32 @@ const FilmPage = async () => {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1442px]">
-        <div
-          className="flex h-[343px] w-full items-center justify-end bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/assets/film/imghorizontal.png')" }}
-        >
-          <div className="flex h-[165.5px] w-[383px] flex-col items-end justify-center gap-[15.5px] p-[41px] text-start">
-            <h3
-              className="w-full max-w-[301px] text-start text-[32px] font-bold leading-[33.92px] text-white"
-              style={{ fontFamily: ara }}
-            >
-              {t("bannerTitle")}
-            </h3>
-            <p
-              className="w-full max-w-[301px] text-start text-[48px] font-bold leading-[33.92px] text-white"
-              style={{ fontFamily: ara }}
-            >
-              {t("bannerSubtitle")}
-            </p>
+      <section className="relative w-full overflow-hidden">
+        <div className="relative h-[343px] w-full">
+          <Image
+            src="/assets/film/imghorizontal.png"
+            alt=""
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 z-10 flex items-center px-4 sm:px-8 md:px-[62px]">
+            <div className="mx-auto flex h-full w-full max-w-[1442px] items-center justify-end">
+              <div className="flex h-[165.5px] w-full max-w-[383px] shrink-0 flex-col items-end justify-center gap-[15.5px] p-[41px] text-start sm:w-[383px]">
+                <h3
+                  className="w-full max-w-[301px] text-start text-[32px] font-bold leading-[33.92px] text-white"
+                  style={{ fontFamily: ara }}
+                >
+                  {t("bannerTitle")}
+                </h3>
+                <p
+                  className="w-full max-w-[301px] text-start text-[48px] font-bold leading-[33.92px] text-white"
+                  style={{ fontFamily: ara }}
+                >
+                  {t("bannerSubtitle")}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -103,55 +119,59 @@ const FilmPage = async () => {
       <FilmServicesSection cards={serviceCards} />
       <FilmShowcaseSection cards={showcaseCards} />
 
-      <section className="relative mx-auto flex min-h-[850px] w-full max-w-[1440px] items-center justify-center overflow-hidden px-4 py-[242px] sm:px-8 md:px-[68px]">
-        <img
+      <section className="relative min-h-[850px] w-full overflow-hidden">
+        <Image
           src="/assets/activities/seasonal-activities.jpg"
-          alt="Call to action background"
-          className="absolute inset-0 h-full w-full object-cover"
+          alt=""
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
         />
-        <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 z-1 bg-black/35" aria-hidden />
 
-        <div className="relative z-10 flex w-full max-w-[1241px] flex-col items-center text-center">
-          <div className="mb-[30px] h-[47px] w-[251px]">
-            <p
-              className="text-start text-[24px] font-medium leading-[119%] text-white"
-              style={{ fontFamily: ibm }}
+        <div className="relative z-10 mx-auto flex min-h-[850px] w-full max-w-[1440px] flex-col items-center justify-center px-4 py-[242px] sm:px-8 md:px-[68px]">
+          <div className="flex w-full max-w-[1241px] flex-col items-center text-center">
+            <div className="mb-[30px] h-[47px] w-[251px]">
+              <p
+                className="text-start text-[24px] font-medium leading-[119%] text-white"
+                style={{ fontFamily: ibm }}
+              >
+                {t("ctaFormPrompt")}
+              </p>
+            </div>
+
+            <Link
+              href="/tour-guides/register"
+              className="inline-flex h-[52px] w-[185px] items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                paddingTop: 13.5,
+                paddingBottom: 14.5,
+              }}
             >
-              {t("ctaFormPrompt")}
-            </p>
-          </div>
+              {t("registerNow")}
+            </Link>
 
-          <a
-            href="/tour-guides/register"
-            className="inline-flex h-[52px] w-[185px] items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
-            style={{
-              fontFamily: "Inter, sans-serif",
-              paddingTop: 13.5,
-              paddingBottom: 14.5,
-            }}
-          >
-            {t("registerNow")}
-          </a>
+            <div className="h-[61px] w-full max-w-[1241px] py-[30px]" />
 
-          <div className="h-[61px] w-full max-w-[1241px] py-[30px]" />
+            <div className="mb-4 h-[29px] w-[205px] pb-4">
+              <p
+                className="whitespace-nowrap text-start text-[18px] font-light leading-[119%] text-white"
+                style={{ fontFamily: ibm }}
+              >
+                {t("orEmailUs")}
+              </p>
+            </div>
 
-          <div className="mb-4 h-[29px] w-[205px] pb-4">
-            <p
-              className="whitespace-nowrap text-start text-[18px] font-light leading-[119%] text-white"
-              style={{ fontFamily: ibm }}
+            <a
+              href="mailto:marketing@discoveraseer.com"
+              className="text-start text-[24px] font-normal leading-[27px] text-[#D3A6F6] underline underline-offset-4"
+              style={{ fontFamily: "Inter, sans-serif" }}
+              dir="ltr"
             >
-              {t("orEmailUs")}
-            </p>
+              marketing@discoveraseer.com
+            </a>
           </div>
-
-          <a
-            href="mailto:marketing@discoveraseer.com"
-            className="text-start text-[24px] font-normal leading-[27px] text-[#D3A6F6] underline underline-offset-4"
-            style={{ fontFamily: "Inter, sans-serif" }}
-            dir="ltr"
-          >
-            marketing@discoveraseer.com
-          </a>
         </div>
       </section>
 
