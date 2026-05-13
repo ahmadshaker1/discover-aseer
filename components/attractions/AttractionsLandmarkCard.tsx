@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import type { Landmark } from "@/components/landmarks/data";
 import SafeHtml from "@/components/common/SafeHtml";
@@ -41,14 +41,12 @@ const AttractionsLandmarkCard = ({
   className = "",
   cardHref,
 }: AttractionsLandmarkCardProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
   const [imageFailed, setImageFailed] = useState(false);
 
   return (
     <article
-      dir={isRtl ? "rtl" : "ltr"}
+     
       className={`relative h-[419px] w-full max-w-[326px] overflow-hidden rounded-[10px] bg-black text-primary-foreground shadow-[0_4.28px_3.37px_0_rgba(41,72,152,0.01),0_8.72px_6.97px_0_rgba(41,72,152,0.02),0_21.4px_13.91px_0_rgba(41,72,152,0.02)] ${className}`}
     >
       {cardHref ? (
@@ -76,7 +74,7 @@ const AttractionsLandmarkCard = ({
         }`}
       >
         <div
-          className={`inline-flex w-fit flex-row items-center gap-1 rounded-[24.51px] ${isRtl ? "text-right" : "text-left"}`}
+          className={`inline-flex w-fit flex-row items-center gap-1 rounded-[24.51px] text-start`}
         >
           <LocationIcon />
           <span
@@ -88,17 +86,17 @@ const AttractionsLandmarkCard = ({
         </div>
 
         <div
-          className={`flex w-full max-w-[251px] flex-col gap-[18px] self-start ${isRtl ? "text-right" : "text-left"}`}
+          className={`flex w-full max-w-[251px] flex-col gap-[18px] self-start text-start`}
         >
           <h3
-            className={`text-[24px] font-bold leading-[119%] ${isRtl ? "text-right" : "text-left"}`}
+            className={`text-[24px] font-bold leading-[119%] text-start`}
             style={{ fontFamily: ara }}
           >
             {landmark.title}
           </h3>
           <SafeHtml
             html={landmark.description}
-            className={`line-clamp-2 text-[18px] leading-[130%] text-white/80 ${isRtl ? "text-right" : "text-left"}`}
+            className={`line-clamp-2 text-[18px] leading-[130%] text-white/80 text-start`}
           />
         </div>
       </div>

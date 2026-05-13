@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import DestinationsGridCard from "@/components/destinations/DestinationsGridCard";
 import type { Destination } from "@/components/destinations/data";
 
@@ -8,9 +9,9 @@ interface DestinationsLandmarksSectionProps {
   destinations: Destination[];
 }
 
-function LeftArrowIcon() {
+function LeftArrowIcon({ className }: { className?: string }) {
   return (
-    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden className={className}>
       <path
         d="M3.01172 8.69438L13.6367 8.69438"
         stroke="currentColor"
@@ -29,28 +30,30 @@ function LeftArrowIcon() {
   );
 }
 
-const DestinationsLandmarksSection = ({ destinations }: DestinationsLandmarksSectionProps) => {
+const DestinationsLandmarksSection = async ({ destinations }: DestinationsLandmarksSectionProps) => {
+  const t = await getTranslations("destinations");
+  const tCommon = await getTranslations("common");
+
   return (
-    <section className="w-full bg-background py-12 text-foreground" dir="rtl">
+    <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
         <div className="mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center justify-between">
           <h2
-            className="h-[58px] w-full max-w-[498px] text-right text-[48px] font-bold leading-[100%] text-secondary"
+            className="h-[58px] w-full max-w-[498px] text-start text-[48px] font-bold leading-[100%] text-secondary"
             style={{ fontFamily: ara }}
           >
-            اكتشف أشهر المعالم في أبها
+            {t("landmarksSectionTitle")}
           </h2>
 
           <Link
             href="/destinations/browse"
-            className="inline-flex h-6 w-[98px] shrink-0 items-center justify-between gap-2 text-secondary hover:opacity-80"
+            className="inline-flex h-6 shrink-0 items-center gap-2 text-secondary hover:opacity-80"
             style={{ fontFamily: ara }}
-            dir="ltr"
           >
-            <LeftArrowIcon />
-            <span className="h-6 w-[73px] whitespace-nowrap text-right text-[20px] font-bold leading-[100%] text-secondary">
-              عرض المزيد
+            <span className="whitespace-nowrap text-start text-[20px] font-bold leading-[100%] text-secondary">
+              {tCommon("browseMore")}
             </span>
+            <LeftArrowIcon className="shrink-0 rtl:rotate-180" />
           </Link>
         </div>
 

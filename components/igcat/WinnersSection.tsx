@@ -27,7 +27,7 @@ export default function WinnersSection() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
-    <section className="py-16 bg-white" dir="rtl">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* 1. عنوان القسم */}
         <h2 className="text-center text-[24px] md:text-[32px] font-bold text-black mb-12">
@@ -55,14 +55,14 @@ export default function WinnersSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
 
               {/* شارة السنة (مثلاً 2024) في الزاوية اليسرى العلوية */}
-              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-purple-200">
+              <div className="absolute top-4 start-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-purple-200">
                 <span className="text-[#7300CD] font-bold text-[13px]">
                   {winner.year}
                 </span>
               </div>
 
               {/* محتوى النص بالأسفل */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-right z-10">
+              <div className="absolute bottom-0 start-0 end-0 p-5 text-start z-10">
                 <h3 className="text-white font-bold text-[16px] md:text-[18px] mb-2 leading-tight">
                   {winner.title}
                 </h3>

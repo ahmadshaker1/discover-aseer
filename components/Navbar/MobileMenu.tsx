@@ -99,7 +99,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                       onClick={onClose}
                                       className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
                                     >
-                                      {locale === "ar" ? item.labelAr : item.labelEn}
+                                      {t(item.labelKey)}
                                     </Link>
                                   ))}
                                 </Disclosure.Panel>

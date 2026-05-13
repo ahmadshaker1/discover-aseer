@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
 import TourGuideRegisterFlow from "@/components/tour-guides/TourGuideRegisterFlow/TourGuideRegisterFlow";
-import { getLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 export const generateMetadata = async (): Promise<Metadata> => {
-  const locale = await getLocale();
-  const isRtl = locale === "ar";
+  const t = await getTranslations("tourGuidesRegister");
   return {
-    title: isRtl
-      ? "نموذج تسجيل المرشدين السياحيين | Discover Aseer"
-      : "Tour guide registration form | Discover Aseer",
-    description: isRtl
-      ? "تسجيل كمرشد سياحي في منطقة عسير"
-      : "Register as a tour guide in Aseer.",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
   };
 };
 

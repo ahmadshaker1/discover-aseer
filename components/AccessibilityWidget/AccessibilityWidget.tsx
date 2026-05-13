@@ -41,10 +41,10 @@ export default function AccessibilityWidget() {
   const resetFont = () => setFontScale(100);
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999]" dir="rtl">
+    <div className="fixed bottom-6 end-6 z-[9999]">
       {/* اللوحة (تظهر فقط إذا كان isOpen true) */}
       {isOpen && (
-        <div className="absolute bottom-16 right-0 bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-5 mb-2 w-[260px] border border-gray-100 animate-fade-in-up">
+        <div className="absolute bottom-16 end-0 bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-5 mb-2 w-[260px] border border-gray-100 animate-fade-in-up">
           <div className="flex justify-between items-center border-b pb-3 mb-4">
             <h3 className="font-bold text-[16px] text-gray-800">
               سهولة الوصول

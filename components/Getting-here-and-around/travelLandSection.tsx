@@ -1,14 +1,11 @@
 import Image from "next/image";
-import { useLocale } from "next-intl";
-import { resolveGettingHereContent } from "./gettingHerePageContent";
+import { useTranslations } from "next-intl";
 
 export default function TravelLandSection() {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-  const copy = resolveGettingHereContent(locale).land;
+  const t = useTranslations("gettingHere.land");
 
   return (
-    <section dir={isRtl ? "rtl" : "ltr"} className={`py-12 text-foreground ${isRtl ? "text-right" : "text-left"}`}>
+    <section className={`py-12 text-foreground text-start`}>
       <div
         className="mt-12 h-[300px] w-full"
         style={{
@@ -19,18 +16,18 @@ export default function TravelLandSection() {
           backgroundRepeat: "no-repeat",
         }}
       />
-      <div className="container mx-auto px-6 mb-12" dir={isRtl ? "rtl" : "ltr"}>
+      <div className="container mx-auto px-6 mb-12">
         {/* العنوان */}
         <div className="mb-6 border-b border-border pb-4 pt-6">
-          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}>
-            {copy.travelByRoad}
+          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}>
+            {t("travelByRoad")}
           </h2>
         </div>
 
         {/* الوصف (محدد العرض عشان يجي على اليمين زي الصورة) */}
         <div className="mb-8 flex justify-start">
-          <p className={`max-w-2xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] ${isRtl ? "text-right" : "text-left"}`}>
-            {copy.roadLead}
+          <p className={`max-w-2xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] text-start`}>
+            {t("roadLead")}
           </p>
         </div>
 
@@ -58,13 +55,13 @@ export default function TravelLandSection() {
                     <circle cx="17" cy="17" r="2" />
                   </svg>
                 </div>
-                <div className={isRtl ? "text-right" : "text-left"}>
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">{copy.fromRiyadh}</p>
-                  <p className="text-[18px] font-bold text-foreground">{copy.hours950}</p>
+                <div className="text-start">
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">{t("fromRiyadh")}</p>
+                  <p className="text-[18px] font-bold text-foreground">{t("hours950")}</p>
                 </div>
               </div>
-              <div className="text-left">
-                <p className="text-[18px] font-bold text-foreground">{copy.time910}</p>
+              <div className="text-start">
+                <p className="text-[18px] font-bold text-foreground">{t("time910")}</p>
               </div>
             </div>
 
@@ -88,13 +85,13 @@ export default function TravelLandSection() {
                     <circle cx="17" cy="17" r="2" />
                   </svg>
                 </div>
-                <div className={isRtl ? "text-right" : "text-left"}>
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">{copy.fromJeddah}</p>
-                  <p className="text-[18px] font-bold text-foreground">{copy.hours630}</p>
+                <div className="text-start">
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">{t("fromJeddah")}</p>
+                  <p className="text-[18px] font-bold text-foreground">{t("hours630")}</p>
                 </div>
               </div>
-              <div className="text-left">
-                <p className="text-[18px] font-bold text-foreground">{copy.time67}</p>
+              <div className="text-start">
+                <p className="text-[18px] font-bold text-foreground">{t("time67")}</p>
               </div>
             </div>
 
@@ -118,13 +115,13 @@ export default function TravelLandSection() {
                     <circle cx="17" cy="17" r="2" />
                   </svg>
                 </div>
-                <div className={isRtl ? "text-right" : "text-left"}>
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">{copy.fromDammam}</p>
-                  <p className="text-[18px] font-bold text-foreground">{copy.hours1400}</p>
+                <div className="text-start">
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">{t("fromDammam")}</p>
+                  <p className="text-[18px] font-bold text-foreground">{t("hours1400")}</p>
                 </div>
               </div>
-              <div className="text-left">
-                <p className="text-[18px] font-bold text-foreground">{copy.time1314}</p>
+              <div className="text-start">
+                <p className="text-[18px] font-bold text-foreground">{t("time1314")}</p>
               </div>
             </div>
           </div>
@@ -134,7 +131,7 @@ export default function TravelLandSection() {
             <div>
               <div className="mb-6 flex items-center justify-start gap-3">
                 <h3 className="text-[28px] font-bold text-white">
-                  {copy.saptcoTitle}
+                  {t("saptcoTitle")}
                 </h3>
                 <div className="text-[#FBB03B]">
                   <svg
@@ -147,8 +144,8 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
               </div>
-              <p className={`mb-8 text-[16px] leading-[1.8] text-white/80 ${isRtl ? "text-right" : "text-left"}`}>
-                {copy.saptcoBody}
+              <p className={`mb-8 text-[16px] leading-[1.8] text-white/80 text-start`}>
+                {t("saptcoBody")}
               </p>
             </div>
 
@@ -159,7 +156,7 @@ export default function TravelLandSection() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center rounded-xl bg-[#FBB03B] px-8 py-3 text-[16px] font-bold text-[#333036] transition hover:bg-[#e59e35]"
               >
-                {copy.bookOnWebsite}
+                {t("bookOnWebsite")}
               </a>
               <a
                 href="https://play.google.com/store/apps/details?id=com.sat.passenger&hl=ar&pli=1"
@@ -167,18 +164,18 @@ export default function TravelLandSection() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center rounded-xl bg-[#4A474E] px-8 py-3 text-[16px] font-bold text-white transition hover:brightness-110"
               >
-                {copy.downloadApp}
+                {t("downloadApp")}
               </a>
             </div>
           </div>
         </div>
       </div>
       {/* قسم التنقل في عسير */}
-      <div className="container mx-auto px-6 mb-12" dir={isRtl ? "rtl" : "ltr"}>
+      <div className="container mx-auto px-6 mb-12">
         {/* العنوان الرئيسي */}
         <div className="mb-8 border-b border-border pb-4 pt-6">
-          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}>
-            {copy.gettingAroundTitle}
+          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}>
+            {t("gettingAroundTitle")}
           </h2>
         </div>
 
@@ -189,15 +186,15 @@ export default function TravelLandSection() {
             {/* الصورة الخلفية */}
             <img
               src="/assets/Getting-here-and-around/89fb030a28469fcdf2237c498d9867f61d4ab7f0.jpg"
-              alt={copy.airportTaxiAlt}
+              alt={t("airportTaxiAlt")}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             {/* تدرج لوني عشان النص يكون واضح */}
             <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent"></div>
 
             {/* المحتوى النصي */}
-            <div className={`relative z-10 p-8 ${isRtl ? "text-right" : "text-left"}`}>
-              <div className={`mb-3 flex ${isRtl ? "justify-end" : "justify-start"}`}>
+            <div className={`relative z-10 p-8 text-start`}>
+              <div className={`mb-3 flex justify-start`}>
                 {/* أيقونة سيارة أجرة */}
                 <svg
                   width="32"
@@ -217,18 +214,18 @@ export default function TravelLandSection() {
                 </svg>
               </div>
               <h3 className="mb-3 text-[24px] font-bold text-white">
-                {copy.airportTaxiTitle}
+                {t("airportTaxiTitle")}
               </h3>
               <p className="text-[14px] leading-[1.8] text-white/80">
-                {copy.airportTaxiBody}
+                {t("airportTaxiBody")}
               </p>
             </div>
           </div>
 
           {/* العمود الأيسر: تطبيقات التوصيل */}
           <div className="flex flex-col justify-center rounded-4xl border border-border bg-surface p-8 shadow-sm">
-            <h3 className={`mb-6 text-[20px] font-bold text-foreground ${isRtl ? "text-right" : "text-left"}`}>
-              {copy.rideAppsTitle}
+            <h3 className={`mb-6 text-[20px] font-bold text-foreground text-start`}>
+              {t("rideAppsTitle")}
             </h3>
 
             {/* شبكة كروت التطبيقات */}
@@ -239,14 +236,14 @@ export default function TravelLandSection() {
                   B
                 </div>
                 <p className="mb-4 text-[18px] font-bold text-secondary">
-                  {copy.bolt}
+                  {t("bolt")}
                 </p>
                 <a
                   href="https://play.google.com/store/apps/details?id=ee.mtakso.client&hl=ar"
                   target="_blank"
                   className="text-[14px] font-bold text-primary hover:underline"
                 >
-                  {copy.downloadAppShort}
+                  {t("downloadAppShort")}
                 </a>
               </div>
 
@@ -256,14 +253,14 @@ export default function TravelLandSection() {
                   C
                 </div>
                 <p className="mb-4 text-[18px] font-bold text-secondary">
-                  {copy.careem}
+                  {t("careem")}
                 </p>
                 <a
                   href="https://play.google.com/store/apps/details?id=com.careem.acma&hl=ar"
                   target="_blank"
                   className="text-[14px] font-bold text-primary hover:underline"
                 >
-                  {copy.downloadAppShort}
+                  {t("downloadAppShort")}
                 </a>
               </div>
 
@@ -273,31 +270,31 @@ export default function TravelLandSection() {
                   U
                 </div>
                 <p className="mb-4 text-[18px] font-bold text-secondary">
-                  {copy.uber}
+                  {t("uber")}
                 </p>
                 <a
                   href="https://play.google.com/store/apps/details?id=com.ubercab&hl=ar"
                   target="_blank"
                   className="text-[14px] font-bold text-primary hover:underline"
                 >
-                  {copy.downloadAppShort}
+                  {t("downloadAppShort")}
                 </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-6 mb-12" dir={isRtl ? "rtl" : "ltr"}>
+      <div className="container mx-auto px-6 mb-12">
         {/* ================= قسم تأجير السيارات ================= */}
         <div className="mb-6 border-b border-border pb-4 pt-6">
-          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}>
-            {copy.carRentalTitle}
+          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}>
+            {t("carRentalTitle")}
           </h2>
         </div>
 
         <div className="mb-8 flex justify-start">
-          <p className={`max-w-3xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] ${isRtl ? "text-right" : "text-left"}`}>
-            {copy.carRentalLead}
+          <p className={`max-w-3xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] text-start`}>
+            {t("carRentalLead")}
           </p>
         </div>
 
@@ -305,15 +302,15 @@ export default function TravelLandSection() {
         <div className="mb-16 flex justify-start">
           <div className="relative flex w-full flex-col rounded-4xl bg-surface p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 md:w-[350px]">
             {/* أيقونة B في اليسار */}
-            <div className={`absolute top-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2EBA7F] text-white font-bold ${isRtl ? "left-6" : "right-6"}`}>
+            <div className={`absolute top-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2EBA7F] text-white font-bold end-6`}>
               B
             </div>
 
-            <div className={`mt-8 ${isRtl ? "text-right" : "text-left"}`}>
-              <h3 className="mb-6 text-[24px] font-bold text-secondary">{copy.theebTitle}</h3>
+            <div className={`mt-8 text-start`}>
+              <h3 className="mb-6 text-[24px] font-bold text-secondary">{t("theebTitle")}</h3>
 
               {/* رقم الجوال */}
-              <div className={`mb-4 flex items-center gap-3 text-[14px] font-medium text-foreground ${isRtl ? "justify-end" : "justify-start"}`}>
+              <div className={`mb-4 flex items-center gap-3 text-[14px] font-medium text-foreground justify-start`}>
                 <span dir="ltr">+966 9200000890</span>
                 <svg
                   className="h-5 w-5 text-secondary"
@@ -329,7 +326,7 @@ export default function TravelLandSection() {
               </div>
 
               {/* الموقع الإلكتروني */}
-              <div className={`mb-8 flex items-center gap-3 text-[14px] font-bold text-secondary ${isRtl ? "justify-end" : "justify-start"}`}>
+              <div className={`mb-8 flex items-center gap-3 text-[14px] font-bold text-secondary justify-start`}>
                 <span>theeb.sa</span>
                 <svg
                   className="h-5 w-5 text-secondary"
@@ -349,9 +346,9 @@ export default function TravelLandSection() {
               {/* رابط التحميل */}
               <a
                 href="#"
-                className={`flex text-[14px] font-bold text-primary hover:underline ${isRtl ? "justify-end" : "justify-start"}`}
+                className={`flex text-[14px] font-bold text-primary hover:underline justify-start`}
               >
-                {copy.downloadAppShort}
+                {t("downloadAppShort")}
               </a>
             </div>
           </div>
@@ -361,8 +358,8 @@ export default function TravelLandSection() {
         <div className="relative mt-20 mb-8 pt-4">
           {/* عنوان القسم */}
           <div className="relative z-10 mb-10 flex items-end justify-start border-b border-border pb-4">
-            <h2 className={`relative z-10 inline-block bg-background pl-6 text-[32px] font-bold text-foreground sm:text-[40px] ${isRtl ? "text-right" : "text-left"}`}>
-              {copy.seeAlso}
+            <h2 className={`relative z-10 inline-block bg-background pl-6 text-[32px] font-bold text-foreground sm:text-[40px] text-start`}>
+              {t("seeAlso")}
             </h2>
           </div>
 
@@ -373,13 +370,13 @@ export default function TravelLandSection() {
               <div className="flex justify-start">
                 <Image
                   src="/assets/Getting-here-and-around/evisa-logo-1707824671.png"
-                  alt={copy.visaAlt}
+                  alt={t("visaAlt")}
                   width={70}
                   height={50}
                 />
               </div>
-              <h3 className={`text-[20px] font-bold text-foreground ${isRtl ? "text-right" : "text-left"}`}>
-                {copy.visaTitle}
+              <h3 className={`text-[20px] font-bold text-foreground text-start`}>
+                {t("visaTitle")}
               </h3>
               <div className="flex justify-start">
                 <a
@@ -409,13 +406,13 @@ export default function TravelLandSection() {
               <div className="flex justify-start text-primary">
                 <Image
                   src="/assets/Getting-here-and-around/icon3346.svg"
-                  alt={copy.planStayAlt}
+                  alt={t("planStayAlt")}
                   width={48}
                   height={48}
                 />
               </div>
-              <h3 className={`text-[20px] font-bold text-foreground ${isRtl ? "text-right" : "text-left"}`}>
-                {copy.planStayTitle}
+              <h3 className={`text-[20px] font-bold text-foreground text-start`}>
+                {t("planStayTitle")}
               </h3>
               <div className="flex justify-start">
                 <a
@@ -445,13 +442,13 @@ export default function TravelLandSection() {
               <div className="flex justify-start text-primary">
                 <Image
                   src="/assets/Getting-here-and-around/Vector.svg"
-                  alt={copy.pickDestinationAlt}
+                  alt={t("pickDestinationAlt")}
                   width={48}
                   height={48}
                 />
               </div>
-              <h3 className={`text-[20px] font-bold text-foreground ${isRtl ? "text-right" : "text-left"}`}>
-                {copy.pickDestinationTitle}
+              <h3 className={`text-[20px] font-bold text-foreground text-start`}>
+                {t("pickDestinationTitle")}
               </h3>
               <div className="flex justify-start">
                 <button className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition hover:opacity-90">

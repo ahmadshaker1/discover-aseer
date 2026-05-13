@@ -7,7 +7,7 @@ import {
   XIcon,
   YouTubeIcon,
 } from "@/components/Footer/Icons";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -17,24 +17,28 @@ interface AttractionsIntroSectionProps {
 }
 
 const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const t = useTranslations("attractionsPage");
   const tCommon = useTranslations("common");
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]" dir={isRtl ? "rtl" : "ltr"}>
-      <div className={`mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:h-[441px] lg:items-start ${isRtl ? "lg:flex-row" : "lg:flex-row-reverse"}`}>
-        <div className={`flex h-full w-full max-w-[704px] flex-col gap-6 ${isRtl ? "text-right" : "text-left"}`}>
+    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]">
+      <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:h-[441px] lg:flex-row-reverse lg:items-start">
+        <div className="flex h-full w-full max-w-[704px] flex-col gap-6 text-start">
           <h2
-            className={`w-full text-[44px] font-bold leading-[180%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
+            className="w-full text-start text-[44px] font-bold leading-[180%] text-foreground"
             style={{ fontFamily: ara }}
           >
             {t("introTitle")}
           </h2>
 
-          <div className={`flex h-8 w-full max-w-[218px] items-center gap-[15px] ${isRtl ? "justify-start flex-row-reverse" : "justify-start flex-row"}`}>
-            <div className={`flex items-center gap-2 text-foreground/70 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
+          <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]">
+            <span
+              className="shrink-0 text-[18px] font-bold leading-[180%] text-foreground"
+              style={{ fontFamily: ara }}
+            >
+              {tCommon("share")}
+            </span>
+            <div className="flex items-center gap-2 text-foreground/70">
               <a href="#" aria-label="Instagram" className="cursor-pointer hover:opacity-80">
                 <InstagramIcon />
               </a>
@@ -51,15 +55,9 @@ const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => 
                 <XIcon />
               </a>
             </div>
-            <span
-              className={`text-[18px] font-bold leading-[180%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
-              style={{ fontFamily: ara }}
-            >
-              {tCommon("share")}
-            </span>
           </div>
 
-          <div className={`w-full text-[15px] font-light leading-[119%] text-muted-foreground ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ibm }}>
+          <div className="w-full text-start text-[15px] font-light leading-[119%] text-muted-foreground" style={{ fontFamily: ibm }}>
             <p>{t("innerIntroP1")}</p>
             <p className="mt-4">{t("innerIntroP2")}</p>
             <p className="mt-4">{t("innerIntroP3")}</p>

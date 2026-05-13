@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import ExperienceCardShareButton from "./ExperienceCardShareButton";
 import ExperienceCardActions from "./ExperienceCardActions";
 import { BuildingIcon, PersonIcon, SaudiRiyalIcon } from "./Icons";
@@ -33,8 +33,6 @@ const ExperienceCard = ({
   groupSize,
   bookUrl,
 }: ExperienceCardProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const t = useTranslations("common");
   const currencyLabel = currency ?? t("currencySar");
   return (
@@ -48,18 +46,16 @@ const ExperienceCard = ({
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <ExperienceCardShareButton experienceId={id} title={title} isRtl={isRtl} />
+        <ExperienceCardShareButton experienceId={id} title={title} />
         <div
-          className={`absolute top-3 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5 ${
-            isRtl ? "right-3" : "left-3"
-          }`}
+          className="absolute start-3 top-3 rounded-full bg-black/70 px-3 py-1.5 backdrop-blur-sm"
         >
           <span className="text-white text-xs font-medium">{category}</span>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="p-5 text-start" dir={isRtl ? "rtl" : "ltr"}>
+      <div className="p-5 text-start">
         {/* Title */}
         <h3 className="mb-1 text-xl font-bold text-foreground">{title}</h3>
 

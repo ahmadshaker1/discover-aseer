@@ -1,8 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useLocale } from "next-intl";
-
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
@@ -22,10 +20,8 @@ interface AseerCuisineChefsVideoSectionProps {
 }
 
 const AseerCuisineChefsVideoSection = ({ data }: AseerCuisineChefsVideoSectionProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   return (
-    <section className="mx-auto w-full max-w-[1440px] bg-background py-8 text-foreground" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="mx-auto w-full max-w-[1440px] bg-background py-8 text-foreground">
       <div className="flex w-full flex-col gap-8">
         <div className="px-4 sm:px-8 xl:px-[120px]">
           <div className="mx-auto flex w-full max-w-[704px] flex-col items-center gap-3 text-center">

@@ -1,24 +1,21 @@
 import { MapPinOutlineIcon } from "./Icons";
-import { useLocale } from "next-intl";
-import { resolveGettingHereContent } from "./gettingHerePageContent";
+import { useTranslations } from "next-intl";
 
 export default function TravelSection() {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-  const copy = resolveGettingHereContent(locale).air;
+  const t = useTranslations("gettingHere.air");
 
   return (
-    <section dir={isRtl ? "rtl" : "ltr"} className={`py-12 text-foreground ${isRtl ? "text-right" : "text-left"}`}>
+    <section className={`py-12 text-foreground text-start`}>
       <div className="container mx-auto px-6 mb-12">
-        <h2 className="travel-section-title">{copy.flyByAir}</h2>
+        <h2 className="travel-section-title">{t("flyByAir")}</h2>
         <div className="mb-6 border-b border-border" />
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <article className="rounded-2xl border border-border bg-surface p-6">
             <p className="mb-3 text-2xl font-bold text-secondary">
-              {copy.abhaAirportTitle}
+              {t("abhaAirportTitle")}
             </p>
             <p className="mb-5 text-base leading-7 text-muted-foreground">
-              {copy.abhaAirportBody}
+              {t("abhaAirportBody")}
             </p>
             <a
               href="https://www.google.com/maps/place/Abha+International+Airport/@18.2343646,42.6553277,937m/data=!3m2!1e3!4b1!4m6!3m5!1s0x15fca9c54b96b363:0xfe8a0c2ac4f96600!8m2!3d18.2343646!4d42.6579026!16s%2Fm%2F02882r5?entry=ttu&g_ep=EgoyMDI2MDQxMy4wIKXMDSoASAFQAw%3D%3D"
@@ -29,16 +26,16 @@ export default function TravelSection() {
               <span aria-hidden="true" className="inline-flex">
                 <MapPinOutlineIcon />
               </span>
-              <span className="text-sm font-medium">{copy.viewOnMap}</span>
+              <span className="text-sm font-medium">{t("viewOnMap")}</span>
             </a>
           </article>
 
           <article className="rounded-2xl border border-border bg-surface p-6">
             <p className="mb-3 text-2xl font-bold text-secondary">
-              {copy.bishaAirportTitle}
+              {t("bishaAirportTitle")}
             </p>
             <p className="mb-5 text-base leading-7 text-muted-foreground">
-              {copy.bishaAirportBody}
+              {t("bishaAirportBody")}
             </p>
             <a
               href="https://www.google.com/maps/place/Bisha+Domestic+Airport/@19.8797569,43.6564457,23565m/data=!3m1!1e3!4m6!3m5!1s0x15f02937bd44e1c5:0x4c127fec01eb95f!8m2!3d19.9942184!4d42.6185414!16s%2Fm%2F02882_2?entry=ttu&g_ep=EgoyMDI2MDQxMy4wIKXMDSoASAFQAw%3D%3D"
@@ -49,14 +46,14 @@ export default function TravelSection() {
               <span aria-hidden="true" className="inline-flex">
                 <MapPinOutlineIcon />
               </span>
-              <span className="text-sm font-medium">{copy.viewOnMap}</span>
+              <span className="text-sm font-medium">{t("viewOnMap")}</span>
             </a>
           </article>
         </div>
       </div>
       <div className="container mx-auto px-6">
-        <p className={`${isRtl ? "text-right" : "text-left"} align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}>
-          {copy.domesticFlights}
+        <p className={`text-start align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}>
+          {t("domesticFlights")}
         </p>
         <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
           <div className="flex h-[332px] w-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
@@ -65,15 +62,15 @@ export default function TravelSection() {
                 س
               </span>
               <span className="rounded-full bg-[#F4EEDC] px-4 py-1 text-[12px] font-bold leading-none text-[#8C5B00]">
-                {copy.featured}
+                {t("featured")}
               </span>
             </div>
-            <div className={`mt-auto ${isRtl ? "text-right" : "text-left"}`}>
+            <div className={`mt-auto text-start`}>
               <p className="text-[24px] font-bold leading-[1.05] text-secondary">
-                {copy.saudiLabel}
+                {t("saudiLabel")}
               </p>
               <p className="mt-3 text-[16px] leading-[1.2] text-muted-foreground">
-                {copy.saudiCarrier}
+                {t("saudiCarrier")}
               </p>
               <a
                 href="https://www.saudia.com/?cid=&gad_campaignid=23017945566"
@@ -81,7 +78,7 @@ export default function TravelSection() {
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex items-center gap-3 rounded-full border border-primary/30 bg-primary/15 px-2 py-1 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/25"
               >
-                {copy.bookNow}
+                {t("bookNow")}
                 <span aria-hidden="true" className="text-[24px]">
                   ↗
                 </span>
@@ -94,15 +91,15 @@ export default function TravelSection() {
                 ن
               </span>
               <span className="rounded-full bg-[#E9ECF2] px-4 py-1 text-[12px] font-bold leading-none text-[#747782]">
-                {copy.budget}
+                {t("budget")}
               </span>
             </div>
-            <div className={`mt-auto ${isRtl ? "text-right" : "text-left"}`}>
+            <div className={`mt-auto text-start`}>
               <p className="text-[24px] font-bold leading-[1.05] text-secondary">
-                {copy.flyNasLabel}
+                {t("flyNasLabel")}
               </p>
               <p className="mt-3 text-[16px] leading-[1.2] text-muted-foreground">
-                {copy.flyNasTagline}
+                {t("flyNasTagline")}
               </p>
               <a
                 href="https://www.flynas.com/ar?gclsrc=aw.ds&gad_source=1&gad_campaignid=17793646925"
@@ -110,7 +107,7 @@ export default function TravelSection() {
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex items-center gap-3 rounded-full border border-primary/30 bg-primary/15 px-2 py-1 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/25"
               >
-                {copy.bookNow}
+                {t("bookNow")}
                 <span aria-hidden="true" className="text-[24px]">
                   ↗
                 </span>
@@ -123,15 +120,15 @@ export default function TravelSection() {
                 أ
               </span>
               <span className="rounded-full bg-[#E9ECF2] px-4 py-1 text-[12px] font-bold leading-none text-[#747782]">
-                {copy.budget}
+                {t("budget")}
               </span>
             </div>
-            <div className={`mt-auto ${isRtl ? "text-right" : "text-left"}`}>
+            <div className={`mt-auto text-start`}>
               <p className="text-[24px] font-bold leading-[1.05] text-secondary">
-                {copy.flyadealLabel}
+                {t("flyadealLabel")}
               </p>
               <p className="mt-3 text-[16px] leading-[1.2] text-muted-foreground">
-                {copy.flyadealTagline}
+                {t("flyadealTagline")}
               </p>
               <a
                 href="https://www.flyadeal.com/en/search-flight?gad_source=1&gad_campaignid=13589844465&gclid=Cj0KCQjwkYLPBhC3ARIsAIyHi3TbmImJwiG4yASbL6E_-RQecLzG09amnaOoE7BEKfyyaZmPQ7TYm68aAswdEALw_wcB"
@@ -139,7 +136,7 @@ export default function TravelSection() {
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex items-center gap-3 rounded-full border border-primary/30 bg-primary/15 px-2 py-1 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/25"
               >
-                {copy.bookNow}
+                {t("bookNow")}
                 <span aria-hidden="true" className="text-[24px]">
                   ↗
                 </span>
@@ -149,8 +146,8 @@ export default function TravelSection() {
         </div>
       </div>
       <div className="container mx-auto mt-12 px-6">
-        <p className={`${isRtl ? "text-right" : "text-left"} align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}>
-          {copy.internationalFlights}
+        <p className={`text-start align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}>
+          {t("internationalFlights")}
         </p>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {/* الكرت الأول: فلاي دبي */}
@@ -163,9 +160,9 @@ export default function TravelSection() {
                 className="h-8 w-8 object-contain"
               />
             </div>
-            <div className={`mt-auto ${isRtl ? "text-right" : "text-left"}`}>
+            <div className={`mt-auto text-start`}>
               <p className="text-[24px] font-bold leading-[1.05] text-secondary">
-                {copy.flyDubai}
+                {t("flyDubai")}
               </p>
               <a
                 href="https://www.flydubai.com/ar-ae/"
@@ -173,7 +170,7 @@ export default function TravelSection() {
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center gap-3 rounded-full px-2 py-1 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/15"
               >
-                {copy.bookingSite}
+                {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
                   ↗
                 </span>
@@ -191,9 +188,9 @@ export default function TravelSection() {
                 className="h-8 w-8 object-contain"
               />
             </div>
-            <div className={`mt-auto ${isRtl ? "text-right" : "text-left"}`}>
+            <div className={`mt-auto text-start`}>
               <p className="text-[24px] font-bold leading-[1.05] text-secondary">
-                {copy.airArabia}
+                {t("airArabia")}
               </p>
               <a
                 href="https://www.airarabia.com/ar"
@@ -201,7 +198,7 @@ export default function TravelSection() {
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center gap-3 rounded-full px-2 py-1 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/15"
               >
-                {copy.bookingSite}
+                {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
                   ↗
                 </span>
@@ -219,9 +216,9 @@ export default function TravelSection() {
                 className="h-8 w-8 object-contain"
               />
             </div>
-            <div className={`mt-auto ${isRtl ? "text-right" : "text-left"}`}>
+            <div className={`mt-auto text-start`}>
               <p className="text-[24px] font-bold leading-[1.05] text-secondary">
-                {copy.nileAir}
+                {t("nileAir")}
               </p>
               <a
                 href="https://www.nileair.com/ar"
@@ -229,7 +226,7 @@ export default function TravelSection() {
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center gap-3 rounded-full px-2 py-1 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/15"
               >
-                {copy.bookingSite}
+                {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
                   ↗
                 </span>
@@ -247,9 +244,9 @@ export default function TravelSection() {
                 className="h-8 w-8 object-contain"
               />
             </div>
-            <div className={`mt-auto ${isRtl ? "text-right" : "text-left"}`}>
+            <div className={`mt-auto text-start`}>
               <p className="text-[24px] font-bold leading-[1.05] text-secondary">
-                {copy.airCairo}
+                {t("airCairo")}
               </p>
               <a
                 href="https://aircairo.com/ar-sa/homepage"
@@ -257,7 +254,7 @@ export default function TravelSection() {
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center gap-3 rounded-full px-2 py-1 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/15"
               >
-                {copy.bookingSite}
+                {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
                   ↗
                 </span>

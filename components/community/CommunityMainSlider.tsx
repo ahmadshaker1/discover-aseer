@@ -106,7 +106,6 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
   return (
     <section
       className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]"
-      dir="rtl"
     >
       {/* Backend: update `sectionTitle` + `sectionSubtitle` from API/CMS only. */}
       <div className="mx-auto mb-8 flex w-full max-w-[760px] flex-col items-center text-center">
@@ -142,7 +141,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
 
         <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-20 text-white">
-          <div className="flex w-full max-w-[510px] flex-col gap-[18px] text-right sm:h-[187px]">
+          <div className="flex w-full max-w-[510px] flex-col gap-[18px] text-start sm:h-[187px]">
             <h3
               className="text-[26px] font-bold leading-[40px] text-white sm:h-[48px] sm:text-[32px] sm:leading-[48px]"
               style={{ fontFamily: ara }}

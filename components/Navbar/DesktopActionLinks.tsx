@@ -11,6 +11,7 @@
  *   consider env e.g. NEXT_PUBLIC_BOOKLET_PDF_URL.
  */
 import { Link } from "@/i18n/navigation";
+import { GlobeIcon, CrescentMoonIcon, BookletIcon, LocationPinIcon } from "./Icons";
 import { iconButtons } from "./navbarData";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
@@ -41,7 +42,15 @@ const DesktopActionLinks = () => {
   };
 
   return (
-    <div className="hidden lg:flex flex-row items-center space-x-6">
+    <div className="hidden lg:flex flex-row items-center gap-6">
+      <Link
+        href="/interactive-map"
+        className="inline-flex items-center gap-2 text-base font-medium text-white transition-opacity hover:opacity-80"
+      >
+        <LocationPinIcon />
+        <span className="whitespace-nowrap">{t("interactiveMap.title")}</span>
+      </Link>
+
       {iconButtons.map((item, index) => {
         const Icon = item.icon;
         if ("isBooklet" in item && item.isBooklet) {

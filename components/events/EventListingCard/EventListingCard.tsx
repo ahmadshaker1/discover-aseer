@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { EventListingItem } from "../types";
 
 const PLACEHOLDER = "/assets/experiences/experiences.png";
@@ -121,8 +121,7 @@ interface EventListingCardProps {
 }
 
 const EventListingCard = ({ event }: EventListingCardProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const tCommon = useTranslations("common");
   const [imageIndex, setImageIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
 
@@ -143,14 +142,14 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   const venue = event.venueLabel ?? event.title;
 
   const expandedPanel = (
-    <div className={`flex flex-col gap-4 px-4 pb-4 pt-5 sm:pt-6 ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
-      <h3 className={`w-full text-2xl font-bold leading-none text-foreground ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ara }}>
+    <div className={`flex flex-col gap-4 px-4 pb-4 pt-5 sm:pt-6 text-start`}>
+      <h3 className={`w-full text-2xl font-bold leading-none text-foreground text-start`} style={{ fontFamily: ara }}>
         {event.title}
       </h3>
 
       <div className="flex w-full gap-3 text-muted-foreground">
         <MapPinIcon className="shrink-0 text-muted-foreground" />
-        <div className="min-w-0 flex-1 text-right">
+        <div className="min-w-0 flex-1 text-start">
           <p className="text-sm font-bold leading-tight text-foreground" style={{ fontFamily: ara }}>
             {venue}
           </p>
@@ -158,7 +157,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             href={event.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`mt-0.5 block text-sm font-medium text-[#6027D2] underline ${isRtl ? "text-right" : "text-left"}`}
+            className={`mt-0.5 block text-sm font-medium text-[#6027D2] underline text-start`}
             style={{ fontFamily: ibm }}
           >
             {event.mapsLinkLabel}
@@ -168,9 +167,9 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
       <div className="flex w-full gap-3 text-muted-foreground">
         <CalendarIcon className="shrink-0 text-muted-foreground" />
-        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
+        <div className={`min-w-0 text-start`}>
           <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
-            {isRtl ? "التاريخ" : "Date"}
+            {tCommon("date")}
           </p>
           <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.dateRange}
@@ -180,9 +179,9 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
       <div className="flex w-full gap-3 text-muted-foreground">
         <ClockIcon className="shrink-0 text-muted-foreground" />
-        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
+        <div className={`min-w-0 text-start`}>
           <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
-            {isRtl ? "الوقت" : "Time"}
+            {tCommon("time")}
           </p>
           <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.timeRange}
@@ -192,9 +191,9 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
       <div className="flex w-full gap-3">
         <CurrencyIcon className="mt-0.5 shrink-0 text-foreground" />
-        <div className={`min-w-0 ${isRtl ? "text-right" : "text-left"}`}>
+        <div className={`min-w-0 text-start`}>
           <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
-            {isRtl ? "التذكرة" : "Ticket"}
+            {tCommon("ticket")}
           </p>
           <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
             {event.priceLabel}
@@ -207,7 +206,6 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   return (
     <div
       className="group/card relative z-0 mx-auto h-[357px] w-full max-w-[318px] justify-self-center hover:z-40 focus-within:z-40"
-      dir={isRtl ? "rtl" : "ltr"}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
         setHovered(false);
@@ -233,12 +231,12 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           />
 
           <div
-            className={`absolute top-2 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-2" : "right-2"}`}
-            dir={isRtl ? "rtl" : "ltr"}
+            className="absolute end-2 top-2 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]"
+            dir="ltr"
           >
             <RatingStar />
             <span
-              className="min-w-0 truncate text-right text-[11px] font-medium leading-none text-white"
+              className="min-w-0 truncate text-start text-[11px] font-medium leading-none text-white"
               style={{ fontFamily: ibm }}
             >
               {votesDisplay} {ratingDisplay}
@@ -246,33 +244,33 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           </div>
 
           <div
-            className={`absolute top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-[14px] font-bold leading-none text-white ${isRtl ? "right-2 text-right" : "left-2 text-left"}`}
+            className={`absolute top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-[14px] font-bold leading-none text-white start-2 text-start`}
             style={{ fontFamily: ara }}
           >
             {imageIndex + 1}/3
           </div>
 
-          <div className="absolute inset-x-0 bottom-0 z-5 flex w-full flex-col items-stretch gap-3 p-4 pt-24 text-right transition-opacity duration-300 group-hover/card:pointer-events-none group-hover/card:opacity-0 group-focus-within/card:pointer-events-none group-focus-within/card:opacity-0">
-            <h3 className="w-full text-right text-2xl font-bold leading-none text-white" style={{ fontFamily: ara }}>
+          <div className="absolute inset-x-0 bottom-0 z-5 flex w-full flex-col items-stretch gap-3 p-4 pt-24 text-start transition-opacity duration-300 group-hover/card:pointer-events-none group-hover/card:opacity-0 group-focus-within/card:pointer-events-none group-focus-within/card:opacity-0">
+            <h3 className="w-full text-start text-2xl font-bold leading-none text-white" style={{ fontFamily: ara }}>
               {event.title}
             </h3>
             <div className="flex w-full justify-start">
               <div
-                className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-surface/85 px-2 py-1 text-right text-foreground"
+                className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-surface/85 px-2 py-1 text-start text-foreground"
                 style={{ fontFamily: ara }}
               >
-                <span className="text-right text-sm font-bold leading-none">{event.priceLabel}</span>
+                <span className="text-start text-sm font-bold leading-none">{event.priceLabel}</span>
                 <CurrencyIcon className="shrink-0 text-foreground" />
               </div>
             </div>
-            <div className="flex w-full flex-col items-stretch gap-3 text-right">
+            <div className="flex w-full flex-col items-stretch gap-3 text-start">
               <div className="flex w-full items-center gap-2 text-[#EAEAEA]">
                 <MapPinIcon className="shrink-0" />
                 <a
                   href={event.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="min-w-0 flex-1 text-right text-[14px] font-medium leading-none text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.6)] hover:underline"
+                  className="min-w-0 flex-1 text-start text-[14px] font-medium leading-none text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.6)] hover:underline"
                   style={{ fontFamily: ibm }}
                 >
                   {event.mapsLinkLabel}
@@ -281,7 +279,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
               <div className="flex w-full items-center gap-2 text-[#EAEAEA]">
                 <CalendarIcon className="shrink-0" />
                 <span
-                  className="min-w-0 flex-1 text-right text-[14px] font-medium leading-none text-white"
+                  className="min-w-0 flex-1 text-start text-[14px] font-medium leading-none text-white"
                   style={{ fontFamily: ibm }}
                 >
                   {event.dateRange}
@@ -290,7 +288,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
               <div className="flex w-full items-center gap-2 text-[#EAEAEA]">
                 <ClockIcon className="shrink-0" />
                 <span
-                  className="min-w-0 flex-1 text-right text-[14px] font-medium leading-none text-white"
+                  className="min-w-0 flex-1 text-start text-[14px] font-medium leading-none text-white"
                   style={{ fontFamily: ibm }}
                 >
                   {event.timeRange}

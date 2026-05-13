@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -29,8 +29,6 @@ const LandingWelcomeSection = ({
   description,
   cards,
 }: LandingWelcomeSectionProps) => {
-  const locale = useLocale();
-  const isRtl = locale == "ar";
   const tHome = useTranslations("home");
   const tCommon = useTranslations("common");
 
@@ -73,7 +71,7 @@ const LandingWelcomeSection = ({
   return (
     <section
       className="mx-auto w-full max-w-[1440px] bg-background px-4 py-12 text-foreground md:px-[130px] md:py-[86px]"
-      dir={isRtl ? "rtl" : "ltr"}
+     
     >
       <div className="mx-auto flex w-full max-w-[1180px] flex-col items-center gap-12 md:gap-[48px]">
         <div className="flex w-full flex-col items-center gap-[50px]">
@@ -119,7 +117,7 @@ const LandingWelcomeSection = ({
                 }}
               >
                 <span
-                  className={`block w-full ${isRtl ? "text-right" : "text-left"} text-[22px] font-bold leading-[119%] text-white md:text-[24px]`}
+                  className={`block w-full text-start text-[22px] font-bold leading-[119%] text-white md:text-[24px]`}
                   style={{ fontFamily: ara }}
                 >
                   {card.title}

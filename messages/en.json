@@ -96,14 +96,22 @@
     "goToLandmark": "Go to {title}",
     "shareLandmark": "Share {title}",
     "restaurant": "Restaurant",
-    "notSpecified": "Not specified"
+    "notSpecified": "Not specified",
+    "visitDuration": "Visit duration",
+    "prices": "Prices",
+    "time": "Time",
+    "ticket": "Ticket",
+    "noEventsFilter": "No events match your filters."
   },
   "nav": {
     "planTrip": "Plan your trip",
     "events": "Events",
     "closeMenu": "Close menu",
     "downloadGuide": "Download guide",
-    "languageSwitchLabel": "Switch language"
+    "languageSwitchLabel": "Switch language",
+    "browseDestinations": "Browse destinations",
+    "indoorAttractions": "Indoor attractions",
+    "film": "Film"
   },
   "footer": {
     "discoverAseerTitle": "Discover Aseer",
@@ -162,7 +170,14 @@
     "heroTitleAbha": "Abha",
     "heroSubtitleAbha": "One visit is never enough with all the activities and experiences on offer.",
     "introTitle": "City of fog",
-    "introBody": "Aseer offers mountain landscapes, temperate weather and rich cultural depth.",
+    "introBody": "On the Sarawat peaks in southwest Saudi Arabia, Abha rests like a jewel crowned in mist and beauty, wrapped in cloud summer and winter.",
+    "introP1": "On the Sarawat peaks in southwest Saudi Arabia, Abha rests like a jewel crowned in mist and beauty, wrapped in cloud summer and winter. It is the bright gateway to Aseer and rich with diversity in every direction. Its cool, rainy summers have made it a leading sustainable destination, backed by deep cultural, artistic and heritage assets.",
+    "introP2": "Historic fortresses tell centuries of stories—from Shamsan and Dhara to the great and small Daql forts. Heritage museums in restored homes, such as Fatima Museum and Al-Raqidi Museum, introduce visitors to Aseer's treasures.",
+    "introP3": "Along Abha Valley runs one of its most famous folk markets, Tuesday Market, beside the artistic Al-Muftaha village—home to arts and the legacy of Talal Maddah.",
+    "introP4": "Green fields across Abha supply flowers, grains, fruit and vegetables; locals work in trade, industry and agriculture.",
+    "introP5": "Ancient yet calm as a summer dream, Abha competes globally in modern services, dining, cafés, entertainment, sport and year-round festivals and forums.",
+    "introP6": "Abha—a treasure whose richness never ends and whose wonder never fades.",
+    "landmarksSectionTitle": "Discover top landmarks in Abha",
     "mapViewOnMap": "View {area} on map",
     "mapAlt": "{area} map"
   },
@@ -225,6 +240,8 @@
     "breadcrumb": "Essentials",
     "title": "Essentials",
     "subtitle": "One visit is never enough with all the activities and experiences on offer.",
+    "faqTitle": "Frequently asked questions",
+    "emergencyTitle": "Emergency contacts",
     "emergencyPolice": "Police",
     "emergencyCivilDefense": "Civil Defense",
     "emergencyAmbulance": "Ambulance",
@@ -232,7 +249,23 @@
     "emergencyTraffic": "Traffic",
     "emergencyTourism": "Tourism",
     "emergencyFire": "Fire",
-    "emergencyGeneralSecurity": "General security"
+    "emergencyGeneralSecurity": "General security",
+    "faq": {
+      "items": {
+        "1": {
+          "question": "What does Aseer offer as a tourism destination?",
+          "answer": "Aseer is one of Saudi Arabia’s standout regions, with varied landscapes—mountains, plains, wadis and coastlines—and different weather across seasons. It blends heritage architecture, festivals, modern urban hubs and cultural experiences across food, arts and fashion, with accommodation for many budgets and activities year-round."
+        },
+        "2": {
+          "question": "When is the best time to visit Aseer?",
+          "answer": "Spring and summer bring milder weather in the highlands plus lively events. Winter can be cool and misty in the mountains; autumn often offers calm hiking conditions."
+        },
+        "3": {
+          "question": "What should I pack for Aseer?",
+          "answer": "Pack layers for shifts between coast and mountains, comfortable shoes, sun protection and ID. Check any extra requirements for festivals or sites you plan to visit."
+        }
+      }
+    }
   },
   "experiencesDetail": {
     "backToExperiences": "Back to experiences",
@@ -254,21 +287,70 @@
   },
   "aboutAseer": {
     "title": "About Aseer",
-    "subtitle": "Learn about the region, heritage and nature."
+    "breadcrumbAbout": "About Aseer",
+    "heroSubtitle": "Discover the natural and cultural diversity of the region.",
+    "story": {
+      "sectionTitle": "Aseer tells the story of place",
+      "sectionSubtitle": "From cool highlands to plains and coastlines, Aseer brings natural diversity and cultural depth into one journey.",
+      "sectionCaption": "Discover Aseer to rediscover Saudi Arabia.",
+      "highlights": {
+        "h1": "Al Soudah Mountains",
+        "h2": "Rijal Almaa Village",
+        "h3": "Al Qahma Coast",
+        "h4": "Tanomah Forests"
+      },
+      "slides": {
+        "culture1": {
+          "title": "Land of culture and arts",
+          "description": "Aseer thrives with folk arts, crafts and festivals, making it a destination full of identity and creativity."
+        },
+        "nature2": {
+          "title": "Exceptional geographic diversity",
+          "description": "Aseer's terrain varies between mountains, valleys and coastlines, offering distinct weather and experiences every trip."
+        },
+        "heritage3": {
+          "title": "Living and renewed heritage",
+          "description": "Historic villages and architecture in Aseer reflect a unique blend of authenticity and future ambition."
+        }
+      }
+    }
   },
   "servicesSupport": {
     "title": "Services & support",
     "subtitle": "Information and assistance during your visit.",
     "bannerCrumb": "Support services",
-    "bannerDescription": "Safety, security and support services across Aseer’s cities and governorates."
+    "bannerDescription": "Safety, security and support services across Aseer’s cities and governorates.",
+    "filterServices": "Filter services",
+    "chooseDestination": "Choose destination",
+    "chooseServiceType": "Choose support service type",
+    "internationalCallCenter": "International call center:",
+    "noServicesFilter": "No services match your selected filters.",
+    "noServicesData": "No support services data is available right now. Please check the API settings or try again later."
   },
   "tourGuides": {
     "title": "Tour guides",
-    "subtitle": "Connect with certified guides for a richer trip."
+    "subtitle": "Connect with certified guides for a richer trip.",
+    "filterGuides": "Filter guides",
+    "specializations": "Specializations",
+    "gender": "Gender",
+    "transportation": "Transportation",
+    "transportAvailable": "Available",
+    "transportNotAvailable": "Not available",
+    "contactWhatsApp": "Contact on WhatsApp",
+    "registerAsGuide": "Register as a tour guide"
   },
   "tourGuidesRegister": {
     "title": "Guide registration",
-    "subtitle": "Join the Aseer guide network."
+    "subtitle": "Join the Aseer guide network.",
+    "metaTitle": "Tour guide registration form | Discover Aseer",
+    "metaDescription": "Register as a tour guide in Aseer.",
+    "back": "Back",
+    "breadcrumbLabel": "Breadcrumb",
+    "home": "Home",
+    "tourGuides": "Tour guides",
+    "formTitle": "Tour guide registration form",
+    "stepProgress": "Step {step} of {total}",
+    "formProgressAria": "Form completion progress"
   },
   "aseerCommunity": {
     "title": "Aseer community",
@@ -276,23 +358,207 @@
   },
   "aseerCuisine": {
     "title": "Aseeri cuisine",
-    "subtitle": "Authentic flavours from the south."
+    "subtitle": "Authentic flavours from the south.",
+    "dishesSection": {
+      "title": "Taste traditional Aseeri dishes",
+      "description": "Aseeri cooking brings mountains, valleys, and farms together on one table: coffee from highland beans, dates from Bisha, mountain wheat and valley grains, fresh dairy, and wildflower honey—often finishing with slow-cooked haneeth from local herds. Explore dishes like haneeth, areekah, mashgothah, asidah, mifa bread from the tannur, marqoush bread, mabthoothah, and more.",
+      "cards": {
+        "dish1": "Haneeth",
+        "dish2": "Areekah",
+        "dish3": "Mashgothah",
+        "dish4": "Asidah"
+      }
+    },
+    "restaurantsSection": {
+      "title": "Popular restaurants",
+      "ctaLabel": "Restaurants",
+      "cards": {
+        "r1": { "title": "Haneeth House", "location": "Abha — King Fahd Road", "cuisineType": "Aseeri cuisine", "priceRange": "SAR 50–120" },
+        "r2": { "title": "Areekah Corner", "location": "Khamis Mushait — Airport district", "cuisineType": "Casual dining", "priceRange": "SAR 35–90" },
+        "r3": { "title": "Mifa Bakery", "location": "Tanomah — Souq Street", "cuisineType": "Aseeri baking", "priceRange": "SAR 25–70" },
+        "r4": { "title": "House of Marqoush", "location": "Al-Namas — King Khalid Road", "cuisineType": "Heritage food", "priceRange": "SAR 40–110" },
+        "r5": { "title": "Marsa Aseer", "location": "Bisha — city centre", "cuisineType": "Local plates", "priceRange": "SAR 30–85" },
+        "r6": { "title": "Mountain Table", "location": "Rijal Almaa — historic quarter", "cuisineType": "Highland kitchen", "priceRange": "SAR 60–140" }
+      }
+    },
+    "localFlavorsSection": {
+      "title": "Local flavours",
+      "subtitle": "A window into Aseer's most distinctive tastes",
+      "cards": {
+        "flavor1": "Haneeth",
+        "flavor2": "Areekah",
+        "flavor3": "Mashgothah",
+        "flavor4": "Mifa bread"
+      }
+    },
+    "cookingExperiencesSection": {
+      "title": "Cooking experiences",
+      "description": "Join hands-on sessions with local hosts: from haneeth and tannur bread to coffee roasting and mountain honey—built around the same ingredients that define Aseeri tables.",
+      "ctaLabel": "View all experiences",
+      "cards": {
+        "cookExp1": {
+          "category": "Cooking",
+          "title": "Cook haneeth the Aseeri way",
+          "duration": "3 hours",
+          "description": "Choose cuts, rubs, and slow-cooking steps for authentic Aseeri haneeth.",
+          "provider": "Bayt Al Nakaat"
+        },
+        "cookExp2": {
+          "category": "Heritage baking",
+          "title": "Mifa bread workshop",
+          "duration": "2.5 hours",
+          "description": "Mix, shape, and bake mifa bread using traditional tannur methods.",
+          "provider": "Heritage Aseer Kitchen"
+        },
+        "cookExp3": {
+          "category": "Sweets",
+          "title": "Areekah & mashgothah",
+          "duration": "2 hours",
+          "description": "Interactive prep and plating for two beloved Aseeri comfort dishes.",
+          "provider": "Pioneers of Taste"
+        },
+        "cookExp4": {
+          "category": "Coffee & honey",
+          "title": "Aseeri coffee circle",
+          "duration": "1.5 hours",
+          "description": "Roast, brew, and taste local coffee with honey and Bisha dates.",
+          "provider": "Mountain Coffee"
+        }
+      }
+    },
+    "chefsVideoSection": {
+      "title": "Meet Aseer's chefs",
+      "subtitle": "Stories from the kitchens that carry the region's flavours forward"
+    }
   },
   "planner": {
     "title": "Plan your trip",
-    "subtitle": "Plan your visit with ease."
+    "subtitle": "Plan your visit with ease.",
+    "formTitle": "Write a description of your trip",
+    "formPlaceholder": "Suggestion: Plan a 7-day trip to Aseer with breakfast at 10 AM, lunch at 3 PM, and dinner at 8 PM.",
+    "dateFrom": "From",
+    "dateTo": "To",
+    "timePeriod": "Time period",
+    "planning": "Planning...",
+    "createPlan": "Create plan",
+    "parseError": "Unable to parse the plan from server, please try again.",
+    "generateError": "An error occurred while generating the schedule"
   },
   "interactiveMap": {
     "title": "Interactive map",
-    "subtitle": "Explore destinations on the map."
+    "subtitle": "Explore destinations on the map.",
+    "all": "All",
+    "allCategories": "All categories",
+    "discover": "Discover Aseer",
+    "filterLabel": "Filter",
+    "search": "Search...",
+    "locations": "Locations",
+    "clearFilters": "Clear filters",
+    "noGeo": "Location coordinates are currently unavailable on the map.",
+    "showOnMap": "Show on map",
+    "noResults": "No places match the current search.",
+    "tokenHint": "Add `NEXT_PUBLIC_MAPBOX_API_KEY` in the environment file to enable the map."
   },
   "film": {
     "title": "Aseer on screen",
-    "subtitle": "Video stories introducing the region."
+    "subtitle": "Video stories introducing the region.",
+    "introTitle": "Start a cinematic journey rich in diversity and unique beauty.",
+    "introBody": "Aseer is distinguished by diverse natural landscapes: mountain peaks, plains, vast deserts, and Red Sea coastlines, with more than four thousand heritage villages that reflect deep culture, history, and authentic local identity.",
+    "bannerTitle": "In Aseer!",
+    "bannerSubtitle": "We are here with what you need.",
+    "ctaFormPrompt": "Please fill in the form below.",
+    "registerNow": "Register now",
+    "orEmailUs": "Or email us at:",
+    "whyAseer": "Why Aseer?",
+    "services": "Services",
+    "filmedWorks": "Filmed works in Aseer",
+    "filterAll": "All",
+    "filterFilms": "Films",
+    "filterPromo": "Promotional films",
+    "filterSeries": "Series",
+    "filterMusic": "Music films",
+    "serviceCrewTitle": "Crew",
+    "serviceCrewDesc": "Support in connecting productions with local talent and skilled professionals across Asir.",
+    "serviceLocationsTitle": "Locations",
+    "serviceLocationsDesc": "Support and facilitation to identify and access locations that match production requirements.",
+    "servicePermitsTitle": "Permits",
+    "servicePermitsDesc": "Support and guidance through required approvals from official entities for filming in Asir."
   },
   "gettingHere": {
     "title": "Getting here & around",
-    "subtitle": "Transport and roads in Aseer."
+    "subtitle": "Transport and roads in Aseer.",
+    "banner": {
+      "home": "Home",
+      "crumbExperiences": "Experiences",
+      "title": "Getting here & around",
+      "subtitle": "One visit is rarely enough—with so many activities and experiences to explore."
+    },
+    "air": {
+      "flyByAir": "Flying in",
+      "abhaAirportTitle": "Abha International Airport (AHB)",
+      "abhaAirportBody": "The main gateway to the region—about 18 km from downtown Abha—with domestic flights and links to international hubs.",
+      "bishaAirportTitle": "Bisha Domestic Airport (BHH)",
+      "bishaAirportBody": "Ideal if you're heading to northern parts of Asir with efficient domestic connections.",
+      "viewOnMap": "View on map",
+      "domesticFlights": "Domestic flights",
+      "internationalFlights": "International flights",
+      "bookNow": "Book now",
+      "bookingSite": "Booking site",
+      "featured": "Featured",
+      "budget": "Budget",
+      "saudiLabel": "Saudia",
+      "saudiCarrier": "National carrier",
+      "flyNasLabel": "flynas",
+      "flyNasTagline": "Leading economy airline",
+      "flyadealLabel": "flyadeal",
+      "flyadealTagline": "Smart travel",
+      "flyDubai": "flydubai",
+      "airArabia": "Air Arabia",
+      "nileAir": "Nile Air",
+      "airCairo": "Air Cairo"
+    },
+    "land": {
+      "travelByRoad": "Driving in",
+      "roadLead": "Driving to Asir crosses changing terrain—from coastal plains to high mountains—on well-maintained roads with unforgettable views.",
+      "fromRiyadh": "From Riyadh",
+      "fromJeddah": "From Jeddah",
+      "fromDammam": "From Dammam",
+      "hours950": "950 km",
+      "hours630": "630 km",
+      "hours1400": "1,400 km",
+      "time910": "9–10 hours",
+      "time67": "6–7 hours",
+      "time1314": "13–14 hours",
+      "saptcoTitle": "SAPTCO buses",
+      "saptcoBody": "Travel comfortably nationwide with SAPTCO's scheduled inter‑city buses, including routes to central Abha station.",
+      "bookOnWebsite": "Book online",
+      "downloadApp": "Download app",
+      "gettingAroundTitle": "Getting around Asir",
+      "airportTaxiTitle": "Airport taxis",
+      "airportTaxiAlt": "Airport taxi",
+      "airportTaxiBody": "Available outside arrivals. Reliable though supply can tighten in peak tourism seasons; fixed fares into town are typical.",
+      "rideAppsTitle": "Ride‑hailing apps",
+      "downloadAppShort": "Download app",
+      "bolt": "Bolt",
+      "careem": "Careem",
+      "uber": "Uber",
+      "carRentalTitle": "Car rental",
+      "carRentalLead": "For villages and viewpoints, renting a car is recommended. Local and international desks operate at airports.",
+      "theebTitle": "Theeb",
+      "seeAlso": "See also",
+      "visaTitle": "Visa & entry requirements",
+      "visaAlt": "Visa requirements",
+      "planStayTitle": "Plan your stay",
+      "planStayAlt": "Plan your stay",
+      "pickDestinationAlt": "Pick your destination",
+      "pickDestinationTitle": "Choose your destination"
+    }
+  },
+  "notFound": {
+    "title": "Sorry, this page doesn't exist",
+    "description": "You can go back to the previous page or return to the home page.",
+    "goBack": "Go back",
+    "goHome": "Go to home"
   },
   "landmarks": {
     "redirectNote": "Redirect to attractions"

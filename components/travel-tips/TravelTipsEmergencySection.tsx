@@ -1,7 +1,7 @@
  "use client";
 
 import type { ReactNode } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import {
   IconArrow,
   IconBell,
@@ -43,19 +43,18 @@ interface TravelTipsEmergencySectionProps {
 }
 
 const TravelTipsEmergencySection = ({ contacts }: TravelTipsEmergencySectionProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("travelTips");
   return (
     <section
       className="mx-auto w-full max-w-[1440px] px-4 pb-12 sm:px-8 md:px-[60px]"
-      dir={isRtl ? "rtl" : "ltr"}
+     
     >
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         <h2
-          className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
+          className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-foreground text-start`}
           style={{ fontFamily: ara }}
         >
-          {isRtl ? "أرقام تهمك" : "Emergency contacts"}
+          {t("emergencyTitle")}
         </h2>
 
         <div
@@ -76,13 +75,13 @@ const TravelTipsEmergencySection = ({ contacts }: TravelTipsEmergencySectionProp
                 </span>
               </div>
               <p
-                className="w-full text-right text-[24px] font-bold leading-[119%] text-foreground"
+                className="w-full text-start text-[24px] font-bold leading-[119%] text-foreground"
                 style={{ fontFamily: ara }}
               >
                 {item.title}
               </p>
               <p
-                className="w-full text-right text-[32px] font-bold leading-none text-foreground"
+                className="w-full text-start text-[32px] font-bold leading-none text-foreground"
                 style={{ fontFamily: ibm }}
               >
                 {item.number}

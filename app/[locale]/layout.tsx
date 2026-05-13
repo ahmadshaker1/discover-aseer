@@ -1,7 +1,42 @@
+import type { Metadata } from "next";
+import { IBM_Plex_Sans_Arabic, Readex_Pro } from "next/font/google";
+import localFont from "next/font/local";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
-import { routing } from "@/i18n/routing";
+import Navbar from "@/components/Navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
+import AccessibilityWidget from "@/components/AccessibilityWidget/AccessibilityWidget";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { routing, type AppLocale } from "@/i18n/routing";
+
+const araHamah1964 = localFont({
+  src: "../../public/fonts/Ara Hamah 1964 B Bold.ttf",
+  variable: "--font-ara-hamah-1964",
+  display: "swap",
+});
+
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["arabic", "latin"],
+  variable: "--font-ibm-plex-sans-arabic",
+});
+
+const readexPro = Readex_Pro({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["arabic", "latin"],
+  variable: "--font-readex-pro",
+});
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export const metadata: Metadata = {
+  title: "Discover Aseer",
+  description: "Discover Aseer region — heritage, nature and hospitality.",
+};
 
 export default async function LocaleLayout({
   children,
@@ -16,7 +51,24 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  setRequestLocale(locale);
-  return children;
-}
+  const appLocale = locale as AppLocale;
+  setRequestLocale(appLocale);
+  const messages = await getMessages();
 
+  return (
+    <html lang={appLocale} dir={appLocale === "ar" ? "rtl" : "ltr"}>
+      <body
+        className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
+      >
+        <NextIntlClientProvider locale={appLocale} messages={messages}>
+          <ThemeProvider>
+            <Navbar />
+            {children}
+            <AccessibilityWidget />
+            <Footer />
+          </ThemeProvider>
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

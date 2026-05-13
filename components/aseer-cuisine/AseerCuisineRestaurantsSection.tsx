@@ -186,7 +186,6 @@ function formatPriceBand(card: AseerCuisineRestaurantCard): string {
 
 const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSectionProps) => {
   const locale = useLocale();
-  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
   const interestOpts = useMemo(() => getInterestOptions(locale), [locale]);
@@ -218,20 +217,20 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
   }, [city, data.cards, interest, price]);
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] py-8 text-foreground" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="mx-auto w-full max-w-[1440px] py-8 text-foreground">
       <div className="flex w-full flex-col gap-8">
         <div className="px-4 sm:px-8 xl:px-[120px]">
           <div className="flex w-full items-start justify-between">
-            <div className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] ${isRtl ? "items-end justify-end text-right" : "items-start justify-start text-left"}`}>
+            <div className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] items-start justify-start text-start`}>
               <h2
-                className={`w-full text-[64px] font-bold leading-[119%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
+                className={`w-full text-[64px] font-bold leading-[119%] text-foreground text-start`}
                 style={{ fontFamily: ara }}
               >
                 {data.title}
               </h2>
               {data.subtitle ? (
                 <p
-                  className={`h-[11px] w-[224px] text-[24px] font-bold leading-[119%] text-muted-foreground ${isRtl ? "text-right" : "text-left"}`}
+                  className={`h-[11px] w-[224px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start`}
                   style={{ fontFamily: ara }}
                 >
                   {data.subtitle}
@@ -251,7 +250,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
 
         {data.showFilters ? (
           <div className="mx-auto mb-2 w-full max-w-[1181px] overflow-x-auto pb-1">
-            <div className={`flex min-w-max items-center gap-3 px-1 ${isRtl ? "justify-start" : "justify-end"}`}>
+            <div className={`flex min-w-max items-center gap-3 px-1 justify-end`}>
               <select
                 value={city ?? ""}
                 onChange={(e) => setCity(e.target.value || null)}
@@ -281,7 +280,7 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                 onChange={(e) => setPrice((e.target.value as PriceFilterId) || null)}
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
               >
-                <option value="">{isRtl ? "السعر" : "Price"}</option>
+                <option value="">{tCommon("price")}</option>
                 {priceOptions.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
@@ -308,8 +307,8 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
             {filteredCards.map((card) => (
               <article
                 key={card.id}
-                className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl ${isRtl ? "text-right" : "text-left"}`}
-                dir={isRtl ? "rtl" : "ltr"}
+                className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl text-start`}
+               
               >
                 <div className="relative h-[190px] w-full overflow-hidden">
                   <img
@@ -319,12 +318,12 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
                     loading="lazy"
                   />
                   <div
-                    className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-3" : "right-3"}`}
+                    className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] end-3`}
                     dir="ltr"
                   >
                     <RatingStar />
                     <span
-                      className="min-w-0 truncate text-right text-[11px] font-medium leading-none text-white"
+                      className="min-w-0 truncate text-start text-[11px] font-medium leading-none text-white"
                       style={{ fontFamily: ibm }}
                     >
                       ({card.reviewsCount}) {Number(card.rating).toFixed(1)}/5

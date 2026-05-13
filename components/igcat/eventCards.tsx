@@ -54,10 +54,10 @@ export default function IGCatEventCards() {
   const activeEvent = dummyEvents[activeIndex];
 
   return (
-    <section className="py-16 bg-white" dir="rtl">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* 1. العنوان والتاق */}
-        <div className="flex flex-col items-start   mb-10 text-right">
+        <div className="flex flex-col items-start   mb-10 text-start">
           <span className="inline-block px-5 py-1 border border-[#7300CD] text-[#7300CD] rounded-full text-[14px] font-bold mb-4">
             ملتقى عالمي
           </span>
@@ -110,7 +110,7 @@ export default function IGCatEventCards() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
             {/* محتوى النص */}
-            <div className="absolute bottom-0 right-0 p-6 md:p-10 text-right w-full md:w-3/4 lg:w-2/3 z-10">
+            <div className="absolute bottom-0 end-0 p-6 md:p-10 text-start w-full md:w-3/4 lg:w-2/3 z-10">
               <h3 className="text-[24px] md:text-[32px] font-bold text-white mb-4">
                 {activeEvent.title}
               </h3>

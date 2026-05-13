@@ -56,30 +56,30 @@ const DestinationsIntroSection = ({
 }: DestinationsIntroSectionProps) => {
   const t = useTranslations("common");
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]" dir="rtl">
+    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]">
       <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:flex-row lg:items-start">
         <div
           className={`flex w-full flex-col gap-6 ${
             hideImage ? "max-w-[900px]" : "max-w-[704px]"
-          } ${centerContent ? "mx-auto items-center text-center" : "text-right"}`}
+          } ${centerContent ? "mx-auto items-center text-center" : "text-start"}`}
         >
           <h2
             className={`w-full text-[44px] font-bold leading-[180%] text-foreground ${
-              centerContent ? "text-center" : "text-right"
+              centerContent ? "text-center" : "text-start"
             }`}
             style={{ fontFamily: ara }}
           >
             {title}
           </h2>
 
-          <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]" dir="rtl">
+          <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]">
             <span
               className="shrink-0 text-[18px] font-bold leading-[180%] text-foreground"
               style={{ fontFamily: ara }}
             >
               {t("share")}
             </span>
-            <div className="flex items-center gap-2 text-foreground/70" dir="ltr">
+            <div className="flex items-center gap-2 text-foreground/70">
               <a href="#" aria-label="WhatsApp" className="hover:opacity-80">
                 <WhatsAppIcon />
               </a>
@@ -100,7 +100,7 @@ const DestinationsIntroSection = ({
 
           <div
             className={`w-full text-[15px] font-light leading-[130%] text-muted-foreground ${
-              centerContent ? "text-center" : "text-right"
+              centerContent ? "text-center" : "text-start"
             }`}
             style={{ fontFamily: ibm }}
           >

@@ -1,4 +1,4 @@
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
 const TOTAL_STEPS = 3;
@@ -25,27 +25,25 @@ const TourGuideRegisterProgress = ({
   totalCount,
   currentStep = 1,
 }: TourGuideRegisterProgressProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("tourGuidesRegister");
   const filled = segmentsFilledFromInputs(completedCount, totalCount);
   const stepLabel = Math.min(TOTAL_STEPS, Math.max(1, currentStep));
 
   return (
     <div className="mx-auto flex w-full max-w-[1026px] flex-col gap-2">
       <p
-        className={`w-full text-[18px] font-bold leading-[150%] text-[#292D30] ${isRtl ? "text-right" : "text-left"}`}
+        className={`w-full text-[18px] font-bold leading-[150%] text-[#292D30] text-start`}
         style={{ fontFamily: araBold }}
       >
-        {isRtl ? `الخطوة ${stepLabel} من ${TOTAL_STEPS}` : `Step ${stepLabel} of ${TOTAL_STEPS}`}
+        {t("stepProgress", { step: stepLabel, total: TOTAL_STEPS })}
       </p>
       <div
         className="flex h-[5px] w-full max-w-[1026px] gap-[5px]"
-        dir={isRtl ? "rtl" : "ltr"}
         role="progressbar"
         aria-valuenow={completedCount}
         aria-valuemin={0}
         aria-valuemax={totalCount}
-        aria-label={isRtl ? "تقدم إكمال النموذج" : "Form completion progress"}
+        aria-label={t("formProgressAria")}
       >
         {[0, 1, 2].map((idx) => (
           <div

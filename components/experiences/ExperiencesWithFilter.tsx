@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useState, useMemo } from "react";
 import ExperienceCard from "@/components/experiences/ExperienceCard/ExperienceCard";
 import ExperiencesFilter, {
@@ -51,8 +51,6 @@ export default function ExperiencesWithFilter({
   experiences,
   filterOptions,
 }: ExperiencesWithFilterProps) {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
 
@@ -66,7 +64,7 @@ export default function ExperiencesWithFilter({
   return (
     <div
       className="flex flex-col gap-8 lg:flex-row"
-      dir={isRtl ? "rtl" : "ltr"}
+     
     >
       <aside className="shrink-0 lg:self-start">
         <ExperiencesFilter

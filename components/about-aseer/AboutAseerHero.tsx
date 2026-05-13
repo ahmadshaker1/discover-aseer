@@ -1,6 +1,5 @@
 "use client";
 
-import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
@@ -20,7 +19,6 @@ export interface AboutAseerHeroData {
 }
 
 function BreadcrumbChevron() {
-  const isRtl = useLocale() === "ar";
   return (
     <svg
       width="5"
@@ -29,7 +27,7 @@ function BreadcrumbChevron() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
-      className={isRtl ? "" : "rotate-180"}
+      className="rtl:rotate-180"
     >
       <path
         d="M4.25184 0C4.35476 0 4.45767 0.0379143 4.53892 0.119164C4.69601 0.276247 4.69601 0.536248 4.53893 0.693332L1.00726 4.225C0.747259 4.485 0.747259 4.9075 1.00726 5.1675L4.53893 8.69916C4.69601 8.85625 4.69601 9.11625 4.53893 9.27333C4.38184 9.43041 4.12184 9.43041 3.96476 9.27333L0.433092 5.74167C0.156842 5.46542 -0.000241179 5.09166 -0.000241213 4.69625C-0.000241248 4.30083 0.151425 3.92708 0.433092 3.65083L3.96476 0.119165C4.04601 0.0433312 4.14893 0 4.25184 0Z"
@@ -107,8 +105,6 @@ interface AboutAseerHeroProps {
 }
 
 const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   return (
     <section
       className="relative flex min-h-[75vh] w-full flex-col items-center justify-center overflow-hidden md:min-h-[80vh]"
@@ -123,33 +119,27 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
       <div className="absolute inset-0 bg-black/25" />
 
       <div
-        className={`pointer-events-none absolute top-0 z-2 hidden md:block ${isRtl ? "right-0" : "left-0"}`}
+        className="pointer-events-none absolute top-0 z-2 hidden h-[187px] w-[553px] origin-top-left -rotate-90 translate-y-[120px] md:block start-0 rtl:origin-top-right rtl:rotate-90 rtl:-translate-y-[120px]"
         aria-hidden
-        style={{
-          width: "553px",
-          height: "187px",
-          transform: isRtl ? "rotate(90deg) translateY(-120px)" : "rotate(-90deg) translateY(120px)",
-          transformOrigin: isRtl ? "top right" : "top left",
-          backdropFilter: "blur(400px)",
-        }}
+        style={{ backdropFilter: "blur(400px)" }}
       >
         <div className="h-full w-full rounded-full bg-white/10" />
       </div>
 
       <div
-        className={`pointer-events-none absolute inset-y-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)] ${isRtl ? "left-0" : "right-0"}`}
+        className={`pointer-events-none absolute inset-y-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)] end-0`}
         aria-hidden
       >
         <Image
           src="/hero-pattern/pattern-diamons.png"
           alt=""
           fill
-          className={`object-contain ${isRtl ? "object-left" : "object-right scale-x-[-1]"}`}
+          className="object-contain object-start ltr:scale-x-[-1]"
           sizes="(max-width: 768px) 55vw, 28rem"
         />
       </div>
 
-      <div className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex ${isRtl ? "right-8" : "left-8"}`}>
+      <div className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-8`}>
         {data.socialLinks.map((social) => (
           <a
             key={social.platform}
@@ -168,7 +158,7 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
         <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
           <div
             className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-            dir={isRtl ? "rtl" : "ltr"}
+           
             style={{ fontFamily: ara }}
           >
             {data.breadcrumbs.map((crumb, index) => (

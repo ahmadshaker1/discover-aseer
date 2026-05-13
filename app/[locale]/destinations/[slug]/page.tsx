@@ -10,7 +10,7 @@ import {
 import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
 
 interface DestinationSlugPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {

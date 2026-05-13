@@ -12,7 +12,6 @@ export default async function ExperiencesBanner() {
       title={t("title")}
       subtitle={t("subtitle")}
       backgroundImage="/assets/experiences/experiences.png"
-      breadcrumbDir={locale === "ar" ? "rtl" : "ltr"}
-    />
+          />
   );
 }

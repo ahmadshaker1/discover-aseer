@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Fragment } from "react";
 import {
   HeartIcon,
@@ -72,18 +72,12 @@ const ExperiencesFilter = ({
   onFiltersChange,
   onReset,
 }: ExperiencesFilterProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
   const tExperiencesPage = useTranslations("experiencesPage");
   const { cityOptions, interests, costOptions, travelerTypes } = filterOptions;
 
-  const cityMenuButtonClass = `flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm ${
-    isRtl ? "flex-row-reverse" : "flex-row"
-  }`;
-  const menuItemsClass = `absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none ${
-    isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"
-  }`;
+  const cityMenuButtonClass = "flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm";
+  const menuItemsClass = "absolute start-0 z-50 mt-2 w-full origin-top-start rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none";
 
   const handleInterestToggle = (interestId: string) => {
     onFiltersChange({
@@ -117,7 +111,7 @@ const ExperiencesFilter = ({
   return (
     <div
       className="w-full max-w-md rounded-lg bg-surface p-6 text-foreground shadow-sm"
-      dir={isRtl ? "rtl" : "ltr"}
+     
     >
       <div className="mb-8 flex items-center justify-between gap-4">
         <Button

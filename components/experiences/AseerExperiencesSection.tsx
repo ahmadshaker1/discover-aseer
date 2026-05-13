@@ -26,12 +26,12 @@ const AseerCuisineCookingExperiencesSection = ({
   data,
 }: AseerCuisineCookingExperiencesSectionProps) => {
   return (
-    <section className="mx-auto w-full max-w-[1441px] p-4 text-foreground sm:p-8 md:p-[60px]" dir="rtl">
+    <section className="mx-auto w-full max-w-[1441px] p-4 text-foreground sm:p-8 md:p-[60px]">
       <div className="flex h-full w-full flex-col gap-[50px]">
         <div className="flex w-full flex-col gap-6 lg:h-[520px] lg:flex-row lg:items-start lg:justify-between lg:gap-[114px]">
           {/* Right panel */}
           <div className="flex w-full max-w-[337px] flex-col gap-12 lg:h-[284px]">
-            <div className="flex flex-col gap-5 text-right">
+            <div className="flex flex-col gap-5 text-start">
               <h2
                 className="text-[100px] font-bold leading-[100%] text-secondary"
                 style={{ fontFamily: ara }}
@@ -56,7 +56,7 @@ const AseerCuisineCookingExperiencesSection = ({
           </div>
 
           {/* Left panel: exact experiences cards, horizontally scrollable */}
-          <div className="w-full max-w-[875px] overflow-x-auto">
+          <div className="w-full max-w-[875px] overflow-x-auto" dir="ltr">
             {/* Backend (Directus): provide `cards` with ExperienceCard fields; no component/style changes needed. */}
             <div className="flex min-w-max gap-8 pb-2">
               {data.cards.map((card) => (

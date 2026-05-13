@@ -43,12 +43,10 @@ export default function FoodFilmSection() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-12">
           {/* الوصف (يسار) */}
           <div
-            className="order-2 lg:order-1 w-full lg:w-1/2 text-right lg:text-right mt-4 lg:mt-0"
-            dir="rtl"
+            className="order-2 lg:order-1 w-full lg:w-1/2 text-start lg:text-start mt-4 lg:mt-0"
           >
             <p
-              className="text-[#333] leading-relaxed text-[15px] max-w-xl mr-auto font-bold"
-              dir="rtl"
+              className="text-[#333] leading-relaxed text-[15px] max-w-xl ms-auto font-bold"
             >
               تقام المسابقة سنوياً لعرض مقاطع فيديو تروج للمعالم الثقافية
               والطبيعية حول العالم. فازت عسير بالجائزة مرتين في 2022 و2024،
@@ -56,13 +54,12 @@ export default function FoodFilmSection() {
             </p>
           </div>
           {/* العنوان (يمين) */}
-          <div className="flex flex-col items-start lg:items-end order-1 lg:order-2 w-full lg:w-1/2 text-right">
+          <div className="flex flex-col items-start lg:items-end order-1 lg:order-2 w-full lg:w-1/2 text-start">
             <span className="inline-block px-5 py-1 border border-[#7300CD] text-[#7300CD] rounded-full text-[13px] font-bold mb-4">
               المسابقات
             </span>
             <h2
               className="text-[28px] md:text-[36px] font-bold text-black"
-              dir="rtl"
             >
               مسابقة Food Film Menu
             </h2>
@@ -92,7 +89,7 @@ export default function FoodFilmSection() {
                     <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30"></div>
 
                     {/* شارة السنة */}
-                    <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full shadow-sm z-10">
+                    <div className="absolute top-4 start-4 bg-white px-3 py-1 rounded-full shadow-sm z-10">
                       <span className="text-[#7300CD] font-bold text-[14px]">
                         {video.year}
                       </span>

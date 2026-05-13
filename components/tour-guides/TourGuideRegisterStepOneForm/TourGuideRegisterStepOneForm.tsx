@@ -294,7 +294,7 @@ const TourGuideRegisterStepOneForm = ({
   return (
     <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit}>
       <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-name-ar`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -306,12 +306,12 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-name-ar`}
             value={values.name_ar}
             onChange={(e) => setField("name_ar", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-name-en`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -323,13 +323,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-name-en`}
             value={values.name_en}
             onChange={(e) => setField("name_en", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-gender`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -343,7 +343,7 @@ const TourGuideRegisterStepOneForm = ({
             onChange={(e) =>
               setField("gender", e.target.value as FormValues["gender"])
             }
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
           >
             <option value="">اختر</option>
@@ -352,7 +352,7 @@ const TourGuideRegisterStepOneForm = ({
           </select>
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-nid`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -364,13 +364,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-nid`}
             value={values.National_ID_number}
             onChange={(e) => setField("National_ID_number", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             inputMode="numeric"
           />
         </div>
 
-        <div className="md:col-span-2 flex flex-col gap-2 text-right" dir="rtl">
+        <div className="md:col-span-2 flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-bio`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -382,12 +382,12 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-bio`}
             value={values.About_me}
             onChange={(e) => setField("About_me", e.target.value)}
-            className="min-h-[110px] w-full rounded-lg border border-[#E5E7EB] p-4 text-right"
+            className="min-h-[110px] w-full rounded-lg border border-[#E5E7EB] p-4 text-start"
             style={{ fontFamily: ibm }}
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-license-number`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -399,12 +399,12 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-license-number`}
             value={values.License_number}
             onChange={(e) => setField("License_number", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-license-date`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -422,7 +422,7 @@ const TourGuideRegisterStepOneForm = ({
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-arabic-level`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -439,7 +439,7 @@ const TourGuideRegisterStepOneForm = ({
                 e.target.value as FormValues["Arabic_language"],
               )
             }
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
           >
             <option value="">اختر</option>
@@ -451,7 +451,7 @@ const TourGuideRegisterStepOneForm = ({
           </select>
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-english-level`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -468,7 +468,7 @@ const TourGuideRegisterStepOneForm = ({
                 e.target.value as FormValues["english_language"],
               )
             }
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
           >
             <option value="">اختر</option>
@@ -480,7 +480,7 @@ const TourGuideRegisterStepOneForm = ({
           </select>
         </div>
 
-        <div className="md:col-span-2 flex flex-col gap-2 text-right" dir="rtl">
+        <div className="md:col-span-2 flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-other-languages`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -492,13 +492,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-other-languages`}
             value={values.Other_languages}
             onChange={(e) => setField("Other_languages", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             placeholder="مثال: الفرنسية، الإسبانية"
           />
         </div>
 
-        <div className="md:col-span-2 flex flex-col gap-3 text-right" dir="rtl">
+        <div className="md:col-span-2 flex flex-col gap-3 text-start">
           <p
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
@@ -512,7 +512,7 @@ const TourGuideRegisterStepOneForm = ({
                 className="flex items-center justify-end gap-2 rounded-lg border border-[#E5E7EB] px-3 py-2"
               >
                 <span
-                  className="text-sm text-right text-[#1D1F1F]"
+                  className="text-sm text-start text-[#1D1F1F]"
                   style={{ fontFamily: ibm }}
                 >
                   {item}
@@ -529,14 +529,14 @@ const TourGuideRegisterStepOneForm = ({
             <input
               value={otherSpecialization}
               onChange={(e) => onOtherSpecializationChange(e.target.value)}
-              className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+              className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
               style={{ fontFamily: ibm }}
               placeholder="اذكر التخصص الآخر"
             />
           ) : null}
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-transportation`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -553,7 +553,7 @@ const TourGuideRegisterStepOneForm = ({
                 e.target.value as FormValues["transportation"],
               )
             }
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
           >
             <option value="">اختر</option>
@@ -562,7 +562,7 @@ const TourGuideRegisterStepOneForm = ({
           </select>
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-email`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -575,13 +575,13 @@ const TourGuideRegisterStepOneForm = ({
             type="email"
             value={values.Email}
             onChange={(e) => setField("Email", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-mobile`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -593,13 +593,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-mobile`}
             value={values.Mobile_number}
             onChange={(e) => setField("Mobile_number", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             inputMode="tel"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-whatsapp`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -611,13 +611,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-whatsapp`}
             value={values.WhatsApp_number}
             onChange={(e) => setField("WhatsApp_number", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-right"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             inputMode="tel"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-website`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -629,13 +629,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-website`}
             value={values.Website}
             onChange={(e) => setField("Website", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-instagram`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -647,13 +647,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-instagram`}
             value={values.Instagram}
             onChange={(e) => setField("Instagram", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-x`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -665,13 +665,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-x`}
             value={values.X_platform}
             onChange={(e) => setField("X_platform", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-right" dir="rtl">
+        <div className="flex flex-col gap-2 text-start">
           <label
             htmlFor={`${baseId}-tiktok`}
             className="text-base font-bold text-[#1D1F1F]"
@@ -683,13 +683,13 @@ const TourGuideRegisterStepOneForm = ({
             id={`${baseId}-tiktok`}
             value={values.TikTok}
             onChange={(e) => setField("TikTok", e.target.value)}
-            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-left"
+            className="h-12 w-full rounded-lg border border-[#E5E7EB] px-4 text-start"
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="md:col-span-2 flex flex-col gap-3 text-right" dir="rtl">
+        <div className="md:col-span-2 flex flex-col gap-3 text-start">
           <p
             className="text-base font-bold text-[#1D1F1F]"
             style={{ fontFamily: araBold }}
@@ -732,9 +732,9 @@ const TourGuideRegisterStepOneForm = ({
         </div>
 
         <div className="md:col-span-2 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="flex flex-col gap-2 text-right" dir="rtl">
+          <div className="flex flex-col gap-2 text-start">
             <p
-              className="mb-1 text-right text-base font-bold text-[#1D1F1F]"
+              className="mb-1 text-start text-base font-bold text-[#1D1F1F]"
               style={{ fontFamily: araBold }}
             >
               صورة شخصية *
@@ -779,9 +779,9 @@ const TourGuideRegisterStepOneForm = ({
             </label>
           </div>
 
-          <div className="flex flex-col gap-2 text-right" dir="rtl">
+          <div className="flex flex-col gap-2 text-start">
             <p
-              className="mb-1 text-right text-base font-bold text-[#1D1F1F]"
+              className="mb-1 text-start text-base font-bold text-[#1D1F1F]"
               style={{ fontFamily: araBold }}
             >
               رخصة الإرشاد السياحي *
@@ -834,7 +834,7 @@ const TourGuideRegisterStepOneForm = ({
       >
         {submitMessage ? (
           <p
-            className={`mb-3 text-right text-sm ${
+            className={`mb-3 text-start text-sm ${
               submitState === "success" ? "text-green-700" : "text-red-600"
             }`}
             style={{ fontFamily: ibm }}

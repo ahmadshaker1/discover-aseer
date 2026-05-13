@@ -1,23 +1,20 @@
 import ServicesSupportCard from "./ServicesSupportCard";
 import type { SupportService } from "./types";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 interface ServicesSupportGridProps {
   services: SupportService[];
 }
 
 const ServicesSupportGrid = ({ services }: ServicesSupportGridProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("servicesSupport");
   if (services.length === 0) {
     return (
       <div
         className="flex min-h-[240px] items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-center text-muted-foreground"
-        dir={isRtl ? "rtl" : "ltr"}
+       
       >
-        {isRtl
-          ? "لا توجد خدمات مطابقة للفلاتر المحددة."
-          : "No services match your selected filters."}
+        {t("noServicesFilter")}
       </div>
     );
   }

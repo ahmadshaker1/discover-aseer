@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import ServicesSupportFilterSidebar from "./ServicesSupportFilterSidebar";
 import ServicesSupportGrid from "./ServicesSupportGrid";
 import ServicesSupportPagination from "./ServicesSupportPagination";
@@ -34,8 +34,7 @@ function buildOptions(values: string[]): FilterOption[] {
 }
 
 const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("servicesSupport");
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
@@ -105,11 +104,9 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
           {services.length === 0 ? (
             <div
               className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-center text-muted-foreground"
-              dir={isRtl ? "rtl" : "ltr"}
+             
             >
-              {isRtl
-                ? "لا توجد بيانات خدمات متاحة حاليًا. يرجى التحقق من إعدادات الـ API أو المحاولة لاحقًا."
-                : "No support services data is available right now. Please check the API settings or try again later."}
+              {t("noServicesData")}
             </div>
           ) : (
             <ServicesSupportGrid services={paginatedServices} />

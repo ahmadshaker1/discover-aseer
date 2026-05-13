@@ -1,5 +1,5 @@
 import type { FilmServiceCard } from "@/components/film/data";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -50,63 +50,50 @@ const iconByKey = {
   permits: <PermitsIcon />,
 };
 
-const EN_SERVICE_COPY: Record<FilmServiceCard["iconKey"], { title: string; description: string }> = {
-  crew: {
-    title: "Crew",
-    description:
-      "Support in connecting productions with local talent and skilled professionals across Asir.",
-  },
-  locations: {
-    title: "Locations",
-    description:
-      "Support and facilitation to identify and access locations that match production requirements.",
-  },
-  permits: {
-    title: "Permits",
-    description:
-      "Support and guidance through required approvals from official entities for filming in Asir.",
-  },
-};
+const SERVICE_KEYS = {
+  crew: { title: "serviceCrewTitle", description: "serviceCrewDesc" },
+  locations: { title: "serviceLocationsTitle", description: "serviceLocationsDesc" },
+  permits: { title: "servicePermitsTitle", description: "servicePermitsDesc" },
+} as const;
 
 const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("film");
   return (
-    <section className="mx-auto h-auto w-full max-w-[1442px] bg-background p-[60px] text-foreground" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="mx-auto h-auto w-full max-w-[1442px] bg-background p-[60px] text-foreground">
       <div className="mx-auto flex w-full max-w-[1322px] flex-col gap-16">
         <div className="h-[22px] w-full">
           <h2
-            className={`${isRtl ? "text-right" : "text-left"} text-[48px] font-bold leading-[38px] text-foreground`}
+            className={`text-start text-[48px] font-bold leading-[38px] text-foreground`}
             style={{ fontFamily: ara }}
           >
-            {isRtl ? "الخدمات" : "Services"}
+            {t("services")}
           </h2>
         </div>
 
         <div className="flex h-auto w-full flex-col justify-between gap-4 lg:h-[290px] lg:flex-row">
           {cards.slice(0, 3).map((card) => {
-            const localized = !isRtl ? EN_SERVICE_COPY[card.iconKey] : null;
+            const keys = SERVICE_KEYS[card.iconKey];
             return (
             <article
               key={card.id}
-              className={`flex h-[290px] w-full max-w-[434.666687px] flex-col gap-6 rounded-[13px] border border-border bg-surface px-8 py-[50px] ${isRtl ? "items-end" : "items-start"}`}
+              className={`flex h-[290px] w-full max-w-[434.666687px] flex-col gap-6 rounded-[13px] border border-border bg-surface px-8 py-[50px] items-start`}
             >
-              <div className={`flex h-[73.026314px] w-[73.026314px] items-center justify-center rounded-full border border-border bg-muted text-foreground ${isRtl ? "self-end" : "self-start"}`}>
+              <div className={`flex h-[73.026314px] w-[73.026314px] items-center justify-center rounded-full border border-border bg-muted text-foreground self-start`}>
                 {iconByKey[card.iconKey]}
               </div>
 
-              <div className={`flex w-full max-w-[370.666687px] flex-col gap-3 ${isRtl ? "text-right" : "text-left"}`}>
+              <div className={`flex w-full max-w-[370.666687px] flex-col gap-3 text-start`}>
                 <h3
-                  className={`text-[32px] font-bold leading-[30px] text-foreground ${isRtl ? "text-right" : "text-left"}`}
+                  className={`text-[32px] font-bold leading-[30px] text-foreground text-start`}
                   style={{ fontFamily: ara }}
                 >
-                  {localized?.title ?? card.title}
+                  {card.title || t(keys.title)}
                 </h3>
                 <p
-                  className={`text-[15px] font-light leading-[119%] text-muted-foreground ${isRtl ? "text-right" : "text-left"}`}
+                  className={`text-[15px] font-light leading-[119%] text-muted-foreground text-start`}
                   style={{ fontFamily: ibm }}
                 >
-                  {localized?.description ?? card.description}
+                  {card.description || t(keys.description)}
                 </p>
               </div>
             </article>

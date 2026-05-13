@@ -69,7 +69,6 @@ interface PlannerFormProps {
 
 const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
   const locale = useLocale();
-  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
   const tPlanner = useTranslations("planner");
   const [description, setDescription] = useState("");
@@ -123,14 +122,13 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
     <form onSubmit={handleSubmit} className="w-full">
       <div className="rounded-2xl bg-surface p-6 text-foreground sm:p-8 lg:p-12">
         {/* Title */}
-        <h2 className={`text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 ${isRtl ? "text-right" : "text-left"}`}>
-          {isRtl ? "اكتب وصفاً لرحلتك" : "Write a description of your trip"}
+        <h2 className={`text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-start`}>
+          {tPlanner("formTitle")}
         </h2>
 
         {/* Main textarea */}
         <div className="mb-6">
           <textarea
-            dir={isRtl ? "rtl" : "ltr"}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             onKeyDown={(e) => {
@@ -143,17 +141,13 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                 return;
               }
             }}
-            placeholder={
-              isRtl
-                ? "اقتراح: خطط لرحلة لمدة 7 أيام إلى عسير مع استراحة إفطار في الساعة 10 صباحاً، واستراحة غداء في الساعة 3 مساءً، واستراحة عشاء في الساعة 8 مساءً."
-                : "Suggestion: Plan a 7-day trip to Aseer with breakfast at 10 AM, lunch at 3 PM, and dinner at 8 PM."
-            }
-            className={`h-40 w-full resize-none rounded-xl border border-border bg-background p-4 text-sm placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary sm:h-48 sm:p-6 sm:text-base ${isRtl ? "text-right" : "text-left"}`}
+            placeholder={tPlanner("formPlaceholder")}
+            className={`h-40 w-full resize-none rounded-xl border border-border bg-background p-4 text-sm placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary sm:h-48 sm:p-6 sm:text-base text-start`}
           />
         </div>
 
         {/* Input fields row */}
-        <div className={`flex items-end gap-3 sm:gap-4 mb-6 ${isRtl ? "text-right justify-start" : "text-left justify-end"}`}>
+        <div className={`flex items-end gap-3 sm:gap-4 mb-6 text-start justify-end`}>
           {/* City */}
           <div>
             <FilterDropdown
@@ -170,18 +164,18 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
             <Menu as="div" className="relative">
               <Menu.Button
                 type="button"
-                className={`flex cursor-pointer items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs text-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 sm:px-6 sm:py-2 sm:text-sm ${isRtl ? "flex-row-reverse" : "flex-row"}`}
+                className={`flex cursor-pointer items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs text-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 sm:px-6 sm:py-2 sm:text-sm flex-row`}
               >
                 <ChevronDownIcon />
-                <span className="text-right whitespace-nowrap">
+                <span className="text-start whitespace-nowrap">
                   {arrivalDate && departureDate
                     ? `${formatDate(arrivalDate)} - ${formatDate(
                         departureDate,
                       )}`
                     : arrivalDate
-                      ? `${isRtl ? "من" : "From"} ${formatDate(arrivalDate)}`
+                      ? `${tPlanner("dateFrom")} ${formatDate(arrivalDate)}`
                       : departureDate
-                        ? `${isRtl ? "إلى" : "To"} ${formatDate(departureDate)}`
+                        ? `${tPlanner("dateTo")} ${formatDate(departureDate)}`
                         : tCommon("datePlaceholder")}
                 </span>
                 <CalendarIcon />
@@ -195,8 +189,8 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                 leaveFrom="opacity-100 scale-100 translate-y-0"
                 leaveTo="opacity-0 scale-95 translate-y-1"
               >
-                <Menu.Items className={`absolute z-50 mt-2 rounded-lg border border-border bg-surface p-4 shadow-xl ring-1 ring-border focus:outline-none ${isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"}`}>
-                  <div className="flex flex-col gap-4" dir={isRtl ? "rtl" : "ltr"}>
+                <Menu.Items className={`absolute z-50 mt-2 rounded-lg border border-border bg-surface p-4 shadow-xl ring-1 ring-border focus:outline-none start-0 origin-top-start`}>
+                  <div className="flex flex-col gap-4">
                     {/* إضافة التقويم هنا */}
                     <style>{`
       /* هذي التعديلات البسيطة عشان نظبط ألوان الفيجما على التقويم */
@@ -222,7 +216,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
 
                     <DayPicker
                       mode="range"
-                      locale={isRtl ? ar : enUS}
+                      locale={locale === "ar" ? ar : enUS}
                       selected={{
                         from: arrivalDate
                           ? fromLocalISODate(arrivalDate)
@@ -253,7 +247,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
           <div>
             <FilterDropdown
               icon={<ClockIcon />}
-              label={isRtl ? "فترة الخروج" : "Time period"}
+              label={tPlanner("timePeriod")}
               selectedValue={selectedDuration}
               options={durationOptions}
               onSelect={setSelectedDuration}
@@ -280,14 +274,14 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
         </div>
 
         {/* Submit button */}
-        <div className={`flex ${isRtl ? "justify-start" : "justify-end"}`}>
+        <div className={`flex justify-end`}>
           <button
             type="submit"
             data-submit-plan="true"
             disabled={isLoading || !description.trim()}
             className="px-8 py-3 bg-[#6027D2] text-white rounded-full font-semibold text-base hover:bg-[#5020B8] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? (isRtl ? "جاري التخطيط..." : "Planning...") : (isRtl ? "إنشاء الخطة" : tPlanner("title"))}
+            {isLoading ? tPlanner("planning") : tPlanner("createPlan")}
           </button>
         </div>
       </div>

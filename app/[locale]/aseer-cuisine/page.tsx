@@ -8,8 +8,8 @@ import type { ExperienceCardProps } from "@/components/experiences/ExperienceCar
 import { fetchExperiences } from "@/components/experiences/data";
 import { fetchRestaurants } from "@/components/restaurants/data";
 import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsCredibilitySection";
-import { getLocale, getTranslations } from "next-intl/server";
-import { ASEER_CUISINE_DUMMY_EN } from "./englishDummy";
+import { getTranslations } from "next-intl/server";
+import { buildAseerCuisineFallback } from "./buildFallbackData";
 import type { AseerCuisinePageData } from "./types";
 
 /**
@@ -20,212 +20,6 @@ import type { AseerCuisinePageData } from "./types";
  *   `hero`, `dishesSection`, `restaurantsSection`, `localFlavorsSection`, `cookingExperiencesSection`, `chefsVideoSection`.
  * - Keep component markup unchanged; update only Directus fields/content.
  */
-const DUMMY_ASEER_CUISINE_PAGE_DATA_AR: AseerCuisinePageData = {
-  hero: {
-    // Backend (Directus): replace with actual hosted hero video URL.
-    videoUrl: "/assets/videos/aseer-cuisine-hero.mp4",
-    // Backend (Directus): replace with actual poster/fallback image URL.
-    posterImage: "/assets/community/hero-comunity-bg.png",
-  },
-  dishesSection: {
-    // Backend (Directus): section title text.
-    title: "تذوق أشهى الأطباق التقليدية في عسير",
-    // Backend (Directus): section description text.
-    description:
-      "في المطبخ العسيري ستكتفي بكل ما يُشبع حواسك من منطقة واحدة، ستبدأ بشرب فنجان قهوتك من البن العسيري من أشجارها المعمرة على سفوح الجبال والمحمص بعناية ليأسر برائحته وطعمه ذائقتك مع حبات من تمر الصفري من نخيل بيشة الباسق. ثم جرب أطباقا من قمح جبالها أو دُخن سهولها مُزجت مع حليب طازج من مواشيها وزُينت بالعسل المستخرج من أزهار حقولها. واختم مساءك بطبق شهي من الحنيذ العسيري المختار له لحم طازج من مواشي ربت بين سهول عسير الخضراء وفي وديانها. لديك قائمة متنوعة من الأطباق بإمكانك اختيار ما شئت منها دون معزل من الحيرة مثل: الحنيذ، العريكة، المشغوثة، اللهيدة، خبز الميفا (التنور)، العصيدة والمرقة، خبز المرقش، المبثوثة، التصابيع، الثريف، والمرسة",
-    // Backend (Directus): each row item controls card image + label.
-    cards: [
-      {
-        id: "dish-1",
-        title: "الحنيذ",
-        image: "/assets/community/hero-comunity-bg.png",
-      },
-      {
-        id: "dish-2",
-        title: "العريكة",
-        image: "/assets/community/hero-comunity-bg.png",
-      },
-      {
-        id: "dish-3",
-        title: "المشغوثة",
-        image: "/assets/community/hero-comunity-bg.png",
-      },
-      {
-        id: "dish-4",
-        title: "العصيدة",
-        image: "/assets/community/hero-comunity-bg.png",
-      },
-    ],
-  },
-  restaurantsSection: {
-    // Backend (Directus): heading + CTA button values.
-    title: "أشهر المطاعم",
-    ctaLabel: "المطاعم",
-    ctaHref: "/restaurants",
-    // Backend (Directus): 6 carousel cards with all fields below.
-    cards: [
-      {
-        id: "r-1",
-        image: "/assets/community/hero-comunity-bg.png",
-        title: "مطعم الحنيذ",
-        location: "أبها - طريق الملك فهد",
-        cuisineType: "مطبخ عسيري",
-        priceRange: "50-120 ر.س",
-        rating: 4.8,
-        reviewsCount: 542,
-      },
-      {
-        id: "r-2",
-        image: "/assets/community/hero-comunity-bg.png",
-        title: "ركن العريكة",
-        location: "خميس مشيط - حي المطار",
-        cuisineType: "مطبخ شعبي",
-        priceRange: "35-90 ر.س",
-        rating: 4.6,
-        reviewsCount: 389,
-      },
-      {
-        id: "r-3",
-        image: "/assets/community/hero-comunity-bg.png",
-        title: "بيت الميفا",
-        location: "تنومة - شارع السوق",
-        cuisineType: "مخبوزات عسيرية",
-        priceRange: "25-70 ر.س",
-        rating: 4.7,
-        reviewsCount: 261,
-      },
-      {
-        id: "r-4",
-        image: "/assets/community/hero-comunity-bg.png",
-        title: "دار المرقش",
-        location: "النماص - طريق الملك خالد",
-        cuisineType: "مأكولات تراثية",
-        priceRange: "40-110 ر.س",
-        rating: 4.5,
-        reviewsCount: 317,
-      },
-      {
-        id: "r-5",
-        image: "/assets/community/hero-comunity-bg.png",
-        title: "مرسة عسير",
-        location: "بيشة - وسط المدينة",
-        cuisineType: "أطباق محلية",
-        priceRange: "30-85 ر.س",
-        rating: 4.4,
-        reviewsCount: 198,
-      },
-      {
-        id: "r-6",
-        image: "/assets/community/hero-comunity-bg.png",
-        title: "سفرة الجبال",
-        location: "رجال ألمع - الحي التاريخي",
-        cuisineType: "مطبخ جبلي",
-        priceRange: "60-140 ر.س",
-        rating: 4.9,
-        reviewsCount: 476,
-      },
-    ],
-  },
-  localFlavorsSection: {
-    // Backend (Directus): title + subtitle for this bento section.
-    title: "نكهات محلية",
-    subtitle: "خيرات عسير؛ نافذة نحو تجربة أطيب النكهات الفريدة",
-    // Backend (Directus): Keep order as LTR [leftTall, topLeft, topRight, bottomWide].
-    cards: [
-      {
-        id: "flavor-1",
-        title: "الحنيذ",
-        image: "/restaurant/img1.png",
-      },
-      {
-        id: "flavor-2",
-        title: "العريكة",
-        image: "/restaurant/img2.png",
-      },
-      {
-        id: "flavor-3",
-        title: "المشغوثة",
-        image: "/restaurant/img3.png",
-      },
-      {
-        id: "flavor-4",
-        title: "خبز الميفا",
-        image: "/restaurant/img4.png",
-      },
-    ],
-  },
-  cookingExperiencesSection: {
-    // Backend (Directus): right-side title/description/button values.
-    title: "تجارب الطبخ",
-    description:
-      "في المطبخ العسيري ستكتفي بكل ما يُشبع حواسك من منطقة واحدة، ستبدأ بشرب فنجان قهوتك من البن العسيري من أشجارها المعمرة على سفوح الجبال والمحمص بعناية ليأسر برائحته وطعمه ذائقتك مع حبات من تمر الصفري من نخيل بيشة الباسق. ثم جرب أطباقا من قمح جبالها",
-    ctaLabel: "عرض جميع التجارب",
-    ctaHref: "/experiences",
-    // Backend (Directus): cards map directly to ExperienceCardProps used in `/experiences`.
-    cards: [
-      {
-        id: "cook-exp-1",
-        imageUrl: "/restaurant/img1.png",
-        category: "فن الطهي",
-        title: "تجربة إعداد الحنيذ",
-        duration: "3 ساعات",
-        description: "تعلم اختيار اللحم والتتبيلة وطريقة الطهي التقليدية للحنيذ العسيري.",
-        provider: "بيت النكهات",
-        price: 180,
-        currency: "ر.س",
-        groupSize: 6,
-        bookUrl: "#",
-      },
-      {
-        id: "cook-exp-2",
-        imageUrl: "/restaurant/img2.png",
-        category: "خبز تراثي",
-        title: "صناعة خبز الميفا",
-        duration: "2.5 ساعات",
-        description: "ورشة تطبيقية لتحضير عجين خبز الميفا وخبزه على الطريقة المحلية.",
-        provider: "مطبخ عسير التراثي",
-        price: 120,
-        currency: "ر.س",
-        groupSize: 8,
-        bookUrl: "#",
-      },
-      {
-        id: "cook-exp-3",
-        imageUrl: "/restaurant/img3.png",
-        category: "حلويات شعبية",
-        title: "العريكة والمشغوثة",
-        duration: "2 ساعات",
-        description: "تجربة تفاعلية لتحضير العريكة والمشغوثة وتقديمها بنكهات عسيرية.",
-        provider: "رواد الطهي",
-        price: 95,
-        currency: "ر.س",
-        groupSize: 10,
-        bookUrl: "#",
-      },
-      {
-        id: "cook-exp-4",
-        imageUrl: "/restaurant/img4.png",
-        category: "قهوة وعسل",
-        title: "جلسة القهوة العسيرية",
-        duration: "1.5 ساعات",
-        description: "تحميص وتقديم البن العسيري مع تذوق العسل المحلي وتمر بيشة.",
-        provider: "قهوة الجبال",
-        price: 75,
-        currency: "ر.س",
-        groupSize: 12,
-        bookUrl: "#",
-      },
-    ],
-  },
-  chefsVideoSection: {
-    // Backend (Directus): final section title/subtitle/video values.
-    title: "تعرّف على طهاة عسير",
-    subtitle: "خيرات عسير؛ نافذة نحو تجربة أطيب النكهات الفريدة",
-    videoUrl: "/assets/videos/aseer-cuisine-chefs.mp4",
-    // Placeholder image shown for now in UI (video field kept ready for future switch).
-    posterImage: "/restaurant/img4.png",
-  },
-};
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -434,12 +228,11 @@ function mapAseerCuisineDataFromDirectus(
   };
 }
 
-async function fetchAseerCuisinePageData(
-  locale: "ar" | "en"
-): Promise<AseerCuisinePageData> {
+async function fetchAseerCuisinePageData(): Promise<AseerCuisinePageData> {
+  const t = await getTranslations("aseerCuisine");
+  const tCommon = await getTranslations("common");
+  const fallback = buildAseerCuisineFallback(t, tCommon("currencySar"));
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
-  const fallback =
-    locale === "en" ? ASEER_CUISINE_DUMMY_EN : DUMMY_ASEER_CUISINE_PAGE_DATA_AR;
   if (!directusUrl) return fallback;
 
   try {
@@ -468,11 +261,10 @@ async function fetchAseerCuisinePageData(
 }
 
 const AseerCuisinePage = async () => {
-  const locale = ((await getLocale()) === "en" ? "en" : "ar") as "ar" | "en";
   const tCommon = await getTranslations("common");
 
   const [aseerCuisinePageData, restaurants, experiencesResult] = await Promise.all([
-    fetchAseerCuisinePageData(locale),
+    fetchAseerCuisinePageData(),
     fetchRestaurants(),
     fetchExperiences(),
   ]);

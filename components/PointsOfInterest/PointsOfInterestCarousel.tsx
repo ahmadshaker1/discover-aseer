@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useLocale } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PointOfInterest } from "./data";
 import { TextOverlay } from "./TextOverlay";
@@ -21,9 +20,6 @@ function mod(n: number, m: number) {
 export const PointsOfInterestCarousel = ({
   points,
 }: PointsOfInterestCarouselProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-
   const [activeIndex, setActiveIndex] = useState(0);
   const [incomingIndex, setIncomingIndex] = useState<number | null>(null);
   const [incomingOpaque, setIncomingOpaque] = useState(false);
@@ -127,8 +123,8 @@ export const PointsOfInterestCarousel = ({
         point={displayPoint}
         carouselSlot={
           <div
-            className={`flex flex-col gap-4 ${isRtl ? "items-end" : "items-start"}`}
-            dir={isRtl ? "rtl" : "ltr"}
+            className={`flex flex-col gap-4 items-start`}
+           
           >
             {/* <NavigationControls onNext={nextImage} onPrev={prevImage} /> */}
             <PreviewImages

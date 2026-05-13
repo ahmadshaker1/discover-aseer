@@ -1,20 +1,24 @@
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import DestinationsHero from "@/components/destinations/DestinationsHero";
 import DestinationsIntroSection from "@/components/destinations/DestinationsIntroSection";
 import DestinationsLandmarksSection from "@/components/destinations/DestinationsLandmarksSection";
 import DestinationsMapSection from "@/components/destinations/DestinationsMapSection";
-import {
-  DESTINATIONS_MAIN_INTRO_PARAGRAPHS,
-  DESTINATIONS_MAIN_INTRO_TITLE,
-} from "@/components/destinations/destinationsMainIntro";
 import { fetchDestinationsWithFallback } from "@/components/destinations/data";
 import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
 
+const INTRO_PARAGRAPH_KEYS = [
+  "introP1",
+  "introP2",
+  "introP3",
+  "introP4",
+  "introP5",
+  "introP6",
+] as const;
+
 const DestinationsPage = async () => {
-  const locale = (await getLocale()) as "ar" | "en";
   const t = await getTranslations();
   const tDest = await getTranslations("destinations");
-  const destinations = await fetchDestinationsWithFallback(locale);
+  const destinations = await fetchDestinationsWithFallback();
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
@@ -32,12 +36,10 @@ const DestinationsPage = async () => {
       />
 
       <DestinationsIntroSection
-        title={locale === "ar" ? DESTINATIONS_MAIN_INTRO_TITLE : tDest("introTitle")}
+        title={tDest("introTitle")}
         imageUrl="/assets/destinations/hero-destinations.png"
         imageAlt=""
-        paragraphs={
-          locale === "ar" ? DESTINATIONS_MAIN_INTRO_PARAGRAPHS : [tDest("introBody")]
-        }
+        paragraphs={INTRO_PARAGRAPH_KEYS.map((key) => tDest(key))}
       />
 
       <DestinationsLandmarksSection destinations={destinations} />

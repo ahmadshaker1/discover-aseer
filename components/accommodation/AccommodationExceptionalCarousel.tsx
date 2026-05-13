@@ -52,7 +52,6 @@ const AccommodationExceptionalCarousel = ({
 }: AccommodationExceptionalCarouselProps) => {
   const t = useTranslations("common");
   const locale = useLocale();
-  const isRtl = locale === "ar";
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
@@ -98,11 +97,8 @@ const AccommodationExceptionalCarousel = ({
   if (items.length === 0) return null;
 
   return (
-    <section className="min-w-0" dir={isRtl ? "rtl" : "ltr"} lang={locale}>
-      <h2
-        dir={isRtl ? "rtl" : "ltr"}
-        className={`mb-4 text-xl font-bold text-foreground sm:text-2xl [unicode-bidi:isolate] ${isRtl ? "text-right" : "text-left"}`}
-      >
+    <section className="min-w-0" lang={locale}>
+      <h2 className="mb-4 text-start text-xl font-bold text-foreground sm:text-2xl [unicode-bidi:isolate]">
         {t("exceptionalHotels")}
       </h2>
       <div className="rounded-2xl border border-border bg-linear-to-b from-muted to-surface p-6">
@@ -121,10 +117,7 @@ const AccommodationExceptionalCarousel = ({
           ))}
         </div>
 
-        <div
-          dir="ltr"
-          className="mt-4 flex flex-row items-center justify-start gap-3 ps-1"
-        >
+        <div className="mt-4 flex flex-row items-center justify-start gap-3 ps-1 rtl:flex-row-reverse">
           <button
             type="button"
             aria-label={t("previous")}

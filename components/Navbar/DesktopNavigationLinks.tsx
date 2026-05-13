@@ -8,8 +8,9 @@ import DiscoverAseerDropdown from "./DiscoverAseerDropdown";
 const DesktopNavigationLinks = () => {
   const t = useTranslations();
 
+  // Shift toward logo: lower `gap-*`, or add e.g. `-ms-2` / `-ms-4` on the wrapper below
   return (
-    <div className="hidden lg:flex flex-row items-center space-x-8">
+    <div className="hidden lg:flex flex-row items-center gap-8 ms-10">
       {navigationLinks.map((link) => {
         if (link.isDropdown) {
           return <DiscoverAseerDropdown key={link.labelKey} label={t(link.labelKey)} />;

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { fetchExperienceById } from "@/components/experiences/data";
 
 interface ExperienceDetailsPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }
 
 const TRAVELER_MESSAGE_KEYS: Record<string, "travelerFemale" | "travelerIndividual" | "travelerCouple" | "travelerFamily" | "travelerGroups"> = {
@@ -37,7 +37,7 @@ export default async function ExperienceDetailsPage({
   const currency = experience.currency ?? t("currencyFallback");
 
   return (
-    <main className="bg-background pb-16 text-foreground" dir={locale === "ar" ? "rtl" : "ltr"}>
+    <main className="bg-background pb-16 text-foreground">
       <section className="relative h-[360px] w-full overflow-hidden md:h-[500px]">
         <Image
           src={experience.imageUrl}

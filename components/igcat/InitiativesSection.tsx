@@ -26,7 +26,7 @@ const initiativesData = [
 
 export default function InitiativesSection() {
   return (
-    <section className="py-16 md:py-24 bg-white" dir="rtl">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* 1. قسم الشعار والعنوان */}
         <div className="flex flex-col items-center justify-center mb-12">
@@ -59,7 +59,7 @@ export default function InitiativesSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-90"></div>
 
               {/* عنوان الكرت بالأسفل */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex items-end justify-center text-center z-10 h-1/2">
+              <div className="absolute bottom-0 start-0 end-0 p-6 md:p-8 flex items-end justify-center text-center z-10 h-1/2">
                 <h3 className="text-white font-bold text-[18px] md:text-[22px] leading-snug drop-shadow-lg">
                   {item.title}
                 </h3>

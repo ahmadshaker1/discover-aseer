@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowLeftIcon, ExternalLinkIcon } from "./Icons";
 
@@ -13,20 +13,18 @@ const ExperienceCardActions = ({
   experienceId,
   bookUrl,
 }: ExperienceCardActionsProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const t = useTranslations("common");
   return (
     <div
       className="flex items-center justify-between gap-4"
-      dir={isRtl ? "rtl" : "ltr"}
+     
     >
       <Link
         href={`/experiences/${encodeURIComponent(String(experienceId))}`}
         className="flex items-center gap-1 text-sm text-foreground transition-colors hover:text-muted-foreground"
       >
         <span>{t("more")}</span>
-        <span className={isRtl ? "" : "inline-flex rotate-180"}>
+        <span className="inline-flex rtl:rotate-180">
           <ArrowLeftIcon />
         </span>
       </Link>

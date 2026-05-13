@@ -121,7 +121,6 @@ const EventsFilterSidebar = ({
   return (
     <div
       className="w-full min-w-[min(100%,280px)] rounded-2xl border border-border bg-surface p-4 text-foreground sm:p-6 lg:min-w-[300px]"
-      dir="rtl"
     >
       <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-6">
         <h2 className="text-lg font-bold text-foreground sm:text-xl" style={{ fontFamily: ara }}>
@@ -150,10 +149,10 @@ const EventsFilterSidebar = ({
             value={dateText}
             onChange={(e) => onDateTextChange(e.target.value)}
             placeholder={tCommon("datePlaceholder")}
-            className="w-full rounded-xl border border-border bg-surface py-3 pl-11 pr-4 text-right text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full rounded-xl border border-border bg-surface py-3 ps-11 pe-4 text-start text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             style={{ fontFamily: ibm }}
           />
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <span className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2">
             <CalendarInputIcon />
           </span>
         </div>
@@ -171,14 +170,14 @@ const EventsFilterSidebar = ({
             const checked = selectedInterests.includes(row.id);
             return (
               <li key={row.id}>
-                <label className="flex cursor-pointer items-center gap-3 rounded-lg py-2 pr-1 transition-colors hover:bg-muted">
+                <label className="flex cursor-pointer items-center gap-3 rounded-lg py-2 pe-1 transition-colors hover:bg-muted">
                   <input
                     type="checkbox"
                     checked={checked}
                     onChange={() => onToggleInterest(row.id)}
                     className="h-4 w-4 shrink-0 rounded border-border text-primary focus:ring-primary"
                   />
-                  <span className="min-w-0 flex-1 text-right text-sm font-bold text-foreground" style={{ fontFamily: ara }}>
+                  <span className="min-w-0 flex-1 text-start text-sm font-bold text-foreground" style={{ fontFamily: ara }}>
                     {tEvents(row.labelKey)}
                   </span>
                   <span

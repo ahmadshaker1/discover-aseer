@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { EventListingItem } from "./types";
 import EventListingCard from "./EventListingCard/EventListingCard";
 
@@ -9,12 +9,11 @@ interface EventsListingGridProps {
 }
 
 const EventsListingGrid = ({ events }: EventsListingGridProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("common");
   if (events.length === 0) {
     return (
-      <div className={`mx-auto w-full max-w-[1009px] py-12 text-muted-foreground ${isRtl ? "text-right" : "text-left"}`} dir={isRtl ? "rtl" : "ltr"}>
-        {isRtl ? "لا توجد فعاليات مطابقة للتصفية." : "No events match your filters."}
+      <div className={`mx-auto w-full max-w-[1009px] py-12 text-muted-foreground text-start`}>
+        {t("noEventsFilter")}
       </div>
     );
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { MinusIcon, PlusIcon } from "./Icons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -21,8 +21,7 @@ interface TravelTipsFaqProps {
 }
 
 const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("travelTips");
   const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
 
   const toggle = useCallback((id: string) => {
@@ -32,14 +31,14 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
   return (
     <section
       className="w-full max-w-[1440px] mx-auto px-4 py-10 sm:px-8 md:px-[60px] md:py-12"
-      dir={isRtl ? "rtl" : "ltr"}
+     
     >
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8 text-foreground">
         <h2
-          className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-foreground ${isRtl ? "text-right" : "text-left"}`}
+          className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-foreground text-start`}
           style={{ fontFamily: ara }}
         >
-          {isRtl ? "الأسئلة الشائعة" : "Frequently asked questions"}
+          {t("faqTitle")}
         </h2>
 
         <div className="flex w-full flex-col gap-2">
@@ -53,7 +52,7 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                       type="button"
                       aria-expanded
                       onClick={() => toggle(item.id)}
-                      className={`flex w-full items-center justify-between gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7300CD] ${isRtl ? "text-right" : "flex-row-reverse text-left"}`}
+                      className={`flex w-full items-center justify-between gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7300CD] text-start`}
                     >
                       <span
                         className="min-w-0 flex-1 text-[29px] font-bold leading-none text-foreground"
@@ -66,10 +65,10 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                       </span>
                     </button>
                     <div
-                      className={`ms-0 me-auto w-full max-w-[1264px] bg-transparent text-[20px] font-bold leading-none text-muted-foreground ${isRtl ? "pl-3 text-right" : "pr-3 text-left"}`}
+                      className={`ms-0 me-auto w-full max-w-[1264px] bg-transparent text-[20px] font-bold leading-none text-muted-foreground ps-3 text-start`}
                       style={{ fontFamily: ara }}
                     >
-                      <p className={`py-3 ${isRtl ? "pr-3" : "pl-3"}`} style={{ fontFamily: ara }}>
+                      <p className={`py-3 ps-3`} style={{ fontFamily: ara }}>
                         {item.answer}
                       </p>
                     </div>
@@ -79,7 +78,7 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                     type="button"
                     aria-expanded={false}
                     onClick={() => toggle(item.id)}
-                    className={`flex min-h-[67px] w-full items-center justify-between gap-3 rounded-lg border border-solid border-border bg-surface p-4 transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${isRtl ? "text-right" : "flex-row-reverse text-left"}`}
+                    className={`flex min-h-[67px] w-full items-center justify-between gap-3 rounded-lg border border-solid border-border bg-surface p-4 transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary text-start`}
                   >
                     <span
                       className="min-w-0 flex-1 text-[29px] font-bold leading-none text-foreground"

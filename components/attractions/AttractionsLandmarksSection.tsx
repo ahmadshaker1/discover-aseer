@@ -72,7 +72,6 @@ const AttractionsLandmarksSection = ({
   landmarkCardHref,
 }: AttractionsLandmarksSectionProps) => {
   const locale = useLocale();
-  const isRtl = locale === "ar";
   const t = useTranslations("common");
   const sectionTitle = title ?? t("exploreAttractionsDefault");
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
@@ -112,18 +111,18 @@ const AttractionsLandmarksSection = ({
   }, [city, interest, landmarks, price, traveler]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-background py-12 text-foreground" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="relative w-full overflow-hidden bg-background py-12 text-foreground">
       {decorationImageSrc ? (
         <div
           aria-hidden
-          className={`pointer-events-none absolute top-1/2 z-1 h-[457px] w-[773px] -translate-y-1/2 bg-primary opacity-40 ${isRtl ? "right-0" : "left-0"}`}
+          className={`pointer-events-none absolute top-1/2 z-1 h-[457px] w-[773px] -translate-y-1/2 bg-primary opacity-40 start-0`}
           style={{
             WebkitMaskImage: `url(${decorationImageSrc})`,
             maskImage: `url(${decorationImageSrc})`,
             WebkitMaskRepeat: "no-repeat",
             maskRepeat: "no-repeat",
-            WebkitMaskPosition: isRtl ? "right center" : "left center",
-            maskPosition: isRtl ? "right center" : "left center",
+            WebkitMaskPosition: "start center",
+            maskPosition: "start center",
             WebkitMaskSize: "contain",
             maskSize: "contain",
           }}
@@ -131,16 +130,16 @@ const AttractionsLandmarksSection = ({
       ) : null}
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
         <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-start justify-between gap-4">
-          <div className={`space-y-2 ${isRtl ? "text-right" : "text-left"}`}>
+          <div className={`space-y-2 text-start`}>
             <h2
-              className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary ${isRtl ? "text-right" : "text-left"}`}
+              className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
               style={{ fontFamily: ara }}
             >
               {sectionTitle}
             </h2>
             {description ? (
               <p
-                className={`h-[11px] w-[430px] text-[24px] font-bold leading-[119%] text-muted-foreground ${isRtl ? "text-right" : "text-left"}`}
+                className={`h-[11px] w-[430px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start`}
                 style={{ fontFamily: ara }}
               >
                 {description}
@@ -151,7 +150,7 @@ const AttractionsLandmarksSection = ({
 
         {showFilters ? (
           <div className="mx-auto mb-8 w-full max-w-[1181px] overflow-x-auto pb-1">
-            <div className={`flex min-w-max items-center gap-3 px-1 ${isRtl ? "justify-start" : "justify-end"}`}>
+            <div className={`flex min-w-max items-center gap-3 px-1 justify-end`}>
               <select
                 value={city ?? ""}
                 onChange={(e) => setCity(e.target.value || null)}
@@ -216,7 +215,7 @@ const AttractionsLandmarksSection = ({
           </div>
         ) : null}
 
-        <div className="mx-auto w-full max-w-[1320px] overflow-x-auto pb-2">
+        <div className="mx-auto w-full max-w-[1320px] overflow-x-auto pb-2" dir="ltr">
           <div className="flex min-w-max flex-row gap-6">
             {filteredLandmarks.map((landmark) => (
               <AttractionsLandmarkCard
@@ -234,10 +233,9 @@ const AttractionsLandmarksSection = ({
             href="/attractions"
             className="inline-flex h-[52px] min-w-[161px] cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-primary/30 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
             style={{ fontFamily: ara }}
-            dir={isRtl ? "ltr" : "rtl"}
           >
-            <LeftArrowIcon className={`text-white ${isRtl ? "" : "rotate-180"}`} />
-            <span className={`whitespace-nowrap text-[20px] font-bold leading-[100%] ${isRtl ? "text-right" : "text-left"}`}>
+            <LeftArrowIcon className="text-white rtl:rotate-180" />
+            <span className={`whitespace-nowrap text-[20px] font-bold leading-[100%] text-start`}>
               {t("browseMore")}
             </span>
           </Link>

@@ -14,7 +14,6 @@ export default function IGCatBannerSection() {
       {/* 3. المحتوى (النص والزر) */}
       <div
         className="relative z-10 flex flex-col items-center text-center px-4"
-        dir="rtl"
       >
         <h1 className="text-white text-[40px] md:text-[56px] font-bold mb-6 leading-[1.2]">
           عسير منطقة طهي
@@ -23,7 +22,7 @@ export default function IGCatBannerSection() {
         </h1>
         <div>
           <button
-            className="bg-[#7300CD] text-white px-8 py-3 rounded-full text-[20px] leading-[36px] tracking-[0] text-right align-middle transition-colors hover:bg-[#6027D2] mb-6 inline-flex items-center gap-2"
+            className="bg-[#7300CD] text-white px-8 py-3 rounded-full text-[20px] leading-[36px] tracking-[0] text-start align-middle transition-colors hover:bg-[#6027D2] mb-6 inline-flex items-center gap-2"
             style={{ fontFamily: "Ara Hamah 1964 B" }}
           >
             اكتشف

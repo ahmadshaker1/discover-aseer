@@ -161,7 +161,7 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
   const activeDay = schedule.days[activeDayIndex];
 
   return (
-    <div className="mx-auto mt-16 w-full max-w-5xl text-foreground" dir="rtl">
+    <div className="mx-auto mt-16 w-full max-w-5xl text-foreground">
       {/* 1. العنوان وأزرار المشاركة والطباعة */}
       <div className="flex flex-col-reverse sm:flex-row justify-between items-center mb-10 gap-4">
         <h2 className="text-[32px] font-bold text-foreground sm:text-[40px]">
@@ -182,7 +182,6 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
       {/* 2. شريط الأيام (التبويبات) */}
       <div
         className="flex gap-4 overflow-x-auto pb-4 mb-10 hide-scrollbar"
-        dir="rtl"
         style={{ scrollbarWidth: "none" }}
       >
         {schedule.days.map((day, idx) => {
@@ -214,23 +213,23 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
 
       {/* 3. التايم لاين لليوم المحدد */}
       <div>
-        <h3 className="mb-8 text-right text-[20px] font-bold text-foreground">
+        <h3 className="mb-8 text-start text-[20px] font-bold text-foreground">
           {activeDay.dayLabel}
         </h3>
 
         <div className="relative">
           {/* الخط المنقط العمودي */}
-          <div className="absolute bottom-0 right-[19px] top-8 z-0 w-0 border-r-2 border-dashed border-border"></div>
+          <div className="absolute bottom-0 end-[19px] top-8 z-0 w-0 border-e-2 border-dashed border-border"></div>
 
           {activeDay.activities.map((activity, index) => (
-            <div key={index} className="relative z-10 mb-2" dir="rtl">
+            <div key={index} className="relative z-10 mb-2">
               {/* الرأس: الأيقونة + النوع والوقت */}
-              <div className="flex justify-start items-start gap-4 mb-4 mr-[10px]">
+              <div className="flex justify-start items-start gap-4 mb-4 me-[10px]">
                 {/* الأيقونة بخلفية بيضاء لقطع الخط المنقط */}
                 <div className="z-10 bg-surface py-2 text-primary">
                   <ActivityTypeIcon />
                 </div>
-                <div className="text-right pt-1">
+                <div className="text-start pt-1">
                   <p className="mb-1 text-[14px] font-bold text-primary">
                     {activity.type}
                   </p>
@@ -242,11 +241,10 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
 
               {/* بطاقة الفعالية */}
               <div
-                className="mr-14 flex flex-col-reverse items-center justify-between gap-6 rounded-3xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 sm:flex-row"
-                dir="rtl"
+                className="me-14 flex flex-col-reverse items-center justify-between gap-6 rounded-3xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 sm:flex-row"
               >
                 {/* تفاصيل الفعالية (يمين) */}
-                <div className="text-right w-full sm:w-auto ">
+                <div className="text-start w-full sm:w-auto ">
                   <h4 className="mb-3 text-[22px] font-bold text-foreground">
                     {activity.title}
                   </h4>
@@ -291,8 +289,8 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
 
               {/* التنقل للفعالية التالية (يظهر فقط إذا كان هناك travelToNext) */}
               {activity.travelToNext && (
-                <div className="mr-[10px] mt-4 flex h-[80px] items-center justify-start gap-4 bg-surface">
-                  <div className="pt-2 text-right text-[13px] leading-relaxed text-muted-foreground">
+                <div className="me-[10px] mt-4 flex h-[80px] items-center justify-start gap-4 bg-surface">
+                  <div className="pt-2 text-start text-[13px] leading-relaxed text-muted-foreground">
                     <p>{activity.travelToNext.duration}</p>
                     <p>{activity.travelToNext.distance}</p>
                   </div>

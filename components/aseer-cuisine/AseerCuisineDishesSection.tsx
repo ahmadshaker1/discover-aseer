@@ -1,8 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useLocale } from "next-intl";
-
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
@@ -26,10 +24,8 @@ interface AseerCuisineDishesSectionProps {
 }
 
 const AseerCuisineDishesSection = ({ data }: AseerCuisineDishesSectionProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   return (
-    <section className="mx-auto w-full max-w-[1440px] py-12 text-foreground" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="mx-auto w-full max-w-[1440px] py-12 text-foreground">
       <div className="flex w-full flex-col gap-[59px]">
         <div className="px-4 sm:px-8 md:px-[62px]">
           <div className="mx-auto flex w-full max-w-[1316px] flex-col items-center gap-5 text-center">
@@ -64,7 +60,7 @@ const AseerCuisineDishesSection = ({ data }: AseerCuisineDishesSectionProps) => 
                 />
                 <div className="absolute inset-x-0 bottom-0 h-[51px] rounded-b-[10px] bg-[linear-gradient(179.54deg,rgba(0,0,0,0)_0.39%,#000000_99.6%)] px-5 py-4">
                   <p
-                    className={`line-clamp-1 text-[24px] font-bold leading-[119%] text-white ${isRtl ? "text-right" : "text-left"}`}
+                    className={`line-clamp-1 text-[24px] font-bold leading-[119%] text-white text-start`}
                     style={{ fontFamily: ara }}
                   >
                     {card.title}

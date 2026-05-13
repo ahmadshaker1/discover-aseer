@@ -78,7 +78,7 @@ const CuisineCard: React.FC<{ item: CuisineItem }> = ({ item }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none"></div>
 
       {/* الاسم بالأبيض أسفل اليسار */}
-      <div className="absolute bottom-5 left-5 right-5 text-right z-10">
+      <div className="absolute bottom-5 start-5 end-5 text-start z-10">
         <h3 className="text-white font-bold text-[18px] md:text-[20px] drop-shadow-md">
           {item.name}
         </h3>
@@ -110,7 +110,7 @@ const RestaurantCard: React.FC<{ item: RestaurantItem }> = ({ item }) => {
           className="w-full h-full object-cover"
         />
         {/* التقييم */}
-        <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1.5 text-[12px]">
+        <div className="absolute top-4 end-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1.5 text-[12px]">
           <StarIcon />
           <span className="font-bold text-gray-700">
             ({item.reviews_count || 0}) {item.rating || "0.0"}
@@ -119,7 +119,7 @@ const RestaurantCard: React.FC<{ item: RestaurantItem }> = ({ item }) => {
       </div>
 
       {/* التفاصيل بالأسفل */}
-      <div className="p-5 text-right">
+      <div className="p-5 text-start">
         {/* اسم المطعم */}
         <h3 className="text-black font-bold text-[18px] mb-3 leading-tight">
           {item.name}
@@ -194,14 +194,14 @@ export default function FoodAndDiningSection() {
   }
 
   return (
-    <div className="w-full" dir="rtl">
+    <div className="w-full">
       {/* 1. قسم الأطباق التقليدية (Grid: 4 أعمدة) */}
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           {/* العنوان والتاق */}
           <div className="flex justify-between items-center gap-4 mb-12">
             {/* العنوان (يمين) */}
-            <h2 className="text-[28px] md:text-[36px] font-bold text-black text-right leading-tight">
+            <h2 className="text-[28px] md:text-[36px] font-bold text-black text-start leading-tight">
               الأطباق التقليدية في عسير
             </h2>
             {/* التاق (يسار) */}
@@ -233,7 +233,7 @@ export default function FoodAndDiningSection() {
           <div className="flex justify-between items-center gap-4 mb-12">
             {/* التاق (يسار) */}
             {/* العنوان (يمين) */}
-            <h2 className="text-[28px] md:text-[36px] font-bold text-black text-right leading-tight">
+            <h2 className="text-[28px] md:text-[36px] font-bold text-black text-start leading-tight">
               أشهر المطاعم
             </h2>
             <a

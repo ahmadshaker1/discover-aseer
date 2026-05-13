@@ -1,9 +1,7 @@
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
 const PlannerBreadcrumb = async () => {
-  const locale = await getLocale();
-  const isRtl = locale === "ar";
   const t = await getTranslations("planner");
   const tCommon = await getTranslations("common");
 
@@ -11,11 +9,11 @@ const PlannerBreadcrumb = async () => {
     <div className="w-full px-4 pb-8 pt-8 sm:px-6 sm:pb-12 sm:pt-10 md:pb-16 md:pt-12 lg:px-8">
       <div className="container mx-auto">
         {/* Breadcrumb - Centered */}
-        <div className="mb-6 flex items-center justify-center text-sm font-medium text-muted-foreground sm:mb-8 sm:text-base" dir={isRtl ? "rtl" : "ltr"}>
+        <div className="mb-6 flex items-center justify-center text-sm font-medium text-muted-foreground sm:mb-8 sm:text-base">
           <Link href="/" className="transition-colors hover:text-foreground">
             {tCommon("breadcrumbHome")}
           </Link>
-          <span className={`mx-2 inline-block text-muted-foreground ${isRtl ? "" : "rotate-180"}`}>{" › "}</span>
+          <span className={`mx-2 inline-block text-muted-foreground rtl:rotate-180`}>{" › "}</span>
           <span className="text-muted-foreground">{t("title")}</span>
         </div>
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -77,8 +77,7 @@ function BreadcrumbChevronSmall() {
  * Hero for `/tour-guides/register` — gradient shell, back control, title, breadcrumb (Figma 1440×644, −139px offset).
  */
 const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("tourGuidesRegister");
   return (
     <section
       className="relative z-0 w-full min-h-[644px] -mt-[139px] pb-10"
@@ -91,35 +90,33 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
       <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-[calc(139px+5rem)] sm:px-6 md:px-10 lg:px-8 lg:pt-[200px]">
         <Link
           href="/tour-guides"
-          dir={isRtl ? "rtl" : "ltr"}
-          className={`mb-10 inline-flex h-[42px] min-w-[98px] items-center justify-center gap-[10px] self-end rounded-[43px] bg-white px-[10px] py-[10px] text-[#130F26] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7520B9] lg:absolute lg:mb-0 lg:top-[291px] ${isRtl ? "lg:right-[68px]" : "lg:left-[68px]"}`}
+          className={`mb-10 inline-flex h-[42px] min-w-[98px] items-center justify-center gap-[10px] self-end rounded-[43px] bg-white px-[10px] py-[10px] text-[#130F26] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7520B9] lg:absolute lg:mb-0 lg:top-[291px] lg:end-[68px]`}
           style={{ fontFamily: araBold }}
           prefetch={false}
         >
-          <span className="text-base font-bold leading-none">{isRtl ? "العودة" : "Back"}</span>
+          <span className="text-base font-bold leading-none">{t("back")}</span>
           <BackChevronIcon />
         </Link>
 
         <div className="mx-auto mt-20 flex max-w-[590px] flex-col items-center gap-[33px] text-center sm:mt-24 lg:mt-30 xl:mt-32">
           <h1
             id="tour-guide-register-hero-title"
-            className={`w-full text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-[#280048] ${isRtl ? "text-right" : "text-left"}`}
+            className={`w-full text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-[#280048] text-start`}
             style={{ fontFamily: araBold }}
           >
-            {isRtl ? "نموذج تسجيل المرشدين السياحيين" : "Tour guide registration form"}
+            {t("formTitle")}
           </h1>
 
           <nav
             className="flex w-full max-w-[543px] flex-wrap items-center justify-center gap-1.5 text-[#280048]"
-            aria-label={isRtl ? "مسار التنقل" : "Breadcrumb"}
-            dir={isRtl ? "rtl" : "ltr"}
+            aria-label={t("breadcrumbLabel")}
           >
             <Link
               href="/"
               className="text-[24px] font-normal leading-[180%] opacity-50 transition-opacity hover:opacity-70"
               style={{ fontFamily: araBold }}
             >
-              {isRtl ? "الرئيسية" : "Home"}
+              {t("home")}
             </Link>
             <BreadcrumbChevronLarge />
             <Link
@@ -127,7 +124,7 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
               className="text-[24px] font-bold leading-[180%] text-[#280048]"
               style={{ fontFamily: araBold }}
             >
-              {isRtl ? "المرشدين السياحيين" : "Tour guides"}
+              {t("tourGuides")}
             </Link>
             <BreadcrumbChevronSmall />
             <span
@@ -135,7 +132,7 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
               style={{ fontFamily: araBold }}
               aria-current="page"
             >
-              {isRtl ? "نموذج تسجيل المرشدين السياحيين" : "Tour guide registration form"}
+              {t("formTitle")}
             </span>
           </nav>
         </div>

@@ -61,16 +61,15 @@ export default async function EventsBanner() {
         <div className="mx-auto flex w-full max-w-[460px] flex-col items-center gap-6 text-center sm:gap-7">
           <div
             className="flex flex-wrap items-center justify-center gap-[9px]"
-            dir="rtl"
             style={{ fontFamily: ara }}
           >
-            <span className="text-right text-[16px] font-bold leading-[119%] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]">
+            <span className="text-start text-[16px] font-bold leading-[119%] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]">
               {tEvents("breadcrumb")}
             </span>
             <BreadcrumbChevron />
             <Link
               href="/"
-              className="text-right text-[16px] font-bold leading-[119%] text-white transition-opacity [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] hover:opacity-85"
+              className="text-start text-[16px] font-bold leading-[119%] text-white transition-opacity [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] hover:opacity-85"
             >
               {tCommon("breadcrumbHome")}
             </Link>

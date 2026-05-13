@@ -1,11 +1,11 @@
 export default function IGCatBackgroundSection() {
   return (
     <>
-      <section className="py-16 md:py-24 bg-white" dir="rtl">
+      <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* قسم النص (يمين الشاشة في الكمبيوتر، وفوق في الجوال) */}
-            <div className="flex flex-col items-start text-right">
+            <div className="flex flex-col items-start text-start">
               {/* التاق (لقب) */}
               <span className="inline-block px-5 py-1 border border-[#7300CD] bg-[#F1E6FA] text-[#7300CD] rounded-full text-[14px] font-bold mb-6">
                 لقب
@@ -63,7 +63,7 @@ export default function IGCatBackgroundSection() {
 
       {/* القسم الثاني: عسير منطقة طهي (خلفية رمادية) */}
       {/* ========================================== */}
-      <section className="py-16 md:py-24 bg-[#F8F8F8]" dir="rtl">
+      <section className="py-16 md:py-24 bg-[#F8F8F8]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* قسم الصورة (يمين الشاشة في الكمبيوتر، وتحت في الجوال) */}
@@ -77,7 +77,7 @@ export default function IGCatBackgroundSection() {
             </div>
 
             {/* قسم النص (يسار الشاشة في الكمبيوتر، وفوق في الجوال) */}
-            <div className="flex flex-col items-start text-right order-1 lg:order-2">
+            <div className="flex flex-col items-start text-start order-1 lg:order-2">
               <h2 className="text-[28px] md:text-[36px] font-bold text-black mb-6">
                 عسير منطقة طهي عالمية 2024
               </h2>

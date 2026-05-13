@@ -7,7 +7,7 @@ export default async function ServicesSupportBanner() {
   const tCommon = await getTranslations("common");
 
   return (
-    <section className="relative h-[600px] w-full overflow-hidden" dir="ltr" style={{ fontFamily: "Ara Hamah 1964 R" }}>
+    <section className="relative h-[600px] w-full overflow-hidden" style={{ fontFamily: "Ara Hamah 1964 R" }}>
       <div className="absolute inset-0 z-0">
         <Image
           src="/assets/services-support/f125fee16e0267a3d14ee285efd5f272ad21108c.png"
@@ -20,14 +20,14 @@ export default async function ServicesSupportBanner() {
         <div className="absolute inset-0 z-10 bg-black/40" aria-hidden />
 
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 z-20 w-[min(52%,20rem)] sm:w-[min(48%,24rem)] md:w-[min(44%,28rem)]"
+          className="pointer-events-none absolute inset-y-0 start-0 z-20 w-[min(52%,20rem)] sm:w-[min(48%,24rem)] md:w-[min(44%,28rem)]"
           aria-hidden
         >
           <Image
             src="/hero-pattern/pattern-diamons.png"
             alt=""
             fill
-            className="object-contain object-left"
+            className="object-contain object-start"
             sizes="(max-width: 768px) 52vw, 28rem"
           />
         </div>

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import SafeHtml from "@/components/common/SafeHtml";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface LocationPin {
   id: string;
@@ -43,34 +43,19 @@ const CATEGORY_CHIPS = [
   { label: "أماكن الإقامة", icon: "🏨" },
 ] as const;
 
-const UI_COPY = {
-  ar: {
-    all: "الكل",
-    allCategories: "كل الفئات",
-    discover: "اكتشف عسير",
-    filterLabel: "فلترة",
-    search: "البحث...",
-    locations: "المواقع",
-    clearFilters: "مسح الفلاتر",
-    noGeo: "الموقع الجغرافي غير متوفر حالياً على الخريطة",
-    showOnMap: "عرض على الخريطة",
-    noResults: "لا توجد نتائج مطابقة للبحث الحالي.",
-    tokenHint: "أضف `NEXT_PUBLIC_MAPBOX_API_KEY` في ملف البيئة لتشغيل الخريطة.",
-  },
-  en: {
-    all: "All",
-    allCategories: "All categories",
-    discover: "Discover Aseer",
-    filterLabel: "Filter",
-    search: "Search...",
-    locations: "Locations",
-    clearFilters: "Clear filters",
-    noGeo: "Location coordinates are currently unavailable on the map.",
-    showOnMap: "Show on map",
-    noResults: "No places match the current search.",
-    tokenHint: "Add `NEXT_PUBLIC_MAPBOX_API_KEY` in the environment file to enable the map.",
-  },
-} as const;
+const UI_KEYS = [
+  "all",
+  "allCategories",
+  "discover",
+  "filterLabel",
+  "search",
+  "locations",
+  "clearFilters",
+  "noGeo",
+  "showOnMap",
+  "noResults",
+  "tokenHint",
+] as const;
 
 const placesToGeoJSON = (places: MapPlace[]): GeoJSON.FeatureCollection<GeoJSON.Point> => ({
   type: "FeatureCollection",
@@ -91,8 +76,15 @@ const placesToGeoJSON = (places: MapPlace[]): GeoJSON.FeatureCollection<GeoJSON.
 
 const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => {
   const locale = useLocale();
-  const isRtl = locale === "ar";
-  const ui = isRtl ? UI_COPY.ar : UI_COPY.en;
+  const t = useTranslations("interactiveMap");
+  const ui = useMemo(
+    () =>
+      Object.fromEntries(UI_KEYS.map((key) => [key, t(key)])) as Record<
+        (typeof UI_KEYS)[number],
+        string
+      >,
+    [t],
+  );
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const mapLoadedRef = useRef(false);
@@ -168,13 +160,13 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
     popupRef.current = new mapboxgl.Popup({ offset: 18, closeButton: false })
       .setLngLat([place.longitude, place.latitude])
       .setHTML(
-        `<div style="font-family: Arial, sans-serif; direction: ${isRtl ? "rtl" : "ltr"}; text-align: ${isRtl ? "right" : "left"};">
+        `<div style="font-family: Arial, sans-serif; direction: inherit; text-align: start;">
           <strong>${place.title}</strong><br/>
           <span style="font-size: 12px; opacity: 0.8;">${place.city}</span>
         </div>`,
       )
       .addTo(mapRef.current);
-  }, [isRtl]);
+  }, []);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -335,11 +327,11 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
   const tokenExists = Boolean(process.env.NEXT_PUBLIC_MAPBOX_API_KEY);
 
   return (
-    <div className="flex h-full w-full bg-background text-foreground" dir={isRtl ? "rtl" : "ltr"}>
+    <div className="flex h-full w-full bg-background text-foreground">
       <div className="relative order-2 h-full flex-1">
         <div ref={mapContainer} className="h-full w-full" />
 
-        <div className={`absolute top-4 z-20 flex max-w-[78%] flex-wrap gap-2 ${isRtl ? "right-4" : "left-4"}`} dir={isRtl ? "rtl" : "ltr"}>
+        <div className={`absolute top-4 z-20 flex max-w-[78%] flex-wrap gap-2 start-4`}>
           <button
             type="button"
             onClick={() => setActiveCategory(ui.all)}
@@ -369,7 +361,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
       <aside className="order-1 flex h-full w-[330px] flex-col bg-surface text-foreground shadow-[-4px_0_18px_rgba(0,0,0,0.18)] md:w-[360px]">
         <div className="border-b border-border p-4">
-          <h1 className={`mb-3 text-[36px] font-bold leading-none ${isRtl ? "text-right" : "text-left"}`}>{ui.discover}</h1>
+          <h1 className={`mb-3 text-[36px] font-bold leading-none text-start`}>{ui.discover}</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -383,7 +375,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder={ui.search}
-                className={`h-9 w-full rounded-md border border-border bg-background px-3 text-[13px] text-foreground outline-none ${isRtl ? "text-right" : "text-left"}`}
+                className={`h-9 w-full rounded-md border border-border bg-background px-3 text-[13px] text-foreground outline-none text-start`}
               />
             </div>
           </div>
@@ -438,7 +430,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           {filteredPlaces.map((place) => (
             <div
               key={place.id}
-              className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-right transition ${selectedPlaceId === place.id
+              className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-start transition ${selectedPlaceId === place.id
                   ? "border-primary bg-muted"
                   : "border-border bg-surface hover:bg-muted"
                 }`}

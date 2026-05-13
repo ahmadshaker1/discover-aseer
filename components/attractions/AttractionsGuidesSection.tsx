@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import TourGuideCard, {
   type TourGuideData,
 } from "@/components/tour-guides/TourGuideCard/TourGuideCard";
@@ -34,16 +34,14 @@ function ChevronLeftIcon() {
 }
 
 const AttractionsGuidesSection = ({ guides }: AttractionsGuidesSectionProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
   const tAttr = useTranslations("attractionsPage");
   return (
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
-        <div className="mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center justify-between" dir={isRtl ? "rtl" : "ltr"}>
+        <div className="mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center justify-between">
           <h2
-            className={`w-full max-w-[498px] text-[48px] font-bold leading-[100%] text-secondary ${isRtl ? "text-right" : "text-left"}`}
+            className={`w-full max-w-[498px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
             style={{ fontFamily: ara }}
           >
             {tAttr("chooseYourGuide")}
@@ -53,12 +51,11 @@ const AttractionsGuidesSection = ({ guides }: AttractionsGuidesSectionProps) => 
             href="/tour-guides"
             className="inline-flex h-6 w-[98px] shrink-0 items-center justify-between gap-2 text-secondary hover:opacity-80"
             style={{ fontFamily: ara }}
-            dir={isRtl ? "ltr" : "rtl"}
           >
-            <span className={isRtl ? "" : "rotate-180"}>
+            <span className="rtl:rotate-180">
               <ChevronLeftIcon />
             </span>
-            <span className={`h-6 w-[73px] whitespace-nowrap text-[20px] font-bold leading-[100%] text-secondary ${isRtl ? "text-right" : "text-left"}`}>
+            <span className={`h-6 w-[73px] whitespace-nowrap text-[20px] font-bold leading-[100%] text-secondary text-start`}>
               {tCommon("more")}
             </span>
           </Link>

@@ -37,7 +37,6 @@ const includesInterests = (landmark: Landmark, selectedInterests: string[]): boo
 
 const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentProps) => {
   const locale = useLocale();
-  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
 
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
@@ -84,7 +83,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
   return (
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start" dir={isRtl ? "rtl" : "ltr"}>
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           <div className="w-full flex-1 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
               {visibleLandmarks.map((landmark) => (
@@ -93,17 +92,17 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
             </div>
 
             {visibleLandmarks.length === 0 ? (
-              <p className={`py-8 text-sm text-muted-foreground ${isRtl ? "text-right" : "text-left"}`} style={{ fontFamily: ibm }}>
+              <p className={`py-8 text-sm text-muted-foreground text-start`} style={{ fontFamily: ibm }}>
                 {tCommon("noLandmarksMatchFilters")}
               </p>
             ) : null}
           </div>
 
-          <aside className={`w-full lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-[#E6E6E6] lg:pt-6 lg:pr-8 lg:pl-8 ${isRtl ? "lg:border-r" : "lg:border-l"}`} dir={isRtl ? "rtl" : "ltr"}>
+          <aside className={`w-full lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-[#E6E6E6] lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}>
             <div className="flex h-full flex-col gap-6">
               <div className="flex h-8 w-full max-w-[256px] items-center justify-between">
                 <h3
-                  className={`h-6 max-w-[180px] whitespace-normal sm:whitespace-nowrap text-[24px] font-bold leading-6 tracking-[-0.31px] text-foreground ${isRtl ? "text-right" : "text-left"}`}
+                  className={`h-6 max-w-[180px] whitespace-normal sm:whitespace-nowrap text-[24px] font-bold leading-6 tracking-[-0.31px] text-foreground text-start`}
                   style={{ fontFamily: ara }}
                 >
                   {tCommon("filterLandmarks")}
@@ -141,7 +140,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
                   ))}
                 </select>
 
-                <div className="flex h-full items-center justify-between" dir={isRtl ? "rtl" : "ltr"}>
+                <div className="flex h-full items-center justify-between">
                   <div className="flex items-center gap-2">
                     <LocationIcon />
                     <span
@@ -161,7 +160,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
                 <div className="mb-4 flex items-center gap-2 text-muted-foreground">
                   <HeartIcon />
                   <h4
-                    className={`h-6 min-w-[73px] text-[20px] font-bold leading-[119%] tracking-[0] text-foreground ${isRtl ? "text-right" : "text-left"}`}
+                    className={`h-6 min-w-[73px] text-[20px] font-bold leading-[119%] tracking-[0] text-foreground text-start`}
                     style={{ fontFamily: ara }}
                   >
                     {tCommon("interests")}
@@ -188,7 +187,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
                               className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] checked:border-primary checked:bg-primary checked:bg-[linear-gradient(45deg,transparent_45%,white_45%,white_55%,transparent_55%),linear-gradient(-45deg,transparent_45%,white_45%,white_55%,transparent_55%)] checked:bg-size-[70%_70%] checked:bg-center checked:bg-no-repeat"
                           />
                           <span
-                              className={`h-5 min-w-[73px] text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground ${isRtl ? "text-right" : "text-left"}`}
+                              className={`h-5 min-w-[73px] text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
                             style={{ fontFamily: "Inter, sans-serif" }}
                           >
                             {option.label}

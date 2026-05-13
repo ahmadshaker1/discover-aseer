@@ -69,12 +69,11 @@ function ServiceTagIcon({ category }: { category: string }) {
 const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
   return (
     <article
-      className="flex h-full min-h-[155px] w-full min-w-0 flex-col justify-between rounded-[12px] border border-border bg-surface p-4 text-right text-foreground"
-      dir="ltr"
+      className="flex h-full min-h-[155px] w-full min-w-0 flex-col justify-between rounded-[12px] border border-border bg-surface p-4 text-start text-foreground"
     >
       <div className="mb-2 flex shrink-0 items-center justify-end">
         <span className="inline-flex h-7 min-w-[95px] max-w-full items-center justify-center gap-1 rounded-[20px] bg-[#B08DCB] px-3 py-1 text-xs font-bold text-white">
-          <span className="min-w-0 truncate text-right">{service.category}</span>
+          <span className="min-w-0 truncate text-start">{service.category}</span>
           <span className="shrink-0" aria-hidden>
             <ServiceTagIcon category={service.category} />
           </span>
@@ -82,7 +81,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
       </div>
 
       <h3
-        className="mb-2 line-clamp-1 text-right text-[24px] font-bold leading-[119%] text-foreground"
+        className="mb-2 line-clamp-1 text-start text-[24px] font-bold leading-[119%] text-foreground"
         style={{ fontFamily: "var(--font-ara-hamah-1964), sans-serif" }}
       >
         {service.title}
@@ -93,7 +92,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
           href={service.mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex min-w-0 max-w-full flex-row items-center justify-end gap-2 text-right text-[12px] font-bold leading-[100%] text-primary underline underline-offset-[20.5%]"
+          className="flex min-w-0 max-w-full flex-row items-center justify-end gap-2 text-start text-[12px] font-bold leading-[100%] text-primary underline underline-offset-[20.5%]"
           style={{ fontFamily: "var(--font-ibm-plex-sans-arabic), sans-serif" }}
         >
           <span className="min-w-0 wrap-break-word">{service.city}</span>
@@ -104,7 +103,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
 
         <a
           href={`tel:${service.supportNumber}`}
-          className="flex min-w-0 max-w-full flex-row items-center justify-end gap-2 text-right text-[12px] font-bold leading-[100%] text-muted-foreground"
+          className="flex min-w-0 max-w-full flex-row items-center justify-end gap-2 text-start text-[12px] font-bold leading-[100%] text-muted-foreground"
           style={{ fontFamily: "var(--font-ibm-plex-sans-arabic), sans-serif" }}
         >
           <span className="min-w-0 truncate" dir="ltr">

@@ -64,13 +64,13 @@ const AccommodationFilters = ({
 
   return (
     <aside
-      className="w-full shrink-0 rounded-2xl border border-border bg-surface p-4 text-foreground sm:p-6 lg:h-[796px] lg:w-[320px] lg:rounded-none lg:border-y-0 lg:border-l-0 lg:border-r lg:border-border lg:bg-transparent lg:pb-0 lg:pl-8 lg:pr-8 lg:pt-6 lg:shadow-none"
-      dir="rtl"
+      className="w-full shrink-0 rounded-2xl border border-border bg-surface p-4 text-foreground sm:p-6 lg:h-[796px] lg:w-[320px] lg:rounded-none lg:border-y-0 lg:border-s-0 lg:border-e lg:border-border lg:bg-transparent lg:pb-0 lg:ps-8 lg:pe-8 lg:pt-6 lg:shadow-none"
+
     >
       <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-6">
         <h2
-          dir="rtl"
-          className="text-right text-lg font-bold text-foreground sm:text-xl [unicode-bidi:isolate]"
+
+          className="text-start text-lg font-bold text-foreground sm:text-xl [unicode-bidi:isolate]"
         >
           {t("filterDestinations")}
         </h2>
@@ -84,14 +84,14 @@ const AccommodationFilters = ({
       </div>
 
       <section className="mb-6 border-b border-border pb-6">
-        <div ref={cityWrapRef} className="relative" dir="rtl">
+        <div ref={cityWrapRef} className="relative">
           <button
             type="button"
             onClick={() => setCityOpen((o) => !o)}
             aria-expanded={cityOpen}
-            className="relative flex w-full appearance-none items-center gap-2 rounded-full border border-border bg-surface py-3 pl-4 pr-11 text-right text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="relative flex w-full appearance-none items-center gap-2 rounded-full border border-border bg-surface py-3 ps-4 pe-11 text-start text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
-            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
+            <span className="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2">
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden>
                 <path d="M6 7.4L0 1.4L1.4 0L6 4.6L10.6 0L12 1.4L6 7.4Z" fill="currentColor" />
               </svg>
@@ -105,19 +105,19 @@ const AccommodationFilters = ({
             <ul
               className="absolute z-30 mt-2 max-h-60 w-full overflow-y-auto rounded-2xl border border-border bg-surface py-1 shadow-lg"
               role="listbox"
-              dir="rtl"
+
             >
               <li>
                 <button
                   type="button"
                   role="option"
-                  dir="rtl"
+
                   aria-selected={selectedCity === "all"}
                   onClick={() => {
                     onCityChange("all");
                     setCityOpen(false);
                   }}
-                  className="flex w-full items-center justify-start gap-2 px-4 py-3 text-right text-sm text-foreground hover:bg-muted"
+                  className="flex w-full items-center justify-start gap-2 px-4 py-3 text-start text-sm text-foreground hover:bg-muted"
                 >
                   <CityPinIcon className="shrink-0 text-muted-foreground opacity-70" />
                   <span className="min-w-0 truncate">{t("allCities")}</span>
@@ -128,13 +128,13 @@ const AccommodationFilters = ({
                   <button
                     type="button"
                     role="option"
-                    dir="rtl"
+
                     aria-selected={selectedCity === city}
                     onClick={() => {
                       onCityChange(city);
                       setCityOpen(false);
                     }}
-                    className="flex w-full items-center justify-start gap-2 px-4 py-3 text-right text-sm text-foreground hover:bg-muted"
+                    className="flex w-full items-center justify-start gap-2 px-4 py-3 text-start text-sm text-foreground hover:bg-muted"
                   >
                     <CityPinIcon className="shrink-0 text-muted-foreground opacity-70" />
                     <span className="min-w-0 truncate">{city}</span>
@@ -146,8 +146,8 @@ const AccommodationFilters = ({
         </div>
       </section>
 
-      <section dir="rtl" className="mb-6 border-b border-border pb-6">
-        <label className="flex w-full cursor-pointer items-center gap-3 rounded-lg py-2 pr-1 transition-colors hover:bg-muted">
+      <section className="mb-6 border-b border-border pb-6">
+        <label className="flex w-full cursor-pointer items-center gap-3 rounded-lg py-2 pe-1 transition-colors hover:bg-muted">
           <div className="relative shrink-0">
             <input
               type="checkbox"
@@ -194,8 +194,8 @@ const AccommodationFilters = ({
             />
           </svg>
           <h3
-            dir="rtl"
-            className="text-right text-base font-bold text-foreground [unicode-bidi:isolate]"
+
+            className="text-start text-base font-bold text-foreground [unicode-bidi:isolate]"
           >
             {t("hotelRating")}
           </h3>
@@ -204,7 +204,7 @@ const AccommodationFilters = ({
           {[5, 4, 3].map((stars) => (
             <label
               key={stars}
-              className="flex cursor-pointer items-center gap-3 rounded-lg py-2 pr-1 transition-colors hover:bg-muted"
+              className="flex cursor-pointer items-center gap-3 rounded-lg py-2 pe-1 transition-colors hover:bg-muted"
             >
               <input
                 type="checkbox"
@@ -212,7 +212,7 @@ const AccommodationFilters = ({
                 onChange={() => onToggleStars(stars)}
                 className="h-4 w-4 shrink-0 rounded border-border text-primary focus:ring-primary"
               />
-              <span className="min-w-0 flex-1 text-right text-sm font-normal text-foreground">
+              <span className="min-w-0 flex-1 text-start text-sm font-normal text-foreground">
                 {t("starRating", { stars })}
               </span>
               <span className="shrink-0 rounded-[8px] bg-muted px-2 py-0.5 text-xs text-foreground">

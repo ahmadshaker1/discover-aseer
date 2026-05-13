@@ -148,8 +148,28 @@ const HamburgerIcon = ({ isOpen }: { isOpen: boolean }) => (
   </svg>
 );
 const LocationPinIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden
+  >
+    <path
+      d="M10 17.5C10 17.5 15.8333 12.0175 15.8333 8.33333C15.8333 5.11167 13.2217 2.5 10 2.5C6.77833 2.5 4.16667 5.11167 4.16667 8.33333C4.16667 12.0175 10 17.5 10 17.5Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M10 10.4167C11.1506 10.4167 12.0833 9.48399 12.0833 8.33333C12.0833 7.18268 11.1506 6.25 10 6.25C8.84933 6.25 7.91667 7.18268 7.91667 8.33333C7.91667 9.48399 8.84933 10.4167 10 10.4167Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 

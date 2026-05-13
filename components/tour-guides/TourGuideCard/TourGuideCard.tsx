@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ArabicFlagIcon, EnglishFlagIcon, WhatsAppIcon } from "./Icons";
 import { Button } from "@headlessui/react";
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 export interface TourGuideData {
   id: string | number;
@@ -38,8 +38,8 @@ const TourGuideCard = ({
   description,
   onCardClick,
 }: TourGuideCardProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+  const t = useTranslations("tourGuides");
+  const tCommon = useTranslations("common");
   return (
     <div
       className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md"
@@ -84,7 +84,7 @@ const TourGuideCard = ({
             <WhatsAppIcon />
           </span>
           <span className="text-sm font-bold leading-tight whitespace-normal">
-            {isRtl ? "تواصل عبر الواتساب" : "Contact on WhatsApp"}
+            {t("contactWhatsApp")}
           </span>
         </a>
 
@@ -101,7 +101,7 @@ const TourGuideCard = ({
           }}
           className="cursor-pointer text-sm font-medium text-foreground hover:underline"
         >
-          {isRtl ? "المزيد" : "More"}
+          {tCommon("more")}
         </Button>
       </div>
     </div>

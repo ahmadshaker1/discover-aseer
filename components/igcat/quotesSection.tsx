@@ -32,7 +32,6 @@ export default function QuotesSection() {
   return (
     <section
       className="relative w-full py-20 overflow-hidden bg-[#240B48]"
-      dir="rtl"
     >
       {/* علامة التنصيص المائية الضخمة في الخلفية (يسار) */}
 
@@ -49,7 +48,7 @@ export default function QuotesSection() {
                 <button
                   key={item.id}
                   onClick={() => setActiveIndex(index)}
-                  className={`text-right p-6 rounded-2xl transition-all duration-300 w-full ${
+                  className={`text-start p-6 rounded-2xl transition-all duration-300 w-full ${
                     isActive
                       ? "bg-white text-black shadow-lg scale-[1.02]"
                       : "bg-[#492965]/40 text-white hover:bg-[#3A1B6B]/60"
@@ -67,7 +66,7 @@ export default function QuotesSection() {
           </div>
 
           {/* 2. نص الاقتباس (يسار الشاشة) */}
-          <div className="lg:col-span-8 flex flex-col items-start gap-6 lg:mr-8">
+          <div className="lg:col-span-8 flex flex-col items-start gap-6 lg:me-8">
             {/* أيقونة الاقتباس البنفسجية الفاقعة */}
             <img src="assets/igcat/SVG.png" alt="quote" />
             {/* النص يتغير بتأثير انسيابي */}

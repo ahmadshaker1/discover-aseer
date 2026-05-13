@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useLocale } from "next-intl";
 import RestaurantsFilterSidebar from "@/components/restaurants/RestaurantsFilterSidebar";
 import RestaurantsGrid from "@/components/restaurants/RestaurantsGrid";
 import type { Restaurant } from "@/components/restaurants/types";
@@ -21,8 +20,6 @@ interface RestaurantsListingProps {
 }
 
 export default function RestaurantsListing({ restaurants }: RestaurantsListingProps) {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const [filters, setFilters] = useState<RestaurantFilterState>(INITIAL_FILTERS);
 
   const filtered = useMemo(
@@ -31,7 +28,7 @@ export default function RestaurantsListing({ restaurants }: RestaurantsListingPr
   );
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:gap-8" dir={isRtl ? "rtl" : "ltr"}>
+    <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
       <div className="w-full flex-1">
         <RestaurantsGrid restaurants={filtered} />
       </div>

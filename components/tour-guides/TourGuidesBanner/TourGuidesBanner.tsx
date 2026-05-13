@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
 const TOUR_GUIDE_REGISTER_URL =
@@ -27,6 +27,7 @@ function CtaArrow() {
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="rtl:rotate-180"
       >
         <path
           d="M15 18l-6-6 6-6"
@@ -41,8 +42,6 @@ function CtaArrow() {
 }
 
 const TourGuidesBanner = async () => {
-  const locale = await getLocale();
-  const isRtl = locale === "ar";
   const tGuides = await getTranslations("tourGuides");
   const tCommon = await getTranslations("common");
   const { href: registerHref, external: registerExternal } = resolveRegisterHref();
@@ -50,7 +49,6 @@ const TourGuidesBanner = async () => {
   return (
     <section
       className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]"
-      dir={isRtl ? "rtl" : "ltr"}
     >
       {/* Background image — full hero */}
       <div className="absolute inset-0 z-0">
@@ -81,14 +79,14 @@ const TourGuidesBanner = async () => {
 
       {/* Diamond pattern — left edge, layered above the photo, below copy */}
       <div
-        className={`pointer-events-none absolute inset-y-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)] ${isRtl ? "left-0" : "right-0"}`}
+        className={`pointer-events-none absolute inset-y-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)] start-0`}
         aria-hidden
       >
         <Image
           src="/hero-pattern/pattern-diamons.png"
           alt=""
           fill
-          className={`object-contain ${isRtl ? "object-left" : "object-right scale-x-[-1]"}`}
+          className={`object-contain object-start ltr:scale-x-[-1]`}
           sizes="(max-width: 768px) 55vw, 28rem"
         />
       </div>
@@ -121,8 +119,8 @@ const TourGuidesBanner = async () => {
               : {})}
             className="inline-flex items-center gap-2 rounded-full bg-[#280048] px-8 py-3.5 text-base font-medium text-white shadow-lg transition-colors hover:bg-[#4d2a75] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            {locale === "ar" ? "التسجيل كمرشد سياحي" : "Register as a tour guide"}
-            <span className={isRtl ? "" : "rotate-180"}><CtaArrow /></span>
+            {tGuides("registerAsGuide")}
+            <CtaArrow />
           </Link>
         </div>
       </div>

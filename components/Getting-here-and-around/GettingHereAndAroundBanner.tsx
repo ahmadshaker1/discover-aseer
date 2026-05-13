@@ -1,12 +1,8 @@
 import Image from "next/image";
-import { getLocale } from "next-intl/server";
-
-import { resolveGettingHereContent } from "./gettingHerePageContent";
+import { getTranslations } from "next-intl/server";
 
 export default async function GettingHereAndAroundBanner() {
-  const locale = await getLocale();
-  const isRtl = locale === "ar";
-  const { banner } = resolveGettingHereContent(locale);
+  const t = await getTranslations("gettingHere.banner");
 
   return (
     <section className="relative w-full min-h-[420px] h-[60vh] max-h-[720px] overflow-hidden">
@@ -29,27 +25,26 @@ export default async function GettingHereAndAroundBanner() {
 
       <div
         className="absolute inset-0 z-10 flex items-end md:items-center"
-        dir={isRtl ? "rtl" : "ltr"}
       >
         <div
-          className={`mx-auto w-full max-w-[1440px] px-6 pb-10 text-white md:px-10 md:pb-0 ${isRtl ? "text-right" : "text-left"}`}
+          className="mx-auto w-full max-w-[1440px] px-6 pb-10 text-white md:px-10 md:pb-0 text-start"
         >
           <div
-            className={`mb-4 flex items-center gap-2 text-sm md:text-base ${isRtl ? "justify-center" : "justify-center"}`}
+            className="mb-4 flex items-center gap-2 text-sm md:text-base justify-center"
           >
             <a href="/" className="hover:underline">
-              {banner.home}
+              {t("home")}
             </a>
             <span>/</span>
-            <p>{banner.crumbExperiences}</p>
+            <p>{t("crumbExperiences")}</p>
           </div>
 
           <h1 className="mb-3 flex items-center justify-center text-3xl font-bold leading-tight md:text-5xl">
-            {banner.title}
+            {t("title")}
           </h1>
 
           <p className="mb-3 flex items-center justify-center text-md font-bold leading-tight text-gray-300 md:text-1xl">
-            {banner.subtitle}
+            {t("subtitle")}
           </p>
         </div>
       </div>

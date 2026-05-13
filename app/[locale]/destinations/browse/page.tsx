@@ -18,8 +18,7 @@ const LocalizedDestinationsBrowsePage = async () => {
           { label: tCommon("destinations") },
           { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
-        breadcrumbDir={locale === "ar" ? "rtl" : "ltr"}
-        title={t("browseTitle")}
+                title={t("browseTitle")}
         subtitle={tCommon("subtitleOneVisit")}
         backgroundImage="/assets/activities/activities.jpg"
         primaryCta={{

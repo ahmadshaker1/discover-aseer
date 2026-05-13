@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import FilterDropdown from "./FilterDropdown";
 import InterestsFilter from "./InterestsFilter";
 import { ClockIcon, PriceIcon, PeopleIcon, LocationIcon } from "./Icons";
@@ -13,8 +13,6 @@ import {
 } from "./filterOptions";
 
 const LandmarksFilters = () => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const tCommon = useTranslations("common");
   const [selectedDuration, setSelectedDuration] = useState<string | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<string | null>(null);
@@ -33,11 +31,11 @@ const LandmarksFilters = () => {
   };
 
   return (
-    <div className={`flex w-full ${isRtl ? "justify-start" : "justify-end"}`} dir={isRtl ? "rtl" : "ltr"}>
+    <div className={`flex w-full justify-end`}>
       <div className="flex flex-wrap gap-2 sm:gap-4">
         <FilterDropdown
           icon={<ClockIcon />}
-          label={isRtl ? "مدة الزيارة" : "Visit duration"}
+          label={tCommon("visitDuration")}
           selectedValue={selectedDuration}
           options={durationOptions}
           onSelect={setSelectedDuration}
@@ -46,7 +44,7 @@ const LandmarksFilters = () => {
 
         <FilterDropdown
           icon={<PriceIcon />}
-          label={isRtl ? "الأسعار" : "Prices"}
+          label={tCommon("prices")}
           selectedValue={selectedPrice}
           options={priceOptions}
           onSelect={setSelectedPrice}

@@ -28,7 +28,7 @@ const Footer = () => {
             <div className="flex h-full w-full items-center justify-between py-5">
               <div className="flex h-[82px] w-[295px] items-start gap-3">
                 <div className="flex h-[82px] w-[100px] flex-col items-start gap-4">
-                  <p className="text-right text-[16px] font-bold leading-[110%]">
+                  <p className="text-end text-[16px] font-bold leading-[110%]">
                     {t("footer.poweredBy")}
                   </p>
                   <Image
@@ -48,52 +48,51 @@ const Footer = () => {
           </div>
 
           {/* Section 2 */}
-          <div className="h-auto pb-6 lg:h-[344px] lg:pb-0" dir="rtl">
+          <div className="h-auto pb-6 lg:h-[344px] lg:pb-0">
             <div
-              className="grid h-full grid-cols-1 gap-8 text-right sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
-              dir="rtl"
+              className="grid h-full grid-cols-1 gap-8 text-end sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
             >   {/* اكتشف عسير */}
-              <div className="flex w-full justify-self-start flex-col items-end text-right" dir="rtl">
-                <h3 className="w-full text-right text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
+              <div className="flex w-full justify-self-start flex-col items-end text-end">
+                <h3 className="w-full text-end text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
                   {t("footer.discoverAseerTitle")}
                 </h3>
 
-                <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }} dir="rtl">
-                  <Link href="/destinations" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkMainDestinations")}</Link>
-                  <Link href="/attractions" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkAttractions")}</Link>
-                  <Link href="/experiences" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkExperiences")}</Link>
-                  <Link href="/aseer-cuisine" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkCuisine")}</Link>
-                  <Link href="/aseer-community" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkCommunity")}</Link>
-                  <Link href="/event-seasons" dir="rtl" className="mt-4 block w-full text-right hover:opacity-80">{t("footer.linkEventsSeasons")}</Link>
+                <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }}>
+                  <Link href="/destinations" className="block w-full text-end hover:opacity-80">{t("footer.linkMainDestinations")}</Link>
+                  <Link href="/attractions" className="block w-full text-end hover:opacity-80">{t("footer.linkAttractions")}</Link>
+                  <Link href="/experiences" className="block w-full text-end hover:opacity-80">{t("footer.linkExperiences")}</Link>
+                  <Link href="/aseer-cuisine" className="block w-full text-end hover:opacity-80">{t("footer.linkCuisine")}</Link>
+                  <Link href="/aseer-community" className="block w-full text-end hover:opacity-80">{t("footer.linkCommunity")}</Link>
+                  <Link href="/event-seasons" className="mt-4 block w-full text-end hover:opacity-80">{t("footer.linkEventsSeasons")}</Link>
                 </div>
               </div>
 
               {/* خطط لرحلتك */}
-              <div className="flex w-full justify-self-start flex-col items-end text-right" dir="rtl">
-                <h3 className="w-full text-right text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
+              <div className="flex w-full justify-self-start flex-col items-end text-end">
+                <h3 className="w-full text-end text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
                   {t("footer.planYourTripTitle")}
                 </h3>
 
-                <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }} dir="rtl">
-                  <Link href="/planner" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkPlanner")}</Link>
-                  <Link href="/accommodation" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkAccommodation")}</Link>
-                  <Link href="/restaurants" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkRestaurants")}</Link>
-                  <Link href="/tour-guides" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkTourGuides")}</Link>
-                  <Link href="/travel-tips" dir="rtl" className="block w-full text-right hover:opacity-80">{t("footer.linkTravelTips")}</Link>
+                <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }}>
+                  <Link href="/planner" className="block w-full text-end hover:opacity-80">{t("footer.linkPlanner")}</Link>
+                  <Link href="/accommodation" className="block w-full text-end hover:opacity-80">{t("footer.linkAccommodation")}</Link>
+                  <Link href="/restaurants" className="block w-full text-end hover:opacity-80">{t("footer.linkRestaurants")}</Link>
+                  <Link href="/tour-guides" className="block w-full text-end hover:opacity-80">{t("footer.linkTourGuides")}</Link>
+                  <Link href="/travel-tips" className="block w-full text-end hover:opacity-80">{t("footer.linkTravelTips")}</Link>
                 </div>
               </div>
 
               {/* كتيبات */}
-              <div className="flex w-full justify-self-start flex-col items-end text-right" dir="rtl">
-                <h3 className="w-full text-right text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
+              <div className="flex w-full justify-self-start flex-col items-end text-end">
+                <h3 className="w-full text-end text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
                   {t("footer.bookletsTitle")}
                 </h3>
 
-                <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }} dir="rtl">
-                  <Link href="/about-aseer" dir="rtl" className="block w-full text-right hover:opacity-80">
-                    <span className="inline-flex items-center gap-1 whitespace-nowrap" dir="rtl">
+                <div className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]" style={{ fontFamily: ara }}>
+                  <Link href="/about-aseer" className="block w-full text-end hover:opacity-80">
+                    <span className="inline-flex items-center gap-1 whitespace-nowrap">
                       <span
-                        className="text-right text-[18px] font-bold leading-[197%]"
+                        className="text-end text-[18px] font-bold leading-[197%]"
                         style={{ fontFamily: ara }}
                       >
                         {t("footer.linkDiscoverBooklet")}
@@ -102,10 +101,10 @@ const Footer = () => {
                     </span>
                   </Link>
 
-                  <Link href="/activities" dir="rtl" className="block w-full text-right hover:opacity-80">
-                    <span className="inline-flex items-center gap-1 whitespace-nowrap" dir="rtl">
+                  <Link href="/activities" className="block w-full text-end hover:opacity-80">
+                    <span className="inline-flex items-center gap-1 whitespace-nowrap">
                       <span
-                        className="text-right text-[18px] font-bold leading-[197%]"
+                        className="text-end text-[18px] font-bold leading-[197%]"
                         style={{ fontFamily: ara }}
                       >
                         {t("footer.linkOutdoorGuide")}
@@ -117,24 +116,24 @@ const Footer = () => {
               </div>
 
               {/* التواصل */}
-              <div className="flex w-full justify-self-start flex-col items-end gap-4 text-right" dir="rtl" >
-                <h3 className="w-full text-right text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
+              <div className="flex w-full justify-self-start flex-col items-end gap-4 text-end" >
+                <h3 className="w-full text-end text-[14px] font-bold leading-[110%] text-white/80" style={{ fontFamily: ara }}>
                   {t("footer.contactTitle")}
                 </h3>
 
-                <Link href="/services-support" className="block w-full text-right text-[18px] font-bold leading-[197%] hover:opacity-80" style={{ fontFamily: ara }}>
+                <Link href="/services-support" className="block w-full text-end text-[18px] font-bold leading-[197%] hover:opacity-80" style={{ fontFamily: ara }}>
                   {t("footer.contactUs")}
                 </Link>
 
-                <div className="w-full text-right text-sm text-white/80" style={{ fontFamily: ara }}>
+                <div className="w-full text-end text-sm text-white/80" style={{ fontFamily: ara }}>
                   {t("footer.internationalCallCenter")}
                 </div>
 
-                <a href="tel:+9669200000890" dir="ltr" className="block w-full text-right text-lg hover:opacity-80">
+                <a href="tel:+9669200000890" dir="ltr" className="block w-full text-end text-lg hover:opacity-80">
                   +966 9200000890
                 </a>
 
-                <div className="w-full text-right text-xs text-white/70" style={{ fontFamily: ara }}>
+                <div className="w-full text-end text-xs text-white/70" style={{ fontFamily: ara }}>
                   {t("footer.followUs")}
                 </div>
 
@@ -151,7 +150,7 @@ const Footer = () => {
           </div>
           {/* Section 3 */}
           <div className="mx-auto w-full max-w-[1180px]">
-            <div className="flex w-full items-center justify-between gap-4" dir="ltr">
+            <div className="flex w-full items-center justify-between gap-4">
               {/* Left block */}
               <div className="flex w-full max-w-[589px] items-center justify-between gap-4">
                 {/* Input + button */}
@@ -172,19 +171,19 @@ const Footer = () => {
                 </div>
 
                 {/* Newsletter text */}
-                <div className="flex h-[79px] w-[138px] flex-col items-end gap-4 text-right">
-                  <p className="h-[18px] w-[100px] text-right text-[16px] font-bold leading-[110%]" style={{ fontFamily: ara }}>
+                <div className="flex h-[79px] w-[138px] flex-col items-end gap-4 text-end">
+                  <p className="h-[18px] w-[100px] text-end text-[16px] font-bold leading-[110%]" style={{ fontFamily: ara }}>
                     {t("footer.newsletterTitle")}
                   </p>
-                  <p className="h-[45px] w-[138px] text-right text-[10px] font-normal leading-[100%] text-white">
+                  <p className="h-[45px] w-[138px] text-end text-[10px] font-normal leading-[100%] text-white">
                     {t("common.newsletterDescription")}
                   </p>
                 </div>
               </div>
 
               {/* Middle block */}
-              <div className="flex h-[79px] w-[231px] flex-col items-end gap-3 text-right">
-                <p className="h-[18px] w-[231px] text-right text-[16px] font-bold leading-[110%] text-white" style={{ fontFamily: ara }}>
+              <div className="flex h-[79px] w-[231px] flex-col items-end gap-3 text-end">
+                <p className="h-[18px] w-[231px] text-end text-[16px] font-bold leading-[110%] text-white" style={{ fontFamily: ara }}>
                   {t("common.memberOf")}
                 </p>
                 <div className="flex h-[34px] w-[231px] items-center justify-between gap-4" dir="ltr">

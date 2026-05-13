@@ -2,6 +2,15 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/:locale(ar|en)/Getting-here-and-around",
+        destination: "/:locale/getting-here-and-around",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     localPatterns: [
       {

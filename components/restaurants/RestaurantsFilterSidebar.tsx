@@ -50,13 +50,11 @@ const FilterHeader = ({ onReset }: FilterHeaderProps) => {
 
 // Location Filter Component
 interface LocationFilterProps {
-  isRtl: boolean;
   selectedCity: string | null;
   onCityChange: (cityId: string | null) => void;
 }
 
 const LocationFilter = ({
-  isRtl,
   selectedCity,
   onCityChange,
 }: LocationFilterProps) => {
@@ -68,7 +66,7 @@ const LocationFilter = ({
   return (
     <div className="mb-6 sm:mb-8">
       <Menu as="div" className="relative">
-        <Menu.Button className={`flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
+        <Menu.Button className={`flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm flex-row`}>
           <LocationIcon />
           <span className="flex-1 text-start">
             {selectedCityOption?.label || t("city")}
@@ -84,7 +82,7 @@ const LocationFilter = ({
           leaveFrom="opacity-100 scale-100 translate-y-0"
           leaveTo="opacity-0 scale-95 translate-y-1"
         >
-          <Menu.Items className={`absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none ${isRtl ? "right-0 origin-top-right" : "left-0 origin-top-left"}`}>
+          <Menu.Items className={`absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none start-0 origin-top-start`}>
             <div className="py-1">
               {cityOpts.map((option) => (
                 <Menu.Item key={option.id}>
@@ -199,14 +197,12 @@ const FilterCheckbox = ({ checked, onChange }: FilterCheckboxProps) => {
 
 // Cuisine Type Filter Component
 interface CuisineTypeFilterProps {
-  isRtl: boolean;
   cuisines: CuisineOption[];
   selectedCuisines: string[];
   onCuisineToggle: (cuisineId: string) => void;
 }
 
 const CuisineTypeFilter = ({
-  isRtl,
   cuisines,
   selectedCuisines,
   onCuisineToggle,
@@ -228,7 +224,7 @@ const CuisineTypeFilter = ({
               key={cuisine.id}
               className="flex items-center justify-between p-2 rounded transition-colors"
             >
-              <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : "flex-row"}`}>
+              <div className={`flex items-center gap-3 flex-row`}>
                 <span className="text-sm text-foreground">{cuisine.label}</span>
                 <FilterCheckbox
                   checked={isChecked}
@@ -257,8 +253,6 @@ const RestaurantsFilterSidebar = ({
   onFiltersChange,
   onReset,
 }: RestaurantsFilterSidebarProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const t = useTranslations("common");
 
   const restaurantTypes: RestaurantType[] = [
@@ -301,10 +295,9 @@ const RestaurantsFilterSidebar = ({
   };
 
   return (
-    <div className="w-full max-w-md rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-none" dir={isRtl ? "rtl" : "ltr"}>
+    <div className="w-full max-w-md rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-none">
       <FilterHeader onReset={onReset} />
       <LocationFilter
-        isRtl={isRtl}
         selectedCity={filters.city}
         onCityChange={handleCityChange}
       />
@@ -314,7 +307,6 @@ const RestaurantsFilterSidebar = ({
         onTypeToggle={handleRestaurantTypeToggle}
       />
       <CuisineTypeFilter
-        isRtl={isRtl}
         cuisines={cuisinesWithCounts}
         selectedCuisines={filters.cuisineTypes}
         onCuisineToggle={handleCuisineToggle}

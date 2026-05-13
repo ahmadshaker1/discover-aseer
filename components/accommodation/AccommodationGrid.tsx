@@ -74,7 +74,7 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
 
   if (accommodations.length === 0) {
     return (
-      <div className="w-full py-12 text-center" dir="rtl">
+      <div className="w-full py-12 text-center">
         <p className="text-lg text-muted-foreground">{t("noAccommodation")}</p>
         <p className="mt-2 text-sm text-muted-foreground">{t("resultsCount", { count: 0 })}</p>
       </div>
@@ -83,7 +83,7 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
 
   return (
     <div className="mx-auto w-full max-w-[1245px]">
-      <div className="flex flex-col gap-6 lg:flex-row-reverse lg:items-start lg:gap-6">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
         <AccommodationFilters
           cityOptions={cityOptions}
           selectedCity={selectedCity}
@@ -97,7 +97,7 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
           onReset={resetFilters}
         />
 
-        <div className="flex min-w-0 flex-1 flex-col gap-8 lg:gap-10" dir="rtl" lang="ar">
+        <div className="flex min-w-0 flex-1 flex-col gap-8 lg:gap-10" lang="ar">
           <AccommodationExceptionalCarousel items={carousel} />
           <AccommodationHotelsGrid items={grid} showTopDivider={carousel.length > 0} />
 

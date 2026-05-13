@@ -1,5 +1,5 @@
 "use client";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 interface ServicesSupportPaginationProps {
   currentPage: number;
@@ -36,8 +36,6 @@ const ServicesSupportPagination = ({
   totalPages,
   onPageChange,
 }: ServicesSupportPaginationProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const t = useTranslations("common");
   if (totalPages <= 1) return null;
 
@@ -46,7 +44,7 @@ const ServicesSupportPagination = ({
   return (
     <nav
       className="mt-8 flex flex-wrap items-center justify-center gap-2"
-      dir={isRtl ? "rtl" : "ltr"}
+     
       aria-label="Pagination"
     >
       <button
@@ -57,7 +55,7 @@ const ServicesSupportPagination = ({
         className="flex h-8 min-w-[50px] cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[8px] px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-muted-foreground transition-colors hover:text-foreground"
         style={{ fontFamily: "Ara Hamah 1964 B" }}
       >
-        <span className={`inline-flex ${isRtl ? "" : "rotate-180"}`}>
+        <span className="inline-flex rtl:rotate-180">
         <svg className="text-muted-foreground" width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0.245899 15.7589C-0.0521604 15.4667 -0.0792571 15.0095 0.16461 14.6873L0.245899 14.595L6.97342 8L0.245898 1.40503C-0.0521617 1.11283 -0.0792584 0.655583 0.164609 0.333376L0.245898 0.241065C0.543957 -0.0511344 1.01037 -0.0776973 1.33904 0.161375L1.4332 0.241065L8.7541 7.41802C9.05216 7.71022 9.07926 8.16746 8.83539 8.48967L8.7541 8.58198L1.43321 15.7589C1.10534 16.0804 0.573765 16.0804 0.245899 15.7589Z" fill="currentColor" />
         </svg>
@@ -96,13 +94,13 @@ const ServicesSupportPagination = ({
         className="flex h-8 min-w-[50px] cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[8px] px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:text-primary"
         style={{ fontFamily: "Ara Hamah 1964 B" }}
       >
-        <span className={`inline-flex ${isRtl ? "" : "rotate-180"}`}>
+        <span className="inline-flex rtl:rotate-180">
         <svg className="text-foreground" width="26" height="13" viewBox="0 0 26 13" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2.12355 5.46139V6.78405C1.78222 6.78405 1.51555 6.88005 1.33422 7.07205C1.15289 7.26405 1.05689 7.57339 1.05689 7.98939C1.05689 8.34139 1.14222 8.61872 1.31289 8.82139C1.47289 9.02405 1.72889 9.12005 2.08089 9.12005H7.94755C8.27822 9.12005 8.53422 9.04539 8.69422 8.89605C8.79022 8.81072 8.85422 8.70405 8.89688 8.58672C8.95022 8.42672 8.96089 8.28805 8.95022 8.17072C8.93955 8.01072 8.80089 7.90405 8.54489 7.90405H6.02755V6.51739H11.0942V7.90405H10.2622V8.48005L10.2302 8.85339C10.1769 9.48272 9.97422 9.92005 9.69689 10.1547C9.41955 10.3894 8.93955 10.5067 8.26755 10.5067H1.91022C1.17422 10.5067 0.672885 10.3361 0.406219 10.0054C0.139552 9.67472 0.000885427 9.02405 0.000885427 8.06405C0.000885427 6.94405 0.182219 6.19739 0.555552 5.84539C0.832885 5.58939 1.35555 5.46139 2.12355 5.46139ZM5.05689 12.5334H3.83022V11.3921H5.05689V12.5334ZM6.78489 12.5334H5.55822V11.3921H6.78489V12.5334ZM13.1694 5.29289e-05V6.03739C13.1694 6.67739 12.9987 7.14672 12.6467 7.45605C12.2947 7.75472 11.7187 7.90405 10.8974 7.90405H10.6734V6.51739H10.8867C11.1961 6.47472 11.4094 6.41072 11.5267 6.33605C11.7081 6.21872 11.7934 6.00539 11.7934 5.71739V5.29289e-05H13.1694ZM15.3925 5.29289e-05V5.71739C15.3925 6.00539 15.4885 6.21872 15.6698 6.33605C15.7872 6.41072 15.9898 6.47472 16.2992 6.51739H16.5125V7.90405H16.2885C15.4672 7.90405 14.8912 7.75472 14.5392 7.45605C14.1872 7.14672 14.0165 6.67739 14.0165 6.03739V5.29289e-05H15.3925ZM18.9383 1.61072H17.7116V0.469386H18.9383V1.61072ZM20.6663 1.61072H19.4396V0.469386H20.6663V1.61072ZM19.8343 2.75205V5.71739C19.8343 6.10139 19.9623 6.33605 20.2076 6.43205C20.3356 6.48539 20.6663 6.51739 21.1996 6.51739H21.3063V7.90405H21.1996C20.3143 7.90405 19.6423 7.68005 19.1623 7.22139C18.6823 7.68005 18.0103 7.90405 17.125 7.90405H16.0796V6.51739H17.125C17.6476 6.51739 17.9783 6.48539 18.117 6.43205C18.3623 6.33605 18.4903 6.10139 18.4903 5.71739V2.75205H19.8343ZM23.3725 5.29289e-05V6.03739C23.3725 6.67739 23.2018 7.14672 22.8498 7.45605C22.4978 7.75472 21.9218 7.90405 21.1005 7.90405H20.8765V6.51739H21.0898C21.3992 6.47472 21.6125 6.41072 21.7298 6.33605C21.9112 6.21872 21.9965 6.00539 21.9965 5.71739V5.29289e-05H23.3725ZM25.5956 7.90405H24.2196V5.29289e-05H25.5956V7.90405Z" fill="currentColor" />
         </svg>
         </span>
 
-        <span className={`inline-flex ${isRtl ? "" : "rotate-180"}`}>
+        <span className="inline-flex rtl:rotate-180">
         <svg className="text-foreground" width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.7541 0.241064C9.05216 0.533264 9.07926 0.990508 8.83539 1.31272L8.7541 1.40503L2.02658 8L8.7541 14.595C9.05216 14.8872 9.07926 15.3444 8.83539 15.6666L8.7541 15.7589C8.45604 16.0511 7.98963 16.0777 7.66096 15.8386L7.56679 15.7589L0.245899 8.58198C-0.0521604 8.28978 -0.0792568 7.83254 0.16461 7.51033L0.245899 7.41802L7.56679 0.241064C7.89466 -0.0803548 8.42624 -0.0803548 8.7541 0.241064Z" fill="currentColor" />
         </svg>

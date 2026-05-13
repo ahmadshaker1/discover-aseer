@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback } from "react";
-import { useLocale } from "next-intl";
 import { Restaurant } from "./data";
 
 interface RestaurantsGridProps {
@@ -125,8 +124,6 @@ function formatPriceBand(r: Restaurant): string {
 }
 
 const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const handleRestaurantClick = useCallback((mapsUrl: string) => {
     window.open(mapsUrl, "_blank", "noopener,noreferrer");
   }, []);
@@ -149,8 +146,8 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
               key={restaurant.id}
               type="button"
               onClick={() => handleRestaurantClick(restaurant.mapsUrl)}
-              className={`group flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface text-foreground transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:rounded-3xl ${isRtl ? "text-right" : "text-left"}`}
-              dir={isRtl ? "rtl" : "ltr"}
+              className={`group flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface text-foreground transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:rounded-3xl text-start`}
+             
             >
               <div className="relative aspect-4/3 w-full overflow-hidden">
                 <img
@@ -163,7 +160,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                 <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent" />
 
                 <div
-                  className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${isRtl ? "left-3" : "right-3"}`}
+                  className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] end-3`}
                   dir="ltr"
                 >
                   <RatingStar />

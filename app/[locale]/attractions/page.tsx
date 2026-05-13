@@ -113,8 +113,7 @@ const AttractionsPage = async () => {
         title={t("title")}
         subtitle={tCommon("subtitleOneVisit")}
         backgroundImage="/assets/attractions/attractions-hero.png"
-        breadcrumbDir={locale === "ar" ? "rtl" : "ltr"}
-      />
+              />
 
       <AttractionsMainPageContent landmarks={displayLandmarks} />
     </div>

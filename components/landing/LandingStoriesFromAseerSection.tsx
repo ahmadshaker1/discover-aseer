@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { LandingStoryFromAseer } from "@/components/landing/storiesFromAseerTypes";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -59,8 +59,6 @@ export default function LandingStoriesFromAseerSection({
   title,
   playVideoLabelPrefix,
 }: LandingStoriesFromAseerSectionProps) {
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const tHome = useTranslations("home");
   const resolvedTitle = title ?? tHome("storiesTitle");
   const resolvedPlayPrefix = playVideoLabelPrefix ?? tHome("playVideoPrefix");
@@ -71,12 +69,12 @@ export default function LandingStoriesFromAseerSection({
   return (
     <section
       className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 bg-background px-4 py-10 text-foreground md:px-[120px] md:pb-14 md:pt-10"
-      dir={isRtl ? "rtl" : "ltr"}
+     
     >
-      <div className={`mx-auto flex w-full max-w-[1200px] min-h-[94px] flex-col ${isRtl ? "items-end" : "items-start"} justify-center`}>
+      <div className={`mx-auto flex w-full max-w-[1200px] min-h-[94px] flex-col items-start justify-center`}>
         <div className="flex w-full max-w-[319px] flex-col gap-[10px] border-b border-border pb-[10px] pt-[7px]">
           <h2
-            className={`${isRtl ? "text-right" : "text-left"} text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-foreground`}
+            className={`text-start text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-foreground`}
             style={{ fontFamily: ara }}
           >
             {resolvedTitle}

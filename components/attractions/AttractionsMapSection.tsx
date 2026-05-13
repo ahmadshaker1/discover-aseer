@@ -5,7 +5,6 @@ import MapPlaceholderSection from "@/components/MapPlaceholderSection";
 
 const AttractionsMapSection = () => {
   const locale = useLocale();
-  const isRtl = locale === "ar";
   const t = useTranslations("attractionsPage");
   const query =
     locale === "en"
@@ -20,7 +19,6 @@ const AttractionsMapSection = () => {
       ctaWidthPx={266}
       mapHref={palacesMapsUrl}
       imageAlt={t("mapPalacesAlt")}
-      dir={isRtl ? "rtl" : "ltr"}
     />
   );
 };
