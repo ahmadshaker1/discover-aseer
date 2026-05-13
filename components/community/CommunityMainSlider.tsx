@@ -134,6 +134,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
             src={activeSlide.image}
             alt={activeSlide.title}
             fill
+            priority={activeIndex === 0}
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 1298px"
           />
