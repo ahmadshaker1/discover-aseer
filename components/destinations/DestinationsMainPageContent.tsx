@@ -75,7 +75,7 @@ const DestinationsMainPageContent = ({
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-          <div className="w-full flex-1 lg:max-w-[1033px]">
+          <div className="w-full flex-1 lg:order-2 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
               {visible.map((d) => (
                 <DestinationsGridCard key={d.id} destination={d} />
@@ -93,7 +93,7 @@ const DestinationsMainPageContent = ({
           </div>
 
           <aside
-            className={`w-full lg:sticky lg:top-24 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-[#E6E6E6] lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
+            className={`w-full lg:sticky lg:top-24 lg:order-1 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-[#E6E6E6] lg:pt-6 lg:ps-8 lg:pe-8 lg:border-e`}
            
           >
             <div className="flex h-full flex-col gap-6">

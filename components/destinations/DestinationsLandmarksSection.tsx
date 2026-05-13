@@ -7,6 +7,8 @@ const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface DestinationsLandmarksSectionProps {
   destinations: Destination[];
+  /** When set, replaces the default `landmarksSectionTitle` string. */
+  sectionHeading?: string;
 }
 
 function LeftArrowIcon({ className }: { className?: string }) {
@@ -30,7 +32,10 @@ function LeftArrowIcon({ className }: { className?: string }) {
   );
 }
 
-const DestinationsLandmarksSection = async ({ destinations }: DestinationsLandmarksSectionProps) => {
+const DestinationsLandmarksSection = async ({
+  destinations,
+  sectionHeading,
+}: DestinationsLandmarksSectionProps) => {
   const t = await getTranslations("destinations");
   const tCommon = await getTranslations("common");
 
@@ -42,7 +47,7 @@ const DestinationsLandmarksSection = async ({ destinations }: DestinationsLandma
             className="h-[58px] w-full max-w-[498px] text-start text-[48px] font-bold leading-[100%] text-secondary"
             style={{ fontFamily: ara }}
           >
-            {t("landmarksSectionTitle")}
+            {sectionHeading ?? t("landmarksSectionTitle")}
           </h2>
 
           <Link

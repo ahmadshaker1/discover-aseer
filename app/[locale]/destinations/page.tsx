@@ -1,50 +1,38 @@
-import { getTranslations } from "next-intl/server";
-import DestinationsHero from "@/components/destinations/DestinationsHero";
-import DestinationsIntroSection from "@/components/destinations/DestinationsIntroSection";
-import DestinationsLandmarksSection from "@/components/destinations/DestinationsLandmarksSection";
-import DestinationsMapSection from "@/components/destinations/DestinationsMapSection";
+import { getLocale, getTranslations } from "next-intl/server";
+import PageBanner from "@/components/PageBanner/PageBanner";
+import DestinationsMainPageContent from "@/components/destinations/DestinationsMainPageContent";
 import { fetchDestinationsWithFallback } from "@/components/destinations/data";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
 
-const INTRO_PARAGRAPH_KEYS = [
-  "introP1",
-  "introP2",
-  "introP3",
-  "introP4",
-  "introP5",
-  "introP6",
-] as const;
+const TOUR_GUIDE_REGISTER_HREF = "/tour-guides/register";
+
+const DESTINATIONS_HERO_IMAGE = "/assets/destinations/hero-destinations.jpg";
 
 const DestinationsPage = async () => {
-  const t = await getTranslations();
-  const tDest = await getTranslations("destinations");
-  const destinations = await fetchDestinationsWithFallback();
+  const locale = (await getLocale()) as "ar" | "en";
+  const tAttr = await getTranslations("attractionsPage");
+  const tCommon = await getTranslations("common");
+  const destinations = await fetchDestinationsWithFallback(locale);
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <DestinationsHero
+      <PageBanner
         breadcrumbs={[
-          { label: tDest("breadcrumbDestinations") },
-          { label: t("common.home"), href: "/" },
+          { label: tCommon("destinations") },
+          { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
-        title={tDest("heroTitleAbha")}
-        subtitle={tDest("heroSubtitleAbha")}
-        backgroundImage="/assets/destinations/hero-destinations.png"
-        weatherArea={tDest("heroTitleAbha")}
-        weatherLat={18.2164}
-        weatherLon={42.5053}
+        title={tAttr("browseTitle")}
+        subtitle={tCommon("subtitleOneVisit")}
+        backgroundImage={DESTINATIONS_HERO_IMAGE}
+        primaryCta={{
+          href: TOUR_GUIDE_REGISTER_HREF,
+          label: tAttr("contributeDestinations"),
+        }}
       />
 
-      <DestinationsIntroSection
-        title={tDest("introTitle")}
-        imageUrl="/assets/destinations/hero-destinations.png"
-        imageAlt=""
-        paragraphs={INTRO_PARAGRAPH_KEYS.map((key) => tDest(key))}
+      <DestinationsMainPageContent
+        destinations={destinations}
+        filterLayout="browse"
       />
-
-      <DestinationsLandmarksSection destinations={destinations} />
-      <DestinationsMapSection areaLabel={tDest("heroTitleAbha")} />
-      <EventsInfo />
     </div>
   );
 };

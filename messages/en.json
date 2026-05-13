@@ -169,6 +169,12 @@
   },
   "destinations": {
     "breadcrumbDestinations": "Destinations",
+    "pageIndexHeroTitle": "Destinations in Aseer",
+    "pageIndexIntroTitle": "Explore the region's cities",
+    "pageIndexIntroP1": "Aseer brings together diverse cities and governorates—pick a destination below to discover local highlights and experiences.",
+    "pageIndexMapAreaLabel": "Aseer region",
+    "landmarksSectionIndexTitle": "Featured destinations in Aseer",
+    "landmarksSectionCityTitle": "Destinations in {city}",
     "heroTitleAbha": "Abha",
     "heroSubtitleAbha": "One visit is never enough with all the activities and experiences on offer.",
     "introTitle": "City of fog",

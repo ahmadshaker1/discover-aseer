@@ -1,13 +1,27 @@
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
-import DestinationsHero from "@/components/destinations/DestinationsHero";
-import DestinationsIntroSection from "@/components/destinations/DestinationsIntroSection";
-import DestinationsMapSection from "@/components/destinations/DestinationsMapSection";
+import DestinationSlugCardsGrid from "@/components/destinations/DestinationSlugCardsGrid";
 import {
   fetchDestinationsWithFallback,
   getDestinationBySlug,
 } from "@/components/destinations/data";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
+import type { Destination } from "@/components/destinations/data";
+import PageBanner from "@/components/PageBanner/PageBanner";
+
+const TOUR_GUIDE_REGISTER_HREF = "/tour-guides/register";
+
+const SLUG_HERO_IMAGE = "/assets/destinations/hero-destinations.png";
+
+function cardsForSlugPage(destination: Destination, all: Destination[], slug: string): Destination[] {
+  const related =
+    destination.cityId != null && destination.cityId !== ""
+      ? all.filter((d) => d.cityId === destination.cityId)
+      : all.filter((d) => d.slug !== slug);
+
+  const withoutSelf = related.filter((d) => d.slug !== slug);
+  const list = withoutSelf.length > 0 ? withoutSelf : all.filter((d) => d.slug !== slug);
+  return list.slice(0, 12);
+}
 
 interface DestinationSlugPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -15,54 +29,48 @@ interface DestinationSlugPageProps {
 
 const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
   const locale = (await getLocale()) as "ar" | "en";
-  const t = await getTranslations();
+  const tCommon = await getTranslations("common");
   const tDest = await getTranslations("destinations");
+  const tAttr = await getTranslations("attractionsPage");
   const { slug } = await params;
-  const destination = await getDestinationBySlug(slug, locale);
+  const [destination, allDestinations] = await Promise.all([
+    getDestinationBySlug(slug, locale),
+    fetchDestinationsWithFallback(locale),
+  ]);
 
   if (!destination) notFound();
 
+  const gridDestinations = cardsForSlugPage(destination, allDestinations, slug);
+
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <DestinationsHero
+      <PageBanner
         breadcrumbs={[
           { label: destination.title },
           { label: tDest("breadcrumbDestinations"), href: "/destinations" },
-          { label: t("common.home"), href: "/" },
+          { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
-        title={destination.area || destination.title}
-        subtitle=""
-        backgroundImage={destination.image}
-        weatherArea={destination.title}
-        weatherLat={destination.lat}
-        weatherLon={destination.lon}
+        title={destination.title}
+        subtitle={tCommon("subtitleOneVisit")}
+        backgroundImage={SLUG_HERO_IMAGE}
+        primaryCta={{
+          href: TOUR_GUIDE_REGISTER_HREF,
+          label: tAttr("contributeDestinations"),
+        }}
       />
 
-      <DestinationsIntroSection
-        title={destination.area || destination.title}
-        imageUrl={destination.image}
-        imageAlt={destination.title}
-        paragraphs={[]}
-        descriptionHtml={destination.description}
-        hideImage
-        centerContent
-      />
-
-      <DestinationsMapSection
-        areaLabel={destination.title}
-        lat={destination.lat}
-        lon={destination.lon}
-      />
-
-      <EventsInfo />
+      <DestinationSlugCardsGrid destinations={gridDestinations} />
     </div>
   );
 };
 
 export async function generateStaticParams() {
-  const rows = await fetchDestinationsWithFallback("ar");
-  return rows.map((d) => ({ slug: d.slug }));
+  const [ar, en] = await Promise.all([
+    fetchDestinationsWithFallback("ar"),
+    fetchDestinationsWithFallback("en"),
+  ]);
+  const slugs = new Set([...ar, ...en].map((d) => d.slug));
+  return Array.from(slugs).map((slug) => ({ slug }));
 }
 
 export default DestinationSlugPage;
-

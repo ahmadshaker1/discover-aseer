@@ -169,6 +169,12 @@
   },
   "destinations": {
     "breadcrumbDestinations": "الوجهات",
+    "pageIndexHeroTitle": "وجهات عسير",
+    "pageIndexIntroTitle": "استكشف مدن المنطقة",
+    "pageIndexIntroP1": "تضم منطقة عسير مدناً ومحافظات متنوعة بأجوائها ومعالمها؛ اختر وجهةً أدناه للاطلاع على أبرز التجارب والمواقع المحلية.",
+    "pageIndexMapAreaLabel": "منطقة عسير",
+    "landmarksSectionIndexTitle": "وجهات بارزة في عسير",
+    "landmarksSectionCityTitle": "وجهات في {city}",
     "heroTitleAbha": "أبها",
     "heroSubtitleAbha": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.",
     "introTitle": "مدينة الضباب",
