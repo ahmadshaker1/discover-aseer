@@ -57,7 +57,9 @@ const UI_KEYS = [
   "tokenHint",
 ] as const;
 
-const placesToGeoJSON = (places: MapPlace[]): GeoJSON.FeatureCollection<GeoJSON.Point> => ({
+const placesToGeoJSON = (
+  places: MapPlace[],
+): GeoJSON.FeatureCollection<GeoJSON.Point> => ({
   type: "FeatureCollection",
   features: places.map((place) => ({
     type: "Feature",
@@ -74,7 +76,10 @@ const placesToGeoJSON = (places: MapPlace[]): GeoJSON.FeatureCollection<GeoJSON.
   })),
 });
 
-const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => {
+const InteractiveMap = ({
+  initialPins = [],
+  onPinAdd,
+}: InteractiveMapProps) => {
   const locale = useLocale();
   const t = useTranslations("interactiveMap");
   const ui = useMemo(
@@ -105,7 +110,8 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
   const filteredPlaces = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
     return places.filter((place) => {
-      const categoryMatch = activeCategory === ui.all || place.category === activeCategory;
+      const categoryMatch =
+        activeCategory === ui.all || place.category === activeCategory;
       const cityMatch = selectedCity === ui.all || place.city === selectedCity;
       const searchMatch =
         normalizedSearch.length === 0 ||
@@ -116,7 +122,13 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
   }, [activeCategory, places, searchTerm, selectedCity]);
 
   const mappablePlaces = useMemo(
-    () => filteredPlaces.filter((place) => place.hasCoordinates && place.latitude != null && place.longitude != null),
+    () =>
+      filteredPlaces.filter(
+        (place) =>
+          place.hasCoordinates &&
+          place.latitude != null &&
+          place.longitude != null,
+      ),
     [filteredPlaces],
   );
 
@@ -127,7 +139,10 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
   useEffect(() => {
     const loadLocations = async () => {
       try {
-        const response = await fetch(`/api/interactive-map/locations?locale=${locale}`, { cache: "no-store" });
+        const response = await fetch(
+          `/api/interactive-map/locations?locale=${locale}`,
+          { cache: "no-store" },
+        );
         if (!response.ok) return;
 
         const json: { data?: MapPlace[] } = await response.json();
@@ -137,7 +152,10 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           setPlaces(json.data);
         }
       } catch (error) {
-        console.error("[interactive-map] Failed to load Directus locations", error);
+        console.error(
+          "[interactive-map] Failed to load Directus locations",
+          error,
+        );
       }
     };
 
@@ -146,7 +164,12 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
   const focusPlace = useCallback((place: MapPlace) => {
     setSelectedPlaceId(place.id);
-    if (!mapRef.current || !place.hasCoordinates || place.latitude == null || place.longitude == null) {
+    if (
+      !mapRef.current ||
+      !place.hasCoordinates ||
+      place.latitude == null ||
+      place.longitude == null
+    ) {
       popupRef.current?.remove();
       return;
     }
@@ -174,7 +197,9 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
     const token = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
     if (!token) {
-      console.error("Mapbox token is not set. Please add NEXT_PUBLIC_MAPBOX_API_KEY to your .env file");
+      console.error(
+        "Mapbox token is not set. Please add NEXT_PUBLIC_MAPBOX_API_KEY to your .env file",
+      );
       return;
     }
 
@@ -247,7 +272,7 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
         paint: {
           "circle-color": "#7A2BDE",
           "circle-radius": 8,
-          "circle-stroke-width": 2,
+          "circle-strokeWidth": 2,
           "circle-stroke-color": "#FFFFFF",
         },
       });
@@ -259,7 +284,9 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
         });
         const clusterId = features[0]?.properties?.cluster_id;
         if (typeof clusterId !== "number") return;
-        const source = mapRef.current.getSource("places") as mapboxgl.GeoJSONSource & {
+        const source = mapRef.current.getSource(
+          "places",
+        ) as mapboxgl.GeoJSONSource & {
           getClusterExpansionZoom: (
             clusterIdParam: number,
             callback: (error: Error | null, zoom: number) => void,
@@ -269,7 +296,8 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           if (err || !mapRef.current) return;
           const feature = features[0];
           const geometry = feature?.geometry as GeoJSON.Point;
-          const safeZoom = typeof zoom === "number" ? zoom : mapRef.current.getZoom();
+          const safeZoom =
+            typeof zoom === "number" ? zoom : mapRef.current.getZoom();
           mapRef.current.easeTo({
             center: geometry.coordinates as [number, number],
             zoom: safeZoom,
@@ -311,9 +339,14 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
   useEffect(() => {
     if (!mapRef.current || !mapLoadedRef.current) return;
-    const source = mapRef.current.getSource("places") as mapboxgl.GeoJSONSource | undefined;
+    const source = mapRef.current.getSource("places") as
+      | mapboxgl.GeoJSONSource
+      | undefined;
     source?.setData(placesToGeoJSON(mappablePlaces));
-    if (selectedPlaceId && !filteredPlaces.some((place) => place.id === selectedPlaceId)) {
+    if (
+      selectedPlaceId &&
+      !filteredPlaces.some((place) => place.id === selectedPlaceId)
+    ) {
       setSelectedPlaceId(null);
       popupRef.current?.remove();
     }
@@ -331,14 +364,17 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
       <div className="relative order-2 h-full flex-1">
         <div ref={mapContainer} className="h-full w-full" />
 
-        <div className={`absolute top-4 z-20 flex max-w-[78%] flex-wrap gap-2 start-4`}>
+        <div
+          className={`absolute top-4 z-20 flex max-w-[78%] flex-wrap gap-2 start-4`}
+        >
           <button
             type="button"
             onClick={() => setActiveCategory(ui.all)}
-            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${activeCategory === ui.all
+            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${
+              activeCategory === ui.all
                 ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
                 : "border-border bg-surface text-foreground"
-              }`}
+            }`}
           >
             {ui.all}
           </button>
@@ -347,10 +383,11 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
               key={chip.label}
               type="button"
               onClick={() => setActiveCategory(chip.label)}
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition ${activeCategory === chip.label
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition ${
+                activeCategory === chip.label
                   ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
                   : "border-border bg-surface text-foreground"
-                }`}
+              }`}
             >
               <span>{chip.icon}</span>
               <span>{chip.label}</span>
@@ -361,7 +398,9 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
 
       <aside className="order-1 flex h-full w-[330px] flex-col bg-surface text-foreground shadow-[-4px_0_18px_rgba(0,0,0,0.18)] md:w-[360px]">
         <div className="border-b border-border p-4">
-          <h1 className={`mb-3 text-[36px] font-bold leading-none text-start`}>{ui.discover}</h1>
+          <h1 className={`mb-3 text-[36px] font-bold leading-none text-start`}>
+            {ui.discover}
+          </h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -419,7 +458,11 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
               {ui.allCategories}
             </option>
             {CATEGORY_CHIPS.map((chip) => (
-              <option key={chip.label} value={chip.label} className="text-foreground">
+              <option
+                key={chip.label}
+                value={chip.label}
+                className="text-foreground"
+              >
                 {chip.label}
               </option>
             ))}
@@ -430,10 +473,11 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
           {filteredPlaces.map((place) => (
             <div
               key={place.id}
-              className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-start transition ${selectedPlaceId === place.id
+              className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-start transition ${
+                selectedPlaceId === place.id
                   ? "border-primary bg-muted"
                   : "border-border bg-surface hover:bg-muted"
-                }`}
+              }`}
             >
               <img
                 src="/assets/travel-essentials/angledsquarepattern.png"
@@ -447,10 +491,17 @@ const InteractiveMap = ({ initialPins = [], onPinAdd }: InteractiveMapProps) => 
                     {place.tag}
                   </span>
                 ) : null}
-                <h3 className="text-[27px] font-bold leading-[1.1]">{place.title}</h3>
-                <SafeHtml html={place.description} className="mt-2 text-[13px] leading-normal text-muted-foreground" />
+                <h3 className="text-[27px] font-bold leading-[1.1]">
+                  {place.title}
+                </h3>
+                <SafeHtml
+                  html={place.description}
+                  className="mt-2 text-[13px] leading-normal text-muted-foreground"
+                />
                 {!place.hasCoordinates ? (
-                  <p className="mt-2 text-[11px] text-muted-foreground">{ui.noGeo}</p>
+                  <p className="mt-2 text-[11px] text-muted-foreground">
+                    {ui.noGeo}
+                  </p>
                 ) : null}
                 <div className="mt-3 flex justify-start">
                   <button

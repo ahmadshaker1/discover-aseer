@@ -1,13 +1,31 @@
-
-const LocationIcon =() => {
-return(  <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.83332 6.75042C8.83332 5.59936 7.90063 4.66667 6.75041 4.66667C5.59935 4.66667 4.66666 5.59936 4.66666 6.75042C4.66666 7.90064 5.59935 8.83333 6.75041 8.83333C7.90063 8.83333 8.83332 7.90064 8.83332 6.75042Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.74959 15.5C5.75086 15.5 0.5 11.2486 0.5 6.80274C0.5 3.3222 3.29758 0.5 6.74959 0.5C10.2016 0.5 13 3.3222 13 6.80274C13 11.2486 7.74832 15.5 6.74959 15.5Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>)
-
-}
-
-
+const LocationIcon = () => {
+  return (
+    <svg
+      width="14"
+      height="16"
+      viewBox="0 0 14 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M8.83332 6.75042C8.83332 5.59936 7.90063 4.66667 6.75041 4.66667C5.59935 4.66667 4.66666 5.59936 4.66666 6.75042C4.66666 7.90064 5.59935 8.83333 6.75041 8.83333C7.90063 8.83333 8.83332 7.90064 8.83332 6.75042Z"
+        stroke="white"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M6.74959 15.5C5.75086 15.5 0.5 11.2486 0.5 6.80274C0.5 3.3222 3.29758 0.5 6.74959 0.5C10.2016 0.5 13 3.3222 13 6.80274C13 11.2486 7.74832 15.5 6.74959 15.5Z"
+        stroke="white"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
 
 const HeartIcon = () => {
   return (
@@ -261,5 +279,3 @@ export {
   GroupsIcon,
   FamilyIcon,
 };
-
-
