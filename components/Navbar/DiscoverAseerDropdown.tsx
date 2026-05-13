@@ -65,7 +65,7 @@ const DiscoverAseerDropdown = ({ label }: DiscoverAseerDropdownProps) => {
         leaveTo="opacity-0 translate-y-1"
       >
         <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-left rounded-2xl border border-white/20 bg-linear-to-b from-[#191919]/95 via-[#2a1a3d]/95 to-[#1a2a1a]/95 shadow-xl backdrop-blur-xl z-50">
-          <div className="max-h-[70vh] overflow-y-auto overscroll-contain py-2 scroll-smooth">
+          <div className="hide-scrollbar max-h-[70vh] overflow-y-auto overscroll-contain py-2 scroll-smooth">
             {discoverAseerLinks.map((item) => (
               <Menu.Item key={item.href}>
                 {({ focus }) => (
