@@ -7,6 +7,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import AccessibilityWidget from "@/components/AccessibilityWidget/AccessibilityWidget";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 const araHamah1964 = localFont({
   src: "../public/fonts/Ara Hamah 1964 B Bold.ttf",
@@ -45,10 +46,12 @@ export default async function RootLayout({
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Navbar />
-          {children}
-          <AccessibilityWidget />
-          <Footer />
+          <ThemeProvider>
+            <Navbar />
+            {children}
+            <AccessibilityWidget />
+            <Footer />
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
