@@ -36,7 +36,7 @@ const ExperienceCard = ({
   const t = useTranslations("common");
   const currencyLabel = currency ?? t("currencySar");
   return (
-    <div className="overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md">
+    <div className="overflow-hidden rounded-xl bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md">
       {/* Image Banner Section */}
       <div className="relative h-48 w-full">
         <Image
@@ -47,9 +47,7 @@ const ExperienceCard = ({
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <ExperienceCardShareButton experienceId={id} title={title} />
-        <div
-          className="absolute start-3 top-3 rounded-full bg-black/70 px-3 py-1.5 backdrop-blur-sm"
-        >
+        <div className="absolute start-3 top-3 rounded-full bg-black/70 px-3 py-1.5 backdrop-blur-sm">
           <span className="text-white text-xs font-medium">{category}</span>
         </div>
       </div>
@@ -78,12 +76,16 @@ const ExperienceCard = ({
           <div className="flex items-center gap-1">
             <span className="text-xl font-bold text-foreground">{price}</span>
             <SaudiRiyalIcon />
-            <span className="text-xs text-muted-foreground">{currencyLabel}</span>
+            <span className="text-xs text-muted-foreground">
+              {currencyLabel}
+            </span>
           </div>
           <span>/</span>
           <div className="flex items-center gap-1.5">
             <span className="text-sm text-foreground">{t("group")}</span>
-            <span className="text-sm font-medium text-foreground">x{groupSize}</span>
+            <span className="text-sm font-medium text-foreground">
+              x{groupSize}
+            </span>
             <PersonIcon />
           </div>
         </div>

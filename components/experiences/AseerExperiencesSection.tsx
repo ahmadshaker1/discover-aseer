@@ -1,7 +1,6 @@
 import Link from "next/link";
-import ExperienceCard, {
-  type ExperienceCardProps,
-} from "@/components/experiences/ExperienceCard/ExperienceCard";
+import type { ExperienceCardProps } from "@/components/experiences/ExperienceCard/ExperienceCard";
+import AseerExperiencesCardsCarousel from "@/components/experiences/AseerExperiencesCardsCarousel";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -26,20 +25,20 @@ const AseerCuisineCookingExperiencesSection = ({
   data,
 }: AseerCuisineCookingExperiencesSectionProps) => {
   return (
-    <section className="mx-auto w-full max-w-[1441px] p-4 text-foreground sm:p-8 md:p-[60px]">
-      <div className="flex h-full w-full flex-col gap-[50px]">
-        <div className="flex w-full flex-col gap-6 lg:h-[520px] lg:flex-row lg:items-start lg:justify-between lg:gap-[114px]">
-          {/* Right panel */}
-          <div className="flex w-full max-w-[337px] flex-col gap-12 lg:h-[284px]">
+    <section className="w-full py-4 text-foreground sm:py-8 md:py-[60px]">
+      <div className="flex w-full flex-col gap-[50px]">
+        <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-[114px]">
+          {/* Intro column (RTL: inline-start is the visual right in Arabic) */}
+          <div className="flex w-full max-w-full flex-col gap-12 px-4 sm:px-8 md:ps-[60px] md:pe-4 lg:max-w-[400px] lg:shrink-0 lg:justify-center lg:px-0 lg:ps-[60px] lg:pe-0">
             <div className="flex flex-col gap-5 text-start">
               <h2
-                className="text-[100px] font-bold leading-[100%] text-secondary"
+                className="text-[100px] font-bold text-secondary"
                 style={{ fontFamily: ara }}
               >
                 {data.title}
               </h2>
               <p
-                className="text-[15px] font-light leading-[119%] text-muted-foreground"
+                className="text-[15px] font-light text-muted-foreground"
                 style={{ fontFamily: ibm }}
               >
                 {data.description}
@@ -55,17 +54,8 @@ const AseerCuisineCookingExperiencesSection = ({
             </Link>
           </div>
 
-          {/* Left panel: exact experiences cards, horizontally scrollable */}
-          <div className="w-full max-w-[875px] overflow-x-auto" dir="ltr">
-            {/* Backend (Directus): provide `cards` with ExperienceCard fields; no component/style changes needed. */}
-            <div className="flex min-w-max gap-8 pb-2">
-              {data.cards.map((card) => (
-                <div key={card.id} className="w-[300px] shrink-0">
-                  <ExperienceCard {...card} />
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Backend (Directus): provide `cards` with ExperienceCard fields. */}
+          <AseerExperiencesCardsCarousel cards={data.cards} />
         </div>
       </div>
     </section>

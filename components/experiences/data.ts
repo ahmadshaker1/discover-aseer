@@ -158,7 +158,6 @@ export function transformExperience(api: ApiExperience): ExperienceWithFilterMet
     description: description.slice(0, 200),
     provider,
     price,
-    currency: "ر.س",
     groupSize,
     bookUrl,
     filterCity,
@@ -244,72 +243,6 @@ export interface FetchExperiencesResult {
  * - isPaid: cost filter toggle source (paid/free)
  * - filterTravelers: traveler audience tags for sidebar filtering
  */
-export const DUMMY_EXPERIENCES: ExperienceWithFilterMeta[] = [
-  {
-    id: "exp-1",
-    imageUrl: "/assets/experiences/experiences.png",
-    category: "مغامرات",
-    title: "مغامرة دروب عسير",
-    duration: "5 ساعات",
-    description: "جولة خفيفة بين المسارات الجبلية مع نقاط توقف للتصوير والطبيعة.",
-    provider: "مغامرات عسير",
-    price: 180,
-    currency: "ر.س",
-    groupSize: 6,
-    bookUrl: "#",
-    filterInterests: ["مغامرات", "طبيعة"],
-    isPaid: true,
-    filterTravelers: ["groups", "individual"],
-  },
-  {
-    id: "exp-2",
-    imageUrl: "/assets/experiences/experiences.png",
-    category: "ثقافة",
-    title: "جولة تراثية في أبها",
-    duration: "3 ساعات",
-    description: "زيارة أبرز المعالم التراثية والتعرف على الموروث المحلي في عسير.",
-    provider: "مرشدون عسير",
-    price: 0,
-    currency: "ر.س",
-    groupSize: 10,
-    bookUrl: "#",
-    filterInterests: ["تراث", "ثقافة"],
-    isPaid: false,
-    filterTravelers: ["family", "groups"],
-  },
-  {
-    id: "exp-3",
-    imageUrl: "/assets/experiences/experiences.png",
-    category: "فن الطهي",
-    title: "تجربة مذاقات عسير",
-    duration: "2 ساعات",
-    description: "تذوق أطباق محلية مع شرح لطريقة التحضير والمكونات التقليدية.",
-    provider: "نكهات الجنوب",
-    price: 95,
-    currency: "ر.س",
-    groupSize: 4,
-    bookUrl: "#",
-    filterInterests: ["فنون الطهي", "ثقافة"],
-    isPaid: true,
-    filterTravelers: ["couple", "individual"],
-  },
-  {
-    id: "exp-4",
-    imageUrl: "/assets/experiences/experiences.png",
-    category: "طبيعة",
-    title: "رحلة شروق السودة",
-    duration: "4 ساعات",
-    description: "رحلة صباحية لمشاهدة الشروق في مرتفعات السودة مع مرشد محلي.",
-    provider: "قمم عسير",
-    price: 0,
-    currency: "ر.س",
-    groupSize: 8,
-    bookUrl: "#",
-    filterInterests: ["طبيعة"],
-    isPaid: false,
-    filterTravelers: ["family", "groups", "individual"],
-  },
-];
 
 function buildFilterOptionsFromExperiences(
   experiences: ExperienceWithFilterMeta[]
@@ -368,9 +301,7 @@ export async function fetchExperienceById(id: string): Promise<ExperienceWithFil
 
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
 
-  if (!directusUrl) {
-    return DUMMY_EXPERIENCES.find((e) => String(e.id) === trimmed) ?? null;
-  }
+
 
   try {
     const res = await fetch(`${directusUrl}/items/experiences/${encodeURIComponent(trimmed)}`, {
@@ -390,22 +321,14 @@ export async function fetchExperienceById(id: string): Promise<ExperienceWithFil
   try {
     const { experiences } = await fetchExperiences();
     return experiences.find((e) => String(e.id) === trimmed) ?? null;
-  } catch {
-    return DUMMY_EXPERIENCES.find((e) => String(e.id) === trimmed) ?? null;
+  } catch (error) {
+    console.error("Error fetching experiences:", error);
   }
+  return null;
 }
 
 export async function fetchExperiences(): Promise<FetchExperiencesResult> {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
-
-  if (!directusUrl) {
-    console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
-    // Fallback keeps page usable until backend/env is wired.
-    return {
-      experiences: DUMMY_EXPERIENCES,
-      filterOptions: buildFilterOptionsFromExperiences(DUMMY_EXPERIENCES),
-    };
-  }
 
   try {
     const response = await fetch(`${directusUrl}/items/experiences`, {
@@ -417,13 +340,7 @@ export async function fetchExperiences(): Promise<FetchExperiencesResult> {
     }
 
     const apiData: ExperiencesApiResponse = await response.json();
-    if (!Array.isArray(apiData.data)) {
-      // Defensive fallback when API returns unexpected shape.
-      return {
-        experiences: DUMMY_EXPERIENCES,
-        filterOptions: buildFilterOptionsFromExperiences(DUMMY_EXPERIENCES),
-      };
-    }
+
 
     const experiences = apiData.data.map(transformExperience);
     if (experiences.length === 0) {
