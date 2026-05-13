@@ -128,7 +128,7 @@ export const PointsOfInterestCarousel = ({
             fill
             className="object-cover object-center"
             sizes="100vw"
-            onLoadingComplete={onIncomingLoadingComplete}
+            onLoad={onIncomingLoadingComplete}
           />
           <div
             className="pointer-events-none absolute inset-0 bg-black/50"
