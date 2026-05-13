@@ -28,6 +28,7 @@ export default async function LocalizedHomePage() {
       <PointsOfInterest />
       <AttractionsLandmarksSection
         landmarks={landmarks}
+        featuredCount={4}
         title={tHome("landmarksTitle")}
         description={tHome("landmarksDescription")}
         decorationImageSrc="/assets/landing/landmarks-zigzag.png"

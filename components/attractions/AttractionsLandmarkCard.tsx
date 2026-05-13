@@ -66,12 +66,12 @@ const AttractionsLandmarkCard = ({
       ) : null}
 
       <div
-        className={`absolute end-0 start-0 bottom-0 flex h-[155px] flex-col items-start gap-5 bg-linear-to-b from-transparent to-black p-5 text-white ${
+        className={`absolute end-0 start-0 bottom-0 flex min-h-[150px] flex-col items-start justify-end gap-3 bg-linear-to-b from-transparent to-black px-5 py-6 pb-7 text-white ${
           cardHref ? "pointer-events-none" : ""
         }`}
       >
         <div
-          className={`inline-flex w-fit flex-row items-center gap-1 rounded-[24.51px] text-start`}
+          className={`inline-flex w-fit flex-row items-center gap-1.5 rounded-[24.51px] text-start`}
         >
           <LocationIcon />
           <span
@@ -83,17 +83,17 @@ const AttractionsLandmarkCard = ({
         </div>
 
         <div
-          className={`flex w-full max-w-[251px] flex-col gap-[18px] self-start text-start`}
+          className={`flex w-full max-w-[251px] flex-col gap-2 self-start text-start`}
         >
           <h3
-            className={`text-[24px] font-bold leading-[119%] text-start`}
+            className={`text-[24px] font-bold leading-[115%] text-start`}
             style={{ fontFamily: ara }}
           >
             {landmark.title}
           </h3>
           <SafeHtml
             html={landmark.description}
-            className={`line-clamp-2 text-[18px] leading-[130%] text-white/80 text-start`}
+            className={`line-clamp-2 text-[18px] leading-[125%] text-white/80 text-start`}
           />
         </div>
       </div>

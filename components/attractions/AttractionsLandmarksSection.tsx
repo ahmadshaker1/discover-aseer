@@ -27,6 +27,8 @@ interface AttractionsLandmarksSectionProps {
   description?: string;
   decorationImageSrc?: string;
   showFilters?: boolean;
+  /** When set, only this many cards are shown (newest first — order from `fetchLandmarks`). */
+  featuredCount?: number;
   /** When set, each card gets a full-card link (share stays clickable above it). */
   landmarkCardHref?: string;
 }
@@ -39,6 +41,7 @@ const AttractionsLandmarksSection = ({
   description,
   decorationImageSrc,
   showFilters = false,
+  featuredCount,
   landmarkCardHref,
 }: AttractionsLandmarksSectionProps) => {
   const locale = useLocale();
@@ -81,12 +84,17 @@ const AttractionsLandmarksSection = ({
     });
   }, [city, interest, landmarks, price, traveler]);
 
+  const displayLandmarks = useMemo(() => {
+    if (featuredCount == null) return filteredLandmarks;
+    return filteredLandmarks.slice(0, featuredCount);
+  }, [filteredLandmarks, featuredCount]);
+
   return (
     <section className="relative w-full overflow-hidden bg-background py-12 text-foreground">
       {decorationImageSrc ? (
         <div
           aria-hidden
-          className={`pointer-events-none absolute top-1/2 z-1 h-[457px] w-[773px] -translate-y-1/2 bg-primary opacity-40 start-0`}
+          className={`pointer-events-none absolute top-1/2 z-1 h-[450px] w-[750px] -translate-y-1/2 bg-primary opacity-40 start-0`}
           style={{
             WebkitMaskImage: `url(${decorationImageSrc})`,
             maskImage: `url(${decorationImageSrc})`,
@@ -99,7 +107,7 @@ const AttractionsLandmarksSection = ({
           }}
         />
       ) : null}
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
+      <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-4 sm:px-8 md:px-[60px]">
         <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-start justify-between gap-4">
           <div className={`space-y-2 text-start`}>
             <h2
@@ -190,20 +198,15 @@ const AttractionsLandmarksSection = ({
           </div>
         ) : null}
 
-        <div
-          className="mx-auto w-full max-w-[1320px] overflow-x-auto pb-2"
-          dir="ltr"
-        >
-          <div className="flex min-w-max flex-row gap-6">
-            {filteredLandmarks.map((landmark) => (
-              <AttractionsLandmarkCard
-                key={landmark.id}
-                landmark={landmark}
-                className="w-[312px] shrink-0"
-                cardHref={landmarkCardHref}
-              />
-            ))}
-          </div>
+        <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 justify-items-center gap-6 pb-2 sm:grid-cols-2 sm:justify-items-stretch lg:grid-cols-4">
+          {displayLandmarks.map((landmark) => (
+            <AttractionsLandmarkCard
+              key={landmark.id}
+              landmark={landmark}
+              className="max-w-none"
+              cardHref={landmarkCardHref}
+            />
+          ))}
         </div>
 
         <div className="mx-auto mt-8 flex w-full max-w-[1320px] justify-center">

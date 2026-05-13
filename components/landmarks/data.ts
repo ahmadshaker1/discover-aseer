@@ -21,6 +21,8 @@ export interface Landmark {
 
 export interface ApiLandmark {
   id: string | number;
+  /** Directus system field — used to surface newest items first when present. */
+  date_created?: string | null;
   status?: string | null;
   title?: string | null;
   title_ar?: string | null;
@@ -196,12 +198,23 @@ export const fetchLandmarks = async (locale: LocaleCode = "ar"): Promise<Landmar
   }
 
   try {
-    const response = await fetch(`${directusUrl}/items/attractions`, {
+    const listUrl = new URL(`${directusUrl}/items/attractions`);
+    listUrl.searchParams.set("sort", "-date_created,-id");
+
+    let response = await fetch(listUrl.toString(), {
       next: { revalidate: 3600 }, // Revalidate every hour
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch landmarks: ${response.statusText}`);
+      const fallback = await fetch(`${directusUrl}/items/attractions`, {
+        next: { revalidate: 3600 },
+      });
+      if (!fallback.ok) {
+        throw new Error(
+          `Failed to fetch landmarks: ${fallback.statusText || response.statusText}`,
+        );
+      }
+      response = fallback;
     }
 
     const apiData: ApiResponse = await response.json();
