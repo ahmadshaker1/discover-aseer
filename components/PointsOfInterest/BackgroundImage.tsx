@@ -16,7 +16,6 @@ export const BackgroundImage = ({ point }: BackgroundImageProps) => {
         fill
         className="object-cover"
         priority
-        quality={100}
         sizes="100vw"
       />
       {/* Dark overlay for text readability */}

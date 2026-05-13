@@ -21,7 +21,6 @@ export const RecipeCardImage = ({
         fill
         className="object-cover"
         sizes="(max-width: 640px) 240px, (max-width: 768px) 260px, 320px"
-        quality={90}
       />
       {/* Rating badge */}
       <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/70 backdrop-blur-sm text-white text-xs flex items-center gap-1">

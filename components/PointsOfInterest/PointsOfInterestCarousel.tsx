@@ -105,7 +105,6 @@ export const PointsOfInterestCarousel = ({
           src={activePoint.image}
           alt={activePoint.title}
           fill
-          quality={88}
           className="object-cover object-center"
           sizes="100vw"
           priority={activeIndex === 0 && incomingIndex === null}
@@ -127,7 +126,6 @@ export const PointsOfInterestCarousel = ({
             src={incomingPoint.image}
             alt={incomingPoint.title}
             fill
-            quality={88}
             className="object-cover object-center"
             sizes="100vw"
             onLoadingComplete={onIncomingLoadingComplete}

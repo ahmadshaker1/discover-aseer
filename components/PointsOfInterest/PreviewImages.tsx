@@ -39,7 +39,6 @@ export const PreviewImages = ({
               src={point.image}
               alt={point.title}
               fill
-              quality={85}
               sizes="(max-width: 640px) 100px, (max-width: 1024px) 112px, 120px"
               className="object-cover object-center"
             />
