@@ -115,17 +115,14 @@ export const PointsOfInterestCarousel = ({
             sizes="100vw"
             onLoadingComplete={onIncomingLoadingComplete}
           />
-          {/* <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/40" /> */}
+          <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/40" />
         </div>
       ) : null}
 
       <TextOverlay
         point={displayPoint}
         carouselSlot={
-          <div
-            className={`flex flex-col gap-4 items-start`}
-           
-          >
+          <div className={`flex flex-col gap-4 items-start`}>
             {/* <NavigationControls onNext={nextImage} onPrev={prevImage} /> */}
             <PreviewImages
               points={points}

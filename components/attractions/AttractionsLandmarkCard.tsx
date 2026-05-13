@@ -40,39 +40,47 @@ const AttractionsLandmarkCard = ({
   cardHref,
 }: AttractionsLandmarkCardProps) => {
   const tCommon = useTranslations("common");
-  const [imageFailed, setImageFailed] = useState(false);
+  const [failedForUrl, setFailedForUrl] = useState<string | null>(null);
+  const imageFailed = failedForUrl === landmark.image;
+
+  /** One grid cell: stack background image, overlays, and link. */
+  const layer = "col-start-1 row-start-1";
+
+  const showImage = !imageFailed && Boolean(landmark.image);
 
   return (
     <article
-      className={`relative h-[419px] w-full max-w-[326px] overflow-hidden rounded-[10px] bg-black text-primary-foreground shadow-[0_4.28px_3.37px_0_rgba(41,72,152,0.01),0_8.72px_6.97px_0_rgba(41,72,152,0.02),0_21.4px_13.91px_0_rgba(41,72,152,0.02)] ${className}`}
+      className={`isolate grid h-[419px] w-full max-w-[326px] grid-cols-1 grid-rows-1 overflow-hidden rounded-xl bg-black text-primary-foreground shadow-[0_4.28px_3.37px_0_rgba(41,72,152,0.01),0_8.72px_6.97px_0_rgba(41,72,152,0.02),0_21.4px_13.91px_0_rgba(41,72,152,0.02)] ${className}`}
     >
-      {cardHref ? (
-        <Link
-          href={cardHref}
-          className="absolute inset-0 z-10"
-          aria-label={tCommon("goToLandmark", { title: landmark.title })}
+      {/* Hidden probe so we can clear a broken URL without relying on onError on the bg layer */}
+      <img
+        src={landmark.image}
+        className="sr-only"
+        onError={() => setFailedForUrl(landmark.image)}
+      />
+
+      <div
+        aria-hidden
+        className={`${layer} size-full bg-cover bg-center bg-no-repeat`}
+        style={
+          showImage
+            ? { backgroundImage: `url(${JSON.stringify(landmark.image)})` }
+            : undefined
+        }
+      />
+      {imageFailed ? (
+        <div
+          className={`${layer} pointer-events-none z-1 size-full bg-black/45`}
+          aria-hidden
         />
       ) : null}
 
-      <img
-        src={landmark.image}
-        alt={landmark.title}
-        className="h-full w-full object-cover"
-        loading="lazy"
-        onError={() => setImageFailed(true)}
-      />
-      {imageFailed ? (
-        <div className="pointer-events-none absolute inset-0 z-1 bg-black/45" />
-      ) : null}
-
       <div
-        className={`absolute end-0 start-0 bottom-0 flex min-h-[150px] flex-col items-start justify-end gap-3 bg-linear-to-b from-transparent to-black px-5 py-6 pb-7 text-white ${
+        className={`${layer} z-2 flex size-full min-h-0 flex-col items-start justify-end gap-3 bg-linear-to-b from-transparent to-black px-5 py-6 pb-7 text-white ${
           cardHref ? "pointer-events-none" : ""
         }`}
       >
-        <div
-          className={`inline-flex w-fit flex-row items-center gap-1.5 rounded-[24.51px] text-start`}
-        >
+        <div className="inline-flex w-fit flex-row items-center gap-1.5 rounded-[24.51px] text-start text-[#EAD0FF]">
           <LocationIcon />
           <span
             className="text-[18px] font-bold leading-[100%]"
@@ -97,6 +105,14 @@ const AttractionsLandmarkCard = ({
           />
         </div>
       </div>
+
+      {cardHref ? (
+        <Link
+          href={cardHref}
+          className={`${layer} z-10 h-full w-full min-h-0`}
+          aria-label={tCommon("goToLandmark", { title: landmark.title })}
+        />
+      ) : null}
     </article>
   );
 };
