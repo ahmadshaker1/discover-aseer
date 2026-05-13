@@ -1,6 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { VisaIcon, AirplaneIcon, HotelIcon, BinocularsIcon } from "./Icons";
-
+import Image from "next/image";
 export interface EventsInfoCard {
   id: number;
   icon: React.ReactNode;
@@ -69,9 +69,7 @@ function mapBackendCards(
     const ar = row.title_ar?.trim();
     const en = row.title_en?.trim();
     const title =
-      locale === "en"
-        ? en || ar || fallbackTitle
-        : ar || en || fallbackTitle;
+      locale === "en" ? en || ar || fallbackTitle : ar || en || fallbackTitle;
     return {
       id: row.id ?? index + 1,
       icon: iconFromKey(row.icon_key),
@@ -81,7 +79,10 @@ function mapBackendCards(
   });
 }
 
-export default async function EventsInfo({ cards, backendCards }: EventsInfoProps) {
+export default async function EventsInfo({
+  cards,
+  backendCards,
+}: EventsInfoProps) {
   const locale = await getLocale();
   const t = await getTranslations("eventsInfo");
   const tCommon = await getTranslations("common");
@@ -118,21 +119,24 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
   const displayCards =
     backendCards && backendCards.length > 0
       ? mapBackendCards(backendCards, locale, fallbackTitle)
-      : cards ?? defaultCards;
-
+      : (cards ?? defaultCards);
 
   return (
-    <section
-      className="relative mx-auto w-full max-w-[1440px] overflow-hidden bg-background px-4 py-12 text-foreground sm:px-8 md:px-[58px]"
-    >
-      <img
-        src="/assets/travel-essentials/angledsquarepattern.png"
-        alt=""
+    <section className="relative mx-auto w-full max-w-[1440px] overflow-hidden bg-background px-4 py-12 text-foreground sm:px-8 md:px-[58px]">
+      <div
+        className="pointer-events-none absolute top-[18px] z-0 h-[240px] w-[240px] end-[-12px] md:top-[-2px] md:h-[320px] md:w-[320px] md:end-6"
         aria-hidden
-        className={`pointer-events-none absolute top-[18px] z-0 h-[240px] w-[240px] object-contain opacity-95 md:top-[-2px] md:h-[320px] md:w-[320px] end-[-12px] md:end-6`}
-      />
+      >
+        <Image
+          src="/assets/travel-essentials/angledsquarepattern.png"
+          alt=""
+          fill
+          className="object-contain opacity-95"
+          sizes="(max-width: 768px) 240px, 320px"
+        />
+      </div>
 
-      <div className="relative z-10 mb-10 border-b border-border pb-4 md:mb-12">
+      <div className="relative z-10 mb-10 border-b border-border pb-4 md:mb-12 w-1/2">
         <h2
           className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}
           style={{ fontFamily: ara }}
@@ -142,13 +146,11 @@ export default async function EventsInfo({ cards, backendCards }: EventsInfoProp
         </h2>
       </div>
 
-      <div
-        className="relative z-10 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4"
-      >
+      <div className="relative z-10 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
         {displayCards.map((card) => (
           <div
             key={card.id}
-            className="mx-auto flex h-[250px] w-full max-w-[320px] flex-col justify-between rounded-4xl border border-border bg-surface p-8 transition-shadow hover:shadow-lg"
+            className="mx-auto flex h-[250px] w-full max-w-[320px] flex-col justify-between rounded-4xl bg-surface p-8 shadow-[0_10px_24px_-8px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_24px_-8px_rgba(0,0,0,0.18)] dark:hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.24)]"
           >
             <div className="inline-flex h-16 w-16 items-center justify-center self-start text-primary">
               {card.icon}
@@ -194,7 +196,19 @@ const ChevronIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
     className="rtl:rotate-180"
   >
-    <path d="M19 12H5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M12 19L5 12L12 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M19 12H5"
+      stroke="white"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M12 19L5 12L12 5"
+      stroke="white"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
