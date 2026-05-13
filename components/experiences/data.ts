@@ -244,52 +244,7 @@ export interface FetchExperiencesResult {
  * - filterTravelers: traveler audience tags for sidebar filtering
  */
 
-function buildFilterOptionsFromExperiences(
-  experiences: ExperienceWithFilterMeta[]
-): FilterOptions {
-  const cityCounts = new Map<string, number>();
-  const interestCounts = new Map<string, number>();
-  const travelerCounts = new Map<string, number>();
-  let paidCount = 0;
-  let freeCount = 0;
 
-  for (const exp of experiences) {
-    if (exp.filterCity) {
-      cityCounts.set(exp.filterCity, (cityCounts.get(exp.filterCity) ?? 0) + 1);
-    }
-    for (const interest of exp.filterInterests) {
-      interestCounts.set(interest, (interestCounts.get(interest) ?? 0) + 1);
-    }
-    for (const traveler of exp.filterTravelers) {
-      travelerCounts.set(traveler, (travelerCounts.get(traveler) ?? 0) + 1);
-    }
-    if (exp.isPaid) paidCount += 1;
-    else freeCount += 1;
-  }
-
-  const interests: FilterOptionWithCount[] = Array.from(interestCounts.entries())
-    .map(([id, count]) => ({ id, label: normalizeInterestLabel(id), count }))
-    .sort((a, b) => b.count - a.count);
-
-  const cityOptions: FilterOptionWithCount[] = Array.from(cityCounts.entries())
-    .map(([id, count]) => ({ id, label: id, count }))
-    .sort((a, b) => b.count - a.count);
-
-  const costOptions: FilterOptionWithCount[] = [
-    { id: "paid", label: "مدفوعة", count: paidCount },
-    { id: "free", label: "مجانية", count: freeCount },
-  ];
-
-  const travelerTypes: FilterOptionWithCount[] = TRAVELER_TYPES.map(
-    ({ id, label }) => ({
-      id,
-      label,
-      count: travelerCounts.get(id) ?? 0,
-    })
-  );
-
-  return { cityOptions, interests, costOptions, travelerTypes };
-}
 
 /**
  * Load one experience by id (Directus single-item endpoint) with fallbacks to the
@@ -343,21 +298,11 @@ export async function fetchExperiences(): Promise<FetchExperiencesResult> {
 
 
     const experiences = apiData.data.map(transformExperience);
-    if (experiences.length === 0) {
-      // Fallback when API is healthy but collection has no records yet.
-      return {
-        experiences: DUMMY_EXPERIENCES,
-        filterOptions: buildFilterOptionsFromExperiences(DUMMY_EXPERIENCES),
-      };
-    }
+
     const filterOptions = buildFilterOptions(apiData.data);
     return { experiences, filterOptions };
   } catch (error) {
     console.error("Error fetching experiences:", error);
-    // Network/API fallback.
-    return {
-      experiences: DUMMY_EXPERIENCES,
-      filterOptions: buildFilterOptionsFromExperiences(DUMMY_EXPERIENCES),
-    };
+  
   }
 }

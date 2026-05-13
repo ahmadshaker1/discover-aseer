@@ -29,12 +29,10 @@ const ExperienceCard = ({
   description,
   provider,
   price,
-  currency,
   groupSize,
   bookUrl,
 }: ExperienceCardProps) => {
   const t = useTranslations("common");
-  const currencyLabel = currency ?? t("currencySar");
   return (
     <div className="overflow-hidden rounded-xl bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md">
       {/* Image Banner Section */}

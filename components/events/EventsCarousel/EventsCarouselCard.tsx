@@ -13,7 +13,6 @@ export interface EventsCarouselCardProps {
 }
 
 const EventsCarouselCard = ({
-  id,
   imageUrl,
   dateRange,
   title,
@@ -29,7 +28,7 @@ const EventsCarouselCard = ({
       </div>
 
       {/* Image Section */}
-      <div className="relative h-64 w-full flex-shrink-0">
+      <div className="relative h-64 w-full shrink-0">
         <Image
           src={imageUrl}
           alt={title}
@@ -40,7 +39,7 @@ const EventsCarouselCard = ({
       </div>
 
       {/* Content Section */}
-      <div className="p-6 bg-white flex flex-col flex-grow">
+      <div className="p-6 bg-white flex flex-col grow">
         {/* Title */}
         <h3 className="text-2xl md:text-3xl font-bold text-[#1E3A8A] mb-2 text-right">
           {title}
@@ -71,4 +70,3 @@ const EventsCarouselCard = ({
 };
 
 export default EventsCarouselCard;
-

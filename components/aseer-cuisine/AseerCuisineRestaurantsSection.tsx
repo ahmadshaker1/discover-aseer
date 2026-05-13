@@ -60,7 +60,9 @@ function inferInterestTags(card: AseerCuisineRestaurantCard): string[] {
   return [...out];
 }
 
-function parsePriceBounds(card: AseerCuisineRestaurantCard): { from: number; to: number } | null {
+function parsePriceBounds(
+  card: AseerCuisineRestaurantCard,
+): { from: number; to: number } | null {
   const band = card.priceBand?.trim();
   if (band && /^\d+\s*-\s*\d+$/.test(band)) {
     const [a, b] = band.split("-").map((s) => Number(String(s).trim()));
@@ -76,7 +78,10 @@ function parsePriceBounds(card: AseerCuisineRestaurantCard): { from: number; to:
   return null;
 }
 
-function cardMatchesCity(card: AseerCuisineRestaurantCard, city: string | null): boolean {
+function cardMatchesCity(
+  card: AseerCuisineRestaurantCard,
+  city: string | null,
+): boolean {
   if (!city) return true;
   const inferred = inferCityId(card);
   if (inferred) return inferred === city;
@@ -169,7 +174,14 @@ function CardCurrencyIcon() {
 
 function RatingStar() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
       <path
         fill="#FACC15"
         d="M12 17.3L6.18 20.59L7.54 14.1L2.47 9.59L9.05 8.95L12 3L14.95 8.95L21.53 9.59L16.46 14.1L17.82 20.59L12 17.3Z"
@@ -184,7 +196,9 @@ function formatPriceBand(card: AseerCuisineRestaurantCard): string {
   return "50-100";
 }
 
-const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSectionProps) => {
+const AseerCuisineRestaurantsSection = ({
+  data,
+}: AseerCuisineRestaurantsSectionProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
@@ -221,7 +235,9 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
       <div className="flex w-full flex-col gap-8">
         <div className="px-4 sm:px-8 xl:px-[120px]">
           <div className="flex w-full items-start justify-between">
-            <div className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] items-start justify-start text-start`}>
+            <div
+              className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] items-start justify-start text-start`}
+            >
               <h2
                 className={`w-full text-[64px] font-bold leading-[119%] text-foreground text-start`}
                 style={{ fontFamily: ara }}
@@ -250,7 +266,9 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
 
         {data.showFilters ? (
           <div className="mx-auto mb-2 w-full max-w-[1181px] overflow-x-auto pb-1">
-            <div className={`flex min-w-max items-center gap-3 px-1 justify-end`}>
+            <div
+              className={`flex min-w-max items-center gap-3 px-1 justify-end`}
+            >
               <select
                 value={city ?? ""}
                 onChange={(e) => setCity(e.target.value || null)}
@@ -277,11 +295,13 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
               </select>
               <select
                 value={price ?? ""}
-                onChange={(e) => setPrice((e.target.value as PriceFilterId) || null)}
+                onChange={(e) =>
+                  setPrice((e.target.value as PriceFilterId) || null)
+                }
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
               >
                 <option value="">{tCommon("price")}</option>
-                {priceOptions.map((opt) => (
+                {priceOpts.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.label}
                   </option>
@@ -308,7 +328,6 @@ const AseerCuisineRestaurantsSection = ({ data }: AseerCuisineRestaurantsSection
               <article
                 key={card.id}
                 className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl text-start`}
-               
               >
                 <div className="relative h-[190px] w-full overflow-hidden">
                   <img
