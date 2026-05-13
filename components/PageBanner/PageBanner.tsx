@@ -79,7 +79,11 @@ const PageBanner = ({
       }}
     >
       <div
-        className="absolute inset-0 opacity-10"
+        className="pointer-events-none absolute inset-0 z-0 bg-black/35"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 z-1 opacity-10"
         style={{
           backgroundImage: `repeating-linear-gradient(
             45deg,

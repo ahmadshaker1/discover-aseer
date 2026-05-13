@@ -159,15 +159,34 @@ const toNumber = (value: number | string | null | undefined): number | undefined
   return undefined;
 };
 
+const DEFAULT_DESTINATION_IMAGE = "/assets/activities/points-of-interest.jpg";
+
+/** Resolve Directus file id, absolute URL, or local public path — avoid double-prefixing. */
+function resolveDestinationImageUrl(
+  imageAsset: string | null | undefined,
+  directusUrl: string,
+): string {
+  const trimmed = typeof imageAsset === "string" ? imageAsset.trim() : "";
+  if (!trimmed) return DEFAULT_DESTINATION_IMAGE;
+
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("//")) {
+    return trimmed;
+  }
+  if (trimmed.startsWith("/")) {
+    return trimmed;
+  }
+
+  const base = directusUrl.replace(/\/$/, "");
+  return `${base}/assets/${trimmed}`;
+}
+
 export const transformDestination = (
   row: ApiDestination,
   directusUrl: string,
   locale: LocaleCode = "ar",
 ): Destination => {
   const imageAsset = row.cover_image || row.hero_image || row.destination_image;
-  const imageUrl = imageAsset
-    ? `${directusUrl}/assets/${imageAsset}`
-    : "/assets/activities/points-of-interest.jpg";
+  const imageUrl = resolveDestinationImageUrl(imageAsset, directusUrl);
 
   const title =
     pickLocalizedField(row, "title", locale) ||
