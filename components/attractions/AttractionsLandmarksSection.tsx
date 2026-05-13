@@ -97,7 +97,8 @@ const AttractionsLandmarksSection = ({
         if (types.length > 0 && !types.includes(traveler)) return false;
       }
 
-      const hasPriceData = landmark.priceFrom != null || landmark.priceTo != null;
+      const hasPriceData =
+        landmark.priceFrom != null || landmark.priceTo != null;
       if (price && hasPriceData) {
         const from = landmark.priceFrom ?? 0;
         const to = landmark.priceTo ?? from;
@@ -150,7 +151,9 @@ const AttractionsLandmarksSection = ({
 
         {showFilters ? (
           <div className="mx-auto mb-8 w-full max-w-[1181px] overflow-x-auto pb-1">
-            <div className={`flex min-w-max items-center gap-3 px-1 justify-end`}>
+            <div
+              className={`flex min-w-max items-center gap-3 px-1 justify-end`}
+            >
               <select
                 value={city ?? ""}
                 onChange={(e) => setCity(e.target.value || null)}
@@ -189,7 +192,9 @@ const AttractionsLandmarksSection = ({
               </select>
               <select
                 value={price ?? ""}
-                onChange={(e) => setPrice((e.target.value as PriceFilterId) || null)}
+                onChange={(e) =>
+                  setPrice((e.target.value as PriceFilterId) || null)
+                }
                 className="h-[48px] w-[230px] shrink-0 cursor-pointer rounded-full border border-border bg-surface px-4 text-sm text-foreground"
               >
                 <option value="">{t("price")}</option>
@@ -215,7 +220,10 @@ const AttractionsLandmarksSection = ({
           </div>
         ) : null}
 
-        <div className="mx-auto w-full max-w-[1320px] overflow-x-auto pb-2" dir="ltr">
+        <div
+          className="mx-auto w-full max-w-[1320px] overflow-x-auto pb-2"
+          dir="ltr"
+        >
           <div className="flex min-w-max flex-row gap-6">
             {filteredLandmarks.map((landmark) => (
               <AttractionsLandmarkCard
@@ -234,8 +242,9 @@ const AttractionsLandmarksSection = ({
             className="inline-flex h-[52px] min-w-[161px] cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-primary/30 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
             style={{ fontFamily: ara }}
           >
-            <LeftArrowIcon className="text-white rtl:rotate-180" />
-            <span className={`whitespace-nowrap text-[20px] font-bold leading-[100%] text-start`}>
+            <span
+              className={`whitespace-nowrap text-[20px] font-bold leading-[100%] text-start`}
+            >
               {t("browseMore")}
             </span>
           </Link>

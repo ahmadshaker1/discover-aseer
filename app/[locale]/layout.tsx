@@ -7,7 +7,6 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-import AccessibilityWidget from "@/components/AccessibilityWidget/AccessibilityWidget";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { routing, type AppLocale } from "@/i18n/routing";
 
@@ -64,7 +63,6 @@ export default async function LocaleLayout({
           <ThemeProvider>
             <Navbar />
             {children}
-            <AccessibilityWidget />
             <Footer />
           </ThemeProvider>
         </NextIntlClientProvider>

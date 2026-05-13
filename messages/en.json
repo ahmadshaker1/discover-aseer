@@ -38,6 +38,8 @@
     "weatherRain": "Rain",
     "happeningNow": "Happening now",
     "viewDetails": "View details",
+    "ambientSoundPlay": "Play ambient sound",
+    "ambientSoundPause": "Pause ambient sound",
     "downloadEventsPdf": "Download events as PDF",
     "datePlaceholder": "Select arrival and departure dates",
     "starRating": "{stars} stars",

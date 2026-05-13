@@ -38,6 +38,8 @@
     "weatherRain": "أمطار",
     "happeningNow": "يحدث الان",
     "viewDetails": "عرض التفاصيل",
+    "ambientSoundPlay": "تشغيل الصوت",
+    "ambientSoundPause": "إيقاف الصوت",
     "downloadEventsPdf": "تحميل الفعاليات لملف PDF",
     "datePlaceholder": "اختر تاريخ الوصول والمغادرة",
     "starRating": "{stars} نجوم",

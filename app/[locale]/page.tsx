@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Hero from "@/components/Hero/Hero";
 import LandingWelcomeSection from "@/components/landing/LandingWelcomeSection";
 import AttractionsLandmarksSection from "@/components/attractions/AttractionsLandmarksSection";
@@ -8,10 +8,11 @@ import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
 import { fetchLandmarks } from "@/components/landmarks/data";
 import { fetchExperiences } from "@/components/experiences/data";
 import PointsOfInterest from "@/components/PointsOfInterest/PointsOfInterest";
-import { getLocale } from "next-intl/server";
+import FloatingAmbientSound from "@/components/FloatingAmbientSound/FloatingAmbientSound";
+import type { AppLocale } from "@/i18n/routing";
 
 export default async function LocalizedHomePage() {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as AppLocale;
   const tHome = await getTranslations("home");
   const [landmarks, experiencesResult] = await Promise.all([
     fetchLandmarks(locale),
@@ -52,6 +53,7 @@ export default async function LocalizedHomePage() {
 
       <LandingStoriesFromAseerSection />
       <EventsInfo />
+      <FloatingAmbientSound locale={locale} />
     </div>
   );
 }
