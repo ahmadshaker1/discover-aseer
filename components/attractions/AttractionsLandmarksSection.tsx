@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
@@ -33,35 +32,6 @@ interface AttractionsLandmarksSectionProps {
 }
 
 type PriceFilterId = "free" | "budget" | "mid-range" | "luxury" | null;
-
-function LeftArrowIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      width="17"
-      height="17"
-      viewBox="0 0 17 17"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden
-    >
-      <path
-        d="M3.01172 8.69438L13.6367 8.69438"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M7.29688 12.9616L3.01146 8.69459L7.29688 4.42688"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 const AttractionsLandmarksSection = ({
   landmarks,

@@ -7,7 +7,6 @@ import type { Landmark } from "@/components/landmarks/data";
 import SafeHtml from "@/components/common/SafeHtml";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsLandmarkCardProps {
   landmark: Landmark;
@@ -37,7 +36,6 @@ function LocationIcon() {
 
 const AttractionsLandmarkCard = ({
   landmark,
-  categoryLabel,
   className = "",
   cardHref,
 }: AttractionsLandmarkCardProps) => {
@@ -46,7 +44,6 @@ const AttractionsLandmarkCard = ({
 
   return (
     <article
-     
       className={`relative h-[419px] w-full max-w-[326px] overflow-hidden rounded-[10px] bg-black text-primary-foreground shadow-[0_4.28px_3.37px_0_rgba(41,72,152,0.01),0_8.72px_6.97px_0_rgba(41,72,152,0.02),0_21.4px_13.91px_0_rgba(41,72,152,0.02)] ${className}`}
     >
       {cardHref ? (
