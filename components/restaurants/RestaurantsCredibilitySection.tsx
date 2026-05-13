@@ -20,7 +20,7 @@ const RestaurantsCredibilitySection = () => {
     >
       <div className="flex min-h-[448px] w-full max-w-[1440px] flex-col items-center justify-center gap-[10px] px-[clamp(1rem,calc((100vw-428px)/2),506px)] py-5">
         <Image
-          src="/restaurant/IGCAT.png"
+          src="/assets/restaurant/IGCAT.png"
           alt="IGCAT — International Institute of Gastronomy, Culture, Arts and Tourism"
           width={377}
           height={139}
