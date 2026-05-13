@@ -99,7 +99,7 @@ export default function AseerExperiencesCardsCarousel({
       <div
         ref={scrollerRef}
         dir={scrollDir}
-        className={`hide-scrollbar relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-auto overflow-y-hidden scroll-smooth lg:left-0 lg:min-w-0 lg:w-full lg:max-w-none lg:shrink-0 lg:translate-x-0 ${TRACK_PAD}`}
+        className={`hide-scrollbar relative left-1/2 w-screen max-w-full -translate-x-1/2 overflow-x-auto overflow-y-hidden scroll-smooth lg:left-0 lg:min-w-0 lg:w-full lg:max-w-none lg:shrink-0 lg:translate-x-0 ${TRACK_PAD}`}
       >
         <div className="flex min-w-max gap-8 pb-2">
           {cards.map((card) => (
