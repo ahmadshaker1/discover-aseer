@@ -51,10 +51,16 @@ function pick(record: Record<string, unknown>, ...keys: string[]): unknown {
 
 function resolveMedia(value: unknown, directusUrl: string, fallback: string): string {
   if (typeof value !== "string" || !value.trim()) return fallback;
-  if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("/")) {
-    return value;
+  let v = value.trim();
+  if (/^https?:\/\//i.test(v) || v.startsWith("//")) return v;
+  if (v.startsWith("/")) {
+    if (v.startsWith("/restaurant/")) {
+      v = `/assets${v}`;
+    }
+    return v;
   }
-  return `${directusUrl.replace(/\/$/, "")}/assets/${value}`;
+  const base = directusUrl.replace(/\/$/, "");
+  return `${base}/assets/${v}`;
 }
 
 function mapExperienceCards(

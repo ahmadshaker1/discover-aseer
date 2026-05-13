@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export interface AseerCuisineHeroData {
   // Backend (Directus): video file URL.
   videoUrl: string;
@@ -10,20 +12,34 @@ interface AseerCuisineHeroProps {
 }
 
 const AseerCuisineHero = ({ data }: AseerCuisineHeroProps) => {
+  const videoSrc = data.videoUrl?.trim() ?? "";
+
   return (
     <section className="relative h-[420px] w-full overflow-hidden md:h-[812px]">
-      {/* Backend (Directus): replace data.videoUrl with actual uploaded video URL. */}
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={data.posterImage}
-      >
-        <source src={data.videoUrl} type="video/mp4" />
-      </video>
+      {videoSrc ? (
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={data.posterImage}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      ) : (
+        <div className="absolute inset-0">
+          <Image
+            src={data.posterImage}
+            alt=""
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+        </div>
+      )}
 
       <div
         className="absolute inset-0"

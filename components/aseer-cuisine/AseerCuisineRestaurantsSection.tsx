@@ -265,7 +265,7 @@ const AseerCuisineRestaurantsSection = ({
         </div>
 
         {data.showFilters ? (
-          <div className="mx-auto mb-2 w-full max-w-[1181px] overflow-x-auto pb-1">
+          <div className="hide-scrollbar mx-auto mb-2 w-full max-w-[1181px] overflow-x-auto overflow-y-hidden pb-1">
             <div
               className={`flex min-w-max items-center gap-3 px-1 justify-end`}
             >
@@ -322,7 +322,7 @@ const AseerCuisineRestaurantsSection = ({
           </div>
         ) : null}
 
-        <div className="h-[337px] w-full overflow-x-auto pb-5">
+        <div className="hide-scrollbar h-[337px] w-full overflow-x-auto overflow-y-hidden pb-5">
           <div className="flex min-w-max gap-6 px-4 sm:px-8 xl:px-[120px]">
             {filteredCards.map((card) => (
               <article

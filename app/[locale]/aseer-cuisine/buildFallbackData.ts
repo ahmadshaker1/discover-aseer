@@ -11,7 +11,8 @@ export function buildAseerCuisineFallback(
 ): AseerCuisinePageData {
   return {
     hero: {
-      videoUrl: "/assets/videos/aseer-cuisine-hero.mp4",
+      /** Empty until `public/assets/videos/aseer-cuisine-hero.mp4` exists; poster shows instead. */
+      videoUrl: "",
       posterImage: "/assets/community/hero-comunity-bg.png",
     },
     dishesSection: {
@@ -62,22 +63,22 @@ export function buildAseerCuisineFallback(
         {
           id: "flavor-1",
           title: t("localFlavorsSection.cards.flavor1"),
-          image: "/restaurant/img1.png",
+          image: "/assets/restaurant/img1.png",
         },
         {
           id: "flavor-2",
           title: t("localFlavorsSection.cards.flavor2"),
-          image: "/restaurant/img2.png",
+          image: "/assets/restaurant/img2.png",
         },
         {
           id: "flavor-3",
           title: t("localFlavorsSection.cards.flavor3"),
-          image: "/restaurant/img3.png",
+          image: "/assets/restaurant/img3.png",
         },
         {
           id: "flavor-4",
           title: t("localFlavorsSection.cards.flavor4"),
-          image: "/restaurant/img4.png",
+          image: "/assets/restaurant/img4.png",
         },
       ],
     },
@@ -91,8 +92,9 @@ export function buildAseerCuisineFallback(
     chefsVideoSection: {
       title: t("chefsVideoSection.title"),
       subtitle: t("chefsVideoSection.subtitle"),
-      videoUrl: "/assets/videos/aseer-cuisine-chefs.mp4",
-      posterImage: "/restaurant/img4.png",
+      /** Empty until `public/assets/videos/aseer-cuisine-chefs.mp4` exists. */
+      videoUrl: "",
+      posterImage: "/assets/restaurant/img4.png",
     },
   };
 }
@@ -103,10 +105,10 @@ function buildCookingExperienceCards(
 ): ExperienceCardProps[] {
   const ids = ["cookExp1", "cookExp2", "cookExp3", "cookExp4"] as const;
   const images = [
-    "/restaurant/img1.png",
-    "/restaurant/img2.png",
-    "/restaurant/img3.png",
-    "/restaurant/img4.png",
+    "/assets/restaurant/img1.png",
+    "/assets/restaurant/img2.png",
+    "/assets/restaurant/img3.png",
+    "/assets/restaurant/img4.png",
   ];
   const prices = [180, 120, 95, 75];
   const groupSizes = [6, 8, 10, 12];

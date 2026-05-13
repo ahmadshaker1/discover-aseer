@@ -26,10 +26,11 @@ interface ApiCuisineResponse {
 
 function mapCuisineItem(item: ApiCuisineItem, directusUrl: string): AseerCuisineDish {
   const imageAsset = item.thumbnail || item.hero_image_url;
-  const image = imageAsset
-    ? imageAsset.startsWith("http")
-      ? imageAsset
-      : `${directusUrl}/assets/${imageAsset}`
+  const trimmed = imageAsset?.trim() ?? "";
+  const image = trimmed
+    ? /^https?:\/\//i.test(trimmed) || trimmed.startsWith("//") || trimmed.startsWith("/")
+      ? trimmed
+      : `${directusUrl}/assets/${trimmed}`
     : "/assets/activities/aseer-cuisine.jpg";
 
   const minutes = item.time_to_prepare && item.time_to_prepare > 0 ? item.time_to_prepare : 30;
