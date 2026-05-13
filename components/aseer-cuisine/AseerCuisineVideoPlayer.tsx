@@ -24,7 +24,8 @@ function PlayIcon() {
 function PauseIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" />
+      <rect x="6" y="5" width="4" height="14" rx="1" />
+      <rect x="14" y="5" width="4" height="14" rx="1" />
     </svg>
   );
 }

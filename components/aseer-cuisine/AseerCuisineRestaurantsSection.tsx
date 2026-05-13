@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
@@ -330,10 +331,12 @@ const AseerCuisineRestaurantsSection = ({
                 className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl text-start`}
               >
                 <div className="relative h-[190px] w-full overflow-hidden">
-                  <img
+                  <Image
                     src={card.image}
                     alt={card.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="282px"
                     loading="lazy"
                   />
                   <div
