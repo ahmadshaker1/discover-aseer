@@ -76,9 +76,6 @@ const ExperienceCard = ({
           <div className="flex items-center gap-1">
             <span className="text-xl font-bold text-foreground">{price}</span>
             <SaudiRiyalIcon />
-            <span className="text-xs text-muted-foreground">
-              {currencyLabel}
-            </span>
           </div>
           <span>/</span>
           <div className="flex items-center gap-1.5">
