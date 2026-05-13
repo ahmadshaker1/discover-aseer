@@ -4,11 +4,12 @@ import AseerCuisineRestaurantsSection from "@/components/aseer-cuisine/AseerCuis
 import AseerCuisineLocalFlavorsSection from "@/components/aseer-cuisine/AseerCuisineLocalFlavorsSection";
 import AseerCuisineCookingExperiencesSection from "@/components/experiences/AseerExperiencesSection";
 import AseerCuisineChefsVideoSection from "@/components/aseer-cuisine/AseerCuisineChefsVideoSection";
+import { fetchAseerCuisineDishes } from "@/components/aseer-cuisine/data";
 import type { ExperienceCardProps } from "@/components/experiences/ExperienceCard/ExperienceCard";
 import { fetchExperiences } from "@/components/experiences/data";
 import { fetchRestaurants } from "@/components/restaurants/data";
 import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsCredibilitySection";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { buildAseerCuisineFallback } from "./buildFallbackData";
 import type { AseerCuisinePageData } from "./types";
 
@@ -18,6 +19,9 @@ import type { AseerCuisinePageData } from "./types";
  * - Expected Directus collection: `aseer_cuisine_page` (single item).
  * - Preferred payload shape is nested JSON sections on the item:
  *   `hero`, `dishesSection`, `restaurantsSection`, `localFlavorsSection`, `cookingExperiencesSection`, `chefsVideoSection`.
+ * - Hero poster and dishes grid (first four cards) use the `cuisine` collection when available
+ *   (`fetchAseerCuisineDishes` — published items, shape: `title_en` / `title_ar`, `hero_image_url`, …).
+ *   Otherwise `aseer_cuisine_page` / fallbacks apply.
  * - Keep component markup unchanged; update only Directus fields/content.
  */
 
@@ -268,11 +272,13 @@ async function fetchAseerCuisinePageData(): Promise<AseerCuisinePageData> {
 
 const AseerCuisinePage = async () => {
   const tCommon = await getTranslations("common");
+  const locale = await getLocale();
 
-  const [aseerCuisinePageData, restaurants, experiencesResult] = await Promise.all([
+  const [aseerCuisinePageData, restaurants, experiencesResult, cuisineDishes] = await Promise.all([
     fetchAseerCuisinePageData(),
     fetchRestaurants(),
     fetchExperiences(),
+    fetchAseerCuisineDishes({ locale }),
   ]);
 
   const cuisineRestaurants = restaurants.slice(0, 6).map((restaurant) => ({
@@ -304,6 +310,22 @@ const AseerCuisinePage = async () => {
 
   const mergedData: AseerCuisinePageData = {
     ...aseerCuisinePageData,
+    ...(cuisineDishes.length > 0
+      ? {
+          hero: {
+            ...aseerCuisinePageData.hero,
+            posterImage: cuisineDishes[0].image,
+          },
+          dishesSection: {
+            ...aseerCuisinePageData.dishesSection,
+            cards: cuisineDishes.slice(0, 4).map((d) => ({
+              id: d.id,
+              title: d.title,
+              image: d.image,
+            })),
+          },
+        }
+      : {}),
     restaurantsSection:
       cuisineRestaurants.length > 0
         ? {
