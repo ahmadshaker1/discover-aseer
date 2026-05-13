@@ -20,29 +20,32 @@ export const PreviewImages = ({
 
   return (
     <div
-      className="flex h-[101px] w-full max-w-[653px] flex-row items-center gap-[24px] overflow-x-auto hide-scrollbar lg:w-[653px]"
-
+      className="ms-auto flex min-h-[110px] w-full min-w-0 flex-row items-center justify-end gap-2 overflow-x-auto overflow-y-visible py-2 ps-1 hide-scrollbar sm:gap-2.5 md:gap-3"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-      {points.map((point, index) => (
-        <Button
-          key={point.id}
-          onClick={() => onSelect(index)}
-          className={`relative h-[101px] w-[140px] shrink-0 overflow-hidden rounded-[12px] transition-opacity duration-300 cursor-pointer ${index === currentIndex
-              ? "z-1 opacity-100 ring-2 ring-white ring-offset-2 ring-offset-black/40"
-              : "opacity-70 hover:opacity-100"
+      {points.map((point, index) => {
+        const selected = index === currentIndex;
+        return (
+          <Button
+            key={`${point.id}-${index}`}
+            onClick={() => onSelect(index)}
+            className={`relative h-[72px] w-[100px] shrink-0 cursor-pointer overflow-hidden rounded-md bg-black/50 transition-transform duration-200 ease-out will-change-transform sm:h-[76px] sm:w-[106px] md:h-[80px] md:w-[112px] ${
+              selected ? "z-10 scale-110" : "z-0 scale-100 hover:scale-105"
             }`}
-          aria-label={`${t("browseMore")} ${point.title}`}
-        >
-          <Image
-            src={point.image}
-            alt={point.title}
-            fill
-            className="object-cover"
-          />
-          {index === currentIndex && <div className="absolute inset-0" />}
-        </Button>
-      ))}
+            aria-label={`${t("browseMore")} ${point.title}`}
+            aria-current={selected ? "true" : undefined}
+          >
+            <Image
+              src={point.image}
+              alt={point.title}
+              fill
+              quality={85}
+              sizes="(max-width: 640px) 100px, (max-width: 1024px) 112px, 120px"
+              className="object-cover object-center"
+            />
+          </Button>
+        );
+      })}
     </div>
   );
 };

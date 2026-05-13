@@ -28,6 +28,14 @@ export const PointsOfInterestCarousel = ({
   const incomingRef = useRef<number | null>(null);
   const timerBlockedRef = useRef(false);
 
+  useEffect(() => {
+    activeRef.current = activeIndex;
+  }, [activeIndex]);
+
+  useEffect(() => {
+    incomingRef.current = incomingIndex;
+  }, [incomingIndex]);
+
   const activePoint = points[activeIndex];
   const incomingPoint = incomingIndex !== null ? points[incomingIndex] : null;
 
@@ -38,6 +46,8 @@ export const PointsOfInterestCarousel = ({
   const commitIncoming = useCallback(() => {
     const inc = incomingRef.current;
     if (inc === null) return;
+    activeRef.current = inc;
+    incomingRef.current = null;
     setActiveIndex(inc);
     setIncomingIndex(null);
     setIncomingOpaque(false);
@@ -52,6 +62,7 @@ export const PointsOfInterestCarousel = ({
       if (i === activeRef.current && incomingRef.current === null) return;
 
       timerBlockedRef.current = true;
+      incomingRef.current = i;
       setIncomingOpaque(false);
       setIncomingIndex(i);
     },
@@ -66,6 +77,7 @@ export const PointsOfInterestCarousel = ({
 
   const onIncomingTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {
+      if (e.target !== e.currentTarget) return;
       if (e.propertyName !== "opacity") return;
       if (!incomingOpaque) return;
       commitIncoming();
@@ -86,23 +98,27 @@ export const PointsOfInterestCarousel = ({
   const selectImage = (index: number) => beginCrossfadeTo(index);
 
   return (
-    <div className="relative mx-auto min-h-screen w-full  overflow-hidden bg-black">
+    <div className="relative mx-auto min-h-screen w-full overflow-hidden bg-black">
       {/* Bottom layer — always full opacity; never fades out to white. */}
       <div className="absolute inset-0 z-0">
         <Image
           src={activePoint.image}
           alt={activePoint.title}
           fill
+          quality={88}
           className="object-cover object-center"
           sizes="100vw"
           priority={activeIndex === 0 && incomingIndex === null}
         />
-        {/* <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/40" /> */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-black/50"
+          aria-hidden
+        />
       </div>
 
       {incomingPoint && incomingIndex !== null ? (
         <div
-          key={incomingPoint.id}
+          key={incomingIndex}
           className="absolute inset-0 z-10 transition-opacity duration-700 ease-in-out"
           style={{ opacity: incomingOpaque ? 1 : 0 }}
           onTransitionEnd={onIncomingTransitionEnd}
@@ -111,19 +127,22 @@ export const PointsOfInterestCarousel = ({
             src={incomingPoint.image}
             alt={incomingPoint.title}
             fill
+            quality={88}
             className="object-cover object-center"
             sizes="100vw"
             onLoadingComplete={onIncomingLoadingComplete}
           />
-          <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/40" />
+          <div
+            className="pointer-events-none absolute inset-0 bg-black/50"
+            aria-hidden
+          />
         </div>
       ) : null}
 
       <TextOverlay
         point={displayPoint}
         carouselSlot={
-          <div className={`flex flex-col gap-4 items-start`}>
-            {/* <NavigationControls onNext={nextImage} onPrev={prevImage} /> */}
+          <div className="w-full min-w-0">
             <PreviewImages
               points={points}
               currentIndex={displayIndex}
