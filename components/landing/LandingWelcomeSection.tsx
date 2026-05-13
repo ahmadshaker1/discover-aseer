@@ -37,16 +37,38 @@ const LandingWelcomeSection = ({
   const resolvedTitle = title ?? tHome("welcomeTitle");
   const resolvedDescription = description ?? tHome("welcomeDescription");
 
-  const resolvedCards: LocalizedLandingCard[] =
-    cards ??
-    [
-      { title: tCommon("eventsSeasonsCard"), href: "/events", image: "/assets/landing/fireworks.png" },
-      { title: tCommon("experiencesCard"), href: "/experiences", image: "/assets/activities/activities.jpg" },
-      { title: tCommon("mainDestinationsCard"), href: "/destinations/browse", image: "/assets/landing/city1.jpg" },
-      { title: tCommon("stayInAseerCard"), href: "/accommodation", image: "/assets/landing/manwalking.jpg" },
-      { title: tCommon("cuisineNavTitle"), href: "/aseer-cuisine", image: "/assets/activities/aseer-cuisine.jpg" },
-      { title: tCommon("attractionsCard"), href: "/attractions", image: "/assets/experiences/experiences.png" },
-    ];
+  const resolvedCards: LocalizedLandingCard[] = cards ?? [
+    {
+      title: tCommon("eventsSeasonsCard"),
+      href: "/events",
+      image: "/assets/landing/fireworks.png",
+    },
+    {
+      title: tCommon("experiencesCard"),
+      href: "/experiences",
+      image: "/assets/activities/activities.jpg",
+    },
+    {
+      title: tCommon("mainDestinationsCard"),
+      href: "/destinations/browse",
+      image: "/assets/landing/city1.jpg",
+    },
+    {
+      title: tCommon("stayInAseerCard"),
+      href: "/accommodation",
+      image: "/assets/landing/manwalking.jpg",
+    },
+    {
+      title: tCommon("cuisineNavTitle"),
+      href: "/aseer-cuisine",
+      image: "/assets/activities/aseer-cuisine.jpg",
+    },
+    {
+      title: tCommon("attractionsCard"),
+      href: "/attractions",
+      image: "/assets/experiences/experiences.png",
+    },
+  ];
 
   return (
     <section
@@ -56,7 +78,7 @@ const LandingWelcomeSection = ({
       <div className="mx-auto flex w-full max-w-[1180px] flex-col items-center gap-12 md:gap-[48px]">
         <div className="flex w-full flex-col items-center gap-[50px]">
           <h2
-            className="w-full max-w-[258px] text-center text-[clamp(40px,5vw,64px)] font-bold leading-[119%] text-foreground"
+            className="w-full text-center text-[clamp(40px,5vw,64px)] font-bold leading-[119%] text-foreground"
             style={{ fontFamily: ara }}
           >
             {resolvedTitle}

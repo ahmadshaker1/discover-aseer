@@ -41,7 +41,7 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} dir="ltr">
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
       <body
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >
