@@ -1,3 +1,5 @@
+"use client";
+
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
@@ -149,7 +151,7 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
 
       <div className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex ${isRtl ? "right-8" : "left-8"}`}>
         {data.socialLinks.map((social) => (
-          <Link
+          <a
             key={social.platform}
             href={social.url}
             target="_blank"
@@ -158,7 +160,7 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
             aria-label={social.platform}
           >
             <SocialIcon platform={social.platform} />
-          </Link>
+          </a>
         ))}
       </div>
 

@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 
-import AboutAseerPage from "@/app/about-aseer/page";
+import AboutAseerPage from "@/components/about-aseer/AboutAseerPage";
 import AccommodationPage from "@/app/accommodation/page";
 import AseerCommunityPage from "@/app/aseer-community/page";
 import AseerCuisinePage from "@/app/aseer-cuisine/page";
