@@ -21,7 +21,11 @@ const Hero = ({ title, subtitle }: HeroProps) => {
             "url('/assets/landing/discover-aseer-hero.jpg') center / cover no-repeat",
         }}
       >
-
+        {/* Light dark scrim so hero text stays readable on any photo */}
+        <div
+          className="pointer-events-none absolute inset-0 z-1 bg-black/35"
+          aria-hidden
+        />
 
         <img
           src="/hero-pattern/ribbon_column.png"
