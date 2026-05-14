@@ -24,7 +24,7 @@ const communityPageData: {
     ],
     title: "مجتمع عسير",
     // Backend: hero image + pattern from media/CMS.
-    backgroundImage: "/assets/community/hero-comunity-bg.png",
+    backgroundImage: "/assets/community/hero.webp",
     ribbonPatternImage: "/hero-pattern/ribbon.jpg",
     // Backend: update only URLs/platform values here (or from API); no component edits needed.
     socialLinks: [
@@ -47,21 +47,21 @@ const communityPageData: {
     slides: [
       {
         id: "community-1",
-        image: "/assets/community/hero-comunity-bg.png",
+        image: "/assets/community/id1.webp",
         title: "شيم عسير",
         description:
           "اتساع النطاق السكني في عسير بين بيئات جبلية وساحلية وبدوية وحضرية لم يؤثر في المساس بالعادات والتقاليد العريقة وأصالة الطبائع الإنسانية التي تميز سكان هذه المنطقة، ولم يعارض انفتاحها على التطور والحداثة في مزيج متجانس تميز بخصال الشهامة والوفاء والطيبة مع التحضر والتطور المعرفي والمهني.",
       },
       {
         id: "community-2",
-        image: "/assets/community/hero-comunity-bg.png",
+        image: "/assets/community/id2.webp",
         title: "مجتمع مترابط",
         description:
           "تُمثل العائلة نواة العلاقات الإنسانية في عسير، فالأسرة هي محضن التربية الأول الذي توليه اهتمامها بحُسن التنشئة على الأصالة والتطور، وتمتد هذه العلاقة الأصيلة للمجتمع من أقارب وأصدقاء تجمعهم الألفة والوفاء كما تجمعهم القهوة في ساعات الراحة وليالي السمر.",
       },
       {
         id: "community-3",
-        image: "/assets/community/hero-comunity-bg.png",
+        image: "/assets/community/id3.webp",
         title: "حياة مزدهرة",
         description:
           "فُطر مجتمع عسير على محبة الفن وتمثّله في كافة نواحي الحياة من مظاهر اللبس والعمارة، وأصناف الأكل، أو فنون الطرب أو الجزالة في الشعر والانفتاح على المعرفة والثقافة، أو في وسائل العيش وطرق كسب الرزق من تجارة أو فلاحة. وساهم تنوعها الجغرافي في تنوع هذه الفنون وتميزها بالحفاظ على الموروث والاعتزاز بالتراث.",

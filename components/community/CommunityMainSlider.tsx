@@ -104,9 +104,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
   };
 
   return (
-    <section
-      className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]"
-    >
+    <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]">
       {/* Backend: update `sectionTitle` + `sectionSubtitle` from API/CMS only. */}
       <div className="mx-auto mb-8 flex w-full max-w-[760px] flex-col items-center text-center">
         <h2
@@ -116,8 +114,8 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
           {content.sectionTitle}
         </h2>
         <p
-          className="text-[20px] font-bold leading-6 text-[#6f6f6f]"
-          style={{ fontFamily: ara }}
+          className="text-[20px] font-light leading-6 text-[#6f6f6f]"
+          style={{ fontFamily: ibm }}
         >
           {content.sectionSubtitle}
         </p>
