@@ -118,9 +118,9 @@ const DestinationsHero = ({
   }, [locale, weatherArea, weatherLat, weatherLon]);
 
   const tempRange = useMemo(() => {
-    const high = Math.max(weather.tempMin, weather.tempMax);
     const low = Math.min(weather.tempMin, weather.tempMax);
-    return `${high}–${low}`;
+    const high = Math.max(weather.tempMin, weather.tempMax);
+    return `${low}–${high}`;
   }, [weather.tempMin, weather.tempMax]);
 
   return (
@@ -160,9 +160,11 @@ const DestinationsHero = ({
               {title}
             </h1>
 
-            <p className="w-full text-[16px] font-normal leading-6 text-white/80" style={{ fontFamily: ara }}>
-              {subtitle}
-            </p>
+            {subtitle.trim() ? (
+              <p className="w-full text-[16px] font-normal leading-6 text-white/80" style={{ fontFamily: ara }}>
+                {subtitle}
+              </p>
+            ) : null}
           </div>
 
           <div className="flex h-[118px] w-[142px] shrink-0 flex-col items-center justify-center gap-2 rounded-[20px] border border-solid border-[#FFFFFF54] px-3 py-4">
@@ -181,11 +183,8 @@ const DestinationsHero = ({
                 className="whitespace-nowrap text-[35px] font-bold leading-[100%] tracking-normal text-white"
                 style={{ fontFamily: ara }}
               >
-                <span className="text-[0.5em]">م</span>
-                <span className="align-super text-[0.55em]">°</span>
-
                 {tempRange}
-
+                <span className="align-super text-[0.55em]">°</span>
               </span>
               <span
                 className="text-center text-[14px] font-normal leading-[100%] tracking-normal text-white"

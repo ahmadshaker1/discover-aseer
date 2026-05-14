@@ -101,6 +101,8 @@ export interface ApiDestination {
   name?: string | null;
   name_en?: string | null;
   name_ar?: string | null;
+  /** Preferred URL slug (Latin). Directus may expose this as `slug_en` or a single `slug`. */
+  slug_en?: string | null;
   slug?: string | null;
   location?: string | null;
   address?: string | null;
@@ -161,6 +163,53 @@ const toNumber = (value: number | string | null | undefined): number | undefined
 
 const DEFAULT_DESTINATION_IMAGE = "/assets/activities/points-of-interest.jpg";
 
+/** URL segment: Latin letters, digits, single hyphens (stable across locales). */
+function isAsciiUrlSlug(s: string): boolean {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(s);
+}
+
+/** Build a kebab slug from English (or other Latin) text; strips non-Latin characters. */
+function slugifyLatin(input: string): string {
+  return input
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function resolveCanonicalSlug(row: ApiDestination): string {
+  const candidates = [row.slug_en, row.slug]
+    .filter((s): s is string => typeof s === "string" && s.trim().length > 0)
+    .map((s) => s.trim());
+
+  for (const c of candidates) {
+    if (isAsciiUrlSlug(c)) return c.toLowerCase();
+  }
+
+  const titleEn =
+    pickLocalizedField(row, "title", "en") ||
+    pickLocalizedField(row, "name", "en") ||
+    "";
+  const fromTitle = slugifyLatin(titleEn);
+  if (fromTitle) return fromTitle;
+
+  return `destination-${row.id}`;
+}
+
+function uniquifyDestinationSlugs(items: Destination[]): Destination[] {
+  const taken = new Set<string>();
+  return items.map((item) => {
+    let slug = item.slug;
+    if (taken.has(slug)) {
+      slug = `${item.slug}-${item.id}`;
+    }
+    taken.add(slug);
+    return { ...item, slug };
+  });
+}
+
 /** Resolve Directus file id, absolute URL, or local public path — avoid double-prefixing. */
 function resolveDestinationImageUrl(
   imageAsset: string | null | undefined,
@@ -198,13 +247,7 @@ export const transformDestination = (
     pickLocalizedField(row, "content", locale) ||
     "";
 
-  const slug =
-    row.slug?.trim() ||
-    title
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^\w\u0600-\u06FF-]+/g, "");
+  const slug = resolveCanonicalSlug(row);
 
   const area = row.city || location?.split(",")[0]?.trim() || "";
   const cityId = cityMap[(row.city || "").trim()] || undefined;
@@ -251,9 +294,11 @@ export const fetchDestinations = async (locale: LocaleCode = "ar"): Promise<Dest
     });
     if (!response.ok) return [];
     const apiData: ApiDestinationResponse = await response.json();
-    return apiData.data
-      .filter((d) => !d.status || d.status === "published")
-      .map((d) => transformDestination(d, directusUrl, locale));
+    return uniquifyDestinationSlugs(
+      apiData.data
+        .filter((d) => !d.status || d.status === "published")
+        .map((d) => transformDestination(d, directusUrl, locale)),
+    );
   } catch {
     return [];
   }
@@ -269,12 +314,37 @@ export const fetchDestinationsWithFallback = async (locale: LocaleCode = "ar"): 
   });
 };
 
+/** Old links used a slug derived from the Arabic title (`تثليث` → encoded path). */
+function legacySlugFromLocalizedTitle(title: string): string {
+  return title
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\u0600-\u06FF-]+/g, "");
+}
+
 export const getDestinationBySlug = async (
-  slug: string,
+  slugOrId: string,
   locale: LocaleCode = "ar",
 ): Promise<Destination | null> => {
+  const param = decodeURIComponent(slugOrId.trim());
   const rows = await fetchDestinationsWithFallback(locale);
-  return rows.find((d) => d.slug === slug) ?? null;
+
+  const byId = rows.find((d) => d.id === param);
+  if (byId) return byId;
+
+  const bySlug = rows.find((d) => d.slug === param);
+  if (bySlug) return bySlug;
+
+  if (/[\u0600-\u06FF]/.test(param)) {
+    const arRows = locale === "ar" ? rows : await fetchDestinationsWithFallback("ar");
+    const hitAr = arRows.find((d) => legacySlugFromLocalizedTitle(d.title) === param);
+    if (hitAr) {
+      return rows.find((d) => d.id === hitAr.id) ?? hitAr;
+    }
+  }
+
+  return null;
 };
 
 /** Maps a destination into `Landmark` shape for reuse of `AttractionsLandmarkCard` (design parity). */

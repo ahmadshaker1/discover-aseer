@@ -9,6 +9,8 @@ interface DestinationsLandmarksSectionProps {
   destinations: Destination[];
   /** When set, replaces the default `landmarksSectionTitle` string. */
   sectionHeading?: string;
+  /** When false, hides the “browse more” link (e.g. destination detail pages). */
+  showBrowseMoreLink?: boolean;
 }
 
 function LeftArrowIcon({ className }: { className?: string }) {
@@ -35,6 +37,7 @@ function LeftArrowIcon({ className }: { className?: string }) {
 const DestinationsLandmarksSection = async ({
   destinations,
   sectionHeading,
+  showBrowseMoreLink = true,
 }: DestinationsLandmarksSectionProps) => {
   const t = await getTranslations("destinations");
   const tCommon = await getTranslations("common");
@@ -42,7 +45,11 @@ const DestinationsLandmarksSection = async ({
   return (
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
-        <div className="mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center justify-between">
+        <div
+          className={`mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center ${
+            showBrowseMoreLink ? "justify-between" : "justify-start"
+          }`}
+        >
           <h2
             className="h-[58px] w-full max-w-[498px] text-start text-[48px] font-bold leading-[100%] text-secondary"
             style={{ fontFamily: ara }}
@@ -50,16 +57,18 @@ const DestinationsLandmarksSection = async ({
             {sectionHeading ?? t("landmarksSectionTitle")}
           </h2>
 
-          <Link
-            href="/destinations/browse"
-            className="inline-flex h-6 shrink-0 items-center gap-2 text-secondary hover:opacity-80"
-            style={{ fontFamily: ara }}
-          >
-            <span className="whitespace-nowrap text-start text-[20px] font-bold leading-[100%] text-secondary">
-              {tCommon("browseMore")}
-            </span>
-            <LeftArrowIcon className="shrink-0 rtl:rotate-180" />
-          </Link>
+          {showBrowseMoreLink ? (
+            <Link
+              href="/destinations/browse"
+              className="inline-flex h-6 shrink-0 items-center gap-2 text-secondary hover:opacity-80"
+              style={{ fontFamily: ara }}
+            >
+              <span className="whitespace-nowrap text-start text-[20px] font-bold leading-[100%] text-secondary">
+                {tCommon("browseMore")}
+              </span>
+              <LeftArrowIcon className="shrink-0 rtl:rotate-180" />
+            </Link>
+          ) : null}
         </div>
 
         <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
