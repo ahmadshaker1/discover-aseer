@@ -89,8 +89,14 @@ const Footer = () => {
                     {t("footer.linkCommunity")}
                   </Link>
                   <Link
+                    href="/igcat"
+                    className="block w-full text-end hover:opacity-80"
+                  >
+                    IGCAT
+                  </Link>
+                  <Link
                     href="/events"
-                    className="mt-4 block w-full text-end hover:opacity-80"
+                    className=" block w-full text-end hover:opacity-80"
                   >
                     {t("footer.linkEventsSeasons")}
                   </Link>
@@ -246,14 +252,14 @@ const Footer = () => {
           </div>
           {/* Section 3 */}
           <div className="mx-auto w-full max-w-[1180px]">
-            <div className="flex w-full items-center justify-between gap-4">
+            <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
               {/* Left block */}
-              <div className="flex w-full max-w-[589px] items-center justify-between gap-4">
+              <div className="flex w-full flex-col gap-6 sm:flex-row sm:items-center sm:justify-between lg:max-w-[589px] lg:gap-4">
                 {/* Input + button */}
-                <div className="flex w-full max-w-[397px] items-center gap-3">
+                <div className="flex w-full flex-col gap-3 sm:max-w-[397px] sm:flex-row sm:items-center">
                   <button
                     type="button"
-                    className="flex h-[51px] w-[102px] items-center justify-center rounded-[100px] bg-white px-8 py-[21px] text-[19px] font-bold leading-[119%] text-[#280048]"
+                    className="flex h-[51px] w-full sm:w-[102px] items-center justify-center rounded-[100px] bg-white px-8 py-[21px] text-[19px] font-bold leading-[119%] text-[#280048]"
                     style={{ fontFamily: ara }}
                   >
                     {t("footer.subscribe")}
@@ -261,35 +267,35 @@ const Footer = () => {
                   <input
                     type="email"
                     placeholder={t("common.emailPlaceholder")}
-                    className="h-[52px] w-[283px] rounded-[100px] bg-[#7300CD29] px-6 py-[22px] text-[12px] font-medium leading-[119%] text-white placeholder:text-white/45 focus:outline-none"
+                    className="h-[52px] w-full sm:w-[283px] rounded-[100px] bg-[#7300CD29] px-6 py-[22px] text-[12px] font-medium leading-[119%] text-white placeholder:text-white/45 focus:outline-none"
                     style={{ fontFamily: "KoningDisplay Trial, sans-serif" }}
                   />
                 </div>
 
                 {/* Newsletter text */}
-                <div className="flex h-[79px] w-[138px] flex-col items-end gap-4 text-end">
+                <div className="flex w-full flex-col items-end gap-4 text-end sm:w-[138px]">
                   <p
-                    className="h-[18px] w-[100px] text-end text-[16px] font-bold leading-[110%]"
+                    className="text-end text-[16px] font-bold leading-[110%]"
                     style={{ fontFamily: ara }}
                   >
                     {t("footer.newsletterTitle")}
                   </p>
-                  <p className="h-[45px] w-[138px] text-end text-[10px] font-normal leading-[100%] text-white">
+                  <p className="text-end text-[10px] font-normal leading-[100%] text-white">
                     {t("common.newsletterDescription")}
                   </p>
                 </div>
               </div>
 
               {/* Middle block */}
-              <div className="flex h-[79px] w-[231px] flex-col items-end gap-3 text-end">
+              <div className="flex w-full flex-col items-end gap-3 text-end sm:w-[231px]">
                 <p
-                  className="h-[18px] w-[231px] text-end text-[16px] font-bold leading-[110%] text-white"
+                  className="text-end text-[16px] font-bold leading-[110%] text-white"
                   style={{ fontFamily: ara }}
                 >
                   {t("common.memberOf")}
                 </p>
                 <div
-                  className="flex h-[34px] w-[231px] items-center justify-between gap-4"
+                  className="flex w-full items-center justify-between gap-4 sm:w-[231px]"
                   dir="ltr"
                 >
                   <Image

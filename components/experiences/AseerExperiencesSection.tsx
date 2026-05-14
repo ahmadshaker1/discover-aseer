@@ -32,7 +32,7 @@ const AseerCuisineCookingExperiencesSection = ({
           <div className="flex w-full max-w-full flex-col gap-12 px-4 sm:px-8 md:ps-[60px] md:pe-4 lg:max-w-[400px] lg:shrink-0 lg:justify-center lg:px-0 lg:ps-[60px] lg:pe-0">
             <div className="flex flex-col gap-5 text-start">
               <h2
-                className="text-[100px] font-bold text-secondary"
+                className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] font-bold text-secondary"
                 style={{ fontFamily: ara }}
               >
                 {data.title}

@@ -21,7 +21,7 @@ const AboutAseerPage = async () => {
       ],
       title: t("title"),
       subtitle: t("heroSubtitle"),
-      backgroundImage: "/assets/experiences/experiences.png",
+      backgroundImage: "/assets/aboutAseer/HeroImage.png",
       socialLinks: [
         { platform: "linkedin", url: "https://www.linkedin.com/" },
         { platform: "x", url: "https://x.com/" },
@@ -39,43 +39,55 @@ const AboutAseerPage = async () => {
       highlightCards: [
         {
           id: "h-1",
-          image: "/assets/experiences/experiences.png",
+          image: "/assets/aboutAseer/mountains.png",
           title: t("story.highlights.h1"),
         },
         {
           id: "h-2",
-          image: "/assets/experiences/experiences.png",
+          image: "/assets/aboutAseer/plains.png",
           title: t("story.highlights.h2"),
         },
         {
           id: "h-3",
-          image: "/assets/experiences/experiences.png",
+          image: "/assets/aboutAseer/beaches.jpg",
           title: t("story.highlights.h3"),
         },
         {
           id: "h-4",
-          image: "/assets/experiences/experiences.png",
+          image: "/assets/aboutAseer/desert.jpg",
           title: t("story.highlights.h4"),
         },
       ],
       slides: [
         {
           id: "culture-1",
-          image: "/assets/experiences/experiences.png",
+          image: "/assets/aboutAseer/ID1.webp",
           title: t("story.slides.culture1.title"),
           description: t("story.slides.culture1.description"),
         },
         {
           id: "nature-2",
-          image: "/assets/experiences/experiences.png",
+          image: "/assets/aboutAseer/ID2.webp",
           title: t("story.slides.nature2.title"),
           description: t("story.slides.nature2.description"),
         },
         {
           id: "heritage-3",
-          image: "/assets/experiences/experiences.png",
+          image: "/assets/aboutAseer/ID3.webp",
           title: t("story.slides.heritage3.title"),
           description: t("story.slides.heritage3.description"),
+        },
+        {
+          id: "architectural-4",
+          image: "/assets/aboutAseer/ID4.webp",
+          title: t("story.slides.architectural4.title"),
+          description: t("story.slides.architectural4.description"),
+        },
+        {
+          id: "culinaryArts-5",
+          image: "/assets/aboutAseer/ID5.webp",
+          title: t("story.slides.culinaryArts5.title"),
+          description: t("story.slides.culinaryArts5.description"),
         },
       ],
     },

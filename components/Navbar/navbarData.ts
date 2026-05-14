@@ -30,6 +30,7 @@ export const discoverAseerLinks = [
   { href: "/getting-here-and-around", labelKey: "gettingHere.banner.title" },
   { href: "/services-support", labelKey: "servicesSupport.title" },
   { href: "/travel-tips", labelKey: "travelTips.title" },
+  { href: "/igcat", labelKey: "IGCAT" },
 ];
 
 /** LTR: left → right in the nav bar */
