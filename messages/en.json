@@ -162,7 +162,9 @@
     "experiencesDescription": "Discover unique local experiences, mountain culture and authentic hospitality across Aseer.",
     "experiencesCta": "View all",
     "storiesTitle": "Stories from Aseer",
-    "playVideoPrefix": "Play video"
+    "playVideoPrefix": "Play video",
+    "storyVideo1Title": "Aseer Adventures",
+    "storyVideo2Title": "Aseeri Kitchen"
   },
   "storiesFromAseer": {
     "story1": "Let's go to Aseer — culinary destinations shortlisted for the Middle East & North Africa.",

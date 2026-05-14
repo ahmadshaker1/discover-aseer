@@ -3,8 +3,8 @@
  * Paste `watch`, `youtu.be`, `embed`, or `shorts` URLs — leave `null` to show the poster only.
  */
 export const LANDING_STORY_YOUTUBE_URLS: readonly [string | null, string | null] = [
-  "https://youtu.be/QldTVNIt9fo?si=VTdiFFIAXy3x-70C",
-  "https://youtu.be/koUBGrG6WwY?si=t0EBRq8X07J-PMnE",
+  "https://youtu.be/8W60SA2wvFE?si=44WoypWJGLwhikrC",
+  "https://youtu.be/_y5ByPD3d9U?feature=shared",
 ];
 
 const VIDEO_ID_RE = /^[\w-]{11}$/;

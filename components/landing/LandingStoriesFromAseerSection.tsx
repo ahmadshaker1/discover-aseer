@@ -10,6 +10,8 @@ import {
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
+const STORY_CAPTION_KEYS = ["storyVideo2Title", "storyVideo1Title"] as const;
+
 function PlayIcon43() {
   return (
     <svg
@@ -92,9 +94,13 @@ export default function LandingStoriesFromAseerSection({
       </div>
 
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-8">
-        {items.map((story) => {
+        {items.map((story, index) => {
           const youtubeEmbedSrc = getYouTubeEmbedSrc(story.videoUrl);
-          const iframeTitle = `${resolvedTitle} — ${story.year}`;
+          const captionKey = STORY_CAPTION_KEYS[index];
+          const caption = captionKey ? tHome(captionKey) : "";
+          const iframeTitle = caption
+            ? `${resolvedTitle} — ${caption}`
+            : `${resolvedTitle} — ${index + 1}`;
 
           return (
             <article key={story.id} className="min-w-0">
@@ -120,18 +126,6 @@ export default function LandingStoriesFromAseerSection({
                   />
                 )}
 
-                <div
-                  className="absolute start-3 top-3 z-20 flex min-h-[28px] min-w-[53px] items-center justify-center gap-[10px] rounded-[20px] px-3 py-1"
-                  style={{ background: "#000000AD" }}
-                >
-                  <span
-                    className="text-[14px] font-bold leading-none text-white"
-                    style={{ fontFamily: ara }}
-                  >
-                    {story.year}
-                  </span>
-                </div>
-
                 {!youtubeEmbedSrc ? (
                   <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
                     {story.videoUrl ? (
@@ -140,7 +134,11 @@ export default function LandingStoriesFromAseerSection({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="pointer-events-auto inline-flex cursor-pointer rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/30"
-                        aria-label={`${resolvedPlayPrefix} ${story.year}`}
+                        aria-label={
+                          caption
+                            ? `${resolvedPlayPrefix}: ${caption}`
+                            : resolvedPlayPrefix
+                        }
                       >
                         <PlayIcon43 />
                       </a>
@@ -155,6 +153,14 @@ export default function LandingStoriesFromAseerSection({
                   </div>
                 ) : null}
               </div>
+              {caption ? (
+                <p
+                  className="mt-4 text-start text-[clamp(18px,2.2vw,24px)] font-bold leading-[130%] text-foreground"
+                  style={{ fontFamily: ara }}
+                >
+                  {caption}
+                </p>
+              ) : null}
             </article>
           );
         })}
