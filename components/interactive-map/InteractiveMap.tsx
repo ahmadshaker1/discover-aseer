@@ -5,6 +5,10 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import SafeHtml from "@/components/common/SafeHtml";
 import { useLocale, useTranslations } from "next-intl";
+import {
+  ensureMapboxRtlTextPluginRegistered,
+  setMapLabelLanguage,
+} from "@/lib/mapbox/mapboxLocale";
 
 interface LocationPin {
   id: string;
@@ -203,6 +207,11 @@ const InteractiveMap = ({
       return;
     }
 
+    let cancelled = false;
+
+    ensureMapboxRtlTextPluginRegistered(mapboxgl, locale);
+    if (!mapContainer.current) return;
+
     mapboxgl.accessToken = token;
 
     mapRef.current = new mapboxgl.Map({
@@ -213,129 +222,144 @@ const InteractiveMap = ({
       attributionControl: false,
     });
 
+    if (cancelled) {
+      mapRef.current.remove();
+      mapRef.current = null;
+      return;
+    }
+
     mapRef.current.addControl(new mapboxgl.NavigationControl(), "bottom-left");
 
     mapRef.current.on("load", () => {
-      if (!mapRef.current) return;
-      mapLoadedRef.current = true;
-
+      if (!mapRef.current || cancelled) return;
       mapRef.current.addSource("places", {
-        type: "geojson",
-        data: placesToGeoJSON(mappablePlaces),
-        cluster: true,
-        clusterMaxZoom: 14,
-        clusterRadius: 44,
-      });
-
-      mapRef.current.addLayer({
-        id: "clusters",
-        type: "circle",
-        source: "places",
-        filter: ["has", "point_count"],
-        paint: {
-          "circle-color": "#6C2BD9",
-          "circle-radius": [
-            "step",
-            ["get", "point_count"],
-            17,
-            10,
-            20,
-            30,
-            24,
-            60,
-            30,
-          ],
-          "circle-opacity": 0.95,
-        },
-      });
-
-      mapRef.current.addLayer({
-        id: "cluster-count",
-        type: "symbol",
-        source: "places",
-        filter: ["has", "point_count"],
-        layout: {
-          "text-field": "{point_count_abbreviated}",
-          "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
-          "text-size": 12,
-        },
-        paint: {
-          "text-color": "#FFFFFF",
-        },
-      });
-
-      mapRef.current.addLayer({
-        id: "unclustered-point",
-        type: "circle",
-        source: "places",
-        filter: ["!", ["has", "point_count"]],
-        paint: {
-          "circle-color": "#7A2BDE",
-          "circle-radius": 8,
-          "circle-strokeWidth": 2,
-          "circle-stroke-color": "#FFFFFF",
-        },
-      });
-
-      mapRef.current.on("click", "clusters", (event) => {
-        if (!mapRef.current) return;
-        const features = mapRef.current.queryRenderedFeatures(event.point, {
-          layers: ["clusters"],
+          type: "geojson",
+          data: placesToGeoJSON(mappablePlaces),
+          cluster: true,
+          clusterMaxZoom: 14,
+          clusterRadius: 44,
         });
-        const clusterId = features[0]?.properties?.cluster_id;
-        if (typeof clusterId !== "number") return;
-        const source = mapRef.current.getSource(
-          "places",
-        ) as mapboxgl.GeoJSONSource & {
-          getClusterExpansionZoom: (
-            clusterIdParam: number,
-            callback: (error: Error | null, zoom: number) => void,
-          ) => void;
-        };
-        source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-          if (err || !mapRef.current) return;
-          const feature = features[0];
-          const geometry = feature?.geometry as GeoJSON.Point;
-          const safeZoom =
-            typeof zoom === "number" ? zoom : mapRef.current.getZoom();
-          mapRef.current.easeTo({
-            center: geometry.coordinates as [number, number],
-            zoom: safeZoom,
+
+        mapRef.current.addLayer({
+          id: "clusters",
+          type: "circle",
+          source: "places",
+          filter: ["has", "point_count"],
+          paint: {
+            "circle-color": "#6C2BD9",
+            "circle-radius": [
+              "step",
+              ["get", "point_count"],
+              17,
+              10,
+              20,
+              30,
+              24,
+              60,
+              30,
+            ],
+            "circle-opacity": 0.95,
+          },
+        });
+
+        mapRef.current.addLayer({
+          id: "cluster-count",
+          type: "symbol",
+          source: "places",
+          filter: ["has", "point_count"],
+          layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+            "text-size": 12,
+          },
+          paint: {
+            "text-color": "#FFFFFF",
+          },
+        });
+
+        mapRef.current.addLayer({
+          id: "unclustered-point",
+          type: "circle",
+          source: "places",
+          filter: ["!", ["has", "point_count"]],
+          paint: {
+            "circle-color": "#7A2BDE",
+            "circle-radius": 8,
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#FFFFFF",
+          },
+        });
+
+        mapRef.current.on("click", "clusters", (event) => {
+          if (!mapRef.current) return;
+          const features = mapRef.current.queryRenderedFeatures(event.point, {
+            layers: ["clusters"],
+          });
+          const clusterId = features[0]?.properties?.cluster_id;
+          if (typeof clusterId !== "number") return;
+          const source = mapRef.current.getSource(
+            "places",
+          ) as mapboxgl.GeoJSONSource & {
+            getClusterExpansionZoom: (
+              clusterIdParam: number,
+              callback: (error: Error | null, zoom: number) => void,
+            ) => void;
+          };
+          source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+            if (err || !mapRef.current) return;
+            const feature = features[0];
+            const geometry = feature?.geometry as GeoJSON.Point;
+            const safeZoom =
+              typeof zoom === "number" ? zoom : mapRef.current.getZoom();
+            mapRef.current.easeTo({
+              center: geometry.coordinates as [number, number],
+              zoom: safeZoom,
+            });
           });
         });
-      });
 
-      mapRef.current.on("click", "unclustered-point", (event) => {
-        const feature = event.features?.[0];
-        const placeId = feature?.properties?.id as string | undefined;
-        if (!placeId) return;
-        const place = placesRef.current.find((item) => item.id === placeId);
-        if (!place) return;
-        focusPlace(place);
-      });
+        mapRef.current.on("click", "unclustered-point", (event) => {
+          const feature = event.features?.[0];
+          const placeId = feature?.properties?.id as string | undefined;
+          if (!placeId) return;
+          const place = placesRef.current.find((item) => item.id === placeId);
+          if (!place) return;
+          focusPlace(place);
+        });
 
-      mapRef.current.on("mouseenter", "clusters", () => {
-        if (mapRef.current) mapRef.current.getCanvas().style.cursor = "pointer";
-      });
-      mapRef.current.on("mouseleave", "clusters", () => {
-        if (mapRef.current) mapRef.current.getCanvas().style.cursor = "";
-      });
-      mapRef.current.on("mouseenter", "unclustered-point", () => {
-        if (mapRef.current) mapRef.current.getCanvas().style.cursor = "pointer";
-      });
-      mapRef.current.on("mouseleave", "unclustered-point", () => {
-        if (mapRef.current) mapRef.current.getCanvas().style.cursor = "";
-      });
+        mapRef.current.on("mouseenter", "clusters", () => {
+          if (mapRef.current) mapRef.current.getCanvas().style.cursor = "pointer";
+        });
+        mapRef.current.on("mouseleave", "clusters", () => {
+          if (mapRef.current) mapRef.current.getCanvas().style.cursor = "";
+        });
+        mapRef.current.on("mouseenter", "unclustered-point", () => {
+          if (mapRef.current) mapRef.current.getCanvas().style.cursor = "pointer";
+        });
+        mapRef.current.on("mouseleave", "unclustered-point", () => {
+          if (mapRef.current) mapRef.current.getCanvas().style.cursor = "";
+        });
+
+        setMapLabelLanguage(mapRef.current, locale);
+        mapLoadedRef.current = true;
     });
 
     return () => {
+      cancelled = true;
       popupRef.current?.remove();
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
       }
+      mapLoadedRef.current = false;
     };
   }, [focusPlace, mappablePlaces]);
+
+  useEffect(() => {
+    if (!mapRef.current || !mapLoadedRef.current) return;
+    ensureMapboxRtlTextPluginRegistered(mapboxgl, locale);
+    setMapLabelLanguage(mapRef.current, locale);
+  }, [locale]);
 
   useEffect(() => {
     if (!mapRef.current || !mapLoadedRef.current) return;

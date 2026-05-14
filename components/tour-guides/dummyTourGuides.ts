@@ -30,6 +30,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     specializations_en: null,
     date: null,
     transportation: true,
+    city: "abha",
   },
   {
     id: 9002,
@@ -42,7 +43,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     content: null,
     content_en: null,
     description:
-      "تقدم جولات عائلية وطرق آمنة لاستكشاف المزارع والحدائق في عسير.",
+      "تقدم جولات عائلية وطرق آمنة لاستكشاف المزارع والحدائق في محايل عسير والقرى المجاورة.",
     description_en: null,
     website: null,
     instagram: null,
@@ -55,6 +56,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     specializations_en: null,
     date: null,
     transportation: true,
+    city: "mahayil",
   },
   {
     id: 9003,
@@ -79,6 +81,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     specializations_en: null,
     date: null,
     transportation: false,
+    city: "abha",
   },
   {
     id: 9004,
@@ -90,7 +93,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     whatsapp: "966599887766",
     content: null,
     content_en: null,
-    description: "جولات تصوير وفنون وأسواق محلية مع شرح تاريخي للمواقع.",
+    description: "جولات تصوير وفنون وأسواق محلية في خميس مشيط مع شرح تاريخي للمواقع.",
     description_en: null,
     website: null,
     instagram: null,
@@ -103,6 +106,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     specializations_en: null,
     date: null,
     transportation: false,
+    city: "khamis",
   },
   {
     id: 9005,
@@ -127,6 +131,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     specializations_en: null,
     date: null,
     transportation: true,
+    city: "abha",
   },
   {
     id: 9006,
@@ -138,7 +143,8 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     whatsapp: "966511223344",
     content: null,
     content_en: null,
-    description: "تجارب طهي محلي وزيارات لمزارع القهوة والورود في المنطقة.",
+    description:
+      "تجارب طهي محلي وزيارات لمزارع القهوة والورود في تنومة والمرتفعات المحيطة.",
     description_en: null,
     website: null,
     instagram: null,
@@ -151,5 +157,6 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     specializations_en: null,
     date: null,
     transportation: true,
+    city: "tanomah",
   },
 ];

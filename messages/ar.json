@@ -89,6 +89,7 @@
     "tourGuidesNav": "المرشدين السياحيين",
     "guideDiscoverAseer": "اكتشف عسير",
     "exploreAttractionsDefault": "اكتشف أشهر المعالم السياحية",
+    "exploreAttractionsInCity": "في {city}",
     "filterLandmarks": "تصفية المعالم",
     "noLandmarksMatchFilters": "لا توجد معالم تطابق الفلاتر المحددة حالياً.",
     "filterDestinationsLabel": "تصفية الوجهات",

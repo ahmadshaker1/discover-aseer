@@ -28,7 +28,6 @@ const DestinationsMapSection = ({ areaLabel, lat, lon }: DestinationsMapSectionP
   return (
     <MapPlaceholderSection
       ctaLabel={tDest("mapViewOnMap", { area: resolvedArea })}
-      ctaWidthPx={220}
       mapHref={mapHref}
       imageAlt={tDest("mapAlt", { area: resolvedArea })}
     />

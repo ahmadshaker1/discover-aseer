@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { routing, type AppLocale } from "@/i18n/routing";
+import "./globals.css";
 
 const araHamah1964 = localFont({
   src: "../../public/fonts/Ara Hamah 1964 B Bold.ttf",

@@ -7,16 +7,16 @@ import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmar
 import type { Landmark } from "@/components/landmarks/data";
 import {
   getCityOptions,
+  getCityLabelById,
   getInterestOptions,
   getPriceOptions,
   getTravelerOptions,
-  locationMatchesCityId,
+  landmarkBelongsToCity,
 } from "@/components/landmarks/filterOptions";
 
 function landmarkMatchesCity(landmark: Landmark, city: string | null): boolean {
   if (!city) return true;
-  if (landmark.cityId) return landmark.cityId === city;
-  return locationMatchesCityId(`${landmark.location} ${landmark.area}`, city);
+  return landmarkBelongsToCity(landmark, city);
 }
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -36,6 +36,11 @@ interface AttractionsLandmarksSectionProps {
    * `{landmarkDetailBasePath}/{hrefSegment}` (locale prefix added by `Link`).
    */
   landmarkDetailBasePath?: string;
+  /**
+   * When set, appends a localized “in {city}” / “في {city}” after the section title
+   * (uses `getCityLabelById` for the display name).
+   */
+  titleCityId?: string;
 }
 
 type PriceFilterId = "free" | "budget" | "mid-range" | "luxury" | null;
@@ -49,10 +54,19 @@ const AttractionsLandmarksSection = ({
   featuredCount,
   landmarkCardHref,
   landmarkDetailBasePath,
+  titleCityId,
 }: AttractionsLandmarksSectionProps) => {
   const locale = useLocale();
   const t = useTranslations("common");
   const sectionTitle = title ?? t("exploreAttractionsDefault");
+  const cityLabel =
+    titleCityId && titleCityId.trim().length > 0
+      ? getCityLabelById(titleCityId.trim(), locale)
+      : null;
+  const heading =
+    cityLabel != null && cityLabel.length > 0
+      ? `${sectionTitle} ${t("exploreAttractionsInCity", { city: cityLabel })}`
+      : sectionTitle;
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
   const interestOpts = useMemo(() => getInterestOptions(locale), [locale]);
   const travelerOpts = useMemo(() => getTravelerOptions(locale), [locale]);
@@ -120,7 +134,7 @@ const AttractionsLandmarksSection = ({
               className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
               style={{ fontFamily: ara }}
             >
-              {sectionTitle}
+              {heading}
             </h2>
             {description ? (
               <p

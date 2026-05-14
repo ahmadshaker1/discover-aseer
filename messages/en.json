@@ -89,6 +89,7 @@
     "tourGuidesNav": "Tour guides",
     "guideDiscoverAseer": "Discover Aseer",
     "exploreAttractionsDefault": "Explore top attractions",
+    "exploreAttractionsInCity": "in {city}",
     "filterLandmarks": "Filter landmarks",
     "noLandmarksMatchFilters": "No landmarks match your filters.",
     "filterDestinationsLabel": "Filter destinations",

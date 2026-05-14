@@ -7,7 +7,7 @@ const ShowMoreButton = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/landmarks");
+    router.push("/attractions");
   };
 
   return (

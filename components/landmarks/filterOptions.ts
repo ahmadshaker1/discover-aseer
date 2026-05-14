@@ -1,3 +1,5 @@
+import type { Landmark } from "@/components/landmarks/data";
+
 export interface LabeledFilterOption {
   id: string;
   label: string;
@@ -109,6 +111,34 @@ export function locationMatchesCityId(
   const row = CITY_DEFS.find((c) => c.id === cityId);
   if (!row) return true;
   return haystack.includes(row.ar) || haystack.includes(row.en);
+}
+
+/** Known filter city ids (`CITY_DEFS`). */
+export function isValidAttractionsCityId(id: string | null | undefined): id is string {
+  if (!id?.trim()) return false;
+  return CITY_DEFS.some((c) => c.id === id);
+}
+
+export function getCityLabelById(cityId: string, locale: string): string {
+  const row = CITY_DEFS.find((c) => c.id === cityId);
+  if (!row) return cityId;
+  return pickLocale(locale) === "en" ? row.en : row.ar;
+}
+
+/** Normalize CMS free text (Arabic/English/id) to a `CITY_DEFS` id when possible. */
+export function coerceCityId(raw: string | null | undefined): string | undefined {
+  if (!raw?.trim()) return undefined;
+  const t = raw.trim().toLowerCase();
+  for (const c of CITY_DEFS) {
+    if (t === c.id.toLowerCase()) return c.id;
+  }
+  return inferCityIdFromLocation(raw);
+}
+
+/** Same rule as attractions grid city filter: `cityId` when set, else text match on location/area. */
+export function landmarkBelongsToCity(landmark: Landmark, cityId: string): boolean {
+  if (landmark.cityId) return landmark.cityId === cityId;
+  return locationMatchesCityId(`${landmark.location} ${landmark.area}`, cityId);
 }
 
 /** Infer landmark/restaurant row city id when only free-text location is known */

@@ -16,6 +16,8 @@ const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsMainPageContentProps {
   landmarks: Landmark[];
+  /** Pre-select city filter (e.g. `/attractions?city=mahayil`). */
+  initialCityId?: string | null;
 }
 
 interface FilterState {
@@ -23,10 +25,12 @@ interface FilterState {
   interests: string[];
 }
 
-const INITIAL_FILTERS: FilterState = {
-  city: null,
-  interests: [],
-};
+function buildInitialFilters(initialCityId?: string | null): FilterState {
+  return {
+    city: initialCityId?.trim() || null,
+    interests: [],
+  };
+}
 
 const includesInterests = (landmark: Landmark, selectedInterests: string[]): boolean => {
   if (selectedInterests.length === 0) return true;
@@ -35,7 +39,10 @@ const includesInterests = (landmark: Landmark, selectedInterests: string[]): boo
   return selectedInterests.some((interest) => tags.includes(interest));
 };
 
-const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentProps) => {
+const AttractionsMainPageContent = ({
+  landmarks,
+  initialCityId = null,
+}: AttractionsMainPageContentProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
 
@@ -57,7 +64,9 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
    * - If backend doesn't return some metadata yet, cards still render and
    *   filters gracefully fall back (won't break page rendering).
    */
-  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
+  const [filters, setFilters] = useState<FilterState>(() =>
+    buildInitialFilters(initialCityId)
+  );
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   const cityScopedLandmarks = useMemo(
@@ -117,7 +126,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
                 <button
                   type="button"
                   onClick={() => {
-                    setFilters(INITIAL_FILTERS);
+                    setFilters({ city: null, interests: [] });
                     setSelectedInterests([]);
                   }}
                   className="flex h-8 w-auto cursor-pointer whitespace-nowrap items-center justify-center rounded-[8px] border border-border bg-surface px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted"

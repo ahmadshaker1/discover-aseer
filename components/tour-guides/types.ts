@@ -27,6 +27,9 @@ export interface ApiTouristGuide {
   date: string | null;
   national_id?: string | null;
   license_number?: string | null;
+  /** Directus: home city or service area (id like `abha` or Arabic label). */
+  city?: string | null;
+  city_id?: string | null;
   transportation: boolean | null;
   commitment_1?: boolean | null;
   commitment_2?: boolean | null;
@@ -54,6 +57,8 @@ export interface TourGuideWithFilterMeta extends TourGuideData {
   filterSpecializations: string[];
   gender: string;
   hasTransportation: boolean;
+  /** Inferred or from CMS; used to scope guides by city (e.g. attraction detail page). */
+  cityId?: string;
 }
 
 export interface FetchTourGuidesResult {

@@ -13,7 +13,13 @@ import {
   getAttractionHrefSegments,
   type Landmark,
 } from "@/components/landmarks/data";
-import { fetchTourGuides } from "@/components/tour-guides/data";
+import { inferCityIdFromLocation } from "@/components/landmarks/filterOptions";
+import {
+  fetchTourGuides,
+  filterTourGuidesByCityId,
+  toTourGuideCardData,
+  tourGuidesCardDataForCityFromDummy,
+} from "@/components/tour-guides/data";
 import type { TourGuideData } from "@/components/tour-guides/TourGuideCard/TourGuideCard";
 
 const FALLBACK_GUIDES: TourGuideData[] = [
@@ -72,7 +78,22 @@ const AttractionSlugPage = async ({ params }: AttractionSlugPageProps) => {
     fetchLandmarks(locale),
   ]);
 
-  const displayGuides = guides.length > 0 ? guides : FALLBACK_GUIDES;
+  const attractionCityId =
+    attraction.cityId ??
+    inferCityIdFromLocation(`${attraction.area} ${attraction.location}`.trim());
+
+  const displayGuides = (() => {
+    if (attractionCityId) {
+      const inCity = filterTourGuidesByCityId(guides, attractionCityId).map(
+        toTourGuideCardData
+      );
+      if (inCity.length > 0) return inCity;
+      const dummy = tourGuidesCardDataForCityFromDummy(attractionCityId);
+      if (dummy.length > 0) return dummy;
+    }
+    if (guides.length > 0) return guides.map(toTourGuideCardData);
+    return FALLBACK_GUIDES;
+  })();
 
   const related = allLandmarks
     .filter((l) => l.id !== attraction.id && l.hrefSegment)
@@ -82,6 +103,8 @@ const AttractionSlugPage = async ({ params }: AttractionSlugPageProps) => {
       return score(b) - score(a);
     })
     .slice(0, 8);
+
+  const titleCityId = attractionCityId;
 
   const mapHref = buildMapHref(attraction);
   const introHtml = buildIntroHtml(attraction);
@@ -127,9 +150,12 @@ const AttractionSlugPage = async ({ params }: AttractionSlugPageProps) => {
         showFilters={false}
         landmarkDetailBasePath="/attractions"
         title={tCommon("exploreAttractionsDefault")}
+        titleCityId={titleCityId ?? undefined}
       />
       <AttractionsMapSection
         mapHref={mapHref}
+        latitude={attraction.latitude}
+        longitude={attraction.longitude}
         ctaLabel={tDest("mapViewOnMap", { area: attraction.title })}
         imageAlt={tDest("mapAlt", { area: attraction.title })}
       />

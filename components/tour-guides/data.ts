@@ -28,7 +28,13 @@
  *   2. Parse JSON into an array, then map each item through transformTourGuide — or adjust ApiTouristGuide + transformTourGuide to match your JSON.
  */
 
+import {
+  coerceCityId,
+  getCityLabelById,
+  inferCityIdFromLocation,
+} from "@/components/landmarks/filterOptions";
 import { DUMMY_TOURIST_GUIDES } from "./dummyTourGuides";
+import type { TourGuideData } from "./TourGuideCard/TourGuideCard";
 import type {
   ApiTouristGuide,
   FetchTourGuidesResult,
@@ -63,6 +69,36 @@ function parseSpecializations(raw: string | null): string[] {
     .filter(Boolean);
 }
 
+function inferGuideCityId(api: ApiTouristGuide): string | undefined {
+  const explicit =
+    coerceCityId(typeof api.city === "string" ? api.city : null) ??
+    coerceCityId(typeof api.city_id === "string" ? api.city_id : null);
+  if (explicit) return explicit;
+  const blob = [
+    api.description,
+    api.description_en,
+    api.specializations,
+    api.specializations_en,
+    api.content,
+    api.content_en,
+  ]
+    .filter((x): x is string => typeof x === "string" && x.length > 0)
+    .join(" ");
+  return inferCityIdFromLocation(blob);
+}
+
+export function filterTourGuidesByCityId(
+  guides: TourGuideWithFilterMeta[],
+  cityId: string
+): TourGuideWithFilterMeta[] {
+  return guides.filter((g) => g.cityId === cityId);
+}
+
+export function toTourGuideCardData(guide: TourGuideWithFilterMeta): TourGuideData {
+  const { filterSpecializations: _fs, gender: _g, hasTransportation: _ht, cityId: _c, ...rest } = guide;
+  return rest;
+}
+
 function buildLanguages(api: ApiTouristGuide): Array<{ code: string; name: string; flag: string }> {
   const list: Array<{ code: string; name: string; flag: string }> = [];
   const ar = api.arabic_language_level;
@@ -87,11 +123,13 @@ export function transformTourGuide(api: ApiTouristGuide): TourGuideWithFilterMet
   const specialties = filterSpecializations.length > 0 ? filterSpecializations : undefined;
   const hasTransportation = api.transportation === true;
   const gender = (api.gender || "").trim() || "—";
+  const cityId = inferGuideCityId(api);
+  const locationLabel = cityId ? getCityLabelById(cityId, "ar") : DEFAULT_LOCATION;
 
   return {
     id: api.id,
     name: (api.name || api.name_en || "").trim() || "مرشد سياحي",
-    location: DEFAULT_LOCATION,
+    location: locationLabel,
     profileImage: imageUrl,
     languages: buildLanguages(api),
     whatsappUrl,
@@ -102,7 +140,14 @@ export function transformTourGuide(api: ApiTouristGuide): TourGuideWithFilterMet
     filterSpecializations,
     gender,
     hasTransportation,
+    cityId,
   };
+}
+
+/** City-scoped dummy rows when live guides do not match the requested city. */
+export function tourGuidesCardDataForCityFromDummy(cityId: string): TourGuideData[] {
+  const meta = DUMMY_TOURIST_GUIDES.map(transformTourGuide);
+  return filterTourGuidesByCityId(meta, cityId).map(toTourGuideCardData);
 }
 
 function buildFilterOptions(apiItems: ApiTouristGuide[]): TourGuidesFilterOptions {
