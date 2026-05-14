@@ -478,6 +478,7 @@
     "bannerTitle": "In Aseer!",
     "bannerSubtitle": "We are here with what you need.",
     "ctaFormPrompt": "Please fill in the form below.",
+    "ctaFormButton": "Open form",
     "registerNow": "Register now",
     "orEmailUs": "Or email us at:",
     "whyAseer": "Why Aseer?",
@@ -494,6 +495,22 @@
     "serviceLocationsDesc": "Support and facilitation to identify and access locations that match production requirements.",
     "servicePermitsTitle": "Permits",
     "servicePermitsDesc": "Support and guidance through required approvals from official entities for filming in Asir."
+  },
+  "filmmakerForm": {
+    "metaTitle": "Filmmaker form | Discover Aseer",
+    "metaDescription": "Contact the Discover Aseer film team with your details and message.",
+    "backToFilm": "Back to Film",
+    "title": "Filmmaker inquiry",
+    "description": "Share your details and we will get back to you regarding filming in Aseer.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone number",
+    "message": "Message",
+    "submit": "Submit",
+    "submitting": "Sending…",
+    "success": "Thank you — your message was sent successfully.",
+    "errorGeneric": "Something went wrong. Please try again later."
   },
   "gettingHere": {
     "title": "Getting here & around",

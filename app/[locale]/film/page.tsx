@@ -117,7 +117,7 @@ const FilmPage = async () => {
             </div>
 
             <Link
-              href="/tour-guides/register"
+              href="/filmmaker-form"
               className="inline-flex h-[52px] w-[185px] cursor-pointer items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
               style={{
                 fontFamily: "Inter, sans-serif",
@@ -125,7 +125,7 @@ const FilmPage = async () => {
                 paddingBottom: 14.5,
               }}
             >
-              {t("registerNow")}
+              {t("ctaFormButton")}
             </Link>
 
             <div className="h-[61px] w-full max-w-[1241px] py-[30px]" />
