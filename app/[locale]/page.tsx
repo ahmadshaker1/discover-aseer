@@ -22,7 +22,7 @@ export default async function LocalizedHomePage() {
   const homeExperiences = experiencesResult.experiences.slice(0, 6);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full overflow-x-hidden">
+    <div className="flex w-full flex-col items-center justify-center">
       <Hero />
       <LandingWelcomeSection />
       <PointsOfInterest />

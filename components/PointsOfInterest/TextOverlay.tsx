@@ -34,7 +34,7 @@ export const TextOverlay = ({ point, carouselSlot }: TextOverlayProps) => {
               className="max-w-full text-start text-sm text-white/90 sm:text-base md:text-lg lg:text-xl"
             />
           </div>
-          <div className="pointer-events-auto w-full min-w-0 max-w-full flex-1 self-stretch lg:max-w-[min(100%,820px)] lg:self-end">
+          <div className="pointer-events-auto w-full min-h-0 min-w-0 max-w-full flex-1 self-stretch overflow-x-visible overflow-y-visible lg:max-w-[min(100%,820px)] lg:self-end">
             {carouselSlot}
           </div>
         </div>

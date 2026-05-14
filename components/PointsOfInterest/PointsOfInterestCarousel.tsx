@@ -98,9 +98,10 @@ export const PointsOfInterestCarousel = ({
   const selectImage = (index: number) => beginCrossfadeTo(index);
 
   return (
-    <div className="relative mx-auto min-h-screen w-full overflow-hidden bg-black">
-      {/* Bottom layer — always full opacity; never fades out to white. */}
-      <div className="absolute inset-0 z-0">
+    <div className="relative mx-auto min-h-screen w-full bg-black">
+      {/* Clip only the full-bleed images — root must not use overflow-hidden or horizontal
+          swipe/scroll on the preview strip breaks on some browsers (nested overflow). */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
           src={activePoint.image}
           alt={activePoint.title}
@@ -118,7 +119,7 @@ export const PointsOfInterestCarousel = ({
       {incomingPoint && incomingIndex !== null ? (
         <div
           key={incomingIndex}
-          className="absolute inset-0 z-10 transition-opacity duration-700 ease-in-out"
+          className="absolute inset-0 z-10 overflow-hidden transition-opacity duration-700 ease-in-out"
           style={{ opacity: incomingOpaque ? 1 : 0 }}
           onTransitionEnd={onIncomingTransitionEnd}
         >
