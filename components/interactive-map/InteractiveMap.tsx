@@ -1,5 +1,16 @@
 "use client";
 
+import {
+  Button,
+  Field,
+  Input,
+  Label,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+  RadioGroup,
+} from "@headlessui/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -32,6 +43,7 @@ interface MapPlace {
   category: string;
   city: string;
   tag?: string;
+  mapsUrl?: string;
 }
 
 const MAP_CENTER: [number, number] = [42.62, 18.25];
@@ -57,6 +69,7 @@ const UI_KEYS = [
   "clearFilters",
   "noGeo",
   "showOnMap",
+  "openInMaps",
   "noResults",
   "tokenHint",
 ] as const;
@@ -123,7 +136,7 @@ const InteractiveMap = ({
         place.description.toLowerCase().includes(normalizedSearch);
       return categoryMatch && cityMatch && searchMatch;
     });
-  }, [activeCategory, places, searchTerm, selectedCity]);
+  }, [activeCategory, places, searchTerm, selectedCity, ui.all]);
 
   const mappablePlaces = useMemo(
     () =>
@@ -135,6 +148,13 @@ const InteractiveMap = ({
       ),
     [filteredPlaces],
   );
+
+  const radioSelectedPlaceId = useMemo(() => {
+    if (!selectedPlaceId) return undefined;
+    return filteredPlaces.some((place) => place.id === selectedPlaceId)
+      ? selectedPlaceId
+      : undefined;
+  }, [filteredPlaces, selectedPlaceId]);
 
   useEffect(() => {
     placesRef.current = places;
@@ -169,30 +189,35 @@ const InteractiveMap = ({
   const focusPlace = useCallback((place: MapPlace) => {
     setSelectedPlaceId(place.id);
     if (
-      !mapRef.current ||
-      !place.hasCoordinates ||
-      place.latitude == null ||
-      place.longitude == null
+      mapRef.current &&
+      place.hasCoordinates &&
+      place.latitude != null &&
+      place.longitude != null
     ) {
-      popupRef.current?.remove();
-      return;
-    }
-    mapRef.current.flyTo({
-      center: [place.longitude, place.latitude],
-      zoom: 12.5,
-      essential: true,
-    });
+      mapRef.current.flyTo({
+        center: [place.longitude, place.latitude],
+        zoom: 12.5,
+        essential: true,
+      });
 
-    popupRef.current?.remove();
-    popupRef.current = new mapboxgl.Popup({ offset: 18, closeButton: false })
-      .setLngLat([place.longitude, place.latitude])
-      .setHTML(
-        `<div style="font-family: Arial, sans-serif; direction: inherit; text-align: start;">
+      popupRef.current?.remove();
+      popupRef.current = new mapboxgl.Popup({ offset: 18, closeButton: false })
+        .setLngLat([place.longitude, place.latitude])
+        .setHTML(
+          `<div style="font-family: Arial, sans-serif; direction: inherit; text-align: start;">
           <strong>${place.title}</strong><br/>
           <span style="font-size: 12px; opacity: 0.8;">${place.city}</span>
         </div>`,
-      )
-      .addTo(mapRef.current);
+        )
+        .addTo(mapRef.current);
+      return;
+    }
+
+    popupRef.current?.remove();
+    const url = place.mapsUrl?.trim();
+    if (url) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
   }, []);
 
   useEffect(() => {
@@ -353,7 +378,7 @@ const InteractiveMap = ({
       }
       mapLoadedRef.current = false;
     };
-  }, [focusPlace, mappablePlaces]);
+  }, [focusPlace, mappablePlaces, locale]);
 
   useEffect(() => {
     if (!mapRef.current || !mapLoadedRef.current) return;
@@ -371,7 +396,6 @@ const InteractiveMap = ({
       selectedPlaceId &&
       !filteredPlaces.some((place) => place.id === selectedPlaceId)
     ) {
-      setSelectedPlaceId(null);
       popupRef.current?.remove();
     }
   }, [filteredPlaces, mappablePlaces, selectedPlaceId]);
@@ -391,23 +415,23 @@ const InteractiveMap = ({
         <div
           className={`absolute top-4 z-20 flex max-w-[78%] flex-wrap gap-2 start-4`}
         >
-          <button
+          <Button
             type="button"
             onClick={() => setActiveCategory(ui.all)}
-            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${
+            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${
               activeCategory === ui.all
                 ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
                 : "border-border bg-surface text-foreground"
             }`}
           >
             {ui.all}
-          </button>
+          </Button>
           {CATEGORY_CHIPS.map((chip) => (
-            <button
+            <Button
               key={chip.label}
               type="button"
               onClick={() => setActiveCategory(chip.label)}
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition ${
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${
                 activeCategory === chip.label
                   ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
                   : "border-border bg-surface text-foreground"
@@ -415,7 +439,7 @@ const InteractiveMap = ({
             >
               <span>{chip.icon}</span>
               <span>{chip.label}</span>
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -426,27 +450,29 @@ const InteractiveMap = ({
             {ui.discover}
           </h1>
           <div className="flex items-center gap-2">
-            <button
+            <Button
               type="button"
               aria-label={ui.filterLabel}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-transparent text-foreground"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-transparent text-foreground data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
             >
               ⌕
-            </button>
-            <div className="relative flex-1">
-              <input
+            </Button>
+            <Field className="relative flex-1">
+              <Label className="sr-only">{ui.search}</Label>
+              <Input
+                type="search"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder={ui.search}
-                className={`h-9 w-full rounded-md border border-border bg-background px-3 text-[13px] text-foreground outline-none text-start`}
+                className="h-9 w-full rounded-md border border-border bg-background px-3 text-[13px] text-foreground outline-none text-start data-focus:border-primary data-focus:ring-2 data-focus:ring-primary/30"
               />
-            </div>
+            </Field>
           </div>
         </div>
 
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
           <h2 className="text-[26px] font-bold">{ui.locations}</h2>
-          <button
+          <Button
             type="button"
             onClick={() => {
               setSearchTerm("");
@@ -455,91 +481,150 @@ const InteractiveMap = ({
               setSelectedPlaceId(null);
               popupRef.current?.remove();
             }}
-            className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted"
+            className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
           >
             {ui.clearFilters}
-          </button>
+          </Button>
         </div>
 
         <div className="grid grid-cols-2 gap-2 border-b border-border p-3">
-          <select
-            value={selectedCity}
-            onChange={(event) => setSelectedCity(event.target.value)}
-            className="h-9 rounded-md border border-border bg-background px-2 text-[12px] text-foreground outline-none"
-          >
-            {cities.map((city) => (
-              <option key={city} value={city} className="text-foreground">
-                {city}
-              </option>
-            ))}
-          </select>
-          <select
-            value={activeCategory}
-            onChange={(event) => setActiveCategory(event.target.value)}
-            className="h-9 rounded-md border border-border bg-background px-2 text-[12px] text-foreground outline-none"
-          >
-            <option value={ui.all} className="text-foreground">
-              {ui.allCategories}
-            </option>
-            {CATEGORY_CHIPS.map((chip) => (
-              <option
-                key={chip.label}
-                value={chip.label}
-                className="text-foreground"
+          <Listbox value={selectedCity} onChange={setSelectedCity}>
+            <div className="relative">
+              <ListboxButton className="flex h-9 w-full cursor-pointer items-center justify-between gap-1 rounded-md border border-border bg-background px-2 text-start text-[12px] text-foreground data-focus:border-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary/30">
+                <span className="min-w-0 truncate">{selectedCity}</span>
+                <span className="shrink-0 text-[10px] opacity-60" aria-hidden>
+                  ▾
+                </span>
+              </ListboxButton>
+              <ListboxOptions
+                anchor="bottom start"
+                transition
+                modal={false}
+                className="z-100 max-h-56 w-(--button-width) overflow-auto rounded-md border border-border bg-background py-1 text-[12px] shadow-lg [--anchor-gap:4px] transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0 data-[anchor~=end]:origin-top-end"
               >
-                {chip.label}
-              </option>
-            ))}
-          </select>
+                {cities.map((city) => (
+                  <ListboxOption
+                    key={city}
+                    value={city}
+                    className="cursor-pointer px-3 py-2 text-foreground data-focus:bg-muted data-selected:bg-primary/10 data-selected:font-semibold"
+                  >
+                    {city}
+                  </ListboxOption>
+                ))}
+              </ListboxOptions>
+            </div>
+          </Listbox>
+
+          <Listbox value={activeCategory} onChange={setActiveCategory}>
+            <div className="relative">
+              <ListboxButton className="flex h-9 w-full cursor-pointer items-center justify-between gap-1 rounded-md border border-border bg-background px-2 text-start text-[12px] text-foreground data-focus:border-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary/30">
+                <span className="min-w-0 truncate">
+                  {activeCategory === ui.all ? ui.allCategories : activeCategory}
+                </span>
+                <span className="shrink-0 text-[10px] opacity-60" aria-hidden>
+                  ▾
+                </span>
+              </ListboxButton>
+              <ListboxOptions
+                anchor="bottom end"
+                transition
+                modal={false}
+                className="z-100 max-h-56 w-(--button-width) overflow-auto rounded-md border border-border bg-background py-1 text-[12px] shadow-lg [--anchor-gap:4px] transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0"
+              >
+                <ListboxOption
+                  value={ui.all}
+                  className="cursor-pointer px-3 py-2 text-foreground data-focus:bg-muted data-selected:bg-primary/10 data-selected:font-semibold"
+                >
+                  {ui.allCategories}
+                </ListboxOption>
+                {CATEGORY_CHIPS.map((chip) => (
+                  <ListboxOption
+                    key={chip.label}
+                    value={chip.label}
+                    className="cursor-pointer px-3 py-2 text-foreground data-focus:bg-muted data-selected:bg-primary/10 data-selected:font-semibold"
+                  >
+                    {chip.label}
+                  </ListboxOption>
+                ))}
+              </ListboxOptions>
+            </div>
+          </Listbox>
         </div>
 
         <div className="flex-1 space-y-3 overflow-y-auto p-3">
-          {filteredPlaces.map((place) => (
-            <div
-              key={place.id}
-              className={`relative w-full overflow-hidden rounded-[14px] border p-3 text-start transition ${
-                selectedPlaceId === place.id
-                  ? "border-primary bg-muted"
-                  : "border-border bg-surface hover:bg-muted"
-              }`}
+          {filteredPlaces.length > 0 ? (
+            <RadioGroup
+              value={radioSelectedPlaceId}
+              onChange={setSelectedPlaceId}
+              className="space-y-3"
             >
-              <img
-                src="/assets/travel-essentials/angledsquarepattern.png"
-                alt=""
-                aria-hidden
-                className="pointer-events-none absolute -bottom-8 -left-8 h-24 w-24 opacity-25"
-              />
-              <div className="relative z-10">
-                {place.tag ? (
-                  <span className="mb-2 inline-flex rounded-full bg-background px-2 py-0.5 text-[10px] font-semibold text-foreground">
-                    {place.tag}
-                  </span>
-                ) : null}
-                <h3 className="text-[27px] font-bold leading-[1.1]">
-                  {place.title}
-                </h3>
-                <SafeHtml
-                  html={place.description}
-                  className="mt-2 text-[13px] leading-normal text-muted-foreground"
-                />
-                {!place.hasCoordinates ? (
-                  <p className="mt-2 text-[11px] text-muted-foreground">
-                    {ui.noGeo}
-                  </p>
-                ) : null}
-                <div className="mt-3 flex justify-start">
-                  <button
-                    type="button"
-                    onClick={() => focusPlace(place)}
-                    disabled={!place.hasCoordinates}
-                    className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {ui.showOnMap}
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+              {filteredPlaces.map((place) => (
+                <RadioGroup.Option
+                  key={place.id}
+                  value={place.id}
+                  className={({ checked, focus }) =>
+                    `relative w-full cursor-pointer overflow-hidden rounded-[14px] border p-3 text-start outline-none transition ${
+                      checked
+                        ? "border-primary bg-muted"
+                        : "border-border bg-surface hover:bg-muted"
+                    } ${focus ? "ring-2 ring-primary ring-offset-2 ring-offset-surface" : ""}`
+                  }
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element -- decorative background texture */}
+                  <img
+                    src="/assets/travel-essentials/angledsquarepattern.png"
+                    alt=""
+                    aria-hidden
+                    className="pointer-events-none absolute -bottom-8 -left-8 h-24 w-24 opacity-25"
+                  />
+                  <div className="relative z-10">
+                    {place.tag ? (
+                      <span className="mb-2 inline-flex rounded-full bg-background px-2 py-0.5 text-[10px] font-semibold text-foreground">
+                        {place.tag}
+                      </span>
+                    ) : null}
+                    <h3 className="text-[27px] font-bold leading-[1.1]">
+                      {place.title}
+                    </h3>
+                    <SafeHtml
+                      html={place.description}
+                      className="mt-2 text-[13px] leading-normal text-muted-foreground"
+                    />
+                    {!place.hasCoordinates && !place.mapsUrl ? (
+                      <p className="mt-2 text-[11px] text-muted-foreground">
+                        {ui.noGeo}
+                      </p>
+                    ) : null}
+                    <div className="mt-3 flex flex-wrap justify-start gap-2">
+                      <Button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          focusPlace(place);
+                        }}
+                        disabled={!place.hasCoordinates}
+                        className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {ui.showOnMap}
+                      </Button>
+                      {place.mapsUrl ? (
+                        <Button
+                          as="a"
+                          href={place.mapsUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(event) => event.stopPropagation()}
+                          className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
+                        >
+                          {ui.openInMaps}
+                        </Button>
+                      ) : null}
+                    </div>
+                  </div>
+                </RadioGroup.Option>
+              ))}
+            </RadioGroup>
+          ) : null}
           {filteredPlaces.length === 0 ? (
             <div className="rounded-lg border border-border bg-surface p-4 text-center text-sm text-muted-foreground">
               {ui.noResults}
@@ -560,4 +645,4 @@ const InteractiveMap = ({
 };
 
 export default InteractiveMap;
-export type { LocationPin, InteractiveMapProps };
+export type { LocationPin, InteractiveMapProps, MapPlace };

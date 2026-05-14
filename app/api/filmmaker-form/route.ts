@@ -11,17 +11,6 @@ function directusBaseUrl(): string | null {
   return raw.replace(/\/+$/, "");
 }
 
-function directusHeaders(): HeadersInit {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  const token = process.env.DIRECTUS_WRITE_TOKEN?.trim();
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-  return headers;
-}
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: Request) {
@@ -78,7 +67,7 @@ export async function POST(request: Request) {
       `${base}/items/${COLLECTION}`,
       {
         method: "POST",
-        headers: directusHeaders(),
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       },
     );

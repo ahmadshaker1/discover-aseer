@@ -467,6 +467,7 @@
     "clearFilters": "Clear filters",
     "noGeo": "Location coordinates are currently unavailable on the map.",
     "showOnMap": "Show on map",
+    "openInMaps": "Open in Google Maps",
     "noResults": "No places match the current search.",
     "tokenHint": "Add `NEXT_PUBLIC_MAPBOX_API_KEY` in the environment file to enable the map."
   },

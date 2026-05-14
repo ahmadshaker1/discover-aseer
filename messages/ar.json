@@ -467,6 +467,7 @@
     "clearFilters": "مسح الفلاتر",
     "noGeo": "الموقع الجغرافي غير متوفر حالياً على الخريطة",
     "showOnMap": "عرض على الخريطة",
+    "openInMaps": "فتح في خرائط Google",
     "noResults": "لا توجد نتائج مطابقة للبحث الحالي.",
     "tokenHint": "أضف `NEXT_PUBLIC_MAPBOX_API_KEY` في ملف البيئة لتشغيل الخريطة."
   },
