@@ -24,6 +24,24 @@ const heroSocialLinks = [
   { href: "#", label: "Instagram", Icon: InstagramIcon },
 ] as const;
 
+const heroSocialLinkClassDesktop =
+  "flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white transition-colors hover:bg-white/10 md:h-[52px] md:w-[52px] [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.18] md:[&_svg]:scale-[1.28]";
+
+const heroSocialLinkClassMobile =
+  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white transition-colors active:bg-white/10 [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.12]";
+
+function HeroSocialLinks({ linkClassName }: { linkClassName: string }) {
+  return (
+    <>
+      {heroSocialLinks.map(({ href, label, Icon }) => (
+        <a key={label} href={href} className={linkClassName} aria-label={label}>
+          <Icon />
+        </a>
+      ))}
+    </>
+  );
+}
+
 const Hero = ({ title, subtitle }: HeroProps) => {
   const t = useTranslations("home");
   const displayTitle = title ?? t("heroTitle");
@@ -52,8 +70,27 @@ const Hero = ({ title, subtitle }: HeroProps) => {
         />
 
         <div className="relative z-10 mx-auto h-full w-full max-w-[1440px] px-6 md:px-[130px]">
+          {/* Small screens: horizontal strip + horizontal rules at bottom of hero */}
           <div
-            className="absolute top-1/2 z-30 flex -translate-y-1/2 flex-col items-center start-4 md:start-10"
+            className="absolute inset-x-0 bottom-5 z-30 flex flex-row items-center justify-center gap-2 px-3 text-white md:hidden"
+            dir="ltr"
+          >
+            <div
+              className="h-px min-w-[20px] max-w-[56px] flex-1 bg-white"
+              aria-hidden
+            />
+            <div className="flex max-w-full flex-row flex-wrap items-center justify-center gap-1.5">
+              <HeroSocialLinks linkClassName={heroSocialLinkClassMobile} />
+            </div>
+            <div
+              className="h-px min-w-[20px] max-w-[56px] flex-1 bg-white"
+              aria-hidden
+            />
+          </div>
+
+          {/* md+: vertical column on the start side */}
+          <div
+            className="absolute top-1/2 z-30 hidden -translate-y-1/2 flex-col items-center md:flex start-4 md:start-10"
             dir="ltr"
           >
             <div
@@ -61,16 +98,7 @@ const Hero = ({ title, subtitle }: HeroProps) => {
               aria-hidden
             />
             <div className="flex flex-col items-center gap-3 text-white md:gap-[15px]">
-              {heroSocialLinks.map(({ href, label, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white transition-colors hover:bg-white/10 md:h-[52px] md:w-[52px] [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.18] md:[&_svg]:scale-[1.28]"
-                  aria-label={label}
-                >
-                  <Icon />
-                </a>
-              ))}
+              <HeroSocialLinks linkClassName={heroSocialLinkClassDesktop} />
             </div>
             <div
               className="mt-3 h-14 w-px shrink-0 bg-white md:mt-[15px] md:h-20"
