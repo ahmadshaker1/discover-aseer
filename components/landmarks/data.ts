@@ -9,6 +9,20 @@ export interface Landmark {
   guideName: string;
   image: string;
   /**
+   * URL segment for `/attractions/[slug]` when using Directus/API-backed rows.
+   * Uses `slug` when present, otherwise numeric `id`.
+   */
+  hrefSegment?: string;
+  /** Short tagline (plain text) for hero subtitle and metadata. */
+  subtitle?: string | null;
+  /** Full article HTML for detail pages. */
+  contentHtml?: string | null;
+  /** Parsed gallery image URLs from `attraction_gallery` JSON. */
+  galleryImageUrls?: string[];
+  mapLink?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  /**
    * Backend-ready optional metadata used by `/attractions` main-page filters.
    * These are optional so existing UI consumers continue to work safely.
    */
@@ -28,10 +42,18 @@ export interface ApiLandmark {
   title_ar?: string | null;
   name?: string | null;
   name_ar?: string | null;
+  name_en?: string | null;
   location?: string | null;
   address?: string | null;
   description?: string | null;
   content?: string | null;
+  sub_title?: string | null;
+  content_home_page_card_content?: string | null;
+  slug?: string | null;
+  attraction_gallery?: string | null;
+  map_link?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
   cover_image?: string | null;
   hero_image?: string | null;
   destination_image?: string | null;
@@ -49,6 +71,47 @@ export interface ApiLandmark {
 
 export interface ApiResponse {
   data: ApiLandmark[];
+}
+
+function containsArabicScript(value: string): boolean {
+  return /[\u0600-\u06FF]/.test(value);
+}
+
+/**
+ * CMS rows sometimes label `name_en` / `name_ar` inconsistently; pick by script + locale.
+ */
+function pickAttractionTitle(api: ApiLandmark, locale: LocaleCode): string {
+  const ne = api.name_en?.trim() || "";
+  const na = api.name_ar?.trim() || "";
+  if (ne || na) {
+    if (locale === "ar") {
+      if (containsArabicScript(ne)) return ne || na;
+      if (containsArabicScript(na)) return na || ne;
+      return ne || na;
+    }
+    if (na && !containsArabicScript(na)) return na;
+    if (ne && !containsArabicScript(ne)) return ne;
+    return na || ne;
+  }
+  const row = api as unknown as Record<string, unknown>;
+  return pickLocalizedField(row, "title", locale) || pickLocalizedField(row, "name", locale) || "";
+}
+
+export function parseAttractionGalleryJson(raw: string | null | undefined): string[] {
+  if (!raw || typeof raw !== "string") return [];
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((entry) => {
+        const row = entry as { image?: { url?: string | null } | null } | null;
+        const url = row?.image?.url?.trim();
+        return url || "";
+      })
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
 }
 
 function normalizeText(value: string): string {
@@ -86,24 +149,27 @@ export const transformLandmark = (
       : `${directusUrl}/assets/${imageAsset}`
     : "/assets/experiences/experiences.png";
 
-  const title =
-    pickLocalizedField(apiLandmark, "title", locale) ||
-    pickLocalizedField(apiLandmark, "name", locale) ||
-    "";
+  const title = pickAttractionTitle(apiLandmark, locale);
   const location =
     apiLandmark.location?.trim() || apiLandmark.address?.trim() || apiLandmark.city?.trim() || "";
-  const description =
-    pickLocalizedField(apiLandmark, "description", locale) ||
-    pickLocalizedField(apiLandmark, "content", locale) ||
+
+  const rowRecord = apiLandmark as unknown as Record<string, unknown>;
+  const longDescription =
+    pickLocalizedField(rowRecord, "description", locale) ||
+    pickLocalizedField(rowRecord, "content", locale) ||
     "";
 
-  // Extract guide name from description if it contains one
-  // The description format seems to be: "تسلق جبل سودا مع متسلق الجبال المحلي فيصل"
-  // We'll try to extract the last word as guide name
+  const sub = apiLandmark.sub_title?.trim() || "";
+  const escapedSub = sub
+    ? `<p>${sub.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>`
+    : "";
+  const description =
+    apiLandmark.content_home_page_card_content?.trim() || escapedSub || longDescription || "";
+
+  // Extract guide name from long description if it contains one
   let guideName = "";
-  if (description) {
-    const descriptionParts = description.split(/\s+/);
-    // If description has multiple words, take the last one as guide name
+  if (longDescription) {
+    const descriptionParts = longDescription.split(/\s+/);
     if (descriptionParts.length > 1) {
       guideName = descriptionParts[descriptionParts.length - 1];
     }
@@ -126,6 +192,13 @@ export const transformLandmark = (
     "محايل عسير": "mahayil",
     najran: "najran",
     "نجران": "najran",
+    "رجال ألمع": "mahayil",
+    "المجاردة": "bisha",
+    "سراة عبيدة": "bisha",
+    "النماص": "tanomah",
+    "قحم": "abha",
+    "الحريضة": "abha",
+    "البرك": "abha",
   };
   const citySource = `${apiLandmark.city || ""} ${location} ${area}`;
   const cityId =
@@ -134,7 +207,7 @@ export const transformLandmark = (
     )?.[1] || undefined;
 
   // Fallback interests from title/description when backend tags are not provided.
-  const sourceText = `${title} ${description}`;
+  const sourceText = `${title} ${longDescription || description}`;
   const fallbackInterests: string[] = [];
   if (/تاريخ|تراث|قصر|سوق/i.test(sourceText)) fallbackInterests.push("historical", "culture");
   if (/جبل|حديقة|طبيعة|منتزه|وادي|قمم|السودة/i.test(sourceText))
@@ -173,6 +246,11 @@ export const transformLandmark = (
     interestTags.push("culture");
   }
 
+  const slugTrimmed = apiLandmark.slug?.trim();
+  const hrefSegment =
+    slugTrimmed && slugTrimmed.length > 0 ? slugTrimmed : String(apiLandmark.id);
+  const contentHtml = apiLandmark.content?.trim() || null;
+
   return {
     id: String(apiLandmark.id),
     title,
@@ -181,6 +259,13 @@ export const transformLandmark = (
     description,
     guideName: guideName,
     image: imageUrl,
+    hrefSegment,
+    subtitle: sub || null,
+    contentHtml,
+    galleryImageUrls: parseAttractionGalleryJson(apiLandmark.attraction_gallery),
+    mapLink: apiLandmark.map_link?.trim() || null,
+    latitude: apiLandmark.latitude ?? null,
+    longitude: apiLandmark.longitude ?? null,
     cityId,
     travelerTypes: apiLandmark.traveller_types ?? [],
     priceFrom: apiLandmark.price_range_from,
@@ -225,6 +310,57 @@ export const fetchLandmarks = async (locale: LocaleCode = "ar"): Promise<Landmar
     console.error("Error fetching landmarks:", error);
     return [];
   }
+};
+
+/**
+ * Loads one attraction by public URL segment (`slug` from CMS, or numeric `id`).
+ */
+export const fetchAttractionByHrefSegment = async (
+  segment: string,
+  locale: LocaleCode = "ar",
+): Promise<Landmark | null> => {
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
+  if (!directusUrl) {
+    console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
+    return null;
+  }
+
+  const decoded = decodeURIComponent(segment).trim();
+  if (!decoded) return null;
+
+  try {
+    let item: ApiLandmark | undefined;
+
+    if (/^\d+$/.test(decoded)) {
+      const res = await fetch(`${directusUrl}/items/attractions/${decoded}`, {
+        next: { revalidate: 3600 },
+      });
+      if (!res.ok) return null;
+      const json: { data?: ApiLandmark } = await res.json();
+      item = json.data;
+    } else {
+      const u = new URL(`${directusUrl}/items/attractions`);
+      u.searchParams.set("filter[slug][_eq]", decoded);
+      u.searchParams.set("limit", "1");
+      const res = await fetch(u.toString(), { next: { revalidate: 3600 } });
+      if (!res.ok) return null;
+      const json: ApiResponse = await res.json();
+      item = json.data?.[0];
+    }
+
+    if (!item) return null;
+    if (item.status && item.status !== "published") return null;
+
+    return transformLandmark(item, directusUrl, locale);
+  } catch (error) {
+    console.error("Error fetching attraction by segment:", error);
+    return null;
+  }
+};
+
+export const getAttractionHrefSegments = async (locale: LocaleCode = "ar"): Promise<string[]> => {
+  const landmarks = await fetchLandmarks(locale);
+  return landmarks.map((l) => l.hrefSegment).filter((s): s is string => Boolean(s));
 };
 
 

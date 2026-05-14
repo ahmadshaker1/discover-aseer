@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import AttractionsMainPageContent from "@/components/attractions/AttractionsMainPageContent";
 import { fetchLandmarks, type Landmark } from "@/components/landmarks/data";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 const FALLBACK_ATTRACTIONS: Landmark[] = [
   {
@@ -91,7 +92,7 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
 ];
 
 const AttractionsPage = async () => {
-  const locale = await getLocale();
+  const locale = (await getLocale()) as LocaleCode;
   const t = await getTranslations("attractionsPage");
   const tCommon = await getTranslations("common");
   /**
@@ -100,7 +101,7 @@ const AttractionsPage = async () => {
    * - Main attractions list uses Directus data from `fetchLandmarks()`.
    * - `FALLBACK_ATTRACTIONS` keeps the UI available when API is empty.
    */
-  const landmarks = await fetchLandmarks();
+  const landmarks = await fetchLandmarks(locale);
   const displayLandmarks = landmarks.length > 0 ? landmarks : FALLBACK_ATTRACTIONS;
 
   return (

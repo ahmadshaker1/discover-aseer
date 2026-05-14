@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import AttractionsHero from "@/components/attractions/AttractionsHero";
 import AttractionsIntroSection from "@/components/attractions/AttractionsIntroSection";
 import AttractionsGuidesSection from "@/components/attractions/AttractionsGuidesSection";
@@ -8,6 +8,7 @@ import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
 import { fetchLandmarks, type Landmark } from "@/components/landmarks/data";
 import { fetchTourGuides } from "@/components/tour-guides/data";
 import type { TourGuideData } from "@/components/tour-guides/TourGuideCard/TourGuideCard";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 const FALLBACK_GUIDES: TourGuideData[] = [
   {
@@ -34,11 +35,12 @@ const FALLBACK_LANDMARKS: Landmark[] = [
 ];
 
 const AttractionsInnerPage = async () => {
+  const locale = (await getLocale()) as LocaleCode;
   const t = await getTranslations("attractionsPage");
   const tCommon = await getTranslations("common");
   const [{ guides }, landmarks] = await Promise.all([
     fetchTourGuides(),
-    fetchLandmarks(),
+    fetchLandmarks(locale),
   ]);
   const displayGuides = guides.length > 0 ? guides : FALLBACK_GUIDES;
   const displayLandmarks = landmarks.length > 0 ? landmarks : FALLBACK_LANDMARKS;
@@ -56,7 +58,11 @@ const AttractionsInnerPage = async () => {
       />
       <AttractionsIntroSection imageUrl="/assets/attractions/attractions-hero.png" />
       <AttractionsGuidesSection guides={displayGuides} />
-      <AttractionsLandmarksSection landmarks={displayLandmarks} showFilters={false} />
+      <AttractionsLandmarksSection
+        landmarks={displayLandmarks}
+        showFilters={false}
+        landmarkDetailBasePath="/attractions"
+      />
       <AttractionsMapSection />
       <EventsInfo />
     </div>

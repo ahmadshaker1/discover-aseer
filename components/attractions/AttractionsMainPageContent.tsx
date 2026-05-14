@@ -87,7 +87,14 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
           <div className="w-full flex-1 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
               {visibleLandmarks.map((landmark) => (
-                <AttractionsLandmarkCard key={landmark.id} landmark={landmark} className="mx-auto" />
+                <AttractionsLandmarkCard
+                  key={landmark.id}
+                  landmark={landmark}
+                  className="mx-auto"
+                  cardHref={
+                    landmark.hrefSegment ? `/attractions/${landmark.hrefSegment}` : undefined
+                  }
+                />
               ))}
             </div>
 

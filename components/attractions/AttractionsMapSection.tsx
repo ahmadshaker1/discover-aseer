@@ -3,7 +3,17 @@
 import { useLocale, useTranslations } from "next-intl";
 import MapPlaceholderSection from "@/components/MapPlaceholderSection";
 
-const AttractionsMapSection = () => {
+interface AttractionsMapSectionProps {
+  mapHref?: string;
+  ctaLabel?: string;
+  imageAlt?: string;
+}
+
+const AttractionsMapSection = ({
+  mapHref: mapHrefProp,
+  ctaLabel: ctaLabelProp,
+  imageAlt: imageAltProp,
+}: AttractionsMapSectionProps = {}) => {
   const locale = useLocale();
   const t = useTranslations("attractionsPage");
   const query =
@@ -12,13 +22,14 @@ const AttractionsMapSection = () => {
       : "قصور آل أبو سراح";
   const palacesMapsUrl =
     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  const mapHref = mapHrefProp ?? palacesMapsUrl;
 
   return (
     <MapPlaceholderSection
-      ctaLabel={t("mapPalacesCta")}
+      ctaLabel={ctaLabelProp ?? t("mapPalacesCta")}
       ctaWidthPx={266}
-      mapHref={palacesMapsUrl}
-      imageAlt={t("mapPalacesAlt")}
+      mapHref={mapHref}
+      imageAlt={imageAltProp ?? t("mapPalacesAlt")}
     />
   );
 };

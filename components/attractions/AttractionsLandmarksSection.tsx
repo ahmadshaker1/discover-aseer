@@ -29,8 +29,13 @@ interface AttractionsLandmarksSectionProps {
   showFilters?: boolean;
   /** When set, only this many cards are shown (newest first — order from `fetchLandmarks`). */
   featuredCount?: number;
-  /** When set, each card gets a full-card link (share stays clickable above it). */
+  /** Same `cardHref` for every card (used when not linking to detail pages). */
   landmarkCardHref?: string;
+  /**
+   * When set with `landmark.hrefSegment`, each card links to
+   * `{landmarkDetailBasePath}/{hrefSegment}` (locale prefix added by `Link`).
+   */
+  landmarkDetailBasePath?: string;
 }
 
 type PriceFilterId = "free" | "budget" | "mid-range" | "luxury" | null;
@@ -43,6 +48,7 @@ const AttractionsLandmarksSection = ({
   showFilters = false,
   featuredCount,
   landmarkCardHref,
+  landmarkDetailBasePath,
 }: AttractionsLandmarksSectionProps) => {
   const locale = useLocale();
   const t = useTranslations("common");
@@ -204,7 +210,11 @@ const AttractionsLandmarksSection = ({
               key={landmark.id}
               landmark={landmark}
               className="max-w-none"
-              cardHref={landmarkCardHref}
+              cardHref={
+                landmark.hrefSegment && landmarkDetailBasePath
+                  ? `${landmarkDetailBasePath.replace(/\/$/, "")}/${landmark.hrefSegment}`
+                  : landmarkCardHref
+              }
             />
           ))}
         </div>

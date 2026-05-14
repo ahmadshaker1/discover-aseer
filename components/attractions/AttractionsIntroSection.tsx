@@ -8,17 +8,28 @@ import {
   YouTubeIcon,
 } from "@/components/Footer/Icons";
 import { useTranslations } from "next-intl";
+import SafeHtml from "@/components/common/SafeHtml";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsIntroSectionProps {
   imageUrl: string;
+  /** When set, overrides the translated intro title (e.g. attraction name). */
+  title?: string;
+  /** Rich HTML body for attraction detail; when set, replaces static intro paragraphs. */
+  descriptionHtml?: string;
 }
 
-const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => {
+const AttractionsIntroSection = ({
+  imageUrl,
+  title: titleOverride,
+  descriptionHtml,
+}: AttractionsIntroSectionProps) => {
   const t = useTranslations("attractionsPage");
   const tCommon = useTranslations("common");
+
+  const heading = titleOverride?.trim() || t("introTitle");
 
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]">
@@ -28,7 +39,7 @@ const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => 
             className="w-full text-start text-[44px] font-bold leading-[180%] text-foreground"
             style={{ fontFamily: ara }}
           >
-            {t("introTitle")}
+            {heading}
           </h2>
 
           <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]">
@@ -57,15 +68,24 @@ const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => 
             </div>
           </div>
 
-          <div className="w-full text-start text-[15px] font-light leading-[119%] text-muted-foreground" style={{ fontFamily: ibm }}>
-            <p>{t("innerIntroP1")}</p>
-            <p className="mt-4">{t("innerIntroP2")}</p>
-            <p className="mt-4">{t("innerIntroP3")}</p>
+          <div
+            className="w-full text-start text-[15px] font-light leading-[119%] text-muted-foreground"
+            style={{ fontFamily: ibm }}
+          >
+            {descriptionHtml?.trim() ? (
+              <SafeHtml html={descriptionHtml} className="space-y-4 [&_p]:mt-0" />
+            ) : (
+              <>
+                <p>{t("innerIntroP1")}</p>
+                <p className="mt-4">{t("innerIntroP2")}</p>
+                <p className="mt-4">{t("innerIntroP3")}</p>
+              </>
+            )}
           </div>
         </div>
 
         <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
-          <img src={imageUrl} alt={t("introTitle")} className="h-full w-full object-cover" />
+          <img src={imageUrl} alt={heading} className="h-full w-full object-cover" />
         </div>
       </div>
     </section>
