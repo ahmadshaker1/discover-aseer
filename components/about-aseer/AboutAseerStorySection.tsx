@@ -35,16 +35,42 @@ interface AboutAseerStorySectionProps {
 
 function ChevronRight() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M7.14453 4.5L11.6445 9L7.14453 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M7.14453 4.5L11.6445 9L7.14453 13.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function ChevronLeft() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M10.8555 4.5L6.35547 9L10.8555 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M10.8555 4.5L6.35547 9L10.8555 13.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -57,6 +83,16 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
   const [isPaused, setIsPaused] = useState(false);
 
   const activeSlide = useMemo(() => slides[activeIndex], [slides, activeIndex]);
+
+  const prevSlide = useMemo(() => {
+    if (activeIndex === 0) return slides[lastIndex];
+    return slides[activeIndex - 1];
+  }, [activeIndex, slides, lastIndex]);
+
+  const nextSlide = useMemo(() => {
+    if (activeIndex >= lastIndex) return slides[0];
+    return slides[activeIndex + 1];
+  }, [activeIndex, slides, lastIndex]);
 
   useEffect(() => {
     if (!hasSlides || isPaused) return;
@@ -79,14 +115,20 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         {/* Backend: fill `sectionTitle`, `sectionSubtitle`, `sectionCaption` from API/CMS. */}
         <div className="mx-auto flex w-full max-w-[704px] flex-col items-center text-center">
-          <h2 className="text-[44px] font-bold leading-[180%] text-foreground" style={{ fontFamily: ara }}>
+          <h2
+            className="text-[44px] font-bold leading-[180%] text-[#280048]"
+            style={{ fontFamily: ara }}
+          >
             {content.sectionTitle}
           </h2>
-          <p className="text-[20px] font-bold leading-[140%] text-muted-foreground" style={{ fontFamily: ara }}>
+          <p
+            className="text-[16px] font-medium leading-[140%] text-muted-foreground"
+            style={{ fontFamily: ara }}
+          >
             {content.sectionSubtitle}
           </p>
           <h4
-            className="mt-2 w-full text-center text-[15px] font-medium leading-[119%] text-muted-foreground"
+            className="mt-2 w-full text-center text-[15px] font-medium text-black"
             style={{ fontFamily: ibm }}
           >
             {content.sectionCaption}
@@ -110,7 +152,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                 />
                 <div className="absolute inset-x-0 bottom-0 h-[51px] bg-[linear-gradient(179.54deg,rgba(0,0,0,0)_0.39%,#000000_99.6%)] px-5 py-4">
                   <p
-                  className={`line-clamp-1 text-[16px] font-bold leading-[120%] text-white text-start`}
+                    className={`line-clamp-1 text-[16px] font-bold leading-[120%] text-white text-start`}
                     style={{ fontFamily: ara }}
                   >
                     {card.title}
@@ -141,32 +183,42 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
           </div>
 
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 p-5 text-white sm:p-6 lg:p-8">
-            <div className={`max-w-[510px] text-start`}>
-              <h3 className="text-[32px] font-bold leading-[150%]" style={{ fontFamily: ara }}>
+            <div className={`max-w-[800px] text-start`}>
+              <h3
+                className="text-[40px] font-bold leading-[150%] width-full text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] mb-2"
+                style={{ fontFamily: ara }}
+              >
                 {activeSlide?.title}
               </h3>
-              <p className="text-[20px] font-bold leading-[150%] text-white/90" style={{ fontFamily: ara }}>
+              <p
+                className="text-[20px] font-light leading-[150%] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] max-w-[510px]"
+                style={{ fontFamily: ibm }}
+              >
                 {activeSlide?.description}
               </p>
             </div>
 
             <div className="flex w-full items-center justify-start">
-              <div className="flex h-12 w-[314px] items-center gap-6">
+              <div className="flex h-12 items-center gap-6">
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white transition-colors hover:bg-white/20"
+                  className="flex h-16 w-[200px] items-center justify-center gap-2 rounded-full p-2 text-white opacity-80 transition-colors hover:bg-white/20"
                 >
-                  <span className="rtl:rotate-180"><ChevronRight /></span>
-                  <span style={{ fontFamily: ara }}>{content.prevLabel}</span>
+                  <span className="">
+                    <ChevronRight />
+                  </span>
+                  <span style={{ fontFamily: ara }}>{prevSlide?.title}</span>
                 </button>
                 <button
                   type="button"
                   onClick={goNext}
-                  className="flex h-12 w-[145px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white opacity-80 transition-colors hover:bg-white/20"
+                  className="flex h-16 w-[200px] items-center justify-center gap-2 rounded-full p-2 text-white opacity-80 transition-colors hover:bg-white/20"
                 >
-                  <span style={{ fontFamily: ara }}>{content.nextLabel}</span>
-                  <span className="rtl:rotate-180"><ChevronLeft /></span>
+                  <span style={{ fontFamily: ara }}>{nextSlide?.title}</span>
+                  <span className="">
+                    <ChevronLeft />
+                  </span>
                 </button>
               </div>
             </div>
