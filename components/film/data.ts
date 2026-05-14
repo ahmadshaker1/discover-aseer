@@ -1,14 +1,18 @@
 /**
- * Backend handoff — film first section cards:
- * - Suggested Directus collection: `film_landscapes`
- * - Env: `NEXT_PUBLIC_DIRECTUS_APP_URL`
- * - Fields (suggested): `id`, `title`, `cover_image`, `status`
+ * Backend — Directus `films` collection (`/items/films`).
+ * Env: `NEXT_PUBLIC_DIRECTUS_APP_URL` (e.g. https://tool-portal.discoveraseer.com)
+ *
+ * @see https://tool-portal.discoveraseer.com/items/films
  */
+
+import { withDirectusCoverTransform } from "@/lib/directusAssetUrl";
 
 export interface FilmLandscape {
   id: string;
   title: string;
   image: string;
+  /** External watch link (Netflix, YouTube, Shahid, …). */
+  watchUrl?: string;
 }
 
 export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
@@ -16,85 +20,27 @@ export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
     id: "film-land-1",
     title: "الجبال",
     image: "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg",
+    watchUrl: undefined,
   },
   {
     id: "film-land-2",
     title: "السهول",
     image: "/assets/film/f553c2485f7cee0001b8c78577a11b28d342a8d9.png",
+    watchUrl: undefined,
   },
   {
     id: "film-land-3",
     title: "الشواطئ",
     image: "/assets/film/cb7870bcdbeed166a47cfcfd91a8a0fa3f5c72b5.jpg",
+    watchUrl: undefined,
   },
   {
     id: "film-land-4",
     title: "الصحراء",
     image: "/assets/film/216f4631aac0e23146a54ede4d47668e3a6b8c75 (1).png",
+    watchUrl: undefined,
   },
 ];
-
-interface ApiFilmLandscape {
-  id: string;
-  title?: string | null;
-  cover_image?: string | null;
-  status?: string | null;
-}
-
-interface ApiFilmLandscapeResponse {
-  data: ApiFilmLandscape[];
-}
-
-const transformFilmLandscape = (
-  row: ApiFilmLandscape,
-  directusUrl: string,
-  fallbackTitle: string,
-): FilmLandscape => {
-  const image = row.cover_image
-    ? `${directusUrl}/assets/${row.cover_image}`
-    : "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg";
-
-  return {
-    id: row.id,
-    title: row.title?.trim() || fallbackTitle,
-    image,
-  };
-};
-
-export const fetchFilmLandscapes = async (): Promise<FilmLandscape[]> => {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
-  if (!directusUrl) return [];
-
-  try {
-    const response = await fetch(`${directusUrl}/items/film_landscapes`, {
-      next: { revalidate: 3600 },
-    });
-    if (!response.ok) return [];
-
-    const apiData: ApiFilmLandscapeResponse = await response.json();
-    if (!Array.isArray(apiData?.data)) return [];
-
-    return apiData.data
-      .filter((row) => !row.status || row.status === "published")
-      .map((row, index) =>
-        transformFilmLandscape(
-          row,
-          directusUrl,
-          FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length]
-            .title,
-        ),
-      );
-  } catch {
-    return [];
-  }
-};
-
-export const fetchFilmLandscapesWithFallback = async (): Promise<
-  FilmLandscape[]
-> => {
-  const rows = await fetchFilmLandscapes();
-  return rows.length > 0 ? rows : FALLBACK_FILM_LANDSCAPES;
-};
 
 export type FilmSlideLane = "left" | "right";
 export type FilmSlideTextTheme = "light" | "dark";
@@ -352,6 +298,8 @@ export interface FilmShowcaseCard {
   title: string;
   category: FilmShowcaseCategory;
   image: string;
+  /** External watch link (Netflix, YouTube, Shahid, …). */
+  watchUrl?: string;
 }
 
 export const FILM_SHOWCASE_FILTERS: FilmShowcaseCategory[] = [
@@ -401,76 +349,142 @@ export const FALLBACK_FILM_SHOWCASE_CARDS: FilmShowcaseCard[] = [
   },
 ];
 
-interface ApiFilmShowcaseCard {
+function normalizeDirectusBase(url: string): string {
+  return url.replace(/\/+$/, "");
+}
+
+interface ApiFilm {
   id: string;
-  title?: string | null;
-  category?: string | null;
-  cover_image?: string | null;
   status?: string | null;
+  title_ar?: string | null;
+  title_en?: string | null;
+  url?: string | null;
+  cover_image?: string | null;
+  type?: string | null;
 }
 
-interface ApiFilmShowcaseCardsResponse {
-  data: ApiFilmShowcaseCard[];
+interface FilmsListResponse {
+  data: ApiFilm[];
 }
 
-const normalizeFilmShowcaseCategory = (
-  value: string | null | undefined,
-  fallback: FilmShowcaseCategory,
-): FilmShowcaseCategory => {
-  if (value && FILM_SHOWCASE_FILTERS.includes(value as FilmShowcaseCategory)) {
-    return value as FilmShowcaseCategory;
+export function mapFilmTypeToCategory(
+  type: string | null | undefined,
+): FilmShowcaseCategory {
+  switch (type) {
+    case "movies":
+      return "أفلام";
+    case "promotional_series":
+      return "أﻓﻼم ﺗﺮوﻳﺠﻴﺔ";
+    case "series":
+      return "ﻣﺴﻠﺴﻼت";
+    case "musical_film":
+      return "أفلام ﻣﻮﺳﻴﻘﻴﺔ";
+    default:
+      return "أفلام";
   }
-  return fallback;
-};
+}
 
-const transformFilmShowcaseCard = (
-  row: ApiFilmShowcaseCard,
+function pickFilmTitle(row: ApiFilm, locale: string): string {
+  const isEn = locale === "en";
+  const primary = (isEn ? row.title_en : row.title_ar)?.trim();
+  const secondary = (isEn ? row.title_ar : row.title_en)?.trim();
+  return primary || secondary || "";
+}
+
+function transformFilmRowToLandscape(
+  row: ApiFilm,
   directusUrl: string,
-  fallback: FilmShowcaseCard,
-): FilmShowcaseCard => {
+  locale: string,
+  index: number,
+): FilmLandscape {
+  const fb = FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length];
+  const title = pickFilmTitle(row, locale) || fb.title;
   const image = row.cover_image
-    ? `${directusUrl}/assets/${row.cover_image}`
-    : fallback.image;
+    ? withDirectusCoverTransform(
+        `${directusUrl}/assets/${row.cover_image}`,
+        { width: 960, height: 1040, quality: 92 },
+      )
+    : fb.image;
+
   return {
     id: row.id,
-    title: row.title?.trim() || fallback.title,
-    category: normalizeFilmShowcaseCategory(row.category, fallback.category),
+    title,
     image,
+    watchUrl: row.url?.trim() || undefined,
   };
-};
+}
 
-export const fetchFilmShowcaseCards = async (): Promise<FilmShowcaseCard[]> => {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
-  if (!directusUrl) return [];
+function transformFilmRowToShowcase(
+  row: ApiFilm,
+  directusUrl: string,
+  locale: string,
+  index: number,
+): FilmShowcaseCard {
+  const fb =
+    FALLBACK_FILM_SHOWCASE_CARDS[index % FALLBACK_FILM_SHOWCASE_CARDS.length];
+  const title = pickFilmTitle(row, locale) || fb.title;
+  const image = row.cover_image
+    ? withDirectusCoverTransform(
+        `${directusUrl}/assets/${row.cover_image}`,
+        { width: 1200, height: 1460, quality: 92 },
+      )
+    : fb.image;
+
+  return {
+    id: row.id,
+    title,
+    category: mapFilmTypeToCategory(row.type),
+    image,
+    watchUrl: row.url?.trim() || undefined,
+  };
+}
+
+async function fetchPublishedFilmsFromDirectus(
+  locale: string,
+): Promise<{ landscapes: FilmLandscape[]; showcaseCards: FilmShowcaseCard[] } | null> {
+  const raw = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
+  if (!raw) return null;
+
+  const directusUrl = normalizeDirectusBase(raw);
 
   try {
-    const response = await fetch(`${directusUrl}/items/film_showcase`, {
-      next: { revalidate: 3600 },
-    });
-    if (!response.ok) return [];
+    const response = await fetch(
+      `${directusUrl}/items/films?sort=-date_created`,
+      { next: { revalidate: 3600 } },
+    );
+    if (!response.ok) return null;
 
-    const apiData: ApiFilmShowcaseCardsResponse = await response.json();
-    if (!Array.isArray(apiData?.data)) return [];
+    const apiData: FilmsListResponse = await response.json();
+    if (!Array.isArray(apiData?.data)) return null;
 
-    return apiData.data
-      .filter((row) => !row.status || row.status === "published")
-      .map((row, index) =>
-        transformFilmShowcaseCard(
-          row,
-          directusUrl,
-          FALLBACK_FILM_SHOWCASE_CARDS[
-            index % FALLBACK_FILM_SHOWCASE_CARDS.length
-          ],
-        ),
-      );
+    const rows = apiData.data.filter(
+      (row) => !row.status || row.status === "published",
+    );
+    if (rows.length === 0) return null;
+
+    return {
+      landscapes: rows.map((row, index) =>
+        transformFilmRowToLandscape(row, directusUrl, locale, index),
+      ),
+      showcaseCards: rows.map((row, index) =>
+        transformFilmRowToShowcase(row, directusUrl, locale, index),
+      ),
+    };
   } catch {
-    return [];
+    return null;
   }
-};
+}
 
-export const fetchFilmShowcaseCardsWithFallback = async (): Promise<
-  FilmShowcaseCard[]
-> => {
-  const rows = await fetchFilmShowcaseCards();
-  return rows.length > 0 ? rows : FALLBACK_FILM_SHOWCASE_CARDS;
-};
+/** Single fetch for the film page: hero strip + “filmed works” grid from Directus `films`. */
+export async function fetchFilmsForFilmPage(locale: string): Promise<{
+  landscapes: FilmLandscape[];
+  showcaseCards: FilmShowcaseCard[];
+}> {
+  const fromApi = await fetchPublishedFilmsFromDirectus(locale);
+  if (fromApi) return fromApi;
+
+  return {
+    landscapes: FALLBACK_FILM_LANDSCAPES,
+    showcaseCards: FALLBACK_FILM_SHOWCASE_CARDS,
+  };
+}

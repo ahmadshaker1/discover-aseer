@@ -1,12 +1,12 @@
+import FilmLandscapeSwiper from "@/components/film/FilmLandscapeSwiper";
 import FilmShowcaseSection from "@/components/film/FilmShowcaseSection";
 import FilmWhyAseerSection from "@/components/film/FilmWhyAseerSection";
 import FilmServicesSection from "@/components/film/FilmServicesSection";
 import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import {
-  fetchFilmShowcaseCardsWithFallback,
+  fetchFilmsForFilmPage,
   fetchFilmServiceCardsWithFallback,
-  fetchFilmLandscapesWithFallback,
   fetchFilmWhyAseerSlidesWithFallback,
 } from "@/components/film/data";
 import { Link } from "@/i18n/navigation";
@@ -17,12 +17,12 @@ const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 const FilmPage = async () => {
   const t = await getTranslations("film");
-  const [landscapes, whyAseerSlides, serviceCards, showcaseCards] =
+  const locale = await getLocale();
+  const [{ landscapes, showcaseCards }, whyAseerSlides, serviceCards] =
     await Promise.all([
-      fetchFilmLandscapesWithFallback(),
+      fetchFilmsForFilmPage(locale),
       fetchFilmWhyAseerSlidesWithFallback(),
       fetchFilmServiceCardsWithFallback(),
-      fetchFilmShowcaseCardsWithFallback(),
     ]);
 
   return (
@@ -40,32 +40,8 @@ const FilmPage = async () => {
 
       <section className="mx-auto h-auto w-full max-w-[1442px] bg-background px-4 py-[60px] sm:px-8 md:px-[62px]">
         <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-          <div
-            className="hide-scrollbar w-full flex-1 overflow-x-auto overflow-y-hidden"
-            dir="ltr"
-          >
-            <div className="flex min-w-max items-start gap-6 pb-2">
-              {landscapes.slice(0, 4).map((item) => (
-                <article
-                  key={item.id}
-                  className="relative h-[305px] w-[282px] shrink-0 overflow-hidden rounded-[10px] shadow-[0px_4.28px_3.37px_0px_rgba(41,72,152,0.01),0px_8.72px_6.97px_0px_rgba(41,72,152,0.02),0px_21.4px_13.91px_0px_rgba(41,72,152,0.02)]"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-[91px] rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
-                    <h3
-                      className="text-start text-[24px] font-bold leading-[119%] text-white"
-                      style={{ fontFamily: ara }}
-                    >
-                      {item.title}
-                    </h3>
-                  </div>
-                </article>
-              ))}
-            </div>
+          <div className="w-full min-w-0 flex-1" dir="ltr">
+            <FilmLandscapeSwiper landscapes={landscapes} />
           </div>
 
           <div className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-start lg:h-[265px]">
@@ -142,7 +118,7 @@ const FilmPage = async () => {
 
             <Link
               href="/tour-guides/register"
-              className="inline-flex h-[52px] w-[185px] items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
+              className="inline-flex h-[52px] w-[185px] cursor-pointer items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
               style={{
                 fontFamily: "Inter, sans-serif",
                 paddingTop: 13.5,
@@ -165,7 +141,7 @@ const FilmPage = async () => {
 
             <a
               href="mailto:marketing@discoveraseer.com"
-              className="text-start text-[24px] font-normal leading-[27px] text-[#D3A6F6] underline underline-offset-4"
+              className="cursor-pointer text-start text-[24px] font-normal leading-[27px] text-[#D3A6F6] underline underline-offset-4"
               style={{ fontFamily: "Inter, sans-serif" }}
               dir="ltr"
             >

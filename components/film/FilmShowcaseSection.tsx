@@ -1,7 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Image from "next/image";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Mousewheel } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import "swiper/css";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@/components/events/EventsCarousel/Icons";
 import {
   FILM_SHOWCASE_FILTERS,
   type FilmShowcaseCard,
@@ -11,12 +20,42 @@ import {
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const inter = "var(--font-inter), Inter, sans-serif";
 
+const showcaseCardClass =
+  "relative block h-[420px] w-full overflow-hidden rounded-[20px]";
+
+const showcaseCardLinkClass = `${showcaseCardClass} cursor-pointer`;
+
+const IMAGE_QUALITY = 92;
+
+const NAV_BTN_CLASS =
+  "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
+
 interface FilmShowcaseSectionProps {
   cards: FilmShowcaseCard[];
 }
 
 const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
   const t = useTranslations("film");
+  const tCommon = useTranslations("common");
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [nav, setNav] = useState({
+    show: false,
+    canPrev: false,
+    canNext: false,
+  });
+
+  const syncNav = useCallback((s: SwiperType, count: number) => {
+    if (s.isLocked || count < 2) {
+      setNav({ show: false, canPrev: false, canNext: false });
+      return;
+    }
+    const eps = 0.02;
+    setNav({
+      show: true,
+      canPrev: s.progress > eps,
+      canNext: s.progress < 1 - eps,
+    });
+  }, []);
   const [selected, setSelected] = useState<FilmShowcaseCategory>("الكل");
 
   const filterLabels: Record<FilmShowcaseCategory, string> = {
@@ -28,8 +67,8 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
   };
 
   const visibleCards = useMemo(() => {
-    if (selected === "الكل") return cards.slice(0, 6);
-    return cards.filter((c) => c.category === selected).slice(0, 6);
+    if (selected === "الكل") return cards;
+    return cards.filter((c) => c.category === selected);
   }, [cards, selected]);
 
   return (
@@ -53,7 +92,7 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                   key={filter}
                   type="button"
                   onClick={() => setSelected(filter)}
-                  className={`h-[50px] min-w-[80px] shrink-0 border-b-2 px-2 text-center text-[16px] leading-6 ${
+                  className={`h-[50px] min-w-[80px] shrink-0 cursor-pointer border-b-2 px-2 text-center text-[16px] leading-6 ${
                     active
                       ? "border-primary text-primary"
                       : "border-transparent text-foreground"
@@ -66,24 +105,107 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
             })}
           </div>
 
-          <div className="w-full overflow-x-auto" dir="ltr">
-            <div className="flex min-w-max items-start gap-[10px]">
-              {visibleCards.map((card) => (
-                <article
-                  key={card.id}
-                  className="relative h-[420px] w-[345px] shrink-0 overflow-hidden rounded-[20px]"
+          <div className="w-full min-w-0 pb-1" dir="ltr">
+            {visibleCards.length > 0 ? (
+              <>
+                <Swiper
+                  key={selected}
+                  modules={[FreeMode, Mousewheel]}
+                  grabCursor
+                  mousewheel={{
+                    forceToAxis: true,
+                    sensitivity: 1,
+                    releaseOnEdges: true,
+                  }}
+                  freeMode={{
+                    enabled: true,
+                    momentum: true,
+                    momentumRatio: 0.55,
+                    momentumVelocityRatio: 0.55,
+                  }}
+                  slidesPerView="auto"
+                  spaceBetween={10}
+                  resistanceRatio={0.85}
+                  watchOverflow
+                  className="film-showcase-swiper"
+                  onSwiper={(s) => {
+                    swiperRef.current = s;
+                    requestAnimationFrame(() =>
+                      syncNav(s, visibleCards.length),
+                    );
+                  }}
+                  onProgress={(s) => syncNav(s, visibleCards.length)}
+                  onSlideChange={(s) => syncNav(s, visibleCards.length)}
+                  onResize={(s) => syncNav(s, visibleCards.length)}
                 >
-                  <img src={card.image} alt={card.title} className="h-full w-full object-cover" />
-                  <div className="absolute inset-x-0 bottom-0 h-[120px] bg-linear-to-b from-transparent to-black/80" />
-                  <h3
-                    className={`absolute bottom-6 start-6 text-start text-[20px] font-bold leading-[30px] text-white`}
-                    style={{ fontFamily: ara }}
-                  >
-                    {card.title}
-                  </h3>
-                </article>
-              ))}
-            </div>
+                  {visibleCards.map((card, index) => {
+                    const body = (
+                      <>
+                        <Image
+                          src={card.image}
+                          alt={card.title}
+                          fill
+                          quality={IMAGE_QUALITY}
+                          priority={selected === "الكل" && index === 0}
+                          className="object-cover"
+                          sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 690px"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 h-[120px] bg-linear-to-b from-transparent to-black/80" />
+                        <h3
+                          className={`absolute bottom-6 start-6 text-start text-[20px] font-bold leading-[30px] text-white`}
+                          style={{ fontFamily: ara }}
+                        >
+                          {card.title}
+                        </h3>
+                      </>
+                    );
+
+                    return (
+                      <SwiperSlide
+                        key={card.id}
+                        className="w-[345px]! max-w-[345px] shrink-0"
+                      >
+                        {card.watchUrl ? (
+                          <a
+                            href={card.watchUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={showcaseCardLinkClass}
+                          >
+                            {body}
+                          </a>
+                        ) : (
+                          <article className={showcaseCardClass}>{body}</article>
+                        )}
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
+
+                {nav.show ? (
+                  <div className="mt-4 flex flex-row items-center justify-center gap-3 sm:justify-start">
+                    <button
+                      type="button"
+                      aria-label={tCommon("previous")}
+                      disabled={!nav.canPrev}
+                      className={NAV_BTN_CLASS}
+                      onClick={() => swiperRef.current?.slidePrev(320)}
+                    >
+                      <ChevronLeftIcon />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={tCommon("next")}
+                      disabled={!nav.canNext}
+                      className={NAV_BTN_CLASS}
+                      onClick={() => swiperRef.current?.slideNext(320)}
+                    >
+                      <ChevronRightIcon />
+                    </button>
+                  </div>
+                ) : null}
+              </>
+            ) : null}
           </div>
         </div>
       </div>

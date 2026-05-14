@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from "swiper/modules";
+import { FreeMode, Mousewheel } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import { PointOfInterest } from "./data";
@@ -35,9 +35,16 @@ export const PreviewImages = ({
   if (points.length === 0) return null;
 
   return (
-    <div className="relative z-10 w-full min-w-0 max-w-full" dir="ltr">
-      <Swiper
-        modules={[FreeMode]}
+    <div className="relative z-10 flex w-full min-w-0 max-w-full justify-end" dir="ltr">
+      <div className="w-max min-w-0 max-w-full">
+        <Swiper
+        modules={[FreeMode, Mousewheel]}
+        grabCursor
+        mousewheel={{
+          forceToAxis: true,
+          sensitivity: 1,
+          releaseOnEdges: true,
+        }}
         className="points-preview-swiper py-2"
         slidesPerView="auto"
         spaceBetween={10}
@@ -86,6 +93,7 @@ export const PreviewImages = ({
           );
         })}
       </Swiper>
+      </div>
     </div>
   );
 };
