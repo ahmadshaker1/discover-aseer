@@ -364,6 +364,7 @@
     "dishesSection": {
       "title": "Taste traditional Aseeri dishes",
       "description": "Aseeri cooking brings mountains, valleys, and farms together on one table: coffee from highland beans, dates from Bisha, mountain wheat and valley grains, fresh dairy, and wildflower honey—often finishing with slow-cooked haneeth from local herds. Explore dishes like haneeth, areekah, mashgothah, asidah, mifa bread from the tannur, marqoush bread, mabthoothah, and more.",
+      "browseAll": "View all dishes",
       "cards": {
         "dish1": "Haneeth",
         "dish2": "Areekah",
@@ -386,6 +387,7 @@
     "localFlavorsSection": {
       "title": "Local flavours",
       "subtitle": "A window into Aseer's most distinctive tastes",
+      "browseAll": "View all flavours",
       "cards": {
         "flavor1": "Haneeth",
         "flavor2": "Areekah",
@@ -431,6 +433,14 @@
     "chefsVideoSection": {
       "title": "Meet Aseer's chefs",
       "subtitle": "Stories from the kitchens that carry the region's flavours forward"
+    },
+    "breadcrumbCuisine": "Aseeri cuisine",
+    "back": "Back",
+    "dishesBrowse": {
+      "title": "Traditional Aseeri dishes"
+    },
+    "flavorsBrowse": {
+      "title": "Local flavours"
     }
   },
   "planner": {

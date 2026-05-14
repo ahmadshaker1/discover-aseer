@@ -1,22 +1,19 @@
 "use client";
 
-import Image from "next/image";
+import { Link } from "@/i18n/navigation";
+import CuisineGridCard, { type CuisineGridCardData } from "./CuisineGridCard";
+
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
-export interface AseerCuisineDishCard {
-  id: string;
-  title: string;
-  image: string;
-}
+export interface AseerCuisineDishCard extends CuisineGridCardData {}
 
 export interface AseerCuisineDishesSectionData {
-  // Backend (Directus): section heading.
   title: string;
-  // Backend (Directus): long section description text.
   description: string;
-  // Backend (Directus): exactly 4 cards for this row (image + title).
   cards: AseerCuisineDishCard[];
+  ctaLabel: string;
+  ctaHref: string;
 }
 
 interface AseerCuisineDishesSectionProps {
@@ -47,28 +44,19 @@ const AseerCuisineDishesSection = ({ data }: AseerCuisineDishesSectionProps) => 
         <div className="px-4 sm:px-8 md:px-[62px]">
           <div className="mx-auto grid w-full max-w-[1316px] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {data.cards.slice(0, 4).map((card) => (
-              <article
-                key={card.id}
-                className="relative h-[305px] w-full max-w-[282px] justify-self-center overflow-hidden rounded-[10px] shadow-[0px_4.28px_3.37px_0px_#29489803,0px_8.72px_6.97px_0px_#29489805,0px_21.4px_13.91px_0px_#29489806]"
-              >
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 50vw, 282px"
-                />
-                <div className="absolute inset-x-0 bottom-0 h-[51px] rounded-b-[10px] bg-[linear-gradient(179.54deg,rgba(0,0,0,0)_0.39%,#000000_99.6%)] px-5 py-4">
-                  <p
-                    className={`line-clamp-1 text-[24px] font-bold leading-[119%] text-white text-start`}
-                    style={{ fontFamily: ara }}
-                  >
-                    {card.title}
-                  </p>
-                </div>
-              </article>
+              <CuisineGridCard key={card.id} card={card} />
             ))}
           </div>
+        </div>
+
+        <div className="flex justify-center px-4">
+          <Link
+            href={data.ctaHref}
+            className="flex h-[52px] min-w-[161px] items-center justify-center rounded-[55px] border border-primary/40 bg-primary px-6 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
+            style={{ fontFamily: ara }}
+          >
+            {data.ctaLabel}
+          </Link>
         </div>
       </div>
     </section>
