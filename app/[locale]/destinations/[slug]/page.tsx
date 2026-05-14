@@ -5,8 +5,10 @@ import DestinationsIntroSection from "@/components/destinations/DestinationsIntr
 import DestinationsLandmarksSection from "@/components/destinations/DestinationsLandmarksSection";
 import DestinationsMapSection from "@/components/destinations/DestinationsMapSection";
 import {
-  fetchDestinationsWithFallback,
+  fetchDestinations,
+  filterDestinationsByArea,
   getDestinationBySlug,
+  resolveDestinationMapCenter,
 } from "@/components/destinations/data";
 import type { Destination } from "@/components/destinations/data";
 import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
@@ -36,7 +38,8 @@ function relatedLandmarkDestinations(
       : all.filter((d) => d.slug !== slug);
 
   const withoutSelf = related.filter((d) => d.slug !== slug);
-  const list = withoutSelf.length > 0 ? withoutSelf : all.filter((d) => d.slug !== slug);
+  const list =
+    withoutSelf.length > 0 ? withoutSelf : all.filter((d) => d.slug !== slug);
   return list.slice(0, 8);
 }
 
@@ -51,22 +54,17 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
   const { slug } = await params;
   const [destination, allDestinations] = await Promise.all([
     getDestinationBySlug(slug, locale),
-    fetchDestinationsWithFallback(locale),
+    fetchDestinations(locale),
   ]);
 
   if (!destination) notFound();
 
-  const isAbha = slug === ABHA_SLUG;
-  const introTitle = isAbha ? tDest("introTitle") : destination.location.trim() || destination.area || destination.title;
-  const introParagraphs = isAbha ? INTRO_PARAGRAPH_KEYS.map((key) => tDest(key)) : [];
-  const landmarksHeading = isAbha
-    ? tDest("landmarksSectionTitle")
-    : tDest("landmarksSectionCityTitle", { city: destination.title });
-
-  const landmarkCards = relatedLandmarkDestinations(destination, allDestinations, slug);
-
-  const defaultAbhaLat = 18.2164;
-  const defaultAbhaLon = 42.5053;
+  const areaDestinations = filterDestinationsByArea(
+    allDestinations,
+    destination.destinationFilter,
+    destination.slug,
+  );
+  const mapCenter = resolveDestinationMapCenter(destination);
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
@@ -77,33 +75,31 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
           { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
         title={destination.title}
-        subtitle=""
+        subtitle={destination.subtitle}
         backgroundImage={destination.image}
         weatherArea={destination.title}
-        weatherLat={destination.lat ?? defaultAbhaLat}
-        weatherLon={destination.lon ?? defaultAbhaLon}
+        weatherLat={mapCenter.lat}
+        weatherLon={mapCenter.lon}
       />
 
       <DestinationsIntroSection
-        title={introTitle}
-        imageUrl={isAbha ? ABHA_INTRO_IMAGE : destination.image}
+        title={destination.city || destination.title}
+        imageUrl={destination.introImage || destination.image}
         imageAlt={destination.title}
-        paragraphs={introParagraphs}
-        descriptionHtml={isAbha ? undefined : destination.description}
-        hideImage={!isAbha && !destination.image}
-        centerContent={!isAbha && !destination.image}
+        paragraphs={[]}
+        descriptionHtml={destination.description}
       />
 
       <DestinationsLandmarksSection
-        destinations={landmarkCards}
-        sectionHeading={landmarksHeading}
-        showBrowseMoreLink={false}
+        destinations={areaDestinations}
+        sectionTitle={destination.sectionTitle || destination.title}
+        excludeSlug={destination.slug}
       />
 
       <DestinationsMapSection
         areaLabel={destination.title}
-        lat={destination.lat}
-        lon={destination.lon}
+        lat={mapCenter.lat}
+        lon={mapCenter.lon}
       />
 
       <EventsInfo />
@@ -112,12 +108,8 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
 };
 
 export async function generateStaticParams() {
-  const [ar, en] = await Promise.all([
-    fetchDestinationsWithFallback("ar"),
-    fetchDestinationsWithFallback("en"),
-  ]);
-  const slugs = new Set([...ar, ...en].map((d) => d.slug));
-  return Array.from(slugs).map((slug) => ({ slug }));
+  const rows = await fetchDestinations("ar");
+  return rows.map((d) => ({ slug: d.slug }));
 }
 
 export default DestinationSlugPage;

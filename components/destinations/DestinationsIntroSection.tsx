@@ -1,37 +1,11 @@
 "use client";
 
-import {
-  FacebookIcon,
-  LinkedInIcon,
-  WhatsAppIcon,
-  XIcon,
-} from "@/components/Footer/Icons";
+import { FacebookIcon, LinkedInIcon, WhatsAppIcon, XIcon, MailIcon } from "@/components/shared/icons";
 import SafeHtml from "@/components/common/SafeHtml";
 import { useTranslations } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
-
-function MailIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M3 6.75C3 5.92157 3.67157 5.25 4.5 5.25H19.5C20.3284 5.25 21 5.92157 21 6.75V17.25C21 18.0784 20.3284 18.75 19.5 18.75H4.5C3.67157 18.75 3 18.0784 3 17.25V6.75Z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M3.5 7L11.0222 12.2667C11.6206 12.6855 12.4194 12.6855 13.0178 12.2667L20.5 7"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-
-
 
 export interface DestinationsIntroSectionProps {
   title: string;
@@ -59,14 +33,12 @@ const DestinationsIntroSection = ({
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]">
       <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:flex-row lg:items-start">
         <div
-          className={`flex w-full flex-col gap-6 ${
-            hideImage ? "max-w-[900px]" : "max-w-[704px]"
-          } ${centerContent ? "mx-auto items-center text-center" : "text-start"}`}
+          className={`flex w-full flex-col gap-6 ${hideImage ? "max-w-[900px]" : "max-w-[704px]"
+            } ${centerContent ? "mx-auto items-center text-center" : "text-start"}`}
         >
           <h2
-            className={`w-full text-[44px] font-bold leading-[180%] text-foreground ${
-              centerContent ? "text-center" : "text-start"
-            }`}
+            className={`w-full text-[44px] font-bold leading-[180%] text-foreground ${centerContent ? "text-center" : "text-start"
+              }`}
             style={{ fontFamily: ara }}
           >
             {title}
@@ -79,29 +51,28 @@ const DestinationsIntroSection = ({
             >
               {t("share")}
             </span>
-            <div className="flex items-center gap-2 text-foreground/70">
-              <a href="#" aria-label="WhatsApp" className="hover:opacity-80">
+            <div className="flex items-center gap-2">
+              <a href="#" aria-label="WhatsApp" className="text-[#535353] hover:opacity-80 dark:text-white">
                 <WhatsAppIcon />
               </a>
-              <a href="mailto:info@discoveraseer.com" aria-label="Mail" className="hover:opacity-80">
+              <a href="mailto:info@discoveraseer.com" aria-label="Mail" className="text-[#535353] hover:opacity-80 dark:text-white">
                 <MailIcon />
               </a>
-              <a href="#" aria-label="LinkedIn" className="hover:opacity-80">
+              <a href="#" aria-label="LinkedIn" className="text-[#535353] hover:opacity-80 dark:text-white">
                 <LinkedInIcon />
               </a>
-              <a href="#" aria-label="Facebook" className="hover:opacity-80">
+              <a href="#" aria-label="Facebook" className="text-[#535353] hover:opacity-80 dark:text-white">
                 <FacebookIcon />
               </a>
-              <a href="#" aria-label="X" className="hover:opacity-80">
+              <a href="#" aria-label="X" className="text-[#535353] hover:opacity-80 dark:text-white">
                 <XIcon />
               </a>
             </div>
           </div>
 
           <div
-            className={`w-full text-[15px] font-light leading-[130%] text-muted-foreground ${
-              centerContent ? "text-center" : "text-start"
-            }`}
+            className={`w-full text-[15px] font-light leading-[130%] text-muted-foreground ${centerContent ? "text-center" : "text-start"
+              }`}
             style={{ fontFamily: ibm }}
           >
             {descriptionHtml ? (

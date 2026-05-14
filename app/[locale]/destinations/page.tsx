@@ -1,17 +1,15 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import DestinationsMainPageContent from "@/components/destinations/DestinationsMainPageContent";
-import { fetchDestinationsWithFallback } from "@/components/destinations/data";
+import { fetchDestinations } from "@/components/destinations/data";
 
 const TOUR_GUIDE_REGISTER_HREF = "/tour-guides/register";
 
-const DESTINATIONS_HERO_IMAGE = "/assets/destinations/hero-destinations.jpg";
-
 const DestinationsPage = async () => {
   const locale = (await getLocale()) as "ar" | "en";
-  const tAttr = await getTranslations("attractionsPage");
+  const t = await getTranslations("attractionsPage");
   const tCommon = await getTranslations("common");
-  const destinations = await fetchDestinationsWithFallback(locale);
+  const destinations = await fetchDestinations(locale);
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
@@ -20,12 +18,12 @@ const DestinationsPage = async () => {
           { label: tCommon("destinations") },
           { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
-        title={tAttr("browseTitle")}
+        title={t("browseTitle")}
         subtitle={tCommon("subtitleOneVisit")}
-        backgroundImage={DESTINATIONS_HERO_IMAGE}
+        backgroundImage="/assets/activities/activities.jpg"
         primaryCta={{
           href: TOUR_GUIDE_REGISTER_HREF,
-          label: tAttr("contributeDestinations"),
+          label: t("contributeDestinations"),
         }}
       />
 

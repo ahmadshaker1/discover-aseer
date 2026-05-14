@@ -1,36 +1,55 @@
 "use client";
 
-import MapPlaceholderSection from "@/components/MapPlaceholderSection";
-import { useLocale, useTranslations } from "next-intl";
+import DestinationPreviewMap from "@/components/destinations/DestinationPreviewMap";
+import { DEFAULT_ABHA_MAP_CENTER } from "@/components/destinations/data";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 interface DestinationsMapSectionProps {
-  areaLabel?: string;
+  areaLabel: string;
   lat?: number;
   lon?: number;
 }
 
-const DestinationsMapSection = ({ areaLabel, lat, lon }: DestinationsMapSectionProps) => {
-  const locale = useLocale();
+const ara = "var(--font-ara-hamah-1964), sans-serif";
+
+const DestinationsMapSection = ({
+  areaLabel,
+  lat,
+  lon,
+}: DestinationsMapSectionProps) => {
   const tDest = useTranslations("destinations");
-  const resolvedArea = areaLabel ?? tDest("heroTitleAbha");
 
-  const abhaQuery =
-    locale === "en"
-      ? encodeURIComponent("Abha, Saudi Arabia")
-      : encodeURIComponent("أبها، السعودية");
-  const fallbackMapsUrl = `https://www.google.com/maps/search/?api=1&query=${abhaQuery}`;
+  const mapLat = typeof lat === "number" ? lat : DEFAULT_ABHA_MAP_CENTER.lat;
+  const mapLon = typeof lon === "number" ? lon : DEFAULT_ABHA_MAP_CENTER.lon;
 
-  const mapHref =
-    typeof lat === "number" && typeof lon === "number"
-      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${lat},${lon}`)}`
-      : fallbackMapsUrl;
+  const mapHref = {
+    pathname: "/interactive-map" as const,
+    query: {
+      lat: String(mapLat),
+      lon: String(mapLon),
+      title: areaLabel,
+    },
+  };
 
   return (
-    <MapPlaceholderSection
-      ctaLabel={tDest("mapViewOnMap", { area: resolvedArea })}
-      mapHref={mapHref}
-      imageAlt={tDest("mapAlt", { area: resolvedArea })}
-    />
+    <section className="w-full bg-background py-12 text-foreground">
+      <div className="mx-auto w-full max-w-[1437px] px-4 sm:px-6">
+        <div className="relative h-[468.7745056152344px] w-full max-w-[1437px] shrink-0 overflow-hidden self-center rounded-[10px]">
+          <DestinationPreviewMap lat={mapLat} lon={mapLon} title={areaLabel} />
+          <Link
+            href={mapHref}
+            className="absolute top-1/2 left-1/2 z-10 inline-flex h-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-[10px] overflow-hidden text-ellipsis whitespace-nowrap rounded-[55px] border border-solid border-[#FFFFFF54] bg-[#6027D2] px-4 py-[10px] text-center text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90"
+            style={{
+              fontFamily: ara,
+              width: "min(100% - 2rem, 220px)",
+            }}
+          >
+            {tDest("mapViewOnMap", { area: areaLabel })}
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 };
 

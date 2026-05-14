@@ -4,282 +4,30 @@ import AseerCuisineRestaurantsSection from "@/components/aseer-cuisine/AseerCuis
 import AseerCuisineLocalFlavorsSection from "@/components/aseer-cuisine/AseerCuisineLocalFlavorsSection";
 import AseerCuisineCookingExperiencesSection from "@/components/experiences/AseerExperiencesSection";
 import AseerCuisineChefsVideoSection from "@/components/aseer-cuisine/AseerCuisineChefsVideoSection";
-import { fetchAseerCuisineDishes } from "@/components/aseer-cuisine/data";
+import { fetchFeaturedCuisineCards } from "@/components/aseer-cuisine/data";
 import type { ExperienceCardProps } from "@/components/experiences/ExperienceCard/ExperienceCard";
 import { fetchExperiences } from "@/components/experiences/data";
 import { fetchRestaurants } from "@/components/restaurants/data";
 import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsCredibilitySection";
 import { getLocale, getTranslations } from "next-intl/server";
-import { buildAseerCuisineFallback } from "./buildFallbackData";
-import type { AseerCuisinePageData } from "./types";
 
-/**
- * Backend handoff (Directus):
- * - Page is Directus-ready: `fetchAseerCuisinePageData()` reads from Directus and falls back to dummy data.
- * - Expected Directus collection: `aseer_cuisine_page` (single item).
- * - Preferred payload shape is nested JSON sections on the item:
- *   `hero`, `dishesSection`, `restaurantsSection`, `localFlavorsSection`, `cookingExperiencesSection`, `chefsVideoSection`.
- * - Hero poster and dishes grid (first four cards) use the `cuisine` collection when available
- *   (`fetchAseerCuisineDishes` — published items, shape: `title_en` / `title_ar`, `hero_image_url`, …).
- *   Otherwise `aseer_cuisine_page` / fallbacks apply.
- * - Keep component markup unchanged; update only Directus fields/content.
- */
+export const revalidate = 300;
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
-
-function asString(value: unknown, fallback: string): string {
-  return typeof value === "string" && value.trim() ? value : fallback;
-}
-
-function asNumber(value: unknown, fallback: number): number {
-  if (typeof value === "number" && !Number.isNaN(value)) return value;
-  if (typeof value === "string") {
-    const parsed = Number(value);
-    if (!Number.isNaN(parsed)) return parsed;
-  }
-  return fallback;
-}
-
-function asArray(value: unknown): unknown[] {
-  return Array.isArray(value) ? value : [];
-}
-
-function pick(record: Record<string, unknown>, ...keys: string[]): unknown {
-  for (const key of keys) {
-    if (key in record) return record[key];
-  }
-  return undefined;
-}
-
-function resolveMedia(value: unknown, directusUrl: string, fallback: string): string {
-  if (typeof value !== "string" || !value.trim()) return fallback;
-  let v = value.trim();
-  if (/^https?:\/\//i.test(v) || v.startsWith("//")) return v;
-  if (v.startsWith("/")) {
-    if (v.startsWith("/restaurant/")) {
-      v = `/assets${v}`;
-    }
-    return v;
-  }
-  const base = directusUrl.replace(/\/$/, "");
-  return `${base}/assets/${v}`;
-}
-
-function mapExperienceCards(
-  value: unknown,
-  fallbackCards: ExperienceCardProps[],
-  directusUrl: string
-): ExperienceCardProps[] {
-  const list = asArray(value);
-  if (list.length === 0) return fallbackCards;
-
-  return list.map((item, index) => {
-    const raw = isRecord(item) ? item : {};
-    const fallback = fallbackCards[index] ?? fallbackCards[0];
-    return {
-      id: asString(raw.id, `${fallback.id}-${index}`),
-      imageUrl: resolveMedia(raw.imageUrl ?? raw.image, directusUrl, fallback.imageUrl),
-      category: asString(raw.category, fallback.category),
-      title: asString(raw.title, fallback.title),
-      duration: asString(raw.duration, fallback.duration),
-      description: asString(raw.description, fallback.description),
-      provider: asString(raw.provider, fallback.provider),
-      price: asNumber(raw.price, Number(fallback.price)),
-      currency: asString(raw.currency, fallback.currency ?? "ر.س"),
-      groupSize: asNumber(raw.groupSize, fallback.groupSize),
-      bookUrl: asString(raw.bookUrl, fallback.bookUrl),
-    };
-  });
-}
-
-function mapAseerCuisineDataFromDirectus(
-  item: Record<string, unknown>,
-  directusUrl: string,
-  fallback: AseerCuisinePageData
-): AseerCuisinePageData {
-  // Supports both direct nested sections and wrapped payloads.
-  const source =
-    (isRecord(item.pageData) && item.pageData) ||
-    (isRecord(item.page_data) && item.page_data) ||
-    (isRecord(item.data) && item.data) ||
-    item;
-
-  const heroRaw = isRecord(pick(source, "hero")) ? (pick(source, "hero") as Record<string, unknown>) : {};
-  const dishesRaw = isRecord(pick(source, "dishesSection", "dishes_section"))
-    ? (pick(source, "dishesSection", "dishes_section") as Record<string, unknown>)
-    : {};
-  const restaurantsRaw = isRecord(pick(source, "restaurantsSection", "restaurants_section"))
-    ? (pick(source, "restaurantsSection", "restaurants_section") as Record<string, unknown>)
-    : {};
-  const localFlavorsRaw = isRecord(pick(source, "localFlavorsSection", "local_flavors_section"))
-    ? (pick(source, "localFlavorsSection", "local_flavors_section") as Record<string, unknown>)
-    : {};
-  const cookingRaw = isRecord(pick(source, "cookingExperiencesSection", "cooking_experiences_section"))
-    ? (pick(source, "cookingExperiencesSection", "cooking_experiences_section") as Record<string, unknown>)
-    : {};
-  const chefsRaw = isRecord(pick(source, "chefsVideoSection", "chefs_video_section"))
-    ? (pick(source, "chefsVideoSection", "chefs_video_section") as Record<string, unknown>)
-    : {};
-
-  return {
-    hero: {
-      videoUrl: resolveMedia(pick(heroRaw, "videoUrl", "video_url"), directusUrl, fallback.hero.videoUrl),
-      posterImage: resolveMedia(
-        pick(heroRaw, "posterImage", "poster_image"),
-        directusUrl,
-        fallback.hero.posterImage
-      ),
-    },
-    dishesSection: {
-      title: asString(pick(dishesRaw, "title"), fallback.dishesSection.title),
-      description: asString(pick(dishesRaw, "description"), fallback.dishesSection.description),
-      cards: asArray(pick(dishesRaw, "cards", "items")).length
-        ? asArray(pick(dishesRaw, "cards", "items")).map((item, index) => {
-          const raw = isRecord(item) ? item : {};
-          const fallbackCard =
-            fallback.dishesSection.cards[index] ?? fallback.dishesSection.cards[0];
-          return {
-            id: asString(raw.id, `${fallbackCard.id}-${index}`),
-            title: asString(raw.title, fallbackCard.title),
-            image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
-          };
-        })
-        : fallback.dishesSection.cards,
-    },
-    restaurantsSection: {
-      title: asString(pick(restaurantsRaw, "title"), fallback.restaurantsSection.title),
-      ctaLabel: asString(
-        pick(restaurantsRaw, "ctaLabel", "cta_label"),
-        fallback.restaurantsSection.ctaLabel
-      ),
-      ctaHref: asString(
-        pick(restaurantsRaw, "ctaHref", "cta_href"),
-        fallback.restaurantsSection.ctaHref
-      ),
-      cards: asArray(pick(restaurantsRaw, "cards", "items")).length
-        ? asArray(pick(restaurantsRaw, "cards", "items")).map((item, index) => {
-          const raw = isRecord(item) ? item : {};
-          const fallbackCard =
-            fallback.restaurantsSection.cards[index] ?? fallback.restaurantsSection.cards[0];
-          return {
-            id: asString(raw.id, `${fallbackCard.id}-${index}`),
-            image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
-            title: asString(pick(raw, "title"), fallbackCard.title),
-            location: asString(pick(raw, "location"), fallbackCard.location),
-            cuisineType: asString(
-              pick(raw, "cuisineType", "cuisine_type"),
-              fallbackCard.cuisineType
-            ),
-            priceRange: asString(
-              pick(raw, "priceRange", "price_range"),
-              fallbackCard.priceRange
-            ),
-            rating: asNumber(pick(raw, "rating"), fallbackCard.rating),
-            reviewsCount: asNumber(
-              pick(raw, "reviewsCount", "reviews_count"),
-              fallbackCard.reviewsCount
-            ),
-          };
-        })
-        : fallback.restaurantsSection.cards,
-    },
-    localFlavorsSection: {
-      title: asString(pick(localFlavorsRaw, "title"), fallback.localFlavorsSection.title),
-      subtitle: asString(pick(localFlavorsRaw, "subtitle"), fallback.localFlavorsSection.subtitle),
-      cards: asArray(pick(localFlavorsRaw, "cards", "items")).length
-        ? asArray(pick(localFlavorsRaw, "cards", "items")).map((item, index) => {
-          const raw = isRecord(item) ? item : {};
-          const fallbackCard =
-            fallback.localFlavorsSection.cards[index] ?? fallback.localFlavorsSection.cards[0];
-          return {
-            id: asString(raw.id, `${fallbackCard.id}-${index}`),
-            title: asString(pick(raw, "title"), fallbackCard.title),
-            image: resolveMedia(pick(raw, "image", "image_url"), directusUrl, fallbackCard.image),
-          };
-        })
-        : fallback.localFlavorsSection.cards,
-    },
-    cookingExperiencesSection: {
-      title: asString(pick(cookingRaw, "title"), fallback.cookingExperiencesSection.title),
-      description: asString(
-        pick(cookingRaw, "description"),
-        fallback.cookingExperiencesSection.description
-      ),
-      ctaLabel: asString(
-        pick(cookingRaw, "ctaLabel", "cta_label"),
-        fallback.cookingExperiencesSection.ctaLabel
-      ),
-      ctaHref: asString(
-        pick(cookingRaw, "ctaHref", "cta_href"),
-        fallback.cookingExperiencesSection.ctaHref
-      ),
-      cards: mapExperienceCards(
-        pick(cookingRaw, "cards", "items"),
-        fallback.cookingExperiencesSection.cards,
-        directusUrl
-      ),
-    },
-    chefsVideoSection: {
-      title: asString(pick(chefsRaw, "title"), fallback.chefsVideoSection.title),
-      subtitle: asString(pick(chefsRaw, "subtitle"), fallback.chefsVideoSection.subtitle),
-      videoUrl: resolveMedia(
-        pick(chefsRaw, "videoUrl", "video_url"),
-        directusUrl,
-        fallback.chefsVideoSection.videoUrl
-      ),
-      posterImage: resolveMedia(
-        pick(chefsRaw, "posterImage", "poster_image"),
-        directusUrl,
-        fallback.chefsVideoSection.posterImage
-      ),
-    },
-  };
-}
-
-async function fetchAseerCuisinePageData(): Promise<AseerCuisinePageData> {
-  const t = await getTranslations("aseerCuisine");
-  const tCommon = await getTranslations("common");
-  const fallback = buildAseerCuisineFallback(t, tCommon("currencySar"));
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
-  if (!directusUrl) return fallback;
-
-  try {
-    /**
-     * Directus contract:
-     * - Collection: `aseer_cuisine_page`
-     * - Return one item containing nested JSON section fields.
-     * - If shape differs, update only `mapAseerCuisineDataFromDirectus`.
-     */
-    const response = await fetch(`${directusUrl}/items/aseer_cuisine_page?limit=1`, {
-      next: { revalidate: 300 },
-    });
-    if (!response.ok) return fallback;
-
-    const payload: unknown = await response.json();
-    if (!isRecord(payload) || !Array.isArray(payload.data) || payload.data.length === 0) {
-      return fallback;
-    }
-
-    const firstItem = payload.data[0];
-    if (!isRecord(firstItem)) return fallback;
-    return mapAseerCuisineDataFromDirectus(firstItem, directusUrl, fallback);
-  } catch {
-    return fallback;
-  }
-}
+const CUISINE_VIDEO = "/videos/cooking.mp4";
+const FALLBACK_POSTER = "/assets/activities/aseer-cuisine.jpg";
 
 const AseerCuisinePage = async () => {
+  const t = await getTranslations("aseerCuisine");
   const tCommon = await getTranslations("common");
-  const locale = await getLocale();
+  const locale = (await getLocale()) as "ar" | "en";
 
-  const [aseerCuisinePageData, restaurants, experiencesResult, cuisineDishes] = await Promise.all([
-    fetchAseerCuisinePageData(),
+  const [dishCards, flavorCards, restaurants, experiencesResult] = await Promise.all([
+    fetchFeaturedCuisineCards({ locale, cuisineType: "dish", count: 4 }),
+    fetchFeaturedCuisineCards({ locale, cuisineType: "flavour", count: 4 }),
     fetchRestaurants(),
     fetchExperiences(),
-    fetchAseerCuisineDishes({ locale }),
   ]);
+  const posterImage = dishCards[0]?.image || flavorCards[0]?.image || FALLBACK_POSTER;
 
   const cuisineRestaurants = restaurants.slice(0, 6).map((restaurant) => ({
     id: restaurant.id,
@@ -308,64 +56,64 @@ const AseerCuisinePage = async () => {
       bookUrl: experience.bookUrl,
     }));
 
-  const mergedData: AseerCuisinePageData = {
-    ...aseerCuisinePageData,
-    ...(cuisineDishes.length > 0
-      ? {
-          hero: {
-            ...aseerCuisinePageData.hero,
-            posterImage: cuisineDishes[0].image,
-          },
-          dishesSection: {
-            ...aseerCuisinePageData.dishesSection,
-            cards: cuisineDishes.slice(0, 4).map((d) => ({
-              id: d.id,
-              title: d.title,
-              image: d.image,
-            })),
-          },
-        }
-      : {}),
-    restaurantsSection:
-      cuisineRestaurants.length > 0
-        ? {
-          ...aseerCuisinePageData.restaurantsSection,
-          cards: cuisineRestaurants,
-          ctaHref: "/restaurants",
-        }
-        : aseerCuisinePageData.restaurantsSection,
-    cookingExperiencesSection:
-      cuisineExperiences.length > 0
-        ? {
-          ...aseerCuisinePageData.cookingExperiencesSection,
-          cards: cuisineExperiences,
-          ctaHref: "/experiences",
-        }
-        : aseerCuisinePageData.cookingExperiencesSection,
-  };
-
-  const cuisineCookingVideo = "/videos/cooking.mp4";
-  const pageData: AseerCuisinePageData = {
-    ...mergedData,
-    hero: {
-      ...mergedData.hero,
-      videoUrl: cuisineCookingVideo,
-    },
-    chefsVideoSection: {
-      ...mergedData.chefsVideoSection,
-      videoUrl: cuisineCookingVideo,
-    },
-  };
-
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <AseerCuisineHero data={pageData.hero} />
-      <AseerCuisineDishesSection data={pageData.dishesSection} />
-      <AseerCuisineRestaurantsSection data={pageData.restaurantsSection} />
-      <AseerCuisineLocalFlavorsSection data={pageData.localFlavorsSection} />
-      <AseerCuisineCookingExperiencesSection data={pageData.cookingExperiencesSection} />
+      <AseerCuisineHero
+        data={{
+          videoUrl: CUISINE_VIDEO,
+          posterImage,
+        }}
+      />
+
+      <AseerCuisineDishesSection
+        data={{
+          title: t("dishesSection.title"),
+          description: t("dishesSection.description"),
+          cards: dishCards,
+          ctaLabel: t("dishesSection.browseAll"),
+          ctaHref: "/aseer-cuisine/dishes",
+        }}
+      />
+
+      <AseerCuisineRestaurantsSection
+        data={{
+          title: t("restaurantsSection.title"),
+          ctaLabel: t("restaurantsSection.ctaLabel"),
+          ctaHref: "/restaurants",
+          cards: cuisineRestaurants,
+        }}
+      />
+
+      <AseerCuisineLocalFlavorsSection
+        data={{
+          title: t("localFlavorsSection.title"),
+          subtitle: t("localFlavorsSection.subtitle"),
+          cards: flavorCards,
+          ctaLabel: t("localFlavorsSection.browseAll"),
+          ctaHref: "/aseer-cuisine/flavors",
+        }}
+      />
+
+      <AseerCuisineCookingExperiencesSection
+        data={{
+          title: t("cookingExperiencesSection.title"),
+          description: t("cookingExperiencesSection.description"),
+          ctaLabel: t("cookingExperiencesSection.ctaLabel"),
+          ctaHref: "/experiences",
+          cards: cuisineExperiences,
+        }}
+      />
+
       <RestaurantsCredibilitySection />
-      <AseerCuisineChefsVideoSection data={pageData.chefsVideoSection} />
+
+      <AseerCuisineChefsVideoSection
+        data={{
+          title: t("chefsVideoSection.title"),
+          subtitle: t("chefsVideoSection.subtitle"),
+          videoUrl: CUISINE_VIDEO,
+          posterImage,
+        }}
+      />
     </div>
   );
 };

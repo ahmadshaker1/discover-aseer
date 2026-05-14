@@ -17,7 +17,6 @@ import { GlobeIcon, CrescentMoonIcon, BookletIcon } from "./Icons";
 
 export const discoverAseerLinks = [
   { href: "/destinations", labelKey: "common.destinations" },
-  { href: "/destinations/browse", labelKey: "nav.browseDestinations" },
   { href: "/attractions", labelKey: "common.attractions" },
   { href: "/about-aseer", labelKey: "aboutAseer.title" },
   { href: "/aseer-cuisine", labelKey: "aseerCuisine.title" },
