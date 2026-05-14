@@ -1,41 +1,33 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import {
-  InstagramIcon,
-  SnapchatIcon,
-  TiktokIcon,
-  WhatsAppIcon,
-  XIcon,
-  YouTubeIcon,
-} from "@/components/Footer/Icons";
+import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
+import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
 
 interface HeroProps {
   title?: string;
   subtitle?: string;
 }
 
-const heroSocialLinks = [
-  { href: "#", label: "X", Icon: XIcon },
-  { href: "#", label: "Snapchat", Icon: SnapchatIcon },
-  { href: "#", label: "WhatsApp", Icon: WhatsAppIcon },
-  { href: "#", label: "TikTok", Icon: TiktokIcon },
-  { href: "#", label: "YouTube", Icon: YouTubeIcon },
-  { href: "#", label: "Instagram", Icon: InstagramIcon },
-] as const;
-
 const heroSocialLinkClassDesktop =
-  "flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white transition-colors hover:bg-white/10 md:h-[52px] md:w-[52px] [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.18] md:[&_svg]:scale-[1.28]";
+  "flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white transition-colors hover:bg-white/10 md:h-[52px] md:w-[52px] [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.18] md:[&_svg]:scale-[1.28] [&_svg_path]:fill-white";
 
 const heroSocialLinkClassMobile =
-  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white transition-colors active:bg-white/10 [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.12]";
+  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white transition-colors active:bg-white/10 [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.12] [&_svg_path]:fill-white";
 
 function HeroSocialLinks({ linkClassName }: { linkClassName: string }) {
   return (
     <>
-      {heroSocialLinks.map(({ href, label, Icon }) => (
-        <a key={label} href={href} className={linkClassName} aria-label={label}>
-          <Icon />
+      {discoverAseerLinks.map(({ href, label, ariaLabel, platform }) => (
+        <a
+          key={label}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={linkClassName}
+          aria-label={ariaLabel}
+        >
+          <AseerSocialIcon platform={platform} />
         </a>
       ))}
     </>

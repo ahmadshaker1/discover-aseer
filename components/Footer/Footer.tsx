@@ -4,15 +4,9 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import AseerLogo from "../Logo/AseerLogo";
-import {
-  XIcon,
-  YouTubeIcon,
-  InstagramIcon,
-  SnapchatIcon,
-  WhatsAppIcon,
-  TiktokIcon,
-  BookletSmallArrowIcon,
-} from "./Icons";
+import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
+import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
+import { BookletSmallArrowIcon } from "./Icons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -234,48 +228,18 @@ const Footer = () => {
                   className="flex w-full flex-row items-center justify-end gap-3"
                   dir="ltr"
                 >
-                  <a
-                    href="#"
-                    className="text-white transition-opacity hover:opacity-80"
-                    aria-label="X"
-                  >
-                    <XIcon />
-                  </a>
-                  <a
-                    href="#"
-                    className="text-white transition-opacity hover:opacity-80"
-                    aria-label="Snapchat"
-                  >
-                    <SnapchatIcon />
-                  </a>
-                  <a
-                    href="#"
-                    className="text-white transition-opacity hover:opacity-80"
-                    aria-label="WhatsApp"
-                  >
-                    <WhatsAppIcon />
-                  </a>
-                  <a
-                    href="#"
-                    className="text-white transition-opacity hover:opacity-80"
-                    aria-label="TikTok"
-                  >
-                    <TiktokIcon />
-                  </a>
-                  <a
-                    href="#"
-                    className="text-white transition-opacity hover:opacity-80"
-                    aria-label="YouTube"
-                  >
-                    <YouTubeIcon />
-                  </a>
-                  <a
-                    href="#"
-                    className="text-white transition-opacity hover:opacity-80"
-                    aria-label="Instagram"
-                  >
-                    <InstagramIcon />
-                  </a>
+                  {discoverAseerLinks.map(({ href, label, ariaLabel, platform }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white transition-opacity hover:opacity-80 [&_path]:fill-white"
+                      aria-label={ariaLabel}
+                    >
+                      <AseerSocialIcon platform={platform} />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
