@@ -19,7 +19,6 @@ export const discoverAseerLinks = [
   { href: "/destinations", labelKey: "common.destinations" },
   { href: "/destinations/browse", labelKey: "nav.browseDestinations" },
   { href: "/attractions", labelKey: "common.attractions" },
-  { href: "/attractions/inner", labelKey: "nav.indoorAttractions" },
   { href: "/about-aseer", labelKey: "aboutAseer.title" },
   { href: "/aseer-cuisine", labelKey: "aseerCuisine.title" },
   { href: "/aseer-community", labelKey: "aseerCommunity.title" },
