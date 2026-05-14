@@ -34,7 +34,7 @@ const includesInterests = (d: Destination, selected: string[]): boolean => {
 };
 
 /**
- * Browse `/destinations/browse` — same layout as landmarks listing; filters use
+ * Browse `/destinations` — same layout as landmarks listing; filters use
  * `Destination.cityId` and `Destination.interestTags` from Directus.
  */
 const DestinationsMainPageContent = ({

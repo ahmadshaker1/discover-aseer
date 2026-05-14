@@ -48,7 +48,7 @@ const LandingWelcomeSection = ({
     },
     {
       title: tCommon("mainDestinationsCard"),
-      href: "/destinations/browse",
+      href: "/destinations",
       image: "/assets/landing/city1.jpg",
     },
     {

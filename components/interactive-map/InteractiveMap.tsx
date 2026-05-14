@@ -16,6 +16,11 @@ interface LocationPin {
 interface InteractiveMapProps {
   initialPins?: LocationPin[];
   onPinAdd?: (pin: LocationPin) => void;
+  initialFocus?: {
+    latitude: number;
+    longitude: number;
+    title?: string;
+  };
 }
 
 interface MapPlace {
@@ -79,6 +84,7 @@ const placesToGeoJSON = (
 const InteractiveMap = ({
   initialPins = [],
   onPinAdd,
+  initialFocus,
 }: InteractiveMapProps) => {
   const locale = useLocale();
   const t = useTranslations("interactiveMap");
@@ -162,6 +168,30 @@ const InteractiveMap = ({
     loadLocations();
   }, [locale]);
 
+  const focusCoordinates = useCallback(
+    (latitude: number, longitude: number, title?: string) => {
+      if (!mapRef.current) return;
+      mapRef.current.flyTo({
+        center: [longitude, latitude],
+        zoom: 12.5,
+        essential: true,
+      });
+
+      popupRef.current?.remove();
+      if (title) {
+        popupRef.current = new mapboxgl.Popup({ offset: 18, closeButton: false })
+          .setLngLat([longitude, latitude])
+          .setHTML(
+            `<div style="font-family: Arial, sans-serif; direction: inherit; text-align: start;">
+              <strong>${title}</strong>
+            </div>`,
+          )
+          .addTo(mapRef.current);
+      }
+    },
+    [],
+  );
+
   const focusPlace = useCallback((place: MapPlace) => {
     setSelectedPlaceId(place.id);
     if (
@@ -173,23 +203,8 @@ const InteractiveMap = ({
       popupRef.current?.remove();
       return;
     }
-    mapRef.current.flyTo({
-      center: [place.longitude, place.latitude],
-      zoom: 12.5,
-      essential: true,
-    });
-
-    popupRef.current?.remove();
-    popupRef.current = new mapboxgl.Popup({ offset: 18, closeButton: false })
-      .setLngLat([place.longitude, place.latitude])
-      .setHTML(
-        `<div style="font-family: Arial, sans-serif; direction: inherit; text-align: start;">
-          <strong>${place.title}</strong><br/>
-          <span style="font-size: 12px; opacity: 0.8;">${place.city}</span>
-        </div>`,
-      )
-      .addTo(mapRef.current);
-  }, []);
+    focusCoordinates(place.latitude, place.longitude, place.title);
+  }, [focusCoordinates]);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -356,6 +371,15 @@ const InteractiveMap = ({
     if (!initialPins.length || !onPinAdd) return;
     initialPins.forEach((pin) => onPinAdd(pin));
   }, [initialPins, onPinAdd]);
+
+  useEffect(() => {
+    if (!initialFocus || !mapRef.current || !mapLoadedRef.current) return;
+    focusCoordinates(
+      initialFocus.latitude,
+      initialFocus.longitude,
+      initialFocus.title,
+    );
+  }, [focusCoordinates, initialFocus]);
 
   const tokenExists = Boolean(process.env.NEXT_PUBLIC_MAPBOX_API_KEY);
 

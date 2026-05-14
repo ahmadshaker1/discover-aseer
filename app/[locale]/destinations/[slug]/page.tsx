@@ -2,10 +2,13 @@ import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import DestinationsHero from "@/components/destinations/DestinationsHero";
 import DestinationsIntroSection from "@/components/destinations/DestinationsIntroSection";
+import DestinationsLandmarksSection from "@/components/destinations/DestinationsLandmarksSection";
 import DestinationsMapSection from "@/components/destinations/DestinationsMapSection";
 import {
-  fetchDestinationsWithFallback,
+  fetchDestinations,
+  filterDestinationsByArea,
   getDestinationBySlug,
+  resolveDestinationMapCenter,
 } from "@/components/destinations/data";
 import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
 
@@ -18,9 +21,19 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
   const t = await getTranslations();
   const tDest = await getTranslations("destinations");
   const { slug } = await params;
-  const destination = await getDestinationBySlug(slug, locale);
+  const [destination, allDestinations] = await Promise.all([
+    getDestinationBySlug(slug, locale),
+    fetchDestinations(locale),
+  ]);
 
   if (!destination) notFound();
+
+  const areaDestinations = filterDestinationsByArea(
+    allDestinations,
+    destination.destinationFilter,
+    destination.slug,
+  );
+  const mapCenter = resolveDestinationMapCenter(destination);
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
@@ -30,28 +43,32 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
           { label: tDest("breadcrumbDestinations"), href: "/destinations" },
           { label: t("common.home"), href: "/" },
         ]}
-        title={destination.area || destination.title}
-        subtitle=""
+        title={destination.title}
+        subtitle={destination.subtitle}
         backgroundImage={destination.image}
         weatherArea={destination.title}
-        weatherLat={destination.lat}
-        weatherLon={destination.lon}
+        weatherLat={mapCenter.lat}
+        weatherLon={mapCenter.lon}
       />
 
       <DestinationsIntroSection
-        title={destination.area || destination.title}
-        imageUrl={destination.image}
+        title={destination.city || destination.title}
+        imageUrl={destination.introImage || destination.image}
         imageAlt={destination.title}
         paragraphs={[]}
         descriptionHtml={destination.description}
-        hideImage
-        centerContent
+      />
+
+      <DestinationsLandmarksSection
+        destinations={areaDestinations}
+        sectionTitle={destination.sectionTitle || destination.title}
+        excludeSlug={destination.slug}
       />
 
       <DestinationsMapSection
         areaLabel={destination.title}
-        lat={destination.lat}
-        lon={destination.lon}
+        lat={mapCenter.lat}
+        lon={mapCenter.lon}
       />
 
       <EventsInfo />
@@ -60,9 +77,8 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
 };
 
 export async function generateStaticParams() {
-  const rows = await fetchDestinationsWithFallback("ar");
+  const rows = await fetchDestinations("ar");
   return rows.map((d) => ({ slug: d.slug }));
 }
 
 export default DestinationSlugPage;
-
