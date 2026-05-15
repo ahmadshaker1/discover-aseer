@@ -192,7 +192,7 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
               onClick={() => setActiveDayIndex(idx)}
               className={`flex h-[100px] w-[100px] shrink-0 flex-col items-center justify-center rounded-4xl border-2 transition-all ${
                 isActive
-                  ? "border-[#7300CD] bg-[#F3EFFF]"
+                  ? "border-primary bg-primary/10"
                   : "border-border bg-surface hover:border-muted-foreground"
               }`}
             >

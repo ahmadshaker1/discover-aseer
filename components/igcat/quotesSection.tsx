@@ -31,12 +31,12 @@ export default function QuotesSection() {
 
   return (
     <section
-      className="relative w-full py-20 overflow-hidden bg-[#240B48]"
+      className="relative w-full overflow-hidden bg-secondary py-20 text-secondary-foreground dark:bg-muted dark:text-foreground"
     >
       {/* علامة التنصيص المائية الضخمة في الخلفية (يسار) */}
 
       {/* تدرج لوني خفيف لزيادة العمق (اختياري) */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#1a0835] opacity-50 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-linear-to-r from-transparent to-background/40 dark:to-background/60 opacity-50 pointer-events-none"></div>
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -48,15 +48,15 @@ export default function QuotesSection() {
                 <button
                   key={item.id}
                   onClick={() => setActiveIndex(index)}
-                  className={`text-start p-6 rounded-2xl transition-all duration-300 w-full ${
+                  className={`w-full rounded-2xl p-6 text-start transition-all duration-300 ${
                     isActive
-                      ? "bg-white text-black shadow-lg scale-[1.02]"
-                      : "bg-[#492965]/40 text-white hover:bg-[#3A1B6B]/60"
+                      ? "scale-[1.02] bg-background text-foreground shadow-lg"
+                      : "bg-black/20 text-inherit hover:bg-black/30 dark:bg-white/10 dark:hover:bg-white/15"
                   }`}
                 >
                   <h3 className="text-[18px] font-bold mb-2">{item.name}</h3>
                   <p
-                    className={`text-[13px] leading-relaxed ${isActive ? "text-gray-600" : "text-gray-300"}`}
+                    className={`text-[13px] leading-relaxed ${isActive ? "text-muted-foreground" : "opacity-80"}`}
                   >
                     {item.role}
                   </p>
@@ -68,11 +68,11 @@ export default function QuotesSection() {
           {/* 2. نص الاقتباس (يسار الشاشة) */}
           <div className="lg:col-span-8 flex flex-col items-start gap-6 lg:me-8">
             {/* أيقونة الاقتباس البنفسجية الفاقعة */}
-            <img src="assets/igcat/SVG.png" alt="quote" />
+            <img src="/assets/igcat/SVG.png" alt="quote" />
             {/* النص يتغير بتأثير انسيابي */}
             <p
               key={activeIndex} // الكي هنا عشان يسوي ريفريش للأنيميشن لما يتغير النص
-              className="text-white  text-[16px] leading-[1.8] font-medium animate-fade-in-up"
+              className="animate-fade-in-up text-[16px] font-medium leading-[1.8]"
             >
               {activeQuote.quote}
             </p>

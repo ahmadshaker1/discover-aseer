@@ -127,13 +127,13 @@ export default function TravelLandSection() {
           </div>
 
           {/* العمود الأيسر (بطاقة سابتكو) */}
-          <div className="flex flex-col justify-between rounded-4xl bg-[#333036] p-8 shadow-lg ">
+          <div className="flex flex-col justify-between rounded-4xl border border-border bg-secondary p-8 shadow-lg text-secondary-foreground">
             <div>
               <div className="mb-6 flex items-center justify-start gap-3">
-                <h3 className="text-[28px] font-bold text-white">
+                <h3 className="text-[28px] font-bold">
                   {t("saptcoTitle")}
                 </h3>
-                <div className="text-[#FBB03B]">
+                <div className="text-primary">
                   <svg
                     width="32"
                     height="32"
@@ -144,7 +144,7 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
               </div>
-              <p className={`mb-8 text-[16px] leading-[1.8] text-white/80 text-start`}>
+              <p className={`mb-8 text-[16px] leading-[1.8] opacity-80 text-start`}>
                 {t("saptcoBody")}
               </p>
             </div>
@@ -154,7 +154,7 @@ export default function TravelLandSection() {
                 href="https://saptco.com.sa/intercity-transport"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-xl bg-[#FBB03B] px-8 py-3 text-[16px] font-bold text-[#333036] transition hover:bg-[#e59e35]"
+                className="flex items-center justify-center rounded-xl bg-primary px-8 py-3 text-[16px] font-bold text-primary-foreground transition hover:opacity-90"
               >
                 {t("bookOnWebsite")}
               </a>
@@ -162,7 +162,7 @@ export default function TravelLandSection() {
                 href="https://play.google.com/store/apps/details?id=com.sat.passenger&hl=ar&pli=1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-xl bg-[#4A474E] px-8 py-3 text-[16px] font-bold text-white transition hover:brightness-110"
+                className="flex items-center justify-center rounded-xl bg-muted px-8 py-3 text-[16px] font-bold text-foreground transition hover:opacity-90"
               >
                 {t("downloadApp")}
               </a>

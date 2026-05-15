@@ -1,21 +1,21 @@
 export default function IGCatBackgroundSection() {
   return (
     <>
-      <section className="py-16 md:py-24 bg-white">
+      <section className="bg-background py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* قسم النص (يمين الشاشة في الكمبيوتر، وفوق في الجوال) */}
             <div className="flex flex-col items-start text-start">
               {/* التاق (لقب) */}
-              <span className="inline-block px-5 py-1 border border-[#7300CD] bg-[#F1E6FA] text-[#7300CD] rounded-full text-[14px] font-bold mb-6">
+              <span className="mb-6 inline-block rounded-full border border-primary bg-primary/10 px-5 py-1 text-[14px] font-bold text-primary">
                 لقب
               </span>
 
-              <h2 className="text-[28px] md:text-[36px] font-bold text-black mb-6">
+              <h2 className="mb-6 text-[28px] font-bold text-foreground md:text-[36px]">
                 أول منطقة طهي عالمية خارج أوروبا
               </h2>
 
-              <p className="text-[#333] leading-[2] text-[15px] mb-8 text-justify font-bold">
+              <p className="mb-8 text-justify text-[15px] font-bold leading-loose text-muted-foreground">
                 في سبتمبر ٢٠٢٢م  تم الإعلان بفوز عسير بلقب "منطقة فنون الطهي
                 العالمية 2024م"، وبذلك تكون أول منطقة من خارج قارة أوروبا تفوز
                 باللقب الذي يمنحه المعهد الدولي لفن الطهي والثقافة والفنون
@@ -41,7 +41,7 @@ export default function IGCatBackgroundSection() {
                   alt="هيئة فنون الطهي"
                   className="h-16 object-contain "
                 />
-                <p className="text-[16px] font-bold text-black-700 mb-2 mt-2">
+                <p className="mb-2 mt-2 text-[16px] font-bold text-foreground">
                   تحت إشراف هيئة فنون الطهي
                 </p>
                 {/* ضع مسار الشعار هنا */}
@@ -63,7 +63,7 @@ export default function IGCatBackgroundSection() {
 
       {/* القسم الثاني: عسير منطقة طهي (خلفية رمادية) */}
       {/* ========================================== */}
-      <section className="py-16 md:py-24 bg-[#F8F8F8]">
+      <section className="bg-surface py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* قسم الصورة (يمين الشاشة في الكمبيوتر، وتحت في الجوال) */}
@@ -78,11 +78,11 @@ export default function IGCatBackgroundSection() {
 
             {/* قسم النص (يسار الشاشة في الكمبيوتر، وفوق في الجوال) */}
             <div className="flex flex-col items-start text-start order-1 lg:order-2">
-              <h2 className="text-[28px] md:text-[36px] font-bold text-black mb-6">
+              <h2 className="mb-6 text-[28px] font-bold text-foreground md:text-[36px]">
                 عسير منطقة طهي عالمية 2024
               </h2>
 
-              <p className="text-[#333] leading-[2] text-[15px] font-bold mb-8 text-justify">
+              <p className="mb-8 text-justify text-[15px] font-bold leading-loose text-muted-foreground">
                 يُمنح لقب "منطقة فنون الطهي العالمية" من قِبل المعهد الدولي لفن
                 الطهي والثقافة والفنون (IGCAT)، ويُعدّ اعترافًا بالمناطق التي
                 تلتزم بالحفاظ على التراث الثقافي وتطوير السياحة. تُمنح هذه
@@ -108,7 +108,7 @@ export default function IGCatBackgroundSection() {
               </div>
 
               {/* الزر البنفسجي */}
-              <button className="bg-[#7300CD] text-white px-12 py-3 rounded-full font-bold text-[16px] transition-colors hover:bg-[#6027D2] shadow-md">
+              <button className="rounded-full bg-primary px-12 py-3 text-[16px] font-bold text-primary-foreground shadow-md transition-opacity hover:opacity-90">
                 الكتيب
               </button>
             </div>

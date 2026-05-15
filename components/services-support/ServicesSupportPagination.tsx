@@ -1,4 +1,5 @@
 "use client";
+
 import { useTranslations } from "next-intl";
 
 interface ServicesSupportPaginationProps {
@@ -7,26 +8,10 @@ interface ServicesSupportPaginationProps {
   onPageChange: (page: number) => void;
 }
 
-function ChevronIcon({ direction }: { direction: "left" | "right" }) {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      <path
-        d={direction === "right" ? "M9 6L15 12L9 18" : "M15 6L9 12L15 18"}
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+const ara = "var(--font-ara-hamah-1964), sans-serif";
+
+const navButtonClass =
+  "flex h-8 min-w-[50px] cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[8px] px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-muted-foreground disabled:hover:text-muted-foreground";
 
 const buttonBase =
   "flex h-9 min-w-9 items-center justify-center rounded-full border px-3 text-sm transition";
@@ -36,7 +21,7 @@ const ServicesSupportPagination = ({
   totalPages,
   onPageChange,
 }: ServicesSupportPaginationProps) => {
-  const t = useTranslations("common");
+  const t = useTranslations("servicesSupport");
   if (totalPages <= 1) return null;
 
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
@@ -44,27 +29,31 @@ const ServicesSupportPagination = ({
   return (
     <nav
       className="mt-8 flex flex-wrap items-center justify-center gap-2"
-     
-      aria-label="Pagination"
+      aria-label={t("paginationAria")}
     >
       <button
         type="button"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label={t("previous")}
-        className="flex h-8 min-w-[50px] cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[8px] px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-muted-foreground transition-colors hover:text-foreground"
-        style={{ fontFamily: "Ara Hamah 1964 B" }}
+        className={navButtonClass}
+        style={{ fontFamily: ara }}
       >
-        <span className="inline-flex rtl:rotate-180">
-        <svg className="text-muted-foreground" width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0.245899 15.7589C-0.0521604 15.4667 -0.0792571 15.0095 0.16461 14.6873L0.245899 14.595L6.97342 8L0.245898 1.40503C-0.0521617 1.11283 -0.0792584 0.655583 0.164609 0.333376L0.245898 0.241065C0.543957 -0.0511344 1.01037 -0.0776973 1.33904 0.161375L1.4332 0.241065L8.7541 7.41802C9.05216 7.71022 9.07926 8.16746 8.83539 8.48967L8.7541 8.58198L1.43321 15.7589C1.10534 16.0804 0.573765 16.0804 0.245899 15.7589Z" fill="currentColor" />
-        </svg>
+        <span className="inline-flex rtl:rotate-180" aria-hidden>
+          <svg
+            width="9"
+            height="16"
+            viewBox="0 0 9 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8.7541 0.241064C9.05216 0.533264 9.07926 0.990508 8.83539 1.31272L8.7541 1.40503L2.02658 8L8.7541 14.595C9.05216 14.8872 9.07926 15.3444 8.83539 15.6666L8.7541 15.7589C8.45604 16.0511 7.98963 16.0777 7.66096 15.8386L7.56679 15.7589L0.245899 8.58198C-0.0521604 8.28978 -0.0792568 7.83254 0.16461 7.51033L0.245899 7.41802L7.56679 0.241064C7.89466 -0.0803548 8.42624 -0.0803548 8.7541 0.241064Z"
+              fill="currentColor"
+            />
+          </svg>
         </span>
-
-        <svg className="text-muted-foreground" width="28" height="11" viewBox="0 0 28 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.37155 1.61072H2.14489V0.469386H3.37155V1.61072ZM5.09955 1.61072H3.87289V0.469386H5.09955V1.61072ZM3.71289 2.75205C4.61955 2.75205 5.25955 2.92272 5.65422 3.25339C6.04889 3.58405 6.21955 4.16005 6.21955 4.99205V6.51739H6.95555V7.90405H6.21955V8.05339C6.21955 8.68272 6.00622 9.20539 5.56889 9.62139C5.18489 9.99472 4.67289 10.2614 4.02222 10.4107C3.41422 10.5494 2.79555 10.5707 2.16622 10.4641C1.53689 10.3467 1.01422 10.1334 0.619552 9.81339C0.203552 9.47205 0.000885427 8.88539 0.000885427 8.05339V7.46672H1.38755V8.05339C1.38755 8.45872 1.48355 8.73605 1.66489 8.89605C2.10222 9.28005 2.72089 9.40805 3.54222 9.26939C4.40622 9.12005 4.84355 8.71472 4.84355 8.05339V7.79739C4.53422 7.87205 4.17155 7.91472 3.74489 7.91472C2.88089 7.91472 2.26222 7.75472 1.86755 7.44539C1.44089 7.09339 1.22755 6.51739 1.22755 5.71739V4.99205C1.22755 4.17072 1.43022 3.60539 1.83555 3.26405C2.23022 2.93339 2.84889 2.75205 3.71289 2.75205ZM3.74489 3.89339C2.98755 3.89339 2.61422 4.26672 2.61422 5.01339V5.69605C2.61422 6.40005 2.97689 6.75205 3.71289 6.75205C4.07555 6.75205 4.34222 6.68805 4.52355 6.56005C4.72622 6.40005 4.85422 6.13339 4.85422 5.76005V4.92805C4.85422 4.55472 4.74755 4.29872 4.58755 4.13872C4.40622 3.96805 4.12889 3.89339 3.74489 3.89339ZM9.25276 2.75205V5.71739C9.25276 6.43205 9.00743 6.98672 8.50609 7.37072C8.03676 7.72272 7.41809 7.90405 6.63943 7.90405H6.53276V6.51739H6.63943C7.16209 6.51739 7.49276 6.48539 7.63143 6.43205C7.87676 6.33605 7.99409 6.10139 7.99409 5.71739V2.75205H9.25276ZM8.48476 10.2187H7.25809V9.07739H8.48476V10.2187ZM11.4863 5.29289e-05V5.71739C11.4863 6.00539 11.5823 6.21872 11.7636 6.33605C11.8809 6.41072 12.0836 6.47472 12.3929 6.51739H12.6063V7.90405H12.3823C11.5609 7.90405 10.9849 7.75472 10.6329 7.45605C10.2809 7.14672 10.1103 6.67739 10.1103 6.03739V5.29289e-05H11.4863ZM22.0721 2.74139V5.94139C22.1467 6.24005 22.3281 6.42139 22.6267 6.48539C22.7121 6.50672 22.9894 6.51739 23.4694 6.51739V7.90405H23.3094C22.5094 7.90405 21.9654 7.71205 21.6667 7.33872L21.5494 7.44539C21.2081 7.75472 20.6321 7.90405 19.8107 7.90405C19.2561 7.90405 18.8294 7.84005 18.5201 7.72272C18.2001 7.60539 17.9867 7.42405 17.8694 7.20005C17.7627 7.42405 17.5494 7.59472 17.2401 7.71205C16.9201 7.84005 16.4827 7.90405 15.9281 7.90405C15.1067 7.90405 14.5307 7.69072 14.2001 7.27472C13.9227 7.69072 13.3361 7.90405 12.4507 7.90405H12.1734V6.51739H12.3441C12.9307 6.51739 13.3041 6.45339 13.4641 6.30405C13.6347 6.15472 13.6881 5.80272 13.6881 5.26939V2.74139H15.0427V4.37339C15.0427 4.81072 15.0534 5.35472 15.0534 5.98405C15.0854 6.16539 15.2241 6.31472 15.4587 6.41072C15.6827 6.50672 15.9281 6.53872 16.2054 6.52805C16.8987 6.48539 17.2401 6.24005 17.2401 5.76005V3.45605H18.4881V5.76005C18.4881 5.99472 18.6054 6.19739 18.8401 6.33605C19.0534 6.46405 19.3094 6.52805 19.5974 6.52805C19.8961 6.53872 20.1521 6.47472 20.3547 6.34672C20.5787 6.20805 20.6961 5.99472 20.6961 5.74939V2.74139H22.0721ZM25.5444 5.29289e-05V6.03739C25.5444 6.67739 25.3737 7.14672 25.0217 7.45605C24.6697 7.75472 24.0937 7.90405 23.2724 7.90405H23.0484V6.51739H23.2617C23.5711 6.47472 23.7844 6.41072 23.9017 6.33605C24.0831 6.21872 24.1684 6.00539 24.1684 5.71739V5.29289e-05H25.5444ZM27.7675 7.90405H26.3915V5.29289e-05H27.7675V7.90405Z" fill="currentColor" />
-        </svg>
-
+        <span>{t("previous")}</span>
       </button>
 
       {pages.map((page) => {
@@ -74,10 +63,11 @@ const ServicesSupportPagination = ({
             key={page}
             type="button"
             onClick={() => onPageChange(page)}
-            className={`${buttonBase} ${isActive
-              ? "border-primary bg-primary text-primary-foreground "
-              : "cursor-pointer border-border bg-surface text-foreground hover:border-primary"
-              }`}
+            className={`${buttonBase} ${
+              isActive
+                ? "border-primary bg-primary text-primary-foreground"
+                : "cursor-pointer border-border bg-surface text-foreground hover:border-primary hover:text-primary"
+            }`}
             aria-current={isActive ? "page" : undefined}
           >
             {page}
@@ -87,25 +77,27 @@ const ServicesSupportPagination = ({
 
       <button
         type="button"
-
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label={t("next")}
-        className="flex h-8 min-w-[50px] cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[8px] px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:text-primary"
-        style={{ fontFamily: "Ara Hamah 1964 B" }}
+        className={navButtonClass}
+        style={{ fontFamily: ara }}
       >
-        <span className="inline-flex rtl:rotate-180">
-        <svg className="text-foreground" width="26" height="13" viewBox="0 0 26 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2.12355 5.46139V6.78405C1.78222 6.78405 1.51555 6.88005 1.33422 7.07205C1.15289 7.26405 1.05689 7.57339 1.05689 7.98939C1.05689 8.34139 1.14222 8.61872 1.31289 8.82139C1.47289 9.02405 1.72889 9.12005 2.08089 9.12005H7.94755C8.27822 9.12005 8.53422 9.04539 8.69422 8.89605C8.79022 8.81072 8.85422 8.70405 8.89688 8.58672C8.95022 8.42672 8.96089 8.28805 8.95022 8.17072C8.93955 8.01072 8.80089 7.90405 8.54489 7.90405H6.02755V6.51739H11.0942V7.90405H10.2622V8.48005L10.2302 8.85339C10.1769 9.48272 9.97422 9.92005 9.69689 10.1547C9.41955 10.3894 8.93955 10.5067 8.26755 10.5067H1.91022C1.17422 10.5067 0.672885 10.3361 0.406219 10.0054C0.139552 9.67472 0.000885427 9.02405 0.000885427 8.06405C0.000885427 6.94405 0.182219 6.19739 0.555552 5.84539C0.832885 5.58939 1.35555 5.46139 2.12355 5.46139ZM5.05689 12.5334H3.83022V11.3921H5.05689V12.5334ZM6.78489 12.5334H5.55822V11.3921H6.78489V12.5334ZM13.1694 5.29289e-05V6.03739C13.1694 6.67739 12.9987 7.14672 12.6467 7.45605C12.2947 7.75472 11.7187 7.90405 10.8974 7.90405H10.6734V6.51739H10.8867C11.1961 6.47472 11.4094 6.41072 11.5267 6.33605C11.7081 6.21872 11.7934 6.00539 11.7934 5.71739V5.29289e-05H13.1694ZM15.3925 5.29289e-05V5.71739C15.3925 6.00539 15.4885 6.21872 15.6698 6.33605C15.7872 6.41072 15.9898 6.47472 16.2992 6.51739H16.5125V7.90405H16.2885C15.4672 7.90405 14.8912 7.75472 14.5392 7.45605C14.1872 7.14672 14.0165 6.67739 14.0165 6.03739V5.29289e-05H15.3925ZM18.9383 1.61072H17.7116V0.469386H18.9383V1.61072ZM20.6663 1.61072H19.4396V0.469386H20.6663V1.61072ZM19.8343 2.75205V5.71739C19.8343 6.10139 19.9623 6.33605 20.2076 6.43205C20.3356 6.48539 20.6663 6.51739 21.1996 6.51739H21.3063V7.90405H21.1996C20.3143 7.90405 19.6423 7.68005 19.1623 7.22139C18.6823 7.68005 18.0103 7.90405 17.125 7.90405H16.0796V6.51739H17.125C17.6476 6.51739 17.9783 6.48539 18.117 6.43205C18.3623 6.33605 18.4903 6.10139 18.4903 5.71739V2.75205H19.8343ZM23.3725 5.29289e-05V6.03739C23.3725 6.67739 23.2018 7.14672 22.8498 7.45605C22.4978 7.75472 21.9218 7.90405 21.1005 7.90405H20.8765V6.51739H21.0898C21.3992 6.47472 21.6125 6.41072 21.7298 6.33605C21.9112 6.21872 21.9965 6.00539 21.9965 5.71739V5.29289e-05H23.3725ZM25.5956 7.90405H24.2196V5.29289e-05H25.5956V7.90405Z" fill="currentColor" />
-        </svg>
+        <span>{t("next")}</span>
+        <span className="inline-flex rtl:rotate-180" aria-hidden>
+          <svg
+            width="9"
+            height="16"
+            viewBox="0 0 9 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.245899 15.7589C-0.0521604 15.4667 -0.0792571 15.0095 0.16461 14.6873L0.245899 14.595L6.97342 8L0.245898 1.40503C-0.0521617 1.11283 -0.0792584 0.655583 0.164609 0.333376L0.245898 0.241065C0.543957 -0.0511344 1.01037 -0.0776973 1.33904 0.161375L1.4332 0.241065L8.7541 7.41802C9.05216 7.71022 9.07926 8.16746 8.83539 8.48967L8.7541 8.58198L1.43321 15.7589C1.10534 16.0804 0.573765 16.0804 0.245899 15.7589Z"
+              fill="currentColor"
+            />
+          </svg>
         </span>
-
-        <span className="inline-flex rtl:rotate-180">
-        <svg className="text-foreground" width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8.7541 0.241064C9.05216 0.533264 9.07926 0.990508 8.83539 1.31272L8.7541 1.40503L2.02658 8L8.7541 14.595C9.05216 14.8872 9.07926 15.3444 8.83539 15.6666L8.7541 15.7589C8.45604 16.0511 7.98963 16.0777 7.66096 15.8386L7.56679 15.7589L0.245899 8.58198C-0.0521604 8.28978 -0.0792568 7.83254 0.16461 7.51033L0.245899 7.41802L7.56679 0.241064C7.89466 -0.0803548 8.42624 -0.0803548 8.7541 0.241064Z" fill="currentColor" />
-        </svg>
-        </span>
-
       </button>
     </nav>
   );

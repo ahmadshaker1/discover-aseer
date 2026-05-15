@@ -9,7 +9,11 @@ import {
   getInterestOptions,
   locationMatchesCityId,
 } from "@/components/landmarks/filterOptions";
-import { ChevronDownIcon, HeartIcon, LocationIcon } from "@/components/landmarks/Icons";
+import {
+  ChevronDownIcon,
+  HeartIcon,
+  LocationIcon,
+} from "@/components/landmarks/Icons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -59,14 +63,16 @@ const DestinationsMainPageContent = ({
   const interestCounts = useMemo(() => {
     return interestOptions.reduce<Record<string, number>>((acc, option) => {
       acc[option.id] = destinations.filter((d) =>
-        (d.interestTags ?? []).includes(option.id)
+        (d.interestTags ?? []).includes(option.id),
       ).length;
       return acc;
     }, {});
   }, [destinations, interestOptions]);
 
   const visible = useMemo(() => {
-    const cityFiltered = destinations.filter((d) => includesCity(d, filters.city));
+    const cityFiltered = destinations.filter((d) =>
+      includesCity(d, filters.city),
+    );
     if (isBrowse) return cityFiltered;
     return cityFiltered.filter((d) => includesInterests(d, selectedInterests));
   }, [filters.city, destinations, selectedInterests, isBrowse]);
@@ -93,8 +99,7 @@ const DestinationsMainPageContent = ({
           </div>
 
           <aside
-            className={`w-full lg:sticky lg:top-24 lg:order-1 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-[#E6E6E6] lg:pt-6 lg:ps-8 lg:pe-8 lg:border-e`}
-           
+            className={`w-full lg:sticky lg:top-24 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
           >
             <div className="flex h-full flex-col gap-6">
               <div className="flex h-8 w-full max-w-[256px] items-center justify-between">
@@ -144,7 +149,8 @@ const DestinationsMainPageContent = ({
                       className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground"
                       style={{ fontFamily: "Inter, sans-serif" }}
                     >
-                      {cityOptions.find((o) => o.id === filters.city)?.label ?? tCommon("city")}
+                      {cityOptions.find((o) => o.id === filters.city)?.label ??
+                        tCommon("city")}
                     </span>
                   </div>
                   <ChevronDownIcon />
@@ -170,7 +176,10 @@ const DestinationsMainPageContent = ({
                       const checked = selectedInterests.includes(option.id);
                       const count = interestCounts[option.id] ?? 0;
                       return (
-                        <label key={option.id} className="flex cursor-pointer items-center justify-between">
+                        <label
+                          key={option.id}
+                          className="flex cursor-pointer items-center justify-between"
+                        >
                           <div className="flex items-center gap-3">
                             <input
                               type="checkbox"
@@ -179,7 +188,7 @@ const DestinationsMainPageContent = ({
                                 setSelectedInterests((prev) =>
                                   prev.includes(option.id)
                                     ? prev.filter((id) => id !== option.id)
-                                    : [...prev, option.id]
+                                    : [...prev, option.id],
                                 )
                               }
                               className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] checked:border-primary checked:bg-primary checked:bg-[linear-gradient(45deg,transparent_45%,white_45%,white_55%,transparent_55%),linear-gradient(-45deg,transparent_45%,white_45%,white_55%,transparent_55%)] checked:bg-size-[70%_70%] checked:bg-center checked:bg-no-repeat"

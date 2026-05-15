@@ -2,26 +2,7 @@
 import React, { useState } from "react";
 // استيراد البيانات
 import { foodFilmData } from "./data";
-
-// ==========================================
-// أيقونة زر التشغيل (Play Button)
-// ==========================================
-const PlayIcon = () => (
-  <svg
-    width="60"
-    height="60"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
-  >
-    <circle cx="12" cy="12" r="12" fill="white" />
-    <path
-      d="M16.5 11.134C17.1667 11.5189 17.1667 12.4811 16.5 12.866L9.75 16.7631C9.08333 17.148 8.25 16.6669 8.25 15.8971L8.25 8.10288C8.25 7.33308 9.08333 6.85198 9.75 7.23686L16.5 11.134Z"
-      fill="#240B48"
-    />
-  </svg>
-);
+import { PlayIcon } from "./Icons";
 
 // دالة استخراج الـ ID من رابط اليوتيوب
 const getYouTubeId = (url: string) => {
@@ -37,7 +18,7 @@ export default function FoodFilmSection() {
   const [playingVideoId, setPlayingVideoId] = useState<number | null>(null);
 
   return (
-    <section className="py-16 md:py-24 bg-[#F8F8F8]">
+    <section className="bg-surface py-16 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* 1. قسم العنوان والوصف (الهيدر) */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-12">
@@ -46,7 +27,7 @@ export default function FoodFilmSection() {
             className="order-2 lg:order-1 w-full lg:w-1/2 text-start lg:text-start mt-4 lg:mt-0"
           >
             <p
-              className="text-[#333] leading-relaxed text-[15px] max-w-xl ms-auto font-bold"
+              className="ms-auto max-w-xl text-[15px] font-bold leading-relaxed text-muted-foreground"
             >
               تقام المسابقة سنوياً لعرض مقاطع فيديو تروج للمعالم الثقافية
               والطبيعية حول العالم. فازت عسير بالجائزة مرتين في 2022 و2024،
@@ -55,11 +36,11 @@ export default function FoodFilmSection() {
           </div>
           {/* العنوان (يمين) */}
           <div className="flex flex-col items-start lg:items-end order-1 lg:order-2 w-full lg:w-1/2 text-start">
-            <span className="inline-block px-5 py-1 border border-[#7300CD] text-[#7300CD] rounded-full text-[13px] font-bold mb-4">
+            <span className="mb-4 inline-block rounded-full border border-primary bg-primary/10 px-5 py-1 text-[13px] font-bold text-primary">
               المسابقات
             </span>
             <h2
-              className="text-[28px] md:text-[36px] font-bold text-black"
+              className="text-[28px] font-bold text-foreground md:text-[36px]"
             >
               مسابقة Food Film Menu
             </h2>
@@ -89,15 +70,15 @@ export default function FoodFilmSection() {
                     <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30"></div>
 
                     {/* شارة السنة */}
-                    <div className="absolute top-4 start-4 bg-white px-3 py-1 rounded-full shadow-sm z-10">
-                      <span className="text-[#7300CD] font-bold text-[14px]">
+                    <div className="absolute top-4 start-4 z-10 rounded-full bg-background px-3 py-1 shadow-sm">
+                      <span className="text-[14px] font-bold text-primary">
                         {video.year}
                       </span>
                     </div>
 
                     {/* زر التشغيل في المنتصف */}
                     <div className="absolute inset-0 flex items-center justify-center z-10">
-                      <PlayIcon />
+                      <PlayIcon className="drop-shadow-lg transition-transform duration-300 group-hover:scale-110" />
                     </div>
                   </div>
                 ) : (
@@ -113,7 +94,7 @@ export default function FoodFilmSection() {
               </div>
 
               {/* عنوان الفيديو تحت الكرت */}
-              <h3 className="text-black font-bold text-[15px] md:text-[16px] text-center px-4 leading-relaxed line-clamp-2">
+              <h3 className="line-clamp-2 px-4 text-center text-[15px] font-bold leading-relaxed text-foreground md:text-[16px]">
                 {video.title}
               </h3>
             </div>

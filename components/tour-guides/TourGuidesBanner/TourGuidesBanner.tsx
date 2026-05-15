@@ -117,7 +117,7 @@ const TourGuidesBanner = async () => {
             {...(registerExternal
               ? { target: "_blank" as const, rel: "noopener noreferrer" }
               : {})}
-            className="inline-flex items-center gap-2 rounded-full bg-[#280048] px-8 py-3.5 text-base font-medium text-white shadow-lg transition-colors hover:bg-[#4d2a75] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-medium text-primary-foreground shadow-lg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             {tGuides("registerAsGuide")}
             <CtaArrow />

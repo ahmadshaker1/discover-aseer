@@ -36,9 +36,9 @@ const FilterDropdown = ({
         type="button"
         className="flex cursor-pointer flex-row-reverse items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 sm:px-6 sm:py-2 sm:text-sm"
       >
-        <ChevronDownIcon />
+        <ChevronDownIcon className="text-muted-foreground" />
         <span>{selectedOption?.label || label}</span>
-        {icon}
+        <span className="text-muted-foreground">{icon}</span>
       </Menu.Button>
       <Transition
         as={Fragment}

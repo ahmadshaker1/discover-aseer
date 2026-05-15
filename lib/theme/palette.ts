@@ -13,6 +13,9 @@ export type ThemePalette = {
   secondaryForeground: string;
 };
 
+/** Brand button purple — identical in light and dark*/
+export const brandPrimary = "#6027D2";
+
 export const themePalette: Record<ThemeName, ThemePalette> = {
   light: {
     background: "#FFFFFF",
@@ -21,7 +24,7 @@ export const themePalette: Record<ThemeName, ThemePalette> = {
     muted: "#F2F2F2",
     mutedForeground: "#6B7280",
     border: "#E4E4E4",
-    primary: "#7300CD",
+    primary: brandPrimary,
     primaryForeground: "#FFFFFF",
     secondary: "#280048",
     secondaryForeground: "#FFFFFF",
@@ -29,14 +32,14 @@ export const themePalette: Record<ThemeName, ThemePalette> = {
   dark: {
     // Purple-black base instead of pure black.
     background: "#14091F",
-    foreground: "#F3EDF9",
+    foreground: "#FFFFFF",
     surface: "#1C0F2A",
     muted: "#251538",
-    mutedForeground: "#B8A8C9",
+    mutedForeground: "#FFFFFF",
     border: "#34204A",
-    primary: "#B983FF",
-    primaryForeground: "#14091F",
-    secondary: "#8A47DC",
-    secondaryForeground: "#F3EDF9",
+    primary: brandPrimary,
+    primaryForeground: "#FFFFFF",
+    secondary: "#FFFFFF",
+    secondaryForeground: "#14091F",
   },
 };

@@ -15,7 +15,7 @@ const RestaurantsCredibilitySection = () => {
 
   return (
     <section
-      className="flex w-full justify-center bg-[#CD8CFF3D] py-5"
+      className="flex w-full justify-center bg-primary/10 py-5"
       aria-labelledby="restaurants-credibility-heading"
     >
       <div className="flex min-h-[448px] w-full max-w-[1440px] flex-col items-center justify-center gap-[10px] px-[clamp(1rem,calc((100vw-428px)/2),506px)] py-5">
@@ -30,7 +30,7 @@ const RestaurantsCredibilitySection = () => {
 
         <h2
           id="restaurants-credibility-heading"
-          className="w-full max-w-[428px] text-center text-[40px] font-bold leading-[119%] text-black"
+          className="w-full max-w-[428px] text-center text-[40px] font-bold leading-[119%] text-foreground"
           style={{ fontFamily: ara }}
         >
           {t("credibilityLine")}
@@ -40,7 +40,7 @@ const RestaurantsCredibilitySection = () => {
           href={IGCAT_WEBSITE_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-[52px] min-w-[161px] items-center justify-center rounded-[55px] border border-[#6027D2] bg-[#6027D2] px-[10px] py-[10px] text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6027D2]"
+          className="inline-flex h-[52px] min-w-[161px] items-center justify-center rounded-[55px] border border-primary bg-primary px-[10px] py-[10px] text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           style={{ fontFamily: ara }}
         >
           {tCommon("visitorSite")}

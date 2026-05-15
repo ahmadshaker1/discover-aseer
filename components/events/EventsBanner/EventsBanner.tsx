@@ -91,7 +91,7 @@ export default async function EventsBanner() {
 
           <button
             type="button"
-            className="inline-flex h-12 min-w-[229px] items-center justify-center gap-[10px] rounded-[20px] bg-[#6C2BD9] px-16 py-2 text-[20px] font-bold leading-none text-white transition-colors hover:bg-[#5b24b8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="inline-flex h-12 min-w-[229px] items-center justify-center gap-[10px] rounded-[20px] bg-primary px-16 py-2 text-[20px] font-bold leading-none text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             style={{ fontFamily: ara }}
           >
             {tEvents("addYourEvent")}

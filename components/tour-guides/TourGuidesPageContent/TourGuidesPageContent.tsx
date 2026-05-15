@@ -90,7 +90,7 @@ const TourGuidesPageContent = ({
               onGuideClick={handleGuideClick}
             />
             {filteredGuides.length === 0 && (
-              <p className="text-center text-gray-500 py-12">
+              <p className="text-center text-muted-foreground py-12">
                 لا يوجد مرشدون يطابقون التصفية المحددة.
               </p>
             )}

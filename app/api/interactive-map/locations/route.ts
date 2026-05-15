@@ -244,24 +244,34 @@ const buildMapPlace = (
           "category_en",
           "type_en",
           "categories",
-          "tags",
           "type",
           "category_ar",
           "type_ar",
         ]
-      : ["category_ar", "categories", "tags", "type_ar", "type", "category_en", "type_en"],
+      : [
+          "category_ar",
+          "categories",
+          "type_ar",
+          "type",
+          "category_en",
+          "type_en",
+        ],
     locale === "en" ? "Information" : "استفسارات",
   );
 
   const city = pickFirstText(
     row,
-    locale === "en" ? ["city_en", "city", "city_ar"] : ["city_ar", "city", "city_en"],
+    locale === "en"
+      ? ["city_en", "city", "city_ar"]
+      : ["city_ar", "city", "city_en"],
     locale === "en" ? "Aseer" : "عسير",
   );
   const tag =
     pickFirstText(
       row,
-      locale === "en" ? ["type_en", "type", "type_ar", "tags"] : ["type_ar", "type", "type_en", "tags"],
+      locale === "en"
+        ? ["type_en", "type", "type_ar", "tags"]
+        : ["type_ar", "type", "type_en", "tags"],
       "",
     ) || undefined;
 

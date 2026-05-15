@@ -151,7 +151,7 @@ const PageBanner = ({
           {primaryCta ? (
             <Link
               href={primaryCta.href}
-              className="mt-2 inline-flex h-[42px] min-w-[185px] shrink-0 items-center justify-between gap-[10px] rounded-[100px] bg-[#280048] px-4 py-[10px] text-white transition-opacity hover:opacity-90"
+              className="mt-2 inline-flex h-[42px] min-w-[185px] shrink-0 items-center justify-between gap-[10px] rounded-[100px] bg-primary px-4 py-[10px] text-primary-foreground transition-opacity hover:opacity-90"
               style={{ boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)" }}
             >
               <BrowseCtaArrowIcon />

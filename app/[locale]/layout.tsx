@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { getThemeInitScript } from "@/lib/theme/runtime";
 import { routing, type AppLocale } from "@/i18n/routing";
 import "./globals.css";
 
@@ -56,7 +57,10 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={appLocale} dir={appLocale === "ar" ? "rtl" : "ltr"}>
+    <html lang={appLocale} dir={appLocale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
+      </head>
       <body
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >

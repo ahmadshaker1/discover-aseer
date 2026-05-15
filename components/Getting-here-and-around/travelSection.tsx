@@ -61,7 +61,7 @@ export default function TravelSection() {
               <span className="flex h-[78px] w-[78px] items-center justify-center rounded-md bg-[#1F4695] text-[44px] font-bold leading-none text-[#6E8CD9]">
                 س
               </span>
-              <span className="rounded-full bg-[#F4EEDC] px-4 py-1 text-[12px] font-bold leading-none text-[#8C5B00]">
+              <span className="rounded-full bg-primary/15 px-4 py-1 text-[12px] font-bold leading-none text-primary">
                 {t("featured")}
               </span>
             </div>
@@ -90,7 +90,7 @@ export default function TravelSection() {
               <span className="flex h-[78px] w-[78px] items-center justify-center rounded-md bg-[#4CA62A] text-[44px] font-bold leading-none text-[#EAF5E4]">
                 ن
               </span>
-              <span className="rounded-full bg-[#E9ECF2] px-4 py-1 text-[12px] font-bold leading-none text-[#747782]">
+              <span className="rounded-full bg-muted px-4 py-1 text-[12px] font-bold leading-none text-muted-foreground">
                 {t("budget")}
               </span>
             </div>
@@ -119,7 +119,7 @@ export default function TravelSection() {
               <span className="flex h-[78px] w-[78px] items-center justify-center rounded-md bg-[#8227A2] text-[44px] font-bold leading-none text-[#F0E4F6]">
                 أ
               </span>
-              <span className="rounded-full bg-[#E9ECF2] px-4 py-1 text-[12px] font-bold leading-none text-[#747782]">
+              <span className="rounded-full bg-muted px-4 py-1 text-[12px] font-bold leading-none text-muted-foreground">
                 {t("budget")}
               </span>
             </div>

@@ -14,6 +14,8 @@ import {
   FemaleIcon,
   GroupsIcon,
   FamilyIcon,
+  ChevronDownIcon,
+  LocationIcon,
 } from "./Icons";
 import type { FilterOptions } from "@/components/experiences/data";
 
@@ -38,33 +40,6 @@ const TRAVELER_ICONS: Record<string, React.ReactNode> = {
   groups: <GroupsIcon />,
   family: <FamilyIcon />,
 };
-
-function ChevronDownIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path
-        d="M4 6L8 10L12 6"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function LocationIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M12 22C16 18.5 19 15.1 19 11A7 7 0 1 0 5 11C5 15.1 8 18.5 12 22Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <circle cx="12" cy="11" r="2.5" stroke="currentColor" strokeWidth="1.8" />
-    </svg>
-  );
-}
 
 const ExperiencesFilter = ({
   filterOptions,
@@ -110,9 +85,7 @@ const ExperiencesFilter = ({
 
   return (
     <div
-      className="w-full max-w-md rounded-lg bg-surface p-6 text-foreground shadow-sm"
-     
-    >
+      className="w-full max-w-md rounded-lg bg-surface p-6 text-foreground shadow-sm">
       <div className="mb-8 flex items-center justify-between gap-4">
         <Button
           onClick={handleReset}
@@ -154,11 +127,10 @@ const ExperiencesFilter = ({
                             city: filters.city === city.id ? null : city.id,
                           })
                         }
-                        className={`${active ? "bg-primary/10 text-primary" : ""} ${
-                          filters.city === city.id
+                        className={`${active ? "bg-primary/10 text-primary" : ""} ${filters.city === city.id
                             ? "bg-primary/5 font-semibold text-primary"
                             : "text-foreground"
-                        } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
+                          } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
                       >
                         {city.label} ({city.count})
                       </button>
@@ -230,16 +202,14 @@ const ExperiencesFilter = ({
                 key={option.id}
                 onClick={() => handleCostSelect(option.id)}
                 disabled={option.count === 0}
-                className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-4 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
-                  isSelected
+                className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-4 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${isSelected
                     ? "border-primary bg-muted"
                     : "border-border hover:border-muted-foreground"
-                }`}
+                  }`}
               >
                 <div
-                  className={`mb-2 ${
-                    isSelected ? "text-foreground" : "text-muted-foreground"
-                  }`}
+                  className={`mb-2 ${isSelected ? "text-foreground" : "text-muted-foreground"
+                    }`}
                 >
                   {icon}
                 </div>
@@ -268,11 +238,10 @@ const ExperiencesFilter = ({
                   key={traveler.id}
                   onClick={() => handleTravelerToggle(traveler.id)}
                   disabled={traveler.count === 0}
-                  className={`flex h-12 cursor-pointer flex-row items-center justify-center space-x-1 rounded-full border-2 px-2 py-1 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
-                    isSelected
+                  className={`flex h-12 cursor-pointer flex-row items-center justify-center space-x-1 rounded-full border-2 px-2 py-1 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${isSelected
                       ? "border-primary bg-muted"
                       : "border-border hover:border-muted-foreground"
-                  }`}
+                    }`}
                 >
                   <div
                     className={` ${isSelected ? "text-foreground" : "text-muted-foreground"}`}

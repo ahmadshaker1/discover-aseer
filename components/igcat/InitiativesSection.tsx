@@ -26,7 +26,7 @@ const initiativesData = [
 
 export default function InitiativesSection() {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="bg-background py-16 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* 1. قسم الشعار والعنوان */}
         <div className="flex flex-col items-center justify-center mb-12">
@@ -36,7 +36,7 @@ export default function InitiativesSection() {
             alt="جامعة الملك خالد"
             className="h-24 md:h-32 object-contain mb-6"
           />
-          <h2 className="text-[20px] md:text-[24px] font-bold text-black">
+          <h2 className="text-[20px] font-bold text-foreground md:text-[24px]">
             مبادرات جامعة الملك خالد
           </h2>
         </div>
@@ -56,7 +56,7 @@ export default function InitiativesSection() {
               />
 
               {/* تدرج لوني أسود من الأسفل عشان النص الأبيض يكون مقروء */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-90"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-90"></div>
 
               {/* عنوان الكرت بالأسفل */}
               <div className="absolute bottom-0 start-0 end-0 p-6 md:p-8 flex items-end justify-center text-center z-10 h-1/2">

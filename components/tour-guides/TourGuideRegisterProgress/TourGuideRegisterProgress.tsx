@@ -32,7 +32,7 @@ const TourGuideRegisterProgress = ({
   return (
     <div className="mx-auto flex w-full max-w-[1026px] flex-col gap-2">
       <p
-        className={`w-full text-[18px] font-bold leading-[150%] text-[#292D30] text-start`}
+        className="w-full text-start text-[18px] font-bold leading-[150%] text-foreground"
         style={{ fontFamily: araBold }}
       >
         {t("stepProgress", { step: stepLabel, total: TOTAL_STEPS })}
@@ -49,7 +49,7 @@ const TourGuideRegisterProgress = ({
           <div
             key={idx}
             className={`h-[5px] min-w-0 flex-1 rounded-[2px] sm:max-w-[339px] ${
-              idx < filled ? "bg-[#7300CD]" : "bg-[#9DA1A54D]"
+              idx < filled ? "bg-primary" : "bg-muted"
             }`}
           />
         ))}

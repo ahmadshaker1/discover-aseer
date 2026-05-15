@@ -55,8 +55,8 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
     onNext: () => void
   ) => {
     const lightText = slide.textTheme === "light";
-    const textColor = lightText ? "text-white" : "text-[#111111]";
-    const chevronStroke = lightText ? "#FFFFFF" : "#111111";
+    const textColor = lightText ? "text-white" : "text-foreground";
+    const chevronStroke = "currentColor";
     const overlay = lightText
       ? "bg-linear-to-b from-black/15 via-black/20 to-black/45"
       : "bg-linear-to-b from-white/10 via-white/15 to-white/35";
@@ -87,7 +87,7 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
           type="button"
           onClick={onPrev}
           aria-label={`${tCommon("previous")} - ${slide.title}`}
-          className={`absolute bottom-8 inline-flex h-[44px] w-[27px] items-center justify-center end-8`}
+          className={`absolute bottom-8 inline-flex h-[44px] w-[27px] items-center justify-center end-8 ${lightText ? "text-white" : "text-foreground"}`}
         >
           <span className="rtl:rotate-180"><LeftChevron stroke={chevronStroke} /></span>
         </button>
@@ -95,7 +95,7 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
           type="button"
           onClick={onNext}
           aria-label={`${tCommon("next")} - ${slide.title}`}
-          className={`absolute bottom-8 inline-flex h-[44px] w-[27px] items-center justify-center start-8`}
+          className={`absolute bottom-8 inline-flex h-[44px] w-[27px] items-center justify-center start-8 ${lightText ? "text-white" : "text-foreground"}`}
         >
           <span className="rtl:rotate-180"><RightChevron stroke={chevronStroke} /></span>
         </button>
@@ -108,7 +108,7 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
       <div className="mx-auto flex w-full max-w-[1306px] flex-col gap-16">
         <div className="w-full">
           <h2
-            className={`text-[48px] font-bold leading-[38px] text-[#111111] text-start`}
+            className={`text-[48px] font-bold leading-[38px] text-foreground text-start`}
             style={{ fontFamily: ara }}
           >
             {t("whyAseer")}

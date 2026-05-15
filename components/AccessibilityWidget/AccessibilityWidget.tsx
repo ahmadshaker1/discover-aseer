@@ -41,44 +41,44 @@ export default function AccessibilityWidget() {
   const resetFont = () => setFontScale(100);
 
   return (
-    <div className="fixed bottom-6 end-6 z-[9999]">
+    <div className="fixed bottom-6 end-6 z-9999">
       {/* اللوحة (تظهر فقط إذا كان isOpen true) */}
       {isOpen && (
-        <div className="absolute bottom-16 end-0 bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-5 mb-2 w-[260px] border border-gray-100 animate-fade-in-up">
-          <div className="flex justify-between items-center border-b pb-3 mb-4">
-            <h3 className="font-bold text-[16px] text-gray-800">
+        <div className="absolute bottom-16 end-0 bg-surface rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-5 mb-2 w-[260px] border border-border animate-fade-in-up">
+          <div className="flex justify-between items-center border-b border-border pb-3 mb-4">
+            <h3 className="font-bold text-[16px] text-foreground">
               سهولة الوصول
             </h3>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-gray-400 hover:text-red-500 text-lg"
+              className="text-muted-foreground hover:text-red-500 text-lg"
             >
               ×
             </button>
           </div>
 
           <div className="flex flex-col gap-3">
-            <span className="text-[14px] text-gray-600 font-medium">
+            <span className="text-[14px] text-muted-foreground font-medium">
               حجم النص
             </span>
 
             {/* أزرار التحكم */}
-            <div className="flex items-center justify-between bg-gray-50 rounded-xl p-2 border border-gray-100">
+            <div className="flex items-center justify-between bg-muted rounded-xl p-2 border border-border">
               <button
                 onClick={increaseFont}
-                className="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm text-xl text-[#7300CD] hover:bg-[#F3EFFF] transition-colors"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-background text-xl text-primary shadow-sm transition-colors hover:bg-primary/10"
                 aria-label="تكبير الخط"
               >
                 +
               </button>
 
-              <span className="font-bold text-gray-700 select-none">
+              <span className="font-bold text-foreground select-none">
                 {fontScale}%
               </span>
 
               <button
                 onClick={decreaseFont}
-                className="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm text-xl text-[#7300CD] hover:bg-[#F3EFFF] transition-colors"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-background text-xl text-primary shadow-sm transition-colors hover:bg-primary/10"
                 aria-label="تصغير الخط"
               >
                 -
@@ -89,7 +89,7 @@ export default function AccessibilityWidget() {
             {fontScale !== 100 && (
               <button
                 onClick={resetFont}
-                className="text-[13px] text-[#7300CD] hover:underline mt-1 self-start"
+                className="mt-1 self-start text-[13px] text-primary hover:underline"
               >
                 إعادة الضبط
               </button>
@@ -101,7 +101,7 @@ export default function AccessibilityWidget() {
       {/* الزر العائم الأساسي */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-[#7300CD] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#6027D2] transition-transform hover:scale-105"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 hover:opacity-90"
         aria-label="خيارات سهولة الوصول"
       >
         <AccessibilityIcon />

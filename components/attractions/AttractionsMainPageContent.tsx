@@ -114,7 +114,7 @@ const AttractionsMainPageContent = ({
             ) : null}
           </div>
 
-          <aside className={`w-full lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-[#E6E6E6] lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}>
+          <aside className={`w-full lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}>
             <div className="flex h-full flex-col gap-6">
               <div className="flex h-8 w-full max-w-[256px] items-center justify-between">
                 <h3
