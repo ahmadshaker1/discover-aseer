@@ -251,6 +251,18 @@ export const transformDestination = (
   };
 };
 
+/** Ensure each destination has a unique slug (Directus rows may share titles). */
+function uniquifyDestinationSlugs(destinations: Destination[]): Destination[] {
+  const counts = new Map<string, number>();
+  return destinations.map((d) => {
+    const base = d.slug.trim() || `destination-${d.id}`;
+    const n = (counts.get(base) ?? 0) + 1;
+    counts.set(base, n);
+    if (n === 1) return { ...d, slug: base };
+    return { ...d, slug: `${base}-${d.id}` };
+  });
+}
+
 export const fetchDestinations = async (locale: LocaleCode = "ar"): Promise<Destination[]> => {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
   if (!directusUrl) {
@@ -263,8 +275,9 @@ export const fetchDestinations = async (locale: LocaleCode = "ar"): Promise<Dest
     });
     if (!response.ok) return [];
     const apiData: ApiDestinationResponse = await response.json();
+    const rows = Array.isArray(apiData.data) ? apiData.data : [];
     return uniquifyDestinationSlugs(
-      apiData.data
+      rows
         .filter((d) => !d.status || d.status === "published")
         .map((d) => transformDestination(d, directusUrl, locale)),
     );
