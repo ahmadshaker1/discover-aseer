@@ -327,7 +327,10 @@
     "chooseServiceType": "Choose support service type",
     "internationalCallCenter": "International call center:",
     "noServicesFilter": "No services match your selected filters.",
-    "noServicesData": "No support services data is available right now. Please check the API settings or try again later."
+    "noServicesData": "No support services data is available right now. Please check the API settings or try again later.",
+    "paginationAria": "Services pagination",
+    "previous": "Previous",
+    "next": "Next"
   },
   "tourGuides": {
     "title": "Tour guides",

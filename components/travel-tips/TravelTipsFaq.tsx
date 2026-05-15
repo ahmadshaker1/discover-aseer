@@ -52,7 +52,7 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                       type="button"
                       aria-expanded
                       onClick={() => toggle(item.id)}
-                      className={`flex w-full items-center justify-between gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7300CD] text-start`}
+                      className={`flex w-full items-center justify-between gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary text-start`}
                     >
                       <span
                         className="min-w-0 flex-1 text-[29px] font-bold leading-none text-foreground"

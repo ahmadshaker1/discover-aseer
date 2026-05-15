@@ -142,7 +142,7 @@ const FilmPage = async () => {
 
             <Link
               href="/tour-guides/register"
-              className="inline-flex h-[52px] w-[185px] items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
+              className="inline-flex h-[52px] w-[185px] items-center justify-center rounded-[100px] bg-primary px-3 text-center text-[16px] font-normal leading-6 text-primary-foreground hover:opacity-90"
               style={{
                 fontFamily: "Inter, sans-serif",
                 paddingTop: 13.5,

@@ -24,7 +24,7 @@ export const RecipesCarousel = ({ recipes }: RecipesCarouselProps) => {
 
   if (recipes.length === 0) {
     return (
-      <div className="text-center py-8 text-neutral-500">
+      <div className="text-center py-8 text-muted-foreground">
         لا توجد وصفات متاحة
       </div>
     );
@@ -46,14 +46,14 @@ export const RecipesCarousel = ({ recipes }: RecipesCarouselProps) => {
       <div className="mt-4 sm:mt-6 flex justify-start gap-3 sm:gap-4">
         <Button
           onClick={() => scroll("left")}
-          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-neutral-300 flex items-center justify-center hover:bg-neutral-100 transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED]"
+          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary text-foreground"
           aria-label="السابق"
         >
           <span className="text-lg sm:text-xl">←</span>
         </Button>
         <Button
           onClick={() => scroll("right")}
-          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-neutral-300 flex items-center justify-center hover:bg-neutral-100 transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED]"
+          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary text-foreground"
           aria-label="التالي"
         >
           <span className="text-lg sm:text-xl">→</span>

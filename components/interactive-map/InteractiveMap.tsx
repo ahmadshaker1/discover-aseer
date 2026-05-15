@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import SafeHtml from "@/components/common/SafeHtml";
+import { brandPrimary } from "@/lib/theme/palette";
 import { useLocale, useTranslations } from "next-intl";
 
 interface LocationPin {
@@ -40,12 +41,12 @@ const MAP_CENTER: [number, number] = [42.62, 18.25];
 const EMPTY_PLACES: MapPlace[] = [];
 
 const CATEGORY_CHIPS = [
-  { label: "استفسارات", icon: "ⓘ" },
-  { label: "التجارب السياحية", icon: "◉" },
-  { label: "المعالم السياحية", icon: "⌂" },
-  { label: "تقييم + مكافآت", icon: "★" },
-  { label: "مطاعم وكافيهات", icon: "☕" },
-  { label: "أماكن الإقامة", icon: "🏨" },
+  { label: "استفسارات"},
+  { label: "التجارب السياحية"},
+  { label: "المعالم السياحية"},
+  { label: "تقييم + مكافآت" },
+  { label: "مطاعم وكافيهات" },
+  { label: "أماكن الإقامة"},
 ] as const;
 
 const UI_KEYS = [
@@ -248,7 +249,7 @@ const InteractiveMap = ({
         source: "places",
         filter: ["has", "point_count"],
         paint: {
-          "circle-color": "#6C2BD9",
+          "circle-color": brandPrimary,
           "circle-radius": [
             "step",
             ["get", "point_count"],
@@ -285,9 +286,9 @@ const InteractiveMap = ({
         source: "places",
         filter: ["!", ["has", "point_count"]],
         paint: {
-          "circle-color": "#7A2BDE",
+          "circle-color": brandPrimary,
           "circle-radius": 8,
-          "circle-strokeWidth": 2,
+          "circle-stroke-width": 2,
           "circle-stroke-color": "#FFFFFF",
         },
       });
@@ -396,7 +397,7 @@ const InteractiveMap = ({
             onClick={() => setActiveCategory(ui.all)}
             className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition ${
               activeCategory === ui.all
-                ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
+                ? "border-primary bg-primary text-primary-foreground"
                 : "border-border bg-surface text-foreground"
             }`}
           >
@@ -409,11 +410,11 @@ const InteractiveMap = ({
               onClick={() => setActiveCategory(chip.label)}
               className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition ${
                 activeCategory === chip.label
-                  ? "border-[#6C2BD9] bg-[#6C2BD9] text-white"
+                  ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-surface text-foreground"
               }`}
             >
-              <span>{chip.icon}</span>
+              
               <span>{chip.label}</span>
             </button>
           ))}

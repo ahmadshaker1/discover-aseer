@@ -6,7 +6,7 @@ const DiscoverAseer = () => {
     <div className="flex flex-col items-center justify-center h-screen w-screen max-w-screen-2xl px-24 space-y-16 overflow-hidden">
       <div className="relative py-8 px-12 space-y-8">
         <h1 className="text-6xl font-bold ">
-          اكتشف<span className="text-[#6027D2]"> عسير</span>
+          اكتشف<span className="text-primary"> عسير</span>
         </h1>
         <p className="text-xl font-bold">
           في سيمفونية آسرة من الجمال ، تندمج قمم الجبال مع الشواطئ البكر ، حيث

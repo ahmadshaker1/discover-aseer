@@ -72,7 +72,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
       className="flex h-full min-h-[155px] w-full min-w-0 flex-col justify-between rounded-[12px] border border-border bg-surface p-4 text-start text-foreground"
     >
       <div className="mb-2 flex shrink-0 items-center justify-end">
-        <span className="inline-flex h-7 min-w-[95px] max-w-full items-center justify-center gap-1 rounded-[20px] bg-[#B08DCB] px-3 py-1 text-xs font-bold text-white">
+        <span className="inline-flex h-7 min-w-[95px] max-w-full items-center justify-center gap-1 rounded-[20px] bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
           <span className="min-w-0 truncate text-start">{service.category}</span>
           <span className="shrink-0" aria-hidden>
             <ServiceTagIcon category={service.category} />

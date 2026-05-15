@@ -2,35 +2,17 @@
 import React, { useState } from "react";
 // تأكد من تعديل مسار الاستيراد بناءً على مكان ملف Data.ts عندك
 import { winnersData, videoSectionData } from "./data";
-
-// ==========================================
-// أيقونة زر التشغيل (Play Button)
-// ==========================================
-const PlayIcon = () => (
-  <svg
-    width="60"
-    height="60"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="12" cy="12" r="12" fill="white" />
-    <path
-      d="M16.5 11.134C17.1667 11.5189 17.1667 12.4811 16.5 12.866L9.75 16.7631C9.08333 17.148 8.25 16.6669 8.25 15.8971L8.25 8.10288C8.25 7.33308 9.08333 6.85198 9.75 7.23686L16.5 11.134Z"
-      fill="#240B48"
-    />
-  </svg>
-);
+import { PlayIcon } from "./Icons";
 
 export default function WinnersSection() {
   // State للتحكم بتشغيل الفيديو
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
-    <section className="py-16 bg-white">
+    <section className="bg-background py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* 1. عنوان القسم */}
-        <h2 className="text-center text-[24px] md:text-[32px] font-bold text-black mb-12">
+        <h2 className="mb-12 text-center text-[24px] font-bold text-foreground md:text-[32px]">
           الفائزون بتحدي هدايا الطعام العالمية 2023 - 2024
         </h2>
 
@@ -42,7 +24,7 @@ export default function WinnersSection() {
           {winnersData.map((winner) => (
             <div
               key={winner.id}
-              className="relative flex-shrink-0 w-[280px] md:w-[320px] h-[350px] rounded-2xl overflow-hidden group shadow-md"
+              className="relative shrink-0 w-[280px] md:w-[320px] h-[350px] rounded-2xl overflow-hidden group shadow-md"
             >
               {/* صورة الكرت */}
               <img
@@ -52,11 +34,11 @@ export default function WinnersSection() {
               />
 
               {/* تدرج لوني أسود من الأسفل للنص */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
 
               {/* شارة السنة (مثلاً 2024) في الزاوية اليسرى العلوية */}
-              <div className="absolute top-4 start-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-purple-200">
-                <span className="text-[#7300CD] font-bold text-[13px]">
+              <div className="absolute top-4 start-4 rounded-full border border-primary/20 bg-background/90 px-3 py-1 backdrop-blur-sm">
+                <span className="text-[13px] font-bold text-primary">
                   {winner.year}
                 </span>
               </div>

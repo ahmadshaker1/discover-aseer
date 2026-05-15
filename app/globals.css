@@ -23,7 +23,7 @@
   --muted: #f2f2f2;
   --muted-foreground: #6b7280;
   --border: #e4e4e4;
-  --primary: #7300cd;
+  --primary: #6027d2;
   --primary-foreground: #ffffff;
   --secondary: #280048;
   --secondary-foreground: #ffffff;
@@ -31,15 +31,15 @@
 
 html[data-theme="dark"] {
   --background: #14091f;
-  --foreground: #f3edf9;
+  --foreground: #ffffff;
   --surface: #1c0f2a;
   --muted: #251538;
-  --muted-foreground: #b8a8c9;
+  --muted-foreground: #ffffff;
   --border: #34204a;
-  --primary: #b983ff;
-  --primary-foreground: #14091f;
-  --secondary: #8a47dc;
-  --secondary-foreground: #f3edf9;
+  --primary: #6027d2;
+  --primary-foreground: #ffffff;
+  --secondary: #ffffff;
+  --secondary-foreground: #14091f;
 }
 
 html,
@@ -96,6 +96,31 @@ select {
 html[data-theme="dark"],
 html.dark {
   color-scheme: dark;
+}
+
+/* Planner date picker — uses theme primary */
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+  background-color: color-mix(in srgb, var(--primary) 10%, transparent) !important;
+  color: var(--primary-foreground) !important;
+  border-radius: 8px;
+}
+
+.rdp-day_range_middle {
+  background-color: color-mix(in srgb, var(--primary) 10%, transparent) !important;
+  color: var(--foreground) !important;
+  border-radius: 0 !important;
+}
+
+.rdp-day_range_start {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.rdp-day_range_end {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 /* Hide scrollbar for all browsers */

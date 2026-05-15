@@ -157,7 +157,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             href={event.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`mt-0.5 block text-sm font-medium text-[#6027D2] underline text-start`}
+            className={`mt-0.5 block text-sm font-medium text-primary underline text-start`}
             style={{ fontFamily: ibm }}
           >
             {event.mapsLinkLabel}
@@ -212,7 +212,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
         setImageIndex(0);
       }}
     >
-      <article className="relative z-2 h-full w-full overflow-hidden rounded-[20px] border border-[#E5E5E5] bg-neutral-900 shadow-sm transition-shadow duration-300 group-hover/card:shadow-xl group-focus-within/card:shadow-xl">
+      <article className="relative z-2 h-full w-full overflow-hidden rounded-[20px] border border-border bg-neutral-900 shadow-sm transition-shadow duration-300 group-hover/card:shadow-xl group-focus-within/card:shadow-xl">
         <div className="relative h-full w-full overflow-hidden">
           {event.images.map((src, i) => (
             <img

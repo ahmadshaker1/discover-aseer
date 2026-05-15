@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { brandPrimary } from "@/lib/theme/palette";
 
 interface DestinationPreviewMapProps {
   lat: number;
@@ -51,7 +52,7 @@ const DestinationPreviewMap = ({
     map.doubleClickZoom.disable();
     map.touchZoomRotate.disable();
 
-    markerRef.current = new mapboxgl.Marker({ color: "#6027D2" })
+    markerRef.current = new mapboxgl.Marker({ color: brandPrimary })
       .setLngLat([lon, lat])
       .addTo(map);
 

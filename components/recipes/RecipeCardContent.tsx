@@ -14,7 +14,7 @@ export const RecipeCardContent = ({
       <h3 className="text-base sm:text-lg font-semibold text-right w-full">
         {title}
       </h3>
-      <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-neutral-700 w-full justify-end">
+      <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground w-full justify-end">
         <div className="flex items-center gap-1">
           <span>{mainIngredient}</span>
         </div>

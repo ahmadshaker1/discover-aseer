@@ -54,14 +54,14 @@ export default function IGCatEventCards() {
   const activeEvent = dummyEvents[activeIndex];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="bg-background py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* 1. العنوان والتاق */}
         <div className="flex flex-col items-start   mb-10 text-start">
-          <span className="inline-block px-5 py-1 border border-[#7300CD] text-[#7300CD] rounded-full text-[14px] font-bold mb-4">
+          <span className="mb-4 inline-block rounded-full border border-primary px-5 py-1 text-[14px] font-bold text-primary">
             ملتقى عالمي
           </span>
-          <h2 className="text-[32px] md:text-[40px] font-bold text-black">
+          <h2 className="text-[32px] font-bold text-foreground md:text-[40px]">
             أبرز الفعاليات
           </h2>
         </div>
@@ -78,10 +78,10 @@ export default function IGCatEventCards() {
               <button
                 key={event.id}
                 onClick={() => setActiveIndex(index)}
-                className={`flex-shrink-0 flex flex-col items-center justify-center w-[90px] h-[90px] rounded-[1.5rem] border transition-all ${
+                className={`flex shrink-0 flex-col items-center justify-center h-[90px] w-[90px] rounded-3xl border transition-all ${
                   isActive
-                    ? "border-[#7300CD] bg-[#F3EFFF] text-[#7300CD]"
-                    : "border-[#E4E4E4] bg-white text-black hover:border-gray-300"
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border bg-background text-foreground hover:border-muted-foreground"
                 }`}
               >
                 <span className="text-[14px] font-bold text-center leading-tight">
@@ -98,7 +98,7 @@ export default function IGCatEventCards() {
 
         {/* 3. بطاقة الفعالية الكبيرة (Hero Card) */}
         {activeEvent && (
-          <div className="relative w-full h-[380px] md:h-[380px] rounded-[2rem] overflow-hidden group shadow-lg">
+          <div className="group relative h-[380px] w-full overflow-hidden rounded-4xl shadow-lg md:h-[380px]">
             {/* الصورة */}
             <img
               src={activeEvent.image}
@@ -107,7 +107,7 @@ export default function IGCatEventCards() {
             />
 
             {/* تدرج لوني أسود من الأسفل عشان النص الأبيض يكون واضح */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent"></div>
 
             {/* محتوى النص */}
             <div className="absolute bottom-0 end-0 p-6 md:p-10 text-start w-full md:w-3/4 lg:w-2/3 z-10">

@@ -13,7 +13,7 @@ const ShowMoreButton = () => {
   return (
     <Button
       onClick={handleClick}
-      className="mt-10 inline-flex items-center justify-center rounded-full bg-[#6027D2] px-10 py-3 text-sm md:text-base font-semibold text-white  cursor-pointer hover:bg-[#4f1fb0] transition-colors"
+      className="mt-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-primary px-10 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 md:text-base"
     >
       عرض المزيد
     </Button>

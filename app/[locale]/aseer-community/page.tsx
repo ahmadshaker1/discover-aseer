@@ -74,7 +74,7 @@ const AseerCommunityPage = () => {
   return (
     <div className="flex w-full flex-col">
       <CommunityHero data={communityPageData.hero} />
-      <section className="bg-[#f6f6f6]">
+      <section className="bg-surface">
         <CommunityMainSlider content={communityPageData.slider} />
       </section>
     </div>

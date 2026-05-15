@@ -19,14 +19,14 @@ const NotFoundPage = () => {
         </div>
 
         <h1
-          className="text-[36px] font-bold leading-[1.2] text-[#280048]"
+          className="text-[36px] font-bold leading-[1.2] text-secondary"
           style={{ fontFamily: ara }}
         >
           {t("title")}
         </h1>
 
         <p
-          className="mx-auto mt-4 max-w-[520px] text-[18px] leading-normal text-[#4A405A]"
+          className="mx-auto mt-4 max-w-[520px] text-[18px] leading-normal text-muted-foreground"
           style={{ fontFamily: ibm }}
         >
           {t("description")}

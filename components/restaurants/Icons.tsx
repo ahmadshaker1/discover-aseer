@@ -1,34 +1,44 @@
-export const SaudiRiyalIcon = () => (
+import {
+  filterControlIconClass,
+  filterSectionIconClass,
+  type FilterIconProps,
+} from "@/components/icons/filter-icon-types";
+
+export const SaudiRiyalIcon = ({ className = "shrink-0 text-foreground" }: FilterIconProps) => (
   <svg
     width="14"
     height="15"
     viewBox="0 0 14 15"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden
   >
     <path
       d="M8.83181 12.7726C8.65848 13.1534 8.5439 13.5666 8.5 14L12.1682 13.2274C12.3415 12.8467 12.456 12.4334 12.5 12L8.83181 12.7726Z"
-      fill="#19171A"
+      fill="currentColor"
     />
     <path
       d="M12.0901 11.2537C12.3042 10.7944 12.4458 10.2956 12.5 9.7727L8.97005 10.4992V9.10259L12.09 8.46098C12.3041 8.0016 12.4457 7.50286 12.4999 6.97995L8.96994 7.70585V2.68313C8.42905 2.97702 7.94868 3.36823 7.5582 3.82967V7.99633L6.14645 8.28671V2C5.60556 2.29379 5.12519 2.68509 4.7347 3.14654V8.57699L1.57592 9.22655C1.36178 9.68593 1.22012 10.1847 1.16579 10.7076L4.7347 9.97362V11.7324L0.909913 12.519C0.695776 12.9784 0.554228 13.4771 0.5 14L4.50349 13.1767C4.82939 13.1111 5.1095 12.9246 5.29161 12.668L6.02582 11.6147V11.6145C6.10204 11.5055 6.14645 11.3741 6.14645 11.2326V9.68324L7.5582 9.39286V12.1861L12.09 11.2535L12.0901 11.2537Z"
-      fill="#19171A"
+      fill="currentColor"
     />
   </svg>
 );
 
-export const LocationIcon = () => (
+export const LocationIcon = ({ className = filterSectionIconClass }: FilterIconProps) => (
   <svg
     width="24"
     height="24"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden
   >
     <g clipPath="url(#clip0_1149_4101)">
       <path
         d="M12 20.8999L16.95 15.9499C17.9289 14.9709 18.5955 13.7236 18.8656 12.3658C19.1356 11.0079 18.9969 9.60052 18.4671 8.32148C17.9373 7.04244 17.04 5.94923 15.8889 5.18009C14.7378 4.41095 13.3844 4.00043 12 4.00043C10.6156 4.00043 9.26222 4.41095 8.11109 5.18009C6.95996 5.94923 6.06275 7.04244 5.53292 8.32148C5.00308 9.60052 4.86442 11.0079 5.13445 12.3658C5.40449 13.7236 6.07111 14.9709 7.05 15.9499L12 20.8999ZM12 23.7279L5.636 17.3639C4.37734 16.1052 3.52019 14.5016 3.17293 12.7558C2.82567 11.0099 3.00391 9.20035 3.6851 7.55582C4.36629 5.91129 5.51984 4.50569 6.99988 3.51677C8.47992 2.52784 10.22 2 12 2C13.78 2 15.5201 2.52784 17.0001 3.51677C18.4802 4.50569 19.6337 5.91129 20.3149 7.55582C20.9961 9.20035 21.1743 11.0099 20.8271 12.7558C20.4798 14.5016 19.6227 16.1052 18.364 17.3639L12 23.7279ZM12 12.9999C12.5304 12.9999 13.0391 12.7892 13.4142 12.4141C13.7893 12.0391 14 11.5304 14 10.9999C14 10.4695 13.7893 9.96078 13.4142 9.58571C13.0391 9.21064 12.5304 8.99992 12 8.99992C11.4696 8.99992 10.9609 9.21064 10.5858 9.58571C10.2107 9.96078 10 10.4695 10 10.9999C10 11.5304 10.2107 12.0391 10.5858 12.4141C10.9609 12.7892 11.4696 12.9999 12 12.9999ZM12 14.9999C10.9391 14.9999 9.92172 14.5785 9.17158 13.8283C8.42143 13.0782 8 12.0608 8 10.9999C8 9.93906 8.42143 8.92164 9.17158 8.17149C9.92172 7.42135 10.9391 6.99992 12 6.99992C13.0609 6.99992 14.0783 7.42135 14.8284 8.17149C15.5786 8.92164 16 9.93906 16 10.9999C16 12.0608 15.5786 13.0782 14.8284 13.8283C14.0783 14.5785 13.0609 14.9999 12 14.9999Z"
-        fill="#9B9B9C"
+        fill="currentColor"
       />
     </g>
     <defs>
@@ -39,33 +49,37 @@ export const LocationIcon = () => (
   </svg>
 );
 
-export const RestaurantTypeIcon = () => (
+export const RestaurantTypeIcon = ({ className = filterSectionIconClass }: FilterIconProps) => (
   <svg
     width="20"
     height="18"
     viewBox="0 0 20 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden
   >
     <path
       d="M16 4H19C19.2652 4 19.5196 4.10536 19.7071 4.29289C19.8946 4.48043 20 4.73478 20 5V17C20 17.2652 19.8946 17.5196 19.7071 17.7071C19.5196 17.8946 19.2652 18 19 18H1C0.734784 18 0.48043 17.8946 0.292893 17.7071C0.105357 17.5196 0 17.2652 0 17V1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H16V4ZM2 6V16H18V6H2ZM2 2V4H14V2H2ZM13 10H16V12H13V10Z"
-      fill="#9B9B9C"
+      fill="currentColor"
     />
   </svg>
 );
 
-export const CuisineIcon = () => (
+export const CuisineIcon = ({ className = filterSectionIconClass }: FilterIconProps) => (
   <svg
     width="24"
     height="24"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden
   >
     <g clipPath="url(#clip0_1102_9910)">
       <path
         d="M12.001 4.52898C14.35 2.41998 17.98 2.48998 20.243 4.75698C22.505 7.02498 22.583 10.637 20.479 12.993L11.999 21.485L3.52101 12.993C1.41701 10.637 1.49601 7.01898 3.75701 4.75698C6.02201 2.49298 9.64501 2.41698 12.001 4.52898ZM18.827 6.16998C17.327 4.66798 14.907 4.60698 13.337 6.01698L12.002 7.21498L10.666 6.01798C9.09101 4.60598 6.67601 4.66798 5.17201 6.17198C3.68201 7.66198 3.60701 10.047 4.98001 11.623L12 18.654L19.02 11.624C20.394 10.047 20.319 7.66498 18.827 6.16998Z"
-        fill="#9B9B9C"
+        fill="currentColor"
       />
     </g>
     <defs>
@@ -76,13 +90,15 @@ export const CuisineIcon = () => (
   </svg>
 );
 
-export const StarIcon = () => (
+export const StarIcon = ({ className = filterSectionIconClass }: FilterIconProps) => (
   <svg
     width="18"
     height="18"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden
   >
     <g clipPath="url(#clip0_1102_9954)">
       <path
@@ -98,13 +114,15 @@ export const StarIcon = () => (
   </svg>
 );
 
-export const BuildingIcon = () => (
+export const BuildingIcon = ({ className = "shrink-0 text-muted-foreground" }: FilterIconProps) => (
   <svg
     width="18"
     height="18"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden
   >
     <g clipPath="url(#clip0_1114_10717)">
       <path
@@ -179,13 +197,15 @@ export const BuildingIcon = () => (
   </svg>
 );
 
-export const DiamondIcon = () => (
+export const DiamondIcon = ({ className = "shrink-0 text-muted-foreground" }: FilterIconProps) => (
   <svg
     width="18"
     height="18"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden
   >
     <g clipPath="url(#clip0_1113_9491)">
       <path
@@ -201,13 +221,15 @@ export const DiamondIcon = () => (
   </svg>
 );
 
-export const ChevronDownIcon = () => (
+export const ChevronDownIcon = ({ className = filterControlIconClass }: FilterIconProps) => (
   <svg
     width="20"
     height="20"
     viewBox="0 0 20 20"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden
   >
     <path
       d="M5 7.5L10 12.5L15 7.5"

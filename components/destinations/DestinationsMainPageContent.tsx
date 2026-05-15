@@ -93,7 +93,7 @@ const DestinationsMainPageContent = ({
           </div>
 
           <aside
-            className={`w-full lg:sticky lg:top-24 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-[#E6E6E6] lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
+            className={`w-full lg:sticky lg:top-24 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
            
           >
             <div className="flex h-full flex-col gap-6">

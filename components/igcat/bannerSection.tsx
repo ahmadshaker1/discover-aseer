@@ -22,7 +22,7 @@ export default function IGCatBannerSection() {
         </h1>
         <div>
           <button
-            className="bg-[#7300CD] text-white px-8 py-3 rounded-full text-[20px] leading-[36px] tracking-[0] text-start align-middle transition-colors hover:bg-[#6027D2] mb-6 inline-flex items-center gap-2"
+            className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-start text-[20px] leading-[36px] tracking-[0] align-middle text-primary-foreground transition-opacity hover:opacity-90"
             style={{ fontFamily: "Ara Hamah 1964 B" }}
           >
             اكتشف

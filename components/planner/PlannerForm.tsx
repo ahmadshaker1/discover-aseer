@@ -195,13 +195,13 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
                     <style>{`
       /* هذي التعديلات البسيطة عشان نظبط ألوان الفيجما على التقويم */
       .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
-        background-color: #7300CD1A !important;
-        color: white !important;
+        background-color: color-mix(in srgb, var(--primary) 10%, transparent) !important;
+        color: var(--primary-foreground) !important;
         border-radius: 8px;
       }
       .rdp-day_range_middle {
-        background-color: #7300CD1A !important;
-        color: black !important;
+        background-color: color-mix(in srgb, var(--primary) 10%, transparent) !important;
+        color: var(--foreground) !important;
         border-radius: 0px !important;
       }
       .rdp-day_range_start {
@@ -279,7 +279,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
             type="submit"
             data-submit-plan="true"
             disabled={isLoading || !description.trim()}
-            className="px-8 py-3 bg-[#6027D2] text-white rounded-full font-semibold text-base hover:bg-[#5020B8] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-full bg-primary px-8 py-3 text-base font-semibold text-primary-foreground transition-opacity duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? tPlanner("planning") : tPlanner("createPlan")}
           </button>

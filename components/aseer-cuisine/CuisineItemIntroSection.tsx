@@ -52,23 +52,23 @@ const CuisineItemIntroSection = ({
               {t("share")}
             </span>
             <div className="flex items-center gap-2">
-              <a href="#" aria-label="WhatsApp" className="text-[#535353] hover:opacity-80 dark:text-white">
+              <a href="#" aria-label="WhatsApp" className="text-muted-foreground hover:opacity-80">
                 <WhatsAppIcon />
               </a>
               <a
                 href="mailto:info@discoveraseer.com"
                 aria-label="Mail"
-                className="text-[#535353] hover:opacity-80 dark:text-white"
+                className="text-muted-foreground hover:opacity-80"
               >
                 <MailIcon />
               </a>
-              <a href="#" aria-label="LinkedIn" className="text-[#535353] hover:opacity-80 dark:text-white">
+              <a href="#" aria-label="LinkedIn" className="text-muted-foreground hover:opacity-80">
                 <LinkedInIcon />
               </a>
-              <a href="#" aria-label="Facebook" className="text-[#535353] hover:opacity-80 dark:text-white">
+              <a href="#" aria-label="Facebook" className="text-muted-foreground hover:opacity-80">
                 <FacebookIcon />
               </a>
-              <a href="#" aria-label="X" className="text-[#535353] hover:opacity-80 dark:text-white">
+              <a href="#" aria-label="X" className="text-muted-foreground hover:opacity-80">
                 <XIcon />
               </a>
             </div>

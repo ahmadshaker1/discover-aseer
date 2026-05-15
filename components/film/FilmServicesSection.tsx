@@ -16,41 +16,44 @@ function CrewIcon() {
       viewBox="0 0 74 78"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="text-foreground"
+      aria-hidden
     >
       <g clipPath="url(#clip0_1844_13450)">
         <path
           d="M73.8466 39C73.8466 18.8343 57.4991 2.48682 37.3335 2.48682C17.1678 2.48682 0.820312 18.8343 0.820312 39C0.820312 59.1656 17.1678 75.5131 37.3335 75.5131C57.4991 75.5131 73.8466 59.1656 73.8466 39Z"
-          fill="white"
+          fill="currentColor"
+          className="opacity-20"
         />
         <path
           d="M73.8466 39C73.8466 18.8343 57.4991 2.48682 37.3335 2.48682C17.1678 2.48682 0.820312 18.8343 0.820312 39C0.820312 59.1656 17.1678 75.5131 37.3335 75.5131C57.4991 75.5131 73.8466 59.1656 73.8466 39Z"
-          stroke="#E8E8E8"
+          stroke="currentColor"
           strokeWidth="0.973684"
         />
         <path
           d="M49.0169 38.7566V32.1842L42.4445 24.8816H27.109C26.3024 24.8816 25.6484 25.5355 25.6484 26.3421V52.6316C25.6484 53.4382 26.3024 54.0921 27.109 54.0921H34.4116"
-          stroke="#1E1E1E"
+          stroke="currentColor"
           strokeWidth="1.94737"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M44.6359 48.2501C46.2492 48.2501 47.5569 46.9423 47.5569 45.329C47.5569 43.7157 46.2492 42.408 44.6359 42.408C43.0226 42.408 41.7148 43.7157 41.7148 45.329C41.7148 46.9423 43.0226 48.2501 44.6359 48.2501Z"
-          stroke="#1E1E1E"
+          stroke="currentColor"
           strokeWidth="1.94737"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M50.4772 54.0921C50.4772 50.8656 47.8616 48.25 44.6351 48.25C41.4086 48.25 38.793 50.8656 38.793 54.0921"
-          stroke="#1E1E1E"
+          stroke="currentColor"
           strokeWidth="1.94737"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M41.7148 24.8816V32.1842H49.0175"
-          stroke="#1E1E1E"
+          stroke="currentColor"
           strokeWidth="1.94737"
           strokeLinecap="round"
           strokeLinejoin="round"
