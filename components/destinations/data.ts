@@ -290,7 +290,7 @@ export const getDestinationBySlug = async (
   slugOrId: string,
   locale: LocaleCode = "ar",
 ): Promise<Destination | null> => {
-  const normalized = normalizeDestinationSlugParam(slug);
+  const normalized = normalizeDestinationSlugParam(slugOrId);
   const rows = await fetchDestinations(locale);
 
   if (normalized) {
@@ -298,11 +298,11 @@ export const getDestinationBySlug = async (
     if (bySlug) return bySlug;
   }
 
-  let decoded = slug;
+  let decoded = slugOrId;
   try {
-    decoded = decodeURIComponent(slug).trim();
+    decoded = decodeURIComponent(slugOrId).trim();
   } catch {
-    decoded = slug.trim();
+    decoded = slugOrId.trim();
   }
 
   if (decoded) {
