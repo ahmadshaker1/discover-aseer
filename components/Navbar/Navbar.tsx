@@ -18,14 +18,10 @@ const Navbar = () => {
           <AseerLogo />
           <DesktopNavigationLinks />
           <MobileMenuButton onClick={() => setMobileMenuOpen(true)} />
-
-
-
         </div>
         <div className="flex flex-row items-center gap-3">
           <DesktopActionLinks />
         </div>
-
       </nav>
 
       {/* Mobile Menu */}

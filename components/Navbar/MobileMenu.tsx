@@ -7,7 +7,7 @@ import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import AseerLogo from "../Logo/AseerLogo";
 import { HamburgerIcon } from "./Icons";
 import { navigationLinks, discoverAseerLinks, iconButtons } from "./navbarData";
-import { useTheme } from "@/components/theme/ThemeProvider";
+import { toggleTheme } from "@/lib/theme/client";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -19,11 +19,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const { toggleTheme } = useTheme();
 
   const switchLocale = () => {
     const nextLocale = locale === "ar" ? "en" : "ar";
-    const normalizedPathname = pathname.replace(/^\/(ar|en)(?=\/|$)/, "") || "/";
+    const normalizedPathname =
+      pathname.replace(/^\/(ar|en)(?=\/|$)/, "") || "/";
     router.replace(normalizedPathname, { locale: nextLocale });
     router.refresh();
     onClose();
@@ -68,8 +68,9 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                               <Disclosure.Button className="w-full flex items-center justify-between text-white text-lg sm:text-xl font-medium py-3 border-b border-white/10 hover:opacity-80 transition-opacity">
                                 <span>{t(link.labelKey)}</span>
                                 <svg
-                                  className={`w-5 h-5 transition-transform duration-200 ${open ? "rotate-180" : ""
-                                    }`}
+                                  className={`w-5 h-5 transition-transform duration-200 ${
+                                    open ? "rotate-180" : ""
+                                  }`}
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"
@@ -151,20 +152,28 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                         <Link
                           key={index}
                           href={item.href}
-                          onClick={index === 0
-                            ? (e) => {
-                              e.preventDefault();
-                              switchLocale();
-                            }
-                            : index === 1
+                          onClick={
+                            index === 0
                               ? (e) => {
-                                e.preventDefault();
-                                toggleTheme();
-                                onClose();
-                              }
-                              : onClose}
+                                  e.preventDefault();
+                                  switchLocale();
+                                }
+                              : index === 1
+                                ? (e) => {
+                                    e.preventDefault();
+                                    toggleTheme();
+                                    onClose();
+                                  }
+                                : onClose
+                          }
                           className="flex h-12 w-12 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
-                          aria-label={index === 0 ? t("nav.languageSwitchLabel") : index === 1 ? "Toggle theme" : undefined}
+                          aria-label={
+                            index === 0
+                              ? t("nav.languageSwitchLabel")
+                              : index === 1
+                                ? t("nav.themeSwitchLabel")
+                                : undefined
+                          }
                         >
                           <Icon />
                         </Link>

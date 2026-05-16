@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
+import Image from "next/image";
 
 interface HeroProps {
   title?: string;
@@ -54,11 +55,13 @@ const Hero = ({ title, subtitle }: HeroProps) => {
           aria-hidden
         />
 
-        <img
+        <Image
           src="/hero-pattern/ribbon_column.png"
           alt=""
           aria-hidden
-          className="absolute top-0 right-0 z-20 h-full w-[15px] object-cover"
+          className="absolute top-0 right-0 z-20 h-full object-cover"
+          width={15}
+          height={100}
         />
 
         <div className="relative z-10 mx-auto h-full w-full max-w-[1440px] px-6 md:px-[130px]">

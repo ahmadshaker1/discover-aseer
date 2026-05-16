@@ -5,24 +5,22 @@
  *
  * TODO
  * ----
- * - Globe + moon: still `href="#"` placeholders from navbarData — replace with real handlers
- *   (locale + theme). See comment block in `navbarData.ts`.
+ * - Globe: locale switcher wired; moon toggles light/dark via `toggleTheme`.
  * - Booklet: replace hardcoded `/assets/booklet/booklet.pdf` if CMS or CDN URL differs;
  *   consider env e.g. NEXT_PUBLIC_BOOKLET_PDF_URL.
  */
 import { Link } from "@/i18n/navigation";
-import { GlobeIcon, CrescentMoonIcon, BookletIcon, LocationPinIcon } from "./Icons";
+import { LocationPinIcon } from "./Icons";
 import { iconButtons } from "./navbarData";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { useTheme } from "@/components/theme/ThemeProvider";
+import { toggleTheme } from "@/lib/theme/client";
 
 const DesktopActionLinks = () => {
   const locale = useLocale();
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
-  const { toggleTheme } = useTheme();
 
   const handleBookletDownload = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -36,7 +34,8 @@ const DesktopActionLinks = () => {
 
   const handleLocaleSwitch = () => {
     const nextLocale = locale === "ar" ? "en" : "ar";
-    const normalizedPathname = pathname.replace(/^\/(ar|en)(?=\/|$)/, "") || "/";
+    const normalizedPathname =
+      pathname.replace(/^\/(ar|en)(?=\/|$)/, "") || "/";
     router.replace(normalizedPathname, { locale: nextLocale });
     router.refresh();
   };
@@ -72,19 +71,27 @@ const DesktopActionLinks = () => {
           <Link
             key={index}
             href={item.href}
-            onClick={isLocaleButton
-              ? (e) => {
-                e.preventDefault();
-                handleLocaleSwitch();
-              }
-              : isThemeButton
+            onClick={
+              isLocaleButton
                 ? (e) => {
-                  e.preventDefault();
-                  toggleTheme();
-                }
-                : undefined}
+                    e.preventDefault();
+                    handleLocaleSwitch();
+                  }
+                : isThemeButton
+                  ? (e) => {
+                      e.preventDefault();
+                      toggleTheme();
+                    }
+                  : undefined
+            }
             className="flex h-10 w-10 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
-            aria-label={isLocaleButton ? t("nav.languageSwitchLabel") : isThemeButton ? "Toggle theme" : undefined}
+            aria-label={
+              isLocaleButton
+                ? t("nav.languageSwitchLabel")
+                : isThemeButton
+                  ? t("nav.themeSwitchLabel")
+                  : undefined
+            }
           >
             <Icon />
           </Link>
