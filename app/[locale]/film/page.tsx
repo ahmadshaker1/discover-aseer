@@ -9,6 +9,7 @@ import {
   fetchFilmLandscapesWithFallback,
   fetchFilmWhyAseerSlidesWithFallback,
 } from "@/components/film/data";
+import FilmHero from "@/components/film/FilmHero";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
@@ -27,16 +28,7 @@ const FilmPage = async () => {
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <section className="relative h-[420px] w-full overflow-hidden sm:h-[560px] md:h-[809px]">
-        <Image
-          src="/assets/film/film-hero.png"
-          alt="Film hero"
-          fill
-          priority
-          className="object-fill object-center"
-          sizes="100vw"
-        />
-      </section>
+      <FilmHero />
 
       <section className="mx-auto h-auto w-full max-w-[1442px] bg-background px-4 py-[60px] sm:px-8 md:px-[62px]">
         <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
