@@ -3,6 +3,11 @@
 import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmarkCard";
+import {
+  attractionMatchesTerrain,
+  TERRAIN_TO_INTERESTS,
+  type FilmLandscapeFilterId,
+} from "@/components/film/landscapeFilters";
 import type { Landmark } from "@/components/landmarks/data";
 import {
   getCityOptions,
@@ -16,6 +21,8 @@ const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsMainPageContentProps {
   landmarks: Landmark[];
+  /** From `/attractions?terrain=mountains` (film page landscape cards). */
+  initialTerrain?: FilmLandscapeFilterId | null;
 }
 
 interface FilterState {
@@ -35,12 +42,21 @@ const includesInterests = (landmark: Landmark, selectedInterests: string[]): boo
   return selectedInterests.some((interest) => tags.includes(interest));
 };
 
-const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentProps) => {
+const AttractionsMainPageContent = ({
+  landmarks,
+  initialTerrain = null,
+}: AttractionsMainPageContentProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
+  const tFilm = useTranslations("film");
 
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
   const interestOptions = useMemo(() => getInterestOptions(locale), [locale]);
+
+  const terrainInterests = useMemo(
+    () => (initialTerrain ? TERRAIN_TO_INTERESTS[initialTerrain] : []),
+    [initialTerrain],
+  );
 
   const includesCity = (landmark: Landmark, city: string | null): boolean => {
     if (!city) return true;
@@ -58,7 +74,9 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
    *   filters gracefully fall back (won't break page rendering).
    */
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [selectedInterests, setSelectedInterests] = useState<string[]>(
+    () => terrainInterests,
+  );
 
   const cityScopedLandmarks = useMemo(
     () => landmarks.filter((landmark) => includesCity(landmark, filters.city)),
@@ -75,19 +93,37 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
   }, [cityScopedLandmarks]);
 
   const visibleLandmarks = useMemo(() => {
-    return cityScopedLandmarks.filter((landmark) =>
-      includesInterests(landmark, selectedInterests)
-    );
-  }, [cityScopedLandmarks, selectedInterests]);
+    return cityScopedLandmarks.filter((landmark) => {
+      if (initialTerrain && !attractionMatchesTerrain(landmark, initialTerrain)) {
+        return false;
+      }
+      return includesInterests(landmark, selectedInterests);
+    });
+  }, [cityScopedLandmarks, selectedInterests, initialTerrain]);
 
   return (
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
+        {initialTerrain ? (
+          <p
+            className="mb-6 text-start text-sm text-muted-foreground"
+            style={{ fontFamily: ibm }}
+          >
+            {tFilm("landscapes.filteredBy", {
+              label: tFilm(`landscapes.${initialTerrain}`),
+            })}
+          </p>
+        ) : null}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           <div className="w-full flex-1 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
               {visibleLandmarks.map((landmark) => (
-                <AttractionsLandmarkCard key={landmark.id} landmark={landmark} className="mx-auto" />
+                <AttractionsLandmarkCard
+                  key={landmark.id}
+                  landmark={landmark}
+                  className="mx-auto"
+                  cardHref={`/attractions/${landmark.slug}`}
+                />
               ))}
             </div>
 
@@ -184,7 +220,7 @@ const AttractionsMainPageContent = ({ landmarks }: AttractionsMainPageContentPro
                                   : [...prev, option.id]
                               )
                             }
-                              className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] checked:border-primary checked:bg-primary checked:bg-[linear-gradient(45deg,transparent_45%,white_45%,white_55%,transparent_55%),linear-gradient(-45deg,transparent_45%,white_45%,white_55%,transparent_55%)] checked:bg-size-[70%_70%] checked:bg-center checked:bg-no-repeat"
+                              className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                           />
                           <span
                               className={`h-5 min-w-[73px] text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}

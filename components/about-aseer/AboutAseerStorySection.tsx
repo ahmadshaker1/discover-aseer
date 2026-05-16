@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -17,6 +18,8 @@ export interface AboutStoryHighlightCard {
   id: string;
   image: string;
   title: string;
+  /** When set, the card links to `/attractions/{slug}`. */
+  href?: string;
 }
 
 export interface AboutStoryContent {
@@ -35,8 +38,9 @@ interface AboutAseerStorySectionProps {
 
 function ChevronRight() {
   return (
+
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M7.14453 4.5L11.6445 9L7.14453 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.8555 4.5L6.35547 9L10.8555 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -44,8 +48,9 @@ function ChevronRight() {
 function ChevronLeft() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M10.8555 4.5L6.35547 9L10.8555 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7.14453 4.5L11.6445 9L7.14453 13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+
   );
 }
 
@@ -96,28 +101,48 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
         {/* Backend: send exactly 4 cards in `highlightCards` to match this layout block. */}
         <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[35px] px-4 md:px-[64px]">
           <div className="grid w-full grid-cols-1 gap-[35px] sm:grid-cols-2 lg:grid-cols-4">
-            {content.highlightCards.slice(0, 4).map((card) => (
-              <article
-                key={card.id}
-                className="relative h-[305px] w-full max-w-[310px] justify-self-center overflow-hidden rounded-[10px]"
-              >
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 50vw, 310px"
-                />
-                <div className="absolute inset-x-0 bottom-0 h-[51px] bg-[linear-gradient(179.54deg,rgba(0,0,0,0)_0.39%,#000000_99.6%)] px-5 py-4">
-                  <p
-                  className={`line-clamp-1 text-[16px] font-bold leading-[120%] text-white text-start`}
-                    style={{ fontFamily: ara }}
+            {content.highlightCards.slice(0, 4).map((card) => {
+              const inner = (
+                <>
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 50vw, 310px"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-[51px] bg-[linear-gradient(179.54deg,rgba(0,0,0,0)_0.39%,#000000_99.6%)] px-5 py-4">
+                    <p
+                      className="line-clamp-1 text-start text-[16px] font-bold leading-[120%] text-white"
+                      style={{ fontFamily: ara }}
+                    >
+                      {card.title}
+                    </p>
+                  </div>
+                </>
+              );
+
+              if (card.href) {
+                return (
+                  <Link
+                    key={card.id}
+                    href={card.href}
+                    className="group relative block h-[305px] w-full max-w-[310px] justify-self-center overflow-hidden rounded-[10px] transition-transform hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
-                    {card.title}
-                  </p>
-                </div>
-              </article>
-            ))}
+                    {inner}
+                  </Link>
+                );
+              }
+
+              return (
+                <article
+                  key={card.id}
+                  className="relative h-[305px] w-full max-w-[310px] justify-self-center overflow-hidden rounded-[10px]"
+                >
+                  {inner}
+                </article>
+              );
+            })}
           </div>
         </div>
 

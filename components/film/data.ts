@@ -2,34 +2,47 @@
  * Backend handoff — film first section cards:
  * - Suggested Directus collection: `film_landscapes`
  * - Env: `NEXT_PUBLIC_DIRECTUS_APP_URL`
- * - Fields (suggested): `id`, `title`, `cover_image`, `status`
+ * - Fields (suggested): `id`, `title`, `title_en`, `filter_key`, `cover_image`, `status`
  */
+
+import {
+  FILM_LANDSCAPE_LABEL_KEYS,
+  resolveFilmLandscapeFilterId,
+  type FilmLandscapeFilterId,
+} from "./landscapeFilters";
 
 export interface FilmLandscape {
   id: string;
-  title: string;
+  /** i18n key under `film` namespace, e.g. `landscapes.mountains` */
+  labelKey: string;
+  /** Used in `/attractions?terrain=` */
+  filterId: FilmLandscapeFilterId;
   image: string;
 }
 
 export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
   {
     id: "film-land-1",
-    title: "الجبال",
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS.mountains,
+    filterId: "mountains",
     image: "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg",
   },
   {
     id: "film-land-2",
-    title: "السهول",
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS.plains,
+    filterId: "plains",
     image: "/assets/film/f553c2485f7cee0001b8c78577a11b28d342a8d9.png",
   },
   {
     id: "film-land-3",
-    title: "الشواطئ",
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS.beaches,
+    filterId: "beaches",
     image: "/assets/film/cb7870bcdbeed166a47cfcfd91a8a0fa3f5c72b5.jpg",
   },
   {
     id: "film-land-4",
-    title: "الصحراء",
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS.desert,
+    filterId: "desert",
     image: "/assets/film/216f4631aac0e23146a54ede4d47668e3a6b8c75 (1).png",
   },
 ];
@@ -37,6 +50,8 @@ export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
 interface ApiFilmLandscape {
   id: string;
   title?: string | null;
+  title_en?: string | null;
+  filter_key?: string | null;
   cover_image?: string | null;
   status?: string | null;
 }
@@ -48,15 +63,22 @@ interface ApiFilmLandscapeResponse {
 const transformFilmLandscape = (
   row: ApiFilmLandscape,
   directusUrl: string,
-  fallbackTitle: string,
+  fallback: FilmLandscape,
 ): FilmLandscape => {
   const image = row.cover_image
     ? `${directusUrl}/assets/${row.cover_image}`
-    : "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg";
+    : fallback.image;
+
+  const filterId =
+    resolveFilmLandscapeFilterId(row.filter_key) ||
+    resolveFilmLandscapeFilterId(row.title_en) ||
+    resolveFilmLandscapeFilterId(row.title) ||
+    fallback.filterId;
 
   return {
     id: row.id,
-    title: row.title?.trim() || fallbackTitle,
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS[filterId],
+    filterId,
     image,
   };
 };
@@ -80,8 +102,7 @@ export const fetchFilmLandscapes = async (): Promise<FilmLandscape[]> => {
         transformFilmLandscape(
           row,
           directusUrl,
-          FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length]
-            .title,
+          FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length],
         ),
       );
   } catch {

@@ -10,6 +10,7 @@ import {
   fetchFilmWhyAseerSlidesWithFallback,
 } from "@/components/film/data";
 import FilmHero from "@/components/film/FilmHero";
+import FilmLandscapesSection from "@/components/film/FilmLandscapesSection";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
@@ -30,52 +31,11 @@ const FilmPage = async () => {
     <div className="flex w-full flex-col bg-background text-foreground">
       <FilmHero />
 
-      <section className="mx-auto h-auto w-full max-w-[1442px] bg-background px-4 py-[60px] sm:px-8 md:px-[62px]">
-        <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-          <div
-            className="hide-scrollbar w-full flex-1 overflow-x-auto overflow-y-hidden"
-            dir="ltr"
-          >
-            <div className="flex min-w-max items-start gap-6 pb-2">
-              {landscapes.slice(0, 4).map((item) => (
-                <article
-                  key={item.id}
-                  className="relative h-[305px] w-[282px] shrink-0 overflow-hidden rounded-[10px] shadow-[0px_4.28px_3.37px_0px_rgba(41,72,152,0.01),0px_8.72px_6.97px_0px_rgba(41,72,152,0.02),0px_21.4px_13.91px_0px_rgba(41,72,152,0.02)]"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-[91px] rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
-                    <h3
-                      className="text-start text-[24px] font-bold leading-[119%] text-white"
-                      style={{ fontFamily: ara }}
-                    >
-                      {item.title}
-                    </h3>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-start lg:h-[265px]">
-            <h2
-              className="text-[44px] font-bold leading-[38px] text-foreground"
-              style={{ fontFamily: ara }}
-            >
-              {t("introTitle")}
-            </h2>
-            <p
-              className="text-[15px] font-light leading-[119%] text-muted-foreground"
-              style={{ fontFamily: ibm }}
-            >
-              {t("introBody")}
-            </p>
-          </div>
-        </div>
-      </section>
+      <FilmLandscapesSection
+        landscapes={landscapes}
+        introTitle={t("introTitle")}
+        introBody={t("introBody")}
+      />
 
       <section className="relative w-full overflow-hidden">
         <div className="relative h-[343px] w-full">

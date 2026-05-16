@@ -1,11 +1,30 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import AttractionsMainPageContent from "@/components/attractions/AttractionsMainPageContent";
+import { parseAttractionsTerrainParam } from "@/components/film/landscapeFilters";
 import { fetchLandmarks, type Landmark } from "@/components/landmarks/data";
 
+const fallbackAttraction = (
+  partial: Pick<Landmark, "id" | "slug" | "title"> & Partial<Landmark>,
+): Landmark => ({
+  subtitle: "",
+  location: "أبها",
+  area: "أبها",
+  city: "أبها",
+  description: "",
+  contentHtml: "",
+  guideName: "",
+  image: "/assets/experiences/experiences.png",
+  galleryImages: ["/assets/experiences/experiences.png"],
+  categoryLabel: "المعالم",
+  interestTags: ["culture"],
+  ...partial,
+});
+
 const FALLBACK_ATTRACTIONS: Landmark[] = [
-  {
+  fallbackAttraction({
     id: "a-1",
+    slug: "souq-al-thulatha",
     title: "سوق الثلاثاء",
     location: "أبها",
     area: "أبها",
@@ -17,9 +36,10 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
     priceFrom: 0,
     priceTo: 30,
     interestTags: ["historical", "culture", "shopping"],
-  },
-  {
+  }),
+  fallbackAttraction({
     id: "a-2",
+    slug: "rijal-almaa",
     title: "قرية رجال ألمع",
     location: "رجال ألمع",
     area: "محايل عسير",
@@ -31,9 +51,10 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
     priceFrom: 50,
     priceTo: 120,
     interestTags: ["historical", "culture"],
-  },
-  {
+  }),
+  fallbackAttraction({
     id: "a-3",
+    slug: "al-soudah",
     title: "جبال السودة",
     location: "حديقة السودة ، أبها",
     area: "أبها",
@@ -45,9 +66,10 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
     priceFrom: 20,
     priceTo: 220,
     interestTags: ["nature", "adventure"],
-  },
-  {
+  }),
+  fallbackAttraction({
     id: "a-4",
+    slug: "abu-sirah-palace",
     title: "قصر أبو سراح",
     location: "أبها",
     area: "أبها",
@@ -59,9 +81,10 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
     priceFrom: 60,
     priceTo: 180,
     interestTags: ["historical", "culture"],
-  },
-  {
+  }),
+  fallbackAttraction({
     id: "a-5",
+    slug: "habala-park",
     title: "منتزه الحبلة",
     location: "الحبلة",
     area: "أبها",
@@ -73,9 +96,10 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
     priceFrom: 70,
     priceTo: 260,
     interestTags: ["nature", "adventure"],
-  },
-  {
+  }),
+  fallbackAttraction({
     id: "a-6",
+    slug: "abu-khayal-park",
     title: "منتزه أبو خيال",
     location: "أبها",
     area: "أبها",
@@ -87,20 +111,26 @@ const FALLBACK_ATTRACTIONS: Landmark[] = [
     priceFrom: 0,
     priceTo: 40,
     interestTags: ["nature", "relaxation"],
-  },
+  }),
 ];
 
-const AttractionsPage = async () => {
+interface AttractionsPageProps {
+  searchParams: Promise<{ terrain?: string }>;
+}
+
+const AttractionsPage = async ({ searchParams }: AttractionsPageProps) => {
   const locale = await getLocale();
   const t = await getTranslations("attractionsPage");
   const tCommon = await getTranslations("common");
+  const { terrain: terrainParam } = await searchParams;
+  const initialTerrain = parseAttractionsTerrainParam(terrainParam);
   /**
    * Backend handoff:
    * - This is the main attractions listing page opened from the navbar.
    * - Main attractions list uses Directus data from `fetchLandmarks()`.
    * - `FALLBACK_ATTRACTIONS` keeps the UI available when API is empty.
    */
-  const landmarks = await fetchLandmarks();
+  const landmarks = await fetchLandmarks(locale);
   const displayLandmarks = landmarks.length > 0 ? landmarks : FALLBACK_ATTRACTIONS;
 
   return (
@@ -115,7 +145,10 @@ const AttractionsPage = async () => {
         backgroundImage="/assets/attractions/attractions-hero.png"
               />
 
-      <AttractionsMainPageContent landmarks={displayLandmarks} />
+      <AttractionsMainPageContent
+        landmarks={displayLandmarks}
+        initialTerrain={initialTerrain}
+      />
     </div>
   );
 };

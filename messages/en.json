@@ -261,7 +261,10 @@
     "innerIntroP3": "For visitors, Al Abu Sirah is a standout cultural landmark: QR trails at chamber entrances deepen the storytelling, exhibitions and intimate displays bring crafts and arts to life, and seasonal performances fill the courtyards. Pause for coffee beside the palaces or share a memorable meal amid calm mountain air.",
     "chooseYourGuide": "Choose your guide",
     "mapPalacesCta": "View Al Abu Sirah palaces on the map",
+    "mapViewOnMap": "View {area} on map",
     "mapPalacesAlt": "Map preview for Al Abu Sirah palaces",
+    "galleryTitle": "Photo gallery",
+    "relatedAttractionsTitle": "Similar attractions",
     "browseTitle": "Main destinations",
     "browseSubtitle": "One visit is never enough with all the activities and experiences on offer.",
     "contributeDestinations": "Help enrich our destinations"
@@ -525,7 +528,126 @@
     "serviceLocationsTitle": "Locations",
     "serviceLocationsDesc": "Support and facilitation to identify and access locations that match production requirements.",
     "servicePermitsTitle": "Permits",
-    "servicePermitsDesc": "Support and guidance through required approvals from official entities for filming in Asir."
+    "servicePermitsDesc": "Support and guidance through required approvals from official entities for filming in Asir.",
+    "landscapes": {
+      "mountains": "Mountains",
+      "plains": "Plains",
+      "beaches": "Beaches",
+      "desert": "Desert",
+      "viewAttractions": "View attractions in {label}",
+      "filteredBy": "Showing attractions related to {label}"
+    }
+  },
+  "igcat": {
+    "banner": {
+      "titleLine1": "Aseer World Region of Gastronomy",
+      "titleLine2": "2024",
+      "cta": "Discover",
+      "imageAlt": "Aseer World Region of Gastronomy"
+    },
+    "background": {
+      "badge": "Title",
+      "section1Title": "First World Region of Gastronomy outside Europe",
+      "section1Body": "In September 2022, Aseer was named the World Region of Gastronomy 2024 by the International Institute of Gastronomy, Culture, Arts and Tourism (IGCAT)—the first region outside Europe to earn the title. The award recognises work across economic, cultural, social and environmental development through gastronomy. President Diane Dodd presented the honour in Turin on 24 September 2022, following a judging visit (27 February–1 March 2022) that highlighted local biodiversity, heritage, and youth innovation in sustainable tourism.",
+      "mocAlt": "Culinary Arts Commission",
+      "mocCaption": "Under the supervision of the Culinary Arts Commission",
+      "section1ImageAlt": "Food preparation",
+      "section2Title": "Aseer World Region of Gastronomy 2024",
+      "section2Body": "The World Region of Gastronomy title from IGCAT recognises regions committed to preserving cultural heritage and developing tourism through food. It rewards cultural and environmental diversity, community support, and new generations through culinary innovation and integrated visitor services.",
+      "section2ImageAlt": "Aseeri dishes",
+      "brochure": "Brochure"
+    },
+    "events": {
+      "badge": "Global gathering",
+      "title": "Featured events",
+      "items": {
+        "1": {
+          "tabTop": "Day seven",
+          "tabBottom": "18 December",
+          "title": "Tenth expert meeting in Aseer",
+          "description": "Aseer hosted the 27th meeting of the World Regions of Gastronomy platform, bringing together 20 international experts from 11 awarded regions to exchange best practices and explore local culture through workshops on gastronomy and sustainable development."
+        },
+        "2": {
+          "tabTop": "Day six",
+          "tabBottom": "18 December",
+          "title": "Qimam International Mountain Performance Arts Festival",
+          "description": "The festival returns with local and international troupes presenting mountain performances that reflect diverse heritage, alongside craft fairs and live traditional cooking."
+        },
+        "3": {
+          "tabTop": "April",
+          "tabBottom": "2026",
+          "title": "Aseer Culture & Heritage Exhibition",
+          "description": "A comprehensive showcase of Aseer’s history, unique architecture (Aseeri Qatt), and local produce—with opportunities to meet artisans and try heritage crafts."
+        },
+        "4": {
+          "tabTop": "April",
+          "tabBottom": "2026",
+          "title": "Paragliding Championship",
+          "description": "Al Soudah’s skies welcome paragliders from around the world for a thrilling championship with panoramic views over the Sarawat range."
+        }
+      }
+    },
+    "quotes": {
+      "items": {
+        "0": {
+          "name": "Professor Diane Dodd",
+          "role": "President, IGCAT",
+          "quote": "Education and international cooperation are key to empowering communities and ensuring the sustainability of culinary heritage."
+        },
+        "1": {
+          "name": "Mayada Badr",
+          "role": "CEO, Culinary Arts Commission",
+          "quote": "We work passionately to showcase our authentic culinary heritage to the world and empower future generations."
+        }
+      }
+    },
+    "winners": {
+      "title": "World Food Gift Challenge winners 2023–2024",
+      "videoAlt": "Winners video",
+      "items": {
+        "1": {
+          "title": "Abdulrahman Al-Aboudi — modern date bowl",
+          "description": "A wooden date bowl with contemporary design and traditional motifs"
+        },
+        "2": {
+          "title": "Abdullah Al-Jaradi (Tahlil) — Taste of Aseer honey",
+          "description": "A gift blending handcraft with authentic Aseeri honey"
+        },
+        "3": {
+          "title": "Zainab Al-Kulaib — Saudi coffee bean pouch",
+          "description": "A handmade pouch with Saudi coffee ingredients reflecting regional heritage"
+        },
+        "4": {
+          "title": "Murooj Al-Shatri — wooden box",
+          "description": "An elegant wooden box for coffee tools, inspired by heritage"
+        }
+      }
+    },
+    "foodFilm": {
+      "badge": "Competitions",
+      "title": "Food Film Menu competition",
+      "description": "Held annually to showcase videos promoting cultural and natural landmarks worldwide. Aseer won twice in 2022 and 2024 with films highlighting the region’s nature, hospitality, and traditional dishes.",
+      "items": {
+        "1": { "title": "Adventures in Saudi Arabia: Taste of Aseer" },
+        "2": { "title": "Let's go to Aseer — MENA candidate regions for gastronomy" }
+      }
+    },
+    "initiatives": {
+      "title": "King Khalid University initiatives",
+      "universityAlt": "King Khalid University",
+      "items": {
+        "1": { "title": "Arabian Travel Market (ATM)" },
+        "2": { "title": "Saudi Tourism Forum (STF)" },
+        "3": { "title": "Dakar Rally" }
+      }
+    },
+    "food": {
+      "dishesTitle": "Traditional dishes in Aseer",
+      "dishesCta": "Aseeri cuisine",
+      "restaurantsTitle": "Popular restaurants",
+      "restaurantsCta": "Restaurants",
+      "noRestaurants": "No restaurants are available at the moment."
+    }
   },
   "gettingHere": {
     "title": "Getting here & around",

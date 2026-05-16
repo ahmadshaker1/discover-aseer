@@ -7,17 +7,25 @@ import {
   XIcon,
   YouTubeIcon,
 } from "@/components/Footer/Icons";
+import SafeHtml from "@/components/common/SafeHtml";
 import { useTranslations } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsIntroSectionProps {
+  title: string;
   imageUrl: string;
+  imageAlt: string;
+  descriptionHtml: string;
 }
 
-const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => {
-  const t = useTranslations("attractionsPage");
+const AttractionsIntroSection = ({
+  title,
+  imageUrl,
+  imageAlt,
+  descriptionHtml,
+}: AttractionsIntroSectionProps) => {
   const tCommon = useTranslations("common");
 
   return (
@@ -28,7 +36,7 @@ const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => 
             className="w-full text-start text-[44px] font-bold leading-[180%] text-foreground"
             style={{ fontFamily: ara }}
           >
-            {t("introTitle")}
+            {title}
           </h2>
 
           <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]">
@@ -57,15 +65,18 @@ const AttractionsIntroSection = ({ imageUrl }: AttractionsIntroSectionProps) => 
             </div>
           </div>
 
-          <div className="w-full text-start text-[15px] font-light leading-[119%] text-muted-foreground" style={{ fontFamily: ibm }}>
-            <p>{t("innerIntroP1")}</p>
-            <p className="mt-4">{t("innerIntroP2")}</p>
-            <p className="mt-4">{t("innerIntroP3")}</p>
+          <div
+            className="w-full text-start text-[15px] font-light leading-[119%] text-muted-foreground"
+            style={{ fontFamily: ibm }}
+          >
+            {descriptionHtml ? (
+              <SafeHtml html={descriptionHtml} className="space-y-4" />
+            ) : null}
           </div>
         </div>
 
         <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
-          <img src={imageUrl} alt={t("introTitle")} className="h-full w-full object-cover" />
+          <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover" />
         </div>
       </div>
     </section>

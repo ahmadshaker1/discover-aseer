@@ -204,7 +204,9 @@ const AttractionsLandmarksSection = ({
               key={landmark.id}
               landmark={landmark}
               className="max-w-none"
-              cardHref={landmarkCardHref}
+              cardHref={
+                landmarkCardHref ?? `/attractions/${landmark.slug}`
+              }
             />
           ))}
         </div>

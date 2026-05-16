@@ -32,7 +32,6 @@ export default async function LocalizedHomePage() {
         title={tHome("landmarksTitle")}
         description={tHome("landmarksDescription")}
         decorationImageSrc="/assets/landing/landmarks-zigzag.png"
-        landmarkCardHref="/attractions"
       />
       <div
         className="w-full"

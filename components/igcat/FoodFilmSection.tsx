@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
-// استيراد البيانات
-import { foodFilmData } from "./data";
+
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { foodFilmMedia } from "./data";
 import { PlayIcon } from "./Icons";
 
-// دالة استخراج الـ ID من رابط اليوتيوب
 const getYouTubeId = (url: string) => {
   if (!url) return null;
   const regExp =
@@ -14,88 +14,75 @@ const getYouTubeId = (url: string) => {
 };
 
 export default function FoodFilmSection() {
-  // State لحفظ ID الفيديو اللي شغال حالياً (null يعني ولا فيديو شغال)
-  const [playingVideoId, setPlayingVideoId] = useState<number | null>(null);
+  const t = useTranslations("igcat.foodFilm");
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   return (
     <section className="bg-surface py-16 md:py-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        {/* 1. قسم العنوان والوصف (الهيدر) */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-12">
-          {/* الوصف (يسار) */}
-          <div
-            className="order-2 lg:order-1 w-full lg:w-1/2 text-start lg:text-start mt-4 lg:mt-0"
-          >
-            <p
-              className="ms-auto max-w-xl text-[15px] font-bold leading-relaxed text-muted-foreground"
-            >
-              تقام المسابقة سنوياً لعرض مقاطع فيديو تروج للمعالم الثقافية
-              والطبيعية حول العالم. فازت عسير بالجائزة مرتين في 2022 و2024،
-              بمقاطع تُبرز جمال طبيعة المنطقة، كرم ضيافتها، وأطباقها التقليدية.
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+          <div className="order-2 mt-4 w-full text-start lg:order-1 lg:mt-0 lg:w-1/2">
+            <p className="ms-auto max-w-xl text-[15px] font-bold leading-relaxed text-muted-foreground">
+              {t("description")}
             </p>
           </div>
-          {/* العنوان (يمين) */}
-          <div className="flex flex-col items-start lg:items-end order-1 lg:order-2 w-full lg:w-1/2 text-start">
+          <div className="order-1 flex w-full flex-col items-start text-start lg:order-2 lg:w-1/2 lg:items-end">
             <span className="mb-4 inline-block rounded-full border border-primary bg-primary/10 px-5 py-1 text-[13px] font-bold text-primary">
-              المسابقات
+              {t("badge")}
             </span>
-            <h2
-              className="text-[28px] font-bold text-foreground md:text-[36px]"
-            >
-              مسابقة Food Film Menu
+            <h2 className="text-[28px] font-bold text-foreground md:text-[36px]">
+              {t("title")}
             </h2>
           </div>
         </div>
 
-        {/* 2. قسم الفيديوهات (Grid) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {foodFilmData.map((video) => (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {foodFilmMedia.map((video) => (
             <div key={video.id} className="flex flex-col gap-4">
-              {/* حاوية الفيديو / الصورة */}
-              <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-lg bg-black group">
+              <div className="group relative aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-lg">
                 {playingVideoId !== video.id ? (
-                  // الغلاف قبل التشغيل
                   <div
-                    className="absolute inset-0 w-full h-full cursor-pointer"
+                    className="absolute inset-0 h-full w-full cursor-pointer"
                     onClick={() => setPlayingVideoId(video.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        setPlayingVideoId(video.id);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
                   >
-                    {/* الصورة المحلية */}
                     <img
                       src={video.image}
-                      alt={video.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
+                      alt={t(`items.${video.id}.title`)}
+                      className="h-full w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
                     />
 
-                    {/* تدرج لوني خفيف */}
-                    <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30"></div>
+                    <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
 
-                    {/* شارة السنة */}
                     <div className="absolute top-4 start-4 z-10 rounded-full bg-background px-3 py-1 shadow-sm">
                       <span className="text-[14px] font-bold text-primary">
                         {video.year}
                       </span>
                     </div>
 
-                    {/* زر التشغيل في المنتصف */}
-                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                    <div className="absolute inset-0 z-10 flex items-center justify-center">
                       <PlayIcon className="drop-shadow-lg transition-transform duration-300 group-hover:scale-110" />
                     </div>
                   </div>
                 ) : (
-                  // الفيديو يشتغل بعد الضغط
                   <iframe
                     src={`https://www.youtube.com/embed/${getYouTubeId(video.youtubeUrl)}?autoplay=1&rel=0`}
-                    title="YouTube video player"
+                    title={t(`items.${video.id}.title`)}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
-                    className="absolute inset-0 w-full h-full border-0"
-                  ></iframe>
+                    className="absolute inset-0 h-full w-full border-0"
+                  />
                 )}
               </div>
 
-              {/* عنوان الفيديو تحت الكرت */}
               <h3 className="line-clamp-2 px-4 text-center text-[15px] font-bold leading-relaxed text-foreground md:text-[16px]">
-                {video.title}
+                {t(`items.${video.id}.title`)}
               </h3>
             </div>
           ))}

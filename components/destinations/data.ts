@@ -324,12 +324,20 @@ export const resolveDestinationMapCenter = (destination: Destination) => {
 /** Maps a destination into `Landmark` shape for reuse of `AttractionsLandmarkCard`. */
 export const destinationToLandmark = (d: Destination): Landmark => ({
   id: d.id,
+  slug: d.slug,
   title: d.title,
+  subtitle: d.subtitle,
   location: d.location,
   area: d.area,
+  city: d.city,
   description: d.description,
+  contentHtml: d.description,
   guideName: "",
   image: d.image,
+  galleryImages: [d.image],
+  lat: d.lat,
+  lon: d.lon,
+  categoryLabel: d.destinationFilter,
   cityId: d.cityId,
   interestTags: d.interestTags,
 });
