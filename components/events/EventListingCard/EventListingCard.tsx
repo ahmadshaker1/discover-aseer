@@ -42,7 +42,6 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
   const ratingCorner = isArabic ? "left-2" : "right-2";
   const counterCorner = isArabic ? "right-2" : "left-2";
-  const kidCorner = isArabic ? "right-2 top-10" : "left-2 top-10";
 
   return (
     <div className="relative z-0 mx-auto h-[357px] w-full max-w-[318px] justify-self-center">
@@ -85,20 +84,6 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             {safeIndex + 1}/{imageCount}
           </div>
 
-          {event.isKidFriendly ? (
-            <div
-              className={`absolute z-10 flex items-center gap-1 ${kidCorner}`}
-            >
-              <KidFriendlyIcon />
-              <span
-                className="text-[10px] font-medium leading-none text-[#FCAED2]"
-                style={{ fontFamily: ibm }}
-              >
-                {t("kidFriendly")}
-              </span>
-            </div>
-          ) : null}
-
           {imageCount > 1 ? (
             <div
               dir={isArabic ? "rtl" : "ltr"}
@@ -128,6 +113,17 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           ) : null}
 
           <div className="absolute inset-x-0 bottom-0 z-5 flex w-full flex-col items-stretch gap-3 p-4 pt-24 text-start">
+            {event.isKidFriendly ? (
+              <div className="flex w-full items-center justify-start gap-1">
+                <KidFriendlyIcon />
+                <span
+                  className="text-[10px] font-medium leading-none text-[#FCAED2]"
+                  style={{ fontFamily: ibm }}
+                >
+                  {t("kidFriendly")}
+                </span>
+              </div>
+            ) : null}
             <h3
               className="w-full text-start text-2xl font-bold leading-none text-white"
               style={{ fontFamily: ara }}
