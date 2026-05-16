@@ -141,67 +141,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   const votesDisplay = `(${event.reviewsCount})`;
   const venue = event.venueLabel ?? event.title;
 
-  const expandedPanel = (
-    <div className={`flex flex-col gap-4 px-4 pb-4 pt-5 sm:pt-6 text-start`}>
-      <h3 className={`w-full text-2xl font-bold leading-none text-foreground text-start`} style={{ fontFamily: ara }}>
-        {event.title}
-      </h3>
-
-      <div className="flex w-full gap-3 text-muted-foreground">
-        <MapPinIcon className="shrink-0 text-muted-foreground" />
-        <div className="min-w-0 flex-1 text-start">
-          <p className="text-sm font-bold leading-tight text-foreground" style={{ fontFamily: ara }}>
-            {venue}
-          </p>
-          <a
-            href={event.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`mt-0.5 block text-sm font-medium text-primary underline text-start`}
-            style={{ fontFamily: ibm }}
-          >
-            {event.mapsLinkLabel}
-          </a>
-        </div>
-      </div>
-
-      <div className="flex w-full gap-3 text-muted-foreground">
-        <CalendarIcon className="shrink-0 text-muted-foreground" />
-        <div className={`min-w-0 text-start`}>
-          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
-            {tCommon("date")}
-          </p>
-          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
-            {event.dateRange}
-          </p>
-        </div>
-      </div>
-
-      <div className="flex w-full gap-3 text-muted-foreground">
-        <ClockIcon className="shrink-0 text-muted-foreground" />
-        <div className={`min-w-0 text-start`}>
-          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
-            {tCommon("time")}
-          </p>
-          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
-            {event.timeRange}
-          </p>
-        </div>
-      </div>
-
-      <div className="flex w-full gap-3">
-        <CurrencyIcon className="mt-0.5 shrink-0 text-foreground" />
-        <div className={`min-w-0 text-start`}>
-          <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
-            {tCommon("ticket")}
-          </p>
-          <p className="text-sm font-medium text-foreground" style={{ fontFamily: ibm }}>
-            {event.priceLabel}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+ 
 
   return (
     <div
@@ -299,11 +239,8 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
         </div>
       </article>
 
-      <div
-        className="pointer-events-none absolute inset-x-0 top-full z-1 -mt-4 max-h-0 origin-top -translate-y-1 overflow-hidden rounded-b-[20px] border-x border-b border-border bg-surface opacity-0 shadow-[0_10px_28px_-12px_rgba(0,0,0,0.14)] transition-[max-height,opacity,transform] duration-300 ease-out group-hover/card:pointer-events-auto group-hover/card:max-h-[min(420px,70vh)] group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:max-h-[min(420px,70vh)] group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100"
-      >
-        {expandedPanel}
-      </div>
+     
+      
     </div>
   );
 };
