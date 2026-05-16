@@ -213,6 +213,19 @@
     "seasonsPageTitle": "Seasons & events",
     "seasonsPageBody": "Discover seasons and events throughout the year in Aseer."
   },
+  "eventSeasons": {
+    "breadcrumb": "Seasons & events",
+    "heroTitle": "Seasons & events",
+    "heroSubtitle": "Arts, culture, community, environmental and sports experiences — plus many other activities designed for every interest, all year round.",
+    "addYourEvent": "Add your event",
+    "sectionTitle": "Seasons & events",
+    "currentSeasonsTitle": "Seasons & events",
+    "yearFilterPlaceholder": "Select arrival and departure dates",
+    "yearFilterSelected": "Season {year}",
+    "yearFilterClear": "Clear filter",
+    "previousSeasonsTitle": "Previous seasons & events",
+    "details": "Details"
+  },
   "experiencesPage": {
     "breadcrumb": "Experiences",
     "title": "Experiences waiting for you in Aseer",
