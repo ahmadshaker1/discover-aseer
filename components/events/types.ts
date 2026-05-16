@@ -13,8 +13,10 @@ export interface EventListingItem {
   /** Derived from ticket price for التكلفة filter. */
   isFree: boolean;
   title: string;
-  /** Exactly three hero images (carousel / hover shuffle). */
-  images: [string, string, string];
+  /** Unique image URLs for the card carousel (at least one). */
+  images: string[];
+  /** True when the event allows children (`not_allowed_for_kids` is no). */
+  isKidFriendly: boolean;
   rating: number;
   reviewsCount: number;
   /** Shown in teal pill when collapsed; plain text when expanded. */

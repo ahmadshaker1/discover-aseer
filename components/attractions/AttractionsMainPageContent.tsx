@@ -3,21 +3,30 @@
 import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmarkCard";
+import {
+  attractionMatchesTerrain,
+  TERRAIN_TO_INTERESTS,
+  type FilmLandscapeFilterId,
+} from "@/components/film/landscapeFilters";
 import type { Landmark } from "@/components/landmarks/data";
 import {
   getCityOptions,
   getInterestOptions,
   locationMatchesCityId,
 } from "@/components/landmarks/filterOptions";
-import { ChevronDownIcon, HeartIcon, LocationIcon } from "@/components/landmarks/Icons";
+import {
+  ChevronDownIcon,
+  HeartIcon,
+  LocationIcon,
+} from "@/components/landmarks/Icons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsMainPageContentProps {
   landmarks: Landmark[];
-  /** Pre-select city filter (e.g. `/attractions?city=mahayil`). */
-  initialCityId?: string | null;
+  /** From `/attractions?terrain=mountains` (film page landscape cards). */
+  initialTerrain?: FilmLandscapeFilterId | null;
 }
 
 interface FilterState {
@@ -32,7 +41,10 @@ function buildInitialFilters(initialCityId?: string | null): FilterState {
   };
 }
 
-const includesInterests = (landmark: Landmark, selectedInterests: string[]): boolean => {
+const includesInterests = (
+  landmark: Landmark,
+  selectedInterests: string[],
+): boolean => {
   if (selectedInterests.length === 0) return true;
   const tags = landmark.interestTags ?? [];
   if (tags.length === 0) return false;
@@ -41,21 +53,24 @@ const includesInterests = (landmark: Landmark, selectedInterests: string[]): boo
 
 const AttractionsMainPageContent = ({
   landmarks,
-  initialCityId = null,
+  initialTerrain = null,
 }: AttractionsMainPageContentProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
+  const tFilm = useTranslations("film");
 
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
   const interestOptions = useMemo(() => getInterestOptions(locale), [locale]);
 
+  const terrainInterests = useMemo(
+    () => (initialTerrain ? TERRAIN_TO_INTERESTS[initialTerrain] : []),
+    [initialTerrain],
+  );
+
   const includesCity = (landmark: Landmark, city: string | null): boolean => {
     if (!city) return true;
     if (landmark.cityId) return landmark.cityId === city;
-    return locationMatchesCityId(
-      `${landmark.location} ${landmark.area}`,
-      city
-    );
+    return locationMatchesCityId(`${landmark.location} ${landmark.area}`, city);
   };
   /**
    * Backend handoff:
@@ -64,34 +79,50 @@ const AttractionsMainPageContent = ({
    * - If backend doesn't return some metadata yet, cards still render and
    *   filters gracefully fall back (won't break page rendering).
    */
-  const [filters, setFilters] = useState<FilterState>(() =>
-    buildInitialFilters(initialCityId)
+  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
+  const [selectedInterests, setSelectedInterests] = useState<string[]>(
+    () => terrainInterests,
   );
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   const cityScopedLandmarks = useMemo(
     () => landmarks.filter((landmark) => includesCity(landmark, filters.city)),
-    [filters.city, landmarks]
+    [filters.city, landmarks],
   );
 
   const interestCounts = useMemo(() => {
     return interestOptions.reduce<Record<string, number>>((acc, option) => {
       acc[option.id] = cityScopedLandmarks.filter((landmark) =>
-        (landmark.interestTags ?? []).includes(option.id)
+        (landmark.interestTags ?? []).includes(option.id),
       ).length;
       return acc;
     }, {});
   }, [cityScopedLandmarks]);
 
   const visibleLandmarks = useMemo(() => {
-    return cityScopedLandmarks.filter((landmark) =>
-      includesInterests(landmark, selectedInterests)
-    );
-  }, [cityScopedLandmarks, selectedInterests]);
+    return cityScopedLandmarks.filter((landmark) => {
+      if (
+        initialTerrain &&
+        !attractionMatchesTerrain(landmark, initialTerrain)
+      ) {
+        return false;
+      }
+      return includesInterests(landmark, selectedInterests);
+    });
+  }, [cityScopedLandmarks, selectedInterests, initialTerrain]);
 
   return (
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
+        {initialTerrain ? (
+          <p
+            className="mb-6 text-start text-sm text-muted-foreground"
+            style={{ fontFamily: ibm }}
+          >
+            {tFilm("landscapes.filteredBy", {
+              label: tFilm(`landscapes.${initialTerrain}`),
+            })}
+          </p>
+        ) : null}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           <div className="w-full flex-1 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
@@ -100,21 +131,24 @@ const AttractionsMainPageContent = ({
                   key={landmark.id}
                   landmark={landmark}
                   className="mx-auto"
-                  cardHref={
-                    landmark.hrefSegment ? `/attractions/${landmark.hrefSegment}` : undefined
-                  }
+                  cardHref={`/attractions/${landmark.slug}`}
                 />
               ))}
             </div>
 
             {visibleLandmarks.length === 0 ? (
-              <p className={`py-8 text-sm text-muted-foreground text-start`} style={{ fontFamily: ibm }}>
+              <p
+                className={`py-8 text-sm text-muted-foreground text-start`}
+                style={{ fontFamily: ibm }}
+              >
                 {tCommon("noLandmarksMatchFilters")}
               </p>
             ) : null}
           </div>
 
-          <aside className={`w-full lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}>
+          <aside
+            className={`w-full lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
+          >
             <div className="flex h-full flex-col gap-6">
               <div className="flex h-8 w-full max-w-[256px] items-center justify-between">
                 <h3
@@ -163,7 +197,8 @@ const AttractionsMainPageContent = ({
                       className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground"
                       style={{ fontFamily: "Inter, sans-serif" }}
                     >
-                      {cityOptions.find((option) => option.id === filters.city)?.label ?? tCommon("city")}
+                      {cityOptions.find((option) => option.id === filters.city)
+                        ?.label ?? tCommon("city")}
                     </span>
                   </div>
                   <ChevronDownIcon />
@@ -188,7 +223,10 @@ const AttractionsMainPageContent = ({
                     const checked = selectedInterests.includes(option.id);
                     const count = interestCounts[option.id] ?? 0;
                     return (
-                      <label key={option.id} className="flex cursor-pointer items-center justify-between">
+                      <label
+                        key={option.id}
+                        className="flex cursor-pointer items-center justify-between"
+                      >
                         <div className="flex items-center gap-3">
                           <input
                             type="checkbox"
@@ -197,20 +235,20 @@ const AttractionsMainPageContent = ({
                               setSelectedInterests((prev) =>
                                 prev.includes(option.id)
                                   ? prev.filter((id) => id !== option.id)
-                                  : [...prev, option.id]
+                                  : [...prev, option.id],
                               )
                             }
-                              className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] checked:border-primary checked:bg-primary checked:bg-[linear-gradient(45deg,transparent_45%,white_45%,white_55%,transparent_55%),linear-gradient(-45deg,transparent_45%,white_45%,white_55%,transparent_55%)] checked:bg-size-[70%_70%] checked:bg-center checked:bg-no-repeat"
+                            className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                           />
                           <span
-                              className={`h-5 min-w-[73px] text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
+                            className={`h-5 min-w-[73px] text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
                             style={{ fontFamily: "Inter, sans-serif" }}
                           >
                             {option.label}
                           </span>
                         </div>
                         <span
-                            className="inline-flex h-7 min-w-7 items-center justify-center rounded-[8px] bg-muted px-2 text-[24px] leading-[100%] text-muted-foreground"
+                          className="inline-flex h-7 min-w-7 items-center justify-center rounded-[8px] bg-muted px-2 text-[24px] leading-[100%] text-muted-foreground"
                           style={{ fontFamily: ara }}
                         >
                           {count}

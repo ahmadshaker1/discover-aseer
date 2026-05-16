@@ -1,10 +1,14 @@
-import { DUMMY_EVENTS } from "./dummyEvents";
+import {
+  getDateFormatLocale,
+  parseDateOnly,
+} from "@/components/event-seasons/utils";
 import type { EventInterestId, EventListingItem } from "./types";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
 export type { EventListingItem } from "./types";
 
 interface ApiEvent {
+  [key: string]: unknown;
   id: number | string;
   title?: string | null;
   title_en?: string | null;
@@ -16,12 +20,17 @@ interface ApiEvent {
   tags?: string | null;
   start_date?: string | null;
   end_date?: string | null;
+  date?: string | null;
   start_time?: string | null;
   end_time?: string | null;
   free_event?: string | null;
   price?: string | number | null;
   event_status?: string | null;
   unclickable?: string | boolean | null;
+  not_allowed_for_kids?: string | null;
+  audience_type?: string | null;
+  image_new?: string | null;
+  images?: string | unknown[] | null;
 }
 
 interface EventsApiResponse {
@@ -35,13 +44,6 @@ const EVENTS_API_BASE =
   "https://tool-portal.discoveraseer.com";
 
 const FALLBACK_INTEREST: EventInterestId = "heritage";
-
-function shouldUseEventsDummy(): boolean {
-  const flag = process.env.NEXT_PUBLIC_EVENTS_USE_DUMMY;
-  if (flag === "true") return true;
-  if (flag === "false") return false;
-  return process.env.NODE_ENV === "development";
-}
 
 function toSlug(value: string): string {
   return value
@@ -97,36 +99,93 @@ function parseInterestIds(tags: string | null | undefined): EventInterestId[] {
   return Array.from(ids);
 }
 
-function buildImages(apiEvent: ApiEvent): [string, string, string] {
+function buildAssetUrl(assetId: string | null | undefined): string | null {
+  const clean = (assetId || "").trim();
+  if (!clean) return null;
+  if (normalizeMaybeUrl(clean)) return normalizeMaybeUrl(clean);
+  return `${EVENTS_API_BASE}/assets/${clean}`;
+}
+
+function parseExtraImages(raw: string | unknown[] | null | undefined): string[] {
+  if (!raw) return [];
+  if (Array.isArray(raw)) {
+    return raw
+      .map((item) => {
+        if (typeof item === "string") return normalizeMaybeUrl(item) || buildAssetUrl(item);
+        if (item && typeof item === "object" && "directus_files_id" in item) {
+          const id = String((item as { directus_files_id?: string }).directus_files_id || "");
+          return buildAssetUrl(id);
+        }
+        return null;
+      })
+      .filter(Boolean) as string[];
+  }
+  const text = String(raw).trim();
+  if (!text) return [];
+  try {
+    const parsed = JSON.parse(text) as unknown;
+    if (Array.isArray(parsed)) return parseExtraImages(parsed);
+  } catch {
+    // comma-separated URLs or asset ids
+  }
+  return text
+    .split(/[،,]/)
+    .map((part) => normalizeMaybeUrl(part.trim()) || buildAssetUrl(part.trim()))
+    .filter(Boolean) as string[];
+}
+
+function parseKidFriendly(
+  notAllowed: string | null | undefined,
+  audienceType: string | null | undefined,
+): boolean {
+  const flag = (notAllowed || "").trim().toLowerCase();
+  if (["yes", "true", "1"].includes(flag)) return false;
+  if (["no", "false", "0"].includes(flag)) return true;
+
+  const audience = (audienceType || "").toLowerCase();
+  return (
+    audience.includes("عائل") ||
+    audience.includes("أطفال") ||
+    audience.includes("اطفال") ||
+    audience.includes("family") ||
+    audience.includes("kids") ||
+    audience.includes("children")
+  );
+}
+
+function buildImages(apiEvent: ApiEvent): string[] {
   const candidates = [
     normalizeMaybeUrl(apiEvent.image),
     normalizeMaybeUrl(apiEvent.thumbnail),
     normalizeMaybeUrl(apiEvent.hero_mobile),
+    buildAssetUrl(apiEvent.image_new),
+    ...parseExtraImages(apiEvent.images),
   ].filter(Boolean) as string[];
 
-  const images = candidates.length > 0 ? candidates : [PLACEHOLDER_IMAGE];
-  while (images.length < 3) images.push(images[images.length - 1]);
-  return [images[0], images[1], images[2]];
+  const unique = [...new Set(candidates)];
+  return unique.length > 0 ? unique : [PLACEHOLDER_IMAGE];
 }
 
 function formatDate(dateInput: string | null | undefined, locale: LocaleCode): string | null {
-  const clean = (dateInput || "").trim();
-  if (!clean) return null;
-  const date = new Date(clean);
-  if (Number.isNaN(date.getTime())) return clean;
-  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
+  const parsed = parseDateOnly(dateInput);
+  if (!parsed) return null;
+  return new Intl.DateTimeFormat(getDateFormatLocale(locale), {
     day: "numeric",
     month: "long",
-  }).format(date);
+    calendar: "gregory",
+  }).format(parsed);
 }
 
 function buildDateRange(
   startDate: string | null | undefined,
   endDate: string | null | undefined,
+  fallbackDate: string | null | undefined,
   locale: LocaleCode,
 ): string {
-  const start = formatDate(startDate, locale);
-  const end = formatDate(endDate, locale);
+  const resolvedStart = startDate || fallbackDate;
+  const resolvedEnd = endDate || fallbackDate || startDate;
+  const start = formatDate(resolvedStart, locale);
+  const end = formatDate(resolvedEnd, locale);
   if (start && end) return start === end ? start : `${start} - ${end}`;
   return start || end || (locale === "ar" ? "غير محدد" : "Not specified");
 }
@@ -194,23 +253,28 @@ export function transformApiEventToListingItem(
     isFree,
     title,
     images: buildImages(apiEvent),
+    isKidFriendly: parseKidFriendly(
+      apiEvent.not_allowed_for_kids,
+      apiEvent.audience_type,
+    ),
     rating: 4.5,
     reviewsCount: 0,
     priceLabel: toPriceLabel(isFree, apiEvent.price, locale),
     locationLine: city ? `${city}، عسير` : locale === "ar" ? "عسير" : "Aseer",
     mapsUrl: toMapsUrl(apiEvent.map, title),
     mapsLinkLabel: city ? `${city}، عسير` : title,
-    dateRange: buildDateRange(apiEvent.start_date, apiEvent.end_date, locale),
+    dateRange: buildDateRange(
+      apiEvent.start_date,
+      apiEvent.end_date,
+      apiEvent.date,
+      locale,
+    ),
     timeRange: buildTimeRange(apiEvent.start_time, apiEvent.end_time, locale),
     venueLabel: title,
   };
 }
 
 export async function fetchEvents(locale: LocaleCode = "ar"): Promise<EventListingItem[]> {
-  if (shouldUseEventsDummy()) {
-    return DUMMY_EVENTS;
-  }
-
   try {
     const response = await fetch(`${EVENTS_API_BASE}${EVENTS_ITEMS_PATH}`, {
       next: { revalidate: 3600 },
@@ -226,16 +290,7 @@ export async function fetchEvents(locale: LocaleCode = "ar"): Promise<EventListi
       .filter((item) => isPublishedEvent(item.event_status) && isClickableEvent(item.unclickable))
       .map((item) => transformApiEventToListingItem(item, locale));
   } catch (error) {
-    console.error("Error fetching events:", error);
-    if (
-      process.env.NODE_ENV === "development" &&
-      process.env.NEXT_PUBLIC_EVENTS_USE_DUMMY !== "false"
-    ) {
-      console.warn(
-        "[events] Fetch failed - showing dummy list. Set NEXT_PUBLIC_EVENTS_USE_DUMMY=false to force live API."
-      );
-      return DUMMY_EVENTS;
-    }
+    console.error("[events] Failed to fetch events:", error);
     return [];
   }
 }

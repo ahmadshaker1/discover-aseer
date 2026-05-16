@@ -1,92 +1,87 @@
 "use client";
-import React, { useState } from "react";
-// تأكد من تعديل مسار الاستيراد بناءً على مكان ملف Data.ts عندك
-import { winnersData, videoSectionData } from "./data";
+
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { winnersMedia, videoSectionData } from "./data";
 import { PlayIcon } from "./Icons";
 
 export default function WinnersSection() {
-  // State للتحكم بتشغيل الفيديو
+  const t = useTranslations("igcat.winners");
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
     <section className="bg-background py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        {/* 1. عنوان القسم */}
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="mb-12 text-center text-[24px] font-bold text-foreground md:text-[32px]">
-          الفائزون بتحدي هدايا الطعام العالمية 2023 - 2024
+          {t("title")}
         </h2>
 
-        {/* 2. شريط كروت الفائزين (Horizontal Scroll) */}
         <div
-          className="flex gap-4 md:gap-6 overflow-x-auto pb-6 hide-scrollbar"
+          className="hide-scrollbar flex gap-4 overflow-x-auto pb-6 md:gap-6"
           style={{ scrollbarWidth: "none" }}
         >
-          {winnersData.map((winner) => (
+          {winnersMedia.map((winner) => (
             <div
               key={winner.id}
-              className="relative shrink-0 w-[280px] md:w-[320px] h-[350px] rounded-2xl overflow-hidden group shadow-md"
+              className="group relative h-[350px] w-[280px] shrink-0 overflow-hidden rounded-2xl shadow-md md:w-[320px]"
             >
-              {/* صورة الكرت */}
               <img
                 src={winner.image}
-                alt={winner.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                alt={t(`items.${winner.id}.title`)}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
 
-              {/* تدرج لوني أسود من الأسفل للنص */}
-              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent pointer-events-none"></div>
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent" />
 
-              {/* شارة السنة (مثلاً 2024) في الزاوية اليسرى العلوية */}
               <div className="absolute top-4 start-4 rounded-full border border-primary/20 bg-background/90 px-3 py-1 backdrop-blur-sm">
                 <span className="text-[13px] font-bold text-primary">
                   {winner.year}
                 </span>
               </div>
 
-              {/* محتوى النص بالأسفل */}
-              <div className="absolute bottom-0 start-0 end-0 p-5 text-start z-10">
-                <h3 className="text-white font-bold text-[16px] md:text-[18px] mb-2 leading-tight">
-                  {winner.title}
+              <div className="absolute bottom-0 start-0 end-0 z-10 p-5 text-start">
+                <h3 className="mb-2 text-[16px] font-bold leading-tight text-white md:text-[18px]">
+                  {t(`items.${winner.id}.title`)}
                 </h3>
-                <p className="text-gray-300 text-[13px] line-clamp-2 leading-relaxed">
-                  {winner.description}
+                <p className="line-clamp-2 text-[13px] leading-relaxed text-gray-300">
+                  {t(`items.${winner.id}.description`)}
                 </p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* 3. قسم الفيديو */}
         <div className="mt-12 w-full">
-          <div className="relative w-full h-[300px] sm:h-[400px] md:h-[600px] rounded-3xl overflow-hidden shadow-xl bg-black">
+          <div className="relative h-[300px] w-full overflow-hidden rounded-3xl bg-black shadow-xl sm:h-[400px] md:h-[600px]">
             {!isVideoPlaying ? (
-              // الغلاف وزر التشغيل (يظهر قبل الضغط)
               <div
-                className="absolute inset-0 w-full h-full cursor-pointer group"
+                className="group absolute inset-0 h-full w-full cursor-pointer"
                 onClick={() => setIsVideoPlaying(true)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") setIsVideoPlaying(true);
+                }}
+                role="button"
+                tabIndex={0}
               >
                 <img
                   src="./assets/igcat/Screenshot 2026-05-04 112415.png"
-                  alt="فيديو عن الفائزين"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
+                  alt={t("videoAlt")}
+                  className="h-full w-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105"
                 />
-                {/* تدرج خفيف فوق صورة الفيديو */}
-                <div className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40"></div>
+                <div className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40" />
 
-                {/* زر التشغيل في المنتصف */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center transition-transform duration-300 group-hover:scale-110">
                   <PlayIcon />
                 </div>
               </div>
             ) : (
-              // الـ iframe الخاص باليوتيوب (يظهر بعد الضغط ويشتغل تلقائياً)
               <iframe
                 src={`${videoSectionData.youtubeUrl}?autoplay=1&rel=0`}
-                title="YouTube video player"
+                title={t("videoAlt")}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                className="absolute inset-0 w-full h-full border-0"
-              ></iframe>
+                className="absolute inset-0 h-full w-full border-0"
+              />
             )}
           </div>
         </div>

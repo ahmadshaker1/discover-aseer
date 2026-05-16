@@ -1,4 +1,5 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import { getDateFormatLocale } from "./utils";
 import type {
   EventSeasonsPageData,
   PreviousSeasonItem,
@@ -97,9 +98,10 @@ function pickSeasonImage(apiSeason: ApiSeason, fallbackIndex: number): string {
 function formatDate(dateInput: string | null | undefined, locale: LocaleCode): string | null {
   const parsed = parseDateOnly(dateInput);
   if (!parsed) return null;
-  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
+  return new Intl.DateTimeFormat(getDateFormatLocale(locale), {
     day: "numeric",
     month: "long",
+    calendar: "gregory",
   }).format(parsed);
 }
 

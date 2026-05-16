@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
@@ -10,46 +11,45 @@ interface HeroProps {
   subtitle?: string;
 }
 
-const heroSocialLinkClassDesktop =
-  "flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white transition-colors hover:bg-white/10 md:h-[52px] md:w-[52px] [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.18] md:[&_svg]:scale-[1.28] [&_svg_path]:fill-white";
+const HERO_SLIDES = [
+  "/assets/landing/discover-aseer-hero.jpg",
+  "/assets/landing/hero-aseer-cultural.png",
+] as const;
 
-const heroSocialLinkClassMobile =
-  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white transition-colors active:bg-white/10 [&_svg]:origin-center [&_svg]:shrink-0 [&_svg]:scale-[1.12] [&_svg_path]:fill-white";
-
-function HeroSocialLinks({ linkClassName }: { linkClassName: string }) {
-  return (
-    <>
-      {discoverAseerLinks.map(({ href, label, ariaLabel, platform }) => (
-        <a
-          key={label}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={linkClassName}
-          aria-label={ariaLabel}
-        >
-          <AseerSocialIcon platform={platform} />
-        </a>
-      ))}
-    </>
-  );
-}
+const SLIDE_INTERVAL_MS = 5000;
+const FADE_DURATION_MS = 1000;
 
 const Hero = ({ title, subtitle }: HeroProps) => {
   const t = useTranslations("home");
   const displayTitle = title ?? t("heroTitle");
   const displaySubtitle = subtitle ?? t("heroSubtitle");
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (HERO_SLIDES.length <= 1) return;
+    const id = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % HERO_SLIDES.length);
+    }, SLIDE_INTERVAL_MS);
+    return () => window.clearInterval(id);
+  }, []);
+
   return (
     <section className="w-full bg-[#070707]">
-      {/* Hero banner */}
-      <div
-        className="relative h-[756px] w-full overflow-hidden"
-        style={{
-          background:
-            "url('/assets/landing/discover-aseer-hero.jpg') center / cover no-repeat",
-        }}
-      >
-        {/* Light dark scrim so hero text stays readable on any photo */}
+      <div className="relative h-[756px] w-full overflow-hidden">
+        {HERO_SLIDES.map((src, index) => (
+          <div
+            key={src}
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity ease-in-out"
+            style={{
+              backgroundImage: `url('${src}')`,
+              opacity: index === activeIndex ? 1 : 0,
+              transitionDuration: `${FADE_DURATION_MS}ms`,
+              zIndex: index === activeIndex ? 0 : -1,
+            }}
+            aria-hidden={index !== activeIndex}
+          />
+        ))}
+
         <div
           className="pointer-events-none absolute inset-0 z-1 bg-black/35"
           aria-hidden

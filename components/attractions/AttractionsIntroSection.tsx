@@ -7,6 +7,7 @@ import {
   XIcon,
   YouTubeIcon,
 } from "@/components/Footer/Icons";
+import SafeHtml from "@/components/common/SafeHtml";
 import { useTranslations } from "next-intl";
 import SafeHtml from "@/components/common/SafeHtml";
 
@@ -14,19 +15,18 @@ const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsIntroSectionProps {
+  title: string;
   imageUrl: string;
-  /** When set, overrides the translated intro title (e.g. attraction name). */
-  title?: string;
-  /** Rich HTML body for attraction detail; when set, replaces static intro paragraphs. */
-  descriptionHtml?: string;
+  imageAlt: string;
+  descriptionHtml: string;
 }
 
 const AttractionsIntroSection = ({
+  title,
   imageUrl,
-  title: titleOverride,
+  imageAlt,
   descriptionHtml,
 }: AttractionsIntroSectionProps) => {
-  const t = useTranslations("attractionsPage");
   const tCommon = useTranslations("common");
 
   const heading = titleOverride?.trim() || t("introTitle");
@@ -39,7 +39,7 @@ const AttractionsIntroSection = ({
             className="w-full text-start text-[44px] font-bold leading-[180%] text-foreground"
             style={{ fontFamily: ara }}
           >
-            {heading}
+            {title}
           </h2>
 
           <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]">
@@ -50,19 +50,39 @@ const AttractionsIntroSection = ({
               {tCommon("share")}
             </span>
             <div className="flex items-center gap-2 text-foreground/70">
-              <a href="#" aria-label="Instagram" className="cursor-pointer hover:opacity-80">
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="cursor-pointer hover:opacity-80"
+              >
                 <InstagramIcon />
               </a>
-              <a href="#" aria-label="YouTube" className="cursor-pointer hover:opacity-80">
+              <a
+                href="#"
+                aria-label="YouTube"
+                className="cursor-pointer hover:opacity-80"
+              >
                 <YouTubeIcon />
               </a>
-              <a href="#" aria-label="LinkedIn" className="cursor-pointer hover:opacity-80">
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="cursor-pointer hover:opacity-80"
+              >
                 <LinkedInIcon />
               </a>
-              <a href="#" aria-label="Facebook" className="cursor-pointer hover:opacity-80">
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="cursor-pointer hover:opacity-80"
+              >
                 <FacebookIcon />
               </a>
-              <a href="#" aria-label="X" className="cursor-pointer hover:opacity-80">
+              <a
+                href="#"
+                aria-label="X"
+                className="cursor-pointer hover:opacity-80"
+              >
                 <XIcon />
               </a>
             </div>
@@ -72,20 +92,18 @@ const AttractionsIntroSection = ({
             className="w-full text-start text-[15px] font-light leading-[119%] text-muted-foreground"
             style={{ fontFamily: ibm }}
           >
-            {descriptionHtml?.trim() ? (
-              <SafeHtml html={descriptionHtml} className="space-y-4 [&_p]:mt-0" />
-            ) : (
-              <>
-                <p>{t("innerIntroP1")}</p>
-                <p className="mt-4">{t("innerIntroP2")}</p>
-                <p className="mt-4">{t("innerIntroP3")}</p>
-              </>
-            )}
+            {descriptionHtml ? (
+              <SafeHtml html={descriptionHtml} className="space-y-4" />
+            ) : null}
           </div>
         </div>
 
         <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
-          <img src={imageUrl} alt={heading} className="h-full w-full object-cover" />
+          <img
+            src={imageUrl}
+            alt={imageAlt}
+            className="h-full w-full object-cover"
+          />
         </div>
       </div>
     </section>

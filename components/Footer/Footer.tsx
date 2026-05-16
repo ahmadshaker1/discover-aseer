@@ -95,8 +95,8 @@ const Footer = () => {
                     IGCAT
                   </Link>
                   <Link
-                    href="/events"
-                    className=" block w-full text-end hover:opacity-80"
+                    href="/event-seasons"
+                    className="mt-4 block w-full text-end hover:opacity-80"
                   >
                     {t("footer.linkEventsSeasons")}
                   </Link>
@@ -234,18 +234,20 @@ const Footer = () => {
                   className="flex w-full flex-row items-center justify-end gap-3"
                   dir="ltr"
                 >
-                  {discoverAseerLinks.map(({ href, label, ariaLabel, platform }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-white transition-opacity hover:opacity-80 [&_path]:fill-white"
-                      aria-label={ariaLabel}
-                    >
-                      <AseerSocialIcon platform={platform} />
-                    </a>
-                  ))}
+                  {discoverAseerLinks.map(
+                    ({ href, label, ariaLabel, platform }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white transition-opacity hover:opacity-80 [&_path]:fill-white"
+                        aria-label={ariaLabel}
+                      >
+                        <AseerSocialIcon platform={platform} />
+                      </a>
+                    ),
+                  )}
                 </div>
               </div>
             </div>

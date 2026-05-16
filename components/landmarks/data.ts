@@ -1,31 +1,27 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
+export const DEFAULT_ATTRACTION_MAP_CENTER = {
+  lat: 18.087563,
+  lon: 42.43704,
+} as const;
+
 export interface Landmark {
   id: string;
+  slug: string;
   title: string;
+  subtitle: string;
   location: string;
   area: string;
+  city: string;
   description: string;
+  contentHtml: string;
   guideName: string;
   image: string;
-  /**
-   * URL segment for `/attractions/[slug]` when using Directus/API-backed rows.
-   * Uses `slug` when present, otherwise numeric `id`.
-   */
-  hrefSegment?: string;
-  /** Short tagline (plain text) for hero subtitle and metadata. */
-  subtitle?: string | null;
-  /** Full article HTML for detail pages. */
-  contentHtml?: string | null;
-  /** Parsed gallery image URLs from `attraction_gallery` JSON. */
-  galleryImageUrls?: string[];
-  mapLink?: string | null;
-  latitude?: number | null;
-  longitude?: number | null;
-  /**
-   * Backend-ready optional metadata used by `/attractions` main-page filters.
-   * These are optional so existing UI consumers continue to work safely.
-   */
+  galleryImages: string[];
+  lat?: number;
+  lon?: number;
+  mapLink?: string;
+  categoryLabel: string;
   cityId?: string;
   travelerTypes?: string[];
   priceFrom?: number | null;
@@ -35,84 +31,57 @@ export interface Landmark {
 
 export interface ApiLandmark {
   id: string | number;
-  /** Directus system field — used to surface newest items first when present. */
   date_created?: string | null;
   status?: string | null;
   title?: string | null;
   title_ar?: string | null;
   name?: string | null;
+  name_en?: string | null;
   name_ar?: string | null;
   name_en?: string | null;
   location?: string | null;
   address?: string | null;
   description?: string | null;
   content?: string | null;
-  sub_title?: string | null;
   content_home_page_card_content?: string | null;
-  slug?: string | null;
-  attraction_gallery?: string | null;
-  map_link?: string | null;
-  latitude?: number | null;
-  longitude?: number | null;
   cover_image?: string | null;
   hero_image?: string | null;
   destination_image?: string | null;
   city?: string | null;
   traveller_types?: string[] | null;
   tags?: string | null;
+  type?: string | null;
   price_range_from?: number | null;
   price_range_to?: number | null;
-  /**
-   * Optional backend field for interests/categories.
-   * If not present, frontend uses keyword-based fallback tags.
-   */
   interest_tags?: string[] | null;
+  slug?: string | null;
+  sub_title?: string | null;
+  latitude?: number | string | null;
+  longitude?: number | string | null;
+  map_link?: string | null;
+  attraction_gallery?: string | null;
 }
 
 export interface ApiResponse {
   data: ApiLandmark[];
 }
 
-function containsArabicScript(value: string): boolean {
-  return /[\u0600-\u06FF]/.test(value);
+export interface LandmarkMapTarget {
+  kind: "interactive";
+  lat: number;
+  lon: number;
+  title: string;
 }
 
-/**
- * CMS rows sometimes label `name_en` / `name_ar` inconsistently; pick by script + locale.
- */
-function pickAttractionTitle(api: ApiLandmark, locale: LocaleCode): string {
-  const ne = api.name_en?.trim() || "";
-  const na = api.name_ar?.trim() || "";
-  if (ne || na) {
-    if (locale === "ar") {
-      if (containsArabicScript(ne)) return ne || na;
-      if (containsArabicScript(na)) return na || ne;
-      return ne || na;
-    }
-    if (na && !containsArabicScript(na)) return na;
-    if (ne && !containsArabicScript(ne)) return ne;
-    return na || ne;
-  }
-  const row = api as unknown as Record<string, unknown>;
-  return pickLocalizedField(row, "title", locale) || pickLocalizedField(row, "name", locale) || "";
+export interface LandmarkMapExternalTarget {
+  kind: "external";
+  href: string;
 }
 
-export function parseAttractionGalleryJson(raw: string | null | undefined): string[] {
-  if (!raw || typeof raw !== "string") return [];
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    if (!Array.isArray(parsed)) return [];
-    return parsed
-      .map((entry) => {
-        const row = entry as { image?: { url?: string | null } | null } | null;
-        const url = row?.image?.url?.trim();
-        return url || "";
-      })
-      .filter(Boolean);
-  } catch {
-    return [];
-  }
-}
+export type ResolvedLandmarkMap =
+  | LandmarkMapTarget
+  | LandmarkMapExternalTarget
+  | null;
 
 function normalizeText(value: string): string {
   return value
@@ -121,6 +90,79 @@ function normalizeText(value: string): string {
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
+}
+
+const toNumber = (value: number | string | null | undefined): number | undefined => {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim().length > 0) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return undefined;
+};
+
+export const slugifyLandmark = (value: string): string =>
+  value
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['']/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+
+const resolveLandmarkSlug = (row: ApiLandmark): string => {
+  const fromCms = row.slug?.trim();
+  if (fromCms) {
+    const slug = slugifyLandmark(fromCms);
+    if (slug) return slug;
+  }
+
+  const fromEnglish = row.name_en?.trim();
+  if (fromEnglish) {
+    const slug = slugifyLandmark(fromEnglish);
+    if (slug) return slug;
+  }
+
+  return `attraction-${row.id}`;
+};
+
+export const normalizeLandmarkSlugParam = (slug: string): string => {
+  try {
+    return slugifyLandmark(decodeURIComponent(slug));
+  } catch {
+    return slugifyLandmark(slug);
+  }
+};
+
+function resolveImageUrl(
+  asset: string | null | undefined,
+  directusUrl: string,
+): string {
+  const trimmed = (asset || "").trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("//")) return trimmed;
+  if (trimmed.startsWith("/")) return trimmed;
+  return `${directusUrl.replace(/\/$/, "")}/assets/${trimmed}`;
+}
+
+function parseGallery(raw: string | null | undefined, directusUrl: string): string[] {
+  if (!raw?.trim()) return [];
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return [];
+    const urls: string[] = [];
+    for (const item of parsed) {
+      if (!item || typeof item !== "object") continue;
+      const image = (item as { image?: { url?: string; permalink?: string } }).image;
+      const url = image?.url?.trim() || image?.permalink?.trim() || "";
+      if (url) urls.push(url);
+    }
+    return [...new Set(urls)];
+  } catch {
+    return [];
+  }
 }
 
 function mapInterestTokenToId(token: string): string | null {
@@ -136,47 +178,57 @@ function mapInterestTokenToId(token: string): string | null {
   return null;
 }
 
+const toLocalizedRecord = (row: ApiLandmark): Record<string, unknown> =>
+  row as unknown as Record<string, unknown>;
+
+function pickTitle(apiLandmark: ApiLandmark, locale: LocaleCode): string {
+  const record = toLocalizedRecord(apiLandmark);
+  if (locale === "en") {
+    return (
+      apiLandmark.name_en?.trim() ||
+      apiLandmark.name_ar?.trim() ||
+      pickLocalizedField(record, "title", locale) ||
+      pickLocalizedField(record, "name", locale) ||
+      ""
+    );
+  }
+  return (
+    apiLandmark.name_ar?.trim() ||
+    apiLandmark.name_en?.trim() ||
+    pickLocalizedField(record, "title", locale) ||
+    pickLocalizedField(record, "name", locale) ||
+    ""
+  );
+}
+
 export const transformLandmark = (
   apiLandmark: ApiLandmark,
   directusUrl: string,
   locale: LocaleCode = "ar",
 ): Landmark => {
-  const imageAsset =
-    apiLandmark.cover_image || apiLandmark.hero_image || apiLandmark.destination_image;
-  const imageUrl = imageAsset
-    ? imageAsset.startsWith("http://") || imageAsset.startsWith("https://")
-      ? imageAsset
-      : `${directusUrl}/assets/${imageAsset}`
-    : "/assets/experiences/experiences.png";
+  const imageUrl =
+    resolveImageUrl(apiLandmark.hero_image, directusUrl) ||
+    resolveImageUrl(apiLandmark.cover_image, directusUrl) ||
+    resolveImageUrl(apiLandmark.destination_image, directusUrl) ||
+    "/assets/experiences/experiences.png";
 
-  const title = pickAttractionTitle(apiLandmark, locale);
+  const title = pickTitle(apiLandmark, locale);
+  const city = (apiLandmark.city || "").trim();
   const location =
-    apiLandmark.location?.trim() || apiLandmark.address?.trim() || apiLandmark.city?.trim() || "";
+    apiLandmark.location?.trim() || apiLandmark.address?.trim() || city;
+  const contentHtml = (apiLandmark.content || "").trim();
+  const cardHtml = (apiLandmark.content_home_page_card_content || "").trim();
+  const description = cardHtml || contentHtml;
 
-  const rowRecord = apiLandmark as unknown as Record<string, unknown>;
-  const longDescription =
-    pickLocalizedField(rowRecord, "description", locale) ||
-    pickLocalizedField(rowRecord, "content", locale) ||
-    "";
-
-  const sub = apiLandmark.sub_title?.trim() || "";
-  const escapedSub = sub
-    ? `<p>${sub.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>`
-    : "";
-  const description =
-    apiLandmark.content_home_page_card_content?.trim() || escapedSub || longDescription || "";
-
-  // Extract guide name from long description if it contains one
   let guideName = "";
-  if (longDescription) {
-    const descriptionParts = longDescription.split(/\s+/);
+  if (description) {
+    const descriptionParts = description.replace(/<[^>]+>/g, " ").split(/\s+/);
     if (descriptionParts.length > 1) {
-      guideName = descriptionParts[descriptionParts.length - 1];
+      guideName = descriptionParts[descriptionParts.length - 1] || "";
     }
   }
 
-  // Use city if available, otherwise extract from location
-  const area = apiLandmark.city || location?.split(",")[0]?.trim() || "";
+  const area = city || location.split(",")[0]?.trim() || "";
 
   const cityMap: Record<string, string> = {
     abha: "abha",
@@ -190,29 +242,24 @@ export const transformLandmark = (
     "بيشة": "bisha",
     mahayil: "mahayil",
     "محايل عسير": "mahayil",
+    "رجال ألمع": "mahayil",
     najran: "najran",
     "نجران": "najran",
-    "رجال ألمع": "mahayil",
-    "المجاردة": "bisha",
-    "سراة عبيدة": "bisha",
-    "النماص": "tanomah",
-    "قحم": "abha",
-    "الحريضة": "abha",
     "البرك": "abha",
   };
-  const citySource = `${apiLandmark.city || ""} ${location} ${area}`;
+  const citySource = `${city} ${location} ${area}`;
   const cityId =
     Object.entries(cityMap).find(([name]) =>
-      normalizeText(citySource).includes(normalizeText(name))
+      normalizeText(citySource).includes(normalizeText(name)),
     )?.[1] || undefined;
 
-  // Fallback interests from title/description when backend tags are not provided.
-  const sourceText = `${title} ${longDescription || description}`;
+  const sourceText = `${title} ${description}`;
   const fallbackInterests: string[] = [];
   if (/تاريخ|تراث|قصر|سوق/i.test(sourceText)) fallbackInterests.push("historical", "culture");
   if (/جبل|حديقة|طبيعة|منتزه|وادي|قمم|السودة/i.test(sourceText))
     fallbackInterests.push("nature", "adventure");
   if (/تسوق|سوق/i.test(sourceText)) fallbackInterests.push("shopping");
+
   const rawInterestTags = Array.isArray(apiLandmark.interest_tags)
     ? apiLandmark.interest_tags.map((tag) => String(tag).trim()).filter(Boolean)
     : [];
@@ -238,34 +285,37 @@ export const transformLandmark = (
             "relaxation",
             "shopping",
             "historical",
-          ].includes(tag)
-        )
-    )
+          ].includes(tag),
+        ),
+    ),
   );
   if (interestTags.length === 0) {
     interestTags.push("culture");
   }
 
-  const slugTrimmed = apiLandmark.slug?.trim();
-  const hrefSegment =
-    slugTrimmed && slugTrimmed.length > 0 ? slugTrimmed : String(apiLandmark.id);
-  const contentHtml = apiLandmark.content?.trim() || null;
+  const categoryLabel = (apiLandmark.type || apiLandmark.tags || "").trim();
+  const galleryImages = parseGallery(apiLandmark.attraction_gallery, directusUrl);
+  const lat = toNumber(apiLandmark.latitude);
+  const lon = toNumber(apiLandmark.longitude);
+  const mapLink = apiLandmark.map_link?.trim() || undefined;
 
   return {
     id: String(apiLandmark.id),
+    slug: resolveLandmarkSlug(apiLandmark),
     title,
+    subtitle: (apiLandmark.sub_title || "").trim(),
     location,
-    area: area,
+    area,
+    city,
     description,
-    guideName: guideName,
-    image: imageUrl,
-    hrefSegment,
-    subtitle: sub || null,
     contentHtml,
-    galleryImageUrls: parseAttractionGalleryJson(apiLandmark.attraction_gallery),
-    mapLink: apiLandmark.map_link?.trim() || null,
-    latitude: apiLandmark.latitude ?? null,
-    longitude: apiLandmark.longitude ?? null,
+    guideName,
+    image: imageUrl,
+    galleryImages: galleryImages.length > 0 ? galleryImages : [imageUrl],
+    lat,
+    lon,
+    mapLink,
+    categoryLabel,
     cityId,
     travelerTypes: apiLandmark.traveller_types ?? [],
     priceFrom: apiLandmark.price_range_from,
@@ -287,7 +337,7 @@ export const fetchLandmarks = async (locale: LocaleCode = "ar"): Promise<Landmar
     listUrl.searchParams.set("sort", "-date_created,-id");
 
     let response = await fetch(listUrl.toString(), {
-      next: { revalidate: 3600 }, // Revalidate every hour
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
@@ -312,55 +362,84 @@ export const fetchLandmarks = async (locale: LocaleCode = "ar"): Promise<Landmar
   }
 };
 
-/**
- * Loads one attraction by public URL segment (`slug` from CMS, or numeric `id`).
- */
-export const fetchAttractionByHrefSegment = async (
-  segment: string,
+export const getLandmarkBySlug = async (
+  slug: string,
   locale: LocaleCode = "ar",
 ): Promise<Landmark | null> => {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
-  if (!directusUrl) {
-    console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
-    return null;
+  const normalized = normalizeLandmarkSlugParam(slug);
+  const rows = await fetchLandmarks(locale);
+
+  if (normalized) {
+    const bySlug = rows.find((row) => row.slug === normalized);
+    if (bySlug) return bySlug;
   }
 
-  const decoded = decodeURIComponent(segment).trim();
-  if (!decoded) return null;
-
+  let decoded = slug;
   try {
-    let item: ApiLandmark | undefined;
-
-    if (/^\d+$/.test(decoded)) {
-      const res = await fetch(`${directusUrl}/items/attractions/${decoded}`, {
-        next: { revalidate: 3600 },
-      });
-      if (!res.ok) return null;
-      const json: { data?: ApiLandmark } = await res.json();
-      item = json.data;
-    } else {
-      const u = new URL(`${directusUrl}/items/attractions`);
-      u.searchParams.set("filter[slug][_eq]", decoded);
-      u.searchParams.set("limit", "1");
-      const res = await fetch(u.toString(), { next: { revalidate: 3600 } });
-      if (!res.ok) return null;
-      const json: ApiResponse = await res.json();
-      item = json.data?.[0];
-    }
-
-    if (!item) return null;
-    if (item.status && item.status !== "published") return null;
-
-    return transformLandmark(item, directusUrl, locale);
-  } catch (error) {
-    console.error("Error fetching attraction by segment:", error);
-    return null;
+    decoded = decodeURIComponent(slug).trim();
+  } catch {
+    decoded = slug.trim();
   }
+
+  if (decoded) {
+    const byTitle = rows.find((row) => row.title.trim() === decoded);
+    if (byTitle) return byTitle;
+  }
+
+  if (/^\d+$/.test(decoded)) {
+    return rows.find((row) => row.id === decoded) ?? null;
+  }
+
+  if (decoded.startsWith("attraction-")) {
+    const id = decoded.replace(/^attraction-/, "");
+    return rows.find((row) => row.id === id) ?? null;
+  }
+
+  return null;
 };
 
-export const getAttractionHrefSegments = async (locale: LocaleCode = "ar"): Promise<string[]> => {
-  const landmarks = await fetchLandmarks(locale);
-  return landmarks.map((l) => l.hrefSegment).filter((s): s is string => Boolean(s));
+function sameCity(a: Landmark, b: Landmark): boolean {
+  if (a.cityId && b.cityId) return a.cityId === b.cityId;
+  if (a.city && b.city) return normalizeText(a.city) === normalizeText(b.city);
+  return normalizeText(a.area) === normalizeText(b.area);
+}
+
+function sameTagsOrType(a: Landmark, b: Landmark): boolean {
+  const aTags = a.interestTags ?? [];
+  const bTags = b.interestTags ?? [];
+  if (aTags.length > 0 && bTags.some((tag) => aTags.includes(tag))) return true;
+
+  if (a.categoryLabel && b.categoryLabel) {
+    return normalizeText(a.categoryLabel) === normalizeText(b.categoryLabel);
+  }
+
+  return false;
+}
+
+export const getRelatedLandmarks = (
+  current: Landmark,
+  all: Landmark[],
+  limit = 4,
+): Landmark[] => {
+  return all
+    .filter((row) => row.id !== current.id)
+    .filter((row) => sameCity(current, row) && sameTagsOrType(current, row))
+    .slice(0, limit);
 };
 
+export const resolveLandmarkMapTarget = (landmark: Landmark): ResolvedLandmarkMap => {
+  if (typeof landmark.lat === "number" && typeof landmark.lon === "number") {
+    return {
+      kind: "interactive",
+      lat: landmark.lat,
+      lon: landmark.lon,
+      title: landmark.title,
+    };
+  }
 
+  if (landmark.mapLink) {
+    return { kind: "external", href: landmark.mapLink };
+  }
+
+  return null;
+};

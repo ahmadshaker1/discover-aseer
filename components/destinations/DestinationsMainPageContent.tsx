@@ -191,7 +191,7 @@ const DestinationsMainPageContent = ({
                                     : [...prev, option.id],
                                 )
                               }
-                              className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] checked:border-primary checked:bg-primary checked:bg-[linear-gradient(45deg,transparent_45%,white_45%,white_55%,transparent_55%),linear-gradient(-45deg,transparent_45%,white_45%,white_55%,transparent_55%)] checked:bg-size-[70%_70%] checked:bg-center checked:bg-no-repeat"
+                              className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                             />
                             <span
                               className={`h-5 min-w-[73px] text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}

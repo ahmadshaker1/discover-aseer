@@ -1,15 +1,22 @@
 /**
- * Backend — Directus `films` collection (`/items/films`).
- * Env: `NEXT_PUBLIC_DIRECTUS_APP_URL` (e.g. https://tool-portal.discoveraseer.com)
- *
- * @see https://tool-portal.discoveraseer.com/items/films
+ * Backend handoff — film first section cards:
+ * - Suggested Directus collection: `film_landscapes`
+ * - Env: `NEXT_PUBLIC_DIRECTUS_APP_URL`
+ * - Fields (suggested): `id`, `title`, `title_en`, `filter_key`, `cover_image`, `status`
  */
 
-import { withDirectusCoverTransform } from "@/lib/directusAssetUrl";
+import {
+  FILM_LANDSCAPE_LABEL_KEYS,
+  resolveFilmLandscapeFilterId,
+  type FilmLandscapeFilterId,
+} from "./landscapeFilters";
 
 export interface FilmLandscape {
   id: string;
-  title: string;
+  /** i18n key under `film` namespace, e.g. `landscapes.mountains` */
+  labelKey: string;
+  /** Used in `/attractions?terrain=` */
+  filterId: FilmLandscapeFilterId;
   image: string;
   /** External watch link (Netflix, YouTube, Shahid, …). */
   watchUrl?: string;
@@ -22,29 +29,92 @@ const filmLandscapeAssetUrl = (fileName: string) =>
 export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
   {
     id: "film-land-1",
-    title: "الجبال",
-    image: filmLandscapeAssetUrl("Natural 1.webp"),
-    watchUrl: undefined,
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS.mountains,
+    filterId: "mountains",
+    image: "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg",
   },
   {
     id: "film-land-2",
-    title: "السهول",
-    image: filmLandscapeAssetUrl("Natural 2.webp"),
-    watchUrl: undefined,
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS.plains,
+    filterId: "plains",
+    image: "/assets/film/f553c2485f7cee0001b8c78577a11b28d342a8d9.png",
   },
   {
     id: "film-land-3",
-    title: "الشواطئ",
-    image: filmLandscapeAssetUrl("Natural 3.webp"),
-    watchUrl: undefined,
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS.beaches,
+    filterId: "beaches",
+    image: "/assets/film/cb7870bcdbeed166a47cfcfd91a8a0fa3f5c72b5.jpg",
   },
   {
     id: "film-land-4",
-    title: "الصحراء",
-    image: filmLandscapeAssetUrl("Natural 4.webp"),
-    watchUrl: undefined,
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS.desert,
+    filterId: "desert",
+    image: "/assets/film/216f4631aac0e23146a54ede4d47668e3a6b8c75 (1).png",
   },
 ];
+
+interface ApiFilmLandscape {
+  id: string;
+  title?: string | null;
+  title_en?: string | null;
+  filter_key?: string | null;
+  cover_image?: string | null;
+  status?: string | null;
+}
+
+interface ApiFilmLandscapeResponse {
+  data: ApiFilmLandscape[];
+}
+
+const transformFilmLandscape = (
+  row: ApiFilmLandscape,
+  directusUrl: string,
+  fallback: FilmLandscape,
+): FilmLandscape => {
+  const image = row.cover_image
+    ? `${directusUrl}/assets/${row.cover_image}`
+    : fallback.image;
+
+  const filterId =
+    resolveFilmLandscapeFilterId(row.filter_key) ||
+    resolveFilmLandscapeFilterId(row.title_en) ||
+    resolveFilmLandscapeFilterId(row.title) ||
+    fallback.filterId;
+
+  return {
+    id: row.id,
+    labelKey: FILM_LANDSCAPE_LABEL_KEYS[filterId],
+    filterId,
+    image,
+  };
+};
+
+export const fetchFilmLandscapes = async (): Promise<FilmLandscape[]> => {
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
+  if (!directusUrl) return [];
+
+  try {
+    const response = await fetch(`${directusUrl}/items/film_landscapes`, {
+      next: { revalidate: 3600 },
+    });
+    if (!response.ok) return [];
+
+    const apiData: ApiFilmLandscapeResponse = await response.json();
+    if (!Array.isArray(apiData?.data)) return [];
+
+    return apiData.data
+      .filter((row) => !row.status || row.status === "published")
+      .map((row, index) =>
+        transformFilmLandscape(
+          row,
+          directusUrl,
+          FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length],
+        ),
+      );
+  } catch {
+    return [];
+  }
+};
 
 export const fetchFilmLandscapesWithFallback = async (): Promise<FilmLandscape[]> =>
   FALLBACK_FILM_LANDSCAPES;

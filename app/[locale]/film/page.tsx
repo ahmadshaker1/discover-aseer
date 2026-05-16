@@ -2,13 +2,15 @@ import FilmLandscapeSwiper from "@/components/film/FilmLandscapeSwiper";
 import FilmShowcaseSection from "@/components/film/FilmShowcaseSection";
 import FilmWhyAseerSection from "@/components/film/FilmWhyAseerSection";
 import FilmServicesSection from "@/components/film/FilmServicesSection";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
-import { getLocale, getTranslations } from "next-intl/server";
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
+import { getTranslations } from "next-intl/server";
 import {
   fetchFilmsForFilmPage,
   fetchFilmServiceCardsWithFallback,
   fetchFilmWhyAseerSlidesWithFallback,
 } from "@/components/film/data";
+import FilmHero from "@/components/film/FilmHero";
+import FilmLandscapesSection from "@/components/film/FilmLandscapesSection";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
@@ -27,39 +29,13 @@ const FilmPage = async () => {
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <section className="relative h-[420px] w-full overflow-hidden sm:h-[560px] md:h-[809px]">
-        <Image
-          src="/assets/film/film-hero.png"
-          alt="Film hero"
-          fill
-          priority
-          className="object-fill object-center"
-          sizes="100vw"
-        />
-      </section>
+      <FilmHero />
 
-      <section className="mx-auto h-auto w-full max-w-[1442px] bg-background px-4 py-[60px] sm:px-8 md:px-[62px]">
-        <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-          <div className="w-full min-w-0 flex-1" dir="ltr">
-            <FilmLandscapeSwiper landscapes={landscapes} />
-          </div>
-
-          <div className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-start lg:h-[265px]">
-            <h2
-              className="text-[44px] font-bold leading-[38px] text-foreground"
-              style={{ fontFamily: ara }}
-            >
-              {t("introTitle")}
-            </h2>
-            <p
-              className="text-[15px] font-light leading-[119%] text-muted-foreground"
-              style={{ fontFamily: ibm }}
-            >
-              {t("introBody")}
-            </p>
-          </div>
-        </div>
-      </section>
+      <FilmLandscapesSection
+        landscapes={landscapes}
+        introTitle={t("introTitle")}
+        introBody={t("introBody")}
+      />
 
       <section className="relative w-full overflow-hidden">
         <div className="relative h-[343px] w-full">

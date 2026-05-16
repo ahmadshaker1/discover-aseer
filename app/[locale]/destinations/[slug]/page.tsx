@@ -10,38 +10,7 @@ import {
   getDestinationBySlug,
   resolveDestinationMapCenter,
 } from "@/components/destinations/data";
-import type { Destination } from "@/components/destinations/data";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
-
-const ABHA_SLUG = "abha";
-
-const INTRO_PARAGRAPH_KEYS = [
-  "introP1",
-  "introP2",
-  "introP3",
-  "introP4",
-  "introP5",
-  "introP6",
-] as const;
-
-/** Intro column image (heritage / city atmosphere) — Abha long copy uses curated art. */
-const ABHA_INTRO_IMAGE = "/assets/destinations/hero-destinations.png";
-
-function relatedLandmarkDestinations(
-  destination: Destination,
-  all: Destination[],
-  slug: string,
-): Destination[] {
-  const related =
-    destination.cityId != null && destination.cityId !== ""
-      ? all.filter((d) => d.cityId === destination.cityId)
-      : all.filter((d) => d.slug !== slug);
-
-  const withoutSelf = related.filter((d) => d.slug !== slug);
-  const list =
-    withoutSelf.length > 0 ? withoutSelf : all.filter((d) => d.slug !== slug);
-  return list.slice(0, 8);
-}
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
 
 interface DestinationSlugPageProps {
   params: Promise<{ locale: string; slug: string }>;

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { SeasonListingItem } from "../types";
-import { ArrowLeftIcon } from "@/components/events/EventCard/Icons";
+import { DetailsArrowIcon } from "./icons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -79,7 +79,7 @@ export default function SeasonExpandableCard({
 
             <span>{tCommon("viewDetails")}</span>
             <span className="inline-flex ltr:rotate-180">
-              <ArrowLeftIcon />
+              <DetailsArrowIcon />
             </span>
           </Link>
         </div>
