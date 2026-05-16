@@ -16,14 +16,12 @@ import type { FilmLandscape } from "@/components/film/data";
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const NAV_BTN_CLASS =
-  "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
+  "flex h-11 w-11 rotate-180 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
 
 const landscapeCardClass =
   "relative h-[305px] w-full overflow-hidden rounded-[10px] shadow-[0px_4.28px_3.37px_0px_rgba(41,72,152,0.01),0px_8.72px_6.97px_0px_rgba(41,72,152,0.02),0px_21.4px_13.91px_0px_rgba(41,72,152,0.02)]";
 
 const landscapeCardLinkClass = `${landscapeCardClass} cursor-pointer`;
-
-const IMAGE_QUALITY = 92;
 
 interface FilmLandscapeSwiperProps {
   landscapes: FilmLandscape[];
@@ -38,18 +36,21 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
     canNext: false,
   });
 
-  const syncNav = useCallback((s: SwiperType) => {
-    if (s.isLocked || landscapes.length < 2) {
-      setNav({ show: false, canPrev: false, canNext: false });
-      return;
-    }
-    const eps = 0.02;
-    setNav({
-      show: true,
-      canPrev: s.progress > eps,
-      canNext: s.progress < 1 - eps,
-    });
-  }, [landscapes.length]);
+  const syncNav = useCallback(
+    (s: SwiperType) => {
+      if (s.isLocked || landscapes.length < 2) {
+        setNav({ show: false, canPrev: false, canNext: false });
+        return;
+      }
+      const eps = 0.02;
+      setNav({
+        show: true,
+        canPrev: s.progress > eps,
+        canNext: s.progress < 1 - eps,
+      });
+    },
+    [landscapes.length],
+  );
 
   if (landscapes.length === 0) return null;
 
@@ -89,7 +90,6 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
                 src={item.image}
                 alt={item.title}
                 fill
-                quality={IMAGE_QUALITY}
                 priority={index < 2}
                 className="object-cover"
                 sizes="(max-width: 640px) 78vw, (max-width: 1024px) 45vw, 564px"
@@ -136,7 +136,7 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
             className={NAV_BTN_CLASS}
             onClick={() => swiperRef.current?.slidePrev(320)}
           >
-            <ChevronLeftIcon />
+            <ChevronRightIcon />
           </button>
           <button
             type="button"
@@ -145,7 +145,7 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
             className={NAV_BTN_CLASS}
             onClick={() => swiperRef.current?.slideNext(320)}
           >
-            <ChevronRightIcon />
+            <ChevronLeftIcon />
           </button>
         </div>
       ) : null}
