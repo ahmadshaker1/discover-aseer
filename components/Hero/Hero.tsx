@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
-import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
+
 import Image from "next/image";
 
 interface HeroProps {

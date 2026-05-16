@@ -7,7 +7,6 @@ import {
   XIcon,
   YouTubeIcon,
 } from "@/components/Footer/Icons";
-import SafeHtml from "@/components/common/SafeHtml";
 import { useTranslations } from "next-intl";
 import SafeHtml from "@/components/common/SafeHtml";
 

@@ -11,7 +11,7 @@ import Footer from "@/components/Footer/Footer";
 
 import { routing, type AppLocale } from "@/i18n/routing";
 import { getThemeInitScript } from "@/lib/theme/runtime";
-import Script from "next/script";
+
 import "./globals.css";
 
 const araHamah1964 = localFont({

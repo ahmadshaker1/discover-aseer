@@ -10,7 +10,7 @@ import "swiper/css";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "@/components/events/EventsCarousel/Icons";
+} from "@/components/shared/icons/CarouselChevrons";
 import {
   FILM_SHOWCASE_FILTERS,
   type FilmShowcaseCard,

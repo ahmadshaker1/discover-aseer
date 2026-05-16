@@ -10,7 +10,7 @@ import "swiper/css";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "@/components/events/EventsCarousel/Icons";
+} from "@/components/shared/icons/CarouselChevrons";
 import type { FilmLandscape } from "@/components/film/data";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
