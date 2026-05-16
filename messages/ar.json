@@ -214,7 +214,22 @@
     "yearFilterSelected": "موسم {year}",
     "yearFilterClear": "إزالة التصفية",
     "previousSeasonsTitle": "مواسم وفعاليات سابقة",
-    "details": "التفاصيل"
+    "details": "التفاصيل",
+    "dayLabel": "اليوم",
+    "scrollDaysPrev": "الأيام السابقة",
+    "scrollDaysNext": "الأيام التالية",
+    "noEventsForDay": "لا توجد فعاليات في هذا اليوم",
+    "noEventsInSeason": "لا توجد فعاليات في هذا الموسم",
+    "filterAll": "الكل",
+    "filterNature": "طبيعة",
+    "filterSports": "رياضي",
+    "filterCultural": "ثقافي",
+    "filterTech": "تقني",
+    "filterEntertainment": "ترفيهي",
+    "filterCreative": "ابداعي",
+    "kidFriendly": "مناسب للأطفال",
+    "imagePrev": "الصورة السابقة",
+    "imageNext": "الصورة التالية"
   },
   "experiencesPage": {
     "breadcrumb": "التجارب",

@@ -4,7 +4,7 @@ import AttractionsIntroSection from "@/components/attractions/AttractionsIntroSe
 import AttractionsGuidesSection from "@/components/attractions/AttractionsGuidesSection";
 import AttractionsLandmarksSection from "@/components/attractions/AttractionsLandmarksSection";
 import AttractionsMapSection from "@/components/attractions/AttractionsMapSection";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import { fetchLandmarks, type Landmark } from "@/components/landmarks/data";
 import { fetchTourGuides } from "@/components/tour-guides/data";
 import type { TourGuideData } from "@/components/tour-guides/TourGuideCard/TourGuideCard";

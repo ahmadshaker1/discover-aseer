@@ -37,7 +37,7 @@ export const discoverAseerLinks = [
 export const navigationLinks = [
   { href: "#", labelKey: "common.discoverAseer", isDropdown: true },
   { href: "/planner", labelKey: "nav.planTrip" },
-  { href: "/events", labelKey: "nav.events" },
+  { href: "/event-seasons", labelKey: "nav.events" },
 ];
 
 export const iconButtons = [

@@ -3,7 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import CuisineItemIntroSection from "@/components/aseer-cuisine/CuisineItemIntroSection";
 import CuisineSlugHero from "@/components/aseer-cuisine/CuisineSlugHero";
 import { fetchCuisineItems, getCuisineBySlug } from "@/components/aseer-cuisine/data";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
 
 export const revalidate = 300;
 

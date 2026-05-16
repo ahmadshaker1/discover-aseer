@@ -214,7 +214,22 @@
     "yearFilterSelected": "Season {year}",
     "yearFilterClear": "Clear filter",
     "previousSeasonsTitle": "Previous seasons & events",
-    "details": "Details"
+    "details": "Details",
+    "dayLabel": "Day",
+    "scrollDaysPrev": "Previous days",
+    "scrollDaysNext": "Next days",
+    "noEventsForDay": "No events on this day",
+    "noEventsInSeason": "No events in this season",
+    "filterAll": "All",
+    "filterNature": "Nature",
+    "filterSports": "Sports",
+    "filterCultural": "Cultural",
+    "filterTech": "Tech",
+    "filterEntertainment": "Entertainment",
+    "filterCreative": "Creative",
+    "kidFriendly": "Suitable for children",
+    "imagePrev": "Previous image",
+    "imageNext": "Next image"
   },
   "experiencesPage": {
     "breadcrumb": "Experiences",

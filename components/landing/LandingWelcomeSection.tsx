@@ -38,7 +38,7 @@ const LandingWelcomeSection = ({
   const resolvedCards: LocalizedLandingCard[] = cards ?? [
     {
       title: tCommon("eventsSeasonsCard"),
-      href: "/events",
+      href: "/event-seasons",
       image: "/assets/landing/fireworks.png",
     },
     {

@@ -9,7 +9,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Restaurant } from "./data";
 import { SaudiRiyalIcon } from "./Icons";
-import { ChevronLeftIcon, ChevronRightIcon } from "../events/EventsCarousel/Icons";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@/components/shared/icons/CarouselChevrons";
 
 interface RestaurantsCardsProps {
   restaurants: Restaurant[];

@@ -95,7 +95,7 @@ const Footer = () => {
                     {t("footer.linkCommunity")}
                   </Link>
                   <Link
-                    href="/events"
+                    href="/event-seasons"
                     className="mt-4 block w-full text-end hover:opacity-80"
                   >
                     {t("footer.linkEventsSeasons")}

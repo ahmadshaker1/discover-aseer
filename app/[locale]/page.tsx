@@ -4,7 +4,7 @@ import LandingWelcomeSection from "@/components/landing/LandingWelcomeSection";
 import AttractionsLandmarksSection from "@/components/attractions/AttractionsLandmarksSection";
 import AseerExperiencesSection from "@/components/experiences/AseerExperiencesSection";
 import LandingStoriesFromAseerSection from "@/components/landing/LandingStoriesFromAseerSection";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import { fetchLandmarks } from "@/components/landmarks/data";
 import { fetchExperiences } from "@/components/experiences/data";
 import PointsOfInterest from "@/components/PointsOfInterest/PointsOfInterest";

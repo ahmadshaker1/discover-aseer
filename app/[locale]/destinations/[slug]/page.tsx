@@ -10,7 +10,7 @@ import {
   getDestinationBySlug,
   resolveDestinationMapCenter,
 } from "@/components/destinations/data";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
 
 interface DestinationSlugPageProps {
   params: Promise<{ locale: string; slug: string }>;

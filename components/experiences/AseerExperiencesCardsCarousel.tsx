@@ -8,7 +8,7 @@ import ExperienceCard, {
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "@/components/events/EventsCarousel/Icons";
+} from "@/components/shared/icons/CarouselChevrons";
 
 /** Horizontal inset for the scroll track and chevron row (aligned). */
 const TRACK_PAD =

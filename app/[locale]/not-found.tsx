@@ -14,7 +14,7 @@ const NotFoundPage = () => {
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-background px-4 py-10 text-foreground">
       <section className="w-full max-w-[640px] rounded-[18px] border border-border bg-surface px-6 py-10 text-center shadow-[0_8px_24px_rgba(40,0,72,0.08)] sm:px-10">
-        <div className="mb-8 flex justify-center filter-[brightness(0)]">
+        <div className="mb-8 flex justify-center filter-[brightness(0)] dark:filter-none">
           <AseerLogo />
         </div>
 

@@ -39,4 +39,3 @@ const BinocularsIcon = () => {
 };
 
 export { VisaIcon, AirplaneIcon, HotelIcon, BinocularsIcon };
-

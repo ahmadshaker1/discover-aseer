@@ -1,7 +1,7 @@
 import FilmShowcaseSection from "@/components/film/FilmShowcaseSection";
 import FilmWhyAseerSection from "@/components/film/FilmWhyAseerSection";
 import FilmServicesSection from "@/components/film/FilmServicesSection";
-import EventsInfo from "@/components/events/EventsInfo/EventsInfo";
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import { getTranslations } from "next-intl/server";
 import {
   fetchFilmShowcaseCardsWithFallback,

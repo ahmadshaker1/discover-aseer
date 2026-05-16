@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { VisaIcon, AirplaneIcon, HotelIcon, BinocularsIcon } from "./Icons";
 import Image from "next/image";
+import { VisaIcon, AirplaneIcon, HotelIcon, BinocularsIcon } from "./Icons";
+
 export interface EventsInfoCard {
   id: number;
   icon: React.ReactNode;
@@ -136,9 +137,9 @@ export default async function EventsInfo({
         />
       </div>
 
-      <div className="relative z-10 mb-10 border-b border-border pb-4 md:mb-12 w-1/2">
+      <div className="relative z-10 mb-10 w-1/2 border-b border-border pb-4 md:mb-12">
         <h2
-          className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}
+          className="text-start text-[32px] font-bold text-foreground sm:text-[40px]"
           style={{ fontFamily: ara }}
         >
           <span className="text-foreground">{t("headingStart")}</span>
@@ -157,7 +158,7 @@ export default async function EventsInfo({
             </div>
 
             <h3
-              className={`w-full text-[20px] font-bold leading-[130%] text-foreground text-start`}
+              className="w-full text-start text-[20px] font-bold leading-[130%] text-foreground"
               style={{ fontFamily: ara }}
             >
               {card.title}
@@ -187,28 +188,31 @@ export default async function EventsInfo({
   );
 }
 
-const ChevronIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="rtl:rotate-180"
-  >
-    <path
-      d="M19 12H5"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M12 19L5 12L12 5"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+function ChevronIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="rtl:rotate-180"
+      aria-hidden
+    >
+      <path
+        d="M19 12H5"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 19L5 12L12 5"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

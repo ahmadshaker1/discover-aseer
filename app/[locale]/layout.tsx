@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { IBM_Plex_Sans_Arabic, Readex_Pro } from "next/font/google";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
@@ -57,9 +58,6 @@ export default async function LocaleLayout({
 
   return (
     <html lang={appLocale} dir={appLocale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
-      </head>
       <body
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >
