@@ -15,32 +15,39 @@ export interface FilmLandscape {
   watchUrl?: string;
 }
 
+const filmLandscapeAssetUrl = (fileName: string) =>
+  `/assets/film/nature/${encodeURIComponent(fileName)}`;
+
+/** Terrain carousel (mountains, plains, beaches, desert) — local assets only. */
 export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
   {
     id: "film-land-1",
     title: "الجبال",
-    image: "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg",
+    image: filmLandscapeAssetUrl("Natural 1.webp"),
     watchUrl: undefined,
   },
   {
     id: "film-land-2",
     title: "السهول",
-    image: "/assets/film/f553c2485f7cee0001b8c78577a11b28d342a8d9.png",
+    image: filmLandscapeAssetUrl("Natural 2.webp"),
     watchUrl: undefined,
   },
   {
     id: "film-land-3",
     title: "الشواطئ",
-    image: "/assets/film/cb7870bcdbeed166a47cfcfd91a8a0fa3f5c72b5.jpg",
+    image: filmLandscapeAssetUrl("Natural 3.webp"),
     watchUrl: undefined,
   },
   {
     id: "film-land-4",
     title: "الصحراء",
-    image: "/assets/film/216f4631aac0e23146a54ede4d47668e3a6b8c75 (1).png",
+    image: filmLandscapeAssetUrl("Natural 4.webp"),
     watchUrl: undefined,
   },
 ];
+
+export const fetchFilmLandscapesWithFallback = async (): Promise<FilmLandscape[]> =>
+  FALLBACK_FILM_LANDSCAPES;
 
 export type FilmSlideLane = "left" | "right";
 export type FilmSlideTextTheme = "light" | "dark";
@@ -523,16 +530,24 @@ async function fetchPublishedFilmsFromDirectus(
   }
 }
 
-/** Single fetch for the film page: hero strip + “filmed works” grid from Directus `films`. */
+/** “Filmed works” grid from Directus `films` (not the terrain intro carousel). */
+export async function fetchFilmShowcaseCardsForFilmPage(
+  locale: string,
+): Promise<FilmShowcaseCard[]> {
+  const fromApi = await fetchPublishedFilmsFromDirectus(locale);
+  if (fromApi) return fromApi.showcaseCards;
+  return FALLBACK_FILM_SHOWCASE_CARDS;
+}
+
+/** Film page data: terrain strip uses local slides; showcase may come from Directus. */
 export async function fetchFilmsForFilmPage(locale: string): Promise<{
   landscapes: FilmLandscape[];
   showcaseCards: FilmShowcaseCard[];
 }> {
-  const fromApi = await fetchPublishedFilmsFromDirectus(locale);
-  if (fromApi) return fromApi;
+  const [landscapes, showcaseCards] = await Promise.all([
+    fetchFilmLandscapesWithFallback(),
+    fetchFilmShowcaseCardsForFilmPage(locale),
+  ]);
 
-  return {
-    landscapes: FALLBACK_FILM_LANDSCAPES,
-    showcaseCards: FALLBACK_FILM_SHOWCASE_CARDS,
-  };
+  return { landscapes, showcaseCards };
 }

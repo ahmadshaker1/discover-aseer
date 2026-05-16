@@ -25,10 +25,8 @@ const showcaseCardClass =
 
 const showcaseCardLinkClass = `${showcaseCardClass} cursor-pointer`;
 
-const IMAGE_QUALITY = 92;
-
 const NAV_BTN_CLASS =
-  "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
+  "flex h-11 w-11 rotate-180 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
 
 interface FilmShowcaseSectionProps {
   cards: FilmShowcaseCard[];
@@ -59,10 +57,10 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
   const [selected, setSelected] = useState<FilmShowcaseCategory>("الكل");
 
   const filterLabels: Record<FilmShowcaseCategory, string> = {
-    "الكل": t("filterAll"),
-    "أفلام": t("filterFilms"),
+    الكل: t("filterAll"),
+    أفلام: t("filterFilms"),
     "أﻓﻼم ﺗﺮوﻳﺠﻴﺔ": t("filterPromo"),
-    "ﻣﺴﻠﺴﻼت": t("filterSeries"),
+    ﻣﺴﻠﺴﻼت: t("filterSeries"),
     "أفلام ﻣﻮﺳﻴﻘﻴﺔ": t("filterMusic"),
   };
 
@@ -97,7 +95,11 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                       ? "border-primary text-primary"
                       : "border-transparent text-foreground"
                   }`}
-                  style={{ fontFamily: inter, paddingTop: 11.5, paddingBottom: 12.5 }}
+                  style={{
+                    fontFamily: inter,
+                    paddingTop: 11.5,
+                    paddingBottom: 12.5,
+                  }}
                 >
                   {filterLabels[filter]}
                 </button>
@@ -145,7 +147,6 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                           src={card.image}
                           alt={card.title}
                           fill
-                          quality={IMAGE_QUALITY}
                           priority={selected === "الكل" && index === 0}
                           className="object-cover"
                           sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 690px"
@@ -175,7 +176,9 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                             {body}
                           </a>
                         ) : (
-                          <article className={showcaseCardClass}>{body}</article>
+                          <article className={showcaseCardClass}>
+                            {body}
+                          </article>
                         )}
                       </SwiperSlide>
                     );
@@ -191,9 +194,7 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                       className={NAV_BTN_CLASS}
                       onClick={() => swiperRef.current?.slidePrev(320)}
                     >
-                      <span className="rotate-180">
-                        <ChevronLeftIcon />
-                      </span>
+                      <ChevronRightIcon />
                     </button>
                     <button
                       type="button"
@@ -202,9 +203,7 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                       className={NAV_BTN_CLASS}
                       onClick={() => swiperRef.current?.slideNext(320)}
                     >
-                      <span className="rotate-180">
-                        <ChevronRightIcon />
-                      </span>
+                      <ChevronLeftIcon />
                     </button>
                   </div>
                 ) : null}
