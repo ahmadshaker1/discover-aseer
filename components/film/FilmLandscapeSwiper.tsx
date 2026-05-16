@@ -136,7 +136,9 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
             className={NAV_BTN_CLASS}
             onClick={() => swiperRef.current?.slidePrev(320)}
           >
-            <ChevronLeftIcon />
+            <span className="rotate-180">
+              <ChevronLeftIcon />
+            </span>
           </button>
           <button
             type="button"
@@ -145,7 +147,9 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
             className={NAV_BTN_CLASS}
             onClick={() => swiperRef.current?.slideNext(320)}
           >
-            <ChevronRightIcon />
+            <span className="rotate-180">
+              <ChevronRightIcon />
+            </span>
           </button>
         </div>
       ) : null}

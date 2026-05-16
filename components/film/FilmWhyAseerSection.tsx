@@ -89,7 +89,9 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
           aria-label={`${tCommon("previous")} - ${slide.title}`}
           className={`absolute bottom-8 inline-flex h-[44px] w-[27px] items-center justify-center end-8`}
         >
-          <span className="rtl:rotate-180"><LeftChevron stroke={chevronStroke} /></span>
+          <span className="rotate-180">
+            <RightChevron stroke={chevronStroke} />
+          </span>
         </button>
         <button
           type="button"
@@ -97,7 +99,9 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
           aria-label={`${tCommon("next")} - ${slide.title}`}
           className={`absolute bottom-8 inline-flex h-[44px] w-[27px] items-center justify-center start-8`}
         >
-          <span className="rtl:rotate-180"><RightChevron stroke={chevronStroke} /></span>
+          <span className="rotate-180">
+            <LeftChevron stroke={chevronStroke} />
+          </span>
         </button>
       </article>
     );

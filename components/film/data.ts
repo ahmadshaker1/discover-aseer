@@ -54,62 +54,110 @@ export interface FilmWhyAseerSlide {
   textTheme: FilmSlideTextTheme;
 }
 
-export const FALLBACK_FILM_WHY_ASEER_SLIDES: FilmWhyAseerSlide[] = [
+const FILM_CULTURAL_IMAGE_FILES = [
+  "Cultural 1.webp",
+  "Cultural 2.webp",
+  "Cultural 3.webp",
+  "Cultural 4.webp",
+  "Cultural 5.webp",
+  "Cultural 6.webp",
+  "Cultural 7.webp",
+  "Cultural 8.webp",
+] as const;
+
+const FILM_NATURE_IMAGE_FILES = [
+  "Natural 1.webp",
+  "Natural 2.webp",
+  "Natural 3.webp",
+  "Natural 4.webp",
+  "Natural 5.webp",
+  "Natural 6.webp",
+  "Natural 7.webp",
+  "Natural 8.webp",
+  "Natural 9.webp",
+] as const;
+
+const filmWhyAseerAssetUrl = (folder: "cultural" | "nature", fileName: string) =>
+  `/assets/film/${folder}/${encodeURIComponent(fileName)}`;
+
+const FILM_WHY_ASEER_CULTURAL_COPY: Omit<
+  FilmWhyAseerSlide,
+  "id" | "lane" | "image"
+>[] = [
   {
-    id: "film-why-1",
-    lane: "left",
     title: "تنوع ثقافي",
     description:
       "يُسهم الثراء والتنوع الثقافي في منطقة عسير في إلهام صُناع الأفلام وتحفيز الحس الإبداعي لديهم.",
-    image: "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg",
     textTheme: "light",
   },
   {
-    id: "film-why-2",
-    lane: "left",
     title: "عمق تاريخي",
     description:
       "أكثر من ٤ آلاف قرية تراثية تمنح المشهد السينمائي عمقاً بصرياً وسردياً نادراً في مكان واحد.",
-    image: "/assets/film/216f4631aac0e23146a54ede4d47668e3a6b8c75 (1).png",
     textTheme: "light",
   },
   {
-    id: "film-why-3",
-    lane: "left",
     title: "مواقع متعددة",
     description:
       "من القمم العالية إلى السفوح والوديان، يمكن تصوير مشاهد متنوعة خلال نطاق جغرافي قريب ومترابط.",
-    image: "/assets/film/f553c2485f7cee0001b8c78577a11b28d342a8d9.png",
     textTheme: "dark",
   },
+];
+
+const FILM_WHY_ASEER_NATURE_COPY: Omit<
+  FilmWhyAseerSlide,
+  "id" | "lane" | "image"
+>[] = [
   {
-    id: "film-why-4",
-    lane: "right",
     title: "تنوع طبيعي",
     description:
       "مزيج السحب والجبال والإضاءة الطبيعية يصنع كادرات بصرية قوية تناسب الإنتاجات السينمائية الكبرى.",
-    image: "/assets/film/imghorizontal.png",
     textTheme: "light",
   },
   {
-    id: "film-why-5",
-    lane: "right",
     title: "بنية متنامية",
     description:
       "تسارع الخدمات اللوجستية والسياحية يسهّل عمليات الإنتاج والتصوير لفِرق العمل المحلية والدولية.",
-    image: "/assets/film/cb7870bcdbeed166a47cfcfd91a8a0fa3f5c72b5.jpg",
     textTheme: "dark",
   },
   {
-    id: "film-why-6",
-    lane: "right",
     title: "قرب المواقع",
     description:
       "تقارب مواقع التصوير المختلفة يساعد على تقليل زمن التنقل ورفع كفاءة أيام التصوير.",
-    image: "/assets/film/film-hero.png",
     textTheme: "light",
   },
 ];
+
+function buildFilmWhyAseerSlidesFromAssets(): FilmWhyAseerSlide[] {
+  const cultural = FILM_CULTURAL_IMAGE_FILES.map((fileName, index) => {
+    const copy =
+      FILM_WHY_ASEER_CULTURAL_COPY[
+        index % FILM_WHY_ASEER_CULTURAL_COPY.length
+      ];
+    return {
+      id: `film-why-cultural-${index + 1}`,
+      lane: "left" as const,
+      image: filmWhyAseerAssetUrl("cultural", fileName),
+      ...copy,
+    };
+  });
+
+  const nature = FILM_NATURE_IMAGE_FILES.map((fileName, index) => {
+    const copy =
+      FILM_WHY_ASEER_NATURE_COPY[index % FILM_WHY_ASEER_NATURE_COPY.length];
+    return {
+      id: `film-why-nature-${index + 1}`,
+      lane: "right" as const,
+      image: filmWhyAseerAssetUrl("nature", fileName),
+      ...copy,
+    };
+  });
+
+  return [...cultural, ...nature];
+}
+
+export const FALLBACK_FILM_WHY_ASEER_SLIDES: FilmWhyAseerSlide[] =
+  buildFilmWhyAseerSlidesFromAssets();
 
 interface ApiFilmWhyAseerSlide {
   id: string;
@@ -182,8 +230,8 @@ export const fetchFilmWhyAseerSlides = async (): Promise<
 export const fetchFilmWhyAseerSlidesWithFallback = async (): Promise<
   FilmWhyAseerSlide[]
 > => {
-  const rows = await fetchFilmWhyAseerSlides();
-  return rows.length > 0 ? rows : FALLBACK_FILM_WHY_ASEER_SLIDES;
+  // Showcase uses bundled cultural / nature stills from public/assets/film.
+  return buildFilmWhyAseerSlidesFromAssets();
 };
 
 export type FilmServiceIconKey = "crew" | "locations" | "permits";
