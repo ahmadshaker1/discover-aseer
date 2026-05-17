@@ -28,8 +28,6 @@ const AttractionsIntroSection = ({
 }: AttractionsIntroSectionProps) => {
   const tCommon = useTranslations("common");
 
-  const heading = titleOverride?.trim() || t("introTitle");
-
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]">
       <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:h-[441px] lg:flex-row-reverse lg:items-start">
