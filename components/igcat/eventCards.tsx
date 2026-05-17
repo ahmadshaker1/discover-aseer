@@ -2,76 +2,274 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { IGCAT_EVENT_IDS, IGCAT_EVENT_IMAGES } from "./eventMedia";
+import { Dialog } from "@headlessui/react";
+
+const IGCAT_EVENTS_DATA = [
+  {
+    id: "1",
+    type: "single",
+    image: "/assets/igcat/event/1.jpeg",
+    innerImage: "/assets/igcat/event/1.1.jpg",
+  },
+  {
+    id: "2",
+    type: "multiple",
+    cards: [
+      {
+        id: "card1",
+        image: "/assets/igcat/event/2.png",
+        innerImage: "/assets/igcat/event/2.2.jpg",
+      },
+      {
+        id: "card2",
+        image: "/assets/igcat/event/3.png",
+        innerImage: "/assets/igcat/event/4.jpg",
+      },
+      {
+        id: "card3",
+        image: "/assets/igcat/event/5.png",
+        innerImage: "/assets/igcat/event/6.jpg",
+      },
+      {
+        id: "card4",
+        image: "/assets/igcat/event/7.png",
+        innerImage: "/assets/igcat/event/8.jpg",
+      },
+      {
+        id: "card5",
+        image: "/assets/igcat/event/9.png",
+        innerImage: "/assets/igcat/event/10.jpg",
+      },
+    ],
+  },
+  {
+    id: "3",
+    type: "multiple",
+    cards: [
+      {
+        id: "card1",
+        image: "/assets/igcat/event/3.1.png",
+        innerImage: "/assets/igcat/event/3.1.1.jpg",
+      },
+      {
+        id: "card2",
+        image: "/assets/igcat/event/3.2.png",
+        innerImage: "/assets/igcat/event/3.2.1.jpg",
+      },
+    ],
+  },
+  {
+    id: "4",
+    type: "multiple",
+    cards: [
+      {
+        id: "card1",
+        image: "/assets/igcat/event/4.1.png",
+        innerImage: "/assets/igcat/event/4.1.1.jpg",
+      },
+      {
+        id: "card2",
+        image: "/assets/igcat/event/4.2.png",
+        innerImage: "/assets/igcat/event/4.2.1.jpg",
+      },
+      {
+        id: "card3",
+        image: "/assets/igcat/event/4.3.png",
+        innerImage: "/assets/igcat/event/4.3.1.jpg",
+      },
+    ],
+  },
+  {
+    id: "5",
+    type: "single",
+    image: "/assets/igcat/event/5.1.png",
+    innerImage: "/assets/igcat/event/5.1.1.jpg",
+  },
+];
 
 export default function IGCatEventCards() {
   const t = useTranslations("igcat.events");
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const activeId = IGCAT_EVENT_IDS[activeIndex];
-  const activeImage = IGCAT_EVENT_IMAGES[activeIndex];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<{
+    id: string;
+    image: string;
+    innerImage: string;
+    isSingle?: boolean;
+  } | null>(null);
+
+  const activeTab = IGCAT_EVENTS_DATA[activeIndex];
+
+  const handleCardClick = (
+    cardId: string,
+    image: string,
+    innerImage: string = image,
+    isSingle: boolean = false,
+  ) => {
+    setSelectedCard({ id: cardId, image, innerImage, isSingle });
+    setIsModalOpen(true);
+  };
 
   return (
     <section className="bg-background py-16">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 flex flex-col items-start text-start">
-          <span className="mb-4 inline-block rounded-full border border-primary px-5 py-1 text-[14px] font-bold text-primary">
-            {t("badge")}
-          </span>
-          <h2 className="text-[32px] font-bold text-foreground md:text-[40px]">
-            {t("title")}
-          </h2>
+        <div className="h-auto flex flex-col md:flex-row justify-between text-start mb-8 gap-6">
+          <div className="flex flex-col items-start text-start hover:cursor-pointer">
+            <span className="mb-4 inline-block rounded-full border border-primary px-5 py-1 text-[14px] font-bold text-primary ">
+              {t("badge")}
+            </span>
+            <h2 className="text-[32px] font-bold text-foreground md:text-[40px]">
+              {t("title")}
+            </h2>
+          </div>
+          <div className="flex items-center text-start">
+            <p className="max-w-3xl text-[18px]">{t("discription")}</p>
+          </div>
         </div>
 
         <div
           className="hide-scrollbar mb-8 flex justify-start gap-4 overflow-x-auto pb-4"
           style={{ scrollbarWidth: "none" }}
         >
-          {IGCAT_EVENT_IDS.map((id, index) => {
+          {IGCAT_EVENTS_DATA.map((tab, index) => {
             const isActive = index === activeIndex;
 
             return (
               <button
-                key={id}
+                key={tab.id}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className={`flex h-[90px] w-[90px] shrink-0 flex-col items-center justify-center rounded-3xl border transition-all ${
+                className={`flex h-[40px] px-6 shrink-0 flex-col items-center justify-center rounded-[999px] border transition-all ${
                   isActive
                     ? "border-primary bg-primary/10 text-primary"
                     : "border-border bg-background text-foreground hover:border-muted-foreground"
                 }`}
               >
-                <span className="text-center text-[14px] font-bold leading-tight">
-                  {t(`items.${id}.tabTop`)}
-                  <br />
-                  <span className="text-[12px] font-normal">
-                    {t(`items.${id}.tabBottom`)}
-                  </span>
+                <span className="text-center text-[14px] font-bold leading-tight whitespace-nowrap">
+                  {t(`items.${tab.id}.tabTop`)}
                 </span>
               </button>
             );
           })}
         </div>
 
-        <div className="group relative h-[380px] w-full overflow-hidden rounded-4xl shadow-lg">
-          <img
-            src={activeImage}
-            alt={t(`items.${activeId}.title`)}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-
-          <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
-
-          <div className="absolute bottom-0 end-0 z-10 w-full p-6 text-start md:w-3/4 md:p-10 lg:w-2/3">
-            <h3 className="mb-4 text-[24px] font-bold text-white md:text-[32px]">
-              {t(`items.${activeId}.title`)}
-            </h3>
-            <p className="line-clamp-3 text-[14px] leading-[1.8] text-gray-200 md:line-clamp-none md:text-[16px]">
-              {t(`items.${activeId}.description`)}
-            </p>
+        {activeTab.type === "single" ? (
+          <div
+            className="group relative h-[380px] w-full overflow-hidden rounded-2xl shadow-lg cursor-pointer"
+            onClick={() =>
+              handleCardClick(
+                activeTab.id,
+                activeTab.image as string,
+                (activeTab as any).innerImage,
+                true,
+              )
+            }
+          >
+            <img
+              src={activeTab.image}
+              alt={t(`items.${activeTab.id}.title`)}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent transition-all duration-300" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-start">
+              <h3 className="mb-2 text-[24px] font-bold text-white md:text-[32px]">
+                {t(`items.${activeTab.id}.title`)}
+              </h3>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex flex-row gap-3 w-full">
+            {activeTab.cards?.map((card) => (
+              <div
+                key={card.id}
+                className="group relative h-[300px] sm:h-[350px] w-full overflow-hidden rounded-2xl shadow-md cursor-pointer"
+                onClick={() =>
+                  handleCardClick(card.id, card.image, (card as any).innerImage)
+                }
+              >
+                <img
+                  src={card.image}
+                  alt={t(`items.${activeTab.id}.${card.id}.title`)}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent transition-all duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 md:p-3 text-start">
+                  <h4 className="text-white font-bold text-[24px] md:text-[24px] leading-tight mb-2">
+                    {t(`items.${activeTab.id}.${card.id}.title`)}
+                  </h4>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+
+      <Dialog
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        className="relative z-50"
+      >
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+          aria-hidden="true"
+        />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-3xl bg-background text-start align-middle shadow-xl transition-all">
+            {selectedCard && (
+              <>
+                <div className="relative h-64 sm:h-80 w-full bg-muted">
+                  <img
+                    src={selectedCard.innerImage || selectedCard.image}
+                    alt={
+                      selectedCard.isSingle
+                        ? t(`items.${activeTab.id}.title`)
+                        : t(`items.${activeTab.id}.${selectedCard.id}.title`)
+                    }
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    className="absolute top-4 end-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors focus:outline-none"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="p-6 md:p-8">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-2xl font-bold leading-6 text-foreground mb-4"
+                  >
+                    {selectedCard.isSingle
+                      ? t(`items.${activeTab.id}.title`)
+                      : t(`items.${activeTab.id}.${selectedCard.id}.title`)}
+                  </Dialog.Title>
+                  <p className="text-base text-muted-foreground leading-[1.8]">
+                    {selectedCard.isSingle
+                      ? t(`items.${activeTab.id}.description`)
+                      : t(
+                          `items.${activeTab.id}.${selectedCard.id}.description`,
+                        )}
+                  </p>
+                </div>
+              </>
+            )}
+          </Dialog.Panel>
+        </div>
+      </Dialog>
     </section>
   );
 }

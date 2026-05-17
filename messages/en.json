@@ -425,12 +425,42 @@
       "title": "Popular restaurants",
       "ctaLabel": "Restaurants",
       "cards": {
-        "r1": { "title": "Haneeth House", "location": "Abha — King Fahd Road", "cuisineType": "Aseeri cuisine", "priceRange": "SAR 50–120" },
-        "r2": { "title": "Areekah Corner", "location": "Khamis Mushait — Airport district", "cuisineType": "Casual dining", "priceRange": "SAR 35–90" },
-        "r3": { "title": "Mifa Bakery", "location": "Tanomah — Souq Street", "cuisineType": "Aseeri baking", "priceRange": "SAR 25–70" },
-        "r4": { "title": "House of Marqoush", "location": "Al-Namas — King Khalid Road", "cuisineType": "Heritage food", "priceRange": "SAR 40–110" },
-        "r5": { "title": "Marsa Aseer", "location": "Bisha — city centre", "cuisineType": "Local plates", "priceRange": "SAR 30–85" },
-        "r6": { "title": "Mountain Table", "location": "Rijal Almaa — historic quarter", "cuisineType": "Highland kitchen", "priceRange": "SAR 60–140" }
+        "r1": {
+          "title": "Haneeth House",
+          "location": "Abha — King Fahd Road",
+          "cuisineType": "Aseeri cuisine",
+          "priceRange": "SAR 50–120"
+        },
+        "r2": {
+          "title": "Areekah Corner",
+          "location": "Khamis Mushait — Airport district",
+          "cuisineType": "Casual dining",
+          "priceRange": "SAR 35–90"
+        },
+        "r3": {
+          "title": "Mifa Bakery",
+          "location": "Tanomah — Souq Street",
+          "cuisineType": "Aseeri baking",
+          "priceRange": "SAR 25–70"
+        },
+        "r4": {
+          "title": "House of Marqoush",
+          "location": "Al-Namas — King Khalid Road",
+          "cuisineType": "Heritage food",
+          "priceRange": "SAR 40–110"
+        },
+        "r5": {
+          "title": "Marsa Aseer",
+          "location": "Bisha — city centre",
+          "cuisineType": "Local plates",
+          "priceRange": "SAR 30–85"
+        },
+        "r6": {
+          "title": "Mountain Table",
+          "location": "Rijal Almaa — historic quarter",
+          "cuisineType": "Highland kitchen",
+          "priceRange": "SAR 60–140"
+        }
       }
     },
     "localFlavorsSection": {
@@ -559,13 +589,14 @@
     "banner": {
       "titleLine1": "Aseer World Region of Gastronomy",
       "titleLine2": "2024",
-      "cta": "Discover",
+      "titleLine3": "Celebrating tradition and innovation",
+      "cta": "Participation booklet",
       "imageAlt": "Aseer World Region of Gastronomy"
     },
     "background": {
       "badge": "Title",
-      "section1Title": "First World Region of Gastronomy outside Europe",
-      "section1Body": "In September 2022, Aseer was named the World Region of Gastronomy 2024 by the International Institute of Gastronomy, Culture, Arts and Tourism (IGCAT)—the first region outside Europe to earn the title. The award recognises work across economic, cultural, social and environmental development through gastronomy. President Diane Dodd presented the honour in Turin on 24 September 2022, following a judging visit (27 February–1 March 2022) that highlighted local biodiversity, heritage, and youth innovation in sustainable tourism.",
+      "section1Title": "Aseer 2024 is the first World Region of Gastronomy Outside Europe",
+      "section1Body": "In September 2022, Asir was declared the winner of the title of \"World Culinary Arts Region 2024,\" making it the first region from outside Europe to win the title awarded by the International Institute of Culinary Arts, Culture, Arts and Tourism (IGCAT) to regions that joined the platform and met the criteria developed by the institute. These criteria include working across economic, cultural, social and environmental development sectors through the field of culinary arts to support sustainable regional development. The award was presented by the president of the institute, Diane Dodd, at an official ceremony held in Turin, Italy on September 24, 2022. This victory came after a jury of experts from the institute visited the region during the period (February 27 - March 1, 2022) and met with local stakeholders to assess Asir's readiness to hold the title. This visit reflected the region's efforts in supporting local cultural and food diversity, its endeavor to ensure regional biodiversity and protect the environment, preserve heritage and traditional knowledge, and empower young generations to create distinctive products and services to attract sustainable tourism.",
       "mocAlt": "Culinary Arts Commission",
       "mocCaption": "Under the supervision of the Culinary Arts Commission",
       "section1ImageAlt": "Food preparation",
@@ -577,30 +608,71 @@
     "events": {
       "badge": "Global gathering",
       "title": "Featured events",
+      "discription": "The Aseer region hosted the 27th meeting of the World Regions of Gastronomy Platform, where 20 international experts from 11 award-winning regions gathered to exchange best practices and explore local culture. This unique event, held for the first time outside Europe, featured discussions and workshops on the role of culinary arts in local development and sustainability promotion.",
       "items": {
         "1": {
-          "tabTop": "Day seven",
+          "tabTop": "22 April",
           "tabBottom": "18 December",
           "title": "Tenth expert meeting in Aseer",
           "description": "Aseer hosted the 27th meeting of the World Regions of Gastronomy platform, bringing together 20 international experts from 11 awarded regions to exchange best practices and explore local culture through workshops on gastronomy and sustainable development."
         },
         "2": {
-          "tabTop": "Day six",
+          "tabTop": "23 April",
           "tabBottom": "18 December",
-          "title": "Qimam International Mountain Performance Arts Festival",
-          "description": "The festival returns with local and international troupes presenting mountain performances that reflect diverse heritage, alongside craft fairs and live traditional cooking."
+          "card1": {
+            "title": "Honey Research Center - King Khalid University",
+            "description": "Visitors can discover the center's efforts to preserve local honey varieties that are an integral part of Aseer's environment. Research on beekeeping, honey production, and environmental sustainability is displayed, highlighting how new generations are engaged in this vital industry."
+          },
+          "card2": {
+            "title": "Preservation Society of Bounty",
+            "description": "Visitors can learn about initiatives aimed at reducing food waste, as the society works to recycle excess food from restaurants and households, redistributing it to needy families. Success stories from the society, with over 16,000 volunteers, reflect the spirit of generosity and community cooperation in Aseer."
+          },
+          "card3": {
+            "title": "South Women's Association",
+            "description": "The association has introduced innovative training programs to support local women in the fields of cooking and hospitality. These programs aim to economically empower women by providing them with the necessary skills to manage their own projects or join the workforce, thereby enhancing their independence and contributing to local development."
+          },
+          "card4": {
+            "title": "Taste Street",
+            "description": "An immersive experience at Taste Street, where visitors can enjoy a variety of traditional dishes from local restaurants and households. The event provides an opportunity to explore the flavors of Aseer in a vibrant atmosphere that enhances social and cultural exchange."
+          },
+          "card5": {
+            "title": "Wine Farm",
+            "description": "Exploring the first tourist farm in Aseer, where visitors can learn about the efforts to preserve local plants. The farm offers an interactive experience for guests, including guided tours and fresh dishes, making it an ideal destination for nature lovers and adventure seekers."
+          }
         },
         "3": {
-          "tabTop": "April",
+          "tabTop": "24 April",
           "tabBottom": "2026",
-          "title": "Aseer Culture & Heritage Exhibition",
-          "description": "A comprehensive showcase of Aseer’s history, unique architecture (Aseeri Qatt), and local produce—with opportunities to meet artisans and try heritage crafts."
+          "card1": {
+            "title": "Honey Cottage",
+            "description": "An inspiring experience at a family-owned honey farm specializing in beekeeping and honey production. The \"Honey Cottage\" stands out by blending traditions with innovation, housing 3,000 beehives scattered across Aseer. Visitors can sample the local honey while learning about its sustainable production methods that reflect the region's values."
+          },
+          "card2": {
+            "title": "The Village of Rijal Almaa",
+            "description": "A visit to one of the most prominent heritage villages in the Kingdom, where the unique architecture of the village, made from stone and clay, was explored. Visitors learned about the region's cultural heritage through local museums and guided tours that provided a glimpse into daily life and the ancient Aseer traditions."
+          }
         },
         "4": {
-          "tabTop": "April",
+          "tabTop": "25 April",
           "tabBottom": "2026",
-          "title": "Paragliding Championship",
-          "description": "Al Soudah’s skies welcome paragliders from around the world for a thrilling championship with panoramic views over the Sarawat range."
+          "card1": {
+            "title": "Food Gift Challenge",
+            "description": "On the last day of the events, some members of the institute joined the judging panel for the \"Global Food Gift Challenge\" held at King Khalid University. The competition involved evaluating unique food products from various regions around the world, with winners selected based on criteria such as innovation, sustainability, and storytelling. The event gave special recognition to products that reflected the spirit of local heritage and culture."
+          },
+          "card2": {
+            "title": "Workshop at the Aseer Development Authority",
+            "description": "On the final day, the remaining members of the institute visited the Aseer Development Authority, accompanied by representatives from the Saudi Tourism Authority and the Heritage Authority. The workshop included presentations on the master plan for the development of Aseer, including the Soudah Development Conservation Program to support the local juniper tree, as well as documenting the use of wild plants in cooking in collaboration with the Culinary Arts Commission. The aim of the workshop was to highlight strategies for preserving Aseer's environmental and cultural heritage."
+          },
+          "card3": {
+            "title": "The Closing Ceremony",
+            "description": "The events of the 27th meeting of the World Culinary Arts Regions Platform concluded with an official ceremony at King Khalid University. The ceremony was an occasion to honor the efforts of local and international stakeholders during the events. It included the presentation of recognition awards and highlighted the key achievements of the Aseer region as part of its project to promote culinary arts and sustainable tourism."
+          }
+        },
+        "5": {
+          "tabTop": "3 July",
+          "tabBottom": "2026",
+          "title": "Workshop to Activate the Role of Stakeholders",
+          "description": "The Culinary Arts Commission organized the workshop \"Aseer World Region of Gastronomy 2024\" at King Khalid University in Al-Fara’a, where government entities, associations, and business owners gathered to work together on enhancing Aseer’s position as a global culinary destination. The workshop focused on showcasing achievements, highlighting the region’s potential to attract visitors through culinary arts, and developing innovative plans and sustainable initiatives for 2024 and 2025, making Aseer a key destination for flavor and culture enthusiasts."
         }
       }
     },
@@ -646,7 +718,9 @@
       "description": "Held annually to showcase videos promoting cultural and natural landmarks worldwide. Aseer won twice in 2022 and 2024 with films highlighting the region’s nature, hospitality, and traditional dishes.",
       "items": {
         "1": { "title": "Adventures in Saudi Arabia: Taste of Aseer" },
-        "2": { "title": "Let's go to Aseer — MENA candidate regions for gastronomy" }
+        "2": {
+          "title": "Let's go to Aseer — MENA candidate regions for gastronomy"
+        }
       }
     },
     "initiatives": {
