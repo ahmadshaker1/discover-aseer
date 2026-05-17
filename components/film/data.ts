@@ -1,8 +1,8 @@
 /**
- * Backend handoff — film first section cards:
- * - Suggested Directus collection: `film_landscapes`
- * - Env: `NEXT_PUBLIC_DIRECTUS_APP_URL`
- * - Fields (suggested): `id`, `title`, `title_en`, `filter_key`, `cover_image`, `status`
+ * Film page data — Directus `films` collection.
+ * @see https://tool-portal.discoveraseer.com/items/films
+ *
+ * Env: `NEXT_PUBLIC_DIRECTUS_APP_URL` (defaults to tool-portal when unset).
  */
 
 import {
@@ -10,6 +10,13 @@ import {
   resolveFilmLandscapeFilterId,
   type FilmLandscapeFilterId,
 } from "./landscapeFilters";
+import { withDirectusCoverTransform } from "@/lib/directusAssetUrl";
+
+const DIRECTUS_API_BASE =
+  process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
+  "https://tool-portal.discoveraseer.com";
+
+const FILMS_ITEMS_PATH = "/items/films" as const;
 
 export interface FilmLandscape {
   id: string;
@@ -571,14 +578,11 @@ function transformFilmRowToShowcase(
 async function fetchPublishedFilmsFromDirectus(
   locale: string,
 ): Promise<{ landscapes: FilmLandscape[]; showcaseCards: FilmShowcaseCard[] } | null> {
-  const raw = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
-  if (!raw) return null;
-
-  const directusUrl = normalizeDirectusBase(raw);
+  const directusUrl = normalizeDirectusBase(DIRECTUS_API_BASE);
 
   try {
     const response = await fetch(
-      `${directusUrl}/items/films?sort=-date_created`,
+      `${directusUrl}${FILMS_ITEMS_PATH}?sort=-date_created`,
       { next: { revalidate: 3600 } },
     );
     if (!response.ok) return null;
