@@ -7,10 +7,13 @@ export default async function AccommodationBanner() {
 
   return (
     <PageBanner
-      breadcrumbs={[{ label: t("breadcrumb") }, { label: tCommon("breadcrumbHome"), href: "/" }]}
+      breadcrumbs={[
+        { label: t("breadcrumb") },
+        { label: tCommon("breadcrumbHome"), href: "/" },
+      ]}
       title={t("title")}
       subtitle={t("subtitle")}
-      backgroundImage="/assets/experiences/experiences.png"
+      backgroundImage="/assets/accommodation/accomodation-banner.webp"
     />
   );
 }

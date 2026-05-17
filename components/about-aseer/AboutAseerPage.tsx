@@ -30,7 +30,7 @@ const AboutAseerPage = async () => {
     return {
       id,
       title: t(HIGHLIGHT_TITLE_KEYS[index]),
-      image: landmark?.image ?? "/assets/experiences/experiences.png",
+      image: landmark?.image ?? "/assets/aboutAseer/about_aseer_banner.webp",
       href: landmark ? `/attractions/${landmark.slug}` : undefined,
     };
   });

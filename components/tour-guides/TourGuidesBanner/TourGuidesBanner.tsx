@@ -44,16 +44,15 @@ function CtaArrow() {
 const TourGuidesBanner = async () => {
   const tGuides = await getTranslations("tourGuides");
   const tCommon = await getTranslations("common");
-  const { href: registerHref, external: registerExternal } = resolveRegisterHref();
+  const { href: registerHref, external: registerExternal } =
+    resolveRegisterHref();
 
   return (
-    <section
-      className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]"
-    >
+    <section className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]">
       {/* Background image — full hero */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/assets/experiences/experiences.png"
+          src="/assets/tourist-guides/tourist-guide-banner.webp"
           alt=""
           fill
           className="object-cover"

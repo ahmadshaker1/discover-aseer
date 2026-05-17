@@ -10,13 +10,10 @@ export default async function RestaurantsBanner() {
   const tCommon = await getTranslations("common");
 
   return (
-    <section
-      className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]"
-     
-    >
+    <section className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/assets/experiences/experiences.png"
+          src="/assets/restaurant/restaurant-banner.webp"
           alt=""
           fill
           className="object-cover"

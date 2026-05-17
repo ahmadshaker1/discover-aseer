@@ -144,7 +144,7 @@ const AttractionsPage = async ({ searchParams }: AttractionsPageProps) => {
         ]}
         title={t("title")}
         subtitle={tCommon("subtitleOneVisit")}
-        backgroundImage="/assets/attractions/attractions-hero.png"
+        backgroundImage="/assets/attractions/attraction-banner.webp"
       />
 
       <AttractionsMainPageContent
