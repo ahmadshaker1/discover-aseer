@@ -17,6 +17,15 @@ export type AseerLink = {
   platform: AseerPlatform;
 };
 
+/** Platforms that support sharing the current page URL (used with `AseerSocialIcon`). */
+export const pageSharePlatforms = [
+  "whatsapp",
+  "facebook",
+  "x",
+] as const satisfies readonly AseerPlatform[];
+
+export type PageSharePlatform = (typeof pageSharePlatforms)[number];
+
 export const discoverAseerLinks: AseerLink[] = [
   {
     href: "https://www.facebook.com/DiscoverAseer/",

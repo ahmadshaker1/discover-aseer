@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  FacebookIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  XIcon,
-  YouTubeIcon,
-} from "@/components/Footer/Icons";
 import { useTranslations } from "next-intl";
+import { PageShareLinks } from "@/components/social/PageShareLinks";
 import SafeHtml from "@/components/common/SafeHtml";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -46,43 +40,7 @@ const AttractionsIntroSection = ({
             >
               {tCommon("share")}
             </span>
-            <div className="flex items-center gap-2 text-foreground/70">
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="cursor-pointer hover:opacity-80"
-              >
-                <InstagramIcon />
-              </a>
-              <a
-                href="#"
-                aria-label="YouTube"
-                className="cursor-pointer hover:opacity-80"
-              >
-                <YouTubeIcon />
-              </a>
-              <a
-                href="#"
-                aria-label="LinkedIn"
-                className="cursor-pointer hover:opacity-80"
-              >
-                <LinkedInIcon />
-              </a>
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="cursor-pointer hover:opacity-80"
-              >
-                <FacebookIcon />
-              </a>
-              <a
-                href="#"
-                aria-label="X"
-                className="cursor-pointer hover:opacity-80"
-              >
-                <XIcon />
-              </a>
-            </div>
+            <PageShareLinks title={title} />
           </div>
 
           <div
