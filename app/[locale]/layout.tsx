@@ -5,7 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { InlineScript } from "@/components/InlineScript";
+import Script from "next/script";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 
@@ -65,8 +65,12 @@ export default async function LocaleLayout({
       data-theme="light"
       suppressHydrationWarning
     >
-      <head>
-        <InlineScript html={getThemeInitScript()} />
+      <head suppressHydrationWarning>
+        <Script
+          id="discover-aseer-theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: getThemeInitScript().trim() }}
+        />
       </head>
       <body
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}

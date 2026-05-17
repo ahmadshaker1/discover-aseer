@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import HeroSocialLinks, {
   heroSocialLinkClassDesktop,
   heroSocialLinkClassMobile,
@@ -26,6 +26,8 @@ const TRANSITION_MS = 500;
 const mod = (value: number, length: number) => ((value % length) + length) % length;
 
 const Hero = ({ title, subtitle }: HeroProps) => {
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const t = useTranslations("home");
   const displayTitle = title ?? t("heroTitle");
   const displaySubtitle = subtitle ?? t("heroSubtitle");
@@ -152,7 +154,7 @@ const Hero = ({ title, subtitle }: HeroProps) => {
         aria-label={displayTitle}
       >
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="flex h-full" style={trackStyle}>
+          <div className="flex h-full" style={trackStyle} dir="ltr">
             {HERO_SLIDES.map((src, index) => (
               <div
                 key={src}
@@ -176,7 +178,9 @@ const Hero = ({ title, subtitle }: HeroProps) => {
           src="/hero-pattern/ribbon_column.png"
           alt=""
           aria-hidden
-          className="pointer-events-none absolute top-0 right-0 z-20 h-full object-cover"
+          className={`pointer-events-none absolute top-0 z-20 h-full object-cover ${
+            isRtl ? "left-0" : "right-0"
+          }`}
           width={15}
           height={100}
         />
@@ -194,7 +198,9 @@ const Hero = ({ title, subtitle }: HeroProps) => {
           </div>
 
           <div
-            className="pointer-events-auto absolute top-1/2 z-30 hidden -translate-y-1/2 flex-col items-center md:flex start-4 md:start-10"
+            className={`pointer-events-auto absolute top-1/2 z-30 hidden -translate-y-1/2 flex-col items-center md:flex ${
+              isRtl ? "left-4 md:left-10" : "right-4 md:right-10"
+            }`}
             dir="ltr"
           >
             <div
@@ -210,7 +216,13 @@ const Hero = ({ title, subtitle }: HeroProps) => {
             />
           </div>
 
-          <div className="ml-auto flex h-full w-full flex-col justify-center text-right md:w-[616px]">
+          <div
+            className={`absolute top-0 flex h-full w-full flex-col justify-center md:w-[616px] ${
+              isRtl
+                ? "right-6 text-right md:right-[130px]"
+                : "left-6 text-left md:left-[130px]"
+            }`}
+          >
             <div className="flex w-full flex-col gap-[50px] md:h-[134px]">
               <h1
                 className="text-white"
