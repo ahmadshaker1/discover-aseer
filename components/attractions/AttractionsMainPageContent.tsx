@@ -79,7 +79,7 @@ const AttractionsMainPageContent = ({
    * - If backend doesn't return some metadata yet, cards still render and
    *   filters gracefully fall back (won't break page rendering).
    */
-  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
+  const [filters, setFilters] = useState<FilterState>(() => buildInitialFilters());
   const [selectedInterests, setSelectedInterests] = useState<string[]>(
     () => terrainInterests,
   );
