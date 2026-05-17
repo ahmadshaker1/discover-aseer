@@ -44,27 +44,27 @@ const LandingWelcomeSection = ({
     {
       title: tCommon("experiencesCard"),
       href: "/experiences",
-      image: "/assets/activities/activities.jpg",
+      image: "/assets/landing/experience-card.png",
     },
     {
       title: tCommon("mainDestinationsCard"),
       href: "/destinations",
-      image: "/assets/landing/city1.jpg",
+      image: "/assets/landing/destinations-card.png",
     },
     {
       title: tCommon("stayInAseerCard"),
       href: "/accommodation",
-      image: "/assets/landing/manwalking.jpg",
+      image: "/assets/landing/accommodation-card.png",
     },
     {
       title: tCommon("cuisineNavTitle"),
       href: "/aseer-cuisine",
-      image: "/assets/activities/aseer-cuisine.jpg",
+      image: "/assets/landing/cuisine-card.png",
     },
     {
       title: tCommon("attractionsCard"),
       href: "/attractions",
-      image: "/assets/experiences/experiences.png",
+      image: "/assets/landing/attractions-card.png",
     },
   ];
 
