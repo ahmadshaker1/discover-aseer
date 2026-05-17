@@ -20,7 +20,7 @@ const DestinationsPage = async () => {
         ]}
         title={t("browseTitle")}
         subtitle={tCommon("subtitleOneVisit")}
-        backgroundImage="/assets/activities/activities.jpg"
+        backgroundImage="/assets/destinations/destination_banner.webp"
         primaryCta={{
           href: TOUR_GUIDE_REGISTER_HREF,
           label: t("contributeDestinations"),
