@@ -29,7 +29,7 @@ const FilmLandscapesSection = ({
         >
           <div className="flex min-w-max items-start gap-6 pb-2">
             {landscapes.slice(0, 4).map((item) => {
-              const label = t(item.labelKey);
+              const label = item.labelKey ? t(item.labelKey) : "";
               return (
                 <Link
                   key={item.id}

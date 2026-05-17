@@ -13,10 +13,12 @@ import {
 
 export interface FilmLandscape {
   id: string;
+  title?: string;
+  description?: string;
   /** i18n key under `film` namespace, e.g. `landscapes.mountains` */
-  labelKey: string;
+  labelKey?: string;
   /** Used in `/attractions?terrain=` */
-  filterId: FilmLandscapeFilterId;
+  filterId?: FilmLandscapeFilterId;
   image: string;
   /** External watch link (Netflix, YouTube, Shahid, …). */
   watchUrl?: string;
@@ -523,7 +525,7 @@ function transformFilmRowToLandscape(
   index: number,
 ): FilmLandscape {
   const fb = FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length];
-  const title = pickFilmTitle(row, locale) || fb.title;
+  const title = pickFilmTitle(row, locale);
   const image = row.cover_image
     ? withDirectusCoverTransform(
         `${directusUrl}/assets/${row.cover_image}`,
@@ -533,7 +535,9 @@ function transformFilmRowToLandscape(
 
   return {
     id: row.id,
-    title,
+    title: title || undefined,
+    labelKey: fb.labelKey,
+    filterId: fb.filterId,
     image,
     watchUrl: row.url?.trim() || undefined,
   };

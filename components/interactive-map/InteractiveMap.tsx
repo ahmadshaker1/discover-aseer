@@ -14,7 +14,6 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import SafeHtml from "@/components/common/SafeHtml";
 import { brandPrimary } from "@/lib/theme/palette";
 import { useLocale, useTranslations } from "next-intl";
 import {
@@ -50,19 +49,38 @@ interface MapPlace {
   city: string;
   tag?: string;
   mapsUrl?: string;
+  imageUrl?: string;
 }
 
 const MAP_CENTER: [number, number] = [42.62, 18.25];
 
 const EMPTY_PLACES: MapPlace[] = [];
 
+const CARD_DESCRIPTION_MAX_LENGTH = 160;
+
+const toMapCardDescription = (html: string): string => {
+  const plain = html
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<\/p>/gi, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!plain) return "";
+  if (plain.length <= CARD_DESCRIPTION_MAX_LENGTH) return plain;
+  return `${plain.slice(0, CARD_DESCRIPTION_MAX_LENGTH).trimEnd()}…`;
+};
+
 const CATEGORY_CHIPS = [
-  { label: "استفسارات"},
-  { label: "التجارب السياحية"},
-  { label: "المعالم السياحية"},
+  { label: "استفسارات" },
+  { label: "التجارب السياحية" },
+  { label: "المعالم السياحية" },
   { label: "تقييم + مكافآت" },
   { label: "مطاعم وكافيهات" },
-  { label: "أماكن الإقامة"},
+  { label: "أماكن الإقامة" },
 ] as const;
 
 const UI_KEYS = [
@@ -224,14 +242,13 @@ const InteractiveMap = ({
     (place: MapPlace) => {
       setSelectedPlaceId(place.id);
       if (
-        mapRef.current &&
-        place.hasCoordinates &&
-        place.latitude != null &&
-        place.longitude != null
+        !place.hasCoordinates ||
+        place.latitude == null ||
+        place.longitude == null
       ) {
-        popupRef.current?.remove();
         return;
       }
+      popupRef.current?.remove();
       focusCoordinates(place.latitude, place.longitude, place.title);
     },
     [focusCoordinates],
@@ -444,11 +461,10 @@ const InteractiveMap = ({
           <Button
             type="button"
             onClick={() => setActiveCategory(ui.all)}
-            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${
-              activeCategory === ui.all
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-surface text-foreground"
-            }`}
+            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${activeCategory === ui.all
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-surface text-foreground"
+              }`}
           >
             {ui.all}
           </Button>
@@ -457,13 +473,12 @@ const InteractiveMap = ({
               key={chip.label}
               type="button"
               onClick={() => setActiveCategory(chip.label)}
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${
-                activeCategory === chip.label
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-surface text-foreground"
-              }`}
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${activeCategory === chip.label
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-surface text-foreground"
+                }`}
             >
-              
+
               <span>{chip.label}</span>
             </Button>
           ))}
@@ -583,74 +598,62 @@ const InteractiveMap = ({
           {filteredPlaces.length > 0 ? (
             <RadioGroup
               value={radioSelectedPlaceId}
-              onChange={setSelectedPlaceId}
+              onChange={(placeId) => {
+                setSelectedPlaceId(placeId);
+                const place = filteredPlaces.find((item) => item.id === placeId);
+                if (place) focusPlace(place);
+              }}
               className="space-y-3"
             >
-              {filteredPlaces.map((place) => (
-                <RadioGroup.Option
-                  key={place.id}
-                  value={place.id}
-                  className={({ checked, focus }) =>
-                    `relative w-full cursor-pointer overflow-hidden rounded-[14px] border p-3 text-start outline-none transition ${
-                      checked
+              {filteredPlaces.map((place) => {
+                const descriptionPreview = toMapCardDescription(place.description);
+                return (
+                  <RadioGroup.Option
+                    key={place.id}
+                    value={place.id}
+                    className={({ checked, focus }) =>
+                      `relative flex min-h-[108px] w-full cursor-pointer overflow-hidden rounded-[14px] border text-start outline-none transition ${checked
                         ? "border-primary bg-muted"
                         : "border-border bg-surface hover:bg-muted"
-                    } ${focus ? "ring-2 ring-primary ring-offset-2 ring-offset-surface" : ""}`
-                  }
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element -- decorative background texture */}
-                  <img
-                    src="/assets/travel-essentials/angledsquarepattern.png"
-                    alt=""
-                    aria-hidden
-                    className="pointer-events-none absolute -bottom-8 -left-8 h-24 w-24 opacity-25"
-                  />
-                  <div className="relative z-10">
-                    {place.tag ? (
-                      <span className="mb-2 inline-flex rounded-full bg-background px-2 py-0.5 text-[10px] font-semibold text-foreground">
-                        {place.tag}
-                      </span>
+                      } ${focus ? "ring-2 ring-primary ring-offset-2 ring-offset-surface" : ""}`
+                    }
+                  >
+                    {place.imageUrl ? (
+                      <div className="absolute inset-y-0 start-0 z-0 w-1/3 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element -- CMS image URL */}
+                        <img
+                          src={place.imageUrl}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
                     ) : null}
-                    <h3 className="text-[27px] font-bold leading-[1.1]">
-                      {place.title}
-                    </h3>
-                    <SafeHtml
-                      html={place.description}
-                      className="mt-2 text-[13px] leading-normal text-muted-foreground"
-                    />
-                    {!place.hasCoordinates && !place.mapsUrl ? (
-                      <p className="mt-2 text-[11px] text-muted-foreground">
-                        {ui.noGeo}
-                      </p>
-                    ) : null}
-                    <div className="mt-3 flex flex-wrap justify-start gap-2">
-                      <Button
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          focusPlace(place);
-                        }}
-                        disabled={!place.hasCoordinates}
-                        className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      >
-                        {ui.showOnMap}
-                      </Button>
-                      {place.mapsUrl ? (
-                        <Button
-                          as="a"
-                          href={place.mapsUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(event) => event.stopPropagation()}
-                          className="inline-flex items-center rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground transition hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
-                        >
-                          {ui.openInMaps}
-                        </Button>
+                    <div
+                      className={`relative z-10 min-w-0 flex-1 p-3 ${place.imageUrl ? "ps-[calc(33.333%+12px)]" : ""
+                        }`}
+                    >
+                      {place.tag ? (
+                        <span className="mb-2 inline-flex rounded-full bg-background px-2 py-0.5 text-[10px] font-semibold text-foreground">
+                          {place.tag}
+                        </span>
+                      ) : null}
+                      <h3 className="line-clamp-2 text-[17px] font-bold leading-[1.15] sm:text-[18px]">
+                        {place.title}
+                      </h3>
+                      {descriptionPreview ? (
+                        <p className="mt-1 line-clamp-4 text-[12px] leading-snug text-muted-foreground">
+                          {descriptionPreview}
+                        </p>
+                      ) : null}
+                      {!place.hasCoordinates ? (
+                        <p className="mt-2 text-[11px] text-muted-foreground">
+                          {ui.noGeo}
+                        </p>
                       ) : null}
                     </div>
-                  </div>
-                </RadioGroup.Option>
-              ))}
+                  </RadioGroup.Option>
+                );
+              })}
             </RadioGroup>
           ) : null}
           {filteredPlaces.length === 0 ? (

@@ -85,7 +85,8 @@ const ExperiencesFilter = ({
 
   return (
     <div
-      className="w-full max-w-md rounded-lg bg-surface p-6 text-foreground shadow-sm">
+      className="mx-auto w-full max-w-md rounded-lg bg-surface p-6 text-foreground shadow-sm"
+    >
       <div className="mb-8 flex items-center justify-between gap-4">
         <Button
           onClick={handleReset}

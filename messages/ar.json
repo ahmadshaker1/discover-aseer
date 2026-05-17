@@ -243,7 +243,8 @@
     "filterCreative": "ابداعي",
     "kidFriendly": "مناسب للأطفال",
     "imagePrev": "الصورة السابقة",
-    "imageNext": "الصورة التالية"
+    "imageNext": "الصورة التالية",
+    "eventOver": "انتهت الفعالية"
   },
   "experiencesPage": {
     "breadcrumb": "التجارب",

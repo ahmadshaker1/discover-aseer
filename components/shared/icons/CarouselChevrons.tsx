@@ -1,4 +1,4 @@
-export function ChevronLeftIcon() {
+export function ChevronLeftIcon( { className }: { className?: string }) {
   return (
     <svg
       width="24"
@@ -19,7 +19,7 @@ export function ChevronLeftIcon() {
   );
 }
 
-export function ChevronRightIcon() {
+export function ChevronRightIcon({ className }: { className?: string }) {
   return (
     <svg
       width="24"

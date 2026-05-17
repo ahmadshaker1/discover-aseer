@@ -5,7 +5,12 @@ import { useLocale, useTranslations } from "next-intl";
 import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { getCityOptions } from "@/components/landmarks/filterOptions";
-import type { RestaurantFilterState } from "@/components/restaurants/applyRestaurantFilters";
+import type { Restaurant } from "@/components/restaurants/types";
+import {
+  countRestaurantsForCuisine,
+  CUISINE_FILTER_IDS,
+  type RestaurantFilterState,
+} from "@/components/restaurants/applyRestaurantFilters";
 import {
   LocationIcon,
   RestaurantTypeIcon,
@@ -242,13 +247,22 @@ const CuisineTypeFilter = ({
   );
 };
 
+const CUISINE_LABEL_KEYS: Record<(typeof CUISINE_FILTER_IDS)[number], string> = {
+  asian: "cuisineAsian",
+  american: "cuisineAmerican",
+  saudi: "cuisineSaudi",
+  "middle-eastern": "cuisineMiddleEastern",
+};
+
 export interface RestaurantsFilterSidebarProps {
+  restaurants: Restaurant[];
   filters: RestaurantFilterState;
   onFiltersChange: Dispatch<SetStateAction<RestaurantFilterState>>;
   onReset: () => void;
 }
 
 const RestaurantsFilterSidebar = ({
+  restaurants,
   filters,
   onFiltersChange,
   onReset,
@@ -261,13 +275,11 @@ const RestaurantsFilterSidebar = ({
     { id: "luxury", label: t("luxury"), icon: <DiamondIcon /> },
   ];
 
-  // Sample cuisine counts - in real app, these would come from data
-  const cuisinesWithCounts: CuisineOption[] = [
-    { id: "asian", label: t("cuisineAsian"), count: 4 },
-    { id: "american", label: t("cuisineAmerican"), count: 3 },
-    { id: "saudi", label: t("cuisineSaudi"), count: 3 },
-    { id: "middle-eastern", label: t("cuisineMiddleEastern"), count: 3 },
-  ];
+  const cuisinesWithCounts: CuisineOption[] = CUISINE_FILTER_IDS.map((id) => ({
+    id,
+    label: t(CUISINE_LABEL_KEYS[id]),
+    count: countRestaurantsForCuisine(restaurants, id),
+  }));
 
   const handleRestaurantTypeToggle = (typeId: string) => {
     onFiltersChange((prev) => ({

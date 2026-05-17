@@ -17,8 +17,8 @@ export interface EventListingItem {
   images: string[];
   /** True when the event allows children (`not_allowed_for_kids` is no). */
   isKidFriendly: boolean;
-  rating: number;
-  reviewsCount: number;
+  /** True when the event end date is before today. */
+  isOver: boolean;
   /** Shown in teal pill when collapsed; plain text when expanded. */
   priceLabel: string;
   /** Short location line on image overlay. */

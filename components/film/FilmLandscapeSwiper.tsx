@@ -14,6 +14,7 @@ import {
 import type { FilmLandscape } from "@/components/film/data";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 const NAV_BTN_CLASS =
   "flex h-11 w-11 rotate-180 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
@@ -27,8 +28,22 @@ interface FilmLandscapeSwiperProps {
   landscapes: FilmLandscape[];
 }
 
+function landscapeTitle(
+  item: FilmLandscape,
+  t: ReturnType<typeof useTranslations<"film">>,
+): string {
+  if ("title" in item && typeof item.title === "string" && item.title.trim()) {
+    return item.title.trim();
+  }
+  if ("labelKey" in item && item.labelKey) {
+    return t(item.labelKey);
+  }
+  return "";
+}
+
 const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
   const t = useTranslations("common");
+  const tFilm = useTranslations("film");
   const swiperRef = useRef<SwiperType | null>(null);
   const [nav, setNav] = useState({
     show: false,
@@ -84,23 +99,39 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
         onResize={(s) => syncNav(s)}
       >
         {landscapes.map((item, index) => {
+          const title = landscapeTitle(item, tFilm);
+          const description =
+            "description" in item &&
+              typeof item.description === "string" &&
+              item.description.trim()
+              ? item.description.trim()
+              : null;
+
           const media = (
             <>
               <Image
                 src={item.image}
-                alt={item.title}
+                alt={title}
                 fill
                 priority={index < 2}
                 className="object-cover"
                 sizes="(max-width: 640px) 78vw, (max-width: 1024px) 45vw, 564px"
               />
-              <div className="absolute inset-x-0 bottom-0 h-[91px] rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
+              <div className="absolute inset-x-0 bottom-0 rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
                 <h3
                   className="text-start text-[24px] font-bold leading-[119%] text-white"
                   style={{ fontFamily: ara }}
                 >
-                  {item.title}
+                  {title}
                 </h3>
+                {description ? (
+                  <p
+                    className="mt-1 line-clamp-2 text-start text-[13px] font-light leading-[119%] text-white"
+                    style={{ fontFamily: ibm }}
+                  >
+                    {description}
+                  </p>
+                ) : null}
               </div>
             </>
           );
@@ -136,7 +167,7 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
             className={NAV_BTN_CLASS}
             onClick={() => swiperRef.current?.slidePrev(320)}
           >
-            <ChevronRightIcon />
+            <ChevronLeftIcon className="ltr:rotate-180" />
           </button>
           <button
             type="button"
@@ -145,7 +176,7 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
             className={NAV_BTN_CLASS}
             onClick={() => swiperRef.current?.slideNext(320)}
           >
-            <ChevronLeftIcon />
+            <ChevronRightIcon className="ltr:rotate-180" />
           </button>
         </div>
       ) : null}

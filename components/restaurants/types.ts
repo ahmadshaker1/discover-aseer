@@ -15,19 +15,24 @@
  * | priceBand        | price_band                          | optional; e.g. "100-50"        |
  * | nationality      | nationality_ar, nationality_en      | optional; default "سعودي"      |
  * | category         | category_ar, category_en            | fallback "مطعم"                |
- * | image            | picture_url_new, picture_url        | Drive URLs proxied in data.ts  |
+ * | image            | image_new, then image               | Drive → /api/image-proxy       |
+ * | cityId           | inferred from location text         | used by sidebar city filter      |
  * | mapsUrl          | google_maps_url                     | fallback Google search by name |
  */
 export interface Restaurant {
   id: string;
   name: string;
   location: string;
+  /** Inferred from location for filter sidebar (`CITY_DEFS` ids). */
+  cityId?: string;
   distanceKm: number;
   rating: number;
   reviewsCount: number;
   priceRange: string;
   nationality: string;
   category: string;
+  /** From CMS `cuisine_type` / tags — helps cuisine filters. */
+  cuisineType?: string;
   /** Price band for card footer, e.g. "100-50" — optional on API (`price_band`). */
   priceBand?: string;
   image: string;

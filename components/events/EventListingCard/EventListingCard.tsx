@@ -11,7 +11,6 @@ import {
   CurrencyIcon,
   KidFriendlyIcon,
   MapPinIcon,
-  RatingStar,
 } from "./icons";
 
 const PLACEHOLDER = "/assets/experiences/experiences.png";
@@ -37,10 +36,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
     e.currentTarget.src = PLACEHOLDER;
   }, []);
 
-  const ratingDisplay = `${Number(event.rating).toFixed(1)}/5`;
-  const votesDisplay = `(${event.reviewsCount})`;
-
-  const ratingCorner = isArabic ? "left-2" : "right-2";
+  const statusCorner = isArabic ? "left-2" : "right-2";
   const counterCorner = isArabic ? "right-2" : "left-2";
 
   return (
@@ -64,18 +60,18 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             aria-hidden
           />
 
-          <div
-            className={`absolute top-2 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] ${ratingCorner}`}
-            dir="ltr"
-          >
-            <RatingStar />
-            <span
-              className="min-w-0 truncate text-start text-[11px] font-medium leading-none text-white"
-              style={{ fontFamily: ibm }}
+          {event.isOver ? (
+            <div
+              className={`absolute top-2 z-10 flex h-[29px] min-w-[89px] items-center justify-center rounded-[50px] bg-[#00000080] px-3 py-[6px] ${statusCorner}`}
             >
-              {votesDisplay} {ratingDisplay}
-            </span>
-          </div>
+              <span
+                className="min-w-0 truncate text-start text-[11px] font-medium leading-none text-white"
+                style={{ fontFamily: ibm }}
+              >
+                {t("eventOver")}
+              </span>
+            </div>
+          ) : null}
 
           <div
             className={`absolute top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-[14px] font-bold leading-none text-white ${counterCorner}`}

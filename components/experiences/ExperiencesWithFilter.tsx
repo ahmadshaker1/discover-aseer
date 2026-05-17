@@ -62,11 +62,8 @@ export default function ExperiencesWithFilter({
   const handleReset = () => setFilters(INITIAL_FILTERS);
 
   return (
-    <div
-      className="flex flex-col gap-8 lg:flex-row"
-     
-    >
-      <aside className="shrink-0 lg:self-start">
+    <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start">
+      <aside className="w-full max-w-md shrink-0 lg:w-auto lg:self-start">
         <ExperiencesFilter
           filterOptions={filterOptions}
           filters={filters}
@@ -75,8 +72,8 @@ export default function ExperiencesWithFilter({
         />
       </aside>
 
-      <div className="flex-1">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="w-full min-w-0 flex-1">
+        <div className="grid w-full grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {filteredExperiences.map((experience) => (
             <ExperienceCard key={experience.id} {...experience} />
           ))}

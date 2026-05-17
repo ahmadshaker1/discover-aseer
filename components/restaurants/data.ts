@@ -12,7 +12,7 @@
  * │ API JSON field names                │ ApiLocation + LocationsApiResponse in this file          │
  * │ API row → Restaurant card           │ transformLocationToRestaurant()                          │
  * │ List endpoint path                  │ RESTAURANTS_LOCATIONS_ITEMS_PATH → `/items/restaurants`  │
- * │ Google Drive images via proxy       │ /api/image-proxy + getProxiedImageUrl()                  │
+ * │ Restaurant image fields             │ image_new → image → PLACEHOLDER (+ Drive via image-proxy)│
  * │ Remote image hosts for dummy        │ next.config.ts → images.remotePatterns (e.g. Unsplash)   │
  * │ Page that loads data                │ app/restaurants/page.tsx → fetchRestaurants()            │
  * │ IGCAT “visit site” URL              │ NEXT_PUBLIC_IGCAT_WEBSITE_URL → RestaurantsCredibility…  │
@@ -24,7 +24,7 @@
  *   URL:    `{NEXT_PUBLIC_RESTAURANTS_API_BASE || default}/items/restaurants`
  *   Body:   n/a
  *   JSON:   `{ "data": ApiLocation[] }` (Directus-style). Supports old and new shapes
- *           (`name_ar/name_en` or `title_ar/title_en`, `picture_url*` or `image`).
+ *           (`name_ar/name_en` or `title_ar/title_en`, `image_new`, `image`).
  *   Filter: client keeps rows that are published (when status exists), match restaurant category,
  *           and include at least one display name field.
  *
@@ -37,11 +37,12 @@
  * Decision order
  * --------------
  *   - Production: dummy only when NEXT_PUBLIC_RESTAURANTS_USE_DUMMY === "true".
- *   - Development: dummy by default; live API when NEXT_PUBLIC_RESTAURANTS_USE_DUMMY === "false".
+ *   - Dummy data only when NEXT_PUBLIC_RESTAURANTS_USE_DUMMY === "true".
  *   - Dev + live fetch fails: falls back to dummy unless USE_DUMMY is explicitly "false".
  *   - Prod + live fetch fails: returns [] (empty grid); set USE_DUMMY=true temporarily if needed.
  */
 
+import { inferCityIdFromLocation } from "@/components/landmarks/filterOptions";
 import { DUMMY_RESTAURANTS } from "./dummyRestaurants";
 import type { Restaurant } from "./types";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
@@ -72,11 +73,14 @@ export interface ApiLocation {
   picture_url_new?: string | null;
   /** New endpoint fields (items/restaurants). */
   content?: string | null;
+  /** Primary CMS image (Directus asset id or URL). */
+  image_new?: string | null;
   image?: string | null;
   location_map?: string | null;
   type?: string | null;
   city?: string | null;
   tags?: string | null;
+  cuisine_type?: string | null;
   categories?: string | null;
   title_en?: string | null;
   title_ar?: string | null;
@@ -99,8 +103,6 @@ export interface LocationsApiResponse {
   data: ApiLocation[];
 }
 
-const FOOD_BEVERAGE_CATEGORY = "Food & Beverage";
-const FOOD_BEVERAGE_CATEGORY_AR = "مطاعم وكافيهات";
 const PLACEHOLDER_IMAGE = "/assets/experiences/experiences.png";
 
 /** Exported so backend/docs can reference the same path as the code. */
@@ -127,36 +129,44 @@ function clampRating(value: unknown): number {
   return Math.min(5, r);
 }
 
-function getGoogleDriveFileId(pictureUrl: string | null): string | null {
-  if (!pictureUrl || typeof pictureUrl !== "string" || pictureUrl.trim() === "")
-    return null;
-  if (
-    pictureUrl.includes("لا يوجد صورة") ||
-    !pictureUrl.includes("drive.google.com")
-  )
-    return null;
+function getGoogleDriveFileId(pictureUrl: string): string | null {
+  if (!pictureUrl.includes("drive.google.com")) return null;
   const pathMatch = pictureUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (pathMatch) return pathMatch[1];
   const queryMatch = pictureUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   return queryMatch ? queryMatch[1] : null;
 }
 
-function getImageUrl(pictureUrl: string | null | undefined): string {
-  const clean = pictureUrl?.trim() || "";
-  if (!clean || clean.includes("لا يوجد صورة")) return PLACEHOLDER_IMAGE;
+function toRestaurantImageUrl(value: string | null | undefined): string | null {
+  const clean = value?.trim() || "";
+  if (!clean || clean.includes("لا يوجد صورة")) return null;
 
-  const fileId = getGoogleDriveFileId(clean);
-  if (fileId) return `/api/image-proxy?id=${encodeURIComponent(fileId)}`;
+  const driveFileId = getGoogleDriveFileId(clean);
+  if (driveFileId) return `/api/image-proxy?id=${encodeURIComponent(driveFileId)}`;
 
-  if (/^https?:\/\//i.test(clean) || clean.startsWith("/")) return clean;
+  if (/^https?:\/\//i.test(clean)) return clean;
+  if (clean.startsWith("//")) return `https:${clean}`;
+  if (clean.startsWith("/")) return clean;
 
-  return PLACEHOLDER_IMAGE;
+  return `${LOCATIONS_API_BASE}/assets/${clean}`;
+}
+
+function resolveRestaurantImageUrl(
+  imageNew: string | null | undefined,
+  image: string | null | undefined,
+): string {
+  return (
+    toRestaurantImageUrl(imageNew) ??
+    toRestaurantImageUrl(image) ??
+    PLACEHOLDER_IMAGE
+  );
 }
 
 function pickBestName(loc: ApiLocation, locale: LocaleCode): string {
+  const row = loc as unknown as Record<string, unknown>;
   return (
-    pickLocalizedField(loc, "name", locale) ||
-    pickLocalizedField(loc, "title", locale) ||
+    pickLocalizedField(row, "name", locale) ||
+    pickLocalizedField(row, "title", locale) ||
     ""
   ).trim();
 }
@@ -164,21 +174,6 @@ function pickBestName(loc: ApiLocation, locale: LocaleCode): string {
 function isPublished(item: ApiLocation): boolean {
   if (!item.status) return true;
   return item.status === "published";
-}
-
-function isRestaurantCategory(item: ApiLocation): boolean {
-  const legacyCategoryEn = (item.category_en || "").trim();
-  const legacyCategoryAr = (item.category_ar || "").trim();
-  const category = (item.categories || "").trim();
-  const type = (item.type || "").trim();
-
-  if (!legacyCategoryEn && !legacyCategoryAr && !category && !type) return true;
-
-  return (
-    legacyCategoryEn === FOOD_BEVERAGE_CATEGORY ||
-    category === FOOD_BEVERAGE_CATEGORY_AR ||
-    type === "المطاعم"
-  );
 }
 
 export const transformLocationToRestaurant = (
@@ -195,8 +190,7 @@ export const transformLocationToRestaurant = (
       : locale === "ar"
         ? "عسير"
         : "Aseer";
-  const pictureSource = loc.picture_url_new || loc.picture_url || loc.image;
-  const image = getImageUrl(pictureSource);
+  const image = resolveRestaurantImageUrl(loc.image_new, loc.image);
   const mapsUrl =
     loc.google_maps_url?.trim() ||
     loc.location_map?.trim() ||
@@ -204,12 +198,16 @@ export const transformLocationToRestaurant = (
 
   const priceRangeRaw = (loc.price_range ?? "").trim();
   const priceBandRaw = (loc.price_band ?? "").trim();
-  const nationalityRaw = (loc.nationality_ar || loc.nationality_en || loc.tags || "").trim();
+  const cuisineTypeRaw = (loc.cuisine_type || loc.tags || "").trim();
+  const nationalityRaw = (loc.nationality_ar || loc.nationality_en || "").trim();
+
+  const cityId = inferCityIdFromLocation(location);
 
   const restaurant: Restaurant = {
     id: loc.id,
     name: name || (locale === "ar" ? "بدون اسم" : "Untitled"),
     location,
+    ...(cityId ? { cityId } : {}),
     distanceKm: toFiniteNumber(loc.distance_km, 0),
     rating: clampRating(loc.rating),
     reviewsCount: toNonNegativeInt(loc.reviews_count, 0),
@@ -221,6 +219,7 @@ export const transformLocationToRestaurant = (
       loc.categories ||
       loc.type ||
       (locale === "ar" ? "مطعم" : "Restaurant"),
+    ...(cuisineTypeRaw ? { cuisineType: cuisineTypeRaw } : {}),
     image,
     mapsUrl,
   };
@@ -231,10 +230,7 @@ export const transformLocationToRestaurant = (
 };
 
 function shouldUseRestaurantDummy(): boolean {
-  const flag = process.env.NEXT_PUBLIC_RESTAURANTS_USE_DUMMY;
-  if (flag === "true") return true;
-  if (flag === "false") return false;
-  return process.env.NODE_ENV === "development";
+  return process.env.NEXT_PUBLIC_RESTAURANTS_USE_DUMMY === "true";
 }
 
 export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Restaurant[]> {
@@ -257,7 +253,6 @@ export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Resta
       .filter(
         (item) =>
           isPublished(item) &&
-          isRestaurantCategory(item) &&
           (item.name_ar != null ||
             item.name_en != null ||
             item.title_ar != null ||

@@ -124,8 +124,8 @@ const AttractionsMainPageContent = ({
           </p>
         ) : null}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-          <div className="w-full flex-1 lg:max-w-[1033px]">
-            <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
+          <div className="order-2 w-full flex-1 lg:order-1 lg:max-w-[1033px]">
+            <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 justify-items-center gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
               {visibleLandmarks.map((landmark) => (
                 <AttractionsLandmarkCard
                   key={landmark.id}
@@ -147,12 +147,12 @@ const AttractionsMainPageContent = ({
           </div>
 
           <aside
-            className={`w-full lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
+            className={`order-1 w-full min-w-0 lg:order-2 lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
           >
-            <div className="flex h-full flex-col gap-6">
-              <div className="flex h-8 w-full max-w-[256px] items-center justify-between">
+            <div className="mx-auto flex w-full max-w-[320px] flex-col gap-6 lg:mx-0 lg:max-w-[256px]">
+              <div className="flex w-full flex-wrap items-center justify-between gap-3">
                 <h3
-                  className={`h-6 max-w-[180px] whitespace-normal sm:whitespace-nowrap text-[24px] font-bold leading-6 tracking-[-0.31px] text-foreground text-start`}
+                  className={`min-w-0 flex-1 text-xl font-bold leading-tight tracking-[-0.31px] text-foreground text-start sm:text-2xl`}
                   style={{ fontFamily: ara }}
                 >
                   {tCommon("filterLandmarks")}
@@ -163,14 +163,14 @@ const AttractionsMainPageContent = ({
                     setFilters({ city: null, interests: [] });
                     setSelectedInterests([]);
                   }}
-                  className="flex h-8 w-auto cursor-pointer whitespace-nowrap items-center justify-center rounded-[8px] border border-border bg-surface px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted"
+                  className="flex h-8 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-3 text-center text-sm font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:text-[18px]"
                   style={{ fontFamily: ara }}
                 >
                   {tCommon("resetFilters")}
                 </button>
               </div>
 
-              <div className="relative h-12 w-full max-w-[256px] overflow-hidden rounded-[55px] border border-border px-6 py-3">
+              <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-border px-6 py-3">
                 <select
                   aria-label={tCommon("city")}
                   value={filters.city ?? ""}
@@ -205,29 +205,29 @@ const AttractionsMainPageContent = ({
                 </div>
               </div>
 
-              <div className="pt-2">
-                <div className="mb-4 h-px w-full max-w-[256px] bg-border" />
+              <div className="w-full pt-2">
+                <div className="mb-4 h-px w-full bg-border" />
 
                 <div className="mb-4 flex items-center gap-2 text-muted-foreground">
                   <HeartIcon />
                   <h4
-                    className={`h-6 min-w-[73px] text-[20px] font-bold leading-[119%] tracking-[0] text-foreground text-start`}
+                    className={`text-lg font-bold leading-[119%] tracking-[0] text-foreground text-start sm:text-[20px]`}
                     style={{ fontFamily: ara }}
                   >
                     {tCommon("interests")}
                   </h4>
                 </div>
 
-                <div className="space-y-3">
+                <div className="w-full space-y-3">
                   {interestOptions.map((option) => {
                     const checked = selectedInterests.includes(option.id);
                     const count = interestCounts[option.id] ?? 0;
                     return (
                       <label
                         key={option.id}
-                        className="flex cursor-pointer items-center justify-between"
+                        className="flex w-full cursor-pointer items-center justify-between gap-2"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex min-w-0 flex-1 items-center gap-3">
                           <input
                             type="checkbox"
                             checked={checked}
@@ -238,17 +238,17 @@ const AttractionsMainPageContent = ({
                                   : [...prev, option.id],
                               )
                             }
-                            className="h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                           />
                           <span
-                            className={`h-5 min-w-[73px] text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
+                            className={`min-w-0 text-sm font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
                             style={{ fontFamily: "Inter, sans-serif" }}
                           >
                             {option.label}
                           </span>
                         </div>
                         <span
-                          className="inline-flex h-7 min-w-7 items-center justify-center rounded-[8px] bg-muted px-2 text-[24px] leading-[100%] text-muted-foreground"
+                          className="inline-flex h-7 shrink-0 items-center justify-center rounded-[8px] bg-muted px-2 text-base leading-[100%] text-muted-foreground sm:text-lg"
                           style={{ fontFamily: ara }}
                         >
                           {count}

@@ -233,6 +233,19 @@ function isClickableEvent(flag: string | boolean | null | undefined): boolean {
   return !["true", "1", "yes"].includes(value);
 }
 
+function isEventOver(apiEvent: ApiEvent): boolean {
+  const end =
+    parseDateOnly(apiEvent.end_date) ||
+    parseDateOnly(apiEvent.date) ||
+    parseDateOnly(apiEvent.start_date);
+  if (!end) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  end.setHours(23, 59, 59, 999);
+  return end.getTime() < today.getTime();
+}
+
 export function transformApiEventToListingItem(
   apiEvent: ApiEvent,
   locale: LocaleCode = "ar",
@@ -257,8 +270,7 @@ export function transformApiEventToListingItem(
       apiEvent.not_allowed_for_kids,
       apiEvent.audience_type,
     ),
-    rating: 4.5,
-    reviewsCount: 0,
+    isOver: isEventOver(apiEvent),
     priceLabel: toPriceLabel(isFree, apiEvent.price, locale),
     locationLine: city ? `${city}، عسير` : locale === "ar" ? "عسير" : "Aseer",
     mapsUrl: toMapsUrl(apiEvent.map, title),

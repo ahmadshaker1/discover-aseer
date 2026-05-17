@@ -2,13 +2,15 @@ import RestaurantsBanner from "@/components/restaurants/RestaurantsBanner";
 import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsCredibilitySection";
 import RestaurantsListing from "@/components/restaurants/RestaurantsListing";
 import { fetchRestaurants } from "@/components/restaurants/data";
+import { getLocale } from "next-intl/server";
 
 /**
  * Data: `components/restaurants/data.ts` (endpoint, env flags, `ApiLocation` → `Restaurant`).
  * Env template: repo root `.env.example`.
  */
 const RestaurantsPage = async () => {
-  const restaurants = await fetchRestaurants();
+  const locale = (await getLocale()) as "ar" | "en";
+  const restaurants = await fetchRestaurants(locale);
 
   return (
     <div className="flex w-full flex-col">

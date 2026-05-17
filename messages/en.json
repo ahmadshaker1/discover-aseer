@@ -243,7 +243,8 @@
     "filterCreative": "Creative",
     "kidFriendly": "Suitable for children",
     "imagePrev": "Previous image",
-    "imageNext": "Next image"
+    "imageNext": "Next image",
+    "eventOver": "Event ended"
   },
   "experiencesPage": {
     "breadcrumb": "Experiences",
