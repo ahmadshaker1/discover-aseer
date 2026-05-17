@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import HeroSocialLinks, {
+  heroSocialLinkClassDesktop,
+  heroSocialLinkClassMobile,
+} from "@/components/Hero/HeroSocialLinks";
 
 import Image from "next/image";
 

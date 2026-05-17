@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { IBM_Plex_Sans_Arabic, Readex_Pro } from "next/font/google";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { InlineScript } from "@/components/InlineScript";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 
@@ -62,13 +62,12 @@ export default async function LocaleLayout({
     <html
       lang={appLocale}
       dir={appLocale === "ar" ? "rtl" : "ltr"}
+      data-theme="light"
       suppressHydrationWarning
     >
-      <Script
-        id="theme-init"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{ __html: getThemeInitScript() }}
-      />
+      <head>
+        <InlineScript html={getThemeInitScript()} />
+      </head>
       <body
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >
