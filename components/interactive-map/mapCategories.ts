@@ -39,28 +39,21 @@ export const MAP_CATEGORY_ICONS: Record<
   accommodation: MapCategoryAccommodationIcon,
 };
 
-const COLLECTION_CATEGORY: Record<string, MapCategoryKey> = {
-  events: "events",
-  attractions: "attractions",
-  restaurants: "restaurants",
-  accomodation: "accommodation",
-};
-
-const EXPERIENCES_PATTERN = /تجارب|experience/i;
-const CAMPING_PATTERN = /تخييم|كرفان|camping|caravan/i;
-
 export const resolvePlaceCategoryKey = (place: {
-  id: string;
-  category: string;
+  categoryKey?: MapCategoryKey | null;
+  category?: string;
+  categoryAr?: string;
+  categoryEn?: string;
 }): MapCategoryKey | null => {
-  const source = place.id.split(":")[0];
-  const fromCollection = COLLECTION_CATEGORY[source];
-  if (fromCollection) return fromCollection;
+  if (place.categoryKey) return place.categoryKey;
 
-  const category = place.category.trim();
-  if (!category) return null;
-  if (EXPERIENCES_PATTERN.test(category)) return "experiences";
-  if (CAMPING_PATTERN.test(category)) return "camping";
+  const label = `${place.categoryAr ?? ""} ${place.categoryEn ?? ""} ${place.category ?? ""}`;
+  if (/تجارب|experience/i.test(label)) return "experiences";
+  if (/تخييم|كرفان|camping|caravan/i.test(label)) return "camping";
+  if (/فعاليات|event/i.test(label)) return "events";
+  if (/معالم|attraction/i.test(label)) return "attractions";
+  if (/مطعم|مقهى|restaurant|cafe|food/i.test(label)) return "restaurants";
+  if (/إقامة|فندق|accommodation|hotel/i.test(label)) return "accommodation";
 
   return null;
 };
