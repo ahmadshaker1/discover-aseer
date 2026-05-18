@@ -20,19 +20,19 @@ export default function FoodFilmSection() {
   return (
     <section className="bg-surface py-16 md:py-24">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-          <div className="order-2 mt-4 w-full text-start lg:order-1 lg:mt-0 lg:w-1/2">
-            <p className="ms-auto max-w-xl text-[15px] font-bold leading-relaxed text-muted-foreground">
-              {t("description")}
-            </p>
-          </div>
-          <div className="order-1 flex w-full flex-col items-start text-start lg:order-2 lg:w-1/2 lg:items-end">
+        <div className="mb-12 flex flex-col items-start justify-between  lg:flex-row lg:items-center">
+          <div className="flex w-full flex-col items-start text-start">
             <span className="mb-4 inline-block rounded-full border border-primary bg-primary/10 px-5 py-1 text-[13px] font-bold text-primary">
               {t("badge")}
             </span>
             <h2 className="text-[28px] font-bold text-foreground md:text-[36px]">
               {t("title")}
             </h2>
+          </div>
+          <div className="mt-4 w-full text-start">
+            <p className="ms-auto max-w-xl text-[18px] text-muted-foreground">
+              {t("description")}
+            </p>
           </div>
         </div>
 

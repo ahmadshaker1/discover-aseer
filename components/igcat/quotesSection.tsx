@@ -24,17 +24,15 @@ export default function QuotesSection() {
                   key={id}
                   type="button"
                   onClick={() => setActiveIndex(index)}
-                  className={`w-full rounded-2xl p-6 text-start transition-all duration-300 ${
+                  className={`w-full rounded-2xl p-3 text-start transition-all duration-300 ${
                     isActive
                       ? "scale-[1.02] bg-background text-foreground shadow-lg"
                       : "bg-black/20 text-inherit hover:bg-black/30 dark:bg-white/10 dark:hover:bg-white/15"
                   }`}
                 >
-                  <h3 className="mb-2 text-[18px] font-bold">
-                    {t(`items.${id}.name`)}
-                  </h3>
+                  <h3 className="mb-2 text-[24px]">{t(`items.${id}.name`)}</h3>
                   <p
-                    className={`text-[13px] leading-relaxed ${isActive ? "text-muted-foreground" : "opacity-80"}`}
+                    className={`text-[18px] leading-relaxed ${isActive ? "text-muted-foreground" : "opacity-80"}`}
                   >
                     {t(`items.${id}.role`)}
                   </p>
@@ -45,10 +43,7 @@ export default function QuotesSection() {
 
           <div className="flex flex-col items-start gap-6 lg:col-span-8 lg:me-8">
             <img src="/assets/igcat/SVG.png" alt="" />
-            <p
-              key={activeId}
-              className="animate-fade-in-up text-[16px] font-medium leading-[1.8]"
-            >
+            <p key={activeId} className="animate-fade-in-up text-[22px]">
               {t(`items.${activeId}.quote`)}
             </p>
           </div>

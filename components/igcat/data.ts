@@ -1,30 +1,13 @@
-export const WINNER_IDS = ["1", "2", "3", "4"] as const;
+export const WINNER_IDS = ["1", "2", "3", "4", "5", "6", "7"] as const;
 
 export const winnersMedia = [
-  {
-    id: "1",
-    year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1610731053155-236b28090514?auto=format&fit=crop&q=80&w=600",
-  },
-  {
-    id: "2",
-    year: "2023",
-    image:
-      "https://images.unsplash.com/photo-1587049352847-4d45543cc856?auto=format&fit=crop&q=80&w=600",
-  },
-  {
-    id: "3",
-    year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1559525839-b184a4d698c7?auto=format&fit=crop&q=80&w=600",
-  },
-  {
-    id: "4",
-    year: "2023",
-    image:
-      "https://images.unsplash.com/photo-1611077543555-523270e5baf6?auto=format&fit=crop&q=80&w=600",
-  },
+  { id: "1", image: "/assets/igcat/winners/1.png" },
+  { id: "2", image: "/assets/igcat/winners/2.png" },
+  { id: "3", image: "/assets/igcat/winners/3.png" },
+  { id: "4", image: "/assets/igcat/winners/4.png" },
+  { id: "5", image: "/assets/igcat/winners/5.png" },
+  { id: "6", image: "/assets/igcat/winners/6.jpeg" },
+  { id: "7", image: "/assets/igcat/winners/7.png" },
 ] as const;
 
 export const videoSectionData = {
@@ -37,14 +20,14 @@ export const foodFilmMedia = [
   {
     id: "1",
     year: "2024",
-    image: "/assets/food-film-2024.jpg",
-    youtubeUrl: "",
+    image: "/assets/igcat/V1.png",
+    youtubeUrl: "https://www.youtube.com/embed/iyPE6sgu__g?si=UDElEWeEK1vnHl2j",
   },
   {
     id: "2",
     year: "2022",
-    image: "/assets/food-film-2022.jpg",
-    youtubeUrl: "",
+    image: "/assets/igcat/V2.png",
+    youtubeUrl: "https://www.youtube.com/embed/rWXAzl_gNno?si=tUNW0PfSiEjPpY5Q",
   },
 ] as const;
 

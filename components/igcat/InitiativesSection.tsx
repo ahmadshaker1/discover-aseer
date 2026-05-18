@@ -8,24 +8,24 @@ export default async function InitiativesSection() {
     <section className="bg-background py-16 md:py-24">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 flex flex-col items-center justify-center">
+          <h2 className="text-[32px] font-bold text-foreground md:text-[24px]">
+            {t("title")}
+          </h2>
           <img
             src="/assets/igcat/image8.png"
             alt={t("universityAlt")}
             className="mb-6 h-24 object-contain md:h-32"
           />
-          <h2 className="text-[20px] font-bold text-foreground md:text-[24px]">
-            {t("title")}
-          </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-8">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-8">
           {initiativesMedia.map((item) => (
             <div
               key={item.id}
-              className="group relative h-[350px] w-full overflow-hidden rounded-3xl shadow-md md:h-[450px]"
+              className="group relative h-[350px] w-full overflow-hidden rounded-2xl shadow-md md:h-[450px]"
             >
               <img
-                src={item.image}
+                src={t(`items.${item.id}.image`)}
                 alt={t(`items.${item.id}.title`)}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />

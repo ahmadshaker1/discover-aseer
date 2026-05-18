@@ -686,29 +686,55 @@
         "1": {
           "name": "Mayada Badr",
           "role": "CEO, Culinary Arts Commission",
-          "quote": "We work passionately to showcase our authentic culinary heritage to the world and empower future generations."
+          "quote": "Aseer’s cuisine is a vibrant palette of flavors, textures, and aromas, deeply influenced by its geographical diversity and the agricultural dedication of its community. From the terraced fields to the verdant valleys, each landscape contributes uniquely to the region’s culinary repertoire. Dishes here are more than food; they are narratives of history, culture, and innovation passed down through generations. Ingredients such as indigenous herbs, grains, and fruits are transformed through time-honored methods into exquisite meals that echo the spirit of Aseer."
         }
       }
     },
     "winners": {
-      "title": "World Food Gift Challenge winners 2023–2024",
+      "title": "World Food Gift Challenge winners 2023 - 2024 - 2025",
       "videoAlt": "Winners video",
       "items": {
         "1": {
-          "title": "Abdulrahman Al-Aboudi — modern date bowl",
-          "description": "A wooden date bowl with contemporary design and traditional motifs"
+          "title": "Abdulrahman Al-Aboudi - Contemporary Date Bowl",
+          "description": "A wooden bowl for dates with a contemporary design and traditional carvings.",
+          "year": "2024",
+          "image": "/assets/igcat/winners/1.png"
         },
         "2": {
-          "title": "Abdullah Al-Jaradi (Tahlil) — Taste of Aseer honey",
-          "description": "A gift blending handcraft with authentic Aseeri honey"
+          "title": "Hanan Al-Qahhtani - Souika Basket",
+          "description": "A basket containing the ingredients for atraditional Aseeri dish representing the region's heritage.",
+          "year": "2024",
+          "image": "/assets/igcat/winners/2.png"
         },
         "3": {
-          "title": "Zainab Al-Kulaib — Saudi coffee bean pouch",
-          "description": "A handmade pouch with Saudi coffee ingredients reflecting regional heritage"
+          "title": "Zainab Al-Khalib - Saudi Coffee Bean Bag",
+          "description": "A handcrafted bag containing ingredients for Saudi coffee, reflecting the region's heritage.",
+          "year": "2024",
+          "image": "/assets/igcat/winners/3.png"
         },
         "4": {
-          "title": "Murooj Al-Shatri — wooden box",
-          "description": "An elegant wooden box for coffee tools, inspired by heritage"
+          "title": "Marouj Al-Shatari - Luxury Wooden Box",
+          "description": "An elegant wooden box for coffee tools, inspired by coffee beans.",
+          "year": "2024",
+          "image": "/assets/igcat/winners/4.png"
+        },
+        "5": {
+          "title": "Abdullah Al-Jarashi (Tahallal) - \"Taste of Aseer\" Honey",
+          "description": "A gift blending handcrafted art with authentic Aseer honey.",
+          "year": "2023",
+          "image": "/assets/igcat/winners/5.png"
+        },
+        "6": {
+          "title": "Palm Cups Set ",
+          "description": "",
+          "year": "2025",
+          "image": "/assets/igcat/winners/6.jpeg"
+        },
+        "7": {
+          "title": "Qasaba Tower-Inspired Date Bowl",
+          "description": "",
+          "year": "2025",
+          "image": "/assets/igcat/winners/7.png"
         }
       }
     },
@@ -727,9 +753,46 @@
       "title": "King Khalid University initiatives",
       "universityAlt": "King Khalid University",
       "items": {
-        "1": { "title": "Arabian Travel Market (ATM)" },
-        "2": { "title": "Saudi Tourism Forum (STF)" },
-        "3": { "title": "Dakar Rally" }
+        "1": {
+          "title": "Dakar Rally",
+          "image": "/assets/igcat/1.jpg"
+        },
+        "2": {
+          "title": "Saudi Tourism Forum (STF)",
+          "image": "/assets/igcat/2.jpg"
+        },
+        "3": {
+          "title": "Arabian Travel Market (ATM)",
+          "image": "/assets/igcat/3.jpg"
+        }
+      }
+    },
+    "igcatDishes": {
+      "items": {
+        "1": {
+          "title": "Al-Haneeth",
+          "description": "Throughout the region, and especially along the coastal stretches like Mahayel and Rijal Alma, Haneeth is more than a meal; it is a symbol of hospitality and communal joy, a treasure shared during special gatherings. Recognized officially by the Culinary Arts Commission under the Ministry of Culture, Haneeth is not only a source of regional pride but also a cherished legacy, an emblem of cultural identity preserved for future generations.",
+          "image": "/assets/igcat/food/1.jpg",
+          "innerImage": "/assets/igcat/food/1.1.jpg"
+        },
+        "2": {
+          "title": "Al-‘Areekah",
+          "description": "Al-Areekah, in its essence, captures the soul of Aseer's winters, serving as a warm embrace during the brisk mornings. Its appeal has woven through the fabric of local and regional cuisine, gracing the menus of numerous eateries, sometimes adorned with cream or nuts for a quick, yet soulful breakfast.\nBut it's in the governorates and the quaint villages of Aseer, like Khamis Mushait, Sarat Abidah, and Ahad Rufaida, that Al-Areekah truly shines as a beacon of hospitality. Here, it stands proud during the Al-Wasl period, a bridge between meals, embodying a tradition of warmth and welcome that is quintessentially Aseeri, making Al-Areekah not just a dish, but a cherished moment shared among friends and family.",
+          "image": "/assets/igcat/food/2.jpg",
+          "innerImage": "/assets/igcat/food/2.2.jpg"
+        },
+        "3": {
+          "title": "Mifa Bread",
+          "description": "Crafted from the bountiful wheat fields of the Sarawat Mountains, Meyfa bread embodies the essence of tradition and sustenance, with some variations incorporating red corn grains, known as Al-Zaer, particularly prevalent in the Tihama regions where it is cultivated.\nEsteemed as an indispensable staple in Aseer, Meyfa bread supplants commercial bread types, captivating the palates of all who partake in its wholesome goodness. Its allure is particularly pronounced during the holy month of Ramadan, where it reigns supreme on dining tables.",
+          "image": "/assets/igcat/food/3.jpg",
+          "innerImage": "/assets/igcat/food/3.3.jpg"
+        },
+        "4": {
+          "title": "Al-Mashghoutha",
+          "description": "Embraced as a quintessential winter delight, Al-Mashgootha captivates with its high caloric content, making it a favored choice among children, the elderly, patients, and during festive seasons, celebrated for its ease of consumption and nutritional richness. This esteemed dish serves as a symbol of generosity and hospitality, particularly cherished among the people of the Al-Hajar region in Aseer, including Al-Namas, Balasmar, Balahmar, and Tanuma",
+          "image": "/assets/igcat/food/4.jpg",
+          "innerImage": "/assets/igcat/food/4.4.jpg"
+        }
       }
     },
     "food": {
@@ -737,7 +800,8 @@
       "dishesCta": "Aseeri cuisine",
       "restaurantsTitle": "Popular restaurants",
       "restaurantsCta": "Restaurants",
-      "noRestaurants": "No restaurants are available at the moment."
+      "noRestaurants": "No restaurants are available at the moment.",
+      "close": "Close"
     }
   },
   "filmmakerForm": {
