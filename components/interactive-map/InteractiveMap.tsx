@@ -186,11 +186,11 @@ const InteractiveMap = ({
     [filteredPlaces],
   );
 
-  const radioSelectedPlaceId = useMemo(() => {
-    if (!selectedPlaceId) return undefined;
+  const radioSelectedPlaceId = useMemo((): string | null => {
+    if (!selectedPlaceId) return null;
     return filteredPlaces.some((place) => place.id === selectedPlaceId)
       ? selectedPlaceId
-      : undefined;
+      : null;
   }, [filteredPlaces, selectedPlaceId]);
 
   useEffect(() => {
