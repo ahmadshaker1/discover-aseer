@@ -1,7 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { PageShareLinks } from "@/components/social/PageShareLinks";
+import { IntroPageShareRow } from "@/components/social/IntroPageShareRow";
 import SafeHtml from "@/components/common/SafeHtml";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
@@ -20,8 +19,6 @@ const AttractionsIntroSection = ({
   imageAlt,
   descriptionHtml,
 }: AttractionsIntroSectionProps) => {
-  const tCommon = useTranslations("common");
-
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]">
       <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:h-[441px] lg:flex-row-reverse lg:items-start">
@@ -33,15 +30,7 @@ const AttractionsIntroSection = ({
             {title}
           </h2>
 
-          <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]">
-            <span
-              className="shrink-0 text-[18px] font-bold leading-[180%] text-foreground"
-              style={{ fontFamily: ara }}
-            >
-              {tCommon("share")}
-            </span>
-            <PageShareLinks title={title} />
-          </div>
+          <IntroPageShareRow title={title} />
 
           <div
             className="w-full text-start text-[15px] font-light leading-[119%] text-muted-foreground"
