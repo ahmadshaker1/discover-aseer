@@ -53,6 +53,72 @@ export interface ExperienceWithFilterMeta extends ExperienceCardProps {
 
 const DEFAULT_IMAGE = "/assets/experiences/experiences.png";
 
+/** CMS `type` value for cooking experiences (Aseer cuisine page). */
+export const COOKING_EXPERIENCE_TYPE = "فن الطهي";
+
+const EMPTY_FETCH_RESULT: FetchExperiencesResult = {
+  experiences: [],
+  filterOptions: {
+    cityOptions: [],
+    interests: [],
+    costOptions: [],
+    travelerTypes: [],
+  },
+};
+
+/** Parse `type` / `tags` from plain text, comma lists, or JSON string arrays. */
+function parseExperienceFieldTokens(raw: string | null | undefined): string[] {
+  const trimmed = (raw || "").trim();
+  if (!trimmed) return [];
+
+  let entries: string[] = [];
+  if (trimmed.startsWith("[")) {
+    try {
+      const parsed = JSON.parse(trimmed) as unknown;
+      if (Array.isArray(parsed)) {
+        entries = parsed.filter((value): value is string => typeof value === "string");
+      }
+    } catch {
+      entries = [trimmed];
+    }
+  } else {
+    entries = [trimmed];
+  }
+
+  const tokens: string[] = [];
+  for (const entry of entries) {
+    for (const part of entry.split(",")) {
+      const label = normalizeInterestLabel(part);
+      if (label) tokens.push(label);
+    }
+  }
+  return tokens;
+}
+
+export function isCookingExperience(api: ApiExperience): boolean {
+  const tokens = [
+    ...parseExperienceFieldTokens(api.type),
+    ...parseExperienceFieldTokens(api.tags),
+  ];
+  return tokens.some((token) =>
+    COOKING_EXPERIENCE_KEYS.has(normalizeInterestKey(token)),
+  );
+}
+
+export function matchesExperienceType(
+  api: ApiExperience,
+  typeFilter: string,
+): boolean {
+  if (normalizeInterestKey(typeFilter) === normalizeInterestKey(COOKING_EXPERIENCE_TYPE)) {
+    return isCookingExperience(api);
+  }
+
+  const want = normalizeInterestKey(typeFilter);
+  return parseExperienceFieldTokens(api.type).some(
+    (token) => normalizeInterestKey(token) === want,
+  );
+}
+
 function stripHtml(html: string | null | undefined): string {
   if (!html || typeof html !== "string") return "";
   return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
@@ -87,6 +153,11 @@ function normalizeInterestKey(s: string): string {
     .replace(/ـ/g, "")
     .toLocaleLowerCase("ar");
 }
+
+const COOKING_EXPERIENCE_KEYS = new Set([
+  normalizeInterestKey("فن الطهي"),
+  normalizeInterestKey("فنون الطهي"),
+]);
 
 /** Map target_audience Arabic labels to filter ids */
 const TRAVELER_LABEL_TO_ID: Record<string, string> = {
@@ -282,8 +353,20 @@ export async function fetchExperienceById(id: string): Promise<ExperienceWithFil
   return null;
 }
 
-export async function fetchExperiences(): Promise<FetchExperiencesResult> {
+export interface FetchExperiencesOptions {
+  /** When set, only items whose `type` field matches (comma-separated values supported). */
+  type?: string;
+}
+
+export async function fetchExperiences(
+  options?: FetchExperiencesOptions,
+): Promise<FetchExperiencesResult> {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
+
+  if (!directusUrl) {
+    console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
+    return EMPTY_FETCH_RESULT;
+  }
 
   try {
     const response = await fetch(`${directusUrl}/items/experiences`, {
@@ -295,14 +378,16 @@ export async function fetchExperiences(): Promise<FetchExperiencesResult> {
     }
 
     const apiData: ExperiencesApiResponse = await response.json();
+    const typeFilter = options?.type?.trim();
+    const rows = typeFilter
+      ? apiData.data.filter((row) => matchesExperienceType(row, typeFilter))
+      : apiData.data;
 
-
-    const experiences = apiData.data.map(transformExperience);
-
+    const experiences = rows.map(transformExperience);
     const filterOptions = buildFilterOptions(apiData.data);
     return { experiences, filterOptions };
   } catch (error) {
     console.error("Error fetching experiences:", error);
-  
+    return EMPTY_FETCH_RESULT;
   }
 }
