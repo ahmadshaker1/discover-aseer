@@ -46,6 +46,7 @@ export interface ApiLandmark {
   content_home_page_card_content?: string | null;
   cover_image?: string | null;
   hero_image?: string | null;
+  hero_image_new?: string | null;
   destination_image?: string | null;
   city?: string | null;
   traveller_types?: string[] | null;
@@ -207,6 +208,7 @@ export const transformLandmark = (
   locale: LocaleCode = "ar",
 ): Landmark => {
   const imageUrl =
+    resolveImageUrl(apiLandmark.hero_image_new, directusUrl) ||
     resolveImageUrl(apiLandmark.hero_image, directusUrl) ||
     resolveImageUrl(apiLandmark.cover_image, directusUrl) ||
     resolveImageUrl(apiLandmark.destination_image, directusUrl) ||

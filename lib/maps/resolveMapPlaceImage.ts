@@ -7,6 +7,7 @@ export type MapImageSource =
 
 const IMAGE_KEYS_BY_SOURCE: Record<MapImageSource, string[]> = {
   attractions: [
+    "hero_image_new",
     "hero_image",
     "cover_image",
     "destination_image",

@@ -44,7 +44,7 @@ function FlavorCard({
       />
       <div className="absolute inset-x-0 bottom-0 h-[51px] rounded-b-[10px] bg-[linear-gradient(179.54deg,rgba(0,0,0,0)_0.39%,#000000_99.6%)] px-5 py-4">
         <p
-          className="line-clamp-1 text-start text-[24px] font-bold leading-[119%] text-white"
+          className="line-clamp-1 text-start text-[24px] font-bold leading-[120%] text-white"
           style={{ fontFamily: ara }}
         >
           {card.title}
@@ -54,7 +54,9 @@ function FlavorCard({
   );
 }
 
-const AseerCuisineLocalFlavorsSection = ({ data }: AseerCuisineLocalFlavorsSectionProps) => {
+const AseerCuisineLocalFlavorsSection = ({
+  data,
+}: AseerCuisineLocalFlavorsSectionProps) => {
   const [leftTall, topLeft, topRight, bottomWide] = data.cards;
 
   return (
