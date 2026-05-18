@@ -1,5 +1,8 @@
-import React, { useState } from "react";
-import { PlanResponse } from "./types";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Activity, PlanResponse } from "./types";
+import SaveAndSharePlan from "./SaveAndSharePlan";
 
 type ScheduleDisplayProps = {
   schedule?: PlanResponse;
@@ -155,24 +158,136 @@ const ActivityTypeIcon = () => (
 export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
   // حالة (State) لحفظ اليوم المحدد حالياً
   const [activeDayIndex, setActiveDayIndex] = useState(0);
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  useEffect(() => {
+    const handleAfterPrint = () => setIsPrinting(false);
+
+    window.addEventListener("afterprint", handleAfterPrint);
+
+    return () => {
+      window.removeEventListener("afterprint", handleAfterPrint);
+    };
+  }, []);
+
+  const handlePrint = () => {
+    setIsPrinting(true);
+
+    // Wait for print-only markup to be committed before opening print dialog.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.print();
+      });
+    });
+  };
 
   if (!schedule || !schedule.days || schedule.days.length === 0) return null;
 
   const activeDay = schedule.days[activeDayIndex];
 
+  const renderActivityCard = (
+    activity: Activity,
+    index: number,
+    printMode = false,
+  ) => (
+    <div
+      key={`${activity.title}-${index}`}
+      className="relative z-10 mb-2 planner-print-activity"
+    >
+      <div className="flex justify-start items-start gap-4 mb-4 me-[10px]">
+        <div className="z-10 bg-surface py-2 text-primary">
+          <ActivityTypeIcon />
+        </div>
+        <div className="text-start pt-1">
+          <p className="mb-1 text-[14px] font-bold text-primary">
+            {activity.type}
+          </p>
+          <p className="text-[18px] font-bold text-foreground">
+            {activity.time}
+          </p>
+        </div>
+      </div>
+
+      <div
+        className={`me-14 flex flex-col-reverse items-center justify-between gap-6 rounded-3xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] planner-print-card ${
+          printMode
+            ? "sm:flex-col"
+            : "transition-transform hover:-translate-y-1 sm:flex-row"
+        }`}
+      >
+        <div className="text-start w-full sm:w-auto ">
+          <h4 className="mb-3 text-[22px] font-bold text-foreground">
+            {activity.title}
+          </h4>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-start gap-2 text-[14px] text-muted-foreground">
+              <StarIcon />
+              <span>
+                ({activity.reviewsCount}) {activity.rating}
+              </span>
+            </div>
+            <div className="flex items-center justify-start gap-2 text-[14px] text-muted-foreground">
+              <PinIcon />
+              <span>{activity.locationText}</span>
+            </div>
+            <div className="mt-1 flex items-center justify-start gap-4 text-[14px] font-bold text-foreground">
+              <div className="flex items-center gap-1.5">
+                <span>{activity.priceRange}</span>
+                <BillIcon />
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span>{activity.category}</span>
+                <PeopleIcon />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a
+          href={activity.googleMapsUrl || "#"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`flex w-full items-center justify-center gap-2 rounded-full border border-primary/25 px-6 py-2.5 font-bold text-primary planner-print-link ${
+            printMode
+              ? "sm:w-full"
+              : "transition-colors hover:bg-primary/10 sm:w-auto"
+          }`}
+        >
+          <DirectionIcon />
+          الاتجاهات
+        </a>
+      </div>
+
+      {activity.travelToNext && (
+        <div className="me-[10px] mt-4 flex h-[80px] items-center justify-start gap-4 bg-surface planner-print-card">
+          <div className="pt-2 text-start text-[13px] leading-relaxed text-muted-foreground">
+            <p>{activity.travelToNext.duration}</p>
+            <p>{activity.travelToNext.distance}</p>
+          </div>
+          <div className="z-10 bg-surface py-4 text-muted-foreground">
+            <CarIcon />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
-    <div className="mx-auto mt-16 w-full max-w-5xl text-foreground">
+    <div className="mx-auto mt-16 w-full max-w-5xl text-foreground planner-print-root">
       {/* 1. العنوان وأزرار المشاركة والطباعة */}
-      <div className="flex flex-col-reverse sm:flex-row justify-between items-center mb-10 gap-4">
+      <div className="planner-screen-only flex flex-col-reverse sm:flex-row justify-between items-center mb-10 gap-4">
         <h2 className="text-[32px] font-bold text-foreground sm:text-[40px]">
           خطتك {schedule.planDetails?.title || "خطتك"}
         </h2>
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 rounded-full border border-border px-6 py-2 font-bold text-muted-foreground transition hover:bg-muted">
-            <ShareIcon />
-            مشاركة
-          </button>
-          <button className="flex items-center gap-2 rounded-full border border-border px-6 py-2 font-bold text-muted-foreground transition hover:bg-muted">
+        <div className="flex gap-3 h-10">
+          <SaveAndSharePlan currentPlan={schedule} />
+          <button
+            type="button"
+            onClick={handlePrint}
+            disabled={isPrinting}
+            className="flex items-center gap-2 rounded-full border border-border px-6 py-2 font-bold text-muted-foreground transition hover:bg-muted disabled:opacity-60"
+          >
             <PrintIcon />
             طباعة
           </button>
@@ -181,7 +296,7 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
 
       {/* 2. شريط الأيام (التبويبات) */}
       <div
-        className="flex gap-4 overflow-x-auto pb-4 mb-10 hide-scrollbar"
+        className="planner-screen-only flex gap-4 overflow-x-auto pb-4 mb-10 hide-scrollbar"
         style={{ scrollbarWidth: "none" }}
       >
         {schedule.days.map((day, idx) => {
@@ -212,7 +327,7 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
       </div>
 
       {/* 3. التايم لاين لليوم المحدد */}
-      <div>
+      <div className="planner-screen-only">
         <h3 className="mb-8 text-start text-[20px] font-bold text-foreground">
           {activeDay.dayLabel}
         </h3>
@@ -221,87 +336,35 @@ export default function ScheduleDisplay({ schedule }: ScheduleDisplayProps) {
           {/* الخط المنقط العمودي */}
           <div className="absolute bottom-0 end-[19px] top-8 z-0 w-0 border-e-2 border-dashed border-border"></div>
 
-          {activeDay.activities.map((activity, index) => (
-            <div key={index} className="relative z-10 mb-2">
-              {/* الرأس: الأيقونة + النوع والوقت */}
-              <div className="flex justify-start items-start gap-4 mb-4 me-[10px]">
-                {/* الأيقونة بخلفية بيضاء لقطع الخط المنقط */}
-                <div className="z-10 bg-surface py-2 text-primary">
-                  <ActivityTypeIcon />
-                </div>
-                <div className="text-start pt-1">
-                  <p className="mb-1 text-[14px] font-bold text-primary">
-                    {activity.type}
-                  </p>
-                  <p className="text-[18px] font-bold text-foreground">
-                    {activity.time}
-                  </p>
-                </div>
-              </div>
+          {activeDay.activities.map((activity, index) =>
+            renderActivityCard(activity, index),
+          )}
+        </div>
+      </div>
 
-              {/* بطاقة الفعالية */}
-              <div
-                className="me-14 flex flex-col-reverse items-center justify-between gap-6 rounded-3xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 sm:flex-row"
-              >
-                {/* تفاصيل الفعالية (يمين) */}
-                <div className="text-start w-full sm:w-auto ">
-                  <h4 className="mb-3 text-[22px] font-bold text-foreground">
-                    {activity.title}
-                  </h4>
+      {/* 4. نسخة الطباعة: جميع أيام الخطة */}
+      <div className="planner-print-only hidden">
+        <h2 className="mb-8 text-[28px] font-bold text-foreground">
+          خطتك {schedule.planDetails?.title || "خطتك"}
+        </h2>
 
-                  <div className="flex flex-col gap-2">
-                    {/* التقييم */}
-                    <div className="flex items-center justify-start gap-2 text-[14px] text-muted-foreground">
-                      <StarIcon />
-                      <span>
-                        ({activity.reviewsCount}) {activity.rating}
-                      </span>
-                    </div>
-                    {/* الموقع */}
-                    <div className="flex items-center justify-start gap-2 text-[14px] text-muted-foreground">
-                      <PinIcon />
-                      <span>{activity.locationText}</span>
-                    </div>
-                    {/* التصنيف والسعر */}
-                    <div className="mt-1 flex items-center justify-start gap-4 text-[14px] font-bold text-foreground">
-                      <div className="flex items-center gap-1.5">
-                        <span>{activity.priceRange}</span>
-                        <BillIcon />
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span>{activity.category}</span>
-                        <PeopleIcon />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* زر الاتجاهات (يسار) */}
-                <a
-                  href={activity.googleMapsUrl || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-full border border-primary/25 px-6 py-2.5 font-bold text-primary transition-colors hover:bg-primary/10 sm:w-auto"
-                >
-                  <DirectionIcon />
-                  الاتجاهات
-                </a>
-              </div>
+        {schedule.days.map((day, dayIdx) => (
+          <section
+            key={`${day.dayLabel}-${dayIdx}`}
+            className="planner-print-day mb-10"
+          >
+            <h3 className="mb-6 text-start text-[22px] font-bold text-foreground">
+              {day.dayLabel} - {day.date}
+            </h3>
 
-              {/* التنقل للفعالية التالية (يظهر فقط إذا كان هناك travelToNext) */}
-              {activity.travelToNext && (
-                <div className="me-[10px] mt-4 flex h-[80px] items-center justify-start gap-4 bg-surface">
-                  <div className="pt-2 text-start text-[13px] leading-relaxed text-muted-foreground">
-                    <p>{activity.travelToNext.duration}</p>
-                    <p>{activity.travelToNext.distance}</p>
-                  </div>
-                  <div className="z-10 bg-surface py-4 text-muted-foreground">
-                    <CarIcon />
-                  </div>
-                </div>
+            <div className="relative">
+              <div className="absolute bottom-0 end-[19px] top-8 z-0 w-0 border-e-2 border-dashed border-border"></div>
+              {day.activities.map((activity, index) =>
+                renderActivityCard(activity, index, true),
               )}
             </div>
-          ))}
-        </div>
+          </section>
+        ))}
       </div>
     </div>
   );
