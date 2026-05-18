@@ -336,37 +336,37 @@
   "aboutAseer": {
     "title": "About Aseer",
     "breadcrumbAbout": "About Aseer",
-    "heroSubtitle": "Explore the region's natural landscapes and living cultural heritage.",
+    "heroSubtitle": "Discover the region's natural and cultural diversity.",
     "story": {
-      "sectionTitle": "Enchanted by its diversity",
-      "sectionSubtitle": "Across thousands of kilometres in southwestern Saudi Arabia, Aseer unfolds as a legendary story of mist-draped peaks, green plains, warm Red Sea shores, and proud desert silence—woven with ancient history, authentic culture, and generous hospitality.",
+      "sectionTitle": "Spellbound by its diversity",
+      "sectionSubtitle": "Across thousands of kilometres in southwestern Saudi Arabia, Aseer unfolds as a legendary story of astonishing chapters: mountain peaks crowned with clouds and draped in mist, green plains that promise bounty all year round, warm shores on the edge of a pristine sea, and a majestic desert in the silence and dignity of its grandeur—a natural tapestry steeped in ancient history, authentic culture, unique heritage, and generous hospitality. A destination where you can weave your own story of experience, adventure, exploration, and beauty.",
       "sectionCaption": "Discover Aseer to rediscover Saudi Arabia.",
       "highlights": {
-        "h1": "Al Soudah Mountains",
-        "h2": "Rijal Almaa Village",
-        "h3": "Al Qahma Coast",
-        "h4": "Tanomah Forests"
+        "h1": "Mountains",
+        "h2": "Plains",
+        "h3": "Beaches",
+        "h4": "Desert"
       },
       "slides": {
         "culture1": {
           "title": "Land of culture and the arts",
-          "description": "For lovers of authentic arts, Aseer is an unrepeatable rendezvous. Its diverse terrain has shaped equally diverse performing and folk traditions—from mountain flutes and UNESCO-listed Al-Qatt wall art to rooted dance forms and the iconic circular Qasab architecture."
+          "description": "For lovers of authentic arts, Aseer is a rendezvous like no other. Its unique, varied character offers scenes found nowhere else. Its diverse landscape has shaped equally diverse artistic and performing traditions that harmonise with every mountain and coast, flowing sweetly across every valley and plateau. When an Aseeri man finds solitude, his flutes enchant the earth and sky; when the women of Aseer were shaped among their flowers, they created the colours of Al-Qatt and painted it on their walls until it became an art form listed as UNESCO intangible heritage; and when evening gatherings sweeten on mountain nights and breezes rise through the valleys, the Aseeri voice rises in song and blends with companions in dances rooted in the land like its wadis—arts that now fill festivals across the region. Aseer is also distinguished by the circular Qasab architecture reaching skyward: fortresses in times of war, grain stores safe from harm the rest of the year, still standing as witnesses to authentic arts waiting for you to experience them."
         },
         "nature2": {
-          "title": "A symphony only nature can compose",
-          "description": "From peaks above 3,000 metres to sea-level shores, with plains, valleys, and dunes between, Aseer offers varied climates and rainfall through much of the year. More than half of the Kingdom's green cover meets 125 kilometres of Red Sea coast, with rare wildlife from the Asir magpie in the highlands to flamingos on the shore."
+          "title": "In Aseer, an exquisite symphony played by nature",
+          "description": "As you move through Aseer from a mountain peak reaching 3,000 metres to shores at sea level, with plains, valleys, plateaus, and dunes between, you pass through different climates, mostly mild throughout the year, visited by rain in most seasons until it became a friend to every field and neighbour to every valley. Aseer paints a green natural canvas that includes more than half of the Kingdom's green areas, stretching 125 kilometres along the Red Sea coast, promising rich biodiversity with perennial trees, fruitful crops, and rare wildlife such as the Asir magpie in its mountains and gulls and flamingos on its shores. With this natural diversity and environmental wealth, Aseer draws a divine canvas of perfection and beauty, pulsing with everything wondrous—you need only discover that wonder yourself and return carrying the scent of nature within you."
         },
         "heritage3": {
-          "title": "Seven centuries of history",
-          "description": "If you are drawn to history, Aseer holds more than seven centuries that refuse to fade—fortresses, castles, and palaces across more than four thousand villages between its cities and governorates, each carrying the story and courage of a proud people."
+          "title": "Aseer, a proud history",
+          "description": "If you are passionate about history, in Aseer you will find a story of more than seven centuries that refuses to fade or be forgotten—history embodied in towering war fortresses, castles steadfast against time and nature, and palaces that tell tales of glory once lived in and never left. In more than four thousand villages scattered like strings of pearls between its cities and governorates, history has taste and scent; between its lines you will read an ancient culture, exquisite arts, and the authenticity of a people of strong character and fierce courage, like their land in steadfastness and pride."
         },
         "architectural4": {
           "title": "Architectural heritage",
-          "description": "Aseer is among the world's largest open-air museums, with more than nine thousand heritage buildings across the Kingdom and dozens of museums welcoming thousands of visitors each year. Varied terrain and climate shaped distinctive building traditions that still stand as testimony to local ingenuity and enduring civilization."
+          "description": "Aseer is one of the world's largest open-air museums, home to more than nine thousand heritage buildings across the Kingdom, including dozens of museums that warmly welcome thousands of visitors each year. Architecture in Aseer is a unique art in its final form, as varied as its terrain and climate, with design and building methods drawn from the land and human needs over hundreds of years—still standing today as majestic testimony to the capability of the Aseeri people and the genius of their architecture, which shaped a deep civilisation and history that does not fade."
         },
         "culinaryArts5": {
           "title": "Culinary arts",
-          "description": "Aseeri cuisine brings one region to the table: highland coffee, Bisha dates, mountain wheat and plain sorghum with fresh dairy and wildflower honey, and slow-cooked haneeth from local herds—from areekah and mashgothah to mifa bread from the tannur and marqoush in every bite."
+          "description": "In Aseeri cuisine you will find everything to satisfy your senses from a single region: coffee from Aseeri coffee trees on the mountain slopes, Safri dates from the palms of Bisha, mountain wheat or plain sorghum with fresh milk and wildflower honey, and finally a dish of haneeth from herds raised between Aseer's plains and valleys. A culinary experience that brings mountains, plains, and coast to one table—from areekah and mashgothah to mifa bread from the tannur and marqoush."
         }
       }
     }
