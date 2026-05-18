@@ -1,12 +1,4 @@
-type MapCategoryIconProps = {
-  className?: string;
-};
-
-const iconClass = "shrink-0";
-
-export const MapCategoryEventsIcon = ({
-  className = iconClass,
-}: MapCategoryIconProps) => (
+export const MapCategoryEventsIcon = () => (
   <div className="w-[26px] h-[26px] rounded-full flex items-center justify-center bg-[#7300CD]">
     <svg
       xmlns="http://www.w3.org/2000/svg"

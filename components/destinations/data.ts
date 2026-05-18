@@ -4,6 +4,10 @@
  */
 
 import type { Landmark } from "@/components/landmarks/data";
+import {
+  getDestinationFilterLabel,
+  resolveDestinationFilterId,
+} from "@/components/destinations/filterOptions";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
 export const DEFAULT_ABHA_MAP_CENTER = {
@@ -27,7 +31,11 @@ export interface Destination {
   lon?: number;
   cityId?: string;
   interestTags?: string[];
+  /** Raw CMS `destination_filter` (Arabic). */
   destinationFilter: string;
+  destinationFilterId?: string;
+  /** Localized label for `destinationFilterId`. */
+  destinationFilterLabel: string;
 }
 
 export interface ApiDestination {
@@ -209,12 +217,13 @@ export const transformDestination = (
   const titleSection2 = pickTitleSection2(row, locale);
   const sectionTitle = buildSectionTitle(titleSection2, city);
 
-  const destinationFilter = (row.destination_filter || city || "").trim();
-  const area = destinationFilter || location.split(",")[0]?.trim() || "";
-  const cityId =
-    cityMap[destinationFilter] ||
-    cityMap[city] ||
-    undefined;
+  const destinationFilter = (row.destination_filter || "").trim();
+  const destinationFilterId = resolveDestinationFilterId(destinationFilter);
+  const destinationFilterLabel = destinationFilterId
+    ? getDestinationFilterLabel(destinationFilterId, locale)
+    : destinationFilter;
+  const area = destinationFilterLabel || location.split(",")[0]?.trim() || "";
+  const cityId = cityMap[city] || undefined;
   const lat = toNumber(row.lat ?? row.latitude);
   const lon = toNumber(row.lon ?? row.longitude);
 
@@ -248,6 +257,8 @@ export const transformDestination = (
     cityId,
     interestTags: mappedTags.filter(Boolean),
     destinationFilter,
+    destinationFilterId,
+    destinationFilterLabel,
   };
 };
 
@@ -319,15 +330,21 @@ export const getDestinationBySlug = async (
 
 export const filterDestinationsByArea = (
   destinations: Destination[],
-  destinationFilter: string,
+  destinationFilterOrId: string,
   excludeSlug?: string,
 ): Destination[] => {
-  const normalized = destinationFilter.trim().toLowerCase();
-  if (!normalized) return [];
+  const filterId =
+    resolveDestinationFilterId(destinationFilterOrId) ?? destinationFilterOrId;
+  if (!filterId.trim()) return [];
 
   return destinations.filter((d) => {
     if (excludeSlug && d.slug === excludeSlug) return false;
-    return d.destinationFilter.trim().toLowerCase() === normalized;
+    if (d.destinationFilterId) return d.destinationFilterId === filterId;
+    return (
+      resolveDestinationFilterId(d.destinationFilter) === filterId ||
+      d.destinationFilter.trim().toLowerCase() ===
+        destinationFilterOrId.trim().toLowerCase()
+    );
   });
 };
 
@@ -354,7 +371,7 @@ export const destinationToLandmark = (d: Destination): Landmark => ({
   galleryImages: [d.image],
   lat: d.lat,
   lon: d.lon,
-  categoryLabel: d.destinationFilter,
+  categoryLabel: d.destinationFilterLabel || d.destinationFilter,
   cityId: d.cityId,
   interestTags: d.interestTags,
 });

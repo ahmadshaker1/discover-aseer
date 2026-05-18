@@ -30,7 +30,7 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
 
   const areaDestinations = filterDestinationsByArea(
     allDestinations,
-    destination.destinationFilter,
+    destination.destinationFilterId ?? destination.destinationFilter,
     destination.slug,
   );
   const mapCenter = resolveDestinationMapCenter(destination);

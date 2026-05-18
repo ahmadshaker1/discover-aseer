@@ -5,10 +5,10 @@ import { useLocale, useTranslations } from "next-intl";
 import DestinationsGridCard from "@/components/destinations/DestinationsGridCard";
 import type { Destination } from "@/components/destinations/data";
 import {
-  getCityOptions,
-  getInterestOptions,
-  locationMatchesCityId,
-} from "@/components/landmarks/filterOptions";
+  destinationMatchesFilterId,
+  getDestinationFilterOptions,
+} from "@/components/destinations/filterOptions";
+import { getInterestOptions } from "@/components/landmarks/filterOptions";
 import {
   ChevronDownIcon,
   HeartIcon,
@@ -25,10 +25,10 @@ interface DestinationsMainPageContentProps {
 }
 
 interface FilterState {
-  city: string | null;
+  destinationFilter: string | null;
 }
 
-const INITIAL_FILTERS: FilterState = { city: null };
+const INITIAL_FILTERS: FilterState = { destinationFilter: null };
 
 const includesInterests = (d: Destination, selected: string[]): boolean => {
   if (selected.length === 0) return true;
@@ -39,7 +39,7 @@ const includesInterests = (d: Destination, selected: string[]): boolean => {
 
 /**
  * Browse `/destinations` — same layout as landmarks listing; filters use
- * `Destination.cityId` and `Destination.interestTags` from Directus.
+ * `Destination.destinationFilterId` and `Destination.interestTags` from Directus.
  */
 const DestinationsMainPageContent = ({
   destinations,
@@ -51,14 +51,11 @@ const DestinationsMainPageContent = ({
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
-  const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
+  const destinationFilterOptions = useMemo(
+    () => getDestinationFilterOptions(locale),
+    [locale],
+  );
   const interestOptions = useMemo(() => getInterestOptions(locale), [locale]);
-
-  const includesCity = (d: Destination, city: string | null): boolean => {
-    if (!city) return true;
-    if (d.cityId) return d.cityId === city;
-    return locationMatchesCityId(`${d.location} ${d.area}`, city);
-  };
 
   const interestCounts = useMemo(() => {
     return interestOptions.reduce<Record<string, number>>((acc, option) => {
@@ -70,12 +67,19 @@ const DestinationsMainPageContent = ({
   }, [destinations, interestOptions]);
 
   const visible = useMemo(() => {
-    const cityFiltered = destinations.filter((d) =>
-      includesCity(d, filters.city),
+    const filterId = filters.destinationFilter;
+    const categoryFiltered = destinations.filter((d) =>
+      destinationMatchesFilterId(
+        d.destinationFilterId,
+        d.destinationFilter,
+        filterId,
+      ),
     );
-    if (isBrowse) return cityFiltered;
-    return cityFiltered.filter((d) => includesInterests(d, selectedInterests));
-  }, [filters.city, destinations, selectedInterests, isBrowse]);
+    if (isBrowse) return categoryFiltered;
+    return categoryFiltered.filter((d) =>
+      includesInterests(d, selectedInterests),
+    );
+  }, [filters.destinationFilter, destinations, selectedInterests, isBrowse]);
 
   return (
     <section className="w-full bg-background py-12 text-foreground">
@@ -128,18 +132,18 @@ const DestinationsMainPageContent = ({
 
               <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-border px-6 py-3">
                 <select
-                  aria-label={tCommon("city")}
-                  value={filters.city ?? ""}
+                  aria-label={tCommon("destinationFilter")}
+                  value={filters.destinationFilter ?? ""}
                   onChange={(e) =>
                     setFilters((prev) => ({
                       ...prev,
-                      city: e.target.value ? e.target.value : null,
+                      destinationFilter: e.target.value ? e.target.value : null,
                     }))
                   }
                   className="absolute inset-0 z-10 cursor-pointer opacity-0"
                 >
-                  <option value="">{tCommon("city")}</option>
-                  {cityOptions.map((option) => (
+                  <option value="">{tCommon("destinationFilter")}</option>
+                  {destinationFilterOptions.map((option) => (
                     <option key={option.id} value={option.id}>
                       {option.label}
                     </option>
@@ -153,8 +157,9 @@ const DestinationsMainPageContent = ({
                       className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground"
                       style={{ fontFamily: "Inter, sans-serif" }}
                     >
-                      {cityOptions.find((o) => o.id === filters.city)?.label ??
-                        tCommon("city")}
+                      {destinationFilterOptions.find(
+                        (o) => o.id === filters.destinationFilter,
+                      )?.label ?? tCommon("destinationFilter")}
                     </span>
                   </div>
                   <ChevronDownIcon />
