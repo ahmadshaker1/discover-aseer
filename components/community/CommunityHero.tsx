@@ -165,14 +165,6 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
         className="absolute top-0 z-20 hidden h-full w-[15px] object-cover md:block start-0 ltr:scale-x-[-1]"
       />
 
-      <div
-        className="pointer-events-none absolute top-0 z-2 hidden h-[187px] w-[553px] origin-top-left -rotate-90 translate-y-[120px] md:block start-0 rtl:origin-top-right rtl:rotate-90 rtl:-translate-y-[120px]"
-        aria-hidden
-        style={{ backdropFilter: "blur(400px)" }}
-      >
-        <div className="h-full w-full rounded-full bg-white/10" />
-      </div>
-
       {/* Backend: `data.socialLinks` drives icon links; keep supported platforms in `CommunityHeroSocialLink`. */}
       <div
         className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-12`}

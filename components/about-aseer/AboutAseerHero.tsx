@@ -158,14 +158,6 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
       <div className="absolute inset-0 bg-black/25" />
 
       <div
-        className="pointer-events-none absolute top-0 z-2 hidden h-[187px] w-[553px] origin-top-left -rotate-90 translate-y-[120px] md:block start-0 rtl:origin-top-right rtl:rotate-90 rtl:-translate-y-[120px]"
-        aria-hidden
-        style={{ backdropFilter: "blur(400px)" }}
-      >
-        <div className="h-full w-full rounded-full bg-white/10" />
-      </div>
-
-      <div
         className={`pointer-events-none absolute inset-y-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)] end-0`}
         aria-hidden
       >
