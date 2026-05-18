@@ -46,7 +46,7 @@ const AboutAseerPage = async () => {
       ],
       title: t("title"),
       subtitle: t("heroSubtitle"),
-      backgroundImage: "/assets/aboutAseer/HeroImage.png",
+      backgroundImage: "/assets/aboutAseer/about_banner.webp",
       socialLinks: [
         { platform: "linkedin", url: "https://www.linkedin.com/" },
         { platform: "x", url: "https://x.com/" },
