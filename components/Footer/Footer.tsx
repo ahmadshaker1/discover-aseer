@@ -22,7 +22,7 @@ const Footer = () => {
             <div className="flex h-full w-full items-center justify-between py-5">
               <div className="flex h-[82px] w-[295px] items-start gap-3">
                 <div className="flex h-[82px] w-[100px] flex-col items-start gap-4">
-                  <p className="text-end text-[16px] font-bold leading-[110%]">
+                  <p className="text-start text-[16px] font-bold leading-[110%]">
                     {t("footer.poweredBy")}
                   </p>
                   <Image
@@ -43,130 +43,130 @@ const Footer = () => {
 
           {/* Section 2 */}
           <div className="h-auto pb-6 lg:h-[344px] lg:pb-0">
-            <div className="grid h-full grid-cols-1 gap-8 text-end sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            <div className="grid h-full grid-cols-1 gap-8 text-start sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
               {" "}
               {/* اكتشف عسير */}
-              <div className="flex w-full justify-self-start flex-col items-end text-end">
+              <div className="flex w-full justify-self-start flex-col items-start text-start">
                 <h3
-                  className="w-full text-end text-[14px] font-bold leading-[110%] text-white/80"
+                  className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.discoverAseerTitle")}
                 </h3>
 
                 <div
-                  className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]"
+                  className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
                   style={{ fontFamily: ara }}
                 >
                   <Link
                     href="/destinations"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkMainDestinations")}
                   </Link>
                   <Link
                     href="/attractions"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkAttractions")}
                   </Link>
                   <Link
                     href="/experiences"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkExperiences")}
                   </Link>
                   <Link
                     href="/aseer-cuisine"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkCuisine")}
                   </Link>
                   <Link
                     href="/aseer-community"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkCommunity")}
                   </Link>
                   <Link
                     href="/igcat"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     IGCAT
                   </Link>
                   <Link
                     href="/event-seasons"
-                    className="mt-4 block w-full text-end hover:opacity-80"
+                    className="mt-4 block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkEventsSeasons")}
                   </Link>
                 </div>
               </div>
               {/* خطط لرحلتك */}
-              <div className="flex w-full justify-self-start flex-col items-end text-end">
+              <div className="flex w-full justify-self-start flex-col items-start text-start">
                 <h3
-                  className="w-full text-end text-[14px] font-bold leading-[110%] text-white/80"
+                  className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.planYourTripTitle")}
                 </h3>
 
                 <div
-                  className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]"
+                  className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
                   style={{ fontFamily: ara }}
                 >
                   <Link
                     href="/planner"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkPlanner")}
                   </Link>
                   <Link
                     href="/accommodation"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkAccommodation")}
                   </Link>
                   <Link
                     href="/restaurants"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkRestaurants")}
                   </Link>
                   <Link
                     href="/tour-guides"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkTourGuides")}
                   </Link>
                   <Link
                     href="/travel-tips"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkTravelTips")}
                   </Link>
                 </div>
               </div>
               {/* كتيبات */}
-              <div className="flex w-full justify-self-start flex-col items-end text-end">
+              <div className="flex w-full justify-self-start flex-col items-start text-start">
                 <h3
-                  className="w-full text-end text-[14px] font-bold leading-[110%] text-white/80"
+                  className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.bookletsTitle")}
                 </h3>
 
                 <div
-                  className="flex w-full flex-col items-end text-[18px] font-bold leading-[197%]"
+                  className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
                   style={{ fontFamily: ara }}
                 >
                   <Link
                     href="/about-aseer"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     <span className="inline-flex items-center gap-1 whitespace-nowrap">
                       <span
-                        className="text-end text-[18px] font-bold leading-[197%]"
+                        className="text-start text-[18px] font-bold leading-[197%]"
                         style={{ fontFamily: ara }}
                       >
                         {t("footer.linkDiscoverBooklet")}
@@ -177,11 +177,11 @@ const Footer = () => {
 
                   <Link
                     href="/activities"
-                    className="block w-full text-end hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     <span className="inline-flex items-center gap-1 whitespace-nowrap">
                       <span
-                        className="text-end text-[18px] font-bold leading-[197%]"
+                        className="text-start text-[18px] font-bold leading-[197%]"
                         style={{ fontFamily: ara }}
                       >
                         {t("footer.linkOutdoorGuide")}
@@ -192,9 +192,9 @@ const Footer = () => {
                 </div>
               </div>
               {/* التواصل */}
-              <div className="flex w-full justify-self-start flex-col items-end gap-4 text-end">
+              <div className="flex w-full justify-self-start flex-col items-start gap-4 text-start">
                 <h3
-                  className="w-full text-end text-[14px] font-bold leading-[110%] text-white/80"
+                  className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.contactTitle")}
@@ -202,14 +202,14 @@ const Footer = () => {
 
                 <Link
                   href="/services-support"
-                  className="block w-full text-end text-[18px] font-bold leading-[197%] hover:opacity-80"
+                  className="block w-full text-start text-[18px] font-bold leading-[197%] hover:opacity-80"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.contactUs")}
                 </Link>
 
                 <div
-                  className="w-full text-end text-sm text-white/80"
+                  className="w-full text-start text-sm text-white/80"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.internationalCallCenter")}
@@ -218,20 +218,20 @@ const Footer = () => {
                 <a
                   href="tel:+9669200000890"
                   dir="ltr"
-                  className="block w-full text-end text-lg hover:opacity-80"
+                  className="block w-full text-start text-lg hover:opacity-80"
                 >
                   +966 9200000890
                 </a>
 
                 <div
-                  className="w-full text-end text-xs text-white/70"
+                  className="w-full text-start text-xs text-white/70"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.followUs")}
                 </div>
 
                 <div
-                  className="flex w-full flex-row items-center justify-end gap-3"
+                  className="flex w-full flex-row items-center justify-start gap-3"
                   dir="ltr"
                 >
                   {discoverAseerLinks.map(
@@ -275,23 +275,23 @@ const Footer = () => {
                 </div>
 
                 {/* Newsletter text */}
-                <div className="flex w-full flex-col items-end gap-4 text-end sm:w-[138px]">
+                <div className="flex w-full flex-col items-start gap-4 text-start sm:w-[138px]">
                   <p
-                    className="text-end text-[16px] font-bold leading-[110%]"
+                    className="text-start text-[16px] font-bold leading-[110%]"
                     style={{ fontFamily: ara }}
                   >
                     {t("footer.newsletterTitle")}
                   </p>
-                  <p className="text-end text-[10px] font-normal leading-[100%] text-white">
+                  <p className="text-start text-[10px] font-normal leading-[100%] text-white">
                     {t("common.newsletterDescription")}
                   </p>
                 </div>
               </div>
 
               {/* Middle block */}
-              <div className="flex w-full flex-col items-end gap-3 text-end sm:w-[231px]">
+              <div className="flex w-full flex-col items-start gap-3 text-start sm:w-[231px]">
                 <p
-                  className="text-end text-[16px] font-bold leading-[110%] text-white"
+                  className="text-start text-[16px] font-bold leading-[110%] text-white"
                   style={{ fontFamily: ara }}
                 >
                   {t("common.memberOf")}
@@ -327,7 +327,7 @@ const Footer = () => {
 
             {/* Copyright row below single divider */}
             <div className="mt-4 border-t border-white/20 pt-4">
-              <div className="flex w-full justify-start" dir="ltr">
+              <div className="flex w-full justify-start">
                 <div
                   className="flex h-[20px] w-[237px] items-center gap-6 text-[13px] font-bold leading-[150%]"
                   style={{ fontFamily: ara }}
