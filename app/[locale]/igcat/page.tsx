@@ -6,12 +6,13 @@ import WinnersSection from "@/components/igcat/WinnersSection";
 import FoodFilmSection from "@/components/igcat/FoodFilmSection";
 import InitiativesSection from "@/components/igcat/InitiativesSection";
 import FoodAndDiningSection from "@/components/igcat/FoodAndDiningSection";
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import { getLocale } from "next-intl/server";
 
 export const revalidate = 300;
 
 export default async function IGCatPage() {
-  await getLocale();
+  const locale = (await getLocale()) as "ar" | "en";
 
   return (
     <main className="flex w-full flex-col bg-background text-foreground">
@@ -23,6 +24,7 @@ export default async function IGCatPage() {
       <WinnersSection />
       <FoodFilmSection />
       <FoodAndDiningSection />
+      <EventsInfo />
     </main>
   );
 }

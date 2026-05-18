@@ -69,10 +69,7 @@ const LandingWelcomeSection = ({
   ];
 
   return (
-    <section
-      className="mx-auto w-full max-w-[1440px] bg-background px-4 py-12 text-foreground md:px-[130px] md:py-[86px]"
-     
-    >
+    <section className="mx-auto w-full max-w-[1440px] bg-background px-4 py-12 text-foreground md:px-[130px] md:py-[86px]">
       <div className="mx-auto flex w-full max-w-[1180px] flex-col items-center gap-12 md:gap-[48px]">
         <div className="flex w-full flex-col items-center gap-[50px]">
           <h2

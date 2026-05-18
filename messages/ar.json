@@ -802,6 +802,25 @@
         }
       }
     },
+    "igcatRestaurants": {
+      "items": {
+        "1": {
+          "title": "حصن أبها",
+          "description": "مأكولات شعبية جنوبية بأجواء تراثية أصيلة",
+          "image": "/assets/igcat/restaurants/1.jpg"
+        },
+        "2": {
+          "title": "سدف",
+          "description": "أطباق جنوبية لمسة عصرية فردة",
+          "image": "/assets/igcat/restaurants/2.png"
+        },
+        "3": {
+          "title": "مجلس العساس",
+          "description": "تجارب طهي حية بأطباق عسيرية تقليدية",
+          "image": "/assets/igcat/restaurants/3.png"
+        }
+      }
+    },
 
     "food": {
       "dishesTitle": "الأطباق التقليدية في عسير",

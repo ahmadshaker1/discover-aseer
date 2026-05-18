@@ -795,6 +795,27 @@
         }
       }
     },
+
+    "igcatRestaurants": {
+      "items": {
+        "1": {
+          "title": "Fort Abha",
+          "description": "Southern popular dishes in a traditional setting",
+          "image": "/assets/igcat/restaurants/1.jpg"
+        },
+        "2": {
+          "title": "Sadaf",
+          "description": "Southern dishes with a unique contemporary touch",
+          "image": "/assets/igcat/restaurants/2.png"
+        },
+        "3": {
+          "title": "Al-Assas Gathering",
+          "description": "Live cooking experiences with traditional Aseeri dishes",
+          "image": "/assets/igcat/restaurants/3.png"
+        }
+      }
+    },
+
     "food": {
       "dishesTitle": "Traditional dishes in Aseer",
       "dishesCta": "Aseeri cuisine",

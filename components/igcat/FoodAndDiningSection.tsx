@@ -3,8 +3,10 @@
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const DISH_IDS = ["1", "2", "3", "4"] as const;
+const RESTAURANT_IDS = ["1", "2", "3"] as const;
 
 type SelectedDish = {
   id: string;
@@ -15,6 +17,7 @@ type SelectedDish = {
 export default function FoodAndDiningSection() {
   const tSection = useTranslations("igcat.food");
   const tDish = useTranslations("igcat.igcatDishes");
+  const tRestaurants = useTranslations("igcat.igcatRestaurants");
   const [selectedDish, setSelectedDish] = useState<SelectedDish | null>(null);
 
   const openDish = (id: string) => {
@@ -29,10 +32,24 @@ export default function FoodAndDiningSection() {
     <div className="w-full">
       <section className="bg-background py-16 md:py-24">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 flex items-center justify-between gap-4">
-            <h2 className="text-start text-[28px] font-bold leading-tight text-foreground md:text-[36px]">
-              {tSection("dishesTitle")}
-            </h2>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-6">
+            <div className="flex flex-col items-start w-full sm:w-auto">
+              <span className="inline-block px-5 py-1 border border-[#7300CD] text-[#7300CD] rounded-full text-sm font-bold mb-2">
+                {tSection("dishesTitle")}
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold text-black">
+                {tSection("dishesTitle")}
+              </h2>
+            </div>
+
+            <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-end">
+              <Link
+                href="/aseer-cuisine"
+                className="inline-block px-8 py-2 border border-[#7300CD] text-[#7300CD] rounded-full text-sm font-bold hover:bg-[#F3EFFF] transition-colors"
+              >
+                {tSection("dishesCta")}
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-6">
@@ -59,6 +76,64 @@ export default function FoodAndDiningSection() {
           </div>
         </div>
       </section>
+      <section className="bg-background py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-6">
+            <div className="flex flex-col items-start w-full sm:w-auto">
+              <span className="inline-block px-5 py-1 border border-[#7300CD] text-[#7300CD] rounded-full text-sm font-bold mb-2">
+                {tSection("restaurantsTitle")}
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold text-black">
+                {tSection("restaurantsTitle")}
+              </h2>
+            </div>
+
+            <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-end">
+              <Link
+                href="/restaurants"
+                className="inline-block px-8 py-2 border border-[#7300CD] text-[#7300CD] rounded-full text-sm font-bold hover:bg-[#F3EFFF] transition-colors"
+              >
+                {tSection("restaurantsCta")}
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {RESTAURANT_IDS.map((id) => (
+              <div
+                key={id}
+                className="relative w-full h-[400px] md:h-[450px] rounded-[2rem] overflow-hidden group shadow-md"
+              >
+                {tRestaurants(`items.${id}.image`) ? (
+                  <img
+                    src={tRestaurants(`items.${id}.image`)}
+                    alt={tRestaurants(`items.${id}.title`)}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-400 text-sm">
+                      {tSection("noRestaurants")}
+                    </span>
+                  </div>
+                )}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none"></div>
+
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-right z-10">
+                  <h3 className="text-white font-bold text-2xl mb-2 drop-shadow-md">
+                    {tRestaurants(`items.${id}.title`)}
+                  </h3>
+                  <p className="text-gray-300 text-base leading-relaxed drop-shadow-sm">
+                    {tRestaurants(`items.${id}.description`)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section></section>
 
       <Dialog
         open={selectedDish !== null}
