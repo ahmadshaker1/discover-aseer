@@ -228,7 +228,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                   onClick={goPrev}
                   className="flex h-16 w-[200px] items-center justify-center gap-2 rounded-full p-2 text-white opacity-80 transition-colors hover:bg-white/20"
                 >
-                  <span className="">
+                  <span className="inline-flex shrink-0 rtl:rotate-180">
                     <ChevronRight />
                   </span>
                   <span style={{ fontFamily: ara }}>{prevSlide?.title}</span>
@@ -239,7 +239,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                   className="flex h-16 w-[200px] items-center justify-center gap-2 rounded-full p-2 text-white opacity-80 transition-colors hover:bg-white/20"
                 >
                   <span style={{ fontFamily: ara }}>{nextSlide?.title}</span>
-                  <span className="">
+                  <span className="inline-flex shrink-0 rtl:rotate-180">
                     <ChevronLeft />
                   </span>
                 </button>
