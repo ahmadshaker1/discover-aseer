@@ -336,10 +336,10 @@
   "aboutAseer": {
     "title": "About Aseer",
     "breadcrumbAbout": "About Aseer",
-    "heroSubtitle": "Discover the natural and cultural diversity of the region.",
+    "heroSubtitle": "Explore the region's natural landscapes and living cultural heritage.",
     "story": {
-      "sectionTitle": "Aseer tells the story of place",
-      "sectionSubtitle": "From cool highlands to plains and coastlines, Aseer brings natural diversity and cultural depth into one journey.",
+      "sectionTitle": "Enchanted by its diversity",
+      "sectionSubtitle": "Across thousands of kilometres in southwestern Saudi Arabia, Aseer unfolds as a legendary story of mist-draped peaks, green plains, warm Red Sea shores, and proud desert silence—woven with ancient history, authentic culture, and generous hospitality.",
       "sectionCaption": "Discover Aseer to rediscover Saudi Arabia.",
       "highlights": {
         "h1": "Al Soudah Mountains",
@@ -349,16 +349,24 @@
       },
       "slides": {
         "culture1": {
-          "title": "Land of culture and arts",
-          "description": "Aseer thrives with folk arts, crafts and festivals, making it a destination full of identity and creativity."
+          "title": "Land of culture and the arts",
+          "description": "For lovers of authentic arts, Aseer is an unrepeatable rendezvous. Its diverse terrain has shaped equally diverse performing and folk traditions—from mountain flutes and UNESCO-listed Al-Qatt wall art to rooted dance forms and the iconic circular Qasab architecture."
         },
         "nature2": {
-          "title": "Exceptional geographic diversity",
-          "description": "Aseer's terrain varies between mountains, valleys and coastlines, offering distinct weather and experiences every trip."
+          "title": "A symphony only nature can compose",
+          "description": "From peaks above 3,000 metres to sea-level shores, with plains, valleys, and dunes between, Aseer offers varied climates and rainfall through much of the year. More than half of the Kingdom's green cover meets 125 kilometres of Red Sea coast, with rare wildlife from the Asir magpie in the highlands to flamingos on the shore."
         },
         "heritage3": {
-          "title": "Living and renewed heritage",
-          "description": "Historic villages and architecture in Aseer reflect a unique blend of authenticity and future ambition."
+          "title": "Seven centuries of history",
+          "description": "If you are drawn to history, Aseer holds more than seven centuries that refuse to fade—fortresses, castles, and palaces across more than four thousand villages between its cities and governorates, each carrying the story and courage of a proud people."
+        },
+        "architectural4": {
+          "title": "Architectural heritage",
+          "description": "Aseer is among the world's largest open-air museums, with more than nine thousand heritage buildings across the Kingdom and dozens of museums welcoming thousands of visitors each year. Varied terrain and climate shaped distinctive building traditions that still stand as testimony to local ingenuity and enduring civilization."
+        },
+        "culinaryArts5": {
+          "title": "Culinary arts",
+          "description": "Aseeri cuisine brings one region to the table: highland coffee, Bisha dates, mountain wheat and plain sorghum with fresh dairy and wildflower honey, and slow-cooked haneeth from local herds—from areekah and mashgothah to mifa bread from the tannur and marqoush in every bite."
         }
       }
     }
