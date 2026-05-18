@@ -1,7 +1,6 @@
 "use client";
 
 import { PointOfInterest } from "./data";
-import SafeHtml from "@/components/common/SafeHtml";
 import type { ReactNode } from "react";
 
 interface TextOverlayProps {
@@ -25,14 +24,11 @@ export const TextOverlay = ({ point, carouselSlot }: TextOverlayProps) => {
 
         {/* Bottom — text (start) + previews (end, wider strip) */}
         <div className="mt-8 flex w-full flex-col gap-5 sm:mt-12 md:mt-16 lg:mt-16 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
-          <div className="flex w-full max-w-[397px] shrink-0 flex-col gap-4 self-start text-start lg:h-[99px] lg:gap-[33px]">
-            <h3 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
-              {point.location}
-            </h3>
-            <SafeHtml
-              html={point.description}
-              className="max-w-full text-start text-sm text-white/90 sm:text-base md:text-lg lg:text-xl"
-            />
+          <div className="flex w-full max-w-[397px] shrink-0 flex-col gap-4 self-start text-start lg:gap-[33px]">
+
+            <p className="line-clamp-3 max-w-full text-start text-sm text-white/90 sm:text-base md:text-lg lg:text-xl">
+              {point.description}
+            </p>
           </div>
           <div className="pointer-events-auto w-full min-h-0 min-w-0 max-w-full flex-1 self-stretch overflow-x-visible overflow-y-visible lg:max-w-[min(100%,820px)] lg:self-end">
             {carouselSlot}
