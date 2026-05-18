@@ -20,6 +20,12 @@ import {
   ensureMapboxRtlTextPluginRegistered,
   setMapLabelLanguage,
 } from "@/lib/mapbox/mapboxLocale";
+import {
+  MAP_CATEGORY_ICONS,
+  MAP_CATEGORY_KEYS,
+  resolvePlaceCategoryKey,
+  type MapCategoryKey,
+} from "./mapCategories";
 
 interface LocationPin {
   id: string;
@@ -74,18 +80,8 @@ const toMapCardDescription = (html: string): string => {
   return `${plain.slice(0, CARD_DESCRIPTION_MAX_LENGTH).trimEnd()}…`;
 };
 
-const CATEGORY_CHIPS = [
-  { label: "استفسارات" },
-  { label: "التجارب السياحية" },
-  { label: "المعالم السياحية" },
-  { label: "تقييم + مكافآت" },
-  { label: "مطاعم وكافيهات" },
-  { label: "أماكن الإقامة" },
-] as const;
-
 const UI_KEYS = [
   "all",
-  "allCategories",
   "discover",
   "filterLabel",
   "search",
@@ -138,7 +134,9 @@ const InteractiveMap = ({
   const popupRef = useRef<mapboxgl.Popup | null>(null);
   const placesRef = useRef<MapPlace[]>(EMPTY_PLACES);
 
-  const [activeCategory, setActiveCategory] = useState<string>(ui.all);
+  const [activeCategories, setActiveCategories] = useState<MapCategoryKey[]>(
+    [],
+  );
   const [selectedCity, setSelectedCity] = useState<string>(ui.all);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
@@ -149,11 +147,25 @@ const InteractiveMap = ({
     [places, ui.all],
   );
 
+  const categoryLabel = useCallback(
+    (key: MapCategoryKey) => t(`categories.${key}`),
+    [t],
+  );
+
+  const toggleCategory = useCallback((key: MapCategoryKey) => {
+    setActiveCategories((prev) =>
+      prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key],
+    );
+  }, []);
+
   const filteredPlaces = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
     return places.filter((place) => {
+      const placeCategoryKey = resolvePlaceCategoryKey(place);
       const categoryMatch =
-        activeCategory === ui.all || place.category === activeCategory;
+        activeCategories.length === 0 ||
+        (placeCategoryKey != null &&
+          activeCategories.includes(placeCategoryKey));
       const cityMatch = selectedCity === ui.all || place.city === selectedCity;
       const searchMatch =
         normalizedSearch.length === 0 ||
@@ -161,7 +173,7 @@ const InteractiveMap = ({
         place.description.toLowerCase().includes(normalizedSearch);
       return categoryMatch && cityMatch && searchMatch;
     });
-  }, [activeCategory, places, searchTerm, selectedCity, ui.all]);
+  }, [activeCategories, places, searchTerm, selectedCity, ui.all]);
 
   const mappablePlaces = useMemo(
     () =>
@@ -458,30 +470,26 @@ const InteractiveMap = ({
         <div
           className={`absolute top-4 z-20 flex max-w-[78%] flex-wrap gap-2 start-4`}
         >
-          <Button
-            type="button"
-            onClick={() => setActiveCategory(ui.all)}
-            className={`rounded-full border px-4 py-1.5 text-[12px] font-medium shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${activeCategory === ui.all
-              ? "border-primary bg-primary text-primary-foreground"
-              : "border-border bg-surface text-foreground"
-              }`}
-          >
-            {ui.all}
-          </Button>
-          {CATEGORY_CHIPS.map((chip) => (
-            <Button
-              key={chip.label}
-              type="button"
-              onClick={() => setActiveCategory(chip.label)}
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${activeCategory === chip.label
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-surface text-foreground"
-                }`}
-            >
-
-              <span>{chip.label}</span>
-            </Button>
-          ))}
+          {MAP_CATEGORY_KEYS.map((key) => {
+            const Icon = MAP_CATEGORY_ICONS[key];
+            const label = categoryLabel(key);
+            const isActive = activeCategories.includes(key);
+            return (
+              <Button
+                key={key}
+                type="button"
+                aria-pressed={isActive}
+                onClick={() => toggleCategory(key)}
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[14px] font-medium leading-tight shadow-sm transition data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${isActive
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-surface text-foreground"
+                  }`}
+              >
+                <Icon className="size-5" />
+                <span>{label}</span>
+              </Button>
+            );
+          })}
         </div>
       </div>
 
@@ -518,7 +526,7 @@ const InteractiveMap = ({
             onClick={() => {
               setSearchTerm("");
               setSelectedCity(ui.all);
-              setActiveCategory(ui.all);
+              setActiveCategories([]);
               setSelectedPlaceId(null);
               popupRef.current?.remove();
             }}
@@ -528,7 +536,7 @@ const InteractiveMap = ({
           </Button>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 border-b border-border p-3">
+        <div className="border-b border-border p-3">
           <Listbox value={selectedCity} onChange={setSelectedCity}>
             <div className="relative">
               <ListboxButton className="flex h-9 w-full cursor-pointer items-center justify-between gap-1 rounded-md border border-border bg-background px-2 text-start text-[12px] text-foreground data-focus:border-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary/30">
@@ -550,43 +558,6 @@ const InteractiveMap = ({
                     className="cursor-pointer px-3 py-2 text-foreground data-focus:bg-muted data-selected:bg-primary/10 data-selected:font-semibold"
                   >
                     {city}
-                  </ListboxOption>
-                ))}
-              </ListboxOptions>
-            </div>
-          </Listbox>
-
-          <Listbox value={activeCategory} onChange={setActiveCategory}>
-            <div className="relative">
-              <ListboxButton className="flex h-9 w-full cursor-pointer items-center justify-between gap-1 rounded-md border border-border bg-background px-2 text-start text-[12px] text-foreground data-focus:border-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary/30">
-                <span className="min-w-0 truncate">
-                  {activeCategory === ui.all
-                    ? ui.allCategories
-                    : activeCategory}
-                </span>
-                <span className="shrink-0 text-[10px] opacity-60" aria-hidden>
-                  ▾
-                </span>
-              </ListboxButton>
-              <ListboxOptions
-                anchor="bottom end"
-                transition
-                modal={false}
-                className="z-100 max-h-56 w-(--button-width) overflow-auto rounded-md border border-border bg-background py-1 text-[12px] shadow-lg [--anchor-gap:4px] transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0"
-              >
-                <ListboxOption
-                  value={ui.all}
-                  className="cursor-pointer px-3 py-2 text-foreground data-focus:bg-muted data-selected:bg-primary/10 data-selected:font-semibold"
-                >
-                  {ui.allCategories}
-                </ListboxOption>
-                {CATEGORY_CHIPS.map((chip) => (
-                  <ListboxOption
-                    key={chip.label}
-                    value={chip.label}
-                    className="cursor-pointer px-3 py-2 text-foreground data-focus:bg-muted data-selected:bg-primary/10 data-selected:font-semibold"
-                  >
-                    {chip.label}
                   </ListboxOption>
                 ))}
               </ListboxOptions>
