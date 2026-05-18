@@ -7,6 +7,7 @@ import type { Destination } from "@/components/destinations/data";
 import {
   destinationMatchesFilterId,
   getDestinationFilterOptions,
+  type DestinationFilterId,
 } from "@/components/destinations/filterOptions";
 import { getInterestOptions } from "@/components/landmarks/filterOptions";
 import {
@@ -22,6 +23,8 @@ interface DestinationsMainPageContentProps {
   destinations: Destination[];
   /** Browse page: same filter chrome as default, but no interest checkboxes. */
   filterLayout?: "default" | "browse";
+  /** From `/destinations?filter=` (e.g. About Aseer landscape cards). */
+  initialDestinationFilter?: DestinationFilterId | null;
 }
 
 interface FilterState {
@@ -44,11 +47,14 @@ const includesInterests = (d: Destination, selected: string[]): boolean => {
 const DestinationsMainPageContent = ({
   destinations,
   filterLayout = "default",
+  initialDestinationFilter = null,
 }: DestinationsMainPageContentProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
   const isBrowse = filterLayout === "browse";
-  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
+  const [filters, setFilters] = useState<FilterState>(() => ({
+    destinationFilter: initialDestinationFilter ?? null,
+  }));
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   const destinationFilterOptions = useMemo(

@@ -2,13 +2,20 @@ import { getLocale, getTranslations } from "next-intl/server";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import DestinationsMainPageContent from "@/components/destinations/DestinationsMainPageContent";
 import { fetchDestinations } from "@/components/destinations/data";
+import { parseDestinationsFilterParam } from "@/components/destinations/filterOptions";
 
 const TOUR_GUIDE_REGISTER_HREF = "/tour-guides/register";
 
-const DestinationsPage = async () => {
+interface DestinationsPageProps {
+  searchParams: Promise<{ filter?: string }>;
+}
+
+const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
   const locale = (await getLocale()) as "ar" | "en";
   const t = await getTranslations("attractionsPage");
   const tCommon = await getTranslations("common");
+  const { filter: filterParam } = await searchParams;
+  const initialDestinationFilter = parseDestinationsFilterParam(filterParam);
   const destinations = await fetchDestinations(locale);
 
   return (
@@ -30,6 +37,7 @@ const DestinationsPage = async () => {
       <DestinationsMainPageContent
         destinations={destinations}
         filterLayout="browse"
+        initialDestinationFilter={initialDestinationFilter}
       />
     </div>
   );

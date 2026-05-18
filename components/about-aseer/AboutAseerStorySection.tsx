@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import type { ComponentProps } from "react";
 import { useEffect, useMemo, useState } from "react";
+
+type StoryLinkHref = ComponentProps<typeof Link>["href"];
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -18,8 +21,8 @@ export interface AboutStoryHighlightCard {
   id: string;
   image: string;
   title: string;
-  /** When set, the card links to `/attractions/{slug}`. */
-  href?: string;
+  /** When set, the card links to destinations (or another internal route). */
+  href?: StoryLinkHref;
 }
 
 export interface AboutStoryContent {

@@ -5,6 +5,7 @@ import AboutAseerHero, {
 import AboutAseerStorySection, {
   type AboutStoryContent,
 } from "@/components/about-aseer/AboutAseerStorySection";
+import { ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS } from "@/components/destinations/filterOptions";
 const HIGHLIGHT_TITLE_KEYS = [
   "story.highlights.h1",
   "story.highlights.h2",
@@ -27,6 +28,10 @@ const AboutAseerPage = async () => {
     id: `h-${index + 1}`,
     title: t(titleKey),
     image: HIGHLIGHT_IMAGES[index],
+    href: {
+      pathname: "/destinations",
+      query: { filter: ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS[index] },
+    },
   }));
 
   const aboutPageData: {

@@ -27,6 +27,22 @@ export const DESTINATION_FILTER_DEFS = [
 
 export type DestinationFilterId = (typeof DESTINATION_FILTER_DEFS)[number]["id"];
 
+/** Landscape keys used on About Aseer / film pages (same card order). */
+export const LANDSCAPE_TO_DESTINATION_FILTER = {
+  mountains: "mountain-peaks",
+  plains: "tihama-plains",
+  beaches: "coastal-beaches",
+  desert: "desert-nature",
+} as const satisfies Record<string, DestinationFilterId>;
+
+/** About Aseer highlight cards → `/destinations?filter=` values (h1–h4). */
+export const ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS: DestinationFilterId[] = [
+  LANDSCAPE_TO_DESTINATION_FILTER.mountains,
+  LANDSCAPE_TO_DESTINATION_FILTER.plains,
+  LANDSCAPE_TO_DESTINATION_FILTER.beaches,
+  LANDSCAPE_TO_DESTINATION_FILTER.desert,
+];
+
 function pickLocale(locale: string): "ar" | "en" {
   return locale === "en" ? "en" : "ar";
 }
@@ -58,6 +74,26 @@ export function resolveDestinationFilterId(
   }
 
   return undefined;
+}
+
+/** Parse `?filter=` on `/destinations` (filter id, landscape key, or CMS Arabic label). */
+export function parseDestinationsFilterParam(
+  filter: string | null | undefined,
+): DestinationFilterId | null {
+  const clean = (filter || "").trim().toLowerCase();
+  if (!clean) return null;
+
+  if (DESTINATION_FILTER_DEFS.some((d) => d.id === clean)) {
+    return clean as DestinationFilterId;
+  }
+
+  if (clean in LANDSCAPE_TO_DESTINATION_FILTER) {
+    return LANDSCAPE_TO_DESTINATION_FILTER[
+      clean as keyof typeof LANDSCAPE_TO_DESTINATION_FILTER
+    ];
+  }
+
+  return resolveDestinationFilterId(filter) ?? null;
 }
 
 export function destinationMatchesFilterId(
