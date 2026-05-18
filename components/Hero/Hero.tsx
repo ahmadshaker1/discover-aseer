@@ -1,254 +1,190 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
+import { Link } from "@/i18n/navigation";
 import HeroSocialLinks, {
   heroSocialLinkClassDesktop,
   heroSocialLinkClassMobile,
 } from "@/components/Hero/HeroSocialLinks";
 
-import Image from "next/image";
-
-interface HeroProps {
-  title?: string;
-  subtitle?: string;
-}
-
-const HERO_SLIDES = [
-  "/assets/landing/discover-aseer-hero.jpg",
-  "/assets/landing/hero-aseer-cultural.png",
-] as const;
+const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const AUTOPLAY_MS = 5000;
-const SWIPE_THRESHOLD_PX = 48;
-const TRANSITION_MS = 500;
 
-const mod = (value: number, length: number) => ((value % length) + length) % length;
+type HeroSlideConfig = {
+  id: string;
+  image: string;
+  titleKey: "slide1.title" | "slide2.title";
+  subtitleKey: "slide1.subtitle" | "slide2.subtitle";
+  ctaKey: "slide1.cta" | "slide2.cta";
+  href: "/interactive-map" | "/aseer-cuisine";
+  largeTitle: boolean;
+  logo?: string;
+};
 
-const Hero = ({ title, subtitle }: HeroProps) => {
+const HERO_SLIDES: HeroSlideConfig[] = [
+  {
+    id: "aseer",
+    image: "/assets/landing/hero-slide-aseer.png",
+    titleKey: "slide1.title",
+    subtitleKey: "slide1.subtitle",
+    ctaKey: "slide1.cta",
+    href: "/interactive-map",
+    largeTitle: true,
+  },
+  {
+    id: "cuisine",
+    image: "/assets/landing/hero-slide-cuisine.png",
+    logo: "/assets/landing/hero-slide-cuisine-logo.png",
+    titleKey: "slide2.title",
+    subtitleKey: "slide2.subtitle",
+    ctaKey: "slide2.cta",
+    href: "/aseer-cuisine",
+    largeTitle: true,
+  },
+];
+
+const CTA_CLASS =
+  "inline-flex min-h-[44px] max-w-[260px] cursor-pointer items-center justify-center rounded-full border border-white/20 bg-gray-500/50 px-6 py-2 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:border-[#6027D2] hover:bg-[#6027D2] md:max-w-none";
+
+const Hero = () => {
+  const t = useTranslations("home.heroSlides");
   const locale = useLocale();
-  const isRtl = locale === "ar";
-  const t = useTranslations("home");
-  const displayTitle = title ?? t("heroTitle");
-  const displaySubtitle = subtitle ?? t("heroSubtitle");
-
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [transitionEnabled, setTransitionEnabled] = useState(false);
-
-  const heroRef = useRef<HTMLDivElement>(null);
-  const pointerIdRef = useRef<number | null>(null);
-  const startXRef = useRef(0);
-  const isDraggingRef = useRef(false);
-  const dragOffsetRef = useRef(0);
-  const autoplayRef = useRef<number | null>(null);
-
-  const slideCount = HERO_SLIDES.length;
-
-  const clearAutoplay = useCallback(() => {
-    if (autoplayRef.current !== null) {
-      window.clearInterval(autoplayRef.current);
-      autoplayRef.current = null;
-    }
-  }, []);
-
-  const startAutoplay = useCallback(() => {
-    clearAutoplay();
-    if (slideCount <= 1) return;
-
-    autoplayRef.current = window.setInterval(() => {
-      if (isDraggingRef.current) return;
-      setDragOffset(0);
-      setActiveIndex((current) => mod(current + 1, slideCount));
-    }, AUTOPLAY_MS);
-  }, [clearAutoplay, slideCount]);
-
-  useLayoutEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setTransitionEnabled(true));
-    });
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
-  useEffect(() => {
-    startAutoplay();
-    return clearAutoplay;
-  }, [clearAutoplay, startAutoplay]);
-
-  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (slideCount <= 1 || event.button !== 0) return;
-
-    clearAutoplay();
-    pointerIdRef.current = event.pointerId;
-    startXRef.current = event.clientX;
-    isDraggingRef.current = true;
-    setIsDragging(true);
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (pointerIdRef.current !== event.pointerId) return;
-
-    const delta = event.clientX - startXRef.current;
-    if (Math.abs(delta) > 4) {
-      event.preventDefault();
-    }
-    dragOffsetRef.current = delta;
-    setDragOffset(delta);
-  };
-
-  const onPointerEnd = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (pointerIdRef.current !== event.pointerId) return;
-
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
-
-    pointerIdRef.current = null;
-    isDraggingRef.current = false;
-    setIsDragging(false);
-
-    const width = heroRef.current?.offsetWidth ?? 0;
-    const threshold = Math.min(SWIPE_THRESHOLD_PX, width * 0.12);
-    const offset = dragOffsetRef.current;
-
-    if (width > 0 && offset < -threshold) {
-      dragOffsetRef.current = 0;
-      setDragOffset(0);
-      setActiveIndex((current) => mod(current + 1, slideCount));
-    } else if (width > 0 && offset > threshold) {
-      dragOffsetRef.current = 0;
-      setDragOffset(0);
-      setActiveIndex((current) => mod(current - 1, slideCount));
-    } else {
-      dragOffsetRef.current = 0;
-      setDragOffset(0);
-    }
-
-    startAutoplay();
-  };
-
-  const slideStepPercent = 100 / slideCount;
-
-  const trackStyle: React.CSSProperties = {
-    width: `${slideCount * 100}%`,
-    transform: `translateX(calc(-${activeIndex * slideStepPercent}% + ${dragOffset}px))`,
-    transition:
-      isDragging || !transitionEnabled
-        ? "none"
-        : `transform ${TRANSITION_MS}ms ease-in-out`,
-  };
+  const isLtr = locale === "en";
 
   return (
-    <section className="w-full bg-[#070707]">
-      <div
-        ref={heroRef}
-        className="relative h-[756px] w-full touch-pan-y overflow-hidden select-none"
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerEnd}
-        onPointerCancel={onPointerEnd}
-        role="region"
-        aria-roledescription="carousel"
-        aria-label={displayTitle}
+    <section className="relative w-full bg-[#070707]">
+      <Swiper
+        modules={[Autoplay]}
+        className="hero-main-swiper h-[756px] w-full"
+        dir={isLtr ? "ltr" : "rtl"}
+        loop={HERO_SLIDES.length > 1}
+        speed={600}
+        autoplay={
+          HERO_SLIDES.length > 1
+            ? { delay: AUTOPLAY_MS, disableOnInteraction: false }
+            : false
+        }
       >
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="flex h-full" style={trackStyle} dir="ltr">
-            {HERO_SLIDES.map((src, index) => (
+        {HERO_SLIDES.map((slide, index) => (
+          <SwiperSlide key={slide.id} className="relative h-[756px] w-full">
+            <Image
+              src={slide.image}
+              alt=""
+              fill
+              priority={index === 0}
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div
+              className="pointer-events-none absolute inset-0 z-1 bg-black/35"
+              aria-hidden
+            />
+
+            <div className="relative z-10 mx-auto h-full w-full max-w-[1440px] px-6 md:px-[130px]">
               <div
-                key={src}
-                className="h-full shrink-0 grow-0 bg-cover bg-center bg-no-repeat"
-                style={{
-                  width: `${slideStepPercent}%`,
-                  backgroundImage: `url('${src}')`,
-                }}
-                aria-hidden={index !== activeIndex}
-              />
-            ))}
+                className={
+                  isLtr
+                    ? "mr-auto flex h-full w-full max-w-[616px] flex-col justify-center text-left"
+                    : "ml-auto flex h-full w-full max-w-[616px] flex-col justify-center text-right"
+                }
+              >
+                {slide.logo ? (
+                  <Image
+                    src={slide.logo}
+                    alt=""
+                    width={240}
+                    height={120}
+                    className={`mb-4 h-auto w-[150px] lg:mb-6 lg:w-[240px] ${isLtr ? "mr-auto" : "ml-auto"}`}
+                    priority={index === 1}
+                  />
+                ) : null}
+
+                <div
+                  className={`flex w-full max-w-[527px] flex-col gap-3 md:gap-4 ${isLtr ? "mr-auto text-left" : "ml-auto text-right"}`}
+                >
+                  <h1
+                    className="w-full text-white"
+                    style={{
+                      fontFamily: ara,
+                      fontWeight: 700,
+                      ...(slide.largeTitle
+                        ? {
+                            fontSize: "clamp(44px, 5vw, 88px)",
+                            lineHeight: "119%",
+                          }
+                        : {
+                            fontSize: "clamp(28px, 4vw, 66px)",
+                            lineHeight: "1.1",
+                          }),
+                    }}
+                  >
+                    {t(slide.titleKey)}
+                  </h1>
+
+                  <p
+                    className="w-full text-base leading-[1.33] text-white md:text-[clamp(18px,1.9vw,24px)]"
+                    style={{ fontFamily: ara, fontWeight: 700 }}
+                  >
+                    {t(slide.subtitleKey)}
+                  </p>
+                </div>
+
+                <Link
+                  href={slide.href}
+                  className={`${CTA_CLASS} mt-6 ${isLtr ? "mr-auto" : "ml-auto"}`}
+                >
+                  {t(slide.ctaKey)}
+                </Link>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <Image
+        src="/hero-pattern/ribbon_column.png"
+        alt=""
+        aria-hidden
+        className={`pointer-events-none absolute top-0 z-20 h-full object-cover ${isLtr ? "left-0 -scale-x-100" : "right-0"}`}
+        width={15}
+        height={100}
+      />
+
+      <div className="pointer-events-none absolute inset-0 z-30">
+        <div className="pointer-events-auto absolute inset-x-0 bottom-5 flex flex-row items-center justify-center gap-2 px-3 text-white md:hidden">
+          <div
+            className="h-px min-w-[20px] max-w-[56px] flex-1 bg-white"
+            aria-hidden
+          />
+          <div className="flex max-w-full flex-row flex-wrap items-center justify-center gap-1.5">
+            <HeroSocialLinks linkClassName={heroSocialLinkClassMobile} />
           </div>
+          <div
+            className="h-px min-w-[20px] max-w-[56px] flex-1 bg-white"
+            aria-hidden
+          />
         </div>
 
         <div
-          className="pointer-events-none absolute inset-0 z-1 bg-black/35"
-          aria-hidden
-        />
-
-        <Image
-          src="/hero-pattern/ribbon_column.png"
-          alt=""
-          aria-hidden
-          className={`pointer-events-none absolute top-0 z-20 h-full object-cover ${
-            isRtl ? "left-0" : "right-0"
-          }`}
-          width={15}
-          height={100}
-        />
-
-        <div className="pointer-events-none relative z-10 mx-auto h-full w-full max-w-[1440px] px-6 md:px-[130px]">
+          className={`pointer-events-auto absolute top-1/2 hidden -translate-y-1/2 flex-col items-center md:flex ${isLtr ? "right-4 md:right-10" : "left-4 md:left-10"}`}
+          dir="ltr"
+        >
           <div
-            className="pointer-events-auto absolute inset-x-0 bottom-5 z-30 flex flex-row items-center justify-center gap-2 px-3 text-white md:hidden"
-            dir="ltr"
-          >
-            <div className="h-px min-w-[20px] max-w-[56px] flex-1 bg-white" aria-hidden />
-            <div className="flex max-w-full flex-row flex-wrap items-center justify-center gap-1.5">
-              <HeroSocialLinks linkClassName={heroSocialLinkClassMobile} />
-            </div>
-            <div className="h-px min-w-[20px] max-w-[56px] flex-1 bg-white" aria-hidden />
+            className="mb-3 h-14 w-px shrink-0 bg-white md:mb-[15px] md:h-20"
+            aria-hidden
+          />
+          <div className="flex flex-col items-center gap-3 text-white md:gap-[15px]">
+            <HeroSocialLinks linkClassName={heroSocialLinkClassDesktop} />
           </div>
-
           <div
-            className={`pointer-events-auto absolute top-1/2 z-30 hidden -translate-y-1/2 flex-col items-center md:flex ${
-              isRtl ? "left-4 md:left-10" : "right-4 md:right-10"
-            }`}
-            dir="ltr"
-          >
-            <div
-              className="mb-3 h-14 w-px shrink-0 bg-white md:mb-[15px] md:h-20"
-              aria-hidden
-            />
-            <div className="flex flex-col items-center gap-3 text-white md:gap-[15px]">
-              <HeroSocialLinks linkClassName={heroSocialLinkClassDesktop} />
-            </div>
-            <div
-              className="mt-3 h-14 w-px shrink-0 bg-white md:mt-[15px] md:h-20"
-              aria-hidden
-            />
-          </div>
-
-          <div
-            className={`absolute top-0 flex h-full w-full flex-col justify-center md:w-[616px] ${
-              isRtl
-                ? "right-6 text-right md:right-[130px]"
-                : "left-6 text-left md:left-[130px]"
-            }`}
-          >
-            <div className="flex w-full flex-col gap-[50px] md:h-[134px]">
-              <h1
-                className="text-white"
-                style={{
-                  fontFamily: "var(--font-ara-hamah-1964), sans-serif",
-                  fontWeight: 700,
-                  fontSize: "clamp(44px, 5vw, 88px)",
-                  lineHeight: "119%",
-                }}
-              >
-                {displayTitle}
-              </h1>
-
-              <p
-                className="text-white"
-                style={{
-                  fontFamily: "var(--font-ara-hamah-1964), sans-serif",
-                  fontWeight: 700,
-                  fontSize: "clamp(18px, 1.9vw, 24px)",
-                  lineHeight: "133%",
-                }}
-              >
-                {displaySubtitle}
-              </p>
-            </div>
-          </div>
+            className="mt-3 h-14 w-px shrink-0 bg-white md:mt-[15px] md:h-20"
+            aria-hidden
+          />
         </div>
       </div>
     </section>

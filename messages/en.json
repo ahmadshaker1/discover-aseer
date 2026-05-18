@@ -160,6 +160,18 @@
   "home": {
     "heroTitle": "A warm welcome to Aseer",
     "heroSubtitle": "Where timeless traditions meet stunning landscapes, with a unique blend of culture, adventure and unmatched beauty.",
+    "heroSlides": {
+      "slide1": {
+        "title": "Aseer.. Awakening Wonder",
+        "subtitle": "A delightful blend of contrasting natural beauty and deeply rooted authenticity, intricately detailed in every aspect.",
+        "cta": "Interactive map"
+      },
+      "slide2": {
+        "title": "Aseeri cuisine",
+        "subtitle": "Discover traditional dishes and unique flavors from the world's first gastronomy region outside Europe",
+        "cta": "Discover more"
+      }
+    },
     "welcomeTitle": "Discover Aseer",
     "welcomeDescription": "Aseer unites mountain peaks with clear coastlines and golden dunes with green highlands. Nature here blends rain, warmth and mist in a singular landscape.",
     "landmarksTitle": "Top attractions in Aseer",
