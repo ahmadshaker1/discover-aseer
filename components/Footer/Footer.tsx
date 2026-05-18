@@ -96,7 +96,7 @@ const Footer = () => {
                   </Link>
                   <Link
                     href="/event-seasons"
-                    className="mt-4 block w-full text-start hover:opacity-80"
+                    className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkEventsSeasons")}
                   </Link>
