@@ -77,6 +77,17 @@ export function resolveDestinationFilterId(
 }
 
 /** Parse `?filter=` on `/destinations` (filter id, landscape key, or CMS Arabic label). */
+/** Film / About Aseer landscape key → destination listing `?filter=` value. */
+export function landscapeKeyToDestinationFilter(
+  landscapeKey: string | null | undefined,
+): DestinationFilterId | null {
+  const clean = (landscapeKey || "").trim().toLowerCase();
+  if (!clean || !(clean in LANDSCAPE_TO_DESTINATION_FILTER)) return null;
+  return LANDSCAPE_TO_DESTINATION_FILTER[
+    clean as keyof typeof LANDSCAPE_TO_DESTINATION_FILTER
+  ];
+}
+
 export function parseDestinationsFilterParam(
   filter: string | null | undefined,
 ): DestinationFilterId | null {

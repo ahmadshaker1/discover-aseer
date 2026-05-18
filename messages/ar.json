@@ -599,6 +599,7 @@
       "beaches": "الشواطئ",
       "desert": "الصحراء",
       "viewAttractions": "عرض المعالم في {label}",
+      "viewDestinations": "عرض الوجهات في {label}",
       "filteredBy": "عرض المعالم المرتبطة بـ {label}"
     }
   },

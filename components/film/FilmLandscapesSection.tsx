@@ -1,6 +1,7 @@
 "use client";
 
 import type { FilmLandscape } from "@/components/film/data";
+import { landscapeKeyToDestinationFilter } from "@/components/destinations/filterOptions";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
@@ -30,15 +31,22 @@ const FilmLandscapesSection = ({
           <div className="flex min-w-max items-start gap-6 pb-2">
             {landscapes.slice(0, 4).map((item) => {
               const label = item.labelKey ? t(item.labelKey) : "";
+              const destinationFilter = landscapeKeyToDestinationFilter(
+                item.filterId,
+              );
               return (
                 <Link
                   key={item.id}
-                  href={{
-                    pathname: "/attractions",
-                    query: { terrain: item.filterId },
-                  }}
+                  href={
+                    destinationFilter
+                      ? {
+                          pathname: "/destinations",
+                          query: { filter: destinationFilter },
+                        }
+                      : "/destinations"
+                  }
                   className="group relative block h-[305px] w-[282px] shrink-0 overflow-hidden rounded-[10px] shadow-[0px_4.28px_3.37px_0px_rgba(41,72,152,0.01),0px_8.72px_6.97px_0px_rgba(41,72,152,0.02),0px_21.4px_13.91px_0px_rgba(41,72,152,0.02)] transition-transform hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                  aria-label={t("landscapes.viewAttractions", { label })}
+                  aria-label={t("landscapes.viewDestinations", { label })}
                 >
                   <img
                     src={item.image}

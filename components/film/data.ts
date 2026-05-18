@@ -24,7 +24,7 @@ export interface FilmLandscape {
   description?: string;
   /** i18n key under `film` namespace, e.g. `landscapes.mountains` */
   labelKey?: string;
-  /** Used in `/attractions?terrain=` */
+  /** Landscape key → `/destinations?filter=` via `LANDSCAPE_TO_DESTINATION_FILTER`. */
   filterId?: FilmLandscapeFilterId;
   image: string;
   /** External watch link (Netflix, YouTube, Shahid, …). */

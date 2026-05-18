@@ -599,6 +599,7 @@
       "beaches": "Beaches",
       "desert": "Desert",
       "viewAttractions": "View attractions in {label}",
+      "viewDestinations": "View destinations in {label}",
       "filteredBy": "Showing attractions related to {label}"
     }
   },
