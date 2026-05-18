@@ -96,6 +96,48 @@ const toMapCardDescription = (html: string): string => {
   return `${plain.slice(0, CARD_DESCRIPTION_MAX_LENGTH).trimEnd()}…`;
 };
 
+const escapeHtml = (value: string): string =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const buildMapPopupHtml = (
+  place: MapPlace,
+  options: { directionsLabel: string; locale: string },
+): string => {
+  const description = toMapCardDescription(place.description);
+  const dir = options.locale === "ar" ? "rtl" : "ltr";
+
+  const imageHtml = place.imageUrl
+    ? `<img src="${escapeHtml(place.imageUrl)}" alt="" style="display:block;width:100%;height:100px;object-fit:cover;" />`
+    : "";
+
+  const tagHtml = place.tag
+    ? `<span style="display:inline-block;margin-bottom:8px;border-radius:9999px;background:var(--background,#fff);padding:4px 10px;font-size:13px;font-weight:600;color:var(--foreground,#111);">${escapeHtml(place.tag)}</span>`
+    : "";
+
+  const descriptionHtml = description
+    ? `<p style="margin:6px 0 0;font-size:15px;line-height:1.35;color:var(--muted-foreground,#6b7280);">${escapeHtml(description)}</p>`
+    : "";
+
+  const mapsHtml = place.mapsUrl
+    ? `<a href="${escapeHtml(place.mapsUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:10px;font-size:14px;font-weight:600;color:var(--primary,#6027d2);text-decoration:underline;">${escapeHtml(options.directionsLabel)}</a>`
+    : "";
+
+  return `<div class="interactive-map-popup-card" style="direction:${dir};text-align:start;font-family:inherit;color:var(--foreground,#111);">
+      ${imageHtml}
+      <div style="padding:12px 14px 14px;">
+        ${tagHtml}
+        <strong style="display:block;font-size:20px;line-height:1.15;">${escapeHtml(place.title)}</strong>
+        ${descriptionHtml}
+        ${mapsHtml}
+      </div>
+    </div>`;
+};
+
 const UI_KEYS = [
   "all",
   "discover",
@@ -105,7 +147,7 @@ const UI_KEYS = [
   "clearFilters",
   "noGeo",
   "showOnMap",
-  "openInMaps",
+  "directions",
   "noResults",
   "tokenHint",
 ] as const;
@@ -249,29 +291,43 @@ const InteractiveMap = ({
     };
   }, [locale]);
 
+  const showPlacePopup = useCallback(
+    (place: MapPlace) => {
+      if (
+        !mapRef.current ||
+        place.latitude == null ||
+        place.longitude == null
+      ) {
+        return;
+      }
+
+      popupRef.current?.remove();
+      popupRef.current = new mapboxgl.Popup({
+        offset: 18,
+        closeButton: true,
+        maxWidth: "300px",
+        className: "interactive-map-popup",
+      })
+        .setLngLat([place.longitude, place.latitude])
+        .setHTML(
+          buildMapPopupHtml(place, {
+            directionsLabel: ui.directions,
+            locale,
+          }),
+        )
+        .addTo(mapRef.current);
+    },
+    [locale, ui.directions],
+  );
+
   const focusCoordinates = useCallback(
-    (latitude: number, longitude: number, title?: string) => {
+    (latitude: number, longitude: number) => {
       if (!mapRef.current) return;
       mapRef.current.flyTo({
         center: [longitude, latitude],
         zoom: 12.5,
         essential: true,
       });
-
-      popupRef.current?.remove();
-      if (title) {
-        popupRef.current = new mapboxgl.Popup({
-          offset: 18,
-          closeButton: false,
-        })
-          .setLngLat([longitude, latitude])
-          .setHTML(
-            `<div style="font-family: Arial, sans-serif; direction: inherit; text-align: start;">
-              <strong>${title}</strong>
-            </div>`,
-          )
-          .addTo(mapRef.current);
-      }
     },
     [],
   );
@@ -286,10 +342,10 @@ const InteractiveMap = ({
       ) {
         return;
       }
-      popupRef.current?.remove();
-      focusCoordinates(place.latitude, place.longitude, place.title);
+      focusCoordinates(place.latitude, place.longitude);
+      showPlacePopup(place);
     },
-    [focusCoordinates],
+    [focusCoordinates, showPlacePopup],
   );
 
   useEffect(() => {
@@ -479,11 +535,7 @@ const InteractiveMap = ({
 
   useEffect(() => {
     if (!initialFocus || !mapRef.current || !mapLoadedRef.current) return;
-    focusCoordinates(
-      initialFocus.latitude,
-      initialFocus.longitude,
-      initialFocus.title,
-    );
+    focusCoordinates(initialFocus.latitude, initialFocus.longitude);
   }, [focusCoordinates, initialFocus]);
 
   const tokenExists = Boolean(process.env.NEXT_PUBLIC_MAPBOX_API_KEY);
@@ -643,22 +695,20 @@ const InteractiveMap = ({
                         </p>
                       ) : null}
                       {!place.hasCoordinates ? (
-                        <div className="mt-2 space-y-1">
-                          <p className="text-[14px] text-muted-foreground">
-                            {ui.noGeo}
-                          </p>
-                          {place.mapsUrl ? (
-                            <a
-                              href={place.mapsUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(event) => event.stopPropagation()}
-                              className="inline-block text-[14px] font-semibold text-primary underline-offset-2 hover:underline"
-                            >
-                              {ui.openInMaps}
-                            </a>
-                          ) : null}
-                        </div>
+                        <p className="mt-2 text-[14px] text-muted-foreground">
+                          {ui.noGeo}
+                        </p>
+                      ) : null}
+                      {place.mapsUrl ? (
+                        <a
+                          href={place.mapsUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(event) => event.stopPropagation()}
+                          className="mt-2 inline-block text-[14px] font-semibold text-primary underline-offset-2 hover:underline"
+                        >
+                          {ui.directions}
+                        </a>
                       ) : null}
                     </div>
                   </RadioGroup.Option>

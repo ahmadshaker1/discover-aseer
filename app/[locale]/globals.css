@@ -205,3 +205,19 @@ html.dark {
   text-align: right;
   vertical-align: middle;
 }
+
+/* Interactive map — location popups */
+.interactive-map-popup .mapboxgl-popup-content {
+  padding: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface, #fff);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+}
+
+.interactive-map-popup .mapboxgl-popup-close-button {
+  font-size: 20px;
+  padding: 6px 10px;
+  color: var(--foreground, #111);
+  z-index: 1;
+}
