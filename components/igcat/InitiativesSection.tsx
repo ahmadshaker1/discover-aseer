@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { initiativesMedia } from "./data";
+import Image from "next/image";
 
 export default async function InitiativesSection() {
   const t = await getTranslations("igcat.initiatives");
@@ -11,10 +12,12 @@ export default async function InitiativesSection() {
           <h2 className="text-[32px] font-bold text-foreground md:text-[24px]">
             {t("title")}
           </h2>
-          <img
-            src="/assets/igcat/image8.png"
+          <Image
+            src="/assets/igcat/king-khalid-university.png"
             alt={t("universityAlt")}
             className="mb-6 h-24 object-contain md:h-32"
+            width={100}
+            height={100}
           />
         </div>
 
