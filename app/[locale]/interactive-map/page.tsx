@@ -19,8 +19,8 @@ const InteractiveMapPage = async ({ searchParams }: InteractiveMapPageProps) => 
       : undefined;
 
   return (
-    <div className="relative z-40 h-screen w-full overflow-y-auto bg-background pt-20 text-foreground md:pt-24">
-      <div className="h-[calc(100vh-5rem)] min-h-[720px] w-full md:h-[calc(100vh-6rem)]">
+    <div className="relative z-40 h-dvh w-full overflow-hidden bg-background pt-16 text-foreground md:pt-24">
+      <div className="h-[calc(100dvh-4rem)] w-full md:h-[calc(100vh-6rem)] md:min-h-[720px]">
         <InteractiveMap initialFocus={initialFocus} />
       </div>
     </div>
