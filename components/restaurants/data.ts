@@ -44,6 +44,11 @@
 
 import { inferCityIdFromLocation } from "@/components/landmarks/filterOptions";
 import { DUMMY_RESTAURANTS } from "./dummyRestaurants";
+import {
+  localizeRestaurant,
+  translateRestaurantCity,
+  translateRestaurantLabel,
+} from "./restaurantLocale";
 import type { Restaurant } from "./types";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
@@ -184,7 +189,12 @@ export const transformLocationToRestaurant = (
   const row = loc as unknown as Record<string, unknown>;
   const name = pickBestName(loc, locale);
 
-  const cityName = pickLocalizedField(row, "city", locale);
+  const cityNameRaw =
+    pickLocalizedField(row, "city", locale) || (loc.city || "").trim();
+  const cityName =
+    locale === "en"
+      ? translateRestaurantCity(cityNameRaw, locale)
+      : cityNameRaw;
   const location = cityName
     ? locale === "ar"
       ? `${cityName}، عسير`
@@ -206,11 +216,20 @@ export const transformLocationToRestaurant = (
     (loc.cuisine_type || loc.tags || "").trim();
   const nationalityRaw = pickLocalizedField(row, "nationality", locale) || "";
 
-  const category =
+  const categoryRaw =
     pickLocalizedField(row, "category", locale) ||
     pickLocalizedField(row, "type", locale) ||
-    (loc.categories || loc.type || "").trim() ||
+    (loc.categories || loc.type || loc.tags || "").trim() ||
     (locale === "ar" ? "مطعم" : "Restaurant");
+
+  const category = translateRestaurantLabel(categoryRaw, locale);
+  const cuisineType = cuisineTypeRaw
+    ? translateRestaurantLabel(cuisineTypeRaw, locale)
+    : undefined;
+  const nationality = translateRestaurantLabel(
+    nationalityRaw || (locale === "ar" ? "سعودي" : "Saudi"),
+    locale,
+  );
 
   const cityId = inferCityIdFromLocation(location);
 
@@ -223,9 +242,9 @@ export const transformLocationToRestaurant = (
     rating: clampRating(loc.rating),
     reviewsCount: toNonNegativeInt(loc.reviews_count, 0),
     priceRange: priceRangeRaw || (locale === "ar" ? "غير محدد" : "Not specified"),
-    nationality: nationalityRaw || (locale === "ar" ? "سعودي" : "Saudi"),
+    nationality,
     category,
-    ...(cuisineTypeRaw ? { cuisineType: cuisineTypeRaw } : {}),
+    ...(cuisineType ? { cuisineType } : {}),
     image,
     mapsUrl,
   };
@@ -241,7 +260,7 @@ function shouldUseRestaurantDummy(): boolean {
 
 export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Restaurant[]> {
   if (shouldUseRestaurantDummy()) {
-    return DUMMY_RESTAURANTS;
+    return DUMMY_RESTAURANTS.map((item) => localizeRestaurant(item, locale));
   }
 
   try {
@@ -274,7 +293,7 @@ export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Resta
       console.warn(
         "[restaurants] Fetch failed — showing dummy list. Use NEXT_PUBLIC_RESTAURANTS_USE_DUMMY=false when the API is ready."
       );
-      return DUMMY_RESTAURANTS;
+      return DUMMY_RESTAURANTS.map((item) => localizeRestaurant(item, locale));
     }
     return [];
   }
