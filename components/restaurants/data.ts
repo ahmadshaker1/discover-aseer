@@ -84,6 +84,7 @@ export interface ApiLocation {
   categories?: string | null;
   title_en?: string | null;
   title_ar?: string | null;
+  content_ar?: string | null;
   /** Optional — maps to Restaurant.rating (0–5). */
   rating?: number | string | null;
   /** Optional — maps to Restaurant.reviewsCount. */
@@ -180,16 +181,18 @@ export const transformLocationToRestaurant = (
   loc: ApiLocation,
   locale: LocaleCode = "ar",
 ): Restaurant => {
+  const row = loc as unknown as Record<string, unknown>;
   const name = pickBestName(loc, locale);
-  const location = loc.city_ar
-    ? `${loc.city_ar}، عسير`
-    : loc.city_en
-      ? `${loc.city_en}، عسير`
-      : loc.city
-        ? `${loc.city}، عسير`
-      : locale === "ar"
-        ? "عسير"
-        : "Aseer";
+
+  const cityName = pickLocalizedField(row, "city", locale);
+  const location = cityName
+    ? locale === "ar"
+      ? `${cityName}، عسير`
+      : `${cityName}, Aseer`
+    : locale === "ar"
+      ? "عسير"
+      : "Aseer";
+
   const image = resolveRestaurantImageUrl(loc.image_new, loc.image);
   const mapsUrl =
     loc.google_maps_url?.trim() ||
@@ -198,8 +201,16 @@ export const transformLocationToRestaurant = (
 
   const priceRangeRaw = (loc.price_range ?? "").trim();
   const priceBandRaw = (loc.price_band ?? "").trim();
-  const cuisineTypeRaw = (loc.cuisine_type || loc.tags || "").trim();
-  const nationalityRaw = (loc.nationality_ar || loc.nationality_en || "").trim();
+  const cuisineTypeRaw =
+    pickLocalizedField(row, "cuisine_type", locale) ||
+    (loc.cuisine_type || loc.tags || "").trim();
+  const nationalityRaw = pickLocalizedField(row, "nationality", locale) || "";
+
+  const category =
+    pickLocalizedField(row, "category", locale) ||
+    pickLocalizedField(row, "type", locale) ||
+    (loc.categories || loc.type || "").trim() ||
+    (locale === "ar" ? "مطعم" : "Restaurant");
 
   const cityId = inferCityIdFromLocation(location);
 
@@ -213,12 +224,7 @@ export const transformLocationToRestaurant = (
     reviewsCount: toNonNegativeInt(loc.reviews_count, 0),
     priceRange: priceRangeRaw || (locale === "ar" ? "غير محدد" : "Not specified"),
     nationality: nationalityRaw || (locale === "ar" ? "سعودي" : "Saudi"),
-    category:
-      loc.category_ar ||
-      loc.category_en ||
-      loc.categories ||
-      loc.type ||
-      (locale === "ar" ? "مطعم" : "Restaurant"),
+    category,
     ...(cuisineTypeRaw ? { cuisineType: cuisineTypeRaw } : {}),
     image,
     mapsUrl,

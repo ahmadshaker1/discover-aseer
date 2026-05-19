@@ -1,8 +1,8 @@
 "use client";
 
-import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
+import { Button, Checkbox /* , Menu, Transition */ } from "@headlessui/react";
 import { useTranslations } from "next-intl";
-import { Fragment } from "react";
+// import { Fragment } from "react";
 import {
   HeartIcon,
   WalletIcon,
@@ -14,8 +14,8 @@ import {
   FemaleIcon,
   GroupsIcon,
   FamilyIcon,
-  ChevronDownIcon,
-  LocationIcon,
+  // ChevronDownIcon,
+  // LocationIcon,
 } from "./Icons";
 import type { FilterOptions } from "@/components/experiences/data";
 
@@ -49,10 +49,10 @@ const ExperiencesFilter = ({
 }: ExperiencesFilterProps) => {
   const tCommon = useTranslations("common");
   const tExperiencesPage = useTranslations("experiencesPage");
-  const { cityOptions, interests, costOptions, travelerTypes } = filterOptions;
+  const { /* cityOptions, */ interests, costOptions, travelerTypes } = filterOptions;
 
-  const cityMenuButtonClass = "flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm";
-  const menuItemsClass = "absolute start-0 z-50 mt-2 w-full origin-top-start rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none";
+  // const cityMenuButtonClass = "flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm";
+  // const menuItemsClass = "absolute start-0 z-50 mt-2 w-full origin-top-start rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none";
 
   const handleInterestToggle = (interestId: string) => {
     onFiltersChange({
@@ -97,8 +97,9 @@ const ExperiencesFilter = ({
         <h2 className="text-xl font-bold text-foreground">{tCommon("filterExperiences")}</h2>
       </div>
 
-      <div className="mb-4">
-        <Menu as="div" className="relative">
+      {/* City filter — disabled for now
+      <motion.div className="mb-4">
+        <Menu as="motion.div" className="relative">
           <Menu.Button className={cityMenuButtonClass}>
             <LocationIcon />
             <span className="flex-1 text-start">
@@ -116,7 +117,7 @@ const ExperiencesFilter = ({
             leaveTo="opacity-0 scale-95 translate-y-1"
           >
             <Menu.Items className={menuItemsClass}>
-              <div className="py-1">
+              <motion.div className="py-1">
                 {cityOptions.map((city) => (
                   <Menu.Item key={city.id}>
                     {({ active }) => (
@@ -138,11 +139,12 @@ const ExperiencesFilter = ({
                     )}
                   </Menu.Item>
                 ))}
-              </div>
+              </motion.div>
             </Menu.Items>
           </Transition>
         </Menu>
-      </div>
+      </motion.div>
+      */}
 
       {interests.length > 0 && (
         <div className="mb-8">
