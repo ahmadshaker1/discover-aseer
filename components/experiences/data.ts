@@ -1,3 +1,4 @@
+import type { LocaleCode } from "@/lib/i18n/localized";
 import type { ExperienceCardProps } from "./ExperienceCard/ExperienceCard";
 
 /** Directus API item shape for the experiences collection */
@@ -124,6 +125,38 @@ function stripHtml(html: string | null | undefined): string {
   return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+function pickExperienceField(
+  api: ApiExperience,
+  field: "title" | "description",
+  locale: LocaleCode,
+): string {
+  const primary =
+    field === "title"
+      ? locale === "en"
+        ? api.title_eng
+        : api.title
+      : locale === "en"
+        ? api.description_eng
+        : api.description;
+  const fallback =
+    field === "title"
+      ? locale === "en"
+        ? api.title
+        : api.title_eng
+      : locale === "en"
+        ? api.description
+        : api.description_eng;
+
+  return (primary || fallback || "").trim();
+}
+
+function formatExperienceDescription(raw: string): string {
+  return stripHtml(raw)
+    .replace(/\r\n|\r|\n/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function parsePrice(value: number | string | null | undefined): number {
   if (value == null) return 0;
   if (typeof value === "number" && !Number.isNaN(value)) return value;
@@ -205,9 +238,16 @@ function parseFilterTravelers(api: ApiExperience): string[] {
   return ids;
 }
 
-export function transformExperience(api: ApiExperience): ExperienceWithFilterMeta {
-  const description = stripHtml(api.description || api.description_eng || "");
-  const title = (api.title || api.title_eng || "").trim() || "تجربة";
+export function transformExperience(
+  api: ApiExperience,
+  locale: LocaleCode = "ar",
+): ExperienceWithFilterMeta {
+  const description = formatExperienceDescription(
+    pickExperienceField(api, "description", locale),
+  );
+  const title =
+    pickExperienceField(api, "title", locale) ||
+    (locale === "en" ? "Experience" : "تجربة");
   const category = (api.type || api.tags || "").split(",")[0]?.trim() || "التجارب";
   const imageUrl = (api.image && api.image.startsWith("http")) ? api.image : DEFAULT_IMAGE;
   const bookUrl = (api.booking_link || api.link || "").trim() || "#";
@@ -238,7 +278,10 @@ export function transformExperience(api: ApiExperience): ExperienceWithFilterMet
   };
 }
 
-function buildFilterOptions(apiItems: ApiExperience[]): FilterOptions {
+function buildFilterOptions(
+  apiItems: ApiExperience[],
+  locale: LocaleCode = "ar",
+): FilterOptions {
   const cityCounts = new Map<string, number>();
   const interestCounts = new Map<string, number>();
   const interestLabels = new Map<string, string>();
@@ -247,7 +290,7 @@ function buildFilterOptions(apiItems: ApiExperience[]): FilterOptions {
   const travelerCounts = new Map<string, number>();
 
   for (const api of apiItems) {
-    const meta = transformExperience(api);
+    const meta = transformExperience(api, locale);
     if (meta.filterCity) {
       cityCounts.set(meta.filterCity, (cityCounts.get(meta.filterCity) ?? 0) + 1);
     }
@@ -321,7 +364,10 @@ export interface FetchExperiencesResult {
  * Load one experience by id (Directus single-item endpoint) with fallbacks to the
  * list endpoint and dummy data so `/experiences/[id]` stays in sync with home cards.
  */
-export async function fetchExperienceById(id: string): Promise<ExperienceWithFilterMeta | null> {
+export async function fetchExperienceById(
+  id: string,
+  locale: LocaleCode = "ar",
+): Promise<ExperienceWithFilterMeta | null> {
   const trimmed = id.trim();
   if (!trimmed) return null;
 
@@ -337,7 +383,7 @@ export async function fetchExperienceById(id: string): Promise<ExperienceWithFil
       const json: { data?: ApiExperience } = await res.json();
       const item = json.data;
       if (item && item.id != null) {
-        return transformExperience(item);
+        return transformExperience(item, locale);
       }
     }
   } catch (error) {
@@ -345,7 +391,7 @@ export async function fetchExperienceById(id: string): Promise<ExperienceWithFil
   }
 
   try {
-    const { experiences } = await fetchExperiences();
+    const { experiences } = await fetchExperiences({ locale });
     return experiences.find((e) => String(e.id) === trimmed) ?? null;
   } catch (error) {
     console.error("Error fetching experiences:", error);
@@ -356,6 +402,7 @@ export async function fetchExperienceById(id: string): Promise<ExperienceWithFil
 export interface FetchExperiencesOptions {
   /** When set, only items whose `type` field matches (comma-separated values supported). */
   type?: string;
+  locale?: LocaleCode;
 }
 
 export async function fetchExperiences(
@@ -378,13 +425,14 @@ export async function fetchExperiences(
     }
 
     const apiData: ExperiencesApiResponse = await response.json();
+    const locale = options?.locale ?? "ar";
     const typeFilter = options?.type?.trim();
     const rows = typeFilter
       ? apiData.data.filter((row) => matchesExperienceType(row, typeFilter))
       : apiData.data;
 
-    const experiences = rows.map(transformExperience);
-    const filterOptions = buildFilterOptions(apiData.data);
+    const experiences = rows.map((row) => transformExperience(row, locale));
+    const filterOptions = buildFilterOptions(apiData.data, locale);
     return { experiences, filterOptions };
   } catch (error) {
     console.error("Error fetching experiences:", error);

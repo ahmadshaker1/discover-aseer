@@ -16,7 +16,7 @@ export default async function LocalizedHomePage() {
   const tHome = await getTranslations("home");
   const [landmarks, experiencesResult] = await Promise.all([
     fetchLandmarks(locale),
-    fetchExperiences(),
+    fetchExperiences({ locale }),
   ]);
 
   const homeExperiences = experiencesResult.experiences.slice(0, 6);

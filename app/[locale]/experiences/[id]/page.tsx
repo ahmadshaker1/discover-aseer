@@ -20,9 +20,9 @@ export default async function ExperienceDetailsPage({
   params,
 }: ExperienceDetailsPageProps) {
   const { id } = await params;
-  const locale = await getLocale();
+  const locale = (await getLocale()) as "ar" | "en";
   const t = await getTranslations("experiencesDetail");
-  const experience = await fetchExperienceById(id);
+  const experience = await fetchExperienceById(id, locale);
 
   if (!experience) {
     notFound();

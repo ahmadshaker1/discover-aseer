@@ -28,7 +28,7 @@ const AseerCuisinePage = async () => {
     fetchFeaturedCuisineCards({ locale, cuisineType: "dish", count: 4 }),
     fetchFeaturedCuisineCards({ locale, cuisineType: "flavour", count: 4 }),
     fetchRestaurants(),
-    fetchExperiences({ type: COOKING_EXPERIENCE_TYPE }),
+    fetchExperiences({ type: COOKING_EXPERIENCE_TYPE, locale }),
   ]);
   const posterImage = dishCards[0]?.image || flavorCards[0]?.image || FALLBACK_POSTER;
 
