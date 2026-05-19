@@ -1,8 +1,12 @@
 "use client";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import {
+  SUPPORT_CATEGORY_FILTER_KEYS,
+  translateSupportCity,
+  translateSupportLabel,
+} from "./supportServiceLocale";
 import {
   CheckboxCheckIcon,
-  ChevronDownSmallIcon,
   LocationIcon,
   PhoneIcon,
   ServiceTypeIcon,
@@ -33,13 +37,14 @@ interface TypeRowOption {
 
 interface CheckboxRowProps {
   option: TypeRowOption;
+  label: string;
   checked: boolean;
   onToggle: (value: string) => void;
 }
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
-const CheckboxRow = ({ option, checked, onToggle }: CheckboxRowProps) => {
+const CheckboxRow = ({ option, label, checked, onToggle }: CheckboxRowProps) => {
   return (
     <label className="flex w-full min-w-0 cursor-pointer items-center justify-between gap-2 py-1.5 sm:gap-3">
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -51,7 +56,7 @@ const CheckboxRow = ({ option, checked, onToggle }: CheckboxRowProps) => {
         className="min-w-0 flex-1 text-start text-[clamp(15px,3.6vw,18px)] font-bold leading-[119%] text-foreground"
         style={{ fontFamily: ara }}
       >
-        {option.value}
+        {label}
       </div>
       <div className="relative">
         <input
@@ -80,13 +85,18 @@ const ServicesSupportFilterSidebar = ({
 }: ServicesSupportFilterSidebarProps) => {
   const t = useTranslations("servicesSupport");
   const tCommon = useTranslations("common");
+  const locale = useLocale() as "ar" | "en";
   const useCategoryFilter = categoryOptions.length > 0;
   const allTypeOptions = useCategoryFilter ? categoryOptions : typeOptions;
-  const serviceTypesOrder = ["مراكز الشرطة", "مستشفيات", "المطارات"];
-  const serviceTypeOptions: TypeRowOption[] = serviceTypesOrder.map((label) => ({
-    value: label,
-    count: allTypeOptions.find((o) => o.value === label)?.count ?? 0,
-  }));
+  const serviceTypeOptions: TypeRowOption[] = SUPPORT_CATEGORY_FILTER_KEYS.map(
+    (filterKey) => ({
+      value: filterKey,
+      count: allTypeOptions.find((o) => o.value === filterKey)?.count ?? 0,
+    }),
+  );
+  const selectedCityLabel = selectedCity
+    ? translateSupportCity(selectedCity, locale)
+    : null;
   const selectedServiceTypes = useCategoryFilter
     ? selectedCategories
     : selectedTypes;
@@ -125,7 +135,7 @@ const ServicesSupportFilterSidebar = ({
             <option value="">{t("chooseDestination")}</option>
             {cityOptions.map((option) => (
               <option key={option.value} value={option.value}>
-                {option.value}
+                {translateSupportCity(option.value, locale)}
               </option>
             ))}
           </select>
@@ -135,7 +145,7 @@ const ServicesSupportFilterSidebar = ({
                 <LocationIcon />
               </span>
               <span className="truncate text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground">
-                {selectedCity ?? t("chooseDestination")}
+                {selectedCityLabel ?? t("chooseDestination")}
               </span>
             </div>
             <svg className="text-foreground" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -147,7 +157,7 @@ const ServicesSupportFilterSidebar = ({
       </section>
       <div className="my-5 h-px w-full bg-border" />
       <section>
-        <div className="mb-4 flex items-center justify-end gap-2 ">
+        <div className="mb-4 flex items-center justify-start gap-2">
           <h3 className="text-start text-[20px] font-bold leading-[119%] text-foreground" style={{ fontFamily: ara }}>
             {t("chooseServiceType")}
           </h3>
@@ -161,6 +171,7 @@ const ServicesSupportFilterSidebar = ({
             <CheckboxRow
               key={option.value}
               option={option}
+              label={translateSupportLabel(option.value, locale)}
               checked={selectedServiceTypes.includes(option.value)}
               onToggle={onToggleServiceType}
             />

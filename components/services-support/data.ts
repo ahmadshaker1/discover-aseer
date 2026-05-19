@@ -1,14 +1,16 @@
+import type { LocaleCode } from "@/lib/i18n/localized";
 import type {
   ApiSupportService,
   SupportService,
   SupportServicesApiResponse,
 } from "./types";
 import {
-  normalizeMapsUrl,
   normalizeSupportNumber,
-  normalizeText,
-  pickArabicTitle,
-} from "./utils";
+  pickLocalizedTitle,
+  translateSupportCity,
+  translateSupportLabel,
+} from "./supportServiceLocale";
+import { normalizeMapsUrl, normalizeText } from "./utils";
 
 const SUPPORT_SERVICES_API_BASE =
   process.env.NEXT_PUBLIC_SERVICES_API_BASE?.replace(/\/$/, "") ||
@@ -21,21 +23,32 @@ function isPublished(item: ApiSupportService): boolean {
   return item.status === "published";
 }
 
-function transformApiSupportService(item: ApiSupportService): SupportService {
-  const title = pickArabicTitle(item);
+function transformApiSupportService(
+  item: ApiSupportService,
+  locale: LocaleCode,
+): SupportService {
+  const filterCategory = normalizeText(item.tags, "غير مصنف");
+  const filterCity = normalizeText(item.city, "غير محدد");
+  const filterType = normalizeText(item.type, "الخدمات المساندة");
+  const title = pickLocalizedTitle(item, locale);
 
   return {
     id: String(item.id),
     title,
-    category: normalizeText(item.tags, "غير مصنف"),
-    city: normalizeText(item.city, "غير محدد"),
-    type: normalizeText(item.type, "الخدمات المساندة"),
-    supportNumber: normalizeSupportNumber(item.support_services_number),
+    category: translateSupportLabel(filterCategory, locale),
+    city: translateSupportCity(filterCity, locale),
+    type: translateSupportLabel(filterType, locale),
+    supportNumber: normalizeSupportNumber(item.support_services_number, locale),
     mapsUrl: normalizeMapsUrl(item.location, title),
+    filterCategory,
+    filterCity,
+    filterType,
   };
 }
 
-export async function fetchSupportServices(): Promise<SupportService[]> {
+export async function fetchSupportServices(
+  locale: LocaleCode = "ar",
+): Promise<SupportService[]> {
   try {
     const response = await fetch(
       `${SUPPORT_SERVICES_API_BASE}${SUPPORT_SERVICES_ITEMS_PATH}`,
@@ -52,7 +65,7 @@ export async function fetchSupportServices(): Promise<SupportService[]> {
 
     const apiData: SupportServicesApiResponse = await response.json();
     const rows = Array.isArray(apiData?.data) ? apiData.data : [];
-    return rows.filter(isPublished).map(transformApiSupportService);
+    return rows.filter(isPublished).map((item) => transformApiSupportService(item, locale));
   } catch (error) {
     console.error("Error fetching support services:", error);
     return [];

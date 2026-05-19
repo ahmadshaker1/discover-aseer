@@ -9,6 +9,9 @@ export const DUMMY_SUPPORT_SERVICES: SupportService[] = [
     type: "الخدمات المساندة",
     supportNumber: "900",
     mapsUrl: "https://maps.app.goo.gl/V55sX8Xv2zhWXD1b6?g_st=iw",
+    filterCategory: "مراكز الشرطة",
+    filterCity: "ظهران الجنوب",
+    filterType: "الخدمات المساندة",
   },
   {
     id: "2",
@@ -18,5 +21,8 @@ export const DUMMY_SUPPORT_SERVICES: SupportService[] = [
     type: "الخدمات المساندة",
     supportNumber: "900",
     mapsUrl: "https://maps.app.goo.gl/mZvR8Xd15LvcbswE9?g_st=iw",
+    filterCategory: "مراكز الشرطة",
+    filterCity: "سراة عبيدة",
+    filterType: "الخدمات المساندة",
   },
 ];

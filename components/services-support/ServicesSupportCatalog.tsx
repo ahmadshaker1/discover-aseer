@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import ServicesSupportFilterSidebar from "./ServicesSupportFilterSidebar";
 import ServicesSupportGrid from "./ServicesSupportGrid";
 import ServicesSupportPagination from "./ServicesSupportPagination";
@@ -20,7 +20,7 @@ interface FilterOption {
   count: number;
 }
 
-function buildOptions(values: string[]): FilterOption[] {
+function buildOptions(values: string[], locale: "ar" | "en"): FilterOption[] {
   const counts = values.reduce<Map<string, number>>((map, value) => {
     const key = value.trim();
     if (!key) return map;
@@ -30,39 +30,41 @@ function buildOptions(values: string[]): FilterOption[] {
 
   return Array.from(counts.entries())
     .map(([value, count]) => ({ value, count }))
-    .sort((a, b) => a.value.localeCompare(b.value, "ar"));
+    .sort((a, b) => a.value.localeCompare(b.value, locale));
 }
 
 const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
   const t = useTranslations("servicesSupport");
+  const locale = useLocale() as "ar" | "en";
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const cityOptions = useMemo(
-    () => buildOptions(services.map((service) => service.city)),
-    [services],
+    () => buildOptions(services.map((service) => service.filterCity), locale),
+    [services, locale],
   );
 
   const categoryOptions = useMemo(
-    () => buildOptions(services.map((service) => service.category)),
-    [services],
+    () =>
+      buildOptions(services.map((service) => service.filterCategory), locale),
+    [services, locale],
   );
 
   const typeOptions = useMemo(
-    () => buildOptions(services.map((service) => service.type)),
-    [services],
+    () => buildOptions(services.map((service) => service.filterType), locale),
+    [services, locale],
   );
 
   const filteredServices = useMemo(() => {
     return services.filter((service) => {
-      const cityMatch = !selectedCity || selectedCity === service.city;
+      const cityMatch = !selectedCity || selectedCity === service.filterCity;
       const categoryMatch =
         selectedCategories.length === 0 ||
-        selectedCategories.includes(service.category);
+        selectedCategories.includes(service.filterCategory);
       const typeMatch =
-        selectedTypes.length === 0 || selectedTypes.includes(service.type);
+        selectedTypes.length === 0 || selectedTypes.includes(service.filterType);
 
       return cityMatch && categoryMatch && typeMatch;
     });

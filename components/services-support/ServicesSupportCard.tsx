@@ -34,8 +34,9 @@ function PhoneIcon() {
   );
 }
 
-function ServiceTagIcon({ category }: { category: string }) {
-  if (category.includes("مستشف")) {
+function ServiceTagIcon({ categoryKey }: { categoryKey: string }) {
+  const key = categoryKey.toLowerCase();
+  if (categoryKey.includes("مستشف") || key.includes("hospital")) {
     return (
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
         <path
@@ -45,14 +46,14 @@ function ServiceTagIcon({ category }: { category: string }) {
       </svg>
     );
   }
-  if (category.includes("شرطة")) {
+  if (categoryKey.includes("شرطة") || key.includes("police")) {
     return (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
         <path d="M12 3L4 7V12C4 17 7.4 21.7 12 23C16.6 21.7 20 17 20 12V7L12 3Z" fill="white" />
       </svg>
     );
   }
-  if (category.includes("مطار")) {
+  if (categoryKey.includes("مطار") || key.includes("airport")) {
     return (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
         <path d="M21 16V14L13 9V3.5C13 2.67 12.33 2 11.5 2C10.67 2 10 2.67 10 3.5V9L2 14V16L10 13.5V19L8 20.5V22L11.5 21L15 22V20.5L13 19V13.5L21 16Z" fill="white" />
@@ -71,11 +72,11 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
     <article
       className="flex h-full min-h-[155px] w-full min-w-0 flex-col justify-between rounded-[12px] border border-border bg-surface p-4 text-start text-foreground"
     >
-      <div className="mb-2 flex shrink-0 items-center justify-end">
+      <div className="mb-2 flex shrink-0 items-center justify-start">
         <span className="inline-flex h-7 min-w-[95px] max-w-full items-center justify-center gap-1 rounded-[20px] bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
           <span className="min-w-0 truncate text-start">{service.category}</span>
           <span className="shrink-0" aria-hidden>
-            <ServiceTagIcon category={service.category} />
+            <ServiceTagIcon categoryKey={service.filterCategory} />
           </span>
         </span>
       </div>
@@ -87,12 +88,12 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
         {service.title}
       </h3>
 
-      <div className="mt-auto flex min-w-0 flex-col items-end gap-2">
+      <div className="mt-auto flex min-w-0 flex-col items-stretch gap-2">
         <a
           href={service.mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex min-w-0 max-w-full flex-row items-center justify-end gap-2 text-start text-[12px] font-bold leading-[100%] text-primary underline underline-offset-[20.5%]"
+          className="flex min-w-0 max-w-full flex-row items-center justify-start gap-2 text-start text-[12px] font-bold leading-[100%] text-primary underline underline-offset-[20.5%]"
           style={{ fontFamily: "var(--font-ibm-plex-sans-arabic), sans-serif" }}
         >
           <span className="min-w-0 wrap-break-word">{service.city}</span>
@@ -103,7 +104,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
 
         <a
           href={`tel:${service.supportNumber}`}
-          className="flex min-w-0 max-w-full flex-row items-center justify-end gap-2 text-start text-[12px] font-bold leading-[100%] text-muted-foreground"
+          className="flex min-w-0 max-w-full flex-row items-center justify-start gap-2 text-start text-[12px] font-bold leading-[100%] text-muted-foreground"
           style={{ fontFamily: "var(--font-ibm-plex-sans-arabic), sans-serif" }}
         >
           <span className="min-w-0 truncate" dir="ltr">

@@ -18,6 +18,10 @@ export interface SupportService {
   type: string;
   supportNumber: string;
   mapsUrl: string;
+  /** Raw CMS values used for filter matching (Arabic from API). */
+  filterCategory: string;
+  filterCity: string;
+  filterType: string;
 }
 
 export interface SupportServicesApiResponse {
