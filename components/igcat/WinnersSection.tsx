@@ -16,17 +16,14 @@ export default function WinnersSection() {
           {t("title")}
         </h2>
 
-        <div
-          className="hide-scrollbar flex gap-4 overflow-x-auto pb-6 md:gap-6"
-          style={{ scrollbarWidth: "none" }}
-        >
+        <div className="flex gap-4 overflow-x-auto  pb-6 md:gap-6">
           {winnersMedia.map((winner) => (
             <div
               key={winner.id}
               className="group relative h-[350px] w-[280px] shrink-0 overflow-hidden rounded-2xl shadow-md md:w-[320px]"
             >
               <img
-                src={winner.image}
+                src={t(`items.${winner.id}.image`)}
                 alt={t(`items.${winner.id}.title`)}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
@@ -35,7 +32,7 @@ export default function WinnersSection() {
 
               <div className="absolute top-4 start-4 rounded-full border border-primary/20 bg-background/90 px-3 py-1 backdrop-blur-sm">
                 <span className="text-[13px] font-bold text-primary">
-                  {winner.year}
+                  {t(`items.${winner.id}.year`)}
                 </span>
               </div>
 
@@ -58,13 +55,14 @@ export default function WinnersSection() {
                 className="group absolute inset-0 h-full w-full cursor-pointer"
                 onClick={() => setIsVideoPlaying(true)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") setIsVideoPlaying(true);
+                  if (e.key === "Enter" || e.key === " ")
+                    setIsVideoPlaying(true);
                 }}
                 role="button"
                 tabIndex={0}
               >
                 <img
-                  src="./assets/igcat/Screenshot 2026-05-04 112415.png"
+                  src="/assets/igcat/winners/1.1.png"
                   alt={t("videoAlt")}
                   className="h-full w-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-105"
                 />

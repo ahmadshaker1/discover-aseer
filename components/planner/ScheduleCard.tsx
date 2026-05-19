@@ -54,19 +54,25 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
   };
 
   const formatPrice = () => {
-    if (activity.pricing.minPriceSAR && activity.pricing.maxPriceSAR) {
-      return `${activity.pricing.minPriceSAR}-${activity.pricing.maxPriceSAR} ر.س`;
-    } else if (activity.pricing.minPriceSAR) {
-      return `${activity.pricing.minPriceSAR}+ ر.س`;
-    }
-    return "غير محدد";
+    return activity.priceRange || "غير محدد";
+  };
+
+  const formatRating = () => {
+    const numericRating =
+      typeof activity.rating === "number"
+        ? activity.rating
+        : Number.parseFloat(activity.rating);
+
+    return Number.isFinite(numericRating)
+      ? `${numericRating.toFixed(1)}/5`
+      : `${activity.rating}/5`;
   };
 
   const handleDirections = () => {
-    if (activity.directionsUrl) {
-      window.open(activity.directionsUrl, "_blank", "noopener,noreferrer");
+    if (activity.googleMapsUrl) {
+      window.open(activity.googleMapsUrl, "_blank", "noopener,noreferrer");
     } else if (onDirectionsClick) {
-      onDirectionsClick(activity.directionsUrl);
+      onDirectionsClick(activity.googleMapsUrl);
     }
   };
 
@@ -76,15 +82,15 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
         {/* Image Section */}
         <div className="relative h-48 w-48 shrink-0 sm:h-56 sm:w-56">
           <img
-            src={activity.imageUrl || "/assets/experiences/experiences.png"}
-            alt={activity.name}
+            src="/assets/experiences/experiences.png"
+            alt={activity.title}
             className="w-full h-full object-cover"
           />
           {/* Category Badge */}
           <div className="absolute top-3 right-3 bg-[#1a1a1a] rounded-lg px-3 py-1.5 flex items-center gap-1.5">
-            {getTypeIcon(activity.type.label)}
+            {getTypeIcon(activity.type)}
             <span className="text-white text-xs font-medium">
-              {activity.type.label}
+              {activity.type}
             </span>
           </div>
         </div>
@@ -93,17 +99,15 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
         <div className="flex-1 flex flex-col justify-between p-4 sm:p-6">
           <div className="flex-1">
             <h3 className="mb-2 text-right text-xl font-bold text-foreground sm:text-2xl">
-              {activity.name}
+              {activity.title}
             </h3>
 
             {/* Rating */}
             <div className="flex items-center gap-1 text-right mb-2">
               <span className="text-yellow-400">★</span>
-              <span className="text-sm text-foreground">
-                {activity.rating.score.toFixed(1)}/5
-              </span>
+              <span className="text-sm text-foreground">{formatRating()}</span>
               <span className="text-sm text-muted-foreground">
-                ({activity.rating.totalReviews})
+                ({activity.reviewsCount})
               </span>
             </div>
 
@@ -111,7 +115,7 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
             <div className="flex items-center gap-2 text-right mb-2">
               <LocationIcon />
               <span className="text-sm text-foreground">
-                {activity.location.distanceKm} كم، {activity.location.city}
+                {activity.locationText}
               </span>
             </div>
 
@@ -130,7 +134,7 @@ const ScheduleCard = ({ activity, onDirectionsClick }: ScheduleCardProps) => {
                 />
               </svg>
               <span className="text-sm text-foreground">
-                {activity.pricing.audience} • {formatPrice()}
+                {activity.category} • {formatPrice()}
               </span>
             </div>
           </div>

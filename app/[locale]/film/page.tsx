@@ -126,7 +126,6 @@ const FilmPage = async () => {
           </div>
         </div>
       </section>
-
       <EventsInfo />
     </div>
   );

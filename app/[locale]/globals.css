@@ -206,6 +206,67 @@ html.dark {
   vertical-align: middle;
 }
 
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  nav,
+  footer {
+    display: none !important;
+  }
+
+  .planner-screen-only {
+    display: none !important;
+  }
+
+  .planner-print-only {
+    display: block !important;
+  }
+
+  .planner-print-root {
+    max-width: 100% !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    color: #111111 !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .planner-print-day {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .planner-print-day:first-child {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  .planner-print-card,
+  .planner-print-activity {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .planner-print-link {
+    color: #111111 !important;
+    text-decoration: none !important;
+  }
+}
+
 /* Interactive map — location popups */
 .interactive-map-popup .mapboxgl-popup-content {
   padding: 0;
