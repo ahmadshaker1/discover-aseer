@@ -122,6 +122,15 @@
     "film": "الأفلام",
     "igcat": "IGCAT"
   },
+  "navLinks": {
+    "aboutAseer": "عن عسير",
+    "destinations": "الوجهات الرئيسية",
+    "attractions": "المعالم السياحية",
+    "experiences": "التجارب السياحية",
+    "cuisine": "المطبخ العسيري",
+    "community": "مجتمع عسير",
+    "film": "فيلم عسير"
+  },
   "footer": {
     "discoverAseerTitle": "اكتشف عسير",
     "planYourTripTitle": "خطط لرحلتك",

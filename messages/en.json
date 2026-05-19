@@ -122,6 +122,15 @@
     "film": "Film",
     "igcat": "IGCAT"
   },
+  "navLinks": {
+    "aboutAseer": "About Aseer",
+    "destinations": "destinations",
+    "attractions": "Attractions",
+    "experiences": "experiences",
+    "cuisine": "Aseeri cuisine",
+    "community": "Our community",
+    "film": "Film Aseer"
+  },
   "footer": {
     "discoverAseerTitle": "Discover Aseer",
     "planYourTripTitle": "Plan your trip",
