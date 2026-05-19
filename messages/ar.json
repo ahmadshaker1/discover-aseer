@@ -131,6 +131,14 @@
     "community": "مجتمع عسير",
     "film": "فيلم عسير"
   },
+  "navPlanTripLinks": {
+    "aiPlanner": "صمم خطة باستخدام الذكاء الاصطناعي",
+    "accommodation": "أماكن الإقامة",
+    "restaurants": "المطاعم",
+    "tourGuides": "المرشدين السياحيين",
+    "sopportingServices": "الخدمات المساندة",
+    "gettingAround": "الوصول و التجول"
+  },
   "footer": {
     "discoverAseerTitle": "اكتشف عسير",
     "planYourTripTitle": "خطط لرحلتك",

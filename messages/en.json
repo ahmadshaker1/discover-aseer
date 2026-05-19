@@ -131,6 +131,14 @@
     "community": "Our community",
     "film": "Film Aseer"
   },
+  "navPlanTripLinks": {
+    "aiPlanner": "Make a plan with AI",
+    "accommodation": "Accommodation",
+    "restaurants": "Restaurants",
+    "tourGuides": "Tour guides",
+    "sopportingServices": "Supporting services",
+    "gettingAround": "Getting Here And Around"
+  },
   "footer": {
     "discoverAseerTitle": "Discover Aseer",
     "planYourTripTitle": "Plan your trip",

@@ -15,7 +15,12 @@
  */
 import { GlobeIcon, CrescentMoonIcon, BookletIcon } from "./Icons";
 
-export const discoverAseerLinks = [
+export type NavbarDropdownLink = {
+  href: string;
+  labelKey: string;
+};
+
+export const discoverAseerLinks: NavbarDropdownLink[] = [
   { href: "/about-aseer", labelKey: "navLinks.aboutAseer" },
   { href: "/destinations", labelKey: "navLinks.destinations" },
   { href: "/attractions", labelKey: "navLinks.attractions" },
@@ -25,10 +30,37 @@ export const discoverAseerLinks = [
   { href: "/film", labelKey: "navLinks.film" },
 ];
 
+export const planTripLinks: NavbarDropdownLink[] = [
+  { href: "/planner", labelKey: "navPlanTripLinks.aiPlanner" },
+  { href: "/accommodation", labelKey: "navPlanTripLinks.accommodation" },
+  { href: "/restaurants", labelKey: "navPlanTripLinks.restaurants" },
+  { href: "/tour-guides", labelKey: "navPlanTripLinks.tourGuides" },
+  {
+    href: "/services-support",
+    labelKey: "navPlanTripLinks.sopportingServices",
+  },
+  {
+    href: "/getting-here-and-around",
+    labelKey: "navPlanTripLinks.gettingAround",
+  },
+];
+
+export const getNavbarDropdownLinks = (labelKey: string) => {
+  if (labelKey === "common.discoverAseer") {
+    return discoverAseerLinks;
+  }
+
+  if (labelKey === "nav.planTrip") {
+    return planTripLinks;
+  }
+
+  return [] as NavbarDropdownLink[];
+};
+
 /** LTR: left → right in the nav bar */
 export const navigationLinks = [
   { href: "#", labelKey: "common.discoverAseer", isDropdown: true },
-  { href: "/planner", labelKey: "nav.planTrip" },
+  { href: "#", labelKey: "nav.planTrip", isDropdown: true },
   { href: "/event-seasons", labelKey: "nav.events" },
 ];
 
