@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { navigationLinks } from "./navbarData";
+import { getNavbarDropdownLinks, navigationLinks } from "./navbarData";
 import DiscoverAseerDropdown from "./DiscoverAseerDropdown";
 
 const DesktopNavigationLinks = () => {
@@ -13,7 +13,13 @@ const DesktopNavigationLinks = () => {
     <div className="hidden lg:flex flex-row items-center gap-8 ms-10">
       {navigationLinks.map((link) => {
         if (link.isDropdown) {
-          return <DiscoverAseerDropdown key={link.labelKey} label={t(link.labelKey)} />;
+          return (
+            <DiscoverAseerDropdown
+              key={link.labelKey}
+              label={t(link.labelKey)}
+              links={getNavbarDropdownLinks(link.labelKey)}
+            />
+          );
         }
         return (
           <Link

@@ -6,7 +6,11 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import AseerLogo from "../Logo/AseerLogo";
 import { HamburgerIcon } from "./Icons";
-import { navigationLinks, discoverAseerLinks, iconButtons } from "./navbarData";
+import {
+  getNavbarDropdownLinks,
+  navigationLinks,
+  iconButtons,
+} from "./navbarData";
 import { toggleTheme } from "@/lib/theme/client";
 
 interface MobileMenuProps {
@@ -93,16 +97,18 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                 leaveTo="opacity-0 max-h-0"
                               >
                                 <Disclosure.Panel className="pl-4 space-y-2 overflow-hidden">
-                                  {discoverAseerLinks.map((item) => (
-                                    <Link
-                                      key={item.href}
-                                      href={item.href}
-                                      onClick={onClose}
-                                      className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
-                                    >
-                                      {t(item.labelKey)}
-                                    </Link>
-                                  ))}
+                                  {getNavbarDropdownLinks(link.labelKey).map(
+                                    (item) => (
+                                      <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        onClick={onClose}
+                                        className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
+                                      >
+                                        {t(item.labelKey)}
+                                      </Link>
+                                    ),
+                                  )}
                                 </Disclosure.Panel>
                               </Transition>
                             </>

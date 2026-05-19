@@ -4,10 +4,11 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { discoverAseerLinks } from "./navbarData";
+import { NavbarDropdownLink } from "./navbarData";
 
 interface DiscoverAseerDropdownProps {
   label: string;
+  links: NavbarDropdownLink[];
 }
 
 const ChevronIcon = ({ className }: { className?: string }) => (
@@ -30,7 +31,10 @@ const ChevronIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const DiscoverAseerDropdown = ({ label }: DiscoverAseerDropdownProps) => {
+const DiscoverAseerDropdown = ({
+  label,
+  links,
+}: DiscoverAseerDropdownProps) => {
   const t = useTranslations();
 
   return (
@@ -46,10 +50,10 @@ const DiscoverAseerDropdown = ({ label }: DiscoverAseerDropdownProps) => {
       >
         {({ open }) => (
           <>
-
             <ChevronIcon
-              className={`shrink-0 opacity-90 transition-transform duration-200 ${open ? "rotate-180" : ""
-                }`}
+              className={`shrink-0 opacity-90 transition-transform duration-200 ${
+                open ? "rotate-180" : ""
+              }`}
             />
             <span>{label}</span>
           </>
@@ -66,15 +70,14 @@ const DiscoverAseerDropdown = ({ label }: DiscoverAseerDropdownProps) => {
       >
         <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-left rounded-2xl border border-white/20 bg-linear-to-b from-[#191919]/95 via-[#2a1a3d]/95 to-[#1a2a1a]/95 shadow-xl backdrop-blur-xl z-50">
           <div className="hide-scrollbar max-h-[70vh] overflow-y-auto overscroll-contain py-2 scroll-smooth">
-            {discoverAseerLinks.map((item) => (
+            {links.map((item) => (
               <Menu.Item key={item.href}>
                 {({ focus }) => (
                   <Link
                     href={item.href}
-                    className={`${focus
-                      ? "bg-white/10 text-white"
-                      : "text-white/90"
-                      } block px-4 py-3 text-base font-medium transition-colors hover:bg-white/10 hover:text-white`}
+                    className={`${
+                      focus ? "bg-white/10 text-white" : "text-white/90"
+                    } block px-4 py-3 text-base font-medium transition-colors hover:bg-white/10 hover:text-white`}
                   >
                     {t(item.labelKey)}
                   </Link>

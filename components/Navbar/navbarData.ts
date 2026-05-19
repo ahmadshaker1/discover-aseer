@@ -15,28 +15,52 @@
  */
 import { GlobeIcon, CrescentMoonIcon, BookletIcon } from "./Icons";
 
-export const discoverAseerLinks = [
-  { href: "/destinations", labelKey: "common.destinations" },
-  { href: "/attractions", labelKey: "common.attractions" },
-  { href: "/about-aseer", labelKey: "aboutAseer.title" },
-  { href: "/aseer-cuisine", labelKey: "aseerCuisine.title" },
-  { href: "/aseer-community", labelKey: "aseerCommunity.title" },
-  { href: "/restaurants", labelKey: "common.restaurants" },
-  { href: "/experiences", labelKey: "common.experiences" },
-  { href: "/film", labelKey: "nav.film" },
-  { href: "/tour-guides", labelKey: "tourGuides.title" },
-  { href: "/tour-guides/register", labelKey: "tourGuidesRegister.title" },
-  { href: "/accommodation", labelKey: "common.accommodation" },
-  { href: "/getting-here-and-around", labelKey: "gettingHere.banner.title" },
-  { href: "/services-support", labelKey: "servicesSupport.title" },
-  { href: "/travel-tips", labelKey: "travelTips.title" },
-  { href: "/igcat", labelKey: "nav.igcat" },
+export type NavbarDropdownLink = {
+  href: string;
+  labelKey: string;
+};
+
+export const discoverAseerLinks: NavbarDropdownLink[] = [
+  { href: "/about-aseer", labelKey: "navLinks.aboutAseer" },
+  { href: "/destinations", labelKey: "navLinks.destinations" },
+  { href: "/attractions", labelKey: "navLinks.attractions" },
+  { href: "/experiences", labelKey: "navLinks.experiences" },
+  { href: "/aseer-cuisine", labelKey: "navLinks.cuisine" },
+  { href: "/aseer-community", labelKey: "navLinks.community" },
+  { href: "/film", labelKey: "navLinks.film" },
 ];
+
+export const planTripLinks: NavbarDropdownLink[] = [
+  { href: "/planner", labelKey: "navPlanTripLinks.aiPlanner" },
+  { href: "/accommodation", labelKey: "navPlanTripLinks.accommodation" },
+  { href: "/restaurants", labelKey: "navPlanTripLinks.restaurants" },
+  { href: "/tour-guides", labelKey: "navPlanTripLinks.tourGuides" },
+  {
+    href: "/services-support",
+    labelKey: "navPlanTripLinks.sopportingServices",
+  },
+  {
+    href: "/getting-here-and-around",
+    labelKey: "navPlanTripLinks.gettingAround",
+  },
+];
+
+export const getNavbarDropdownLinks = (labelKey: string) => {
+  if (labelKey === "common.discoverAseer") {
+    return discoverAseerLinks;
+  }
+
+  if (labelKey === "nav.planTrip") {
+    return planTripLinks;
+  }
+
+  return [] as NavbarDropdownLink[];
+};
 
 /** LTR: left → right in the nav bar */
 export const navigationLinks = [
   { href: "#", labelKey: "common.discoverAseer", isDropdown: true },
-  { href: "/planner", labelKey: "nav.planTrip" },
+  { href: "#", labelKey: "nav.planTrip", isDropdown: true },
   { href: "/event-seasons", labelKey: "nav.events" },
 ];
 
