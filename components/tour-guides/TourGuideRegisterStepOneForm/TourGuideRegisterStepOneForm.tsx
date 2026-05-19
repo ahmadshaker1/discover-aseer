@@ -1,26 +1,48 @@
 "use client";
 
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 19;
 
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
 
-const SPECIALIZATION_OPTIONS = [
-  "متخصص في التجارب والأنشطة البرية",
-  "متخصص في التجارب والأنشطة البحرية",
-  "متخصص في التجارب والأنشطة الهوائية",
-  "متخصص في التجارب والأنشطة التراثية والثقافية",
-  "متخصص في سياحة الاستجمام",
-  "أخرى",
-] as const;
+type SpecializationId =
+  | "land"
+  | "marine"
+  | "aerial"
+  | "heritage"
+  | "recreational"
+  | "other";
 
-const LANGUAGE_LEVEL_OPTIONS = [
-  { value: "beginner", label: "مبتدئ" },
-  { value: "intermediate", label: "متوسط" },
-  { value: "advanced", label: "متقدم" },
-] as const;
+const SPECIALIZATION_IDS: SpecializationId[] = [
+  "land",
+  "marine",
+  "aerial",
+  "heritage",
+  "recreational",
+  "other",
+];
+
+/** Values sent to the registration API (Arabic labels). */
+const SPECIALIZATION_AR: Record<SpecializationId, string> = {
+  land: "متخصص في التجارب والأنشطة البرية",
+  marine: "متخصص في التجارب والأنشطة البحرية",
+  aerial: "متخصص في التجارب والأنشطة الهوائية",
+  heritage: "متخصص في التجارب والأنشطة التراثية والثقافية",
+  recreational: "متخصص في سياحة الاستجمام",
+  other: "أخرى",
+};
+
+const LANGUAGE_LEVEL_VALUES = ["beginner", "intermediate", "advanced"] as const;
+
+const FIELD_GROUP = "flex flex-col gap-2 text-start";
+const FIELD_INPUT =
+  "h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start";
+const CHECK_ROW =
+  "flex items-start justify-start gap-3 rounded-lg border border-border bg-background px-3 py-2";
+const CHECK_LABEL = "flex items-start justify-start gap-3";
 
 type FormValues = {
   name_ar: string;
@@ -110,16 +132,18 @@ function isLicenseDateValid(dateText: string): boolean {
 }
 
 function buildSpecializationValue(
-  selectedSpecializations: string[],
+  selectedSpecializations: SpecializationId[],
   otherSpecialization: string,
 ) {
-  const list = selectedSpecializations.filter((item) => item !== "أخرى");
-  if (selectedSpecializations.includes("أخرى")) {
+  const list = selectedSpecializations
+    .filter((item) => item !== "other")
+    .map((id) => SPECIALIZATION_AR[id]);
+  if (selectedSpecializations.includes("other")) {
     const trimmedOther = otherSpecialization.trim();
     if (trimmedOther) {
       list.push(trimmedOther);
     } else if (list.length === 0) {
-      list.push("أخرى");
+      list.push(SPECIALIZATION_AR.other);
     }
   }
   return list.join(", ");
@@ -128,10 +152,12 @@ function buildSpecializationValue(
 const TourGuideRegisterStepOneForm = ({
   onCompletionChange,
 }: TourGuideRegisterStepOneFormProps) => {
+  const t = useTranslations("tourGuidesRegister");
+  const locale = useLocale();
   const baseId = useId();
   const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
   const [selectedSpecializations, setSelectedSpecializations] = useState<
-    string[]
+    SpecializationId[]
   >([]);
   const [otherSpecialization, setOtherSpecialization] = useState("");
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
@@ -205,19 +231,19 @@ const TourGuideRegisterStepOneForm = ({
     setLicenseAttachmentFile(list?.[0] ?? null);
   };
 
-  const toggleSpecialization = (value: string) => {
+  const toggleSpecialization = (value: SpecializationId) => {
     const exists = selectedSpecializations.includes(value);
     if (exists) {
       const next = selectedSpecializations.filter((item) => item !== value);
       setSelectedSpecializations(next);
-      if (value === "أخرى") {
+      if (value === "other") {
         setOtherSpecialization("");
       }
       setField(
         "Specialization",
         buildSpecializationValue(
           next,
-          value === "أخرى" ? "" : otherSpecialization,
+          value === "other" ? "" : otherSpecialization,
         ),
       );
       return;
@@ -229,6 +255,12 @@ const TourGuideRegisterStepOneForm = ({
       "Specialization",
       buildSpecializationValue(next, otherSpecialization),
     );
+  };
+
+  const languageLevelLabel = (value: (typeof LANGUAGE_LEVEL_VALUES)[number]) => {
+    if (value === "beginner") return t("form.levelBeginner");
+    if (value === "intermediate") return t("form.levelIntermediate");
+    return t("form.levelAdvanced");
   };
 
   const onOtherSpecializationChange = (value: string) => {
@@ -271,13 +303,11 @@ const TourGuideRegisterStepOneForm = ({
 
       if (!response.ok) {
         const errorBody = await response.json().catch(() => null);
-        throw new Error(
-          errorBody?.error ?? "تعذر إرسال الطلب، حاول مرة أخرى لاحقاً.",
-        );
+        throw new Error(errorBody?.error ?? t("form.errorSubmit"));
       }
 
       setSubmitState("success");
-      setSubmitMessage("تم إرسال الطلب بنجاح.");
+      setSubmitMessage(t("form.success"));
       setValues(EMPTY_VALUES);
       setSelectedSpecializations([]);
       setOtherSpecialization("");
@@ -286,7 +316,7 @@ const TourGuideRegisterStepOneForm = ({
     } catch (error) {
       setSubmitState("error");
       setSubmitMessage(
-        error instanceof Error ? error.message : "حدث خطأ غير متوقع.",
+        error instanceof Error ? error.message : t("form.errorGeneric"),
       );
     }
   };
@@ -294,48 +324,49 @@ const TourGuideRegisterStepOneForm = ({
   return (
     <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit}>
       <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-name-ar`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            الاسم بالعربي *
+            {t("form.nameAr")}
           </label>
           <input
             id={`${baseId}-name-ar`}
             value={values.name_ar}
             onChange={(e) => setField("name_ar", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
+            dir="rtl"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-name-en`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            الاسم بالإنجليزي *
+            {t("form.nameEn")}
           </label>
           <input
             id={`${baseId}-name-en`}
             value={values.name_en}
             onChange={(e) => setField("name_en", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-gender`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            الجنس *
+            {t("form.gender")}
           </label>
           <select
             id={`${baseId}-gender`}
@@ -343,28 +374,28 @@ const TourGuideRegisterStepOneForm = ({
             onChange={(e) =>
               setField("gender", e.target.value as FormValues["gender"])
             }
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
           >
-            <option value="">اختر</option>
-            <option value="ذكر">ذكر</option>
-            <option value="أنثى">أنثى</option>
+            <option value="">{t("form.select")}</option>
+            <option value="ذكر">{t("form.genderMale")}</option>
+            <option value="أنثى">{t("form.genderFemale")}</option>
           </select>
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-nid`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            رقم الهوية الوطنية *
+            {t("form.nationalId")}
           </label>
           <input
             id={`${baseId}-nid`}
             value={values.National_ID_number}
             onChange={(e) => setField("National_ID_number", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             inputMode="numeric"
           />
@@ -376,7 +407,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            نبذة عني (المرشد السياحي) *
+            {t("form.aboutMe")}
           </label>
           <textarea
             id={`${baseId}-bio`}
@@ -384,33 +415,34 @@ const TourGuideRegisterStepOneForm = ({
             onChange={(e) => setField("About_me", e.target.value)}
             className="min-h-[110px] w-full rounded-lg border border-border bg-background text-foreground p-4 text-start"
             style={{ fontFamily: ibm }}
+            dir={locale === "ar" ? "rtl" : "ltr"}
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-license-number`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            رقم الترخيص *
+            {t("form.licenseNumber")}
           </label>
           <input
             id={`${baseId}-license-number`}
             value={values.License_number}
             onChange={(e) => setField("License_number", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-license-date`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            تاريخ انتهاء الترخيص *
+            {t("form.licenseExpiry")}
           </label>
           <input
             id={`${baseId}-license-date`}
@@ -422,13 +454,13 @@ const TourGuideRegisterStepOneForm = ({
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-arabic-level`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            اللغة العربية *
+            {t("form.arabicLanguage")}
           </label>
           <select
             id={`${baseId}-arabic-level`}
@@ -439,25 +471,25 @@ const TourGuideRegisterStepOneForm = ({
                 e.target.value as FormValues["Arabic_language"],
               )
             }
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
           >
-            <option value="">اختر</option>
-            {LANGUAGE_LEVEL_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
+            <option value="">{t("form.select")}</option>
+            {LANGUAGE_LEVEL_VALUES.map((value) => (
+              <option key={value} value={value}>
+                {languageLevelLabel(value)}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-english-level`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            اللغة الإنجليزية *
+            {t("form.englishLanguage")}
           </label>
           <select
             id={`${baseId}-english-level`}
@@ -468,13 +500,13 @@ const TourGuideRegisterStepOneForm = ({
                 e.target.value as FormValues["english_language"],
               )
             }
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
           >
-            <option value="">اختر</option>
-            {LANGUAGE_LEVEL_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
+            <option value="">{t("form.select")}</option>
+            {LANGUAGE_LEVEL_VALUES.map((value) => (
+              <option key={value} value={value}>
+                {languageLevelLabel(value)}
               </option>
             ))}
           </select>
@@ -486,15 +518,15 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            لغات أخرى
+            {t("form.otherLanguages")}
           </label>
           <input
             id={`${baseId}-other-languages`}
             value={values.Other_languages}
             onChange={(e) => setField("Other_languages", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
-            placeholder="مثال: الفرنسية، الإسبانية"
+            placeholder={t("form.otherLanguagesPlaceholder")}
           />
         </div>
 
@@ -503,46 +535,44 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            التخصص *
+            {t("form.specialization")}
           </p>
           <div className="grid grid-cols-1 gap-2">
-            {SPECIALIZATION_OPTIONS.map((item) => (
-              <label
-                key={item}
-                className="flex items-center justify-end gap-2 rounded-lg border border-border bg-background text-foreground px-3 py-2"
-              >
-                <span
-                  className="text-sm text-start text-foreground"
-                  style={{ fontFamily: ibm }}
-                >
-                  {item}
-                </span>
+            {SPECIALIZATION_IDS.map((item) => (
+              <label key={item} className={CHECK_ROW}>
                 <input
                   type="checkbox"
+                  className="mt-0.5 shrink-0"
                   checked={selectedSpecializations.includes(item)}
                   onChange={() => toggleSpecialization(item)}
                 />
+                <span
+                  className="flex-1 text-sm text-start text-foreground"
+                  style={{ fontFamily: ibm }}
+                >
+                  {t(`form.specializations.${item}`)}
+                </span>
               </label>
             ))}
           </div>
-          {selectedSpecializations.includes("أخرى") ? (
+          {selectedSpecializations.includes("other") ? (
             <input
               value={otherSpecialization}
               onChange={(e) => onOtherSpecializationChange(e.target.value)}
-              className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+              className={FIELD_INPUT}
               style={{ fontFamily: ibm }}
-              placeholder="اذكر التخصص الآخر"
+              placeholder={t("form.otherSpecializationPlaceholder")}
             />
           ) : null}
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-transportation`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            هل تتوفر لديك وسيلة مواصلات؟ *
+            {t("form.transportation")}
           </label>
           <select
             id={`${baseId}-transportation`}
@@ -553,137 +583,137 @@ const TourGuideRegisterStepOneForm = ({
                 e.target.value as FormValues["transportation"],
               )
             }
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
           >
-            <option value="">اختر</option>
-            <option value="yes">نعم</option>
-            <option value="no">لا</option>
+            <option value="">{t("form.select")}</option>
+            <option value="yes">{t("form.yes")}</option>
+            <option value="no">{t("form.no")}</option>
           </select>
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-email`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            البريد الإلكتروني *
+            {t("form.email")}
           </label>
           <input
             id={`${baseId}-email`}
             type="email"
             value={values.Email}
             onChange={(e) => setField("Email", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-mobile`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            رقم الجوال *
+            {t("form.mobile")}
           </label>
           <input
             id={`${baseId}-mobile`}
             value={values.Mobile_number}
             onChange={(e) => setField("Mobile_number", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             inputMode="tel"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-whatsapp`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            رقم الواتس اب *
+            {t("form.whatsapp")}
           </label>
           <input
             id={`${baseId}-whatsapp`}
             value={values.WhatsApp_number}
             onChange={(e) => setField("WhatsApp_number", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             inputMode="tel"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-website`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            الموقع الإلكتروني
+            {t("form.website")}
           </label>
           <input
             id={`${baseId}-website`}
             value={values.Website}
             onChange={(e) => setField("Website", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-instagram`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            انستقرام
+            {t("form.instagram")}
           </label>
           <input
             id={`${baseId}-instagram`}
             value={values.Instagram}
             onChange={(e) => setField("Instagram", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-x`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            منصة X
+            {t("form.xPlatform")}
           </label>
           <input
             id={`${baseId}-x`}
             value={values.X_platform}
             onChange={(e) => setField("X_platform", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
         </div>
 
-        <div className="flex flex-col gap-2 text-start">
+        <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-tiktok`}
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            تيك توك
+            {t("form.tiktok")}
           </label>
           <input
             id={`${baseId}-tiktok`}
             value={values.TikTok}
             onChange={(e) => setField("TikTok", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 text-start"
+            className={FIELD_INPUT}
             style={{ fontFamily: ibm }}
             dir="ltr"
           />
@@ -694,50 +724,50 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            التعهدات *
+            {t("form.commitmentsTitle")}
           </p>
-          <label className="flex items-start justify-end gap-2">
-            <span className="text-sm" style={{ fontFamily: ibm }}>
-              أقر أن جميع المعلومات المذكورة أعلاه والمستندات المرفقة صحيحة
-              ومتطابقة تماماً مع معلوماتي الشخصية وخبرتي في الإرشاد السياحي.
-            </span>
+          <label className={CHECK_LABEL}>
             <input
               type="checkbox"
+              className="mt-1 shrink-0"
               checked={values.commitment1}
               onChange={(e) => setField("commitment1", e.target.checked)}
             />
-          </label>
-          <label className="flex items-start justify-end gap-2">
-            <span className="text-sm" style={{ fontFamily: ibm }}>
-              أوافق على استخدام المعلومات المذكورة أعلاه من قبل القنوات
-              الإلكترونية لتسويق عسير، وهيئة تطوير منطقة عسير.
+            <span className="flex-1 text-sm text-start" style={{ fontFamily: ibm }}>
+              {t("form.commitment1")}
             </span>
+          </label>
+          <label className={CHECK_LABEL}>
             <input
               type="checkbox"
+              className="mt-1 shrink-0"
               checked={values.commitment2}
               onChange={(e) => setField("commitment2", e.target.checked)}
             />
-          </label>
-          <label className="flex items-start justify-end gap-2">
-            <span className="text-sm" style={{ fontFamily: ibm }}>
-              أتعهد بالالتزام التام بتقديم خدمات الإرشاد السياحي والرد
-              والاستجابة السريعة.
+            <span className="flex-1 text-sm text-start" style={{ fontFamily: ibm }}>
+              {t("form.commitment2")}
             </span>
+          </label>
+          <label className={CHECK_LABEL}>
             <input
               type="checkbox"
+              className="mt-1 shrink-0"
               checked={values.commitment3}
               onChange={(e) => setField("commitment3", e.target.checked)}
             />
+            <span className="flex-1 text-sm text-start" style={{ fontFamily: ibm }}>
+              {t("form.commitment3")}
+            </span>
           </label>
         </div>
 
         <div className="md:col-span-2 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="flex flex-col gap-2 text-start">
+          <div className={FIELD_GROUP}>
             <p
               className="mb-1 text-start text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              صورة شخصية *
+              {t("form.profilePhoto")}
             </p>
             <label
               htmlFor={`${baseId}-profile-image`}
@@ -760,13 +790,13 @@ const TourGuideRegisterStepOneForm = ({
                 className="text-center text-[14px] font-bold leading-[120%] text-primary"
                 style={{ fontFamily: araBold }}
               >
-                تصفح الصورة
+                {t("form.browsePhoto")}
               </span>
               <span
                 className="text-xs text-muted-foreground"
                 style={{ fontFamily: ibm }}
               >
-                JPG, JPEG, PNG, WEBP
+                {t("form.fileTypesImage")}
               </span>
               {profileImageFile ? (
                 <span
@@ -779,12 +809,12 @@ const TourGuideRegisterStepOneForm = ({
             </label>
           </div>
 
-          <div className="flex flex-col gap-2 text-start">
+          <div className={FIELD_GROUP}>
             <p
               className="mb-1 text-start text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              رخصة الإرشاد السياحي *
+              {t("form.licenseAttachment")}
             </p>
             <label
               htmlFor={`${baseId}-license-attachment`}
@@ -807,13 +837,13 @@ const TourGuideRegisterStepOneForm = ({
                 className="text-center text-[14px] font-bold leading-[120%] text-primary"
                 style={{ fontFamily: araBold }}
               >
-                تصفح المرفق
+                {t("form.browseAttachment")}
               </span>
               <span
                 className="text-xs text-muted-foreground"
                 style={{ fontFamily: ibm }}
               >
-                JPG, JPEG, PDF
+                {t("form.fileTypesLicense")}
               </span>
               {licenseAttachmentFile ? (
                 <span
@@ -830,7 +860,7 @@ const TourGuideRegisterStepOneForm = ({
 
       <section
         className="mx-auto mt-12 w-full max-w-[962px] rounded-[12px] sm:mt-16 lg:mt-20"
-        aria-label="إجراءات النموذج"
+        aria-label={t("form.formActionsAria")}
       >
         {submitMessage ? (
           <p
@@ -849,7 +879,7 @@ const TourGuideRegisterStepOneForm = ({
           className="flex h-[62px] w-full items-center justify-center gap-[10px] rounded-[100px] bg-primary px-[22px] py-[14px] text-lg font-bold text-primary-foreground transition-opacity hover:enabled:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-45"
           style={{ fontFamily: araBold }}
         >
-          {submitState === "submitting" ? "جاري الإرسال..." : "إرسال الطلب"}
+          {submitState === "submitting" ? t("form.submitting") : t("form.submit")}
         </button>
       </section>
     </form>

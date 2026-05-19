@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -78,6 +78,9 @@ function BreadcrumbChevronSmall() {
  */
 const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
   const t = useTranslations("tourGuidesRegister");
+  const locale = useLocale();
+  const backAlignClass = locale === "ar" ? "self-start" : "self-end";
+
   return (
     <section
       className="relative z-0 w-full min-h-[644px] -mt-[139px] pb-10"
@@ -90,7 +93,7 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
       <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-[calc(139px+5rem)] sm:px-6 md:px-10 lg:px-8 lg:pt-[200px]">
         <Link
           href="/tour-guides"
-          className="mb-10 inline-flex h-[42px] min-w-[98px] items-center justify-center gap-[10px] self-end rounded-[43px] bg-background px-[10px] py-[10px] text-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:absolute lg:mb-0 lg:top-[291px] lg:end-[68px]"
+          className={`mb-10 inline-flex h-[42px] min-w-[98px] items-center justify-center gap-[10px] ${backAlignClass} rounded-[43px] bg-background px-[10px] py-[10px] text-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:absolute lg:mb-0 lg:top-[291px] lg:right-[68px]`}
           style={{ fontFamily: araBold }}
           prefetch={false}
         >
@@ -98,17 +101,17 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
           <BackChevronIcon />
         </Link>
 
-        <div className="mx-auto mt-20 flex max-w-[590px] flex-col items-center gap-[33px] text-center sm:mt-24 lg:mt-30 xl:mt-32">
+        <div className="mx-auto mt-20 flex w-full max-w-[590px] flex-col items-stretch gap-[33px] sm:mt-24 lg:mt-30 xl:mt-32">
           <h1
             id="tour-guide-register-hero-title"
-            className={`w-full text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary text-start`}
+            className="w-full text-start text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary"
             style={{ fontFamily: araBold }}
           >
             {t("formTitle")}
           </h1>
 
           <nav
-            className="flex w-full max-w-[543px] flex-wrap items-center justify-center gap-1.5 text-secondary"
+            className="flex w-full max-w-[543px] flex-wrap items-center justify-start gap-1.5 text-secondary"
             aria-label={t("breadcrumbLabel")}
           >
             <Link
@@ -128,7 +131,7 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
             </Link>
             <BreadcrumbChevronSmall />
             <span
-              className="text-center text-[24px] font-normal leading-[180%] text-secondary"
+              className="text-start text-[24px] font-normal leading-[180%] text-secondary"
               style={{ fontFamily: araBold }}
               aria-current="page"
             >
