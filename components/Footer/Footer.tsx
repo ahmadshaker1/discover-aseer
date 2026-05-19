@@ -44,7 +44,6 @@ const Footer = () => {
           {/* Section 2 */}
           <div className="h-auto pb-6 lg:h-[344px] lg:pb-0">
             <div className="grid h-full grid-cols-1 gap-8 text-start sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-              {" "}
               {/* اكتشف عسير */}
               <div className="flex w-full justify-self-start flex-col items-start text-start">
                 <h3

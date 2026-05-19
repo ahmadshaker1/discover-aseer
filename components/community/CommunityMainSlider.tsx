@@ -164,7 +164,9 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
               className="inline-flex items-center gap-4 text-[18px] font-medium leading-none transition-opacity hover:opacity-100"
               style={{ fontFamily: ara }}
             >
-              <ChevronRight />
+              <span className="inline-flex shrink-0 ltr:rotate-180" aria-hidden>
+                <ChevronRight />
+              </span>
               {previousSlideTitle}
             </button>
             <button
@@ -174,7 +176,9 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
               style={{ fontFamily: ara }}
             >
               {nextSlideTitle}
-              <ChevronLeft />
+              <span className="inline-flex shrink-0 ltr:rotate-180" aria-hidden>
+                <ChevronLeft />
+              </span>
             </button>
           </div>
         </div>
