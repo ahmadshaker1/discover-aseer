@@ -40,25 +40,25 @@ export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
     id: "film-land-1",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.mountains,
     filterId: "mountains",
-    image: "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg",
+    image: "/assets/aboutAseer/mountains.png",
   },
   {
     id: "film-land-2",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.plains,
     filterId: "plains",
-    image: "/assets/film/f553c2485f7cee0001b8c78577a11b28d342a8d9.png",
+    image: "/assets/film/cb7870bcdbeed166a47cfcfd91a8a0fa3f5c72b5.jpg",
   },
   {
     id: "film-land-3",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.beaches,
     filterId: "beaches",
-    image: "/assets/film/cb7870bcdbeed166a47cfcfd91a8a0fa3f5c72b5.jpg",
+    image: "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg",
   },
   {
     id: "film-land-4",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.desert,
     filterId: "desert",
-    image: "/assets/film/216f4631aac0e23146a54ede4d47668e3a6b8c75 (1).png",
+    image: "/assets/igcat/ralydakar.jpg",
   },
 ];
 
