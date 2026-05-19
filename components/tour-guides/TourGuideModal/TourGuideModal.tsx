@@ -2,6 +2,7 @@
 
 import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import {
   CloseIcon,
   WhatsAppIcon,
@@ -41,7 +42,10 @@ const TourGuideModal = ({
   transportation,
   availability,
 }: TourGuideModalProps) => {
+  const t = useTranslations("tourGuides");
   if (!guide) return null;
+
+  const firstName = guide.name.split(" ")[0] || guide.name;
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
@@ -101,7 +105,7 @@ const TourGuideModal = ({
                   <span className="text-green-600">
                     <WhatsAppIcon />
                   </span>
-                  <span>تواصل عبر الواتساب</span>
+                  <span>{t("contactWhatsApp")}</span>
                 </a>
               </div>
             </div>
@@ -109,7 +113,7 @@ const TourGuideModal = ({
             {/* About Section */}
             <div className="mb-4 sm:mb-6">
               <h3 className="mb-2 text-lg font-bold text-foreground sm:mb-3 sm:text-xl">
-                عن {guide.name.split(" ")[0]}
+                {t("aboutGuide", { name: firstName })}
               </h3>
               <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
                 {about}
@@ -133,14 +137,14 @@ const TourGuideModal = ({
             {/* Services Section */}
             <div>
               <h3 className="mb-3 text-lg font-bold text-foreground sm:mb-4 sm:text-xl">
-                الخدمات
+                {t("services")}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 <div className="rounded-xl bg-muted p-3 sm:rounded-2xl sm:p-4">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <ClockIcon />
                     <span className="text-xs sm:text-sm font-medium">
-                      السعر لكل ساعة
+                      {t("pricePerHour")}
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -156,7 +160,7 @@ const TourGuideModal = ({
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <PeopleIcon />
                     <span className="text-xs sm:text-sm font-medium">
-                      الحد الأعلى للأشخاص
+                      {t("maxPersons")}
                     </span>
                   </div>
                   <p className="text-base font-bold text-foreground sm:text-lg">
@@ -167,7 +171,7 @@ const TourGuideModal = ({
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <CarIcon />
                     <span className="text-xs sm:text-sm font-medium">
-                      وسيلة النقل
+                      {t("transportation")}
                     </span>
                   </div>
                   <p className="text-base font-bold text-foreground sm:text-lg">
@@ -178,7 +182,7 @@ const TourGuideModal = ({
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <CalendarIcon />
                     <span className="text-xs sm:text-sm font-medium">
-                      المواعيد
+                      {t("availabilityLabel")}
                     </span>
                   </div>
                   <p className="text-base font-bold text-foreground sm:text-lg">

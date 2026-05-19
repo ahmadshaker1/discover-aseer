@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import TourGuidesFilter, {
   type TourGuidesFilterState,
 } from "../TourGuidesFilter/TourGuidesFilter";
@@ -49,6 +50,7 @@ const TourGuidesPageContent = ({
   guides,
   filterOptions,
 }: TourGuidesPageContentProps) => {
+  const t = useTranslations("tourGuides");
   const [filters, setFilters] = useState<TourGuidesFilterState>(INITIAL_FILTERS);
   const [selectedGuide, setSelectedGuide] = useState<TourGuideData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,11 +72,11 @@ const TourGuidesPageContent = ({
 
   const getGuideDetails = (guide: TourGuideData) => {
     return {
-      about: guide.description || "مرشد سياحي محترف",
+      about: guide.description || t("defaultAbout"),
       pricePerHour: guide.pricePerHour ?? 200,
       maxPersons: guide.maxPersons ?? 8,
-      transportation: guide.transportation || "غير محدد",
-      availability: guide.availability || "مرنة",
+      transportation: guide.transportation || t("defaultTransport"),
+      availability: guide.availability || t("defaultAvailability"),
     };
   };
 
@@ -91,7 +93,7 @@ const TourGuidesPageContent = ({
             />
             {filteredGuides.length === 0 && (
               <p className="text-center text-muted-foreground py-12">
-                لا يوجد مرشدون يطابقون التصفية المحددة.
+                {t("noGuidesFilter")}
               </p>
             )}
           </div>

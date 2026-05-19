@@ -409,7 +409,16 @@
     "transportAvailable": "متوفر",
     "transportNotAvailable": "غير متوفر",
     "contactWhatsApp": "تواصل عبر الواتساب",
-    "registerAsGuide": "التسجيل كمرشد سياحي"
+    "registerAsGuide": "التسجيل كمرشد سياحي",
+    "noGuidesFilter": "لا يوجد مرشدون يطابقون التصفية المحددة.",
+    "aboutGuide": "عن {name}",
+    "services": "الخدمات",
+    "pricePerHour": "السعر لكل ساعة",
+    "maxPersons": "الحد الأعلى للأشخاص",
+    "availabilityLabel": "المواعيد",
+    "defaultAbout": "مرشد سياحي محترف",
+    "defaultTransport": "غير محدد",
+    "defaultAvailability": "مرنة"
   },
   "tourGuidesRegister": {
     "title": "تسجيل المرشدين",

@@ -409,7 +409,16 @@
     "transportAvailable": "Available",
     "transportNotAvailable": "Not available",
     "contactWhatsApp": "Contact on WhatsApp",
-    "registerAsGuide": "Register as a tour guide"
+    "registerAsGuide": "Register as a tour guide",
+    "noGuidesFilter": "No guides match your filters.",
+    "aboutGuide": "About {name}",
+    "services": "Services",
+    "pricePerHour": "Price per hour",
+    "maxPersons": "Maximum guests",
+    "availabilityLabel": "Availability",
+    "defaultAbout": "Professional tour guide",
+    "defaultTransport": "Not specified",
+    "defaultAvailability": "Flexible"
   },
   "tourGuidesRegister": {
     "title": "Guide registration",

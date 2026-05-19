@@ -33,6 +33,14 @@ import {
   getCityLabelById,
   inferCityIdFromLocation,
 } from "@/components/landmarks/filterOptions";
+import type { LocaleCode } from "@/lib/i18n/localized";
+import {
+  buildSpecLabelMapFromApi,
+  canonicalEnglishSpecLabel,
+  localizeTourGuideFilterLabel,
+  normalizeGuideGender,
+  parseSpecializationTokens,
+} from "./tourGuideFilterLabels";
 import { DUMMY_TOURIST_GUIDES } from "./dummyTourGuides";
 import type { TourGuideData } from "./TourGuideCard/TourGuideCard";
 import type {
@@ -53,20 +61,21 @@ export type {
 } from "./types";
 
 const DEFAULT_IMAGE = "/assets/experiences/experiences.png";
-const DEFAULT_LOCATION = "منطقة عسير";
 
-const LANGUAGE_LEVEL_MAP: Record<string, string> = {
+const LANGUAGE_LEVEL_AR: Record<string, string> = {
   advanced: "متقدم",
   intermediate: "متوسط",
   beginner: "مبتدئ",
 };
 
+const LANGUAGE_LEVEL_EN: Record<string, string> = {
+  advanced: "Advanced",
+  intermediate: "Intermediate",
+  beginner: "Beginner",
+};
+
 function parseSpecializations(raw: string | null): string[] {
-  if (!raw || typeof raw !== "string") return [];
-  return raw
-    .split(",")
-    .map((s) => s.replace(/\s+/g, " ").trim())
-    .filter(Boolean);
+  return parseSpecializationTokens(raw);
 }
 
 function inferGuideCityId(api: ApiTouristGuide): string | undefined {
@@ -99,17 +108,103 @@ export function toTourGuideCardData(guide: TourGuideWithFilterMeta): TourGuideDa
   return rest;
 }
 
-function buildLanguages(api: ApiTouristGuide): Array<{ code: string; name: string; flag: string }> {
+function buildLanguages(
+  api: ApiTouristGuide,
+  locale: LocaleCode,
+): Array<{ code: string; name: string; flag: string }> {
   const list: Array<{ code: string; name: string; flag: string }> = [];
   const ar = api.arabic_language_level;
   const en = api.english_language_level;
-  if (ar) list.push({ code: "ar", name: `العربية (${LANGUAGE_LEVEL_MAP[ar] ?? ar})`, flag: "🇸🇦" });
-  if (en) list.push({ code: "en", name: `English (${LANGUAGE_LEVEL_MAP[en] ?? en})`, flag: "🇬🇧" });
-  if (list.length === 0) list.push({ code: "ar", name: "العربية", flag: "🇸🇦" });
+  const levelMap = locale === "en" ? LANGUAGE_LEVEL_EN : LANGUAGE_LEVEL_AR;
+
+  if (ar) {
+    const level = levelMap[ar] ?? ar;
+    list.push({
+      code: "ar",
+      name: locale === "en" ? `Arabic (${level})` : `العربية (${level})`,
+      flag: "🇸🇦",
+    });
+  }
+  if (en) {
+    const level = levelMap[en] ?? en;
+    list.push({
+      code: "en",
+      name: `English (${level})`,
+      flag: "🇬🇧",
+    });
+  }
+  if (list.length === 0) {
+    list.push({
+      code: "ar",
+      name: locale === "en" ? "Arabic" : "العربية",
+      flag: "🇸🇦",
+    });
+  }
   return list;
 }
 
-export function transformTourGuide(api: ApiTouristGuide): TourGuideWithFilterMeta {
+function pickGuideDescription(
+  api: ApiTouristGuide,
+  locale: LocaleCode,
+  specLabelMap: Map<string, string>,
+): string {
+  if (locale === "en") {
+    const text = (
+      api.description_en ||
+      api.content_en ||
+      api.description ||
+      api.content ||
+      ""
+    ).trim();
+    if (text) return text;
+
+    const enSpecs = parseSpecializations(api.specializations_en);
+    if (enSpecs.length > 0) {
+      return enSpecs.map((s) => canonicalEnglishSpecLabel(s)).join(", ");
+    }
+
+    const arSpecs = parseSpecializations(api.specializations);
+    if (arSpecs.length > 0) {
+      return arSpecs
+        .map((s) => localizeTourGuideFilterLabel(s, "en", specLabelMap))
+        .join(", ");
+    }
+    return "";
+  }
+
+  return (
+    (api.description || api.content || api.description_en || api.content_en || "")
+      .trim() ||
+    (api.specializations || api.specializations_en || "").trim()
+  );
+}
+
+function buildDisplaySpecialties(
+  api: ApiTouristGuide,
+  filterSpecializations: string[],
+  locale: LocaleCode,
+  specLabelMap: Map<string, string>,
+): string[] | undefined {
+  if (locale === "en") {
+    if (filterSpecializations.length > 0) {
+      return filterSpecializations.map((s) =>
+        localizeTourGuideFilterLabel(s, "en", specLabelMap),
+      );
+    }
+    const enSpecs = parseSpecializations(api.specializations_en);
+    if (enSpecs.length > 0) {
+      return enSpecs.map((label) => canonicalEnglishSpecLabel(label));
+    }
+    return undefined;
+  }
+  return filterSpecializations.length > 0 ? filterSpecializations : undefined;
+}
+
+export function transformTourGuide(
+  api: ApiTouristGuide,
+  locale: LocaleCode = "ar",
+  specLabelMap: Map<string, string> = new Map(),
+): TourGuideWithFilterMeta {
   const imageUrl =
     api.image && typeof api.image === "string" && api.image.startsWith("http")
       ? api.image
@@ -118,25 +213,49 @@ export function transformTourGuide(api: ApiTouristGuide): TourGuideWithFilterMet
   if (phone.length === 9 && phone.startsWith("5")) phone = `966${phone}`;
   else if (phone.length === 10 && phone.startsWith("05")) phone = `966${phone.slice(1)}`;
   const whatsappUrl = phone ? `https://wa.me/${phone}` : "#";
-  const description = (api.description || api.description_en || api.specializations || "").trim() || "مرشد سياحي في منطقة عسير";
+  const description =
+    pickGuideDescription(api, locale, specLabelMap) ||
+    (locale === "en"
+      ? "Professional tour guide in the Aseer region"
+      : "مرشد سياحي في منطقة عسير");
   const filterSpecializations = parseSpecializations(api.specializations);
-  const specialties = filterSpecializations.length > 0 ? filterSpecializations : undefined;
+  const specialties = buildDisplaySpecialties(
+    api,
+    filterSpecializations,
+    locale,
+    specLabelMap,
+  );
   const hasTransportation = api.transportation === true;
-  const gender = (api.gender || "").trim() || "—";
+  const gender = normalizeGuideGender(api.gender);
   const cityId = inferGuideCityId(api);
-  const locationLabel = cityId ? getCityLabelById(cityId, "ar") : DEFAULT_LOCATION;
+  const locationLabel = cityId
+    ? getCityLabelById(cityId, locale)
+    : locale === "en"
+      ? "Aseer region"
+      : "منطقة عسير";
+  const name =
+    (locale === "en"
+      ? (api.name_en || api.name || "").trim()
+      : (api.name || api.name_en || "").trim()) ||
+    (locale === "en" ? "Tour guide" : "مرشد سياحي");
 
   return {
     id: api.id,
-    name: (api.name || api.name_en || "").trim() || "مرشد سياحي",
+    name,
     location: locationLabel,
     profileImage: imageUrl,
-    languages: buildLanguages(api),
+    languages: buildLanguages(api, locale),
     whatsappUrl,
     description,
     specialties,
-    transportation: hasTransportation ? "متوفر" : "غير متوفر",
-    availability: "مرن",
+    transportation: hasTransportation
+      ? locale === "en"
+        ? "Available"
+        : "متوفر"
+      : locale === "en"
+        ? "Not available"
+        : "غير متوفر",
+    availability: locale === "en" ? "Flexible" : "مرن",
     filterSpecializations,
     gender,
     hasTransportation,
@@ -145,35 +264,59 @@ export function transformTourGuide(api: ApiTouristGuide): TourGuideWithFilterMet
 }
 
 /** City-scoped dummy rows when live guides do not match the requested city. */
-export function tourGuidesCardDataForCityFromDummy(cityId: string): TourGuideData[] {
-  const meta = DUMMY_TOURIST_GUIDES.map(transformTourGuide);
+export function tourGuidesCardDataForCityFromDummy(
+  cityId: string,
+  locale: LocaleCode = "ar",
+): TourGuideData[] {
+  const specLabelMap = buildSpecLabelMapFromApi(DUMMY_TOURIST_GUIDES);
+  const meta = DUMMY_TOURIST_GUIDES.map((api) =>
+    transformTourGuide(api, locale, specLabelMap),
+  );
   return filterTourGuidesByCityId(meta, cityId).map(toTourGuideCardData);
 }
 
-function buildFilterOptions(apiItems: ApiTouristGuide[]): TourGuidesFilterOptions {
+function buildFilterOptions(
+  apiItems: ApiTouristGuide[],
+  locale: LocaleCode,
+): TourGuidesFilterOptions {
+  const specLabelMap = buildSpecLabelMapFromApi(apiItems);
   const specCounts = new Map<string, number>();
   const genderCounts = new Map<string, number>();
   let withTransport = 0;
   let withoutTransport = 0;
 
   for (const api of apiItems) {
-    const t = transformTourGuide(api);
-    for (const s of t.filterSpecializations) {
+    const filterSpecializations = parseSpecializations(api.specializations);
+    const gender = normalizeGuideGender(api.gender);
+    const hasTransportation = api.transportation === true;
+
+    for (const s of filterSpecializations) {
       specCounts.set(s, (specCounts.get(s) ?? 0) + 1);
     }
-    if (t.gender && t.gender !== "—") {
-      genderCounts.set(t.gender, (genderCounts.get(t.gender) ?? 0) + 1);
+    if (gender && gender !== "—") {
+      genderCounts.set(gender, (genderCounts.get(gender) ?? 0) + 1);
     }
-    if (t.hasTransportation) withTransport += 1;
+    if (hasTransportation) withTransport += 1;
     else withoutTransport += 1;
   }
 
   const specializations = Array.from(specCounts.entries())
-    .map(([id, count]) => ({ id, label: id, count }))
+    .map(([id, count]) => ({
+      id,
+      label:
+        locale === "en"
+          ? localizeTourGuideFilterLabel(id, "en", specLabelMap)
+          : id,
+      count,
+    }))
     .sort((a, b) => b.count - a.count);
 
   const genderOptions = Array.from(genderCounts.entries())
-    .map(([id, count]) => ({ id, label: id, count }))
+    .map(([id, count]) => ({
+      id,
+      label: locale === "en" ? localizeTourGuideFilterLabel(id, "en", specLabelMap) : id,
+      count,
+    }))
     .sort((a, b) => b.count - a.count);
 
   const transportation = [
@@ -184,13 +327,19 @@ function buildFilterOptions(apiItems: ApiTouristGuide[]): TourGuidesFilterOption
   return { specializations, gender: genderOptions, transportation };
 }
 
-function resultFromApiRows(rows: ApiTouristGuide[]): FetchTourGuidesResult {
-  const guides = rows.map(transformTourGuide);
-  const filterOptions = buildFilterOptions(rows);
+function resultFromApiRows(
+  rows: ApiTouristGuide[],
+  locale: LocaleCode,
+): FetchTourGuidesResult {
+  const specLabelMap = buildSpecLabelMapFromApi(rows);
+  const guides = rows.map((api) => transformTourGuide(api, locale, specLabelMap));
+  const filterOptions = buildFilterOptions(rows, locale);
   return { guides, filterOptions };
 }
 
-export async function fetchTourGuides(): Promise<FetchTourGuidesResult> {
+export async function fetchTourGuides(
+  locale: LocaleCode = "ar",
+): Promise<FetchTourGuidesResult> {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
   const forceDummy = process.env.NEXT_PUBLIC_TOUR_GUIDES_USE_DUMMY === "true";
 
@@ -200,7 +349,7 @@ export async function fetchTourGuides(): Promise<FetchTourGuidesResult> {
         "[tour-guides] NEXT_PUBLIC_DIRECTUS_APP_URL is not set — using dummy data. See components/tour-guides/data.ts"
       );
     }
-    return resultFromApiRows(DUMMY_TOURIST_GUIDES);
+    return resultFromApiRows(DUMMY_TOURIST_GUIDES, locale);
   }
 
   try {
@@ -221,7 +370,7 @@ export async function fetchTourGuides(): Promise<FetchTourGuidesResult> {
       };
     }
 
-    return resultFromApiRows(apiData.data);
+    return resultFromApiRows(apiData.data, locale);
   } catch (error) {
     console.error("Error fetching tour guides:", error);
     // TODO(backend): Optionally fall back to DUMMY_TOURIST_GUIDES in development.
