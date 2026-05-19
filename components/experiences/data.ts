@@ -16,8 +16,8 @@ export interface ApiExperience {
   price_1: string | null;
   minimum_number_of_people: string | null;
   details: string | null;
-  type: string | null;
-  tags: string | null;
+  type: string | string[] | null;
+  tags: string | string[] | null;
   date: string | null;
   tour_agency: string | null;
   price: number | string | null;
@@ -67,9 +67,19 @@ const EMPTY_FETCH_RESULT: FetchExperiencesResult = {
   },
 };
 
-/** Parse `type` / `tags` from plain text, comma lists, or JSON string arrays. */
-function parseExperienceFieldTokens(raw: string | null | undefined): string[] {
-  const trimmed = (raw || "").trim();
+type ExperienceFieldValue = string | string[] | null | undefined;
+
+/** Parse `type` / `tags` from arrays, plain text, comma lists, or JSON string arrays. */
+function parseExperienceFieldTokens(raw: ExperienceFieldValue): string[] {
+  if (raw == null) return [];
+  if (Array.isArray(raw)) {
+    return raw
+      .filter((value): value is string => typeof value === "string")
+      .map((value) => normalizeInterestLabel(value))
+      .filter(Boolean);
+  }
+
+  const trimmed = raw.trim();
   if (!trimmed) return [];
 
   let entries: string[] = [];
@@ -83,24 +93,26 @@ function parseExperienceFieldTokens(raw: string | null | undefined): string[] {
       entries = [trimmed];
     }
   } else {
-    entries = [trimmed];
+    entries = trimmed.split(",");
   }
 
   const tokens: string[] = [];
   for (const entry of entries) {
-    for (const part of entry.split(",")) {
-      const label = normalizeInterestLabel(part);
-      if (label) tokens.push(label);
-    }
+    const label = normalizeInterestLabel(entry);
+    if (label) tokens.push(label);
   }
   return tokens;
 }
 
-export function isCookingExperience(api: ApiExperience): boolean {
-  const tokens = [
+function getExperienceTypeTokens(api: ApiExperience): string[] {
+  return [
     ...parseExperienceFieldTokens(api.type),
     ...parseExperienceFieldTokens(api.tags),
   ];
+}
+
+export function isCookingExperience(api: ApiExperience): boolean {
+  const tokens = getExperienceTypeTokens(api);
   return tokens.some((token) =>
     COOKING_EXPERIENCE_KEYS.has(normalizeInterestKey(token)),
   );
@@ -215,11 +227,8 @@ const TRAVELER_TYPES = [
 ] as const;
 
 function parseFilterInterests(api: ApiExperience): string[] {
-  const combined = [api.type, api.tags].filter(Boolean).join(",");
   const byKey = new Map<string, string>();
-  for (const token of combined.split(",")) {
-    const label = normalizeInterestLabel(token);
-    if (!label) continue;
+  for (const label of getExperienceTypeTokens(api)) {
     const key = normalizeInterestKey(label);
     if (!byKey.has(key)) byKey.set(key, label);
   }
@@ -248,7 +257,7 @@ export function transformExperience(
   const title =
     pickExperienceField(api, "title", locale) ||
     (locale === "en" ? "Experience" : "تجربة");
-  const category = (api.type || api.tags || "").split(",")[0]?.trim() || "التجارب";
+  const category = getExperienceTypeTokens(api)[0] || "التجارب";
   const imageUrl = (api.image && api.image.startsWith("http")) ? api.image : DEFAULT_IMAGE;
   const bookUrl = (api.booking_link || api.link || "").trim() || "#";
   const price = parsePrice(api.price ?? api.price_1);
@@ -294,9 +303,7 @@ function buildFilterOptions(
     if (meta.filterCity) {
       cityCounts.set(meta.filterCity, (cityCounts.get(meta.filterCity) ?? 0) + 1);
     }
-    for (const token of [api.type, api.tags].filter(Boolean).join(",").split(",")) {
-      const label = normalizeInterestLabel(token);
-      if (!label) continue;
+    for (const label of getExperienceTypeTokens(api)) {
       const key = normalizeInterestKey(label);
       if (!interestLabels.has(key)) interestLabels.set(key, label);
     }
