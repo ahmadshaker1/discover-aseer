@@ -77,8 +77,8 @@ function buildAssetUrl(assetId: string | null | undefined): string | null {
 
 function pickSeasonImage(apiSeason: ApiSeason): string {
   return (
-    buildAssetUrl(apiSeason.image) ||
     buildAssetUrl(apiSeason.banner_image) ||
+    buildAssetUrl(apiSeason.image) ||
     FALLBACK_IMAGES[0]
   );
 }
@@ -134,7 +134,10 @@ function categoriesFromTags(tags: string[]): SeasonEventCategoryId[] {
   return Array.from(ids);
 }
 
-function transformSeason(apiSeason: ApiSeason, locale: LocaleCode): SeasonDetail {
+function transformSeason(
+  apiSeason: ApiSeason,
+  locale: LocaleCode,
+): SeasonDetail {
   const title =
     pickLocalizedField(apiSeason, "title", locale) ||
     (locale === "ar" ? "موسم بدون عنوان" : "Untitled season");
@@ -170,7 +173,10 @@ function resolveEventDates(apiEvent: ApiEvent): {
   return { start, end };
 }
 
-function transformEvent(apiEvent: ApiEvent, locale: LocaleCode): SeasonDetailEvent {
+function transformEvent(
+  apiEvent: ApiEvent,
+  locale: LocaleCode,
+): SeasonDetailEvent {
   const { start, end } = resolveEventDates(apiEvent);
 
   return {
@@ -191,7 +197,9 @@ async function fetchSeasonById(id: string): Promise<ApiSeason | null> {
   });
   if (response.status === 404) return null;
   if (!response.ok) {
-    console.error(`[event-seasons] Failed to fetch season ${id}: ${response.status}`);
+    console.error(
+      `[event-seasons] Failed to fetch season ${id}: ${response.status}`,
+    );
     return null;
   }
   const json = (await response.json()) as { data: ApiSeason };
@@ -248,7 +256,11 @@ export async function fetchSeasonDetailPage(
     const apiEvents = await fetchEventsByIds(eventIds);
 
     const events = apiEvents
-      .filter((e) => isVisibleSeasonEvent(e.event_status) && isClickableEvent(e.unclickable))
+      .filter(
+        (e) =>
+          isVisibleSeasonEvent(e.event_status) &&
+          isClickableEvent(e.unclickable),
+      )
       .map((e) => transformEvent(e, locale));
 
     return { season, events };
