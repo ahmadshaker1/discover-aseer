@@ -137,46 +137,44 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
             sizes="(max-width: 1024px) 100vw, 1298px"
           />
         ) : null}
-        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/35 to-transparent" />
 
-        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-20 text-white">
-          <div className="flex w-full max-w-[510px] flex-col gap-[18px] text-start sm:h-[187px]">
+        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 p-5 text-white sm:p-6 lg:p-8">
+          <div className="max-w-[min(100%,720px)] text-start">
             <h3
-              className="text-[26px] font-bold leading-[40px] text-white sm:h-[48px] sm:text-[32px] sm:leading-[48px]"
+              className="mb-2 text-[26px] font-bold leading-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] sm:text-[32px] sm:leading-[1.2]"
               style={{ fontFamily: ara }}
             >
               {activeSlide?.title}
             </h3>
-            <div className="sm:h-[121px]">
-              <p
-                className="text-[18px] font-light leading-7 text-white/95"
-                style={{ fontFamily: ibm }}
-              >
-                {activeSlide?.description}
-              </p>
-            </div>
+            <p
+              className="line-clamp-4 text-[16px] font-light leading-7 text-white/95 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] sm:line-clamp-5 sm:text-[18px] lg:line-clamp-6"
+              style={{ fontFamily: ibm }}
+            >
+              {activeSlide?.description}
+            </p>
           </div>
 
-          <div className="flex w-full max-w-[510px] items-center justify-start gap-6 text-white/90">
+          <div className="mt-2 flex w-full flex-wrap items-center gap-3  pt-4 sm:gap-6">
             <button
               type="button"
               onClick={goPrev}
-              className="inline-flex items-center gap-4 text-[18px] font-medium leading-none transition-opacity hover:opacity-100"
+              className="inline-flex max-w-full min-w-0 items-center gap-2 rounded-full px-1 py-2 text-[15px] font-medium leading-none text-white/90 transition-colors hover:bg-white/10 hover:text-white sm:max-w-[min(48%,220px)] sm:gap-3 sm:text-[18px]"
               style={{ fontFamily: ara }}
             >
-              <span className="inline-flex shrink-0 ltr:rotate-180" aria-hidden>
+              <span className="inline-flex shrink-0 rtl:rotate-180" aria-hidden>
                 <ChevronRight />
               </span>
-              {previousSlideTitle}
+              <span className="truncate">{previousSlideTitle}</span>
             </button>
             <button
               type="button"
               onClick={goNext}
-              className="inline-flex items-center gap-4 text-[18px] font-medium leading-none opacity-80 transition-opacity hover:opacity-100"
+              className="inline-flex max-w-full min-w-0 items-center gap-2 rounded-full px-1 py-2 text-[15px] font-medium leading-none text-white/90 transition-colors hover:bg-white/10 hover:text-white sm:max-w-[min(48%,220px)] sm:gap-3 sm:text-[18px]"
               style={{ fontFamily: ara }}
             >
-              {nextSlideTitle}
-              <span className="inline-flex shrink-0 ltr:rotate-180" aria-hidden>
+              <span className="truncate">{nextSlideTitle}</span>
+              <span className="inline-flex shrink-0 rtl:rotate-180" aria-hidden>
                 <ChevronLeft />
               </span>
             </button>

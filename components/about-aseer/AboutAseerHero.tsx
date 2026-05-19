@@ -117,6 +117,7 @@ function FacebookIcon() {
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="size-5"
     >
       <g clip-path="url(#clip0_17_61)">
         <path

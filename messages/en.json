@@ -426,7 +426,25 @@
   },
   "aseerCommunity": {
     "title": "Aseer community",
-    "subtitle": "Stories and activities from the local community."
+    "subtitle": "Stories and activities from the local community.",
+    "slider": {
+      "sectionTitle": "People of Aseer",
+      "sectionSubtitle": "Aseer spans a wide geographic area with one of the highest population densities among Saudi regions, home to more than one million people.",
+      "slides": {
+        "slide1": {
+          "title": "Spirit of Aseer",
+          "description": "Settlement across Aseer's mountain, coastal, Bedouin, and urban landscapes has not weakened deep-rooted customs, traditions, or the human qualities that define the region. Openness to progress and modernity blends with generosity, loyalty, and kindness alongside cultural and professional growth."
+        },
+        "slide2": {
+          "title": "A connected community",
+          "description": "The family is the heart of social life in Aseer—the first cradle of upbringing that nurtures authenticity and development. These bonds extend to relatives and friends united by warmth and loyalty, as coffee brings them together in moments of rest and evening gatherings."
+        },
+        "slide3": {
+          "title": "A thriving life",
+          "description": "Aseer society is rooted in a love of art expressed in dress, architecture, food, music, poetry, knowledge, and livelihoods from trade and farming. Geographic diversity enriched these arts while preserving heritage and pride in tradition."
+        }
+      }
+    }
   },
   "aseerCuisine": {
     "title": "Aseeri cuisine",
