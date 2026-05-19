@@ -14,6 +14,134 @@ interface NetworkErrorLike {
   hostname?: string;
 }
 
+type PromptLanguage = "ar" | "en";
+
+const detectPromptLanguage = (description?: string): PromptLanguage => {
+  if (!description) {
+    return "ar";
+  }
+
+  return /[A-Za-z]/.test(description) ? "en" : "ar";
+};
+
+const monthNames: Record<PromptLanguage, string[]> = {
+  ar: [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ],
+  en: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+};
+
+const cityNames: Record<PromptLanguage, Record<string, string>> = {
+  ar: {
+    abha: "أبها",
+    khamis: "خميس مشيط",
+    tanomah: "تنومة",
+    bisha: "بيشة",
+    mahayil: "محايل عسير",
+    najran: "نجران",
+  },
+  en: {
+    abha: "Abha",
+    khamis: "Khamis Mushait",
+    tanomah: "Tanomah",
+    bisha: "Bisha",
+    mahayil: "Mahayil Asir",
+    najran: "Najran",
+  },
+};
+
+const interestNames: Record<PromptLanguage, Record<string, string>> = {
+  ar: {
+    adventure: "المغامرات",
+    culture: "الثقافة والتراث",
+    nature: "الطبيعة والهواء الطلق",
+    food: "الطعام والمطاعم",
+    relaxation: "الاسترخاء",
+    shopping: "التسوق",
+    historical: "المواقع التاريخية",
+  },
+  en: {
+    adventure: "adventure",
+    culture: "culture and heritage",
+    nature: "nature and the outdoors",
+    food: "food and dining",
+    relaxation: "relaxation",
+    shopping: "shopping",
+    historical: "historical sites",
+  },
+};
+
+const durationNames: Record<PromptLanguage, Record<string, string>> = {
+  ar: {
+    morning: "صباحي (6 صباحاً - 12 ظهراً)",
+    afternoon: "بعد الظهر (12 ظهراً - 6 مساءً)",
+    evening: "مسائي (6 مساءً - 12 منتصف الليل)",
+    "full-day": "يوم كامل",
+  },
+  en: {
+    morning: "morning (6 AM - 12 PM)",
+    afternoon: "afternoon (12 PM - 6 PM)",
+    evening: "evening (6 PM - 12 AM)",
+    "full-day": "full day",
+  },
+};
+
+const dayLabels: Record<PromptLanguage, string[]> = {
+  ar: [
+    "الأول",
+    "الثاني",
+    "الثالث",
+    "الرابع",
+    "الخامس",
+    "السادس",
+    "السابع",
+    "الثامن",
+    "التاسع",
+    "العاشر",
+  ],
+  en: [
+    "first",
+    "second",
+    "third",
+    "fourth",
+    "fifth",
+    "sixth",
+    "seventh",
+    "eighth",
+    "ninth",
+    "tenth",
+  ],
+};
+
+const buildDateLabel = (dateValue: string | Date, language: PromptLanguage) => {
+  const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
+  return `${date.getDate()} ${monthNames[language][date.getMonth()]}`;
+};
+
 export async function POST(request: NextRequest) {
   try {
     console.log("==========================================");
@@ -32,6 +160,9 @@ export async function POST(request: NextRequest) {
       interests = [],
     } = body;
 
+    const promptLanguage = detectPromptLanguage(description);
+    const isEnglishPrompt = promptLanguage === "en";
+
     const apiKey = process.env.ANTHROPIC_API_KEY;
 
     console.log("🔑 [3] CONFIGURATION:", {
@@ -46,46 +177,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get city name in Arabic
-    const cityOptions: Record<string, string> = {
-      abha: "أبها",
-      khamis: "خميس مشيط",
-      tanomah: "تنومة",
-      bisha: "بيشة",
-      mahayil: "محايل عسير",
-      najran: "نجران",
-    };
-
-    const cityName = city ? cityOptions[city] || city : "عسير";
-
-    // Get interests in Arabic
-    const interestOptions: Record<string, string> = {
-      adventure: "المغامرات",
-      culture: "الثقافة والتراث",
-      nature: "الطبيعة والهواء الطلق",
-      food: "الطعام والمطاعم",
-      relaxation: "الاسترخاء",
-      shopping: "التسوق",
-      historical: "المواقع التاريخية",
-    };
+    const cityName = city
+      ? cityNames[promptLanguage][city] || city
+      : isEnglishPrompt
+        ? "Aseer"
+        : "عسير";
 
     const selectedInterestsText = interests
-      .map((id: string) => interestOptions[id] || id)
-      .join("، ");
+      .map((id: string) => interestNames[promptLanguage][id] || id)
+      .join(isEnglishPrompt ? ", " : "، ");
 
-    // Get duration in Arabic
-    const durationOptions: Record<string, string> = {
-      morning: "صباحي (6 صباحاً - 12 ظهراً)",
-      afternoon: "بعد الظهر (12 ظهراً - 6 مساءً)",
-      evening: "مسائي (6 مساءً - 12 منتصف الليل)",
-      "full-day": "يوم كامل",
-    };
-
-    const durationText = duration ? durationOptions[duration] || duration : "";
-    // Build the prompt
-    // ==========================================
-    // 1. Calculate number of days and format dates
-    // ==========================================
+    const durationText = duration
+      ? durationNames[promptLanguage][duration] || duration
+      : "";
     let numberOfDays = 1;
     let startDateFormatted = "";
 
@@ -95,134 +199,125 @@ export async function POST(request: NextRequest) {
       const diffTime = Math.abs(departure.getTime() - arrival.getTime());
       numberOfDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-      const months = [
-        "يناير",
-        "فبراير",
-        "مارس",
-        "أبريل",
-        "مايو",
-        "يونيو",
-        "يوليو",
-        "أغسطس",
-        "سبتمبر",
-        "أكتوبر",
-        "نوفمبر",
-        "ديسمبر",
-      ];
-      startDateFormatted = `${arrival.getDate()} ${months[arrival.getMonth()]}`;
+      startDateFormatted = buildDateLabel(arrivalDate, promptLanguage);
     } else if (arrivalDate) {
-      const arrival = new Date(arrivalDate);
-      const months = [
-        "يناير",
-        "فبراير",
-        "مارس",
-        "أبريل",
-        "مايو",
-        "يونيو",
-        "يوليو",
-        "أغسطس",
-        "سبتمبر",
-        "أكتوبر",
-        "نوفمبر",
-        "ديسمبر",
-      ];
-      startDateFormatted = `${arrival.getDate()} ${months[arrival.getMonth()]}`;
+      startDateFormatted = buildDateLabel(arrivalDate, promptLanguage);
     }
 
-    // ==========================================
-    // 2. Build the English Prompt
-    // ==========================================
-    let prompt = `You are an expert local travel guide for the Aseer region in Saudi Arabia. Your task is to create a realistic, well-paced daily itinerary.\n\n`;
+    const promptHeader = isEnglishPrompt
+      ? "You are a local travel guide for Aseer, Saudi Arabia. Write a realistic daily itinerary."
+      : "أنت دليل سفر محلي لمنطقة عسير في السعودية. اكتب جدول رحلة يومي واقعي ومختصر.";
 
-    prompt += `--- TRIP PARAMETERS ---\n`;
-    prompt += `Target City: ${cityName}\n`;
-    if (description) prompt += `User Request: ${description}\n`;
-    if (arrivalDate && departureDate)
-      prompt += `Dates: From ${arrivalDate} to ${departureDate} (${numberOfDays} days)\n`;
-    if (durationText) prompt += `Preferred Outing Time: ${durationText}\n`;
-    if (selectedInterestsText)
-      prompt += `User Interests: ${selectedInterestsText}\n`;
+    const promptRules = isEnglishPrompt
+      ? [
+          "--- TRIP DETAILS ---",
+          `Target City: ${cityName}`,
+          description ? `User Request: ${description}` : null,
+          arrivalDate && departureDate
+            ? `Dates: From ${arrivalDate} to ${departureDate} (${numberOfDays} days)`
+            : null,
+          durationText ? `Preferred Time: ${durationText}` : null,
+          selectedInterestsText ? `Interests: ${selectedInterestsText}` : null,
+          "",
+          "--- RULES ---",
+          "1. Output JSON only. No markdown, no extra text.",
+          "2. Use English for all JSON keys.",
+          "3. Use English for all string values.",
+          "4. Keep it realistic and use real places in the target city.",
+          "5. Sort activities by time.",
+          "6. Limit each day to 5 activities max.",
+          "7. Set travelToNext to null for the last activity of each day.",
+          "8. Use a valid Google Maps link with English place names.",
+          "",
+          "--- JSON SCHEMA ---",
+          `{
+  "planDetails": {
+    "title": "Your Plan",
+    "totalDays": ${numberOfDays}
+  },
+  "days": [`,
+        ]
+      : [
+          "--- تفاصيل الرحلة ---",
+          `المدينة المستهدفة: ${cityName}`,
+          description ? `طلب المستخدم: ${description}` : null,
+          arrivalDate && departureDate
+            ? `التواريخ: من ${arrivalDate} إلى ${departureDate} (${numberOfDays} أيام)`
+            : null,
+          durationText ? `الوقت المفضل: ${durationText}` : null,
+          selectedInterestsText ? `الاهتمامات: ${selectedInterestsText}` : null,
+          "",
+          "--- القواعد ---",
+          "1. أخرج JSON فقط. بدون شرح أو تنسيق إضافي.",
+          "2. استخدم مفاتيح JSON بالإنجليزية.",
+          "3. استخدم القيم النصية بالعربية.",
+          "4. اجعل الجدول واقعيًا واستخدم أماكن حقيقية في المدينة.",
+          "5. رتّب الأنشطة حسب الوقت.",
+          "6. لا تتجاوز 5 أنشطة في اليوم.",
+          "7. اجعل travelToNext = null في آخر نشاط من كل يوم.",
+          "8. استخدم رابط Google Maps صحيحًا بأسماء أماكن إنجليزية.",
+          "",
+          "--- مخطط JSON ---",
+          `{
+  "planDetails": {
+    "title": "خطتك",
+    "totalDays": ${numberOfDays}
+  },
+  "days": [`,
+        ];
 
-    prompt += `\n--- CRITICAL INSTRUCTIONS ---\n`;
-    prompt += `1. STRICT JSON ONLY: You must output a valid JSON object. No markdown, no introductions, no explanations.\n`;
-    prompt += `2. LANGUAGE RULE: All JSON Keys MUST be in English. All String Values (titles, types, descriptions, locations) MUST be in Arabic, EXCEPT googleMapsUrl which MUST be in English.\n`;
-    prompt += `3. LIMIT: Maximum 5 activities per day. Do not overpack the schedule.\n`;
-    prompt += `4. REALISM: Use real, existing restaurants, cafes, and tourist attractions in ${cityName}.\n`;
-    prompt += `5. LOGIC: Sort activities chronologically by time (e.g., Morning to Evening).\n`;
-    prompt += `6. DISTANCES: Calculate realistic "travelToNext" (duration and distance) between consecutive activities. The last activity of EVERY day MUST have "travelToNext": null.\n`;
-    prompt += `7. GOOGLE MAPS URL: googleMapsUrl MUST be a real, valid Google Maps link using English place names only (Latin characters), and should open the exact place.\n\n`;
-
-    prompt += `--- EXACT JSON SCHEMA REQUIRED ---\n`;
-    prompt += `{
-      "planDetails": {
-        "title": "خطتك",
-        "totalDays": ${numberOfDays}
-      },
-      "days": [\n`;
+    const promptActivities: string[] = [];
 
     for (let i = 0; i < numberOfDays; i++) {
       const dayNumber = i + 1;
-      const dayLabels = [
-        "الأول",
-        "الثاني",
-        "الثالث",
-        "الرابع",
-        "الخامس",
-        "السادس",
-        "السابع",
-        "الثامن",
-        "التاسع",
-        "العاشر",
-      ];
       const dayLabel =
-        dayNumber <= 10 ? dayLabels[dayNumber - 1] : `رقم ${dayNumber}`;
+        dayNumber <= 10
+          ? dayLabels[promptLanguage][dayNumber - 1]
+          : isEnglishPrompt
+            ? `day ${dayNumber}`
+            : `رقم ${dayNumber}`;
 
       let dayDate = startDateFormatted;
       if (arrivalDate && i > 0) {
         const arrival = new Date(arrivalDate);
         arrival.setDate(arrival.getDate() + i);
-        const months = [
-          "يناير",
-          "فبراير",
-          "مارس",
-          "أبريل",
-          "مايو",
-          "يونيو",
-          "يوليو",
-          "أغسطس",
-          "سبتمبر",
-          "أكتوبر",
-          "نوفمبر",
-          "ديسمبر",
-        ];
-        dayDate = `${arrival.getDate()} ${months[arrival.getMonth()]}`;
+        dayDate = buildDateLabel(arrival, promptLanguage);
       }
 
-      prompt += `        {
-          "dayLabel": "اليوم ${dayLabel}",
+      promptActivities.push(
+        `        {
+          "dayLabel": "${isEnglishPrompt ? "Day" : "اليوم"} ${dayLabel}",
           "date": "${dayDate}",
           "activities": [
             {
-              "type": "فطور", 
-              "time": "09:00 صباحاً",
-              "title": "اسم المكان الفعلي",
+              "type": "${isEnglishPrompt ? "Breakfast" : "فطور"}",
+              "time": "09:00 ${isEnglishPrompt ? "AM" : "صباحاً"}",
+              "title": "${isEnglishPrompt ? "Actual place name" : "اسم المكان الفعلي"}",
               "rating": 4.8,
               "reviewsCount": 233,
-              "locationText": "12 كم، ${cityName}",
-              "category": "تاريخي",
-              "priceRange": "50-100 ﷼",
+              "locationText": "12 ${isEnglishPrompt ? "km" : "كم"}, ${cityName}",
+              "category": "${isEnglishPrompt ? "Historical" : "تاريخي"}",
+              "priceRange": "${isEnglishPrompt ? "SAR 50-100" : "50-100 ر.س"}",
               "googleMapsUrl": "https://maps.google.com/...",
               "travelToNext": {
-                "duration": "12 دقيقة",
-                "distance": "8 كيلومتر"
-              } 
+                "duration": "12 ${isEnglishPrompt ? "minutes" : "دقيقة"}",
+                "distance": "8 ${isEnglishPrompt ? "kilometers" : "كيلومتر"}"
+              }
             }
           ]
-        }${i < numberOfDays - 1 ? "," : ""}\n`;
+        }${i < numberOfDays - 1 ? "," : ""}`,
+      );
     }
 
-    prompt += `      ]
-    }`;
+    const prompt = [
+      promptHeader,
+      ...promptRules,
+      ...promptActivities,
+      "      ]",
+      "    }",
+    ]
+      .filter((line): line is string => line !== null)
+      .join("\n");
 
     console.log("📝 [4] GENERATED PROMPT LENGTH:", prompt.length, "characters");
 
@@ -242,8 +337,9 @@ export async function POST(request: NextRequest) {
           model: "claude-haiku-4-5-20251001", // استخدمت لك أحدث وأذكى نسخة
           max_tokens: 8000,
           temperature: 0.7,
-          system:
-            "أنت مساعد ذكي متخصص في تخطيط الرحلات السياحية في منطقة عسير، المملكة العربية السعودية. قم بإنشاء جداول رحلات تفصيلية ومنظمة بصيغة JSON فقط. تأكد من أن JSON صحيح وصالح.",
+          system: isEnglishPrompt
+            ? "You are a travel planner for Aseer, Saudi Arabia. Return valid JSON only."
+            : "أنت مخطط رحلات لمنطقة عسير. أعد JSON صحيحًا فقط.",
           messages: [
             {
               role: "user",
