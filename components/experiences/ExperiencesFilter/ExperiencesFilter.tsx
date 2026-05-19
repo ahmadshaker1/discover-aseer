@@ -98,8 +98,8 @@ const ExperiencesFilter = ({
       </div>
 
       {/* City filter — disabled for now
-      <motion.div className="mb-4">
-        <Menu as="motion.div" className="relative">
+      <div className="mb-4">
+        <Menu as="div" className="relative">
           <Menu.Button className={cityMenuButtonClass}>
             <LocationIcon />
             <span className="flex-1 text-start">
@@ -117,7 +117,7 @@ const ExperiencesFilter = ({
             leaveTo="opacity-0 scale-95 translate-y-1"
           >
             <Menu.Items className={menuItemsClass}>
-              <motion.div className="py-1">
+              <div className="py-1">
                 {cityOptions.map((city) => (
                   <Menu.Item key={city.id}>
                     {({ active }) => (
@@ -139,11 +139,11 @@ const ExperiencesFilter = ({
                     )}
                   </Menu.Item>
                 ))}
-              </motion.div>
+              </div>
             </Menu.Items>
           </Transition>
         </Menu>
-      </motion.div>
+      </div>
       */}
 
       {interests.length > 0 && (
