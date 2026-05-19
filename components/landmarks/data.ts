@@ -43,6 +43,7 @@ export interface ApiLandmark {
   address?: string | null;
   description?: string | null;
   content?: string | null;
+  content_ar?: string | null;
   content_home_page_card_content?: string | null;
   cover_image?: string | null;
   hero_image?: string | null;
@@ -182,6 +183,17 @@ function mapInterestTokenToId(token: string): string | null {
 const toLocalizedRecord = (row: ApiLandmark): Record<string, unknown> =>
   row as unknown as Record<string, unknown>;
 
+function pickContentHtml(apiLandmark: ApiLandmark, locale: LocaleCode): string {
+  const contentEn = (apiLandmark.content || "").trim();
+  const contentAr = (apiLandmark.content_ar || "").trim();
+
+  if (locale === "en") {
+    return contentEn || contentAr;
+  }
+
+  return contentAr || contentEn;
+}
+
 function pickTitle(apiLandmark: ApiLandmark, locale: LocaleCode): string {
   const record = toLocalizedRecord(apiLandmark);
   if (locale === "en") {
@@ -218,7 +230,7 @@ export const transformLandmark = (
   const city = (apiLandmark.city || "").trim();
   const location =
     apiLandmark.location?.trim() || apiLandmark.address?.trim() || city;
-  const contentHtml = (apiLandmark.content || "").trim();
+  const contentHtml = pickContentHtml(apiLandmark, locale);
   const cardHtml = (apiLandmark.content_home_page_card_content || "").trim();
   const description = cardHtml || contentHtml;
 
