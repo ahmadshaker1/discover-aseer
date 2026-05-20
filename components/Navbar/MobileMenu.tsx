@@ -53,7 +53,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                   <AseerLogo />
                   <button
                     type="button"
-                    className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    className="p-2 rounded-lg transition-colors"
                     onClick={onClose}
                     aria-label={t("nav.closeMenu")}
                   >

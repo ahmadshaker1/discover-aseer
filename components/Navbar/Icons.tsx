@@ -101,27 +101,27 @@ const HamburgerIcon = ({ isOpen }: { isOpen: boolean }) => (
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="transition-transform duration-300"
+    className="transition-transform duration-300 stroke-white"
   >
     {!isOpen ? (
       <>
         <path
           d="M3 12H21"
-          stroke="currentColor"
+          stroke="white"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M3 6H21"
-          stroke="currentColor"
+          stroke="white"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M3 18H21"
-          stroke="currentColor"
+          stroke="white"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -131,14 +131,14 @@ const HamburgerIcon = ({ isOpen }: { isOpen: boolean }) => (
       <>
         <path
           d="M18 6L6 18"
-          stroke="currentColor"
+          stroke="white"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M6 6L18 18"
-          stroke="currentColor"
+          stroke="white"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -173,4 +173,10 @@ const LocationPinIcon = () => (
   </svg>
 );
 
-export { GlobeIcon, CrescentMoonIcon, BookletIcon, HamburgerIcon, LocationPinIcon };
+export {
+  GlobeIcon,
+  CrescentMoonIcon,
+  BookletIcon,
+  HamburgerIcon,
+  LocationPinIcon,
+};
