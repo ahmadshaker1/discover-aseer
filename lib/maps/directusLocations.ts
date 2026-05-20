@@ -149,6 +149,61 @@ const fetchAllEventRows = async (
   return { rows, ok };
 };
 
+/**
+ * Combine `locations` pins with `events` pins. When both collections share the same
+ * Google/Apple Maps URL, keep the `events:*` row so the richer event payload wins.
+ * Rows without a map URL are all kept (no dedupe key).
+ */
+const mergeLocationAndEventPlaces = (
+  locationPlaces: LocationMapPlace[],
+  eventPlaces: LocationMapPlace[],
+): LocationMapPlace[] => {
+  const byUrl = new Map<string, LocationMapPlace>();
+  const noUrl: LocationMapPlace[] = [];
+
+  const consider = (place: LocationMapPlace) => {
+    const key = place.mapsUrl?.trim().toLowerCase();
+    if (!key) {
+      noUrl.push(place);
+      return;
+    }
+    const existing = byUrl.get(key);
+    if (!existing) {
+      byUrl.set(key, place);
+      return;
+    }
+    if (
+      place.id.startsWith("events:") &&
+      existing.id.startsWith("locations:")
+    ) {
+      byUrl.set(key, place);
+    }
+  };
+
+  for (const place of locationPlaces) consider(place);
+  for (const place of eventPlaces) consider(place);
+
+  return [...byUrl.values(), ...noUrl];
+};
+
+const recountListedStats = (
+  places: LocationMapPlace[],
+  stats: MapLocationsStats,
+): void => {
+  stats.listed = places.length;
+  stats.withCoordinates = 0;
+  stats.withoutCoordinates = 0;
+  stats.byCategoryAr = {};
+
+  for (const place of places) {
+    const categoryLabel = place.categoryAr || place.categoryEn || "—";
+    stats.byCategoryAr[categoryLabel] =
+      (stats.byCategoryAr[categoryLabel] ?? 0) + 1;
+    if (place.hasCoordinates) stats.withCoordinates += 1;
+    else stats.withoutCoordinates += 1;
+  }
+};
+
 const patchLocationCoordinates = async (
   baseUrl: string,
   id: string,
@@ -342,7 +397,7 @@ export async function fetchMapLocations(
 ): Promise<FetchMapLocationsResult> {
   const { baseUrl, readToken, writeToken } = getDirectusConfig();
   const googleApiKey = process.env.GOOGLE_MAPS_GEOCODING_API_KEY?.trim();
-  const resolveLimit = Math.min(Math.max(options.resolveLimit ?? 40, 0), 150);
+  const resolveLimit = Math.min(Math.max(options.resolveLimit ?? 40, 0), 300);
   const geocodeLimit = Math.min(Math.max(options.geocodeLimit ?? 25, 0), 50);
   const shouldResolve = options.resolve === true;
   const shouldPersist = options.geocode === true;
@@ -370,7 +425,7 @@ export async function fetchMapLocations(
     eventsListed: 0,
   };
 
-  const places: LocationMapPlace[] = [];
+  const locationPlaces: LocationMapPlace[] = [];
 
   for (const row of rows) {
     if (!isPublishedLocation(row)) continue;
@@ -381,25 +436,10 @@ export async function fetchMapLocations(
     const place = buildLocationMapPlace(row, options.locale);
     if (!place) continue;
 
-    /**
-     * When the `events` collection read succeeds, event pins come from there only.
-     * If that request fails (e.g. permissions), keep legacy `locations` rows tagged as events.
-     */
-    if (eventsCollectionReady && place.categoryKey === "events") continue;
-
-    stats.listed += 1;
-    const categoryLabel = place.categoryAr || place.categoryEn || "—";
-    stats.byCategoryAr[categoryLabel] =
-      (stats.byCategoryAr[categoryLabel] ?? 0) + 1;
-
-    if (place.hasCoordinates) {
-      stats.withCoordinates += 1;
-    } else {
-      stats.withoutCoordinates += 1;
-    }
-
-    places.push(place);
+    locationPlaces.push(place);
   }
+
+  const eventPlaces: LocationMapPlace[] = [];
 
   for (const row of eventRows) {
     stats.published += 1;
@@ -412,20 +452,12 @@ export async function fetchMapLocations(
     const place = buildEventMapPlace(row, options.locale);
     if (!place) continue;
 
-    stats.listed += 1;
     stats.eventsListed += 1;
-    const categoryLabel = place.categoryAr || place.categoryEn || "—";
-    stats.byCategoryAr[categoryLabel] =
-      (stats.byCategoryAr[categoryLabel] ?? 0) + 1;
-
-    if (place.hasCoordinates) {
-      stats.withCoordinates += 1;
-    } else {
-      stats.withoutCoordinates += 1;
-    }
-
-    places.push(place);
+    eventPlaces.push(place);
   }
+
+  const places = mergeLocationAndEventPlaces(locationPlaces, eventPlaces);
+  recountListedStats(places, stats);
 
   if (shouldResolve) {
     await resolveCoordinatesForPlaces({

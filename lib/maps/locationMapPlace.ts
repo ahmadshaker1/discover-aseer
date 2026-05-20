@@ -68,6 +68,14 @@ export interface LocationMapPlace {
 const asText = (value: unknown): string =>
   typeof value === "string" ? value.trim() : "";
 
+/** Directus primary keys are often numeric; never drop rows because `id` isn't a string. */
+const asDirectusIdString = (value: unknown): string => {
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  if (typeof value === "bigint") return String(value);
+  return "";
+};
+
 const asNumberOrNull = (value: unknown): number | null => {
   if (typeof value === "number" && Number.isFinite(value)) return value;
   if (typeof value === "string") {
@@ -179,7 +187,7 @@ export const buildEventMapPlace = (
   row: DirectusEventRow,
   locale: LocaleCode,
 ): LocationMapPlace | null => {
-  const sourceId = asText(row.id);
+  const sourceId = asDirectusIdString(row.id);
   if (!sourceId) return null;
 
   const record = row as Record<string, unknown>;
@@ -225,7 +233,7 @@ export const buildLocationMapPlace = (
   row: DirectusLocationRow,
   locale: LocaleCode,
 ): LocationMapPlace | null => {
-  const sourceId = asText(row.id);
+  const sourceId = asDirectusIdString(row.id);
   if (!sourceId) return null;
 
   const lat = asNumberOrNull(row.latitude);
