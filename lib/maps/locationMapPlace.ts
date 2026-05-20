@@ -1,12 +1,36 @@
 import type { MapCategoryKey } from "@/components/interactive-map/mapCategories";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
+/** Directus `events` collection rows (interactive map). */
+export type DirectusEventRow = Record<string, unknown> & {
+  id?: string | number;
+  title?: string | null;
+  title_en?: string | null;
+  description?: string | null;
+  description_en?: string | null;
+  latitude?: number | string | null;
+  longitude?: number | string | null;
+  map?: string | null;
+  city?: string | null;
+  hide_from_interactive_map?: string | boolean | null;
+  /** Alternate field name on some Directus collections */
+  hide_from_map?: string | boolean | null;
+  image?: string | null;
+  thumbnail?: string | null;
+  hero_mobile?: string | null;
+  image_new?: string | null;
+  type?: string | null;
+  categories?: string | null;
+};
+
 export type DirectusLocationRow = Record<string, unknown> & {
   id?: string | number;
   status?: string | null;
   latitude?: number | string | null;
   longitude?: number | string | null;
   hide_from_interactive_map?: string | boolean | null;
+  /** Alternate field name on some Directus collections */
+  hide_from_map?: string | boolean | null;
   name_ar?: string | null;
   name_en?: string | null;
   city_ar?: string | null;
@@ -128,6 +152,75 @@ function resolveLocationImageUrl(row: DirectusLocationRow): string | undefined {
   return undefined;
 }
 
+function resolveEventImageUrl(row: DirectusEventRow): string | undefined {
+  const candidates = [
+    row.image_new,
+    row.hero_mobile,
+    row.thumbnail,
+    row.image,
+  ]
+    .map((value) => asText(value))
+    .filter(Boolean);
+
+  for (const raw of candidates) {
+    if (/^https?:\/\//i.test(raw)) return raw;
+    if (raw.startsWith("//")) return `https:${raw}`;
+    if (raw.startsWith("/")) return raw;
+  }
+
+  return undefined;
+}
+
+/**
+ * Map an `events` collection row to the shared interactive-map place model.
+ * `hide_from_interactive_map` is handled by the caller (same semantics as `locations`).
+ */
+export const buildEventMapPlace = (
+  row: DirectusEventRow,
+  locale: LocaleCode,
+): LocationMapPlace | null => {
+  const sourceId = asText(row.id);
+  if (!sourceId) return null;
+
+  const record = row as Record<string, unknown>;
+  const title =
+    pickLocalizedField(record, "title", locale) ||
+    (locale === "en" ? "Event" : "فعالية");
+  const description =
+    pickLocalizedField(record, "description", locale) ||
+    (locale === "en" ? "Event" : "فعالية");
+
+  const lat = asNumberOrNull(row.latitude);
+  const lng = asNumberOrNull(row.longitude);
+  const hasCoordinates = lat != null && lng != null;
+
+  const cityRaw = asText(row.city);
+  const city = cityRaw || (locale === "en" ? "Aseer" : "عسير");
+  const mapsUrl = asText(row.map) || undefined;
+  const tag = asText(row.type) || undefined;
+
+  const categoryAr = "الفعاليات";
+  const categoryEn = "Events";
+  const category = locale === "en" ? categoryEn : categoryAr;
+
+  return {
+    id: `events:${sourceId}`,
+    title,
+    description,
+    latitude: lat,
+    longitude: lng,
+    hasCoordinates,
+    category,
+    categoryAr,
+    categoryEn,
+    categoryKey: "events",
+    city,
+    tag: tag || undefined,
+    mapsUrl,
+    imageUrl: resolveEventImageUrl(row),
+  };
+};
+
 export const buildLocationMapPlace = (
   row: DirectusLocationRow,
   locale: LocaleCode,
@@ -188,8 +281,24 @@ export const isPublishedLocation = (row: DirectusLocationRow): boolean => {
   return row.status.trim().toLowerCase() === "published";
 };
 
+/** Prefer CMS `hide_from_interactive_map`; some collections use `hide_from_map`. */
+export const mapHideFlagFromRow = (row: Record<string, unknown>): unknown =>
+  row.hide_from_interactive_map ?? row.hide_from_map;
+
+/**
+ * `true` means exclude from the interactive map.
+ * Supports Directus booleans, yes/no toggles, strings, and 0/1 integers.
+ */
 export const isHiddenFromMap = (value: unknown): boolean => {
+  if (value === null || value === undefined) return false;
   if (typeof value === "boolean") return value;
-  const normalized = asText(value).toLowerCase();
-  return ["true", "1", "yes", "y", "نعم"].includes(normalized);
+  if (typeof value === "number") {
+    if (value === 0) return false;
+    if (value === 1) return true;
+    return false;
+  }
+  const normalized = String(value).trim().toLowerCase();
+  if (!normalized) return false;
+  if (["false", "no", "0", "off", "لا"].includes(normalized)) return false;
+  return ["true", "1", "yes", "y", "on", "نعم"].includes(normalized);
 };

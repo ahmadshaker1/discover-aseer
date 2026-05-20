@@ -5,15 +5,19 @@ import {
   type LatLng,
 } from "@/lib/maps/googleMapsCoordinates";
 import {
+  buildEventMapPlace,
   buildLocationMapPlace,
   isHiddenFromMap,
   isPublishedLocation,
+  mapHideFlagFromRow,
+  type DirectusEventRow,
   type DirectusLocationRow,
   type LocationMapPlace,
 } from "@/lib/maps/locationMapPlace";
 import type { LocaleCode } from "@/lib/i18n/localized";
 
 const LOCATIONS_COLLECTION = "locations";
+const EVENTS_COLLECTION = "events";
 
 export interface MapLocationsStats {
   totalFetched: number;
@@ -27,6 +31,10 @@ export interface MapLocationsStats {
   geocodeFailed: number;
   geocodeSkippedNoUrl: number;
   byCategoryAr: Record<string, number>;
+  /** First-page `/items/events` read succeeded (Directus token / permissions OK). */
+  eventsFetchOk: boolean;
+  /** Event pins in the payload after hide + build (before on-the-fly coordinate resolve). */
+  eventsListed: number;
 }
 
 export interface FetchMapLocationsResult {
@@ -89,6 +97,56 @@ const fetchAllLocationRows = async (
   }
 
   return rows;
+};
+
+const fetchAllEventRows = async (
+  baseUrl: string,
+  readToken?: string,
+): Promise<{ rows: DirectusEventRow[]; ok: boolean }> => {
+  const headers: HeadersInit | undefined = readToken
+    ? { Authorization: `Bearer ${readToken}` }
+    : undefined;
+
+  const rows: DirectusEventRow[] = [];
+  const limit = 100;
+  let offset = 0;
+  let ok = true;
+
+  for (;;) {
+    const url = new URL(`${baseUrl}/items/${EVENTS_COLLECTION}`);
+    url.searchParams.set("limit", String(limit));
+    url.searchParams.set("offset", String(offset));
+    url.searchParams.set("meta", "filter_count");
+
+    const response = await fetch(url.toString(), {
+      headers,
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      if (offset === 0) {
+        ok = false;
+        console.warn(
+          `[directusLocations] events fetch failed (${response.status}) — falling back to location rows for event pins`,
+        );
+      }
+      break;
+    }
+
+    const json = (await response.json()) as {
+      data?: DirectusEventRow[];
+      meta?: { filter_count?: number };
+    };
+
+    const batch = Array.isArray(json.data) ? json.data : [];
+    rows.push(...batch);
+
+    if (batch.length < limit) break;
+    offset += limit;
+    if (offset > 10_000) break;
+  }
+
+  return { rows, ok };
 };
 
 const patchLocationCoordinates = async (
@@ -216,6 +274,15 @@ const resolveCoordinatesForPlaces = async ({
   const pending = places.filter(
     (place) => !place.hasCoordinates && Boolean(place.mapsUrl),
   );
+  /**
+   * `places` lists all locations first, then events. Without reordering, the resolve
+   * budget can be exhausted by location rows and event pins never get coordinates.
+   */
+  pending.sort((a, b) => {
+    const aEvent = a.id.startsWith("events:") ? 0 : 1;
+    const bEvent = b.id.startsWith("events:") ? 0 : 1;
+    return aEvent - bEvent;
+  });
   const batch = pending.slice(0, limit);
   if (batch.length === 0) return;
 
@@ -230,11 +297,18 @@ const resolveCoordinatesForPlaces = async ({
       (await getCachedCoordinatesFromGoogleMapsUrl(mapsUrl)) ?? null;
 
     if (!coords) {
-      const sourceId = place.id.replace(/^locations:/, "");
-      const row = rows.find((item) => String(item.id) === sourceId);
-      if (row) {
-        coords = await geocodeLocationRow(row, place, googleApiKey);
-      }
+      const sourceId = place.id.startsWith("locations:")
+        ? place.id.slice("locations:".length)
+        : "";
+      const row =
+        sourceId && rows.length > 0
+          ? rows.find((item) => String(item.id) === sourceId)
+          : undefined;
+      coords = await geocodeLocationRow(
+        row ?? ({} as DirectusLocationRow),
+        place,
+        googleApiKey,
+      );
     }
 
     if (!coords) {
@@ -247,8 +321,8 @@ const resolveCoordinatesForPlaces = async ({
     place.hasCoordinates = true;
     stats.resolvedThisRequest += 1;
 
-    if (persist) {
-      const sourceId = place.id.replace(/^locations:/, "");
+    if (persist && place.id.startsWith("locations:")) {
+      const sourceId = place.id.slice("locations:".length);
       const saved = await patchLocationCoordinates(
         baseUrl,
         sourceId,
@@ -268,15 +342,20 @@ export async function fetchMapLocations(
 ): Promise<FetchMapLocationsResult> {
   const { baseUrl, readToken, writeToken } = getDirectusConfig();
   const googleApiKey = process.env.GOOGLE_MAPS_GEOCODING_API_KEY?.trim();
-  const resolveLimit = Math.min(Math.max(options.resolveLimit ?? 40, 0), 80);
+  const resolveLimit = Math.min(Math.max(options.resolveLimit ?? 40, 0), 150);
   const geocodeLimit = Math.min(Math.max(options.geocodeLimit ?? 25, 0), 50);
   const shouldResolve = options.resolve === true;
   const shouldPersist = options.geocode === true;
 
-  const rows = await fetchAllLocationRows(baseUrl, readToken);
+  const [rows, eventResult] = await Promise.all([
+    fetchAllLocationRows(baseUrl, readToken),
+    fetchAllEventRows(baseUrl, readToken),
+  ]);
+  const eventRows = eventResult.rows;
+  const eventsCollectionReady = eventResult.ok;
 
   const stats: MapLocationsStats = {
-    totalFetched: rows.length,
+    totalFetched: rows.length + eventRows.length,
     published: 0,
     listed: 0,
     withCoordinates: 0,
@@ -287,6 +366,8 @@ export async function fetchMapLocations(
     geocodeFailed: 0,
     geocodeSkippedNoUrl: 0,
     byCategoryAr: {},
+    eventsFetchOk: eventsCollectionReady,
+    eventsListed: 0,
   };
 
   const places: LocationMapPlace[] = [];
@@ -294,12 +375,45 @@ export async function fetchMapLocations(
   for (const row of rows) {
     if (!isPublishedLocation(row)) continue;
     stats.published += 1;
-    if (isHiddenFromMap(row.hide_from_interactive_map)) continue;
+    if (isHiddenFromMap(mapHideFlagFromRow(row as Record<string, unknown>)))
+      continue;
 
     const place = buildLocationMapPlace(row, options.locale);
     if (!place) continue;
 
+    /**
+     * When the `events` collection read succeeds, event pins come from there only.
+     * If that request fails (e.g. permissions), keep legacy `locations` rows tagged as events.
+     */
+    if (eventsCollectionReady && place.categoryKey === "events") continue;
+
     stats.listed += 1;
+    const categoryLabel = place.categoryAr || place.categoryEn || "—";
+    stats.byCategoryAr[categoryLabel] =
+      (stats.byCategoryAr[categoryLabel] ?? 0) + 1;
+
+    if (place.hasCoordinates) {
+      stats.withCoordinates += 1;
+    } else {
+      stats.withoutCoordinates += 1;
+    }
+
+    places.push(place);
+  }
+
+  for (const row of eventRows) {
+    stats.published += 1;
+    if (
+      isHiddenFromMap(mapHideFlagFromRow(row as Record<string, unknown>))
+    ) {
+      continue;
+    }
+
+    const place = buildEventMapPlace(row, options.locale);
+    if (!place) continue;
+
+    stats.listed += 1;
+    stats.eventsListed += 1;
     const categoryLabel = place.categoryAr || place.categoryEn || "—";
     stats.byCategoryAr[categoryLabel] =
       (stats.byCategoryAr[categoryLabel] ?? 0) + 1;
@@ -363,7 +477,8 @@ const buildListedPlaces = (
   for (const row of rows) {
     if (!isPublishedLocation(row)) continue;
     stats.published += 1;
-    if (isHiddenFromMap(row.hide_from_interactive_map)) continue;
+    if (isHiddenFromMap(mapHideFlagFromRow(row as Record<string, unknown>)))
+      continue;
 
     const place = buildLocationMapPlace(row, locale);
     if (!place) continue;
@@ -409,6 +524,8 @@ export async function backfillLocationCoordinates(
     geocodeFailed: 0,
     geocodeSkippedNoUrl: 0,
     byCategoryAr: {},
+    eventsFetchOk: true,
+    eventsListed: 0,
   };
 
   const places = buildListedPlaces(rows, locale, stats);

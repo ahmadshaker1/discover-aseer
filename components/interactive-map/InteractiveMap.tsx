@@ -64,6 +64,8 @@ interface MapLoadStats {
   geocodeFailed: number;
   geocodeSkippedNoUrl: number;
   byCategoryAr: Record<string, number>;
+  eventsFetchOk?: boolean;
+  eventsListed?: number;
 }
 
 const MAP_CENTER: [number, number] = [42.62, 18.25];
@@ -256,7 +258,12 @@ const InteractiveMap = ({
     const loadLocations = async () => {
       try {
         const response = await fetch(
-          `/api/interactive-map/locations?${new URLSearchParams({ locale }).toString()}`,
+          `/api/interactive-map/locations?${new URLSearchParams({
+            locale,
+            /** Many CMS rows only have a Maps URL; server resolves lat/lng for pins. */
+            resolve: "true",
+            resolveLimit: "150",
+          }).toString()}`,
           { cache: "no-store" },
         );
         if (!response.ok || cancelled) return;
@@ -269,7 +276,10 @@ const InteractiveMap = ({
         }
 
         if (process.env.NODE_ENV === "development" && json.stats && !cancelled) {
-          console.info("[interactive-map] locations stats", json.stats);
+          console.info(
+            "[interactive-map] loaded from /api/interactive-map/locations (Directus runs on server). Stats:",
+            json.stats,
+          );
         }
       } catch (error) {
         console.error(
@@ -615,8 +625,10 @@ const InteractiveMap = ({
 
   const handleSelectPlace = useCallback(
     (placeId: string) => {
-      setSelectedPlaceId(placeId);
-      const place = filteredPlaces.find((item) => item.id === placeId);
+      const id = placeId.length > 0 ? placeId : null;
+      setSelectedPlaceId(id);
+      if (!id) return;
+      const place = filteredPlaces.find((item) => item.id === id);
       if (place) focusPlace(place);
       setIsListingsOpen(false);
     },

@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { fetchMapLocations } from "@/lib/maps/directusLocations";
 import type { LocaleCode } from "@/lib/i18n/localized";
 
+/** CMS-driven list; avoid stale empty responses after permission/schema changes. */
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const locale: LocaleCode = url.searchParams.get("locale") === "en" ? "en" : "ar";
@@ -24,10 +27,7 @@ export async function GET(request: Request) {
       {
         status: 200,
         headers: {
-          "Cache-Control":
-          resolve || geocode
-            ? "no-store"
-            : "private, max-age=120, stale-while-revalidate=300",
+          "Cache-Control": "no-store, must-revalidate",
         },
       },
     );
@@ -48,6 +48,8 @@ export async function GET(request: Request) {
           geocodeFailed: 0,
           geocodeSkippedNoUrl: 0,
           byCategoryAr: {},
+          eventsFetchOk: false,
+          eventsListed: 0,
         },
       },
       { status: 500 },

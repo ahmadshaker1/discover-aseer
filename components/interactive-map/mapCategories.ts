@@ -45,7 +45,9 @@ export const resolvePlaceCategoryKey = (place: {
   categoryAr?: string;
   categoryEn?: string;
 }): MapCategoryKey | null => {
-  if (place.categoryKey) return place.categoryKey;
+  if (place.categoryKey != null) {
+    return place.categoryKey;
+  }
 
   const label = `${place.categoryAr ?? ""} ${place.categoryEn ?? ""} ${place.category ?? ""}`;
   if (/تجارب|experience/i.test(label)) return "experiences";
