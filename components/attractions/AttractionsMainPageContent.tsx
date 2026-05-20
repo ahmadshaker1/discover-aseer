@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmarkCard";
 import {
@@ -16,6 +16,7 @@ import {
 } from "@/components/landmarks/filterOptions";
 import {
   ChevronDownIcon,
+  ClockIcon,
   HeartIcon,
   LocationIcon,
 } from "@/components/landmarks/Icons";
@@ -31,12 +32,14 @@ interface AttractionsMainPageContentProps {
 
 interface FilterState {
   city: string | null;
+  attractionType: string | null;
   interests: string[];
 }
 
 function buildInitialFilters(initialCityId?: string | null): FilterState {
   return {
     city: initialCityId?.trim() || null,
+    attractionType: null,
     interests: [],
   };
 }
@@ -72,6 +75,15 @@ const AttractionsMainPageContent = ({
     if (landmark.cityId) return landmark.cityId === city;
     return locationMatchesCityId(`${landmark.location} ${landmark.area}`, city);
   };
+
+  const includesAttractionType = (
+    landmark: Landmark,
+    type: string | null,
+  ): boolean => {
+    if (!type) return true;
+    const value = (landmark.attractionType || "").trim();
+    return value === type;
+  };
   /**
    * Backend handoff:
    * - These filters are fully wired to `Landmark` metadata:
@@ -89,17 +101,41 @@ const AttractionsMainPageContent = ({
     [filters.city, landmarks],
   );
 
+  const attractionTypeOptions = useMemo(() => {
+    const unique = new Set<string>();
+    for (const landmark of cityScopedLandmarks) {
+      const value = landmark.attractionType?.trim();
+      if (value) unique.add(value);
+    }
+    return [...unique].sort((a, b) => a.localeCompare(b, locale));
+  }, [cityScopedLandmarks, locale]);
+
+  useEffect(() => {
+    if (!filters.attractionType) return;
+    if (!attractionTypeOptions.includes(filters.attractionType)) {
+      setFilters((prev) => ({ ...prev, attractionType: null }));
+    }
+  }, [attractionTypeOptions, filters.attractionType]);
+
+  const typeScopedLandmarks = useMemo(
+    () =>
+      cityScopedLandmarks.filter((landmark) =>
+        includesAttractionType(landmark, filters.attractionType),
+      ),
+    [cityScopedLandmarks, filters.attractionType],
+  );
+
   const interestCounts = useMemo(() => {
     return interestOptions.reduce<Record<string, number>>((acc, option) => {
-      acc[option.id] = cityScopedLandmarks.filter((landmark) =>
+      acc[option.id] = typeScopedLandmarks.filter((landmark) =>
         (landmark.interestTags ?? []).includes(option.id),
       ).length;
       return acc;
     }, {});
-  }, [cityScopedLandmarks]);
+  }, [interestOptions, typeScopedLandmarks]);
 
   const visibleLandmarks = useMemo(() => {
-    return cityScopedLandmarks.filter((landmark) => {
+    return typeScopedLandmarks.filter((landmark) => {
       if (
         initialTerrain &&
         !attractionMatchesTerrain(landmark, initialTerrain)
@@ -108,7 +144,7 @@ const AttractionsMainPageContent = ({
       }
       return includesInterests(landmark, selectedInterests);
     });
-  }, [cityScopedLandmarks, selectedInterests, initialTerrain]);
+  }, [typeScopedLandmarks, selectedInterests, initialTerrain]);
 
   return (
     <section className="w-full bg-background py-12 text-foreground">
@@ -160,7 +196,7 @@ const AttractionsMainPageContent = ({
                 <button
                   type="button"
                   onClick={() => {
-                    setFilters({ city: null, interests: [] });
+                    setFilters({ city: null, attractionType: null, interests: [] });
                     setSelectedInterests([]);
                   }}
                   className="flex h-8 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-3 text-center text-sm font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:text-[18px]"
@@ -204,6 +240,48 @@ const AttractionsMainPageContent = ({
                   <ChevronDownIcon />
                 </div>
               </div>
+
+              {attractionTypeOptions.length > 0 ? (
+                <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-border px-6 py-3">
+                  <select
+                    aria-label={tCommon("attractionType")}
+                    value={filters.attractionType ?? ""}
+                    onChange={(event) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        attractionType: event.target.value
+                          ? event.target.value
+                          : null,
+                      }))
+                    }
+                    className="absolute inset-0 z-10 cursor-pointer opacity-0"
+                  >
+                    <option value="">{tCommon("attractionType")}</option>
+                    {attractionTypeOptions.map((value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+
+                  <div className="flex h-full items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <ClockIcon />
+                      <span
+                        className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground"
+                        style={{ fontFamily: "Inter, sans-serif" }}
+                      >
+                        {attractionTypeOptions.includes(
+                          filters.attractionType ?? "",
+                        )
+                          ? (filters.attractionType as string)
+                          : tCommon("attractionType")}
+                      </span>
+                    </div>
+                    <ChevronDownIcon />
+                  </div>
+                </div>
+              ) : null}
 
               <div className="w-full pt-2">
                 <div className="mb-4 h-px w-full bg-border" />

@@ -27,6 +27,8 @@ export interface Landmark {
   priceFrom?: number | null;
   priceTo?: number | null;
   interestTags?: string[];
+  /** Raw `type` from Directus `attractions` (معالم / طبيعة / …). */
+  attractionType?: string;
 }
 
 export interface ApiLandmark {
@@ -307,7 +309,8 @@ export const transformLandmark = (
     interestTags.push("culture");
   }
 
-  const categoryLabel = (apiLandmark.type || apiLandmark.tags || "").trim();
+  const rawAttractionType = (apiLandmark.type || "").trim();
+  const categoryLabel = (rawAttractionType || apiLandmark.tags || "").trim();
   const galleryImages = parseGallery(apiLandmark.attraction_gallery, directusUrl);
   const lat = toNumber(apiLandmark.latitude);
   const lon = toNumber(apiLandmark.longitude);
@@ -330,6 +333,7 @@ export const transformLandmark = (
     lon,
     mapLink,
     categoryLabel,
+    attractionType: rawAttractionType || undefined,
     cityId,
     travelerTypes: apiLandmark.traveller_types ?? [],
     priceFrom: apiLandmark.price_range_from,
