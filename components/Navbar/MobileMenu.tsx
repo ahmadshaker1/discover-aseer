@@ -4,7 +4,7 @@ import { Dialog, Transition, Disclosure } from "@headlessui/react";
 import { Fragment } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import AseerLogo from "../Logo/AseerLogo";
+
 import { HamburgerIcon } from "./Icons";
 import {
   getNavbarDropdownLinks,
@@ -12,6 +12,7 @@ import {
   iconButtons,
 } from "./navbarData";
 import { toggleTheme } from "@/lib/theme/client";
+import Image from "next/image";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -50,7 +51,12 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
               <div className="flex flex-col h-full min-h-screen">
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/20">
-                  <AseerLogo />
+                  <Image
+                    src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
+                    alt="footer:aseer_logo673"
+                    width={120}
+                    height={55}
+                  />
                   <button
                     type="button"
                     className="p-2 rounded-lg transition-colors"

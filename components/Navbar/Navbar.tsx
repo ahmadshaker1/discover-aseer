@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AseerLogo from "../Logo/AseerLogo";
+import Image from "next/image";
 import DesktopNavigationLinks from "./DesktopNavigationLinks";
 import DesktopActionLinks from "./DesktopActionLinks";
 import MobileMenuButton from "./MobileMenuButton";
@@ -22,7 +22,12 @@ const Navbar = () => {
 
           {/* Center: Logo */}
           <div className="absolute left-1/2 -translate-x-1/2">
-            <AseerLogo />
+            <Image
+              src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
+              alt="footer:aseer_logo673"
+              width={120}
+              height={55}
+            />
           </div>
 
           {/* Right: Action links */}

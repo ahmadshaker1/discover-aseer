@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import AseerLogo from "../Logo/AseerLogo";
+
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
 import { BookletSmallArrowIcon } from "./Icons";
@@ -35,9 +35,12 @@ const Footer = () => {
                 </div>
               </div>
 
-              <div className="h-[60.92px] w-[151.62px]">
-                <AseerLogo />
-              </div>
+              <Image
+                src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
+                alt="footer:aseer_logo673"
+                width={120}
+                height={55}
+              />
             </div>
           </div>
 

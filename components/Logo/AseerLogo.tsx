@@ -8,6 +8,7 @@ const AseerLogo = () => {
         viewBox="0 0 112 45"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="size-32"
       >
         <g clipPath="url(#clip0_2653_13111)">
           <path

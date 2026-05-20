@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
-import AseerLogo from "@/components/Logo/AseerLogo";
+
+import Image from "next/image";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -15,7 +16,12 @@ const NotFoundPage = () => {
     <main className="flex min-h-screen w-full items-center justify-center bg-background px-4 py-10 text-foreground">
       <section className="w-full max-w-[640px] rounded-[18px] border border-border bg-surface px-6 py-10 text-center shadow-[0_8px_24px_rgba(40,0,72,0.08)] sm:px-10">
         <div className="mb-8 flex justify-center filter-[brightness(0)] dark:filter-none">
-          <AseerLogo />
+          <Image
+            src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
+            alt="footer:aseer_logo673"
+            width={120}
+            height={55}
+          />
         </div>
 
         <h1
