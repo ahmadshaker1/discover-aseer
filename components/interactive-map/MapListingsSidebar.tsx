@@ -84,13 +84,6 @@ export function MapListingsSidebar({
           ) : null}
         </div>
         <div className="flex items-center gap-3">
-          <Button
-            type="button"
-            aria-label={ui.filterLabel}
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-transparent text-lg text-foreground data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
-          >
-            ⌕
-          </Button>
           <Field className="relative min-w-0 flex-1">
             <Label className="sr-only">{ui.search}</Label>
             <Input
@@ -101,6 +94,13 @@ export function MapListingsSidebar({
               className="h-11 w-full rounded-md border border-border bg-background px-4 text-[15px] text-foreground outline-none text-start data-focus:border-primary data-focus:ring-2 data-focus:ring-primary/30"
             />
           </Field>
+          <Button
+            type="button"
+            aria-label={ui.filterLabel}
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-transparent text-lg text-foreground data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
+          >
+            ⌕
+          </Button>
         </div>
       </div>
 
