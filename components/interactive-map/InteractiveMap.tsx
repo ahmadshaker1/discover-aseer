@@ -2,6 +2,7 @@
 
 import { Button } from "@headlessui/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createRoot, type Root } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { brandPrimary } from "@/lib/theme/palette";
@@ -18,7 +19,7 @@ import {
 } from "./mapCategories";
 import { MapListingsOpenIcon } from "./MapListingsOpenIcon";
 import { MapListingsSidebar } from "./MapListingsSidebar";
-import { buildMapPopupHtml } from "./mapPopupHtml";
+import { MapPopupContent } from "./MapPopupContent";
 
 interface LocationPin {
   id: string;
@@ -140,6 +141,7 @@ const InteractiveMap = ({
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const mapLoadedRef = useRef(false);
   const popupRef = useRef<mapboxgl.Popup | null>(null);
+  const popupRootRef = useRef<Root | null>(null);
   const placesRef = useRef<MapPlace[]>(EMPTY_PLACES);
 
   const [activeCategories, setActiveCategories] = useState<MapCategoryKey[]>(
@@ -268,6 +270,13 @@ const InteractiveMap = ({
     };
   }, [locale]);
 
+  const clearMapPopup = useCallback(() => {
+    popupRef.current?.remove();
+    popupRef.current = null;
+    popupRootRef.current?.unmount();
+    popupRootRef.current = null;
+  }, []);
+
   const showPlacePopup = useCallback(
     (place: MapPlace) => {
       if (
@@ -278,25 +287,39 @@ const InteractiveMap = ({
         return;
       }
 
-      popupRef.current?.remove();
-      popupRef.current = new mapboxgl.Popup({
+      clearMapPopup();
+
+      const container = document.createElement("div");
+      const root = createRoot(container);
+      popupRootRef.current = root;
+      root.render(
+        <MapPopupContent
+          place={place}
+          directionsLabel={ui.directions}
+          viewMoreLabel={ui.viewMore}
+          viewLessLabel={ui.viewLess}
+          locale={locale}
+        />,
+      );
+
+      const popup = new mapboxgl.Popup({
         offset: 18,
         closeButton: true,
         maxWidth: "320px",
         className: "interactive-map-popup",
       })
         .setLngLat([place.longitude, place.latitude])
-        .setHTML(
-          buildMapPopupHtml(place, {
-            directionsLabel: ui.directions,
-            viewMoreLabel: ui.viewMore,
-            viewLessLabel: ui.viewLess,
-            locale,
-          }),
-        )
+        .setDOMContent(container)
         .addTo(mapRef.current);
+
+      popup.on("close", () => {
+        popupRootRef.current?.unmount();
+        popupRootRef.current = null;
+      });
+
+      popupRef.current = popup;
     },
-    [locale, ui.directions, ui.viewLess, ui.viewMore],
+    [clearMapPopup, locale, ui.directions, ui.viewLess, ui.viewMore],
   );
 
   const focusCoordinates = useCallback(
@@ -482,14 +505,14 @@ const InteractiveMap = ({
 
     return () => {
       cancelled = true;
-      popupRef.current?.remove();
+      clearMapPopup();
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
       }
       mapLoadedRef.current = false;
     };
-  }, [focusPlace, locale]);
+  }, [clearMapPopup, focusPlace, locale]);
 
   useEffect(() => {
     if (!mapRef.current || !mapLoadedRef.current) return;
@@ -507,9 +530,9 @@ const InteractiveMap = ({
       selectedPlaceId &&
       !filteredPlaces.some((place) => place.id === selectedPlaceId)
     ) {
-      popupRef.current?.remove();
+      clearMapPopup();
     }
-  }, [filteredPlaces, mappablePlaces, selectedPlaceId]);
+  }, [clearMapPopup, filteredPlaces, mappablePlaces, selectedPlaceId]);
 
   useEffect(() => {
     if (!initialPins.length || !onPinAdd) return;
@@ -594,8 +617,8 @@ const InteractiveMap = ({
     setSelectedCity(ui.all);
     setActiveCategories([]);
     setSelectedPlaceId(null);
-    popupRef.current?.remove();
-  }, [ui.all]);
+    clearMapPopup();
+  }, [clearMapPopup, ui.all]);
 
   const handleSelectPlace = useCallback(
     (placeId: string) => {

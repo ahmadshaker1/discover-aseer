@@ -12,7 +12,6 @@ import {
   RadioGroup,
 } from "@headlessui/react";
 import type { MapPlace } from "./InteractiveMap";
-import { MapDirectionsLink } from "./MapDirectionsLink";
 import { MapListingsCloseIcon } from "./MapListingsCloseIcon";
 import { MapPlaceDescription } from "./MapPlaceDescription";
 import { resolveMapPlaceImageUrl } from "./mapPlaceImage";
@@ -27,7 +26,6 @@ type MapListingsSidebarProps = {
     locations: string;
     clearFilters: string;
     noGeo: string;
-    directions: string;
     viewMore: string;
     viewLess: string;
     noResults: string;
@@ -210,14 +208,6 @@ export function MapListingsSidebar({
                       <p className="mt-2 text-[14px] text-muted-foreground">
                         {ui.noGeo}
                       </p>
-                    ) : null}
-                    {place.mapsUrl ? (
-                      <MapDirectionsLink
-                        href={place.mapsUrl}
-                        label={ui.directions}
-                        onClick={(event) => event.stopPropagation()}
-                        className="mt-2"
-                      />
                     ) : null}
                   </div>
                 </RadioGroup.Option>
