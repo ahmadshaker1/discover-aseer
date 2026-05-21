@@ -247,7 +247,11 @@ const InteractiveMap = ({
           setPlaces(json.data);
         }
 
-        if (process.env.NODE_ENV === "development" && json.stats && !cancelled) {
+        if (
+          process.env.NODE_ENV === "development" &&
+          json.stats &&
+          !cancelled
+        ) {
           console.info(
             "[interactive-map] loaded from /api/interactive-map/locations (Directus runs on server). Stats:",
             json.stats,
@@ -371,10 +375,16 @@ const InteractiveMap = ({
 
     mapRef.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v12",
+      style: "mapbox://styles/mapbox/outdoors-v12",
       center: MAP_CENTER,
       zoom: 7.6,
       attributionControl: false,
+      config: {
+        basemap: {
+          theme: "faded",
+          lightPreset: "day",
+        },
+      },
     });
 
     if (cancelled) {
@@ -566,11 +576,7 @@ const InteractiveMap = ({
     if (!selectedPlaceId || !popupRef.current) return;
 
     const place = placesRef.current.find((item) => item.id === selectedPlaceId);
-    if (
-      !place ||
-      place.latitude == null ||
-      place.longitude == null
-    ) {
+    if (!place || place.latitude == null || place.longitude == null) {
       return;
     }
 
@@ -668,10 +674,11 @@ const InteractiveMap = ({
                 type="button"
                 aria-pressed={isActive}
                 onClick={() => toggleCategory(key)}
-                className={`inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-3 py-2 text-[13px] font-medium leading-tight shadow-sm transition sm:gap-2 sm:px-4 sm:py-2.5 sm:text-[15px] data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${isActive
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-surface text-foreground"
-                  }`}
+                className={`inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-3 py-2 text-[13px] font-medium leading-tight shadow-sm transition sm:gap-2 sm:px-4 sm:py-2.5 sm:text-[15px] data-focus:outline-none data-focus:ring-2 data-focus:ring-[#6C2BD9] data-focus:ring-offset-2 ${
+                  isActive
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-surface text-foreground"
+                }`}
               >
                 <Icon className="size-4 sm:size-5" />
                 <span className="whitespace-nowrap">{label}</span>
@@ -746,7 +753,6 @@ const InteractiveMap = ({
     </div>
   );
 };
-
 
 export default InteractiveMap;
 export type { LocationPin, InteractiveMapProps, MapPlace };
