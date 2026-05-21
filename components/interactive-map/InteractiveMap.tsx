@@ -148,6 +148,16 @@ const UI_KEYS = [
   "closeListings",
 ] as const;
 
+/** Fisher–Yates shuffle; new order on each call (e.g. when places load). */
+function shuffleIds(ids: string[]): string[] {
+  const copy = [...ids];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
 const placesToGeoJSON = (
   places: MapPlace[],
 ): GeoJSON.FeatureCollection<GeoJSON.Point> => ({
@@ -229,6 +239,20 @@ const InteractiveMap = ({
       return categoryMatch && cityMatch && searchMatch;
     });
   }, [activeCategories, places, searchTerm, selectedCity, ui.all]);
+
+  const sidebarPlaceOrder = useMemo(() => {
+    const shuffled = shuffleIds(places.map((place) => place.id));
+    return new Map(shuffled.map((id, index) => [id, index]));
+  }, [places]);
+
+  const sidebarPlaces = useMemo(() => {
+    if (sidebarPlaceOrder.size === 0) return filteredPlaces;
+    return [...filteredPlaces].sort(
+      (a, b) =>
+        (sidebarPlaceOrder.get(a.id) ?? Number.MAX_SAFE_INTEGER) -
+        (sidebarPlaceOrder.get(b.id) ?? Number.MAX_SAFE_INTEGER),
+    );
+  }, [filteredPlaces, sidebarPlaceOrder]);
 
   const mappablePlaces = useMemo(
     () =>
@@ -642,7 +666,7 @@ const InteractiveMap = ({
     selectedCity,
     onSelectedCityChange: setSelectedCity,
     cities,
-    filteredPlaces,
+    filteredPlaces: sidebarPlaces,
     radioSelectedPlaceId,
     onSelectPlace: handleSelectPlace,
     onClearFilters: handleClearFilters,
