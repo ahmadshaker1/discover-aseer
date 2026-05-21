@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import DesktopNavigationLinks from "./DesktopNavigationLinks";
 import DesktopActionLinks from "./DesktopActionLinks";
 import MobileMenuButton from "./MobileMenuButton";
 import MobileMenu from "./MobileMenu";
 
 const Navbar = () => {
+  const t = useTranslations();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -22,12 +25,18 @@ const Navbar = () => {
 
           {/* Center: Logo */}
           <div className="absolute left-1/2 -translate-x-1/2">
-            <Image
-              src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
-              alt="footer:aseer_logo673"
-              width={120}
-              height={55}
-            />
+            <Link
+              href="/"
+              aria-label={t("common.home")}
+              className="inline-flex rounded-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+            >
+              <Image
+                src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
+                alt=""
+                width={120}
+                height={55}
+              />
+            </Link>
           </div>
 
           {/* Right: Action links */}
