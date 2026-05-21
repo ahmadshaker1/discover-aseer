@@ -26,7 +26,9 @@ type MapListingsSidebarProps = {
     noGeo: string;
     directions: string;
     noResults: string;
+    loadingLocations: string;
   };
+  isLoading?: boolean;
   searchTerm: string;
   onSearchTermChange: (value: string) => void;
   selectedCity: string;
@@ -52,6 +54,7 @@ export function MapListingsSidebar({
   onSelectedCityChange,
   cities,
   filteredPlaces,
+  isLoading = false,
   radioSelectedPlaceId,
   onSelectPlace,
   onClearFilters,
@@ -147,22 +150,34 @@ export function MapListingsSidebar({
       </div>
 
       <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4">
-        {filteredPlaces.length > 0 ? (
+        {isLoading ? (
+          <div className="flex min-h-[200px] flex-1 items-center justify-center py-12">
+            <div
+              className="h-6 w-6 animate-spin rounded-full border-2 border-border border-t-primary"
+              role="status"
+              aria-label={ui.loadingLocations}
+            />
+          </div>
+        ) : null}
+        {!isLoading && filteredPlaces.length > 0 ? (
           <RadioGroup
             value={radioSelectedPlaceId ?? ""}
             onChange={onSelectPlace}
             className="space-y-3"
           >
             {filteredPlaces.map((place) => {
-              const descriptionPreview = toMapCardDescription(place.description);
+              const descriptionPreview = toMapCardDescription(
+                place.description,
+              );
               return (
                 <RadioGroup.Option
                   key={place.id}
                   value={place.id}
                   className={({ checked, focus }) =>
-                    `relative flex min-h-[120px] w-full cursor-pointer overflow-hidden rounded-[14px] border text-start outline-none transition ${checked
-                      ? "border-primary bg-muted"
-                      : "border-border bg-surface hover:bg-muted"
+                    `relative flex min-h-[120px] w-full cursor-pointer overflow-hidden rounded-[14px] border text-start outline-none transition ${
+                      checked
+                        ? "border-primary bg-muted"
+                        : "border-border bg-surface hover:bg-muted"
                     } ${focus ? "ring-2 ring-primary ring-offset-2 ring-offset-surface" : ""}`
                   }
                 >
@@ -177,8 +192,9 @@ export function MapListingsSidebar({
                     </div>
                   ) : null}
                   <div
-                    className={`relative z-10 min-w-0 flex-1 p-4 ${place.imageUrl ? "ps-[calc(33.333%+12px)]" : ""
-                      }`}
+                    className={`relative z-10 min-w-0 flex-1 p-4 ${
+                      place.imageUrl ? "ps-[calc(33.333%+12px)]" : ""
+                    }`}
                   >
                     {place.tag ? (
                       <span className="mb-2 inline-flex rounded-full bg-background px-2.5 py-1 text-[13px] font-semibold text-foreground">
@@ -215,7 +231,7 @@ export function MapListingsSidebar({
             })}
           </RadioGroup>
         ) : null}
-        {filteredPlaces.length === 0 ? (
+        {!isLoading && filteredPlaces.length === 0 ? (
           <div className="rounded-lg border border-border bg-surface p-4 text-center text-base text-muted-foreground sm:text-lg">
             {ui.noResults}
           </div>

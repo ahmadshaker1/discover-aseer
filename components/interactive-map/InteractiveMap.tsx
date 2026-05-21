@@ -143,6 +143,7 @@ const UI_KEYS = [
   "showOnMap",
   "directions",
   "noResults",
+  "loadingLocations",
   "tokenHint",
   "openListings",
   "closeListings",
@@ -205,6 +206,7 @@ const InteractiveMap = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [places, setPlaces] = useState<MapPlace[]>(EMPTY_PLACES);
+  const [isPlacesLoading, setIsPlacesLoading] = useState(true);
   const [isListingsOpen, setIsListingsOpen] = useState(false);
 
   const cities = useMemo(
@@ -278,6 +280,7 @@ const InteractiveMap = ({
 
   useEffect(() => {
     let cancelled = false;
+    setIsPlacesLoading(true);
 
     const loadLocations = async () => {
       try {
@@ -310,6 +313,8 @@ const InteractiveMap = ({
           "[interactive-map] Failed to load Directus locations",
           error,
         );
+      } finally {
+        if (!cancelled) setIsPlacesLoading(false);
       }
     };
 
@@ -667,6 +672,7 @@ const InteractiveMap = ({
     onSelectedCityChange: setSelectedCity,
     cities,
     filteredPlaces: sidebarPlaces,
+    isLoading: isPlacesLoading,
     radioSelectedPlaceId,
     onSelectPlace: handleSelectPlace,
     onClearFilters: handleClearFilters,
