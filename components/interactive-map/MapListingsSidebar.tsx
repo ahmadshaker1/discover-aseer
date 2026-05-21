@@ -188,11 +188,16 @@ export function MapListingsSidebar({
                       alt=""
                       className="h-full w-full object-cover"
                     />
+                    {place.city ? (
+                      <span className="interactive-map-popup-city-badge">
+                        {place.city}
+                      </span>
+                    ) : null}
                   </div>
                   <div className="relative z-10 min-w-0 flex-1 p-4 ps-[calc(33.333%+12px)]">
-                    {(place.city || place.tag) ? (
+                    {place.category ? (
                       <span className="mb-2 inline-flex rounded-full bg-muted px-2.5 py-1 text-[13px] font-semibold text-foreground">
-                        {place.city || place.tag}
+                        {place.category}
                       </span>
                     ) : null}
                     <h3 className="line-clamp-2 text-[18px] font-bold leading-[1.15] sm:text-[21px]">

@@ -299,6 +299,33 @@ html.dark {
   object-fit: cover;
 }
 
+.interactive-map-popup-city-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  max-width: calc(100% - 16px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--foreground);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.interactive-map-popup .interactive-map-popup-city-badge {
+  top: 12px;
+  right: 48px;
+  max-width: calc(100% - 64px);
+  padding: 5px 14px;
+  font-size: 13px;
+}
+
 .interactive-map-popup .interactive-map-popup-body {
   display: flex;
   flex-direction: column;

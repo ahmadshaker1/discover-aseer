@@ -9,8 +9,8 @@ export type MapPopupPlace = {
   id: string;
   title: string;
   description: string;
+  category?: string;
   city?: string;
-  tag?: string;
   mapsUrl?: string;
   imageUrl?: string;
 };
@@ -35,7 +35,8 @@ export function MapPopupContent({
     plainDescription.length > MAP_DESCRIPTION_PREVIEW_LENGTH;
   const expandId = `interactive-map-popup-expand-${place.id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const dir = locale === "ar" ? "rtl" : "ltr";
-  const badgeLabel = (place.city || place.tag || "").trim();
+  const categoryLabel = place.category?.trim() ?? "";
+  const cityLabel = place.city?.trim() ?? "";
   const imageSrc = resolveMapPlaceImageUrl(place.imageUrl);
 
   return (
@@ -43,12 +44,15 @@ export function MapPopupContent({
       <div className="interactive-map-popup-media">
         {/* eslint-disable-next-line @next/next/no-img-element -- CMS photo or default placeholder */}
         <img src={imageSrc} alt="" />
+        {cityLabel ? (
+          <span className="interactive-map-popup-city-badge">{cityLabel}</span>
+        ) : null}
       </div>
       <div className="interactive-map-popup-body">
         <div className="interactive-map-popup-header">
           <strong className="interactive-map-popup-title">{place.title}</strong>
-          {badgeLabel ? (
-            <span className="interactive-map-popup-tag">{badgeLabel}</span>
+          {categoryLabel ? (
+            <span className="interactive-map-popup-tag">{categoryLabel}</span>
           ) : null}
         </div>
 
