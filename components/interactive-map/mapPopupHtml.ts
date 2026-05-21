@@ -3,6 +3,7 @@ import {
   MAP_DESCRIPTION_PREVIEW_LENGTH,
 } from "./mapPlaceDescription";
 import { MAP_DIRECTIONS_ICON_SVG } from "./mapDirectionsIcon";
+import { resolveMapPlaceImageUrl } from "./mapPlaceImage";
 
 const escapeHtml = (value: string): string =>
   value
@@ -38,9 +39,8 @@ export function buildMapPopupHtml(
   const dir = options.locale === "ar" ? "rtl" : "ltr";
   const badgeLabel = (place.city || place.tag || "").trim();
 
-  const imageHtml = place.imageUrl
-    ? `<div class="interactive-map-popup-media"><img src="${escapeHtml(place.imageUrl)}" alt="" /></div>`
-    : "";
+  const imageSrc = resolveMapPlaceImageUrl(place.imageUrl);
+  const imageHtml = `<div class="interactive-map-popup-media"><img src="${escapeHtml(imageSrc)}" alt="" /></div>`;
 
   const badgeHtml = badgeLabel
     ? `<span class="interactive-map-popup-tag">${escapeHtml(badgeLabel)}</span>`

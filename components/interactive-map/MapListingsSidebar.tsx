@@ -15,6 +15,7 @@ import type { MapPlace } from "./InteractiveMap";
 import { MapDirectionsLink } from "./MapDirectionsLink";
 import { MapListingsCloseIcon } from "./MapListingsCloseIcon";
 import { MapPlaceDescription } from "./MapPlaceDescription";
+import { resolveMapPlaceImageUrl } from "./mapPlaceImage";
 
 type MapListingsSidebarProps = {
   className?: string;
@@ -167,7 +168,10 @@ export function MapListingsSidebar({
             onChange={onSelectPlace}
             className="space-y-3"
           >
-            {filteredPlaces.map((place) => (
+            {filteredPlaces.map((place) => {
+              const imageSrc = resolveMapPlaceImageUrl(place.imageUrl);
+
+              return (
                 <RadioGroup.Option
                   key={place.id}
                   value={place.id}
@@ -179,21 +183,15 @@ export function MapListingsSidebar({
                     } ${focus ? "ring-2 ring-primary ring-offset-2 ring-offset-surface" : ""}`
                   }
                 >
-                  {place.imageUrl ? (
-                    <div className="absolute inset-y-0 start-0 z-0 flex w-[42%] shrink-0 items-center justify-center bg-muted p-2">
-                      {/* eslint-disable-next-line @next/next/no-img-element -- CMS image URL */}
-                      <img
-                        src={place.imageUrl}
-                        alt=""
-                        className="max-h-full max-w-full object-contain"
-                      />
-                    </div>
-                  ) : null}
-                  <div
-                    className={`relative z-10 min-w-0 flex-1 p-4 ${
-                      place.imageUrl ? "ps-[calc(42%+12px)]" : ""
-                    }`}
-                  >
+                  <div className="absolute inset-y-0 start-0 z-0 w-1/3 shrink-0 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- CMS photo or default placeholder */}
+                    <img
+                      src={imageSrc}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="relative z-10 min-w-0 flex-1 p-4 ps-[calc(33.333%+12px)]">
                     {(place.city || place.tag) ? (
                       <span className="mb-2 inline-flex rounded-full bg-muted px-2.5 py-1 text-[13px] font-semibold text-foreground">
                         {place.city || place.tag}
@@ -223,7 +221,8 @@ export function MapListingsSidebar({
                     ) : null}
                   </div>
                 </RadioGroup.Option>
-            ))}
+              );
+            })}
           </RadioGroup>
         ) : null}
         {!isLoading && filteredPlaces.length === 0 ? (
