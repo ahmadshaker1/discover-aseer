@@ -669,6 +669,8 @@
     "noGeo": "Location coordinates are currently unavailable on the map.",
     "showOnMap": "Show on map",
     "directions": "Directions",
+    "viewMore": "View more",
+    "viewLess": "View less",
     "noResults": "No places match the current search.",
     "loadingLocations": "Loading locations",
     "openListings": "Open locations list",

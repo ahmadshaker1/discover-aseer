@@ -18,6 +18,7 @@ import {
 } from "./mapCategories";
 import { MapListingsOpenIcon } from "./MapListingsOpenIcon";
 import { MapListingsSidebar } from "./MapListingsSidebar";
+import { buildMapPopupHtml } from "./mapPopupHtml";
 
 interface LocationPin {
   id: string;
@@ -72,66 +73,6 @@ const MAP_CENTER: [number, number] = [42.62, 18.25];
 
 const EMPTY_PLACES: MapPlace[] = [];
 
-const CARD_DESCRIPTION_MAX_LENGTH = 160;
-
-const toMapCardDescription = (html: string): string => {
-  const plain = html
-    .replace(/<br\s*\/?>/gi, " ")
-    .replace(/<\/p>/gi, " ")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (!plain) return "";
-  if (plain.length <= CARD_DESCRIPTION_MAX_LENGTH) return plain;
-  return `${plain.slice(0, CARD_DESCRIPTION_MAX_LENGTH).trimEnd()}…`;
-};
-
-const escapeHtml = (value: string): string =>
-  value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-
-const buildMapPopupHtml = (
-  place: MapPlace,
-  options: { directionsLabel: string; locale: string },
-): string => {
-  const description = toMapCardDescription(place.description);
-  const dir = options.locale === "ar" ? "rtl" : "ltr";
-
-  const imageHtml = place.imageUrl
-    ? `<img src="${escapeHtml(place.imageUrl)}" alt="" style="display:block;width:100%;height:100px;object-fit:cover;" />`
-    : "";
-
-  const tagHtml = place.tag
-    ? `<span style="display:inline-block;margin-bottom:8px;border-radius:9999px;background:var(--muted);padding:4px 10px;font-size:13px;font-weight:600;color:var(--foreground);">${escapeHtml(place.tag)}</span>`
-    : "";
-
-  const descriptionHtml = description
-    ? `<p style="margin:6px 0 0;font-size:15px;line-height:1.35;color:var(--muted-foreground);">${escapeHtml(description)}</p>`
-    : "";
-
-  const mapsHtml = place.mapsUrl
-    ? `<a href="${escapeHtml(place.mapsUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:10px;font-size:14px;font-weight:600;color:var(--primary);text-decoration:underline;">${escapeHtml(options.directionsLabel)}</a>`
-    : "";
-
-  return `<div class="interactive-map-popup-card" style="direction:${dir};text-align:start;font-family:inherit;background:var(--surface);color:var(--foreground);">
-      ${imageHtml}
-      <div style="padding:12px 14px 14px;">
-        ${tagHtml}
-        <strong style="display:block;font-size:20px;line-height:1.15;">${escapeHtml(place.title)}</strong>
-        ${descriptionHtml}
-        ${mapsHtml}
-      </div>
-    </div>`;
-};
-
 const UI_KEYS = [
   "all",
   "discover",
@@ -142,6 +83,8 @@ const UI_KEYS = [
   "noGeo",
   "showOnMap",
   "directions",
+  "viewMore",
+  "viewLess",
   "noResults",
   "loadingLocations",
   "tokenHint",
@@ -339,19 +282,21 @@ const InteractiveMap = ({
       popupRef.current = new mapboxgl.Popup({
         offset: 18,
         closeButton: true,
-        maxWidth: "300px",
+        maxWidth: "320px",
         className: "interactive-map-popup",
       })
         .setLngLat([place.longitude, place.latitude])
         .setHTML(
           buildMapPopupHtml(place, {
             directionsLabel: ui.directions,
+            viewMoreLabel: ui.viewMore,
+            viewLessLabel: ui.viewLess,
             locale,
           }),
         )
         .addTo(mapRef.current);
     },
-    [locale, ui.directions],
+    [locale, ui.directions, ui.viewLess, ui.viewMore],
   );
 
   const focusCoordinates = useCallback(
@@ -676,7 +621,8 @@ const InteractiveMap = ({
     radioSelectedPlaceId,
     onSelectPlace: handleSelectPlace,
     onClearFilters: handleClearFilters,
-    toMapCardDescription: toMapCardDescription,
+    viewMore: ui.viewMore,
+    viewLess: ui.viewLess,
     closeLabel: ui.closeListings,
   };
 

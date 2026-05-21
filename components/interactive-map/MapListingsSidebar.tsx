@@ -12,7 +12,9 @@ import {
   RadioGroup,
 } from "@headlessui/react";
 import type { MapPlace } from "./InteractiveMap";
+import { MapDirectionsLink } from "./MapDirectionsLink";
 import { MapListingsCloseIcon } from "./MapListingsCloseIcon";
+import { MapPlaceDescription } from "./MapPlaceDescription";
 
 type MapListingsSidebarProps = {
   className?: string;
@@ -25,6 +27,8 @@ type MapListingsSidebarProps = {
     clearFilters: string;
     noGeo: string;
     directions: string;
+    viewMore: string;
+    viewLess: string;
     noResults: string;
     loadingLocations: string;
   };
@@ -38,7 +42,6 @@ type MapListingsSidebarProps = {
   radioSelectedPlaceId: string | null;
   onSelectPlace: (placeId: string) => void;
   onClearFilters: () => void;
-  toMapCardDescription: (html: string) => string;
   showCloseButton?: boolean;
   onClose?: () => void;
   closeLabel?: string;
@@ -58,7 +61,6 @@ export function MapListingsSidebar({
   radioSelectedPlaceId,
   onSelectPlace,
   onClearFilters,
-  toMapCardDescription,
   showCloseButton = false,
   onClose,
   closeLabel = "Close",
@@ -165,16 +167,12 @@ export function MapListingsSidebar({
             onChange={onSelectPlace}
             className="space-y-3"
           >
-            {filteredPlaces.map((place) => {
-              const descriptionPreview = toMapCardDescription(
-                place.description,
-              );
-              return (
+            {filteredPlaces.map((place) => (
                 <RadioGroup.Option
                   key={place.id}
                   value={place.id}
                   className={({ checked, focus }) =>
-                    `relative flex min-h-[120px] w-full cursor-pointer overflow-hidden rounded-[14px] border text-start outline-none transition ${
+                    `relative flex min-h-[140px] w-full cursor-pointer overflow-hidden rounded-[14px] border text-start outline-none transition ${
                       checked
                         ? "border-primary bg-muted"
                         : "border-border bg-surface hover:bg-muted"
@@ -182,53 +180,50 @@ export function MapListingsSidebar({
                   }
                 >
                   {place.imageUrl ? (
-                    <div className="absolute inset-y-0 start-0 z-0 w-1/3 shrink-0">
+                    <div className="absolute inset-y-0 start-0 z-0 flex w-[42%] shrink-0 items-center justify-center bg-muted p-2">
                       {/* eslint-disable-next-line @next/next/no-img-element -- CMS image URL */}
                       <img
                         src={place.imageUrl}
                         alt=""
-                        className="h-full w-full object-cover"
+                        className="max-h-full max-w-full object-contain"
                       />
                     </div>
                   ) : null}
                   <div
                     className={`relative z-10 min-w-0 flex-1 p-4 ${
-                      place.imageUrl ? "ps-[calc(33.333%+12px)]" : ""
+                      place.imageUrl ? "ps-[calc(42%+12px)]" : ""
                     }`}
                   >
-                    {place.tag ? (
-                      <span className="mb-2 inline-flex rounded-full bg-background px-2.5 py-1 text-[13px] font-semibold text-foreground">
-                        {place.tag}
+                    {(place.city || place.tag) ? (
+                      <span className="mb-2 inline-flex rounded-full bg-muted px-2.5 py-1 text-[13px] font-semibold text-foreground">
+                        {place.city || place.tag}
                       </span>
                     ) : null}
                     <h3 className="line-clamp-2 text-[18px] font-bold leading-[1.15] sm:text-[21px]">
                       {place.title}
                     </h3>
-                    {descriptionPreview ? (
-                      <p className="mt-1.5 line-clamp-4 text-[14px] leading-snug text-muted-foreground sm:text-[15px]">
-                        {descriptionPreview}
-                      </p>
-                    ) : null}
+                    <MapPlaceDescription
+                      html={place.description}
+                      viewMore={ui.viewMore}
+                      viewLess={ui.viewLess}
+                      className="mt-1.5"
+                    />
                     {!place.hasCoordinates ? (
                       <p className="mt-2 text-[14px] text-muted-foreground">
                         {ui.noGeo}
                       </p>
                     ) : null}
                     {place.mapsUrl ? (
-                      <a
+                      <MapDirectionsLink
                         href={place.mapsUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        label={ui.directions}
                         onClick={(event) => event.stopPropagation()}
-                        className="mt-2 inline-block text-[14px] font-semibold text-primary underline-offset-2 hover:underline"
-                      >
-                        {ui.directions}
-                      </a>
+                        className="mt-2"
+                      />
                     ) : null}
                   </div>
                 </RadioGroup.Option>
-              );
-            })}
+            ))}
           </RadioGroup>
         ) : null}
         {!isLoading && filteredPlaces.length === 0 ? (

@@ -1,0 +1,2 @@
+/** Outlined navigation circle — shared by map popup and sidebar list. */
+export const MAP_DIRECTIONS_ICON_SVG = `<svg class="map-directions-icon-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/><path d="M20 10L23.5 28L20 23L16.5 28L20 10Z" fill="currentColor"/></svg>`;
