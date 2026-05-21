@@ -7,7 +7,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
+import ConditionalFooter from "@/components/Footer/ConditionalFooter";
 
 import { routing, type AppLocale } from "@/i18n/routing";
 import { getThemeInitScript } from "@/lib/theme/runtime";
@@ -78,7 +78,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider locale={appLocale} messages={messages}>
           <Navbar />
           {children}
-          <Footer />
+          <ConditionalFooter />
         </NextIntlClientProvider>
       </body>
     </html>
