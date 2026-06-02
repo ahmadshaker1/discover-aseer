@@ -39,6 +39,8 @@
     "memberOf": "Member of",
     "newsletterDescription": "Subscribe to our newsletter for offers and special discounts.",
     "emailPlaceholder": "Example @email.com",
+    "phone": "Phone",
+    "email": "Email",
     "noPointsOfInterest": "No points of interest available",
     "weatherRain": "Rain",
     "happeningNow": "Happening now",
@@ -1054,5 +1056,40 @@
   },
   "landmarks": {
     "redirectNote": "Redirect to attractions"
+  },
+  "tourismCompanies": {
+    "navigation": {
+      "home": "Home",
+      "companies": "Support services"
+    },
+    "title": "Tourism Companies",
+    "campany1": {
+      "name": "Visit South",
+      "phone": "557574477",
+      "email": "info@visitsouthsaudi.com",
+      "website": "NA",
+      "logo": "/assets/tourism-companies/c1.webp"
+    },
+    "campany2": {
+      "name": "Future Luxury",
+      "phone": "553740200",
+      "email": "futuer.luxury@gmail.com",
+      "website": "https://futuer-luxury.com/ar/",
+      "logo": "/assets/tourism-companies/c2.webp"
+    },
+    "campany3": {
+      "name": "Tamashi",
+      "phone": "530250000",
+      "email": "info@tmashi.sa",
+      "website": "https://tmashi.sa/",
+      "logo": "/assets/tourism-companies/c3.webp"
+    },
+    "campany4": {
+      "name": "Eva Travel",
+      "phone": "591277555",
+      "email": "abha_travel@hotmail.com",
+      "website": "NA",
+      "logo": "/assets/tourism-companies/c4.webp"
+    }
   }
 }

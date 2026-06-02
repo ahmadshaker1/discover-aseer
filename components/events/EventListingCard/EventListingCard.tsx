@@ -32,9 +32,12 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   const canGoPrev = safeIndex > 0;
   const canGoNext = safeIndex < imageCount - 1;
 
-  const onImgError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = PLACEHOLDER;
-  }, []);
+  const onImgError = useCallback(
+    (e: React.SyntheticEvent<HTMLImageElement>) => {
+      e.currentTarget.src = PLACEHOLDER;
+    },
+    [],
+  );
 
   const statusCorner = isArabic ? "left-2" : "right-2";
   const counterCorner = isArabic ? "right-2" : "left-2";
