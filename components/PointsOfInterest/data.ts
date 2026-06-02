@@ -16,7 +16,6 @@ type PoiApiDestination = ApiDestination & {
   destination_content_ar?: string | null;
 };
 
-
 export interface PointOfInterest {
   id: string;
   image: string;
@@ -45,14 +44,16 @@ const isMostlyLatin = (text: string): boolean => {
   return latin / letters.length > 0.5;
 };
 
-const truncatePlainText = (text: string, maxLength = DESCRIPTION_MAX_LENGTH): string => {
+const truncatePlainText = (
+  text: string,
+  maxLength = DESCRIPTION_MAX_LENGTH,
+): string => {
   const plain = text.replace(/\s+/g, " ").trim();
   if (plain.length <= maxLength) return plain;
 
   const cut = plain.slice(0, maxLength);
   const lastSpace = cut.lastIndexOf(" ");
-  const trimmed =
-    lastSpace > maxLength * 0.55 ? cut.slice(0, lastSpace) : cut;
+  const trimmed = lastSpace > maxLength * 0.55 ? cut.slice(0, lastSpace) : cut;
 
   return `${trimmed.trimEnd()}…`;
 };
@@ -106,7 +107,10 @@ const pickPoiTitle = (row: PoiApiDestination, locale: LocaleCode): string => {
   );
 };
 
-const pickPoiSubtitle = (row: PoiApiDestination, locale: LocaleCode): string => {
+const pickPoiSubtitle = (
+  row: PoiApiDestination,
+  locale: LocaleCode,
+): string => {
   const record = toRecord(row);
   const localized =
     pickLocalizedField(record, "sub_title", locale) ||
@@ -119,9 +123,17 @@ const pickPoiSubtitle = (row: PoiApiDestination, locale: LocaleCode): string => 
     .trim();
 
   if (combined) {
-    if (locale === "ar" && isMostlyLatin(combined) && !isMostlyArabic(combined)) {
+    if (
+      locale === "ar" &&
+      isMostlyLatin(combined) &&
+      !isMostlyArabic(combined)
+    ) {
       // CMS subtitle is English-only on this row — skip for Arabic UI
-    } else if (locale === "en" && isMostlyArabic(combined) && !isMostlyLatin(combined)) {
+    } else if (
+      locale === "en" &&
+      isMostlyArabic(combined) &&
+      !isMostlyLatin(combined)
+    ) {
       // CMS subtitle is Arabic-only on this row — skip for English UI
     } else {
       return combined;
@@ -178,7 +190,10 @@ const pickPoiDescriptionHtml = (
   );
 };
 
-const pickPoiLocation = (row: PoiApiDestination, locale: LocaleCode): string => {
+const pickPoiLocation = (
+  row: PoiApiDestination,
+  locale: LocaleCode,
+): string => {
   const record = toRecord(row);
   const city =
     pickLocalizedField(record, "city", locale) || row.city?.trim() || "";
@@ -257,7 +272,9 @@ export const fetchPointsOfInterest = async (
     }
 
     const apiData: ApiDestinationResponse = await response.json();
-    const rows = (Array.isArray(apiData.data) ? apiData.data : []) as PoiApiDestination[];
+    const rows = (
+      Array.isArray(apiData.data) ? apiData.data : []
+    ) as PoiApiDestination[];
 
     return rows
       .filter((row) => !row.status || row.status === "published")

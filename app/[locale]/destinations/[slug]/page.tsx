@@ -52,7 +52,7 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
       />
 
       <DestinationsIntroSection
-        title={destination.city || destination.title}
+        title={destination.displayCity}
         imageUrl={destination.introImage || destination.image}
         imageAlt={destination.title}
         paragraphs={[]}
@@ -61,7 +61,9 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
 
       <DestinationsLandmarksSection
         destinations={areaDestinations}
-        sectionTitle={destination.sectionTitle || destination.title}
+        sectionTitle={tDest("landmarksSectionTitle", {
+          area: destination.displayCity,
+        })}
         excludeSlug={destination.slug}
       />
 

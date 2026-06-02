@@ -8,7 +8,11 @@ import {
   getDestinationFilterLabel,
   resolveDestinationFilterId,
 } from "@/components/destinations/filterOptions";
-import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  isMostlyArabicText,
+  pickLocalizedField,
+  type LocaleCode,
+} from "@/lib/i18n/localized";
 
 export const DEFAULT_ABHA_MAP_CENTER = {
   lat: 18.087563,
@@ -20,7 +24,10 @@ export interface Destination {
   slug: string;
   title: string;
   subtitle: string;
+  /** @deprecated Prefer `displayCity` + `destinations.landmarksSectionTitle` i18n on slug pages. */
   sectionTitle: string;
+  /** Locale-aware place name for intro headings and section titles ({area}). */
+  displayCity: string;
   city: string;
   location: string;
   area: string;
@@ -61,7 +68,16 @@ export interface ApiDestination {
   content?: string | null;
   content_en?: string | null;
   content_ar?: string | null;
+  content_of_home_page?: string | null;
+  content_of_home_page_en?: string | null;
+  content_of_home_page_ar?: string | null;
+  destination_content?: string | null;
+  destination_content_en?: string | null;
+  destination_content_ar?: string | null;
   sub_title?: string | null;
+  sub_title_orange?: string | null;
+  sub_title_orange_en?: string | null;
+  sub_title_orange_ar?: string | null;
   subtitle?: string | null;
   sub_title_en?: string | null;
   sub_title_ar?: string | null;
@@ -77,6 +93,8 @@ export interface ApiDestination {
   latitude?: number | string | null;
   longitude?: number | string | null;
   city?: string | null;
+  city_en?: string | null;
+  city_ar?: string | null;
   destination_filter?: string | null;
   tags?: string | null;
   interest_tags?: string[] | null;
@@ -88,20 +106,22 @@ export interface ApiDestinationResponse {
 
 const cityMap: Record<string, string> = {
   abha: "abha",
-  "أبها": "abha",
+  أبها: "abha",
   "خميس مشيط": "khamis",
   khamis: "khamis",
   tanomah: "tanomah",
-  "تنومة": "tanomah",
+  تنومة: "tanomah",
   bisha: "bisha",
-  "بيشة": "bisha",
+  بيشة: "bisha",
   mahayil: "mahayil",
   "محايل عسير": "mahayil",
   najran: "najran",
-  "نجران": "najran",
+  نجران: "najran",
 };
 
-const toNumber = (value: number | string | null | undefined): number | undefined => {
+const toNumber = (
+  value: number | string | null | undefined,
+): number | undefined => {
   if (typeof value === "number" && Number.isFinite(value)) return value;
   if (typeof value === "string" && value.trim().length > 0) {
     const parsed = Number(value);
@@ -130,6 +150,11 @@ function resolveDestinationImageUrl(
 
 const toLocalizedRecord = (row: ApiDestination): Record<string, unknown> =>
   row as unknown as Record<string, unknown>;
+
+const readApiText = (row: ApiDestination, key: keyof ApiDestination): string => {
+  const value = row[key];
+  return typeof value === "string" ? value.trim() : "";
+};
 
 /** Locale-independent slug — always derived from English title (or CMS slug / id). */
 export const slugifyDestination = (value: string): string =>
@@ -175,15 +200,90 @@ const pickTitleSection2 = (row: ApiDestination, locale: LocaleCode): string => {
 const buildSectionTitle = (titleSection2: string, city: string): string =>
   [titleSection2, city].filter(Boolean).join(" ").trim();
 
+const pickDisplayCity = (
+  row: ApiDestination,
+  locale: LocaleCode,
+  title: string,
+): string => {
+  if (locale === "en") {
+    return (
+      readApiText(row, "city_en") ||
+      title ||
+      readApiText(row, "title_en") ||
+      ""
+    );
+  }
+  return (
+    readApiText(row, "city_ar") ||
+    readApiText(row, "city") ||
+    readApiText(row, "title_ar") ||
+    title
+  );
+};
+
+/** Hero tagline — EN uses `*_en` fields; AR uses `sub_title` + `sub_title_orange`. */
 const pickSubtitle = (row: ApiDestination, locale: LocaleCode): string => {
-  const record = toLocalizedRecord(row);
-  const localized =
-    pickLocalizedField(record, "sub_title", locale) ||
-    pickLocalizedField(record, "subtitle", locale) ||
-    (locale === "en"
-      ? row.sub_title_en || row.subtitle_en
-      : row.sub_title_ar || row.subtitle_ar);
-  return (localized || row.sub_title || row.subtitle || "").trim();
+  if (locale === "en") {
+    const line1 =
+      readApiText(row, "sub_title_en") || readApiText(row, "subtitle_en");
+    const line2 = readApiText(row, "sub_title_orange_en");
+    const fromEn = [line1, line2].filter(Boolean).join(" ").trim();
+    if (fromEn) return fromEn;
+
+    // CMS sometimes stores the full EN tagline only in `sub_title_en`
+    if (line1) return line1;
+
+    // Legacy rows: English copy still in non-suffixed fields
+    const legacy1 = readApiText(row, "sub_title") || readApiText(row, "subtitle");
+    const legacy2 = readApiText(row, "sub_title_orange");
+    const legacy = [legacy1, legacy2].filter(Boolean).join(" ").trim();
+    if (legacy && !isMostlyArabicText(legacy)) return legacy;
+
+    return "";
+  }
+
+  const line1 =
+    readApiText(row, "sub_title_ar") ||
+    readApiText(row, "sub_title") ||
+    readApiText(row, "subtitle_ar") ||
+    readApiText(row, "subtitle");
+  const line2 =
+    readApiText(row, "sub_title_orange_ar") ||
+    readApiText(row, "sub_title_orange");
+
+  return [line1, line2].filter(Boolean).join(" ").trim();
+};
+
+const pickDescription = (row: ApiDestination, locale: LocaleCode): string => {
+  if (locale === "en") {
+    const candidates: (keyof ApiDestination)[] = [
+      "content_en",
+      "description_en",
+      "destination_content_en",
+      "content_of_home_page_en",
+      "content",
+      "description",
+      "destination_content",
+      "content_of_home_page",
+    ];
+    for (const key of candidates) {
+      const text = readApiText(row, key);
+      if (text && !isMostlyArabicText(text)) return text;
+    }
+    return "";
+  }
+
+  return (
+    readApiText(row, "content_ar") ||
+    readApiText(row, "content") ||
+    readApiText(row, "description_ar") ||
+    readApiText(row, "description") ||
+    readApiText(row, "destination_content_ar") ||
+    readApiText(row, "destination_content") ||
+    readApiText(row, "content_of_home_page_ar") ||
+    readApiText(row, "content_of_home_page") ||
+    ""
+  );
 };
 
 export const transformDestination = (
@@ -192,7 +292,11 @@ export const transformDestination = (
   locale: LocaleCode = "ar",
 ): Destination => {
   const heroImage = resolveDestinationImageUrl(
-    row.hero_image_new || row.hero_image || row.hero_image_1 || row.cover_image || row.destination_image,
+    row.hero_image_new ||
+      row.hero_image ||
+      row.hero_image_1 ||
+      row.cover_image ||
+      row.destination_image,
     directusUrl,
   );
   const introImage = resolveDestinationImageUrl(
@@ -205,15 +309,21 @@ export const transformDestination = (
     pickLocalizedField(record, "title", locale) ||
     pickLocalizedField(record, "name", locale) ||
     "";
-  const location = row.location?.trim() || row.address?.trim() || row.city?.trim() || "";
-  const description =
-    pickLocalizedField(record, "description", locale) ||
-    pickLocalizedField(record, "content", locale) ||
-    "";
+  // CMS `city` is Arabic-only; for EN cards use the English title as the location line.
+  const location =
+    locale === "en"
+      ? title ||
+        row.location?.trim() ||
+        row.address?.trim() ||
+        row.city?.trim() ||
+        ""
+      : row.location?.trim() || row.address?.trim() || row.city?.trim() || "";
+  const description = pickDescription(row, locale);
 
   const slug = resolveDestinationSlug(row);
 
   const city = (row.city || "").trim();
+  const displayCity = pickDisplayCity(row, locale, title);
   const titleSection2 = pickTitleSection2(row, locale);
   const sectionTitle = buildSectionTitle(titleSection2, city);
 
@@ -229,8 +339,10 @@ export const transformDestination = (
 
   const sourceText = `${title} ${description}`;
   const fallbackTags: string[] = [];
-  if (/طبيعة|منتزه|جبل|وادي/i.test(sourceText)) fallbackTags.push("nature", "adventure");
-  if (/تراث|قرية|تاريخ|ثقافة/i.test(sourceText)) fallbackTags.push("historical", "culture");
+  if (/طبيعة|منتزه|جبل|وادي/i.test(sourceText))
+    fallbackTags.push("nature", "adventure");
+  if (/تراث|قرية|تاريخ|ثقافة/i.test(sourceText))
+    fallbackTags.push("historical", "culture");
   if (/سوق|تسوق/i.test(sourceText)) fallbackTags.push("shopping");
   const mappedTags =
     row.interest_tags ??
@@ -246,6 +358,7 @@ export const transformDestination = (
     title,
     subtitle: pickSubtitle(row, locale),
     sectionTitle,
+    displayCity,
     city,
     location,
     area,
@@ -274,16 +387,21 @@ function uniquifyDestinationSlugs(destinations: Destination[]): Destination[] {
   });
 }
 
-export const fetchDestinations = async (locale: LocaleCode = "ar"): Promise<Destination[]> => {
+export const fetchDestinations = async (
+  locale: LocaleCode = "ar",
+): Promise<Destination[]> => {
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
   if (!directusUrl) {
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
     return [];
   }
   try {
-    const response = await fetch(`${directusUrl.replace(/\/$/, "")}/items/destination`, {
-      next: { revalidate: 3600 },
-    });
+    const response = await fetch(
+      `${directusUrl.replace(/\/$/, "")}/items/destination`,
+      {
+        next: { revalidate: 3600 },
+      },
+    );
     if (!response.ok) return [];
     const apiData: ApiDestinationResponse = await response.json();
     const rows = Array.isArray(apiData.data) ? apiData.data : [];
@@ -349,7 +467,10 @@ export const filterDestinationsByArea = (
 };
 
 export const resolveDestinationMapCenter = (destination: Destination) => {
-  if (typeof destination.lat === "number" && typeof destination.lon === "number") {
+  if (
+    typeof destination.lat === "number" &&
+    typeof destination.lon === "number"
+  ) {
     return { lat: destination.lat, lon: destination.lon };
   }
   return DEFAULT_ABHA_MAP_CENTER;

@@ -23,11 +23,15 @@ interface DestinationsHeroProps {
 }
 
 interface WeatherState {
-  tempMin: number;
-  tempMax: number;
+  temp: number;
   condition: string;
   iconUrl?: string;
 }
+
+const DEFAULT_WEATHER_ICON = "https://openweathermap.org/img/wn/10d@2x.png";
+
+const isWeatherFallbackSource = (source: unknown): boolean =>
+  typeof source === "string" && source.startsWith("fallback");
 
 function BreadcrumbChevron() {
   return (
@@ -78,10 +82,9 @@ const DestinationsHero = ({
   const locale = useLocale();
   const tCommon = useTranslations("common");
   const [weather, setWeather] = useState<WeatherState>({
-    tempMin: 18,
-    tempMax: 21,
+    temp: 18,
     condition: tCommon("weatherRain"),
-    iconUrl: "https://openweathermap.org/img/wn/10d@2x.png",
+    iconUrl: undefined,
   });
 
   useEffect(() => {
@@ -92,6 +95,7 @@ const DestinationsHero = ({
           lat: String(weatherLat),
           lon: String(weatherLon),
           area: weatherArea,
+          locale,
         });
         const res = await fetch(`/api/weather/current?${query.toString()}`, {
           cache: "no-store",
@@ -99,29 +103,27 @@ const DestinationsHero = ({
         if (!res.ok) return;
         const data = await res.json();
         if (cancelled) return;
+
+        if (isWeatherFallbackSource(data?.source)) {
+          return;
+        }
+
         setWeather({
-          tempMin: Number.isFinite(data?.tempMin) ? data.tempMin : 18,
-          tempMax: Number.isFinite(data?.tempMax) ? data.tempMax : 21,
+          temp: Number.isFinite(data?.temp) ? data.temp : 18,
           condition: String(data?.condition || tCommon("weatherRain")),
-          iconUrl: String(
-            data?.iconUrl || "https://openweathermap.org/img/wn/10d@2x.png",
-          ),
+          iconUrl: String(data?.iconUrl || DEFAULT_WEATHER_ICON),
         });
       } catch {
-        // Keep fallback values silently.
+        // Keep previous values silently.
       }
     };
     void loadWeather();
     return () => {
       cancelled = true;
     };
-  }, [locale, weatherArea, weatherLat, weatherLon]);
+  }, [locale, weatherArea, weatherLat, weatherLon, tCommon]);
 
-  const tempRange = useMemo(() => {
-    const low = Math.min(weather.tempMin, weather.tempMax);
-    const high = Math.max(weather.tempMin, weather.tempMax);
-    return `${low}–${high}`;
-  }, [weather.tempMin, weather.tempMax]);
+  const tempDisplay = useMemo(() => `${weather.temp}`, [weather.temp]);
 
   return (
     <section
@@ -183,7 +185,7 @@ const DestinationsHero = ({
                 className="whitespace-nowrap text-[35px] font-bold leading-[100%] tracking-normal text-white"
                 style={{ fontFamily: ara }}
               >
-                {tempRange}
+                {tempDisplay}
                 <span className="align-super text-[0.55em]">°</span>
               </span>
               <span
