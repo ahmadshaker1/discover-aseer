@@ -30,7 +30,7 @@ const Footer = () => {
                     alt={t("footer.poweredBy")}
                     width={100}
                     height={48}
-                    className="h-[48px] w-[100px] object-contain"
+                    className="h-12 w-[100px] object-contain"
                   />
                 </div>
               </div>
@@ -146,6 +146,18 @@ const Footer = () => {
                     className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkTravelTips")}
+                  </Link>
+                  <Link
+                    href="/identityfiles"
+                    className="block w-full text-start hover:opacity-80"
+                  >
+                    {t("footer.identityfiles")}
+                  </Link>
+                  <Link
+                    href="/tourism-companies"
+                    className="block w-full text-start hover:opacity-80"
+                  >
+                    {t("footer.tourism-companies")}
                   </Link>
                 </div>
               </div>
@@ -307,7 +319,7 @@ const Footer = () => {
                     alt={t("footer.altUnTourism")}
                     width={36}
                     height={34}
-                    className="h-[34px] w-[36px] object-contain brightness-0 invert"
+                    className="h-[34px] w-9 object-contain brightness-0 invert"
                   />
                   <Image
                     src="/assets/footer/PATA.png"
@@ -331,7 +343,7 @@ const Footer = () => {
             <div className="mt-4 border-t border-white/20 pt-4">
               <div className="flex w-full justify-start">
                 <div
-                  className="flex h-[20px] w-[237px] items-center gap-6 text-[13px] font-bold leading-[150%]"
+                  className="flex h-5 w-[237px] items-center gap-6 text-[13px] font-bold leading-[150%]"
                   style={{ fontFamily: ara }}
                 >
                   <span className="whitespace-nowrap">

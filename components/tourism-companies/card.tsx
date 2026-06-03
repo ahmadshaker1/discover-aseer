@@ -58,7 +58,7 @@ export default async function TourismCompaniesCardSection() {
             return (
               <article
                 key={company.name}
-                className="overflow-hidden rounded-[16px] border border-black/10 bg-[#F7F7F6] shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+                className="overflow-hidden rounded-2xl border border-black/10 bg-[#F7F7F6] shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
               >
                 <div className="flex h-[150px] items-center justify-center bg-white p-8 sm:h-[200px]">
                   <div className="relative h-full w-full">
@@ -81,7 +81,7 @@ export default async function TourismCompaniesCardSection() {
                     <div className="flex items-center justify-start gap-3 text-[#6A6A6A]">
                       <div className="relative h-5 w-5 shrink-0">
                         <Image
-                          src="/assets/tourism-companies/website-logo.png"
+                          src="/assets/tourism-companies/website.svg"
                           alt=""
                           fill
                           className="object-contain"
@@ -107,7 +107,7 @@ export default async function TourismCompaniesCardSection() {
                     <div className="flex items-center justify-start gap-3 text-[#5F5F5F]">
                       <div className="relative h-5 w-5 shrink-0">
                         <Image
-                          src="/assets/tourism-companies/email-logo.png"
+                          src="/assets/tourism-companies/email.svg"
                           alt=""
                           fill
                           className="object-contain"
@@ -125,7 +125,7 @@ export default async function TourismCompaniesCardSection() {
                     <div className="flex items-center justify-start gap-3 text-[#5F5F5F]">
                       <div className="relative h-5 w-5 shrink-0">
                         <Image
-                          src="/assets/tourism-companies/phone-logo.png"
+                          src="/assets/tourism-companies/phone.svg"
                           alt=""
                           fill
                           className="object-contain"

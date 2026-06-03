@@ -172,7 +172,9 @@
     "linkOutdoorGuide": "دليل الأنشطة الخارجية",
     "altUnTourism": "سياحة الأمم المتحدة",
     "altPata": "PATA",
-    "altGstc": "GSTC"
+    "altGstc": "GSTC",
+    "identityfiles": "ملف هوية عسير",
+    "tourism-companies": "الشركات السياحية"
   },
   "pageBanner": {
     "browseMore": "عرض المزيد"
@@ -1089,5 +1091,12 @@
       "website": "NA",
       "logo": "/assets/tourism-companies/c4.webp"
     }
+  },
+  "identityfiles": {
+    "navigation": {
+      "home": "الرئيسية",
+      "companies": "الخدمات المساندة"
+    },
+    "title": "ملف هوية عسير"
   }
 }

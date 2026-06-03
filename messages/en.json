@@ -172,7 +172,9 @@
     "linkOutdoorGuide": "Outdoor activities guide",
     "altUnTourism": "UN Tourism",
     "altPata": "PATA",
-    "altGstc": "GSTC"
+    "altGstc": "GSTC",
+    "identityfiles": "Asir Identity files",
+    "tourism-companies": "Tourism companies"
   },
   "pageBanner": {
     "browseMore": "Browse more"
@@ -1091,5 +1093,12 @@
       "website": "NA",
       "logo": "/assets/tourism-companies/c4.webp"
     }
+  },
+  "identityfiles": {
+    "navigation": {
+      "home": "Home",
+      "companies": "Support services"
+    },
+    "title": "Asir Identity files"
   }
 }
