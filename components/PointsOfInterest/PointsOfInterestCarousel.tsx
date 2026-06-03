@@ -11,6 +11,7 @@ const AUTO_ADVANCE_MS = 5000;
 
 interface PointsOfInterestCarouselProps {
   points: PointOfInterest[];
+  sectionTitle: string;
 }
 
 function mod(n: number, m: number) {
@@ -19,6 +20,7 @@ function mod(n: number, m: number) {
 
 export const PointsOfInterestCarousel = ({
   points,
+  sectionTitle,
 }: PointsOfInterestCarouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [incomingIndex, setIncomingIndex] = useState<number | null>(null);
@@ -140,6 +142,7 @@ export const PointsOfInterestCarousel = ({
 
       <TextOverlay
         point={displayPoint}
+        sectionTitle={sectionTitle}
         carouselSlot={
           <div className="w-full min-w-0">
             <PreviewImages

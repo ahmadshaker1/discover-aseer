@@ -5,12 +5,11 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import Script from "next/script";
 import Navbar from "@/components/Navbar/Navbar";
 import ConditionalFooter from "@/components/Footer/ConditionalFooter";
+import ThemeInitScript from "@/components/theme/ThemeInitScript";
 
 import { routing, type AppLocale } from "@/i18n/routing";
-import { getThemeInitScript } from "@/lib/theme/runtime";
 
 import "./globals.css";
 
@@ -65,16 +64,10 @@ export default async function LocaleLayout({
       data-theme="light"
       suppressHydrationWarning
     >
-      <head suppressHydrationWarning>
-        <Script
-          id="discover-aseer-theme-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: getThemeInitScript().trim() }}
-        />
-      </head>
       <body
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >
+        <ThemeInitScript />
         <NextIntlClientProvider locale={appLocale} messages={messages}>
           <Navbar />
           {children}

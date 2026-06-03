@@ -194,6 +194,7 @@
     "welcomeDescription": "Aseer unites mountain peaks with clear coastlines and golden dunes with green highlands. Nature here blends rain, warmth and mist in a singular landscape.",
     "landmarksTitle": "Top attractions in Aseer",
     "landmarksDescription": "Aseer is rich with attractions and experiences",
+    "featuredDestinationsTitle": "Main Destinations",
     "experiencesTitle": "Experiences in Aseer",
     "experiencesDescription": "Discover unique local experiences, mountain culture and authentic hospitality across Aseer.",
     "experiencesCta": "View all",
@@ -311,7 +312,7 @@
     "mapPalacesAlt": "Map preview for Al Abu Sirah palaces",
     "galleryTitle": "Photo gallery",
     "relatedAttractionsTitle": "Similar attractions",
-    "browseTitle": "Main destinations",
+    "browseTitle": "Main Destinations",
     "browseSubtitle": "One visit is never enough with all the activities and experiences on offer.",
     "contributeDestinations": "Help enrich our destinations"
   },

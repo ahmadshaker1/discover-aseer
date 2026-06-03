@@ -35,64 +35,66 @@ export const PreviewImages = ({
   if (points.length === 0) return null;
 
   return (
-    <div className="relative z-10 flex w-full min-w-0 max-w-full justify-end" dir="ltr">
-      <div className="w-max min-w-0 max-w-full">
+    <div className="relative z-10 flex w-full min-w-0 max-w-full" dir="ltr">
+      <div className="ms-auto w-max min-w-0 max-w-full rtl:ms-0 rtl:me-auto">
         <Swiper
-        modules={[FreeMode, Mousewheel]}
-        grabCursor
-        mousewheel={{
-          forceToAxis: true,
-          sensitivity: 1,
-          releaseOnEdges: true,
-        }}
-        className="points-preview-swiper py-2"
-        slidesPerView="auto"
-        spaceBetween={10}
-        breakpoints={{
-          640: { spaceBetween: 12 },
-          768: { spaceBetween: 12 },
-        }}
-        freeMode={{
-          enabled: true,
-          momentum: true,
-          momentumRatio: 0.55,
-          momentumVelocityRatio: 0.55,
-        }}
-        resistanceRatio={0.85}
-        watchOverflow
-        initialSlide={Math.min(currentIndex, points.length - 1)}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-        }}
-      >
-        {points.map((point, index) => {
-          const selected = index === currentIndex;
-          return (
-            <SwiperSlide
-              key={`${point.id}-${index}`}
-              className="w-[100px]! shrink-0 sm:w-[106px]! md:w-[112px]!"
-            >
-              <button
-                type="button"
-                onClick={() => onSelect(index)}
-                className={`relative block h-[72px] w-full cursor-pointer overflow-hidden rounded-md bg-black/50 transition-transform duration-200 ease-out will-change-transform sm:h-[76px] md:h-[80px] ${
-                  selected ? "z-10 scale-110" : "z-0 scale-100 hover:scale-105"
-                }`}
-                aria-label={`${t("browseMore")} ${point.title}`}
-                aria-current={selected ? "true" : undefined}
+          modules={[FreeMode, Mousewheel]}
+          grabCursor
+          mousewheel={{
+            forceToAxis: true,
+            sensitivity: 1,
+            releaseOnEdges: true,
+          }}
+          className="points-preview-swiper py-2 [&_.swiper-slide]:overflow-visible!"
+          slidesPerView="auto"
+          spaceBetween={10}
+          breakpoints={{
+            640: { spaceBetween: 12 },
+            768: { spaceBetween: 12 },
+          }}
+          freeMode={{
+            enabled: true,
+            momentum: true,
+            momentumRatio: 0.55,
+            momentumVelocityRatio: 0.55,
+          }}
+          resistanceRatio={0.85}
+          watchOverflow
+          initialSlide={Math.min(currentIndex, points.length - 1)}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+          }}
+        >
+          {points.map((point, index) => {
+            const selected = index === currentIndex;
+            return (
+              <SwiperSlide
+                key={`${point.id}-${index}`}
+                className="w-[100px]! shrink-0 sm:w-[106px]! md:w-[112px]!"
               >
-                <Image
-                  src={point.image}
-                  alt={point.title}
-                  fill
-                  sizes="(max-width: 640px) 100px, (max-width: 1024px) 112px, 120px"
-                  className="pointer-events-none object-cover object-center"
-                />
-              </button>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+                <button
+                  type="button"
+                  onClick={() => onSelect(index)}
+                  className={`relative block h-[72px] w-full cursor-pointer overflow-hidden rounded-xl bg-black/50 transition-opacity duration-200 ease-out sm:h-[76px] md:h-[80px] ${
+                    selected
+                      ? "z-10 opacity-100 "
+                      : "z-0 opacity-90 hover:opacity-100"
+                  }`}
+                  aria-label={`${t("browseMore")} ${point.title}`}
+                  aria-current={selected ? "true" : undefined}
+                >
+                  <Image
+                    src={point.image}
+                    alt={point.title}
+                    fill
+                    sizes="(max-width: 640px) 100px, (max-width: 1024px) 112px, 120px"
+                    className="pointer-events-none rounded-xl object-cover object-center"
+                  />
+                </button>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
       </div>
     </div>
   );
