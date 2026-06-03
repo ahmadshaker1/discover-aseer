@@ -174,7 +174,8 @@
     "altPata": "PATA",
     "altGstc": "GSTC",
     "identityfiles": "Asir Identity files",
-    "tourism-companies": "Tourism companies"
+    "tourism-companies": "Tourism companies",
+    "media-kit": "Media kit"
   },
   "pageBanner": {
     "browseMore": "Browse more"
@@ -1100,5 +1101,12 @@
       "companies": "Support services"
     },
     "title": "Asir Identity files"
+  },
+  "media-kit": {
+    "navigation": {
+      "home": "Home",
+      "companies": "Support services"
+    },
+    "title": "Media"
   }
 }

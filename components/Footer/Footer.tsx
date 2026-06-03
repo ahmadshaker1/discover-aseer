@@ -102,6 +102,18 @@ const Footer = () => {
                   >
                     {t("footer.linkEventsSeasons")}
                   </Link>
+                  <Link
+                    href="/media-kit"
+                    className="block w-full text-start hover:opacity-80"
+                  >
+                    {t("footer.media-kit")}
+                  </Link>
+                  <Link
+                    href="/identityfiles"
+                    className="block w-full text-start hover:opacity-80"
+                  >
+                    {t("footer.identityfiles")}
+                  </Link>
                 </div>
               </div>
               {/* خطط لرحلتك */}
@@ -147,12 +159,7 @@ const Footer = () => {
                   >
                     {t("footer.linkTravelTips")}
                   </Link>
-                  <Link
-                    href="/identityfiles"
-                    className="block w-full text-start hover:opacity-80"
-                  >
-                    {t("footer.identityfiles")}
-                  </Link>
+
                   <Link
                     href="/tourism-companies"
                     className="block w-full text-start hover:opacity-80"
@@ -169,7 +176,6 @@ const Footer = () => {
                 >
                   {t("footer.bookletsTitle")}
                 </h3>
-
                 <div
                   className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
                   style={{ fontFamily: ara }}
