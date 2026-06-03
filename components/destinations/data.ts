@@ -95,6 +95,8 @@ export interface ApiDestination {
   city?: string | null;
   city_en?: string | null;
   city_ar?: string | null;
+  temp_ar?: string | null;
+  temp_en?: string | null;
   destination_filter?: string | null;
   tags?: string | null;
   interest_tags?: string[] | null;
@@ -288,6 +290,15 @@ export const pickDestinationTitle = (
     pickLocalizedField(record, "name", locale) ||
     ""
   );
+};
+
+/** POI carousel category line — `temp_ar` / `temp_en`. */
+export const pickDestinationPoiSubtitle = (
+  row: ApiDestination,
+  locale: LocaleCode,
+): string => {
+  const record = toLocalizedRecord(row);
+  return pickLocalizedField(record, "temp", locale) || "";
 };
 
 export const resolveDestinationHeroImageUrl = (

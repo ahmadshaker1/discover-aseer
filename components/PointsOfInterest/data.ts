@@ -3,7 +3,7 @@ import {
   type ApiDestination,
   type ApiDestinationResponse,
   pickDestinationHomePageContent,
-  pickDestinationSubtitle,
+  pickDestinationPoiSubtitle,
   pickDestinationTitle,
   resolveDestinationHeroImageUrl,
 } from "@/components/destinations/data";
@@ -58,7 +58,7 @@ const transformDestinationToPointOfInterest = (
   locale: LocaleCode,
 ): PointOfInterest => {
   const title = pickDestinationTitle(row, locale);
-  const subtitle = pickDestinationSubtitle(row, locale);
+  const subtitle = pickDestinationPoiSubtitle(row, locale);
   const image =
     resolveDestinationHeroImageUrl(row, directusUrl) || FALLBACK_IMAGE;
   const descriptionHtml = pickDestinationHomePageContent(row, locale);
