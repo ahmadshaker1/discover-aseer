@@ -1,23 +1,22 @@
 import { stripHtml } from "@/components/event-seasons/utils";
-import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  type ApiDestination,
+  type ApiDestinationResponse,
+  pickDestinationHomePageContent,
+  pickDestinationSubtitle,
+  pickDestinationTitle,
+  resolveDestinationHeroImageUrl,
+} from "@/components/destinations/data";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
-/** Directus collection: `home_featured_destinations` */
-interface ApiHomeFeaturedDestination {
-  id: string | number;
-  status?: string | null;
-  sort?: number | null;
-  title_ar?: string | null;
-  title_en?: string | null;
-  category_ar?: string | null;
-  category_en?: string | null;
-  description_ar?: string | null;
-  description_en?: string | null;
-  image?: string | null;
-}
+/** Home carousel destinations (Al Birk → Bisha → Abha → Rijal Almaa). */
+const POI_DESTINATION_IDS = [20, 11, 9, 7] as const;
 
-interface ApiResponse {
-  data: ApiHomeFeaturedDestination[];
-}
+const poiSortIndex = (id: string | number): number => {
+  const n = Number(id);
+  const index = POI_DESTINATION_IDS.indexOf(n as (typeof POI_DESTINATION_IDS)[number]);
+  return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+};
 
 export interface PointOfInterest {
   id: string;
@@ -53,48 +52,23 @@ const excerptFromHtml = (
   return truncatePlainText(stripHtml(html), maxLength);
 };
 
-function resolvePoiImageUrl(
-  imageAsset: string | null | undefined,
-  directusUrl: string,
-): string {
-  const trimmed = typeof imageAsset === "string" ? imageAsset.trim() : "";
-  if (!trimmed) return "";
-
-  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("//")) {
-    return trimmed;
-  }
-  if (trimmed.startsWith("/")) {
-    return trimmed;
-  }
-
-  return `${directusUrl.replace(/\/$/, "")}/assets/${trimmed}`;
-}
-
-const toRecord = (row: ApiHomeFeaturedDestination): Record<string, unknown> =>
-  row as unknown as Record<string, unknown>;
-
-const transformHomeFeaturedToPointOfInterest = (
-  row: ApiHomeFeaturedDestination,
+const transformDestinationToPointOfInterest = (
+  row: ApiDestination,
   directusUrl: string,
   locale: LocaleCode,
 ): PointOfInterest => {
-  const record = toRecord(row);
-  const title =
-    pickLocalizedField(record, "title", locale) ||
-    pickLocalizedField(record, "name", locale) ||
-    "";
-  const category = pickLocalizedField(record, "category", locale) || "";
-  const descriptionHtml =
-    pickLocalizedField(record, "description", locale) || "";
+  const title = pickDestinationTitle(row, locale);
+  const subtitle = pickDestinationSubtitle(row, locale);
   const image =
-    resolvePoiImageUrl(row.image, directusUrl) || FALLBACK_IMAGE;
+    resolveDestinationHeroImageUrl(row, directusUrl) || FALLBACK_IMAGE;
+  const descriptionHtml = pickDestinationHomePageContent(row, locale);
 
   return {
     id: String(row.id),
     image,
     title,
-    subtitle: category,
-    location: category,
+    subtitle,
+    location: subtitle,
     description: excerptFromHtml(descriptionHtml),
   };
 };
@@ -113,10 +87,9 @@ export const fetchPointsOfInterest = async (
   }
 
   try {
-    const response = await fetch(
-      `${directusUrl}/items/home_featured_destinations?limit=-1&sort=sort`,
-      { cache: "no-store" },
-    );
+    const response = await fetch(`${directusUrl}/items/destination`, {
+      cache: "no-store",
+    });
 
     if (!response.ok) {
       throw new Error(
@@ -124,14 +97,16 @@ export const fetchPointsOfInterest = async (
       );
     }
 
-    const apiData: ApiResponse = await response.json();
+    const apiData: ApiDestinationResponse = await response.json();
     const rows = Array.isArray(apiData.data) ? apiData.data : [];
+    const allowedIds = new Set<number>(POI_DESTINATION_IDS);
 
     return rows
+      .filter((row) => allowedIds.has(Number(row.id)))
       .filter((row) => !row.status || row.status === "published")
-      .sort((a, b) => (a.sort ?? Number(a.id)) - (b.sort ?? Number(b.id)))
+      .sort((a, b) => poiSortIndex(a.id) - poiSortIndex(b.id))
       .map((row) =>
-        transformHomeFeaturedToPointOfInterest(row, directusUrl, locale),
+        transformDestinationToPointOfInterest(row, directusUrl, locale),
       );
   } catch (error) {
     console.error("Error fetching points of interest:", error);

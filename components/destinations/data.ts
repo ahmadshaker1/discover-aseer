@@ -130,7 +130,7 @@ const toNumber = (
   return undefined;
 };
 
-function resolveDestinationImageUrl(
+export function resolveDestinationImageUrl(
   imageAsset: string | null | undefined,
   directusUrl: string,
 ): string {
@@ -253,6 +253,55 @@ const pickSubtitle = (row: ApiDestination, locale: LocaleCode): string => {
 
   return [line1, line2].filter(Boolean).join(" ").trim();
 };
+
+/** Same tagline logic used on destination slug hero. */
+export const pickDestinationSubtitle = pickSubtitle;
+
+/** Home carousel body copy — `content_of_home_page` fields only. */
+export const pickDestinationHomePageContent = (
+  row: ApiDestination,
+  locale: LocaleCode,
+): string => {
+  const record = toLocalizedRecord(row);
+  const localized = pickLocalizedField(record, "content_of_home_page", locale);
+
+  if (localized) {
+    if (locale === "en" && isMostlyArabicText(localized)) return "";
+    return localized;
+  }
+
+  if (locale === "en") {
+    const fallback = readApiText(row, "content_of_home_page");
+    return fallback && !isMostlyArabicText(fallback) ? fallback : "";
+  }
+
+  return readApiText(row, "content_of_home_page");
+};
+
+export const pickDestinationTitle = (
+  row: ApiDestination,
+  locale: LocaleCode,
+): string => {
+  const record = toLocalizedRecord(row);
+  return (
+    pickLocalizedField(record, "title", locale) ||
+    pickLocalizedField(record, "name", locale) ||
+    ""
+  );
+};
+
+export const resolveDestinationHeroImageUrl = (
+  row: ApiDestination,
+  directusUrl: string,
+): string =>
+  resolveDestinationImageUrl(
+    row.hero_image_new ||
+      row.hero_image ||
+      row.hero_image_1 ||
+      row.cover_image ||
+      row.destination_image,
+    directusUrl,
+  );
 
 const pickDescription = (row: ApiDestination, locale: LocaleCode): string => {
   if (locale === "en") {
