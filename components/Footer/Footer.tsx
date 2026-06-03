@@ -102,6 +102,8 @@ const Footer = () => {
                   >
                     {t("footer.linkEventsSeasons")}
                   </Link>
+                  {/* 
+                  //aseer dont need these links to be in the website.
                   <Link
                     href="/media-kit"
                     className="block w-full text-start hover:opacity-80"
@@ -113,7 +115,7 @@ const Footer = () => {
                     className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.identityfiles")}
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
               {/* خطط لرحلتك */}
@@ -158,13 +160,6 @@ const Footer = () => {
                     className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkTravelTips")}
-                  </Link>
-
-                  <Link
-                    href="/tourism-companies"
-                    className="block w-full text-start hover:opacity-80"
-                  >
-                    {t("footer.tourism-companies")}
                   </Link>
                 </div>
               </div>
