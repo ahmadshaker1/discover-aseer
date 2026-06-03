@@ -39,6 +39,8 @@
     "memberOf": "عضو في",
     "newsletterDescription": "اشترك في النشرة البريدية لدينا لمعرفة المزيد عن العروض الخصومات الخاصة.",
     "emailPlaceholder": "Example @email.com",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
     "noPointsOfInterest": "لا توجد نقاط اهتمام متاحة",
     "weatherRain": "أمطار",
     "happeningNow": "يحدث الان",
@@ -170,7 +172,10 @@
     "linkOutdoorGuide": "دليل الأنشطة الخارجية",
     "altUnTourism": "سياحة الأمم المتحدة",
     "altPata": "PATA",
-    "altGstc": "GSTC"
+    "altGstc": "GSTC",
+    "identityfiles": "ملف هوية عسير",
+    "tourism-companies": "الشركات السياحية",
+    "media-kit": "الوسائط"
   },
   "pageBanner": {
     "browseMore": "عرض المزيد"
@@ -1053,5 +1058,54 @@
   },
   "landmarks": {
     "redirectNote": "إعادة توجيه إلى المعالم"
+  },
+  "tourismCompanies": {
+    "navigation": {
+      "home": "الرئيسية",
+      "companies": "الخدمات المساندة"
+    },
+    "title": "الشركات السياحية",
+    "campany1": {
+      "name": "روح الجنوب",
+      "phone": "557574477",
+      "email": "info@visitsouthsaudi.com",
+      "website": "NA",
+      "logo": "/assets/tourism-companies/c1.webp"
+    },
+    "campany2": {
+      "name": "رفاهية المستقبل",
+      "phone": "553740200",
+      "email": "futuer.luxury@gmail.com",
+      "website": "https://futuer-luxury.com/ar/",
+      "logo": "/assets/tourism-companies/c2.webp"
+    },
+    "campany3": {
+      "name": "تماشي",
+      "phone": "530250000",
+      "email": "info@tmashi.sa",
+      "website": "https://tmashi.sa/",
+      "logo": "/assets/tourism-companies/c3.webp"
+    },
+    "campany4": {
+      "name": "أيفا ترافل",
+      "phone": "591277555",
+      "email": "abha_travel@hotmail.com",
+      "website": "NA",
+      "logo": "/assets/tourism-companies/c4.webp"
+    }
+  },
+  "identityfiles": {
+    "navigation": {
+      "home": "الرئيسية",
+      "companies": "الخدمات المساندة"
+    },
+    "title": "ملف هوية عسير"
+  },
+  "media-kit": {
+    "navigation": {
+      "home": "الرئيسية",
+      "companies": "الخدمات المساندة"
+    },
+    "title": "الوسائط"
   }
 }
