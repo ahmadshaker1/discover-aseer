@@ -19,14 +19,18 @@ export default function TravelLandSection() {
       <div className="container mx-auto px-6 mb-12">
         {/* العنوان */}
         <div className="mb-6 border-b border-border pb-4 pt-6">
-          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}>
+          <h2
+            className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}
+          >
             {t("travelByRoad")}
           </h2>
         </div>
 
         {/* الوصف (محدد العرض عشان يجي على اليمين زي الصورة) */}
         <div className="mb-8 flex justify-start">
-          <p className={`max-w-2xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] text-start`}>
+          <p
+            className={`max-w-2xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] text-start`}
+          >
             {t("roadLead")}
           </p>
         </div>
@@ -56,12 +60,18 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
                 <div className="text-start">
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">{t("fromRiyadh")}</p>
-                  <p className="text-[18px] font-bold text-foreground">{t("hours950")}</p>
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                    {t("fromRiyadh")}
+                  </p>
+                  <p className="text-[18px] font-bold text-foreground">
+                    {t("hours950")}
+                  </p>
                 </div>
               </div>
               <div className="text-start">
-                <p className="text-[18px] font-bold text-foreground">{t("time910")}</p>
+                <p className="text-[18px] font-bold text-foreground">
+                  {t("time910")}
+                </p>
               </div>
             </div>
 
@@ -86,12 +96,18 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
                 <div className="text-start">
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">{t("fromJeddah")}</p>
-                  <p className="text-[18px] font-bold text-foreground">{t("hours630")}</p>
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                    {t("fromJeddah")}
+                  </p>
+                  <p className="text-[18px] font-bold text-foreground">
+                    {t("hours630")}
+                  </p>
                 </div>
               </div>
               <div className="text-start">
-                <p className="text-[18px] font-bold text-foreground">{t("time67")}</p>
+                <p className="text-[18px] font-bold text-foreground">
+                  {t("time67")}
+                </p>
               </div>
             </div>
 
@@ -116,12 +132,18 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
                 <div className="text-start">
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">{t("fromDammam")}</p>
-                  <p className="text-[18px] font-bold text-foreground">{t("hours1400")}</p>
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                    {t("fromDammam")}
+                  </p>
+                  <p className="text-[18px] font-bold text-foreground">
+                    {t("hours1400")}
+                  </p>
                 </div>
               </div>
               <div className="text-start">
-                <p className="text-[18px] font-bold text-foreground">{t("time1314")}</p>
+                <p className="text-[18px] font-bold text-foreground">
+                  {t("time1314")}
+                </p>
               </div>
             </div>
           </div>
@@ -130,21 +152,20 @@ export default function TravelLandSection() {
           <div className="flex flex-col justify-between rounded-4xl border border-border bg-secondary p-8 shadow-lg text-secondary-foreground">
             <div>
               <div className="mb-6 flex items-center justify-start gap-3">
-                <h3 className="text-[28px] font-bold">
-                  {t("saptcoTitle")}
-                </h3>
+                <h3 className="text-[28px] font-bold">{t("saptcoTitle")}</h3>
                 <div className="text-primary">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z" />
-                  </svg>
+                  <Image
+                    src="/assets/Getting-here-and-around/sapitco.png"
+                    alt={t("saptcoAlt") || "Saptco"}
+                    width={70}
+                    height={40}
+                    className="object-contain"
+                  />
                 </div>
               </div>
-              <p className={`mb-8 text-[16px] leading-[1.8] opacity-80 text-start`}>
+              <p
+                className={`mb-8 text-[16px] leading-[1.8] opacity-80 text-start`}
+              >
                 {t("saptcoBody")}
               </p>
             </div>
@@ -158,14 +179,25 @@ export default function TravelLandSection() {
               >
                 {t("bookOnWebsite")}
               </a>
-              <a
-                href="https://play.google.com/store/apps/details?id=com.sat.passenger&hl=ar&pli=1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-xl bg-muted px-8 py-3 text-[16px] font-bold text-foreground transition hover:opacity-90"
-              >
-                {t("downloadApp")}
-              </a>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.sat.passenger&hl=ar&pli=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center rounded-xl bg-muted px-6 py-3 text-[16px] font-bold text-foreground transition hover:opacity-90"
+                >
+                  Android
+                </a>
+
+                <a
+                  href="https://apps.apple.com/us/app/saptco/id1074204412"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center rounded-xl bg-muted px-6 py-3 text-[16px] font-bold text-foreground transition hover:opacity-90"
+                >
+                  iPhone
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -174,7 +206,9 @@ export default function TravelLandSection() {
       <div className="container mx-auto px-6 mb-12">
         {/* العنوان الرئيسي */}
         <div className="mb-8 border-b border-border pb-4 pt-6">
-          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}>
+          <h2
+            className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}
+          >
             {t("gettingAroundTitle")}
           </h2>
         </div>
@@ -224,7 +258,9 @@ export default function TravelLandSection() {
 
           {/* العمود الأيسر: تطبيقات التوصيل */}
           <div className="flex flex-col justify-center rounded-4xl border border-border bg-surface p-8 shadow-sm">
-            <h3 className={`mb-6 text-[20px] font-bold text-foreground text-start`}>
+            <h3
+              className={`mb-6 text-[20px] font-bold text-foreground text-start`}
+            >
               {t("rideAppsTitle")}
             </h3>
 
@@ -238,13 +274,24 @@ export default function TravelLandSection() {
                 <p className="mb-4 text-[18px] font-bold text-secondary">
                   {t("bolt")}
                 </p>
-                <a
-                  href="https://play.google.com/store/apps/details?id=ee.mtakso.client&hl=ar"
-                  target="_blank"
-                  className="text-[14px] font-bold text-primary hover:underline"
-                >
-                  {t("downloadAppShort")}
-                </a>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=ee.mtakso.client&hl=ar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                  >
+                    Android
+                  </a>
+                  <a
+                    href="https://apps.apple.com/us/app/bolt-request-a-ride/id675033630"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                  >
+                    iPhone
+                  </a>
+                </div>
               </div>
 
               {/* كرت كريم */}
@@ -255,13 +302,24 @@ export default function TravelLandSection() {
                 <p className="mb-4 text-[18px] font-bold text-secondary">
                   {t("careem")}
                 </p>
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.careem.acma&hl=ar"
-                  target="_blank"
-                  className="text-[14px] font-bold text-primary hover:underline"
-                >
-                  {t("downloadAppShort")}
-                </a>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.careem.acma&hl=ar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                  >
+                    Android
+                  </a>
+                  <a
+                    href="https://apps.apple.com/us/app/careem-rides-food-grocery/id592978487"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                  >
+                    iPhone
+                  </a>
+                </div>
               </div>
 
               {/* كرت أوبر */}
@@ -272,13 +330,24 @@ export default function TravelLandSection() {
                 <p className="mb-4 text-[18px] font-bold text-secondary">
                   {t("uber")}
                 </p>
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.ubercab&hl=ar"
-                  target="_blank"
-                  className="text-[14px] font-bold text-primary hover:underline"
-                >
-                  {t("downloadAppShort")}
-                </a>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.ubercab&hl=ar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                  >
+                    Android
+                  </a>
+                  <a
+                    href="https://apps.apple.com/us/app/uber-request-a-ride/id368677368"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                  >
+                    iPhone
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -287,13 +356,17 @@ export default function TravelLandSection() {
       <div className="container mx-auto px-6 mb-12">
         {/* ================= قسم تأجير السيارات ================= */}
         <div className="mb-6 border-b border-border pb-4 pt-6">
-          <h2 className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}>
+          <h2
+            className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}
+          >
             {t("carRentalTitle")}
           </h2>
         </div>
 
         <div className="mb-8 flex justify-start">
-          <p className={`max-w-3xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] text-start`}>
+          <p
+            className={`max-w-3xl text-[16px] leading-[1.6] text-muted-foreground sm:text-[18px] text-start`}
+          >
             {t("carRentalLead")}
           </p>
         </div>
@@ -302,15 +375,21 @@ export default function TravelLandSection() {
         <div className="mb-16 flex justify-start">
           <div className="relative flex w-full flex-col rounded-4xl bg-surface p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 md:w-[350px]">
             {/* أيقونة B في اليسار */}
-            <div className={`absolute top-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2EBA7F] text-white font-bold end-6`}>
+            <div
+              className={`absolute top-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2EBA7F] text-white font-bold end-6`}
+            >
               B
             </div>
 
             <div className={`mt-8 text-start`}>
-              <h3 className="mb-6 text-[24px] font-bold text-secondary">{t("theebTitle")}</h3>
+              <h3 className="mb-6 text-[24px] font-bold text-secondary">
+                {t("theebTitle")}
+              </h3>
 
               {/* رقم الجوال */}
-              <div className={`mb-4 flex items-center gap-3 text-[14px] font-medium text-foreground justify-start`}>
+              <div
+                className={`mb-4 flex items-center gap-3 text-[14px] font-medium text-foreground justify-start`}
+              >
                 <span dir="ltr">+966 9200000890</span>
                 <svg
                   className="h-5 w-5 text-secondary"
@@ -326,7 +405,9 @@ export default function TravelLandSection() {
               </div>
 
               {/* الموقع الإلكتروني */}
-              <div className={`mb-8 flex items-center gap-3 text-[14px] font-bold text-secondary justify-start`}>
+              <div
+                className={`mb-8 flex items-center gap-3 text-[14px] font-bold text-secondary justify-start`}
+              >
                 <span>theeb.sa</span>
                 <svg
                   className="h-5 w-5 text-secondary"
@@ -344,12 +425,24 @@ export default function TravelLandSection() {
               </div>
 
               {/* رابط التحميل */}
-              <a
-                href="#"
-                className={`flex text-[14px] font-bold text-primary hover:underline justify-start`}
-              >
-                {t("downloadAppShort")}
-              </a>
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://play.google.com/store/search?q=theeb&c=apps"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                >
+                  Android
+                </a>
+                <a
+                  href="https://apps.apple.com/us/app/theeb-%D8%B0%D9%8A%D8%A8-%D9%84%D8%AA%D8%A3%D8%AC%D9%8A%D8%B1-%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA/id1417199904"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                >
+                  iPhone
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -358,7 +451,9 @@ export default function TravelLandSection() {
         <div className="relative mt-20 mb-8 pt-4">
           {/* عنوان القسم */}
           <div className="relative z-10 mb-10 flex items-end justify-start border-b border-border pb-4">
-            <h2 className={`relative z-10 inline-block bg-background pl-6 text-[32px] font-bold text-foreground sm:text-[40px] text-start`}>
+            <h2
+              className={`relative z-10 inline-block bg-background pl-6 text-[32px] font-bold text-foreground sm:text-[40px] text-start`}
+            >
               {t("seeAlso")}
             </h2>
           </div>
@@ -375,7 +470,9 @@ export default function TravelLandSection() {
                   height={50}
                 />
               </div>
-              <h3 className={`text-[20px] font-bold text-foreground text-start`}>
+              <h3
+                className={`text-[20px] font-bold text-foreground text-start`}
+              >
                 {t("visaTitle")}
               </h3>
               <div className="flex justify-start">
@@ -411,7 +508,9 @@ export default function TravelLandSection() {
                   height={48}
                 />
               </div>
-              <h3 className={`text-[20px] font-bold text-foreground text-start`}>
+              <h3
+                className={`text-[20px] font-bold text-foreground text-start`}
+              >
                 {t("planStayTitle")}
               </h3>
               <div className="flex justify-start">
@@ -447,7 +546,9 @@ export default function TravelLandSection() {
                   height={48}
                 />
               </div>
-              <h3 className={`text-[20px] font-bold text-foreground text-start`}>
+              <h3
+                className={`text-[20px] font-bold text-foreground text-start`}
+              >
                 {t("pickDestinationTitle")}
               </h3>
               <div className="flex justify-start">

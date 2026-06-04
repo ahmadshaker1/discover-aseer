@@ -52,15 +52,20 @@ export default function TravelSection() {
         </div>
       </div>
       <div className="container mx-auto px-6">
-        <p className={`text-start align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}>
+        <p
+          className={`text-start align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}
+        >
           {t("domesticFlights")}
         </p>
         <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
           <div className="flex h-[332px] w-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <div className="mb-6 flex items-start justify-between">
-              <span className="flex h-[78px] w-[78px] items-center justify-center rounded-md bg-[#1F4695] text-[44px] font-bold leading-none text-[#6E8CD9]">
-                س
-              </span>
+              <img
+                src="/assets/Getting-here-and-around/Icon.png"
+                alt=""
+                aria-hidden="true"
+                className="h-8 w-8 object-contain"
+              />
               <span className="rounded-full bg-primary/15 px-4 py-1 text-[12px] font-bold leading-none text-primary">
                 {t("featured")}
               </span>
@@ -87,9 +92,12 @@ export default function TravelSection() {
           </div>
           <div className="flex h-[332px] w-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <div className="mb-10 flex items-start justify-between">
-              <span className="flex h-[78px] w-[78px] items-center justify-center rounded-md bg-[#4CA62A] text-[44px] font-bold leading-none text-[#EAF5E4]">
-                ن
-              </span>
+              <img
+                src="/assets/Getting-here-and-around/Icon.png"
+                alt=""
+                aria-hidden="true"
+                className="h-8 w-8 object-contain"
+              />
               <span className="rounded-full bg-muted px-4 py-1 text-[12px] font-bold leading-none text-muted-foreground">
                 {t("budget")}
               </span>
@@ -116,9 +124,12 @@ export default function TravelSection() {
           </div>
           <div className="flex h-[332px] w-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <div className="mb-10 flex items-start justify-between">
-              <span className="flex h-[78px] w-[78px] items-center justify-center rounded-md bg-[#8227A2] text-[44px] font-bold leading-none text-[#F0E4F6]">
-                أ
-              </span>
+              <img
+                src="/assets/Getting-here-and-around/Icon.png"
+                alt=""
+                aria-hidden="true"
+                className="h-8 w-8 object-contain"
+              />
               <span className="rounded-full bg-muted px-4 py-1 text-[12px] font-bold leading-none text-muted-foreground">
                 {t("budget")}
               </span>
@@ -146,7 +157,9 @@ export default function TravelSection() {
         </div>
       </div>
       <div className="container mx-auto mt-12 px-6">
-        <p className={`text-start align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}>
+        <p
+          className={`text-start align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}
+        >
           {t("internationalFlights")}
         </p>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -154,10 +167,10 @@ export default function TravelSection() {
           <div className="flex h-[150px] w-full flex-col rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <div className="flex items-start justify-start">
               <img
-                src="/assets/Getting-here-and-around/Icon.png"
+                src="/assets/Getting-here-and-around/flayD.png"
                 alt=""
                 aria-hidden="true"
-                className="h-8 w-8 object-contain"
+                className="h-15 w-15  object-contain"
               />
             </div>
             <div className={`mt-auto text-start`}>
@@ -182,10 +195,10 @@ export default function TravelSection() {
           <div className="flex h-[150px] w-full flex-col rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <div className="flex items-start justify-start">
               <img
-                src="/assets/Getting-here-and-around/Icon.png"
+                src="/assets/Getting-here-and-around/Air-Arabia-logo.png"
                 alt=""
                 aria-hidden="true"
-                className="h-8 w-8 object-contain"
+                className="h-15 w-15 object-contain"
               />
             </div>
             <div className={`mt-auto text-start`}>
@@ -210,10 +223,10 @@ export default function TravelSection() {
           <div className="flex h-[150px] w-full flex-col rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <div className="flex items-start justify-start">
               <img
-                src="/assets/Getting-here-and-around/Icon.png"
+                src="/assets/Getting-here-and-around/Nile_air.png"
                 alt=""
                 aria-hidden="true"
-                className="h-8 w-8 object-contain"
+                className="h-15 w-15 object-contain"
               />
             </div>
             <div className={`mt-auto text-start`}>
@@ -238,10 +251,10 @@ export default function TravelSection() {
           <div className="flex h-[150px] w-full flex-col rounded-2xl border border-border bg-surface p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
             <div className="flex items-start justify-start">
               <img
-                src="/assets/Getting-here-and-around/Icon.png"
+                src="/assets/Getting-here-and-around/air-cairo.png"
                 alt=""
                 aria-hidden="true"
-                className="h-8 w-8 object-contain"
+                className="h-15 w-15 object-contain"
               />
             </div>
             <div className={`mt-auto text-start`}>
