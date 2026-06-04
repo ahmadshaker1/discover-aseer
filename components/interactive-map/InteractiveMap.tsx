@@ -17,6 +17,7 @@ import {
   resolvePlaceCategoryKey,
   type MapCategoryKey,
 } from "./mapCategories";
+
 import { MapListingsOpenIcon } from "./MapListingsOpenIcon";
 import { MapListingsSidebar } from "./MapListingsSidebar";
 import { MapPopupContent } from "./MapPopupContent";
