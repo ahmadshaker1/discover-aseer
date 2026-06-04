@@ -156,6 +156,12 @@ const Footer = () => {
                     {t("footer.linkTourGuides")}
                   </Link>
                   <Link
+                    href="/getting-here-and-around"
+                    className="block w-full text-start hover:opacity-80"
+                  >
+                    {t("footer.linkGettingHereAndAround")}
+                  </Link>
+                  <Link
                     href="/travel-tips"
                     className="block w-full text-start hover:opacity-80"
                   >
