@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { MapPinOutlineIcon } from "./Icons";
 
 export default function MapSection() {
   const t = useTranslations("gettingHere.map");
@@ -22,18 +24,31 @@ export default function MapSection() {
               <p className="mt-4 text-[16px] leading-7 text-white/80 sm:text-[18px]">
                 {t("description")}
               </p>
+
+              <div className="mt-8">
+                <Link
+                  href="/interactive-map"
+                  className="inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:bg-white/95 hover:scale-[1.02] active:scale-[0.98] shadow-[0_4px_14px_rgba(255,255,255,0.2)] md:text-base"
+                >
+                  <MapPinOutlineIcon />
+                  <span>{t("viewInteractiveMap")}</span>
+                </Link>
+              </div>
             </div>
 
-            <div className="relative mx-auto aspect-[4/3] w-full max-w-[560px]">
+            <Link
+              href="/interactive-map"
+              className="relative mx-auto aspect-[4/3] w-full max-w-[560px] cursor-pointer group block"
+            >
               <Image
                 src="/assets/Getting-here-and-around/map1.png"
                 alt={t("alt")}
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 560px"
-                className="object-contain"
+                className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
               />
-            </div>
+            </Link>
           </div>
         </div>
       </div>

@@ -1020,7 +1020,8 @@
       "eyebrow": "Route map",
       "title": "Find your way around Asir",
       "description": "Use this quick reference map to orient yourself across the region and plan the most practical route.",
-      "alt": "Map of the Getting here and around section in Asir"
+      "alt": "Map of the Getting here and around section in Asir",
+      "viewInteractiveMap": "View Interactive Map"
     },
     "land": {
       "travelByRoad": "Driving in",
