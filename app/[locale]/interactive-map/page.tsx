@@ -4,7 +4,9 @@ interface InteractiveMapPageProps {
   searchParams: Promise<{ lat?: string; lon?: string; title?: string }>;
 }
 
-const InteractiveMapPage = async ({ searchParams }: InteractiveMapPageProps) => {
+const InteractiveMapPage = async ({
+  searchParams,
+}: InteractiveMapPageProps) => {
   const params = await searchParams;
   const lat = params.lat ? Number(params.lat) : undefined;
   const lon = params.lon ? Number(params.lon) : undefined;
@@ -20,7 +22,7 @@ const InteractiveMapPage = async ({ searchParams }: InteractiveMapPageProps) => 
 
   return (
     <div className="relative z-40 h-dvh w-full overflow-hidden bg-background pt-16 text-foreground md:pt-24">
-      <div className="h-[calc(100dvh-4rem)] w-full md:h-[calc(100vh-6rem)] md:min-h-[720px]">
+      <div className="h-full w-full">
         <InteractiveMap initialFocus={initialFocus} />
       </div>
     </div>
