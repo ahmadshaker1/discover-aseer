@@ -1055,6 +1055,10 @@
       "planStayAlt": "خطط إقامتك",
       "pickDestinationAlt": "اختر وجهتك",
       "pickDestinationTitle": "اختر وجهتك"
+    },
+    "experiences": {
+      "title": "تجارب في عسير",
+      "subtitle": "اكتشف أنشطة استثنائية وتجارب لا تُنسى خلال إقامتك في عسير."
     }
   },
   "notFound": {
