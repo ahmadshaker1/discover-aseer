@@ -1062,6 +1062,10 @@
     "experiences": {
       "title": "Experiences in Asir",
       "subtitle": "Discover exceptional activities and unforgettable experiences during your stay in Asir."
+    },
+    "attractions": {
+      "title": "Attractions in Asir",
+      "subtitle": "Explore iconic landmarks and natural wonders that make Asir a destination worth discovering."
     }
   },
   "notFound": {
