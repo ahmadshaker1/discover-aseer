@@ -15,19 +15,7 @@ const ExperienceCardActions = ({
 }: ExperienceCardActionsProps) => {
   const t = useTranslations("common");
   return (
-    <div
-      className="flex items-center justify-between gap-4"
-     
-    >
-      <Link
-        href={`/experiences/${encodeURIComponent(String(experienceId))}`}
-        className="flex items-center gap-1 text-sm text-foreground transition-colors hover:text-muted-foreground"
-      >
-        <span>{t("more")}</span>
-        <span className="inline-flex rtl:rotate-180">
-          <ArrowLeftIcon />
-        </span>
-      </Link>
+    <div className="flex items-center justify-between gap-4">
       <a
         href={bookUrl}
         target="_blank"
@@ -41,6 +29,15 @@ const ExperienceCardActions = ({
           </div>
         </div>
       </a>
+      <Link
+        href={`/experiences/${encodeURIComponent(String(experienceId))}`}
+        className="flex items-center gap-1 text-sm text-foreground transition-colors hover:text-muted-foreground"
+      >
+        <span>{t("more")}</span>
+        <span className="inline-flex ">
+          <ArrowLeftIcon />
+        </span>
+      </Link>
     </div>
   );
 };
