@@ -20,8 +20,11 @@ interface RestaurantsListingProps {
   restaurants: Restaurant[];
 }
 
-export default function RestaurantsListing({ restaurants }: RestaurantsListingProps) {
-  const [filters, setFilters] = useState<RestaurantFilterState>(INITIAL_FILTERS);
+export default function RestaurantsListing({
+  restaurants,
+}: RestaurantsListingProps) {
+  const [filters, setFilters] =
+    useState<RestaurantFilterState>(INITIAL_FILTERS);
 
   const restaurantsWithCity = useMemo(
     () => withInferredCityIds(restaurants),
@@ -35,11 +38,7 @@ export default function RestaurantsListing({ restaurants }: RestaurantsListingPr
 
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-      <div className="order-2 w-full flex-1 lg:order-1">
-        <RestaurantsGrid restaurants={filtered} />
-      </div>
-
-      <aside className="order-1 w-full shrink-0 lg:order-2 lg:w-auto">
+      <aside className="w-full shrink-0  lg:w-auto">
         <RestaurantsFilterSidebar
           restaurants={restaurantsWithCity}
           filters={filters}
@@ -47,6 +46,9 @@ export default function RestaurantsListing({ restaurants }: RestaurantsListingPr
           onReset={() => setFilters(INITIAL_FILTERS)}
         />
       </aside>
+      <div className=" w-full ">
+        <RestaurantsGrid restaurants={filtered} />
+      </div>
     </div>
   );
 }

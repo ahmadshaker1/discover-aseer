@@ -125,8 +125,9 @@ export const fetchFilmLandscapes = async (): Promise<FilmLandscape[]> => {
   }
 };
 
-export const fetchFilmLandscapesWithFallback = async (): Promise<FilmLandscape[]> =>
-  FALLBACK_FILM_LANDSCAPES;
+export const fetchFilmLandscapesWithFallback = async (): Promise<
+  FilmLandscape[]
+> => FALLBACK_FILM_LANDSCAPES;
 
 export type FilmSlideLane = "left" | "right";
 export type FilmSlideTextTheme = "light" | "dark";
@@ -163,8 +164,10 @@ const FILM_NATURE_IMAGE_FILES = [
   "Natural 9.webp",
 ] as const;
 
-const filmWhyAseerAssetUrl = (folder: "cultural" | "nature", fileName: string) =>
-  `/assets/film/${folder}/${encodeURIComponent(fileName)}`;
+const filmWhyAseerAssetUrl = (
+  folder: "cultural" | "nature",
+  fileName: string,
+) => `/assets/film/${folder}/${encodeURIComponent(fileName)}`;
 
 const FILM_WHY_ASEER_CULTURAL_COPY: Omit<
   FilmWhyAseerSlide,
@@ -173,7 +176,7 @@ const FILM_WHY_ASEER_CULTURAL_COPY: Omit<
   {
     title: "تنوع ثقافي",
     description:
-      "يُسهم الثراء والتنوع الثقافي في منطقة عسير في إلهام صُناع الأفلام وتحفيز الحس الإبداعي لديهم.",
+      "يُسهم الثراء والتنوع الثقافي في منطقة عسير في إلهام صُناع الأفلام وتحفيز الحس الإبداعي لديهم. كونها تحتضن أصالة عريقة ضاربة في جذور التاريخ في أكثر من ٤ آلاف قرية تراثية، ",
     textTheme: "light",
   },
   {
@@ -197,7 +200,7 @@ const FILM_WHY_ASEER_NATURE_COPY: Omit<
   {
     title: "تنوع طبيعي",
     description:
-      "مزيج السحب والجبال والإضاءة الطبيعية يصنع كادرات بصرية قوية تناسب الإنتاجات السينمائية الكبرى.",
+      "تمثل منطقة عسير بيئة مثالية لإنتاج الأفلام والأعمال الفنية التي تبرز الجمال وتتطلب التنوع الطبيعي والمناخي فيها.",
     textTheme: "light",
   },
   {
@@ -217,9 +220,7 @@ const FILM_WHY_ASEER_NATURE_COPY: Omit<
 function buildFilmWhyAseerSlidesFromAssets(): FilmWhyAseerSlide[] {
   const cultural = FILM_CULTURAL_IMAGE_FILES.map((fileName, index) => {
     const copy =
-      FILM_WHY_ASEER_CULTURAL_COPY[
-        index % FILM_WHY_ASEER_CULTURAL_COPY.length
-      ];
+      FILM_WHY_ASEER_CULTURAL_COPY[index % FILM_WHY_ASEER_CULTURAL_COPY.length];
     return {
       id: `film-why-cultural-${index + 1}`,
       lane: "left" as const,
@@ -534,10 +535,11 @@ function transformFilmRowToLandscape(
   const fb = FALLBACK_FILM_LANDSCAPES[index % FALLBACK_FILM_LANDSCAPES.length];
   const title = pickFilmTitle(row, locale);
   const image = row.cover_image
-    ? withDirectusCoverTransform(
-        `${directusUrl}/assets/${row.cover_image}`,
-        { width: 960, height: 1040, quality: 92 },
-      )
+    ? withDirectusCoverTransform(`${directusUrl}/assets/${row.cover_image}`, {
+        width: 960,
+        height: 1040,
+        quality: 92,
+      })
     : fb.image;
 
   return {
@@ -560,10 +562,11 @@ function transformFilmRowToShowcase(
     FALLBACK_FILM_SHOWCASE_CARDS[index % FALLBACK_FILM_SHOWCASE_CARDS.length];
   const title = pickFilmTitle(row, locale) || fb.title;
   const image = row.cover_image
-    ? withDirectusCoverTransform(
-        `${directusUrl}/assets/${row.cover_image}`,
-        { width: 1200, height: 1460, quality: 92 },
-      )
+    ? withDirectusCoverTransform(`${directusUrl}/assets/${row.cover_image}`, {
+        width: 1200,
+        height: 1460,
+        quality: 92,
+      })
     : fb.image;
 
   return {
@@ -575,9 +578,10 @@ function transformFilmRowToShowcase(
   };
 }
 
-async function fetchPublishedFilmsFromDirectus(
-  locale: string,
-): Promise<{ landscapes: FilmLandscape[]; showcaseCards: FilmShowcaseCard[] } | null> {
+async function fetchPublishedFilmsFromDirectus(locale: string): Promise<{
+  landscapes: FilmLandscape[];
+  showcaseCards: FilmShowcaseCard[];
+} | null> {
   const directusUrl = normalizeDirectusBase(DIRECTUS_API_BASE);
 
   try {

@@ -1016,6 +1016,12 @@
       "nileAir": "Nile Air",
       "airCairo": "Air Cairo"
     },
+    "map": {
+      "eyebrow": "Route map",
+      "title": "Find your way around Asir",
+      "description": "Use this quick reference map to orient yourself across the region and plan the most practical route.",
+      "alt": "Map of the Getting here and around section in Asir"
+    },
     "land": {
       "travelByRoad": "Driving in",
       "roadLead": "Driving to Asir crosses changing terrain—from coastal plains to high mountains—on well-maintained roads with unforgettable views.",

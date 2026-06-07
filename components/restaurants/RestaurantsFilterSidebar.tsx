@@ -42,7 +42,9 @@ const FilterHeader = ({ onReset }: FilterHeaderProps) => {
   const t = useTranslations("common");
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-3 sm:gap-4 sm:space-x-4">
-      <h2 className="text-lg font-bold text-foreground sm:text-xl">{t("filterRestaurants")}</h2>
+      <h2 className="text-lg font-bold text-foreground sm:text-xl">
+        {t("filterRestaurants")}
+      </h2>
       <Button
         onClick={onReset}
         className="cursor-pointer whitespace-nowrap rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:px-4 sm:py-2 sm:text-sm"
@@ -71,7 +73,9 @@ const LocationFilter = ({
   return (
     <div className="mb-6 sm:mb-8">
       <Menu as="div" className="relative">
-        <Menu.Button className={`flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm flex-row`}>
+        <Menu.Button
+          className={`flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm flex-row`}
+        >
           <LocationIcon />
           <span className="flex-1 text-start">
             {selectedCityOption?.label || t("city")}
@@ -87,7 +91,9 @@ const LocationFilter = ({
           leaveFrom="opacity-100 scale-100 translate-y-0"
           leaveTo="opacity-0 scale-95 translate-y-1"
         >
-          <Menu.Items className={`absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none start-0 origin-top-start`}>
+          <Menu.Items
+            className={`absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none start-0 origin-top-start`}
+          >
             <div className="py-1">
               {cityOpts.map((option) => (
                 <Menu.Item key={option.id}>
@@ -95,7 +101,7 @@ const LocationFilter = ({
                     <button
                       onClick={() =>
                         onCityChange(
-                          selectedCity === option.id ? null : option.id
+                          selectedCity === option.id ? null : option.id,
                         )
                       }
                       className={`${
@@ -247,12 +253,13 @@ const CuisineTypeFilter = ({
   );
 };
 
-const CUISINE_LABEL_KEYS: Record<(typeof CUISINE_FILTER_IDS)[number], string> = {
-  asian: "cuisineAsian",
-  american: "cuisineAmerican",
-  saudi: "cuisineSaudi",
-  "middle-eastern": "cuisineMiddleEastern",
-};
+const CUISINE_LABEL_KEYS: Record<(typeof CUISINE_FILTER_IDS)[number], string> =
+  {
+    asian: "cuisineAsian",
+    american: "cuisineAmerican",
+    saudi: "cuisineSaudi",
+    "middle-eastern": "cuisineMiddleEastern",
+  };
 
 export interface RestaurantsFilterSidebarProps {
   restaurants: Restaurant[];
@@ -270,9 +277,9 @@ const RestaurantsFilterSidebar = ({
   const t = useTranslations("common");
 
   const restaurantTypes: RestaurantType[] = [
-    { id: "featured", label: t("featured"), icon: <StarIcon /> },
-    { id: "popular", label: t("popular"), icon: <BuildingIcon /> },
     { id: "luxury", label: t("luxury"), icon: <DiamondIcon /> },
+    { id: "popular", label: t("popular"), icon: <BuildingIcon /> },
+    { id: "featured", label: t("featured"), icon: <StarIcon /> },
   ];
 
   const cuisinesWithCounts: CuisineOption[] = CUISINE_FILTER_IDS.map((id) => ({

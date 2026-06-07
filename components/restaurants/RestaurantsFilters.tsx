@@ -66,7 +66,7 @@ const RestaurantsFilters = () => {
     string | null
   >(null);
   const [selectedCuisineType, setSelectedCuisineType] = useState<string | null>(
-    null
+    null,
   );
   const [selectedPrice, setSelectedPrice] = useState<string | null>(null);
   const [selectedDietaryOptions, setSelectedDietaryOptions] = useState<
@@ -77,7 +77,7 @@ const RestaurantsFilters = () => {
     setSelectedDietaryOptions((prev) =>
       prev.includes(optionId)
         ? prev.filter((id) => id !== optionId)
-        : [...prev, optionId]
+        : [...prev, optionId],
     );
   };
 

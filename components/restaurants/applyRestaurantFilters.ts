@@ -20,7 +20,8 @@ export const CUISINE_FILTER_IDS = [
 export type CuisineFilterId = (typeof CUISINE_FILTER_IDS)[number];
 
 export function restaurantMatchesCuisine(r: Restaurant, id: string): boolean {
-  const hay = `${r.name} ${r.category} ${r.nationality} ${r.cuisineType ?? ""}`.toLowerCase();
+  const hay =
+    `${r.name} ${r.category} ${r.nationality} ${r.cuisineType ?? ""}`.toLowerCase();
   switch (id) {
     case "asian":
       return /asian|آسيوي|سوشي|صيني|ياباني|تايلاند|sushi/.test(hay);
@@ -51,7 +52,8 @@ function matchesRestaurantType(r: Restaurant, ids: string[]): boolean {
     if (id === "popular") return r.reviewsCount >= 50;
     if (id === "luxury") {
       if (/\$\$\$\$|\$\$\$/.test(r.priceRange)) return true;
-      const parts = r.priceBand?.split("-").map((s) => Number(String(s).trim())) ?? [];
+      const parts =
+        r.priceBand?.split("-").map((s) => Number(String(s).trim())) ?? [];
       if (parts.length === 2 && parts.every((n) => Number.isFinite(n))) {
         return Math.max(parts[0], parts[1]) >= 150;
       }
@@ -65,7 +67,8 @@ export function countRestaurantsForCuisine(
   restaurants: Restaurant[],
   cuisineId: string,
 ): number {
-  return restaurants.filter((r) => restaurantMatchesCuisine(r, cuisineId)).length;
+  return restaurants.filter((r) => restaurantMatchesCuisine(r, cuisineId))
+    .length;
 }
 
 export function applyRestaurantFilters(

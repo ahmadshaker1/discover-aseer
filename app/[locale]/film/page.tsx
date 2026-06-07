@@ -47,7 +47,7 @@ const FilmPage = async () => {
             sizes="100vw"
           />
           <div className="absolute inset-0 z-10 flex items-center px-4 sm:px-8 md:px-[62px]">
-            <div className="mx-auto flex h-full w-full max-w-[1442px] items-center justify-end">
+            <div className="mx-auto flex h-full w-full max-w-[1442px] items-center justify-start">
               <div className="flex h-[165.5px] w-full max-w-[383px] shrink-0 flex-col items-end justify-center gap-[15.5px] p-[41px] text-start sm:w-[383px]">
                 <h3
                   className="w-full max-w-[301px] text-start text-[32px] font-bold leading-[33.92px] text-white"

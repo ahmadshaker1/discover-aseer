@@ -53,8 +53,20 @@ function BrowseCtaArrowIcon() {
       aria-hidden
       className="shrink-0 rtl:rotate-180"
     >
-      <path d="M0.75 5.01743L11.375 5.01743" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M5.03516 9.28471L0.749739 5.01771L5.03516 0.75" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M0.75 5.01743L11.375 5.01743"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5.03516 9.28471L0.749739 5.01771L5.03516 0.75"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -116,7 +128,10 @@ const PageBanner = ({
             style={{ fontFamily: ara }}
           >
             {breadcrumbs.map((crumb, index) => (
-              <span key={index} className="inline-flex items-center gap-1.5 sm:gap-2">
+              <span
+                key={index}
+                className="inline-flex items-center gap-1.5 sm:gap-2"
+              >
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
@@ -152,7 +167,9 @@ const PageBanner = ({
             <Link
               href={primaryCta.href}
               className="mt-2 inline-flex h-[42px] min-w-[185px] shrink-0 items-center justify-between gap-[10px] rounded-[100px] bg-primary px-4 py-[10px] text-primary-foreground transition-opacity hover:opacity-90"
-              style={{ boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)" }}
+              style={{
+                boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)",
+              }}
             >
               <BrowseCtaArrowIcon />
               <span

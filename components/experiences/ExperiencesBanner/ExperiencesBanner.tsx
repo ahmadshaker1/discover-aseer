@@ -8,10 +8,13 @@ export default async function ExperiencesBanner() {
 
   return (
     <PageBanner
-      breadcrumbs={[{ label: t("breadcrumb") }, { label: tCommon("breadcrumbHome"), href: "/" }]}
+      breadcrumbs={[
+        { label: tCommon("breadcrumbHome"), href: "/" },
+        { label: t("breadcrumb") },
+      ]}
       title={t("title")}
       subtitle={t("subtitle")}
       backgroundImage="/assets/experiences/experiences.png"
-          />
+    />
   );
 }
