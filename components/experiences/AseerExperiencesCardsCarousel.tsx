@@ -83,6 +83,8 @@ export default function AseerExperiencesCardsCarousel({
     };
   }, [cards, syncScrollState]);
 
+  const isRtl = locale === "ar";
+
   const scrollByOne = useCallback((direction: -1 | 1) => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -111,12 +113,12 @@ export default function AseerExperiencesCardsCarousel({
       </div>
 
       <div
-        className={`mt-4 flex flex-row items-center justify-start gap-3 rtl:flex-row-reverse ${TRACK_PAD}`}
+        className={`mt-4 flex flex-row items-center justify-start rtl:justify-end gap-3 [direction:ltr] ${TRACK_PAD}`}
       >
         <button
           type="button"
-          aria-label={t("previous")}
-          disabled={!canPrev}
+          aria-label={isRtl ? t("next") : t("previous")}
+          disabled={isRtl ? !canNext : !canPrev}
           className={NAV_BTN_CLASS}
           onClick={() => scrollByOne(-1)}
         >
@@ -124,8 +126,8 @@ export default function AseerExperiencesCardsCarousel({
         </button>
         <button
           type="button"
-          aria-label={t("next")}
-          disabled={!canNext}
+          aria-label={isRtl ? t("previous") : t("next")}
+          disabled={isRtl ? !canPrev : !canNext}
           className={NAV_BTN_CLASS}
           onClick={() => scrollByOne(1)}
         >

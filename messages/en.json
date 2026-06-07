@@ -1057,6 +1057,10 @@
       "planStayAlt": "Plan your stay",
       "pickDestinationAlt": "Pick your destination",
       "pickDestinationTitle": "Choose your destination"
+    },
+    "experiences": {
+      "title": "Experiences in Asir",
+      "subtitle": "Discover exceptional activities and unforgettable experiences during your stay in Asir."
     }
   },
   "notFound": {
