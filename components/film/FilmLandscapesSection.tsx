@@ -24,11 +24,22 @@ const FilmLandscapesSection = ({
   return (
     <section className="mx-auto h-auto w-full max-w-[1442px] bg-background px-4 py-[60px] sm:px-8 md:px-[62px]">
       <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-        <div
-          className="hide-scrollbar w-full flex-1 overflow-x-auto overflow-y-hidden"
-          dir="ltr"
-        >
+        <div className="hide-scrollbar w-full flex-1 overflow-x-auto overflow-y-hidden">
           <div className="flex min-w-max items-start gap-6 pb-2">
+            <div className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-start lg:h-[265px]">
+              <h2
+                className="text-[44px] font-bold leading-[38px] text-foreground"
+                style={{ fontFamily: ara }}
+              >
+                {introTitle}
+              </h2>
+              <p
+                className="text-[15px] font-light leading-[119%] text-muted-foreground"
+                style={{ fontFamily: ibm }}
+              >
+                {introBody}
+              </p>
+            </div>
             {landscapes.slice(0, 4).map((item) => {
               const label = item.labelKey ? t(item.labelKey) : "";
               const destinationFilter = landscapeKeyToDestinationFilter(
@@ -65,21 +76,6 @@ const FilmLandscapesSection = ({
               );
             })}
           </div>
-        </div>
-
-        <div className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-start lg:h-[265px]">
-          <h2
-            className="text-[44px] font-bold leading-[38px] text-foreground"
-            style={{ fontFamily: ara }}
-          >
-            {introTitle}
-          </h2>
-          <p
-            className="text-[15px] font-light leading-[119%] text-muted-foreground"
-            style={{ fontFamily: ibm }}
-          >
-            {introBody}
-          </p>
         </div>
       </div>
     </section>
