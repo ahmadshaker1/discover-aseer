@@ -20,27 +20,26 @@ const Footer = () => {
           {/* Section 1 */}
           <div className="h-auto border-b border-white/20 lg:h-[122px]">
             <div className="flex h-full w-full items-center justify-between py-5">
-              <div className="flex h-[82px] w-[295px] items-start gap-3">
-                <div className="flex h-[82px] w-[100px] flex-col items-start gap-4">
-                  <p className="text-start text-[16px] font-bold leading-[110%]">
-                    {t("footer.poweredBy")}
-                  </p>
-                  <Image
-                    src="/assets/footer/powerd-by.png"
-                    alt={t("footer.poweredBy")}
-                    width={100}
-                    height={48}
-                    className="h-12 w-[100px] object-contain"
-                  />
-                </div>
+              <div className="flex h-[82px] w-[295px] items-center gap-3">
+                <Image
+                  src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
+                  alt="footer:aseer_logo673"
+                  width={120}
+                  height={55}
+                />
               </div>
-
-              <Image
-                src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
-                alt="footer:aseer_logo673"
-                width={120}
-                height={55}
-              />
+              <div className="flex h-[82px] w-[100px] flex-col items-center gap-4">
+                <p className="text-center text-[16px] font-bold leading-[110%]">
+                  {t("footer.poweredBy")}
+                </p>
+                <Image
+                  src="/assets/footer/powerd-by.png"
+                  alt={t("footer.poweredBy")}
+                  width={100}
+                  height={48}
+                  className="h-12 w-[100px] object-contain"
+                />
+              </div>
             </div>
           </div>
 
@@ -150,6 +149,12 @@ const Footer = () => {
                     {t("footer.linkRestaurants")}
                   </Link>
                   <Link
+                    href="/tourism-companies"
+                    className="block w-full text-start hover:opacity-80"
+                  >
+                    {t("footer.tourism-companies")}
+                  </Link>
+                  <Link
                     href="/tour-guides"
                     className="block w-full text-start hover:opacity-80"
                   >
@@ -220,7 +225,6 @@ const Footer = () => {
                 >
                   {t("footer.contactTitle")}
                 </h3>
-
                 <Link
                   href="/services-support"
                   className="block w-full text-start text-[18px] font-bold leading-[197%] hover:opacity-80"
@@ -228,33 +232,25 @@ const Footer = () => {
                 >
                   {t("footer.contactUs")}
                 </Link>
-
                 <div
                   className="w-full text-start text-sm text-white/80"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.internationalCallCenter")}
                 </div>
-
                 <a
                   href="tel:+9669200000890"
-                  dir="ltr"
                   className="block w-full text-start text-lg hover:opacity-80"
                 >
-                  +966 9200000890
+                  <span dir="ltr">+966 9200000890</span>
                 </a>
-
                 <div
                   className="w-full text-start text-xs text-white/70"
                   style={{ fontFamily: ara }}
                 >
                   {t("footer.followUs")}
                 </div>
-
-                <div
-                  className="flex w-full flex-row items-center justify-start gap-3"
-                  dir="ltr"
-                >
+                <div className="flex w-full flex-row items-center justify-start gap-3">
                   {discoverAseerLinks.map(
                     ({ href, label, ariaLabel, platform }) => (
                       <a
@@ -270,6 +266,38 @@ const Footer = () => {
                     ),
                   )}
                 </div>
+                {/* Middle block */}
+                <div className="flex w-full flex-col items-start gap-3 text-start sm:w-[231px]">
+                  <p
+                    className="text-start text-[16px] font-bold leading-[110%] text-white"
+                    style={{ fontFamily: ara }}
+                  >
+                    {t("common.memberOf")}
+                  </p>
+                  <div className="flex w-full items-start justify-between gap-4 sm:w-[231px]">
+                    <Image
+                      src="/assets/footer/UN-tourism.png"
+                      alt={t("footer.altUnTourism")}
+                      width={36}
+                      height={34}
+                      className="h-[34px] w-9 object-contain brightness-0 invert"
+                    />
+                    <Image
+                      src="/assets/footer/PATA.png"
+                      alt={t("footer.altPata")}
+                      width={63}
+                      height={34}
+                      className="h-[34px] w-[63px] object-contain"
+                    />
+                    <Image
+                      src="/assets/footer/GSTC.png"
+                      alt={t("footer.altGstc")}
+                      width={100}
+                      height={34}
+                      className="h-[34px] w-[100px] object-contain"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -278,6 +306,18 @@ const Footer = () => {
             <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
               {/* Left block */}
               <div className="flex w-full flex-col gap-6 sm:flex-row sm:items-center sm:justify-between lg:max-w-[589px] lg:gap-4">
+                {/* Newsletter text */}
+                <div className="flex w-full flex-col items-start gap-4 text-start sm:w-[138px]">
+                  <p
+                    className="text-start text-[16px] font-bold leading-[110%]"
+                    style={{ fontFamily: ara }}
+                  >
+                    {t("footer.newsletterTitle")}
+                  </p>
+                  <p className="text-start text-[10px] font-normal leading-[100%] text-white">
+                    {t("common.newsletterDescription")}
+                  </p>
+                </div>
                 {/* Input + button */}
                 <div className="flex w-full flex-col gap-3 sm:max-w-[397px] sm:flex-row sm:items-center">
                   <button
@@ -294,72 +334,24 @@ const Footer = () => {
                     style={{ fontFamily: "KoningDisplay Trial, sans-serif" }}
                   />
                 </div>
-
-                {/* Newsletter text */}
-                <div className="flex w-full flex-col items-start gap-4 text-start sm:w-[138px]">
-                  <p
-                    className="text-start text-[16px] font-bold leading-[110%]"
-                    style={{ fontFamily: ara }}
-                  >
-                    {t("footer.newsletterTitle")}
-                  </p>
-                  <p className="text-start text-[10px] font-normal leading-[100%] text-white">
-                    {t("common.newsletterDescription")}
-                  </p>
-                </div>
-              </div>
-
-              {/* Middle block */}
-              <div className="flex w-full flex-col items-start gap-3 text-start sm:w-[231px]">
-                <p
-                  className="text-start text-[16px] font-bold leading-[110%] text-white"
-                  style={{ fontFamily: ara }}
-                >
-                  {t("common.memberOf")}
-                </p>
-                <div
-                  className="flex w-full items-center justify-between gap-4 sm:w-[231px]"
-                  dir="ltr"
-                >
-                  <Image
-                    src="/assets/footer/UN-tourism.png"
-                    alt={t("footer.altUnTourism")}
-                    width={36}
-                    height={34}
-                    className="h-[34px] w-9 object-contain brightness-0 invert"
-                  />
-                  <Image
-                    src="/assets/footer/PATA.png"
-                    alt={t("footer.altPata")}
-                    width={63}
-                    height={34}
-                    className="h-[34px] w-[63px] object-contain"
-                  />
-                  <Image
-                    src="/assets/footer/GSTC.png"
-                    alt={t("footer.altGstc")}
-                    width={100}
-                    height={34}
-                    className="h-[34px] w-[100px] object-contain"
-                  />
-                </div>
               </div>
             </div>
 
             {/* Copyright row below single divider */}
             <div className="mt-4 border-t border-white/20 pt-4">
-              <div className="flex w-full justify-start">
-                <div
-                  className="flex h-5 w-[237px] items-center gap-6 text-[13px] font-bold leading-[150%]"
-                  style={{ fontFamily: ara }}
+              <div
+                className="flex w-full flex-col gap-4 sm:flex-row sm:justify-between items-center text-[13px] font-bold leading-[150%]"
+                style={{ fontFamily: ara }}
+              >
+                <Link
+                  href="/privacy"
+                  className="whitespace-nowrap hover:opacity-80"
                 >
-                  <span className="whitespace-nowrap">
-                    {t("footer.copyright")}
-                  </span>
-                  <Link href="#" className="whitespace-nowrap hover:opacity-80">
-                    {t("footer.privacy")}
-                  </Link>
-                </div>
+                  {t("footer.privacy")}
+                </Link>
+                <span className="whitespace-nowrap">
+                  {t("footer.copyright")}
+                </span>
               </div>
             </div>
           </div>
