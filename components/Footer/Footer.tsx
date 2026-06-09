@@ -278,13 +278,6 @@ const Footer = () => {
                   </p>
                   <div className="flex w-full items-start justify-between gap-4 sm:w-[231px]">
                     <Image
-                      src="/assets/footer/UN-tourism.png"
-                      alt={t("footer.altUnTourism")}
-                      width={36}
-                      height={34}
-                      className="h-[34px] w-9 object-contain brightness-0 invert"
-                    />
-                    <Image
                       src="/assets/footer/PATA.png"
                       alt={t("footer.altPata")}
                       width={63}
@@ -297,6 +290,13 @@ const Footer = () => {
                       width={100}
                       height={34}
                       className="h-[34px] w-[100px] object-contain"
+                    />
+                    <Image
+                      src="/assets/footer/UN-tourism.png"
+                      alt={t("footer.altUnTourism")}
+                      width={36}
+                      height={34}
+                      className="h-[34px] w-9 object-contain brightness-0 invert"
                     />
                   </div>
                 </div>
@@ -311,12 +311,12 @@ const Footer = () => {
                 {/* Newsletter text */}
                 <div className="flex w-full flex-col items-start gap-4 text-start sm:w-[138px]">
                   <p
-                    className="text-start text-[16px] font-bold leading-[110%]"
+                    className="text-start text-[18px] font-bold leading-[110%]"
                     style={{ fontFamily: ara }}
                   >
                     {t("footer.newsletterTitle")}
                   </p>
-                  <p className="text-start text-[10px] font-normal leading-[100%] text-white">
+                  <p className="text-start text-[14px] font-normal leading-[100%] text-white">
                     {t("common.newsletterDescription")}
                   </p>
                 </div>
@@ -347,11 +347,11 @@ const Footer = () => {
               >
                 <Link
                   href="/privacy"
-                  className="whitespace-nowrap hover:opacity-80"
+                  className="whitespace-nowrap  text-[16px] hover:opacity-80"
                 >
                   {t("footer.privacy")}
                 </Link>
-                <span className="whitespace-nowrap">
+                <span className="whitespace-nowrap text-[16px]" dir="ltr">
                   {t("footer.copyright")}
                 </span>
               </div>
