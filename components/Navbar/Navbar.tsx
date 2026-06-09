@@ -8,7 +8,6 @@ import DesktopNavigationLinks from "./DesktopNavigationLinks";
 import DesktopActionLinks from "./DesktopActionLinks";
 import MobileMenuButton from "./MobileMenuButton";
 import MobileMenu from "./MobileMenu";
-import { LocationPinIcon } from "./Icons";
 
 const Navbar = () => {
   const t = useTranslations();
@@ -42,13 +41,6 @@ const Navbar = () => {
 
           {/* Right: Action links */}
           <div className="flex flex-1 flex-row items-center justify-end gap-3">
-            <Link
-              href="/interactive-map"
-              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
-              aria-label={t("interactiveMap.title")}
-            >
-              <LocationPinIcon />
-            </Link>
             <DesktopActionLinks />
           </div>
         </div>

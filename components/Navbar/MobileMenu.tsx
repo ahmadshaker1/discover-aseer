@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 
-import { HamburgerIcon } from "./Icons";
+import { HamburgerIcon, LocationPinIcon } from "./Icons";
 import {
   getNavbarDropdownLinks,
   navigationLinks,
@@ -133,6 +133,15 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                       </Link>
                     );
                   })}
+
+                  <Link
+                    href="/interactive-map"
+                    onClick={onClose}
+                    className="flex items-center gap-2 text-white text-lg sm:text-xl font-medium hover:opacity-80 transition-opacity py-3 border-b border-white/10"
+                  >
+                    <LocationPinIcon />
+                    <span>{t("interactiveMap.title")}</span>
+                  </Link>
 
                   {/* Icon Buttons */}
                   <div className="flex items-center justify-start gap-4 pt-6 border-t border-white/10">
