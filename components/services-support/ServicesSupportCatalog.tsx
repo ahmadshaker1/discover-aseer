@@ -102,7 +102,7 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
       <div className="flex w-full min-w-0 flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
-        <div className="order-2 min-w-0 flex-1 lg:order-1">
+        <div className="order-2 min-w-0 flex-1 lg:order-2">
           {services.length === 0 ? (
             <div
               className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-center text-muted-foreground"
@@ -120,7 +120,7 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
           />
         </div>
 
-        <div className="order-1 w-full shrink-0 lg:order-2 lg:w-[min(100%,320px)] lg:max-w-[320px]">
+        <div className="order-1 w-full shrink-0 lg:order-1 lg:w-[min(100%,320px)] lg:max-w-[320px]">
           <ServicesSupportFilterSidebar
             cityOptions={cityOptions}
             categoryOptions={categoryOptions}

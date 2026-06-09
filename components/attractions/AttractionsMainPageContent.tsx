@@ -160,7 +160,7 @@ const AttractionsMainPageContent = ({
           </p>
         ) : null}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-          <div className="order-2 w-full flex-1 lg:order-1 lg:max-w-[1033px]">
+          <div className="order-2 w-full flex-1 lg:order-2 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 justify-items-center gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
               {visibleLandmarks.map((landmark) => (
                 <AttractionsLandmarkCard
@@ -183,7 +183,7 @@ const AttractionsMainPageContent = ({
           </div>
 
           <aside
-            className={`order-1 w-full min-w-0 lg:order-2 lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
+            className={`order-1 w-full min-w-0 lg:order-1 lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-e`}
           >
             <div className="mx-auto flex w-full max-w-[320px] flex-col gap-6 lg:mx-0 lg:max-w-[256px]">
               <div className="flex w-full flex-wrap items-center justify-between gap-3">

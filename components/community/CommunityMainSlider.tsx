@@ -162,7 +162,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
               className="inline-flex max-w-full min-w-0 items-center gap-2 rounded-full px-1 py-2 text-[15px] font-medium leading-none text-white/90 transition-colors hover:bg-white/10 hover:text-white sm:max-w-[min(48%,220px)] sm:gap-3 sm:text-[18px]"
               style={{ fontFamily: ara }}
             >
-              <span className="inline-flex shrink-0 rtl:rotate-180" aria-hidden>
+              <span className="inline-flex shrink-0" aria-hidden>
                 <ChevronRight />
               </span>
               <span className="truncate">{previousSlideTitle}</span>
@@ -174,7 +174,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
               style={{ fontFamily: ara }}
             >
               <span className="truncate">{nextSlideTitle}</span>
-              <span className="inline-flex shrink-0 rtl:rotate-180" aria-hidden>
+              <span className="inline-flex shrink-0 " aria-hidden>
                 <ChevronLeft />
               </span>
             </button>

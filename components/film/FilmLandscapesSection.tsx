@@ -1,9 +1,14 @@
 "use client";
 
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { FilmLandscape } from "@/components/film/data";
 import { landscapeKeyToDestinationFilter } from "@/components/destinations/filterOptions";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@/components/shared/icons/CarouselChevrons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -14,17 +19,90 @@ interface FilmLandscapesSectionProps {
   introBody: string;
 }
 
+function scrollStepPx(scroller: HTMLElement): number {
+  const row = scroller.firstElementChild as HTMLElement | null;
+  const firstCard = row?.firstElementChild as HTMLElement | null;
+  if (!row || !firstCard) return 306;
+  const gapRaw = getComputedStyle(row).columnGap || getComputedStyle(row).gap;
+  const gap = Number.parseFloat(gapRaw || "24") || 24;
+  return firstCard.getBoundingClientRect().width + gap;
+}
+
 const FilmLandscapesSection = ({
   landscapes,
   introTitle,
   introBody,
 }: FilmLandscapesSectionProps) => {
   const t = useTranslations("film");
+  const locale = useLocale();
+  const tCommon = useTranslations("common");
+
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const scrollDir = locale === "ar" ? "rtl" : "ltr";
+  const isRtl = locale === "ar";
+
+  const syncScrollState = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    const eps = 2;
+    if (max <= eps) {
+      setCanPrev(false);
+      setCanNext(false);
+      return;
+    }
+    const rtl = getComputedStyle(el).direction === "rtl";
+    const sl = el.scrollLeft;
+    if (rtl && sl < 0) {
+      setCanPrev(sl < -eps);
+      setCanNext(sl > -(max - eps));
+      return;
+    }
+    setCanPrev(sl > eps);
+    setCanNext(sl < max - eps);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const raf = requestAnimationFrame(() => {
+      el.scrollLeft = 0;
+      syncScrollState();
+    });
+
+    syncScrollState();
+    el.addEventListener("scroll", syncScrollState, { passive: true });
+    const ro = new ResizeObserver(syncScrollState);
+    ro.observe(el);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener("scroll", syncScrollState);
+      ro.disconnect();
+    };
+  }, [landscapes, syncScrollState]);
+
+  const scrollByOne = useCallback((direction: -1 | 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.scrollBy({
+      left: direction * scrollStepPx(el),
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <section className="mx-auto h-auto w-full max-w-[1442px] bg-background px-4 py-[60px] sm:px-8 md:px-[62px]">
       <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-        <div className="hide-scrollbar w-full flex-1 overflow-x-auto overflow-y-hidden">
+        <div
+          ref={scrollerRef}
+          dir={scrollDir}
+          className="hide-scrollbar w-full flex-1 overflow-x-auto overflow-y-hidden scroll-smooth"
+        >
           <div className="flex min-w-max items-start gap-6 pb-2">
             <div className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-start lg:h-[265px]">
               <h2
@@ -78,6 +156,29 @@ const FilmLandscapesSection = ({
           </div>
         </div>
       </div>
+
+      {landscapes.length > 0 && (
+        <div className="mt-6 flex flex-row items-center justify-start rtl:justify-end gap-3 [direction:ltr]">
+          <button
+            type="button"
+            aria-label={isRtl ? tCommon("next") : tCommon("previous")}
+            disabled={isRtl ? !canNext : !canPrev}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
+            onClick={() => scrollByOne(-1)}
+          >
+            <ChevronLeftIcon />
+          </button>
+          <button
+            type="button"
+            aria-label={isRtl ? tCommon("previous") : tCommon("next")}
+            disabled={isRtl ? !canPrev : !canNext}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
+            onClick={() => scrollByOne(1)}
+          >
+            <ChevronRightIcon />
+          </button>
+        </div>
+      )}
     </section>
   );
 };

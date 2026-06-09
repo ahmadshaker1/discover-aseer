@@ -4,7 +4,7 @@ import Link from "next/link";
 import CuisineRestaurantCard, {
   type CuisineRestaurantCardData,
 } from "./CuisineRestaurantCard";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   getCityOptions,
@@ -13,6 +13,10 @@ import {
   inferCityIdFromLocation,
   locationMatchesCityId,
 } from "@/components/landmarks/filterOptions";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@/components/shared/icons/CarouselChevrons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
@@ -80,6 +84,15 @@ function cardMatchesCity(
   return locationMatchesCityId(card.location, city);
 }
 
+function scrollStepPx(scroller: HTMLElement): number {
+  const row = scroller.firstElementChild as HTMLElement | null;
+  const firstCard = row?.firstElementChild as HTMLElement | null;
+  if (!row || !firstCard) return 306;
+  const gapRaw = getComputedStyle(row).columnGap || getComputedStyle(row).gap;
+  const gap = Number.parseFloat(gapRaw || "24") || 24;
+  return firstCard.getBoundingClientRect().width + gap;
+}
+
 const AseerCuisineRestaurantsSection = ({
   data,
 }: AseerCuisineRestaurantsSectionProps) => {
@@ -91,6 +104,34 @@ const AseerCuisineRestaurantsSection = ({
   const [city, setCity] = useState<string | null>(null);
   const [interest, setInterest] = useState<string | null>(null);
   const [price, setPrice] = useState<PriceFilterId>(null);
+
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const scrollDir = locale === "ar" ? "rtl" : "ltr";
+  const isRtl = locale === "ar";
+
+  const syncScrollState = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    const eps = 2;
+    if (max <= eps) {
+      setCanPrev(false);
+      setCanNext(false);
+      return;
+    }
+    const rtl = getComputedStyle(el).direction === "rtl";
+    const sl = el.scrollLeft;
+    if (rtl && sl < 0) {
+      setCanPrev(sl < -eps);
+      setCanNext(sl > -(max - eps));
+      return;
+    }
+    setCanPrev(sl > eps);
+    setCanNext(sl < max - eps);
+  }, []);
 
   const filteredCards = useMemo(() => {
     return data.cards.filter((card) => {
@@ -113,6 +154,36 @@ const AseerCuisineRestaurantsSection = ({
       return true;
     });
   }, [city, data.cards, interest, price]);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const raf = requestAnimationFrame(() => {
+      el.scrollLeft = 0;
+      syncScrollState();
+    });
+
+    syncScrollState();
+    el.addEventListener("scroll", syncScrollState, { passive: true });
+    const ro = new ResizeObserver(syncScrollState);
+    ro.observe(el);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener("scroll", syncScrollState);
+      ro.disconnect();
+    };
+  }, [filteredCards, syncScrollState]);
+
+  const scrollByOne = useCallback((direction: -1 | 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.scrollBy({
+      left: direction * scrollStepPx(el),
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <section className="mx-auto w-full max-w-[1440px] py-8 text-foreground">
@@ -206,13 +277,40 @@ const AseerCuisineRestaurantsSection = ({
           </div>
         ) : null}
 
-        <div className="hide-scrollbar h-[337px] w-full overflow-x-auto overflow-y-hidden pb-5">
+        <div
+          ref={scrollerRef}
+          dir={scrollDir}
+          className="hide-scrollbar h-[337px] w-full overflow-x-auto overflow-y-hidden pb-5 scroll-smooth"
+        >
           <div className="flex min-w-max gap-6 px-4 sm:px-8 xl:px-[120px]">
             {filteredCards.map((card) => (
               <CuisineRestaurantCard key={card.id} card={card} />
             ))}
           </div>
         </div>
+
+        {filteredCards.length > 0 && (
+          <div className="flex flex-row items-center justify-start rtl:justify-end gap-3 px-4 sm:px-8 xl:px-[120px] [direction:ltr]">
+            <button
+              type="button"
+              aria-label={isRtl ? tCommon("next") : tCommon("previous")}
+              disabled={isRtl ? !canNext : !canPrev}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
+              onClick={() => scrollByOne(-1)}
+            >
+              <ChevronLeftIcon />
+            </button>
+            <button
+              type="button"
+              aria-label={isRtl ? tCommon("previous") : tCommon("next")}
+              disabled={isRtl ? !canPrev : !canNext}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
+              onClick={() => scrollByOne(1)}
+            >
+              <ChevronRightIcon />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

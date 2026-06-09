@@ -56,22 +56,38 @@ const AccommodationExceptionalCarousel = ({
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
 
+  const scrollDir = locale === "ar" ? "rtl" : "ltr";
+  const isRtl = locale === "ar";
+
   const syncScrollState = useCallback(() => {
     const el = scrollerRef.current;
     if (!el) return;
     const max = el.scrollWidth - el.clientWidth;
     const eps = 2;
-    setCanPrev(el.scrollLeft > eps);
-    setCanNext(max > eps && el.scrollLeft < max - eps);
+    if (max <= eps) {
+      setCanPrev(false);
+      setCanNext(false);
+      return;
+    }
+    const rtl = getComputedStyle(el).direction === "rtl";
+    const sl = el.scrollLeft;
+    if (rtl && sl < 0) {
+      setCanPrev(sl < -eps);
+      setCanNext(sl > -(max - eps));
+      return;
+    }
+    setCanPrev(sl > eps);
+    setCanNext(sl < max - eps);
   }, []);
 
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    requestAnimationFrame(() => {
+    const raf = requestAnimationFrame(() => {
       el.scrollLeft = 0;
       syncScrollState();
     });
+    return () => cancelAnimationFrame(raf);
   }, [items, syncScrollState]);
 
   useEffect(() => {
@@ -104,8 +120,8 @@ const AccommodationExceptionalCarousel = ({
       <div className="rounded-2xl border border-border bg-linear-to-b from-muted to-surface p-6">
         <div
           ref={scrollerRef}
-          dir="ltr"
-          className="-mx-1 flex flex-row gap-4 overflow-x-auto px-1 py-1 [scrollbar-width:thin]"
+          dir={scrollDir}
+          className="-mx-1 flex flex-row gap-4 overflow-x-auto px-1 py-1 [scrollbar-width:thin] scroll-smooth"
         >
           {items.map((a) => (
             <AccommodationCard
@@ -117,11 +133,11 @@ const AccommodationExceptionalCarousel = ({
           ))}
         </div>
 
-        <div className="mt-4 flex flex-row items-center justify-start gap-3 ps-1 rtl:flex-row-reverse">
+        <div className="mt-4 flex flex-row items-center justify-start rtl:justify-end gap-3 ps-1 [direction:ltr]">
           <button
             type="button"
-            aria-label={t("previous")}
-            disabled={!canPrev}
+            aria-label={isRtl ? t("next") : t("previous")}
+            disabled={isRtl ? !canNext : !canPrev}
             onClick={() => scrollByOne(-1)}
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
           >
@@ -129,8 +145,8 @@ const AccommodationExceptionalCarousel = ({
           </button>
           <button
             type="button"
-            aria-label={t("next")}
-            disabled={!canNext}
+            aria-label={isRtl ? t("previous") : t("next")}
+            disabled={isRtl ? !canPrev : !canNext}
             onClick={() => scrollByOne(1)}
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
           >

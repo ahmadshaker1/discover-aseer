@@ -86,7 +86,7 @@ const TourGuidesPageContent = ({
     <>
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12">
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-          <div className="order-2 w-full flex-1 lg:order-1">
+          <div className="order-2 w-full flex-1 lg:order-2">
             <TourGuidesGrid
               guides={filteredGuides}
               onGuideClick={handleGuideClick}
@@ -98,7 +98,7 @@ const TourGuidesPageContent = ({
             )}
           </div>
 
-          <aside className="order-1 w-full shrink-0 lg:order-2 lg:w-auto">
+          <aside className="order-1 w-full shrink-0 lg:order-1 lg:w-auto">
             <TourGuidesFilter
               filterOptions={filterOptions}
               filters={filters}

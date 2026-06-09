@@ -39,7 +39,8 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
   const baseFiltered = useMemo(() => {
     return accommodations.filter((a) => {
       if (selectedCity !== "all" && a.city !== selectedCity) return false;
-      if (selectedStars.length > 0 && !selectedStars.includes(a.stars)) return false;
+      if (selectedStars.length > 0 && !selectedStars.includes(a.stars))
+        return false;
       return true;
     });
   }, [accommodations, selectedCity, selectedStars]);
@@ -76,7 +77,9 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
     return (
       <div className="w-full py-12 text-center">
         <p className="text-lg text-muted-foreground">{t("noAccommodation")}</p>
-        <p className="mt-2 text-sm text-muted-foreground">{t("resultsCount", { count: 0 })}</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {t("resultsCount", { count: 0 })}
+        </p>
       </div>
     );
   }
@@ -99,10 +102,15 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
 
         <div className="flex min-w-0 flex-1 flex-col gap-8 lg:gap-10" lang="ar">
           <AccommodationExceptionalCarousel items={carousel} />
-          <AccommodationHotelsGrid items={grid} showTopDivider={carousel.length > 0} />
+          <AccommodationHotelsGrid
+            items={grid}
+            showTopDivider={carousel.length > 0}
+          />
 
           {filtered.length === 0 ? (
-            <p className="py-12 text-center text-muted-foreground">{t("noAccommodationFilter")}</p>
+            <p className="py-12 text-center text-muted-foreground">
+              {t("noAccommodationFilter")}
+            </p>
           ) : null}
         </div>
       </div>
