@@ -38,7 +38,7 @@ const Footer = () => {
                     alt={t("footer.poweredBy")}
                     width={100}
                     height={48}
-                    className="h-12 w-[100px] object-contain"
+                    className=" h-12 w-[100px] object-contain"
                   />
                 </Link>
               </div>
