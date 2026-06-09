@@ -1,17 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
-
-const IGCAT_WEBSITE_URL =
-  process.env.NEXT_PUBLIC_IGCAT_WEBSITE_URL?.trim() || "https://igcat.org";
+import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const RestaurantsCredibilitySection = () => {
   const t = useTranslations("restaurantsPage");
-  const tCommon = useTranslations("common");
 
   return (
     <section
@@ -37,13 +33,11 @@ const RestaurantsCredibilitySection = () => {
         </h2>
 
         <Link
-          href={IGCAT_WEBSITE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/aseer-cuisine"
           className="inline-flex h-[52px] min-w-[161px] items-center justify-center rounded-[55px] border border-primary bg-primary px-[10px] py-[10px] text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           style={{ fontFamily: ara }}
         >
-          {tCommon("visitorSite")}
+          {t("credibilityCta")}
         </Link>
       </div>
     </section>
