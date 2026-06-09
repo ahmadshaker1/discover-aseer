@@ -14,10 +14,10 @@ const HIGHLIGHT_TITLE_KEYS = [
 ] as const;
 
 const HIGHLIGHT_IMAGES = [
-  "/assets/aboutAseer/mountains.png",
-  "/assets/aboutAseer/plains.png",
-  "/assets/aboutAseer/beaches.jpg",
-  "/assets/aboutAseer/desert.jpg",
+  "/assets/aboutAseer/mountains.JPEG",
+  "/assets/aboutAseer/plains.jpeg",
+  "/assets/aboutAseer/beaches.jpeg",
+  "/assets/aboutAseer/desert.JPEG",
 ] as const;
 
 const AboutAseerPage = async () => {
