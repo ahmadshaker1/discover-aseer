@@ -32,13 +32,15 @@ const Footer = () => {
                 <p className="text-center text-[16px] font-bold leading-[110%]">
                   {t("footer.poweredBy")}
                 </p>
-                <Image
-                  src="/assets/footer/powerd-by.png"
-                  alt={t("footer.poweredBy")}
-                  width={100}
-                  height={48}
-                  className="h-12 w-[100px] object-contain"
-                />
+                <Link href="https://www.asda.gov.sa" target="_blank">
+                  <Image
+                    src="/assets/footer/powerd-by.png"
+                    alt={t("footer.poweredBy")}
+                    width={100}
+                    height={48}
+                    className="h-12 w-[100px] object-contain"
+                  />
+                </Link>
               </div>
             </div>
           </div>
