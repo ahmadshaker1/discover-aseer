@@ -26,7 +26,7 @@ const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
           { label: tCommon("breadcrumbHome"), href: "/" },
         ]}
         title={t("browseTitle")}
-        subtitle={tCommon("subtitleOneVisit")}
+        subtitle={t("browseSubtitle")}
         backgroundImage="/assets/destinations/destination_banner.webp"
         hidePattern
         primaryCta={{
