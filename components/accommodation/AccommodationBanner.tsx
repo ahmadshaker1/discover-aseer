@@ -14,6 +14,7 @@ export default async function AccommodationBanner() {
       title={t("title")}
       subtitle={t("subtitle")}
       backgroundImage="/assets/accommodation/accomodation-banner.webp"
+      hidePattern
     />
   );
 }

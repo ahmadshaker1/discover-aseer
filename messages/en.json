@@ -25,7 +25,7 @@
     "filterExperiences": "Filter experiences",
     "filterEvents": "Filter events",
     "filterRestaurants": "Filter restaurants",
-    "filterDestinations": "Filter destinations",
+    "filterDestinations": "Filters",
     "date": "Date",
     "cost": "Cost",
     "free": "Free",
@@ -53,11 +53,11 @@
     "hotelRating": "Hotel rating",
     "exceptional": "Exceptional",
     "hotels": "Hotels",
-    "exceptionalHotels": "Exceptional hotels",
+    "exceptionalHotels": "Popular hotels",
     "previous": "Previous",
     "next": "Next",
     "location": "Location",
-    "allCities": "All cities",
+    "allCities": "Choose your destination",
     "noAccommodation": "No accommodation available right now",
     "resultsCount": "Results: {count}",
     "noAccommodationFilter": "No accommodation matches your filters.",
@@ -293,7 +293,7 @@
   "accommodationPage": {
     "breadcrumb": "Accommodation",
     "title": "Accommodation",
-    "subtitle": "One visit is never enough with all the activities and experiences on offer."
+    "subtitle": "An exquisite stay with diverse options"
   },
   "restaurantsPage": {
     "breadcrumb": "Restaurants",

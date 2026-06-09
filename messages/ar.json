@@ -25,7 +25,7 @@
     "filterExperiences": "تصفية التجارب",
     "filterEvents": "تصفية الفعاليات",
     "filterRestaurants": "تصفية المطاعم",
-    "filterDestinations": "تصفية الوجهات",
+    "filterDestinations": "التصفية",
     "date": "التاريخ",
     "cost": "التكلفة",
     "free": "مجانية",
@@ -53,11 +53,11 @@
     "hotelRating": "تصنيف الفندق",
     "exceptional": "استثنائي",
     "hotels": "الفنادق",
-    "exceptionalHotels": "الفنادق الاستثنائية",
+    "exceptionalHotels": "فنادق مميزة",
     "previous": "السابق",
     "next": "التالي",
     "location": "الموقع",
-    "allCities": "جميع المدن",
+    "allCities": "اختر وجهتك",
     "noAccommodation": "لا توجد أماكن إقامة متاحة حالياً",
     "resultsCount": "عدد النتائج: {count}",
     "noAccommodationFilter": "لا توجد أماكن إقامة تطابق التصفية المحددة.",
@@ -293,7 +293,7 @@
   "accommodationPage": {
     "breadcrumb": "أماكن الإقامة",
     "title": "أماكن الإقامة",
-    "subtitle": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+    "subtitle": "عسير، تجربة مدهشة لخيارات سكن متعددة"
   },
   "restaurantsPage": {
     "breadcrumb": "المطاعم",
