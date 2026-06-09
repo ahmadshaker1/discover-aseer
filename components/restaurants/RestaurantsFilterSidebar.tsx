@@ -126,7 +126,7 @@ const FilterCheckbox = ({ checked, onChange }: FilterCheckboxProps) => {
     <Checkbox
       checked={checked}
       onChange={onChange}
-      className="group relative inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded border-2 border-border bg-surface transition data-checked:border-primary data-checked:bg-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
+      className="group relative inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded border-2 border-border bg-surface transition data-checked:border-primary data-checked:bg-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
     >
       <svg
         className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
@@ -173,12 +173,14 @@ const CuisineTypeFilter = ({
               key={cuisine.id}
               className="flex items-center justify-between p-2 rounded transition-colors"
             >
-              <div className={`flex items-center gap-3 flex-row`}>
-                <span className="text-sm text-foreground">{cuisine.label}</span>
+              <div className="flex items-center gap-3">
                 <FilterCheckbox
                   checked={isChecked}
                   onChange={() => onCuisineToggle(cuisine.id)}
                 />
+                <span className="text-sm text-start text-foreground">
+                  {cuisine.label}
+                </span>
               </div>
               <span className="text-sm font-medium text-muted-foreground">
                 {cuisine.count}
