@@ -122,7 +122,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
         {/* Backend: fill `sectionTitle`, `sectionSubtitle`, `sectionCaption` from API/CMS. */}
         <div className="mx-auto flex w-full max-w-[704px] flex-col items-center text-center">
           <h2
-            className="text-[44px] font-bold leading-[180%] text-[#280048]"
+            className="text-[44px] font-bold leading-[180%] text-secondary"
             style={{ fontFamily: ara }}
           >
             {content.sectionTitle}
@@ -134,7 +134,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
             {content.sectionSubtitle}
           </p>
           <h4
-            className="mt-2 w-full text-center text-[15px] font-medium text-black"
+            className="mt-2 w-full text-center text-[15px] font-medium text-foreground"
             style={{ fontFamily: ibm }}
           >
             {content.sectionCaption}
