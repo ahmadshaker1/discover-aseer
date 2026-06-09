@@ -78,17 +78,6 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/0 to-black/10" />
-                  {restaurant.rating > 0 && (
-                    <div className={`absolute top-4 end-4`}>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
-                        {restaurant.reviewsCount > 0 && (
-                          <span>{`(${restaurant.reviewsCount})`}</span>
-                        )}
-                        <span>{restaurant.rating.toFixed(1)}</span>
-                        <span className="text-yellow-300">★</span>
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 <div className="flex flex-col justify-between px-5 py-4 flex-1">

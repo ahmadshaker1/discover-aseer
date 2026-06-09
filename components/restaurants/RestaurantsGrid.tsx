@@ -97,25 +97,6 @@ function CardCurrencyIcon() {
   );
 }
 
-function RatingStar() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="shrink-0 rounded-[1px]"
-      aria-hidden
-    >
-      <path
-        fill="#FACC15"
-        d="M12 17.3L6.18 20.59L7.54 14.1L2.47 9.59L9.05 8.95L12 3L14.95 8.95L21.53 9.59L16.46 14.1L17.82 20.59L12 17.3Z"
-      />
-    </svg>
-  );
-}
-
 function formatPriceBand(r: Restaurant): string {
   if (r.priceBand?.trim()) return r.priceBand.trim();
   if (r.priceRange && /^\d+-\d+$/.test(r.priceRange.replace(/\s/g, "")))
@@ -139,8 +120,6 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
     <div className="w-full">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
         {restaurants.map((restaurant) => {
-          const ratingDisplay = `${Number(restaurant.rating).toFixed(1)}/5`;
-          const votesDisplay = `(${restaurant.reviewsCount})`;
           return (
             <button
               key={restaurant.id}
@@ -158,19 +137,6 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   onError={handleImageError}
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent" />
-
-                <div
-                  className={`absolute top-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px] end-3`}
-                  dir="ltr"
-                >
-                  <RatingStar />
-                  <span
-                    className="min-w-0 truncate text-[11px] font-medium leading-none text-white"
-                    style={{ fontFamily: ibm }}
-                  >
-                    {votesDisplay} {ratingDisplay}
-                  </span>
-                </div>
               </div>
 
               <div className="flex flex-col gap-2 px-4 py-3 sm:px-5 sm:py-4">
