@@ -49,7 +49,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
       </div>
 
       {/* Sections List */}
-      <div className="flex flex-col rounded-[20px] p-5 gap-16 md:gap-24 bg-[#FFFFFF] max-w-[1298px] mx-auto">
+      <div className="flex flex-col rounded-[20px] p-5 gap-16 md:gap-24 max-w-[1298px] mx-auto">
         {slides.map((slide, index) => {
           const isImageRight = index % 2 === 1;
 
