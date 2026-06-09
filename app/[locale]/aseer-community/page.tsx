@@ -4,6 +4,7 @@ import CommunityHero, {
 import CommunityMainSlider, {
   type CommunityMainSliderContent,
 } from "@/components/community/CommunityMainSlider";
+import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import { getTranslations } from "next-intl/server";
 
 const SLIDE_IMAGES = [
@@ -25,10 +26,11 @@ const AseerCommunityPage = async () => {
   } = {
     hero: {
       breadcrumbs: [
-        { label: tServices("bannerCrumb") },
         { label: tCommon("breadcrumbHome"), href: "/" },
+        { label: tServices("bannerCrumb") },
       ],
       title: t("title"),
+      subtitle: t("subtitle"),
       backgroundImage: "/assets/community/hero.webp",
       ribbonPatternImage: "/hero-pattern/ribbon.jpg",
       socialLinks: [
@@ -59,6 +61,7 @@ const AseerCommunityPage = async () => {
       <section className="bg-surface">
         <CommunityMainSlider content={communityPageData.slider} />
       </section>
+      <EventsInfo />
     </div>
   );
 };

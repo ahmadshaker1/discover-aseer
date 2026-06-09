@@ -40,25 +40,25 @@ export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
     id: "film-land-1",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.mountains,
     filterId: "mountains",
-    image: "/assets/aboutAseer/mountains.png",
+    image: "/assets/aboutAseer/1.png",
   },
   {
     id: "film-land-2",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.plains,
     filterId: "plains",
-    image: "/assets/film/cb7870bcdbeed166a47cfcfd91a8a0fa3f5c72b5.jpg",
+    image: "/assets/aboutAseer/2.png",
   },
   {
     id: "film-land-3",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.beaches,
     filterId: "beaches",
-    image: "/assets/film/3031f7f312de80d43b7987da3469513cef9830aa.jpg",
+    image: "/assets/aboutAseer/3.jpg",
   },
   {
     id: "film-land-4",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.desert,
     filterId: "desert",
-    image: "/assets/igcat/ralydakar.jpg",
+    image: "/assets/aboutAseer/4.jpg",
   },
 ];
 

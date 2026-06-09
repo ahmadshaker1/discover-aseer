@@ -83,9 +83,9 @@ const FilmPage = async () => {
 
         <div className="relative z-10 mx-auto flex min-h-[850px] w-full max-w-[1440px] flex-col items-center justify-center px-4 py-[242px] sm:px-8 md:px-[68px]">
           <div className="flex w-full max-w-[1241px] flex-col items-center text-center">
-            <div className="mb-[30px] h-[47px] w-[251px]">
+            <div className="mb-[30px]">
               <p
-                className="text-start text-[24px] font-medium leading-[119%] text-white"
+                className="text-center text-[24px] font-medium leading-[119%] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]"
                 style={{ fontFamily: ibm }}
               >
                 {t("ctaFormPrompt")}
@@ -94,9 +94,8 @@ const FilmPage = async () => {
 
             <Link
               href="/filmmaker-form"
-              className="inline-flex h-[52px] w-[185px] cursor-pointer items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[16px] font-normal leading-6 text-white hover:opacity-90"
+              className="inline-flex h-[52px] w-[185px] cursor-pointer items-center justify-center rounded-[100px] bg-[#7300CD] px-3 text-center text-[18px] font-bold leading-6 text-white hover:opacity-90"
               style={{
-                fontFamily: "Inter, sans-serif",
                 paddingTop: 13.5,
                 paddingBottom: 14.5,
               }}
@@ -106,9 +105,9 @@ const FilmPage = async () => {
 
             <div className="h-[61px] w-full max-w-[1241px] py-[30px]" />
 
-            <div className="mb-4 h-[29px] w-[205px] pb-4">
+            <div className="mb-4 pb-4">
               <p
-                className="whitespace-nowrap text-start text-[18px] font-light leading-[119%] text-white"
+                className="whitespace-nowrap text-center text-[18px] font-bold leading-[119%] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]"
                 style={{ fontFamily: ibm }}
               >
                 {t("orEmailUs")}
@@ -117,9 +116,9 @@ const FilmPage = async () => {
 
             <a
               href="mailto:marketing@discoveraseer.com"
-              className="cursor-pointer text-start text-[24px] font-normal leading-[27px] text-[#D3A6F6] underline underline-offset-4"
-              style={{ fontFamily: "Inter, sans-serif" }}
+              className="cursor-pointer text-center text-[24px] font-bold leading-[27px] text-[#D3A6F6] underline underline-offset-4 transition-colors hover:text-[#e4c2ff]"
               dir="ltr"
+              style={{ fontFamily: ibm }}
             >
               marketing@discoveraseer.com
             </a>

@@ -8,8 +8,8 @@ export default async function AccommodationBanner() {
   return (
     <PageBanner
       breadcrumbs={[
-        { label: t("breadcrumb") },
         { label: tCommon("breadcrumbHome"), href: "/" },
+        { label: t("breadcrumb") },
       ]}
       title={t("title")}
       subtitle={t("subtitle")}

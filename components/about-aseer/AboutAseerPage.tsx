@@ -14,10 +14,10 @@ const HIGHLIGHT_TITLE_KEYS = [
 ] as const;
 
 const HIGHLIGHT_IMAGES = [
-  "/assets/aboutAseer/mountains.JPEG",
-  "/assets/aboutAseer/plains.jpeg",
-  "/assets/aboutAseer/beaches.jpeg",
-  "/assets/aboutAseer/desert.JPEG",
+  "/assets/aboutAseer/1.png",
+  "/assets/aboutAseer/2.png",
+  "/assets/aboutAseer/3.jpg",
+  "/assets/aboutAseer/4.jpg",
 ] as const;
 
 const AboutAseerPage = async () => {
@@ -40,8 +40,8 @@ const AboutAseerPage = async () => {
   } = {
     hero: {
       breadcrumbs: [
-        { label: t("breadcrumbAbout") },
         { label: tCommon("breadcrumbHome"), href: "/" },
+        { label: t("breadcrumbAbout") },
       ],
       title: t("title"),
       subtitle: t("heroSubtitle"),

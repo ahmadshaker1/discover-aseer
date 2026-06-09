@@ -39,9 +39,9 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
     <div className="flex w-full flex-col bg-background text-foreground">
       <DestinationsHero
         breadcrumbs={[
-          { label: destination.title },
-          { label: tDest("breadcrumbDestinations"), href: "/destinations" },
           { label: tCommon("breadcrumbHome"), href: "/" },
+          { label: tDest("breadcrumbDestinations"), href: "/destinations" },
+          { label: destination.title },
         ]}
         title={destination.title}
         subtitle={destination.subtitle}

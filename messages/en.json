@@ -319,7 +319,7 @@
     "galleryTitle": "Photo gallery",
     "relatedAttractionsTitle": "Similar attractions",
     "browseTitle": "Main Destinations",
-    "browseSubtitle": "One visit is never enough with all the activities and experiences on offer.",
+    "browseSubtitle": "Experience the harmony of nature and climate, merged seamlessly with the richness of heritage and cultural authenticity",
     "contributeDestinations": "Help enrich our destinations"
   },
   "travelTips": {
@@ -374,16 +374,16 @@
   "aboutAseer": {
     "title": "About Aseer",
     "breadcrumbAbout": "About Aseer",
-    "heroSubtitle": "Discover the region's natural and cultural diversity.",
+    "heroSubtitle": "Welcome a thousand to the peaks of breathtaking nature",
     "story": {
       "sectionTitle": "Spellbound by its diversity",
       "sectionSubtitle": "Across thousands of kilometres in southwestern Saudi Arabia, Aseer unfolds as a legendary story of astonishing chapters: mountain peaks crowned with clouds and draped in mist, green plains that promise bounty all year round, warm shores on the edge of a pristine sea, and a majestic desert in the silence and dignity of its grandeur—a natural tapestry steeped in ancient history, authentic culture, unique heritage, and generous hospitality. A destination where you can weave your own story of experience, adventure, exploration, and beauty.",
       "sectionCaption": "Discover Aseer to rediscover Saudi Arabia.",
       "highlights": {
-        "h1": "Mountains",
-        "h2": "Plains",
-        "h3": "Beaches",
-        "h4": "Desert"
+        "h1": "Mountain peaks",
+        "h2": "Tihama plains",
+        "h3": "coastal beaches",
+        "h4": "desert nature"
       },
       "slides": {
         "culture1": {
@@ -515,21 +515,21 @@
   },
   "aseerCommunity": {
     "title": "Aseer community",
-    "subtitle": "Stories and activities from the local community.",
+    "subtitle": "Values of genuine nobility, exceptional hospitality, and authentic courage welcome you in Aseer",
     "slider": {
       "sectionTitle": "People of Aseer",
       "sectionSubtitle": "Aseer spans a wide geographic area with one of the highest population densities among Saudi regions, home to more than one million people.",
       "slides": {
         "slide1": {
-          "title": "Spirit of Aseer",
+          "title": "The Aseer cultural tapestry",
           "description": "Settlement across Aseer's mountain, coastal, Bedouin, and urban landscapes has not weakened deep-rooted customs, traditions, or the human qualities that define the region. Openness to progress and modernity blends with generosity, loyalty, and kindness alongside cultural and professional growth."
         },
         "slide2": {
-          "title": "A connected community",
+          "title": "Community bonds",
           "description": "The family is the heart of social life in Aseer—the first cradle of upbringing that nurtures authenticity and development. These bonds extend to relatives and friends united by warmth and loyalty, as coffee brings them together in moments of rest and evening gatherings."
         },
         "slide3": {
-          "title": "A thriving life",
+          "title": "A vibrant life",
           "description": "Aseer society is rooted in a love of art expressed in dress, architecture, food, music, poetry, knowledge, and livelihoods from trade and farming. Geographic diversity enriched these arts while preserving heritage and pride in tradition."
         }
       }
@@ -718,10 +718,10 @@
     "servicePermitsTitle": "Permits",
     "servicePermitsDesc": "Support and guidance through required approvals from official entities for filming in Asir.",
     "landscapes": {
-      "mountains": "Mountains",
-      "plains": "Plains",
-      "beaches": "Beaches",
-      "desert": "Desert",
+      "mountains": "Mountain peaks",
+      "plains": "Tihama plains",
+      "beaches": "coastal beaches",
+      "desert": "desert nature",
       "viewAttractions": "View attractions in {label}",
       "viewDestinations": "View destinations in {label}",
       "filteredBy": "Showing attractions related to {label}"

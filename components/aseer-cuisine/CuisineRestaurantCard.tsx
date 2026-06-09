@@ -27,7 +27,10 @@ interface CuisineRestaurantCardProps {
   className?: string;
 }
 
-const CuisineRestaurantCard = ({ card, className = "" }: CuisineRestaurantCardProps) => {
+const CuisineRestaurantCard = ({
+  card,
+  className = "",
+}: CuisineRestaurantCardProps) => {
   return (
     <article
       className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-border bg-surface text-start transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl ${className}`}
@@ -41,7 +44,7 @@ const CuisineRestaurantCard = ({ card, className = "" }: CuisineRestaurantCardPr
           sizes="282px"
           loading="lazy"
         />
-        <div
+        {/* <div
           className="absolute top-3 end-3 z-10 flex h-[29px] min-w-[89px] max-w-[89px] items-center justify-center gap-1 rounded-[50px] bg-[#00000080] p-[6px]"
           dir="ltr"
         >
@@ -52,7 +55,7 @@ const CuisineRestaurantCard = ({ card, className = "" }: CuisineRestaurantCardPr
           >
             ({card.reviewsCount}) {Number(card.rating).toFixed(1)}/5
           </span>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex h-[115px] flex-col justify-between gap-2 px-4 py-3 sm:px-5 sm:py-4">

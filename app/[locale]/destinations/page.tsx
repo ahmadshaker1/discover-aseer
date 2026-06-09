@@ -22,8 +22,8 @@ const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
     <div className="flex w-full flex-col bg-background text-foreground">
       <PageBanner
         breadcrumbs={[
-          { label: tCommon("destinations") },
           { label: tCommon("breadcrumbHome"), href: "/" },
+          { label: tCommon("destinations") },
         ]}
         title={t("browseTitle")}
         subtitle={t("browseSubtitle")}

@@ -35,7 +35,7 @@ function BreadcrumbChevron({ isRtl }: { isRtl: boolean }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
-      className={`inline-block shrink-0 ${isRtl ? "rotate-180" : ""}`}
+      className={`inline-block shrink-0 ${isRtl ? "" : "rotate-180"}`}
     >
       <path
         d="M4.25184 -1.87195e-06C4.35476 -1.88095e-06 4.45767 0.0379143 4.53892 0.119164C4.69601 0.276247 4.69601 0.536248 4.53893 0.693332L1.00726 4.225C0.747259 4.485 0.747259 4.9075 1.00726 5.1675L4.53893 8.69916C4.69601 8.85625 4.69601 9.11625 4.53893 9.27333C4.38184 9.43041 4.12184 9.43041 3.96476 9.27333L0.433092 5.74167C0.156842 5.46542 -0.000241179 5.09166 -0.000241213 4.69625C-0.000241248 4.30083 0.151425 3.92708 0.433092 3.65083L3.96476 0.119165C4.04601 0.0433312 4.14893 -1.86295e-06 4.25184 -1.87195e-06Z"
@@ -54,7 +54,7 @@ function BrowseCtaArrowIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
-      className="shrink-0 rtl:rotate-180"
+      className="shrink-0 rotate-180 rtl:rotate-0"
     >
       <path
         d="M0.75 5.01743L11.375 5.01743"
@@ -174,18 +174,18 @@ const PageBanner = ({
           {primaryCta ? (
             <Link
               href={primaryCta.href}
-              className="mt-2 inline-flex h-[42px] min-w-[185px] shrink-0 items-center justify-between gap-[10px] rounded-[100px] bg-primary px-4 py-[10px] text-primary-foreground transition-opacity hover:opacity-90"
+              className="mt-2 inline-flex h-[42px] min-w-[185px] shrink-0 items-center justify-between rounded-[100px] bg-primary px-4 text-primary-foreground transition-opacity hover:opacity-90"
               style={{
                 boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)",
               }}
             >
-              <BrowseCtaArrowIcon />
               <span
                 className="min-w-0 flex-1 whitespace-nowrap text-start text-[17px] font-bold leading-[100%]"
                 style={{ fontFamily: ara }}
               >
                 {primaryCta.label || t("pageBanner.browseMore")}
               </span>
+              <BrowseCtaArrowIcon />
             </Link>
           ) : null}
         </div>

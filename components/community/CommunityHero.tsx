@@ -12,6 +12,8 @@ export interface CommunityHeroData {
   breadcrumbs: { label: string; href?: string }[];
   // Main hero heading text.
   title: string;
+  // Subtitle text under heading.
+  subtitle?: string;
   // Full-bleed hero background image URL/path.
   backgroundImage: string;
   // Social icons + destination URLs.
@@ -27,7 +29,7 @@ function BreadcrumbChevron() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
-      className="rtl:rotate-180"
+      className="rotate-180 rtl:rotate-0"
     >
       <path
         d="M4.25184 0C4.35476 0 4.45767 0.0379143 4.53892 0.119164C4.69601 0.276247 4.69601 0.536248 4.53893 0.693332L1.00726 4.225C0.747259 4.485 0.747259 4.9075 1.00726 5.1675L4.53893 8.69916C4.69601 8.85625 4.69601 9.11625 4.53893 9.27333C4.38184 9.43041 4.12184 9.43041 3.96476 9.27333L0.433092 5.74167C0.156842 5.46542 -0.000241179 5.09166 -0.000241213 4.69625C-0.000241248 4.30083 0.151425 3.92708 0.433092 3.65083L3.96476 0.119165C4.04601 0.0433312 4.14893 0 4.25184 0Z"
@@ -121,6 +123,7 @@ function FacebookIcon() {
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="size-5"
     >
       <g clipPath="url(#clip0_17_61)">
         <path
@@ -164,19 +167,19 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
       <div className="absolute inset-0 bg-black/30" />
 
       {/* Right-edge ribbon, matching landing hero positioning/overflow behavior. */}
-      <img
+      {/* <img
         src="/hero-pattern/ribbon_column.png"
         alt=""
         aria-hidden
         className="absolute top-0 z-20 hidden h-full w-[15px] object-cover md:block start-0 ltr:scale-x-[-1]"
-      />
+      /> */}
 
       {/* Backend: `data.socialLinks` drives icon links; keep supported platforms in `CommunityHeroSocialLink`. */}
       <div
-        className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-12`}
+        className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-8`}
       >
         {data.socialLinks.map((social) => (
-          <Link
+          <a
             key={social.platform}
             href={social.url}
             target="_blank"
@@ -185,7 +188,7 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
             aria-label={social.platform}
           >
             <SocialIcon platform={social.platform} />
-          </Link>
+          </a>
         ))}
       </div>
 
@@ -225,6 +228,14 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
           >
             {data.title}
           </h1>
+          {data.subtitle && (
+            <p
+              className="w-full text-center text-base leading-[1.33] text-white/90 md:text-[clamp(18px,1.9vw,24px)] font-bold"
+              style={{ fontFamily: ara }}
+            >
+              {data.subtitle}
+            </p>
+          )}
         </div>
       </div>
     </section>

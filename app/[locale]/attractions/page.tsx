@@ -139,8 +139,8 @@ const AttractionsPage = async ({ searchParams }: AttractionsPageProps) => {
     <div className="flex w-full flex-col bg-background text-foreground">
       <PageBanner
         breadcrumbs={[
-          { label: t("breadcrumb") },
           { label: tCommon("breadcrumbHome"), href: "/" },
+          { label: t("breadcrumb") },
         ]}
         title={t("title")}
         subtitle={tCommon("subtitleOneVisit")}

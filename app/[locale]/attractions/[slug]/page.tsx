@@ -40,9 +40,9 @@ export default async function AttractionSlugPage({ params }: AttractionSlugPageP
     <div className="flex w-full flex-col bg-background text-foreground">
       <AttractionsHero
         breadcrumbs={[
-          { label: attraction.title },
-          { label: tAttr("breadcrumb"), href: "/attractions" },
           { label: t("common.home"), href: "/" },
+          { label: tAttr("breadcrumb"), href: "/attractions" },
+          { label: attraction.title },
         ]}
         title={attraction.title}
         subtitle={attraction.subtitle || attraction.location}

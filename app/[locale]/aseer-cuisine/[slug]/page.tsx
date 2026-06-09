@@ -24,9 +24,9 @@ const CuisineSlugPage = async ({ params }: CuisineSlugPageProps) => {
     <div className="flex w-full flex-col bg-background text-foreground">
       <CuisineSlugHero
         breadcrumbs={[
-          { label: item.title },
-          { label: tCuisine("breadcrumbCuisine"), href: "/aseer-cuisine" },
           { label: t("common.home"), href: "/" },
+          { label: tCuisine("breadcrumbCuisine"), href: "/aseer-cuisine" },
+          { label: item.title },
         ]}
         title={item.title}
         backgroundImage={item.heroImage}
