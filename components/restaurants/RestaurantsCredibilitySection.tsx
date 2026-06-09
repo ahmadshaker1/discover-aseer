@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import WorldRegionGastronomyAwardLogo from "@/components/restaurants/WorldRegionGastronomyAwardLogo";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -15,14 +15,7 @@ const RestaurantsCredibilitySection = () => {
       aria-labelledby="restaurants-credibility-heading"
     >
       <div className="flex min-h-[448px] w-full max-w-[1440px] flex-col items-center justify-center gap-[10px] px-[clamp(1rem,calc((100vw-428px)/2),506px)] py-5">
-        <Image
-          src="/assets/restaurant/IGCAT.png"
-          alt="IGCAT — International Institute of Gastronomy, Culture, Arts and Tourism"
-          width={377}
-          height={139}
-          className="h-auto w-full max-w-[377px] object-contain mix-blend-multiply"
-          sizes="377px"
-        />
+        <WorldRegionGastronomyAwardLogo />
 
         <h2
           id="restaurants-credibility-heading"
