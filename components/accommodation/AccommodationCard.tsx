@@ -40,13 +40,6 @@ const AccommodationCard = ({
           loading="lazy"
         />
         <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/45 via-black/0 to-black/10" />
-        <div
-          className="absolute start-3 top-3 rounded-full bg-black/70 px-2 py-1 text-[12px] text-white"
-          dir="ltr"
-        >
-          ({accommodation.reviewsCount}) {accommodation.rating.toFixed(1)}/5{" "}
-          <span className="text-yellow-300">★</span>
-        </div>
         <div className="absolute end-3 top-3 rounded-full bg-black/70 px-2 py-1 text-[12px] text-white">
           {accommodation.city}
         </div>
