@@ -8,7 +8,6 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Restaurant } from "./data";
-import { SaudiRiyalIcon } from "./Icons";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -97,11 +96,7 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
                     </div>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <SaudiRiyalIcon />
-                      <span>{restaurant.priceRange}</span>
-                    </div>
+                  <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                     {restaurant.nationality && (
                       <div className="flex items-center gap-1">
                         <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground" />

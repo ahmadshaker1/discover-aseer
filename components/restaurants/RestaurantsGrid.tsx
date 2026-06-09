@@ -11,8 +11,6 @@ const PLACEHOLDER_IMAGE = "/assets/experiences/experiences.png";
 
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 const ara = "var(--font-ara-hamah-1964), sans-serif";
-const readex = "var(--font-readex-pro), sans-serif";
-
 function CardPinIcon() {
   return (
     <svg
@@ -57,51 +55,6 @@ function CardUtensilIcon() {
       />
     </svg>
   );
-}
-
-function CardPersonIcon() {
-  return (
-    <svg
-      width="8"
-      height="11"
-      viewBox="0 0 8 11"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="shrink-0"
-      aria-hidden
-    >
-      <path
-        d="M0 10.5C0 9.43913 0.421427 8.42172 1.17157 7.67157C1.92172 6.92143 2.93913 6.5 4 6.5C5.06087 6.5 6.07828 6.92143 6.82843 7.67157C7.57857 8.42172 8 9.43913 8 10.5H0ZM4 6C2.3425 6 1 4.6575 1 3C1 1.3425 2.3425 0 4 0C5.6575 0 7 1.3425 7 3C7 4.6575 5.6575 6 4 6Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function CardCurrencyIcon() {
-  return (
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 12 12"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="shrink-0"
-      aria-hidden
-    >
-      <path
-        d="M11.5901 9.25373C11.8042 8.79435 11.9458 8.29561 12 7.7727L8.47005 8.49922V7.10259L11.59 6.46098C11.8041 6.0016 11.9457 5.50286 11.9999 4.97995L8.46994 5.70585V0.683132C7.92905 0.977024 7.44868 1.36823 7.0582 1.82967V5.99633L5.64645 6.28671V0C5.10556 0.293789 4.62519 0.685094 4.2347 1.14654V6.57699L1.07592 7.22655C0.861779 7.68593 0.720124 8.18467 0.665789 8.70758L4.2347 7.97362V9.73243L0.409913 10.519C0.195776 10.9784 0.0542281 11.4771 0 12L4.00349 11.1767C4.32939 11.1111 4.6095 10.9246 4.79161 10.668L5.52582 9.61467V9.61446C5.60204 9.50548 5.64645 9.37408 5.64645 9.23256V7.68324L7.0582 7.39286V10.1861L11.59 9.25353L11.5901 9.25373Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function formatPriceBand(r: Restaurant): string {
-  if (r.priceBand?.trim()) return r.priceBand.trim();
-  if (r.priceRange && /^\d+-\d+$/.test(r.priceRange.replace(/\s/g, "")))
-    return r.priceRange.replace(/\s/g, "");
-  return "50-100";
 }
 
 const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
@@ -157,27 +110,14 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   </span>
                 </div>
 
-                <div className="flex w-full flex-wrap items-center justify-start gap-3">
-                  <div className="flex items-center justify-start gap-1">
-                    <CardUtensilIcon />
-                    <span
-                      className="text-xs font-bold leading-none text-foreground"
-                      style={{ fontFamily: ibm }}
-                    >
-                      {restaurant.category}
-                    </span>
-                  </div>
-                  <CardPersonIcon />
-                  <div className="flex items-center justify-start gap-1">
-
-                    <span
-                      className="text-xs font-bold leading-none text-foreground"
-                      style={{ fontFamily: readex }}
-                    >
-                      {formatPriceBand(restaurant)}
-                    </span>
-                    <CardCurrencyIcon />
-                  </div>
+                <div className="flex w-full items-center justify-start gap-1">
+                  <CardUtensilIcon />
+                  <span
+                    className="text-xs font-bold leading-none text-foreground"
+                    style={{ fontFamily: ibm }}
+                  >
+                    {restaurant.category}
+                  </span>
                 </div>
               </div>
             </button>
