@@ -59,6 +59,7 @@ function RightChevron({ stroke }: { stroke: string }) {
 const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
   const t = useTranslations("film");
   const tCommon = useTranslations("common");
+
   const lanes = useMemo(() => {
     const source = slides.length > 0 ? slides : FALLBACK_FILM_WHY_ASEER_SLIDES;
     const left = source.filter((s) => s.lane === "left");
@@ -75,77 +76,88 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
     };
   }, [slides]);
 
-  const [leftIndex, setLeftIndex] = useState(0);
-  const [rightIndex, setRightIndex] = useState(0);
+  const [naturalIndex, setNaturalIndex] = useState(0);
+  const [culturalIndex, setCulturalIndex] = useState(0);
 
-  const leftSlide = lanes.left[leftIndex % lanes.left.length];
-  const rightSlide = lanes.right[rightIndex % lanes.right.length];
+  const naturalImages = useMemo(() => lanes.right.map((s) => s.image), [lanes.right]);
+  const culturalImages = useMemo(() => lanes.left.map((s) => s.image), [lanes.left]);
 
-  const renderCard = (
-    slide: FilmWhyAseerSlide,
+  const renderImageSlider = (
+    images: string[],
+    index: number,
     onPrev: () => void,
     onNext: () => void,
+    sectionName: string,
   ) => {
-    const lightText = slide.textTheme === "light";
-    const textColor = lightText ? "text-white" : "text-foreground";
-    const chevronStroke = "currentColor";
-    const overlay = lightText
-      ? "bg-linear-to-b from-black/15 via-black/20 to-black/45"
-      : "bg-linear-to-b from-white/10 via-white/15 to-white/35";
+    if (images.length === 0) return null;
 
     return (
-      <article className="relative h-[803px] w-full max-w-[640px] shrink-0 overflow-hidden rounded-[10px]">
-        <img
-          src={slide.image}
-          alt={slide.title}
-          className="h-full w-full object-cover"
-        />
-        <div className={`absolute inset-0 ${overlay}`} />
+      <div className="relative h-[360px] sm:h-[480px] md:h-[520px] w-full overflow-hidden rounded-[20px] shadow-lg bg-black/5">
+        {images.map((imgSrc, imgIdx) => {
+          const isActive = imgIdx === (index % images.length);
+          return (
+            <img
+              key={`${imgSrc}-${imgIdx}`}
+              src={imgSrc}
+              alt={`${sectionName} - image ${imgIdx + 1}`}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+                isActive ? "opacity-100 z-1" : "opacity-0 z-0"
+              }`}
+            />
+          );
+        })}
 
-        <div className={`absolute top-0 w-full max-w-[510px] p-8 start-0`}>
-          <div className={`space-y-[18px] p-5 text-start`}>
-            <h3
-              className={`text-[32px] font-bold leading-[48px] ${textColor} text-start`}
-              style={{ fontFamily: ara }}
-            >
-              {slide.title}
-            </h3>
-            <p
-              className={`line-clamp-4 text-[18px] font-light ${textColor} text-start`}
-              style={{ fontFamily: ibm }}
-            >
-              {slide.description}
-            </p>
-          </div>
+        {/* Bottom Dark Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none z-2" />
+
+        {/* Navigation Controls */}
+        <div className="absolute bottom-6 end-6 flex items-center gap-3 z-10">
+          <button
+            type="button"
+            onClick={onPrev}
+            aria-label={tCommon("previous")}
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-md transition-all hover:bg-black/50 hover:scale-105 active:scale-95"
+          >
+            <span className="rtl:rotate-180 flex items-center justify-center">
+              <LeftChevron stroke="currentColor" />
+            </span>
+          </button>
+          <button
+            type="button"
+            onClick={onNext}
+            aria-label={tCommon("next")}
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-md transition-all hover:bg-black/50 hover:scale-105 active:scale-95"
+          >
+            <span className="rtl:rotate-180 flex items-center justify-center">
+              <RightChevron stroke="currentColor" />
+            </span>
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={onPrev}
-          aria-label={`${tCommon("previous")} - ${slide.title}`}
-          className={`absolute bottom-8 inline-flex h-[44px] w-[27px] items-center justify-center end-8 ${lightText ? "text-white" : "text-foreground"}`}
-        >
-          <span className="rtl:rotate-180">
-            <RightChevron stroke={chevronStroke} />
-          </span>
-        </button>
-        <button
-          type="button"
-          onClick={onNext}
-          aria-label={`${tCommon("next")} - ${slide.title}`}
-          className={`absolute bottom-8 inline-flex h-[44px] w-[27px] items-center justify-center start-8 ${lightText ? "text-white" : "text-foreground"}`}
-        >
-          <span className="rtl:rotate-180">
-            <LeftChevron stroke={chevronStroke} />
-          </span>
-        </button>
-      </article>
+        {/* Dots Pagination */}
+        {images.length > 1 && (
+          <div className="absolute bottom-8 start-6 flex items-center gap-1.5 z-10">
+            {images.map((_, imgIdx) => {
+              const isActive = imgIdx === (index % images.length);
+              return (
+                <span
+                  key={imgIdx}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    isActive ? "w-6 bg-white" : "w-1.5 bg-white/50"
+                  }`}
+                />
+              );
+            })}
+          </div>
+        )}
+      </div>
     );
   };
 
   return (
     <section className="mx-auto h-auto w-full max-w-[1442px] px-4 py-[60px] sm:px-8 md:px-[68px]">
-      <div className="mx-auto flex w-full max-w-[1306px] flex-col gap-16">
+      <div className="mx-auto flex w-full max-w-[1306px] flex-col gap-16 md:gap-24">
+        {/* Main Section Header */}
         <div className="w-full">
           <h2
             className={`text-[48px] font-bold leading-[38px] text-foreground text-start`}
@@ -155,25 +167,75 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
           </h2>
         </div>
 
-        <div
-          className={`flex w-full flex-col gap-3 lg:items-start lg:justify-between lg:flex-row`}
-        >
-          {renderCard(
-            leftSlide,
-            () =>
-              setLeftIndex(
-                (prev) => (prev - 1 + lanes.left.length) % lanes.left.length,
-              ),
-            () => setLeftIndex((prev) => (prev + 1) % lanes.left.length),
-          )}
-          {renderCard(
-            rightSlide,
-            () =>
-              setRightIndex(
-                (prev) => (prev - 1 + lanes.right.length) % lanes.right.length,
-              ),
-            () => setRightIndex((prev) => (prev + 1) % lanes.right.length),
-          )}
+        {/* Content Sections Container */}
+        <div className="flex w-full flex-col gap-16 md:gap-24">
+          
+          {/* Section 1: Natural Diversity (Text Left, Image Right) */}
+          <div className="flex flex-col-reverse lg:flex-row items-center gap-8 lg:gap-16 w-full">
+            {/* Left Column: Text */}
+            <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
+              <h3
+                className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4"
+                style={{ fontFamily: ara }}
+              >
+                {t("whyAseerNaturalTitle")}
+              </h3>
+              <p
+                className="text-[18px] sm:text-[20px] font-light leading-[32px] text-muted-foreground text-start"
+                style={{ fontFamily: ibm }}
+              >
+                {t("whyAseerNaturalDesc")}
+              </p>
+            </div>
+            
+            {/* Right Column: Natural Images */}
+            <div className="w-full lg:w-1/2">
+              {renderImageSlider(
+                naturalImages,
+                naturalIndex,
+                () =>
+                  setNaturalIndex(
+                    (prev) => (prev - 1 + naturalImages.length) % naturalImages.length,
+                  ),
+                () => setNaturalIndex((prev) => (prev + 1) % naturalImages.length),
+                t("whyAseerNaturalTitle"),
+              )}
+            </div>
+          </div>
+
+          {/* Section 2: Cultural Diversity (Image Left, Text Right) */}
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 w-full">
+            {/* Left Column: Cultural Images */}
+            <div className="w-full lg:w-1/2">
+              {renderImageSlider(
+                culturalImages,
+                culturalIndex,
+                () =>
+                  setCulturalIndex(
+                    (prev) => (prev - 1 + culturalImages.length) % culturalImages.length,
+                  ),
+                () => setCulturalIndex((prev) => (prev + 1) % culturalImages.length),
+                t("whyAseerCulturalTitle"),
+              )}
+            </div>
+
+            {/* Right Column: Text */}
+            <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
+              <h3
+                className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4"
+                style={{ fontFamily: ara }}
+              >
+                {t("whyAseerCulturalTitle")}
+              </h3>
+              <p
+                className="text-[18px] sm:text-[20px] font-light leading-[32px] text-muted-foreground text-start"
+                style={{ fontFamily: ibm }}
+              >
+                {t("whyAseerCulturalDesc")}
+              </p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
