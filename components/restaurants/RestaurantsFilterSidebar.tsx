@@ -13,19 +13,9 @@ import {
 } from "@/components/restaurants/applyRestaurantFilters";
 import {
   LocationIcon,
-  RestaurantTypeIcon,
   CuisineIcon,
-  StarIcon,
-  BuildingIcon,
-  DiamondIcon,
   ChevronDownIcon,
 } from "./Icons";
-
-interface RestaurantType {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-}
 
 interface CuisineOption {
   id: string;
@@ -125,58 +115,6 @@ const LocationFilter = ({
   );
 };
 
-// Restaurant Type Filter Component
-interface RestaurantTypeFilterProps {
-  restaurantTypes: RestaurantType[];
-  selectedTypes: string[];
-  onTypeToggle: (typeId: string) => void;
-}
-
-const RestaurantTypeFilter = ({
-  restaurantTypes,
-  selectedTypes,
-  onTypeToggle,
-}: RestaurantTypeFilterProps) => {
-  const t = useTranslations("common");
-  return (
-    <div className="mb-6 sm:mb-8">
-      <div className="flex items-center gap-2 mb-3 sm:mb-4">
-        <RestaurantTypeIcon />
-        <h3 className="text-base font-bold text-foreground sm:text-lg">
-          {t("restaurantType")}
-        </h3>
-      </div>
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        {restaurantTypes.map((type) => {
-          const isSelected = selectedTypes.includes(type.id);
-          return (
-            <Button
-              key={type.id}
-              onClick={() => onTypeToggle(type.id)}
-              className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 p-3 transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:p-4 ${
-                isSelected
-                  ? "border-primary bg-muted"
-                  : "border-border hover:border-muted-foreground"
-              }`}
-            >
-              <div
-                className={`mb-1.5 sm:mb-2 ${
-                  isSelected ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {type.icon}
-              </div>
-              <span className="text-xs font-medium text-foreground sm:text-sm">
-                {type.label}
-              </span>
-            </Button>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
 // Filter Checkbox Component
 interface FilterCheckboxProps {
   checked: boolean;
@@ -259,6 +197,7 @@ const CUISINE_LABEL_KEYS: Record<(typeof CUISINE_FILTER_IDS)[number], string> =
     american: "cuisineAmerican",
     saudi: "cuisineSaudi",
     "middle-eastern": "cuisineMiddleEastern",
+    popular: "popular",
   };
 
 export interface RestaurantsFilterSidebarProps {
@@ -276,26 +215,11 @@ const RestaurantsFilterSidebar = ({
 }: RestaurantsFilterSidebarProps) => {
   const t = useTranslations("common");
 
-  const restaurantTypes: RestaurantType[] = [
-    { id: "luxury", label: t("luxury"), icon: <DiamondIcon /> },
-    { id: "popular", label: t("popular"), icon: <BuildingIcon /> },
-    { id: "featured", label: t("featured"), icon: <StarIcon /> },
-  ];
-
   const cuisinesWithCounts: CuisineOption[] = CUISINE_FILTER_IDS.map((id) => ({
     id,
     label: t(CUISINE_LABEL_KEYS[id]),
     count: countRestaurantsForCuisine(restaurants, id),
   }));
-
-  const handleRestaurantTypeToggle = (typeId: string) => {
-    onFiltersChange((prev) => ({
-      ...prev,
-      restaurantType: prev.restaurantType.includes(typeId)
-        ? prev.restaurantType.filter((id) => id !== typeId)
-        : [...prev.restaurantType, typeId],
-    }));
-  };
 
   const handleCuisineToggle = (cuisineId: string) => {
     onFiltersChange((prev) => ({
@@ -319,11 +243,6 @@ const RestaurantsFilterSidebar = ({
       <LocationFilter
         selectedCity={filters.city}
         onCityChange={handleCityChange}
-      />
-      <RestaurantTypeFilter
-        restaurantTypes={restaurantTypes}
-        selectedTypes={filters.restaurantType}
-        onTypeToggle={handleRestaurantTypeToggle}
       />
       <CuisineTypeFilter
         cuisines={cuisinesWithCounts}

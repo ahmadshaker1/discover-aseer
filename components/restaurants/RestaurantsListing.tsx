@@ -12,7 +12,6 @@ import {
 
 const INITIAL_FILTERS: RestaurantFilterState = {
   city: null,
-  restaurantType: [],
   cuisineTypes: [],
 };
 

@@ -6,7 +6,6 @@ import type { Restaurant } from "./types";
 
 export interface RestaurantFilterState {
   city: string | null;
-  restaurantType: string[];
   cuisineTypes: string[];
 }
 
@@ -15,6 +14,7 @@ export const CUISINE_FILTER_IDS = [
   "american",
   "saudi",
   "middle-eastern",
+  "popular",
 ] as const;
 
 export type CuisineFilterId = (typeof CUISINE_FILTER_IDS)[number];
@@ -35,6 +35,8 @@ export function restaurantMatchesCuisine(r: Restaurant, id: string): boolean {
       return /عربي|شرق|levant|turkish|تركي|لبناني|middle|arabic|كافيه|قهوة/.test(
         hay,
       );
+    case "popular":
+      return r.reviewsCount >= 50;
     default:
       return false;
   }
@@ -43,24 +45,6 @@ export function restaurantMatchesCuisine(r: Restaurant, id: string): boolean {
 function restaurantMatchesCity(r: Restaurant, cityId: string): boolean {
   if (r.cityId) return r.cityId === cityId;
   return locationMatchesCityId(r.location, cityId);
-}
-
-function matchesRestaurantType(r: Restaurant, ids: string[]): boolean {
-  if (ids.length === 0) return true;
-  return ids.some((id) => {
-    if (id === "featured") return r.rating >= 4.5;
-    if (id === "popular") return r.reviewsCount >= 50;
-    if (id === "luxury") {
-      if (/\$\$\$\$|\$\$\$/.test(r.priceRange)) return true;
-      const parts =
-        r.priceBand?.split("-").map((s) => Number(String(s).trim())) ?? [];
-      if (parts.length === 2 && parts.every((n) => Number.isFinite(n))) {
-        return Math.max(parts[0], parts[1]) >= 150;
-      }
-      return false;
-    }
-    return false;
-  });
 }
 
 export function countRestaurantsForCuisine(
@@ -83,7 +67,6 @@ export function applyRestaurantFilters(
     ) {
       return false;
     }
-    if (!matchesRestaurantType(r, f.restaurantType)) return false;
     return true;
   });
 }
