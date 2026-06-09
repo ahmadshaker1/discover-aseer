@@ -55,6 +55,13 @@ export function countRestaurantsForCuisine(
     .length;
 }
 
+export function countRestaurantsForCity(
+  restaurants: Restaurant[],
+  cityId: string,
+): number {
+  return restaurants.filter((r) => restaurantMatchesCity(r, cityId)).length;
+}
+
 export function applyRestaurantFilters(
   restaurants: Restaurant[],
   f: RestaurantFilterState,

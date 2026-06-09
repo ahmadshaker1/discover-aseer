@@ -13,7 +13,7 @@ export default async function RestaurantsBanner() {
     <section className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/assets/restaurant/restaurant-banner.webp"
+          src="/assets/restaurant/restaurant-banner.png"
           alt=""
           fill
           className="object-cover"

@@ -8,6 +8,7 @@ import { getCityOptions } from "@/components/landmarks/filterOptions";
 import type { Restaurant } from "@/components/restaurants/types";
 import {
   countRestaurantsForCuisine,
+  countRestaurantsForCity,
   CUISINE_FILTER_IDS,
   type RestaurantFilterState,
 } from "@/components/restaurants/applyRestaurantFilters";
@@ -47,18 +48,18 @@ const FilterHeader = ({ onReset }: FilterHeaderProps) => {
 
 // Location Filter Component
 interface LocationFilterProps {
+  cityOptions: { id: string; label: string }[];
   selectedCity: string | null;
   onCityChange: (cityId: string | null) => void;
 }
 
 const LocationFilter = ({
+  cityOptions,
   selectedCity,
   onCityChange,
 }: LocationFilterProps) => {
-  const locale = useLocale();
   const t = useTranslations("common");
-  const cityOpts = getCityOptions(locale);
-  const selectedCityOption = cityOpts.find((opt) => opt.id === selectedCity);
+  const selectedCityOption = cityOptions.find((opt) => opt.id === selectedCity);
 
   return (
     <div className="mb-6 sm:mb-8">
@@ -85,7 +86,7 @@ const LocationFilter = ({
             className={`absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none start-0 origin-top-start`}
           >
             <div className="py-1">
-              {cityOpts.map((option) => (
+              {cityOptions.map((option) => (
                 <Menu.Item key={option.id}>
                   {({ active }) => (
                     <button
@@ -215,7 +216,12 @@ const RestaurantsFilterSidebar = ({
   onFiltersChange,
   onReset,
 }: RestaurantsFilterSidebarProps) => {
+  const locale = useLocale();
   const t = useTranslations("common");
+
+  const cityOptions = getCityOptions(locale).filter(
+    (opt) => countRestaurantsForCity(restaurants, opt.id) > 0,
+  );
 
   const cuisinesWithCounts: CuisineOption[] = CUISINE_FILTER_IDS.map((id) => ({
     id,
@@ -243,6 +249,7 @@ const RestaurantsFilterSidebar = ({
     <div className="w-full max-w-md rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-none">
       <FilterHeader onReset={onReset} />
       <LocationFilter
+        cityOptions={cityOptions}
         selectedCity={filters.city}
         onCityChange={handleCityChange}
       />
