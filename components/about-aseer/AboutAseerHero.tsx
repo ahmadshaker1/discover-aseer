@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import Image from "next/image";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -163,19 +162,6 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
     >
       {/* Backend: make `backgroundImage` come from CMS/API (hero image URL). */}
       <div className="absolute inset-0 bg-black/25" />
-
-      <div
-        className={`pointer-events-none absolute inset-y-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)] end-0`}
-        aria-hidden
-      >
-        <Image
-          src="/hero-pattern/pattern-diamons.png"
-          alt=""
-          fill
-          className="object-contain object-start ltr:scale-x-[-1]"
-          sizes="(max-width: 768px) 55vw, 28rem"
-        />
-      </div>
 
       <div
         className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-8`}
