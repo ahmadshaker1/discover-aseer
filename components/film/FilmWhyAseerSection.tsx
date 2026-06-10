@@ -170,8 +170,8 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
         {/* Content Sections Container */}
         <div className="flex w-full flex-col gap-16 md:gap-24">
           
-          {/* Section 1: Natural Diversity (Text Left, Image Right) */}
-          <div className="flex flex-col-reverse lg:flex-row items-center gap-8 lg:gap-16 w-full">
+          {/* Section 1: Natural Diversity (text left, image right — reversed in RTL) */}
+          <div className="flex flex-col-reverse items-center gap-8 lg:flex-row rtl:lg:flex-row-reverse lg:gap-16 w-full">
             {/* Left Column: Text */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
               <h3
