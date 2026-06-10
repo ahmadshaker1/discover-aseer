@@ -43,6 +43,14 @@ export const ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS: DestinationFilterId[] = 
   LANDSCAPE_TO_DESTINATION_FILTER.desert,
 ];
 
+/** Landscape card images (mountains → desert), shared by About Aseer and film pages. */
+export const LANDSCAPE_HIGHLIGHT_IMAGES = [
+  "/assets/aboutAseer/mountains.JPEG",
+  "/assets/aboutAseer/plains.jpeg",
+  "/assets/aboutAseer/beaches.jpeg",
+  "/assets/aboutAseer/desert.JPEG",
+] as const;
+
 function pickLocale(locale: string): "ar" | "en" {
   return locale === "en" ? "en" : "ar";
 }

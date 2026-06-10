@@ -154,9 +154,9 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 1024px) 50vw, 310px"
                   />
-                  <div className="absolute inset-x-0 bottom-0 h-[51px] bg-[linear-gradient(179.54deg,rgba(0,0,0,0)_0.39%,#000000_99.6%)] px-5 py-4">
+                  <div className="absolute inset-x-0 bottom-0 flex h-[91px] items-end justify-center rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
                     <p
-                      className="line-clamp-1 text-start text-[16px] font-bold leading-[120%] text-white"
+                      className="line-clamp-2 w-full text-center text-[16px] font-bold leading-[120%] text-white"
                       style={{ fontFamily: ara }}
                     >
                       {card.title}

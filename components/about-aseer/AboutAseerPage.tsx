@@ -5,19 +5,16 @@ import AboutAseerHero, {
 import AboutAseerStorySection, {
   type AboutStoryContent,
 } from "@/components/about-aseer/AboutAseerStorySection";
-import { ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS } from "@/components/destinations/filterOptions";
+import {
+  ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS,
+  LANDSCAPE_HIGHLIGHT_IMAGES,
+} from "@/components/destinations/filterOptions";
+
 const HIGHLIGHT_TITLE_KEYS = [
   "story.highlights.h1",
   "story.highlights.h2",
   "story.highlights.h3",
   "story.highlights.h4",
-] as const;
-
-const HIGHLIGHT_IMAGES = [
-  "/assets/aboutAseer/1.png",
-  "/assets/aboutAseer/2.png",
-  "/assets/aboutAseer/3.jpg",
-  "/assets/aboutAseer/4.jpg",
 ] as const;
 
 const AboutAseerPage = async () => {
@@ -27,7 +24,7 @@ const AboutAseerPage = async () => {
   const highlightCards = HIGHLIGHT_TITLE_KEYS.map((titleKey, index) => ({
     id: `h-${index + 1}`,
     title: t(titleKey),
-    image: HIGHLIGHT_IMAGES[index],
+    image: LANDSCAPE_HIGHLIGHT_IMAGES[index],
     href: {
       pathname: "/destinations",
       query: { filter: ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS[index] },

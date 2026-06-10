@@ -5,6 +5,7 @@
  * Env: `NEXT_PUBLIC_DIRECTUS_APP_URL` (defaults to tool-portal when unset).
  */
 
+import { LANDSCAPE_HIGHLIGHT_IMAGES } from "@/components/destinations/filterOptions";
 import {
   FILM_LANDSCAPE_LABEL_KEYS,
   resolveFilmLandscapeFilterId,
@@ -40,25 +41,25 @@ export const FALLBACK_FILM_LANDSCAPES: FilmLandscape[] = [
     id: "film-land-1",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.mountains,
     filterId: "mountains",
-    image: "/assets/aboutAseer/1.png",
+    image: LANDSCAPE_HIGHLIGHT_IMAGES[0],
   },
   {
     id: "film-land-2",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.plains,
     filterId: "plains",
-    image: "/assets/aboutAseer/2.png",
+    image: LANDSCAPE_HIGHLIGHT_IMAGES[1],
   },
   {
     id: "film-land-3",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.beaches,
     filterId: "beaches",
-    image: "/assets/aboutAseer/3.jpg",
+    image: LANDSCAPE_HIGHLIGHT_IMAGES[2],
   },
   {
     id: "film-land-4",
     labelKey: FILM_LANDSCAPE_LABEL_KEYS.desert,
     filterId: "desert",
-    image: "/assets/aboutAseer/4.jpg",
+    image: LANDSCAPE_HIGHLIGHT_IMAGES[3],
   },
 ];
 
