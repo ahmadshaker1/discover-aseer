@@ -203,8 +203,8 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
             </div>
           </div>
 
-          {/* Section 2: Cultural Diversity (Image Left, Text Right) */}
-          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 w-full">
+          {/* Section 2: Cultural Diversity (images left, text right — reversed in RTL) */}
+          <div className="flex flex-col items-center gap-8 lg:flex-row rtl:lg:flex-row-reverse lg:gap-16 w-full">
             {/* Left Column: Cultural Images */}
             <div className="w-full lg:w-1/2">
               {renderImageSlider(

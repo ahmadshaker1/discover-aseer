@@ -45,35 +45,6 @@ function BreadcrumbChevron({ isRtl }: { isRtl: boolean }) {
   );
 }
 
-function BrowseCtaArrowIcon() {
-  return (
-    <svg
-      width="13"
-      height="11"
-      viewBox="0 0 13 11"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-      className="shrink-0 rotate-180 rtl:rotate-0"
-    >
-      <path
-        d="M0.75 5.01743L11.375 5.01743"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5.03516 9.28471L0.749739 5.01771L5.03516 0.75"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 const PageBanner = ({
   breadcrumbs,
   title,
@@ -174,18 +145,17 @@ const PageBanner = ({
           {primaryCta ? (
             <Link
               href={primaryCta.href}
-              className="mt-2 inline-flex h-[42px] min-w-[185px] shrink-0 items-center justify-between rounded-[100px] bg-primary px-4 text-primary-foreground transition-opacity hover:opacity-90"
+              className="mt-2 inline-flex h-[42px] min-w-[185px] shrink-0 items-center justify-center rounded-[100px] bg-primary px-4 text-primary-foreground transition-opacity hover:opacity-90"
               style={{
                 boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)",
               }}
             >
               <span
-                className="min-w-0 flex-1 whitespace-nowrap text-start text-[17px] font-bold leading-[100%]"
+                className="whitespace-nowrap text-[17px] font-bold leading-[100%]"
                 style={{ fontFamily: ara }}
               >
                 {primaryCta.label || t("pageBanner.browseMore")}
               </span>
-              <BrowseCtaArrowIcon />
             </Link>
           ) : null}
         </div>
