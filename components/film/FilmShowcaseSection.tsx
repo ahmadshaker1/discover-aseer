@@ -41,6 +41,7 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
     canPrev: false,
     canNext: false,
   });
+  const [selected, setSelected] = useState<FilmShowcaseCategory>("الكل");
 
   const syncNav = useCallback((s: SwiperType, count: number) => {
     if (s.isLocked || count < 2) {
@@ -54,7 +55,6 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
       canNext: s.progress < 1 - eps,
     });
   }, []);
-  const [selected, setSelected] = useState<FilmShowcaseCategory>("الكل");
 
   const filterLabels: Record<FilmShowcaseCategory, string> = {
     الكل: t("filterAll"),
@@ -107,11 +107,13 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
             })}
           </div>
 
-          <div className="w-full min-w-0 pb-1" dir="ltr">
+          <div className="w-full min-w-0 overflow-hidden pb-1">
             {visibleCards.length > 0 ? (
               <>
                 <Swiper
                   key={selected}
+                  dir="rtl"
+                  initialSlide={0}
                   modules={[FreeMode, Mousewheel]}
                   grabCursor
                   mousewheel={{
@@ -129,12 +131,10 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                   spaceBetween={10}
                   resistanceRatio={0.85}
                   watchOverflow
-                  className="film-showcase-swiper"
+                  className="film-showcase-swiper w-full overflow-hidden"
                   onSwiper={(s) => {
                     swiperRef.current = s;
-                    requestAnimationFrame(() =>
-                      syncNav(s, visibleCards.length),
-                    );
+                    syncNav(s, visibleCards.length);
                   }}
                   onProgress={(s) => syncNav(s, visibleCards.length)}
                   onSlideChange={(s) => syncNav(s, visibleCards.length)}
