@@ -20,6 +20,7 @@ export const DUMMY_RESTAURANTS: Restaurant[] = [
     priceBand: "80-120",
     nationality: "سعودي",
     category: "مأكولات تقليدية",
+    cuisineTypes: ["aseeri_cuisine"],
     image:
       "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Abha+restaurant",
@@ -35,6 +36,7 @@ export const DUMMY_RESTAURANTS: Restaurant[] = [
     priceBand: "35-70",
     nationality: "سعودي",
     category: "مشويات",
+    cuisineTypes: ["aseeri_cuisine"],
     image:
       "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=600&fit=crop",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Khamis+Mushait+grill",
@@ -50,6 +52,7 @@ export const DUMMY_RESTAURANTS: Restaurant[] = [
     priceBand: "25-55",
     nationality: "عالمي",
     category: "قهوة ومخبوزات",
+    cuisineTypes: ["cafe"],
     image:
       "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&h=600&fit=crop",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Abha+cafe",
@@ -65,6 +68,7 @@ export const DUMMY_RESTAURANTS: Restaurant[] = [
     priceBand: "120-200",
     nationality: "بحري",
     category: "مأكولات بحرية",
+    cuisineTypes: ["international_cuisine"],
     image:
       "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&h=600&fit=crop",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=seafood+Jazan",
@@ -80,6 +84,7 @@ export const DUMMY_RESTAURANTS: Restaurant[] = [
     priceBand: "20-45",
     nationality: "سعودي",
     category: "فطور",
+    cuisineTypes: ["aseeri_cuisine"],
     image:
       "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&h=600&fit=crop",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=breakfast+Asir",
@@ -95,6 +100,7 @@ export const DUMMY_RESTAURANTS: Restaurant[] = [
     priceBand: "60-100",
     nationality: "عالمي",
     category: "عائلي",
+    cuisineTypes: ["international_cuisine"],
     image:
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Bisha+restaurant",

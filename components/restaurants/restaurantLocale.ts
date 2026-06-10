@@ -5,6 +5,40 @@ import {
 import type { LocaleCode } from "@/lib/i18n/localized";
 import type { Restaurant } from "./types";
 
+/** CMS `cuisine_type` slug → display label per locale. */
+const CUISINE_SLUG_LABELS: Record<string, { ar: string; en: string }> = {
+  aseeri_cuisine: { ar: "المطبخ العسيري", en: "Aseeri cuisine" },
+  khaleeji: { ar: "خليجي", en: "Khaleeji" },
+  lebanese: { ar: "لبناني", en: "Lebanese" },
+  italian: { ar: "إيطالي", en: "Italian" },
+  indian: { ar: "هندي", en: "Indian" },
+  international_cuisine: { ar: "مأكولات عالمية", en: "International cuisine" },
+  american: { ar: "أمريكي", en: "American" },
+  cafe: { ar: "مقهى", en: "Café" },
+};
+
+export function translateCuisineSlug(
+  slug: string,
+  locale: LocaleCode,
+): string {
+  const key = slug.trim().toLowerCase();
+  const labels = CUISINE_SLUG_LABELS[key];
+  if (labels) return labels[locale];
+  return slug
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+export function formatCuisineTypes(
+  cuisineTypes: string[] | undefined,
+  locale: LocaleCode,
+): string {
+  if (!cuisineTypes?.length) return "";
+  return cuisineTypes
+    .map((slug) => translateCuisineSlug(slug, locale))
+    .join(locale === "ar" ? "، " : ", ");
+}
+
 /** Known CMS Arabic labels → English for restaurant cards (locale `en`). */
 const LABEL_EN: Record<string, string> = {
   مطاعم: "Restaurants",
@@ -91,9 +125,6 @@ export function localizeRestaurant(
     ...restaurant,
     location,
     category: translateRestaurantLabel(restaurant.category, locale),
-    ...(restaurant.cuisineType
-      ? { cuisineType: translateRestaurantLabel(restaurant.cuisineType, locale) }
-      : {}),
     nationality: translateRestaurantLabel(restaurant.nationality, locale),
   };
 }

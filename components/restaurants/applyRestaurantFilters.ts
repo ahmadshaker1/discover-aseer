@@ -9,37 +9,26 @@ export interface RestaurantFilterState {
   cuisineTypes: string[];
 }
 
+/** Fixed filter order — ids match CMS `cuisine_type` slugs. */
 export const CUISINE_FILTER_IDS = [
-  "asian",
+  "aseeri_cuisine",
+  "khaleeji",
+  "lebanese",
+  "italian",
+  "indian",
+  "international_cuisine",
   "american",
-  "saudi",
-  "middle-eastern",
-  "popular",
+  "cafe",
 ] as const;
 
 export type CuisineFilterId = (typeof CUISINE_FILTER_IDS)[number];
 
+function restaurantCuisineSlugs(r: Restaurant): string[] {
+  return (r.cuisineTypes ?? []).map((slug) => slug.toLowerCase());
+}
+
 export function restaurantMatchesCuisine(r: Restaurant, id: string): boolean {
-  const hay =
-    `${r.name} ${r.category} ${r.nationality} ${r.cuisineType ?? ""}`.toLowerCase();
-  switch (id) {
-    case "asian":
-      return /asian|آسيوي|سوشي|صيني|ياباني|تايلاند|sushi/.test(hay);
-    case "american":
-      return /american|أمريكي|burger|برجر|steak/.test(hay);
-    case "saudi":
-      return /saudi|سعودي|تقليدي|تراثي|عسيري|مشويات|حنيذ|traditional|مطعم|مطاعم|عسير|المطبخ/.test(
-        hay,
-      );
-    case "middle-eastern":
-      return /عربي|شرق|levant|turkish|تركي|لبناني|middle|arabic|كافيه|قهوة/.test(
-        hay,
-      );
-    case "popular":
-      return r.reviewsCount >= 50;
-    default:
-      return false;
-  }
+  return restaurantCuisineSlugs(r).includes(id.toLowerCase());
 }
 
 function restaurantMatchesCity(r: Restaurant, cityId: string): boolean {

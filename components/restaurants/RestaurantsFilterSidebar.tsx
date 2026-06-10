@@ -196,11 +196,14 @@ const CuisineTypeFilter = ({
 
 const CUISINE_LABEL_KEYS: Record<(typeof CUISINE_FILTER_IDS)[number], string> =
   {
-    asian: "cuisineAsian",
+    aseeri_cuisine: "cuisineAseeri",
+    khaleeji: "cuisineKhaleeji",
+    lebanese: "cuisineLebanese",
+    italian: "cuisineItalian",
+    indian: "cuisineIndian",
+    international_cuisine: "cuisineInternational",
     american: "cuisineAmerican",
-    saudi: "cuisineSaudi",
-    "middle-eastern": "cuisineMiddleEastern",
-    popular: "popular",
+    cafe: "cuisineCafe",
   };
 
 export interface RestaurantsFilterSidebarProps {

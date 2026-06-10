@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback } from "react";
+import { useLocale } from "next-intl";
 import { Restaurant } from "./data";
+import { formatCuisineTypes } from "./restaurantLocale";
 
 interface RestaurantsGridProps {
   restaurants: Restaurant[];
@@ -58,6 +60,8 @@ function CardUtensilIcon() {
 }
 
 const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
+  const locale = useLocale() as "ar" | "en";
+
   const handleRestaurantClick = useCallback((mapsUrl: string) => {
     window.open(mapsUrl, "_blank", "noopener,noreferrer");
   }, []);
@@ -73,6 +77,8 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
     <div className="w-full">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
         {restaurants.map((restaurant) => {
+          const cuisineLabel = formatCuisineTypes(restaurant.cuisineTypes, locale);
+
           return (
             <button
               key={restaurant.id}
@@ -92,7 +98,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                 <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent" />
               </div>
 
-              <div className="flex flex-col gap-2 px-4 py-3 sm:px-5 sm:py-4">
+              <div className="flex flex-col gap-2 px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5">
                 <h3
                   className="line-clamp-2 text-[24px] font-bold leading-[119%] text-foreground"
                   style={{ fontFamily: ara }}
@@ -110,15 +116,19 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   </span>
                 </div>
 
-                <div className="flex w-full items-center justify-start gap-1">
-                  <CardUtensilIcon />
-                  <span
-                    className="text-xs font-bold leading-none text-foreground"
-                    style={{ fontFamily: ibm }}
-                  >
-                    {restaurant.category}
-                  </span>
-                </div>
+                {cuisineLabel ? (
+                  <div className="flex w-full items-start justify-start gap-1 pb-1">
+                    <span className="mt-0.5 shrink-0">
+                      <CardUtensilIcon />
+                    </span>
+                    <span
+                      className="line-clamp-2 text-xs font-bold leading-[1.5] text-foreground"
+                      style={{ fontFamily: ibm }}
+                    >
+                      {cuisineLabel}
+                    </span>
+                  </div>
+                ) : null}
               </div>
             </button>
           );

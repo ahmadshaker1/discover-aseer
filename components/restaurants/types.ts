@@ -14,7 +14,8 @@
  * | priceRange       | price_range                         | e.g. "$$" or copy; fallback AR |
  * | priceBand        | price_band                          | optional; e.g. "100-50"        |
  * | nationality      | nationality_ar, nationality_en      | optional; default "سعودي"      |
- * | category         | category_ar, category_en            | fallback "مطعم"                |
+ * | category         | category_ar, category_en            | fallback "مطعم" (not on card)  |
+ * | cuisineTypes     | cuisine_type                        | slug array, e.g. ["lebanese"]  |
  * | image            | image_new, then image               | Drive → /api/image-proxy       |
  * | cityId           | inferred from location text         | used by sidebar city filter      |
  * | mapsUrl          | google_maps_url                     | fallback Google search by name |
@@ -31,8 +32,8 @@ export interface Restaurant {
   priceRange: string;
   nationality: string;
   category: string;
-  /** From CMS `cuisine_type` / tags — helps cuisine filters. */
-  cuisineType?: string;
+  /** CMS `cuisine_type` slugs — shown on cards and used by cuisine filters. */
+  cuisineTypes?: string[];
   /** Price band for card footer, e.g. "100-50" — optional on API (`price_band`). */
   priceBand?: string;
   image: string;

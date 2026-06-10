@@ -56,7 +56,7 @@ export type { Restaurant } from "./types";
 
 /** API shape from GET …/items/restaurants (Directus-style). */
 export interface ApiLocation {
-  id: string;
+  id: string | number;
   status?: string | null;
   sort?: number | null;
   category_ar?: string | null;
@@ -85,7 +85,7 @@ export interface ApiLocation {
   type?: string | null;
   city?: string | null;
   tags?: string | null;
-  cuisine_type?: string | null;
+  cuisine_type?: string[] | string | null;
   categories?: string | null;
   title_en?: string | null;
   title_ar?: string | null;
@@ -182,6 +182,31 @@ function isPublished(item: ApiLocation): boolean {
   return item.status === "published";
 }
 
+function normalizeCuisineTypes(value: unknown): string[] {
+  if (value == null) return [];
+  if (Array.isArray(value)) {
+    return value
+      .filter((entry): entry is string => typeof entry === "string")
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed) return [];
+    try {
+      const parsed: unknown = JSON.parse(trimmed);
+      if (Array.isArray(parsed)) return normalizeCuisineTypes(parsed);
+    } catch {
+      // Not JSON — fall through to delimiter split.
+    }
+    return trimmed
+      .split(/[,،]/)
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
 export const transformLocationToRestaurant = (
   loc: ApiLocation,
   locale: LocaleCode = "ar",
@@ -211,9 +236,7 @@ export const transformLocationToRestaurant = (
 
   const priceRangeRaw = (loc.price_range ?? "").trim();
   const priceBandRaw = (loc.price_band ?? "").trim();
-  const cuisineTypeRaw =
-    pickLocalizedField(row, "cuisine_type", locale) ||
-    (loc.cuisine_type || loc.tags || "").trim();
+  const cuisineTypes = normalizeCuisineTypes(loc.cuisine_type);
   const nationalityRaw = pickLocalizedField(row, "nationality", locale) || "";
 
   const categoryRaw =
@@ -223,9 +246,6 @@ export const transformLocationToRestaurant = (
     (locale === "ar" ? "مطعم" : "Restaurant");
 
   const category = translateRestaurantLabel(categoryRaw, locale);
-  const cuisineType = cuisineTypeRaw
-    ? translateRestaurantLabel(cuisineTypeRaw, locale)
-    : undefined;
   const nationality = translateRestaurantLabel(
     nationalityRaw || (locale === "ar" ? "سعودي" : "Saudi"),
     locale,
@@ -234,7 +254,7 @@ export const transformLocationToRestaurant = (
   const cityId = inferCityIdFromLocation(location);
 
   const restaurant: Restaurant = {
-    id: loc.id,
+    id: String(loc.id),
     name: name || (locale === "ar" ? "بدون اسم" : "Untitled"),
     location,
     ...(cityId ? { cityId } : {}),
@@ -244,7 +264,7 @@ export const transformLocationToRestaurant = (
     priceRange: priceRangeRaw || (locale === "ar" ? "غير محدد" : "Not specified"),
     nationality,
     category,
-    ...(cuisineType ? { cuisineType } : {}),
+    ...(cuisineTypes.length > 0 ? { cuisineTypes } : {}),
     image,
     mapsUrl,
   };

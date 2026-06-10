@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatCuisineTypes } from "./restaurantLocale";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -18,6 +19,7 @@ interface RestaurantsCardsProps {
 }
 
 const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
+  const locale = useLocale() as "ar" | "en";
   const tCommon = useTranslations("common");
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -62,7 +64,10 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
           }}
           className="overflow-visible"
         >
-          {restaurants.map((restaurant) => (
+          {restaurants.map((restaurant) => {
+            const cuisineLabel = formatCuisineTypes(restaurant.cuisineTypes, locale);
+
+            return (
             <SwiperSlide key={restaurant.id}>
               <button
                 type="button"
@@ -103,17 +108,18 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
                         <span>{restaurant.nationality}</span>
                       </div>
                     )}
-                    {restaurant.category && (
+                    {cuisineLabel ? (
                       <div className="flex items-center gap-1">
                         <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/70" />
-                        <span>{restaurant.category}</span>
+                        <span>{cuisineLabel}</span>
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 </div>
               </button>
             </SwiperSlide>
-          ))}
+            );
+          })}
         </Swiper>
 
         {/* Custom Navigation Buttons */}
