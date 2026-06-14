@@ -23,6 +23,7 @@ function encodeRFC5987ValueChars(value: string) {
 
 export async function GET(request: NextRequest) {
   const fileUrl = request.nextUrl.searchParams.get("url");
+
   const requestedFilename =
     request.nextUrl.searchParams.get("filename") || "identity-file.zip";
 
