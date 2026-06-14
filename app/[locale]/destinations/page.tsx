@@ -27,7 +27,7 @@ const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
         ]}
         title={t("browseTitle")}
         subtitle={t("browseSubtitle")}
-        backgroundImage="/assets/destinations/destination_banner.webp"
+        backgroundImage="/assets/destinations/hero.jpeg"
         hidePattern
         primaryCta={{
           href: TOUR_GUIDE_REGISTER_HREF,
