@@ -40,10 +40,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
         >
           {content.sectionTitle}
         </h2>
-        <p
-          className="text-[20px] font-medium leading-relaxed text-muted-foreground"
-          style={{ fontFamily: ibm }}
-        >
+        <p className="text-[20px] font-medium leading-relaxed text-muted-foreground">
           {content.sectionSubtitle}
         </p>
       </div>
