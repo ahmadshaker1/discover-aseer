@@ -53,11 +53,11 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
           return (
             <div
               key={slide.id}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center"
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center md:items-stretch"
             >
               {/* Image Container */}
               <div
-                className={`relative h-[320px] sm:h-[440px] lg:h-[500px] w-full overflow-hidden rounded-[20px] shadow-lg ${
+                className={`relative h-[260px] sm:h-[280px] md:h-full w-full overflow-hidden rounded-[20px] shadow-lg ${
                   isImageRight ? "md:order-2" : "md:order-1"
                 }`}
               >
@@ -83,7 +83,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
                   {slide.title}
                 </h3>
                 <p
-                  className="text-[16px] sm:text-[18px] font-normal leading-7 text-muted-foreground"
+                  className="text-[16px] sm:text-[18px] font-normal leading-10 text-muted-foreground"
                   style={{ fontFamily: ibm }}
                 >
                   {slide.description}

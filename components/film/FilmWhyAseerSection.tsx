@@ -79,8 +79,14 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
   const [naturalIndex, setNaturalIndex] = useState(0);
   const [culturalIndex, setCulturalIndex] = useState(0);
 
-  const naturalImages = useMemo(() => lanes.right.map((s) => s.image), [lanes.right]);
-  const culturalImages = useMemo(() => lanes.left.map((s) => s.image), [lanes.left]);
+  const naturalImages = useMemo(
+    () => lanes.right.map((s) => s.image),
+    [lanes.right],
+  );
+  const culturalImages = useMemo(
+    () => lanes.left.map((s) => s.image),
+    [lanes.left],
+  );
 
   const renderImageSlider = (
     images: string[],
@@ -92,9 +98,9 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
     if (images.length === 0) return null;
 
     return (
-      <div className="relative h-[360px] sm:h-[480px] md:h-[520px] w-full overflow-hidden rounded-[20px] shadow-lg bg-black/5">
+      <div className="relative h-[360px] sm:h-[480px] md:h-[520px] lg:h-full lg:flex-1 w-full overflow-hidden rounded-[20px] shadow-lg bg-black/5">
         {images.map((imgSrc, imgIdx) => {
-          const isActive = imgIdx === (index % images.length);
+          const isActive = imgIdx === index % images.length;
           return (
             <img
               key={`${imgSrc}-${imgIdx}`}
@@ -138,7 +144,7 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
         {images.length > 1 && (
           <div className="absolute bottom-8 start-6 flex items-center gap-1.5 z-10">
             {images.map((_, imgIdx) => {
-              const isActive = imgIdx === (index % images.length);
+              const isActive = imgIdx === index % images.length;
               return (
                 <span
                   key={imgIdx}
@@ -169,9 +175,8 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
 
         {/* Content Sections Container */}
         <div className="flex w-full flex-col gap-16 md:gap-24">
-          
           {/* Section 1: Natural Diversity (text left, image right — reversed in RTL) */}
-          <div className="flex flex-col-reverse items-center gap-8 lg:flex-row rtl:lg:flex-row-reverse lg:gap-16 w-full">
+          <div className="flex flex-col-reverse items-center gap-8 lg:flex-row rtl:lg:flex-row-reverse lg:gap-16 lg:items-stretch w-full">
             {/* Left Column: Text */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
               <h3
@@ -181,40 +186,47 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
                 {t("whyAseerNaturalTitle")}
               </h3>
               <p
-                className="text-[18px] sm:text-[20px] font-light leading-[32px] text-muted-foreground text-start"
+                className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start"
                 style={{ fontFamily: ibm }}
               >
                 {t("whyAseerNaturalDesc")}
               </p>
             </div>
-            
+
             {/* Right Column: Natural Images */}
-            <div className="w-full lg:w-1/2">
+            <div className="w-full lg:w-1/2 flex flex-col">
               {renderImageSlider(
                 naturalImages,
                 naturalIndex,
                 () =>
                   setNaturalIndex(
-                    (prev) => (prev - 1 + naturalImages.length) % naturalImages.length,
+                    (prev) =>
+                      (prev - 1 + naturalImages.length) % naturalImages.length,
                   ),
-                () => setNaturalIndex((prev) => (prev + 1) % naturalImages.length),
+                () =>
+                  setNaturalIndex((prev) => (prev + 1) % naturalImages.length),
                 t("whyAseerNaturalTitle"),
               )}
             </div>
           </div>
 
           {/* Section 2: Cultural Diversity (images left, text right — reversed in RTL) */}
-          <div className="flex flex-col items-center gap-8 lg:flex-row rtl:lg:flex-row-reverse lg:gap-16 w-full">
+          <div className="flex flex-col items-center gap-8 lg:flex-row rtl:lg:flex-row-reverse lg:gap-16 lg:items-stretch w-full">
             {/* Left Column: Cultural Images */}
-            <div className="w-full lg:w-1/2">
+            <div className="w-full lg:w-1/2 flex flex-col">
               {renderImageSlider(
                 culturalImages,
                 culturalIndex,
                 () =>
                   setCulturalIndex(
-                    (prev) => (prev - 1 + culturalImages.length) % culturalImages.length,
+                    (prev) =>
+                      (prev - 1 + culturalImages.length) %
+                      culturalImages.length,
                   ),
-                () => setCulturalIndex((prev) => (prev + 1) % culturalImages.length),
+                () =>
+                  setCulturalIndex(
+                    (prev) => (prev + 1) % culturalImages.length,
+                  ),
                 t("whyAseerCulturalTitle"),
               )}
             </div>
@@ -228,14 +240,13 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
                 {t("whyAseerCulturalTitle")}
               </h3>
               <p
-                className="text-[18px] sm:text-[20px] font-light leading-[32px] text-muted-foreground text-start"
+                className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start"
                 style={{ fontFamily: ibm }}
               >
                 {t("whyAseerCulturalDesc")}
               </p>
             </div>
           </div>
-
         </div>
       </div>
     </section>
