@@ -209,7 +209,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
           </div>
 
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 p-5 text-white sm:p-6 lg:p-8">
-            <div className={`max-w-[800px] text-start`}>
+            <div className={`max-w-[1200px] text-start`}>
               <h3
                 className="text-[40px] font-bold leading-[150%] width-full text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] mb-2"
                 style={{ fontFamily: ara }}
@@ -217,7 +217,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                 {activeSlide?.title}
               </h3>
               <p
-                className="text-[20px] font-light leading-[150%] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] max-w-[510px]"
+                className="text-[20px] font-light text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] max-w-[800px] leading-10"
                 style={{ fontFamily: ibm }}
               >
                 {activeSlide?.description}
