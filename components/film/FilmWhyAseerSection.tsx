@@ -114,7 +114,7 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
         })}
 
         {/* Bottom Dark Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none z-2" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-transparent pointer-events-none z-2" />
 
         {/* Navigation Controls */}
         <div className="absolute bottom-6 end-6 flex items-center gap-3 z-10">
