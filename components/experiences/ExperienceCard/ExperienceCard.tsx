@@ -34,7 +34,7 @@ const ExperienceCard = ({
 }: ExperienceCardProps) => {
   const t = useTranslations("common");
   return (
-    <div className="overflow-hidden rounded-xl bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md">
+    <div className="flex h-full flex-col overflow-hidden rounded-xl bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md">
       {/* Image Banner Section */}
       <div className="relative h-48 w-full">
         <Image
@@ -51,7 +51,7 @@ const ExperienceCard = ({
       </div>
 
       {/* Content Section */}
-      <div className="p-5 text-start">
+      <div className="flex flex-grow flex-col p-5 text-start">
         {/* Title */}
         <h3 className="mb-1 text-xl font-bold text-foreground">{title}</h3>
 
@@ -86,7 +86,9 @@ const ExperienceCard = ({
         </div>
 
         {/* Action Buttons */}
-        <ExperienceCardActions experienceId={id} bookUrl={bookUrl} />
+        <div className="mt-auto">
+          <ExperienceCardActions experienceId={id} bookUrl={bookUrl} />
+        </div>
       </div>
     </div>
   );

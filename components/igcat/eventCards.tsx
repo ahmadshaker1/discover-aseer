@@ -116,9 +116,9 @@ export default function IGCatEventCards() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="h-auto flex flex-col md:flex-row justify-between text-start mb-8 gap-6">
           <div className="flex flex-col items-start text-start hover:cursor-pointer">
-            <span className="mb-4 inline-block rounded-full border border-primary px-5 py-1 text-[14px] font-bold text-primary ">
+            {/* <span className="mb-4 inline-block rounded-full border border-primary px-5 py-1 text-[14px] font-bold text-primary ">
               {t("badge")}
-            </span>
+            </span> */}
             <h2 className="text-[32px] font-bold text-foreground md:text-[40px]">
               {t("title")}
             </h2>

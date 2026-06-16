@@ -11,8 +11,7 @@ import {
 } from "@/components/shared/icons/CarouselChevrons";
 
 /** Horizontal inset for the scroll track and chevron row (aligned). */
-const TRACK_PAD =
-  "px-5 sm:px-8 md:px-10 lg:px-6 xl:px-8";
+const TRACK_PAD = "px-5 sm:px-8 md:px-10 lg:px-6 xl:px-8";
 
 const NAV_BTN_CLASS =
   "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
@@ -103,9 +102,9 @@ export default function AseerExperiencesCardsCarousel({
         dir={scrollDir}
         className={`hide-scrollbar relative left-1/2 w-screen max-w-full -translate-x-1/2 overflow-x-auto overflow-y-hidden scroll-smooth lg:left-0 lg:min-w-0 lg:w-full lg:max-w-none lg:shrink-0 lg:translate-x-0 ${TRACK_PAD}`}
       >
-        <div className="flex min-w-max gap-8 pb-2">
+        <div className="flex min-w-max items-stretch gap-8 pb-2">
           {cards.map((card) => (
-            <div key={card.id} className="w-[300px] shrink-0">
+            <div key={card.id} className="h-auto w-[300px] shrink-0">
               <ExperienceCard {...card} />
             </div>
           ))}

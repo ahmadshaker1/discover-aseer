@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import AseerCuisineVideoPlayer from "./AseerCuisineVideoPlayer";const ara = "var(--font-ara-hamah-1964), sans-serif";
+import AseerCuisineVideoPlayer from "./AseerCuisineVideoPlayer";
+const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export interface AseerCuisineChefsVideoSectionData {
@@ -19,7 +20,9 @@ interface AseerCuisineChefsVideoSectionProps {
   data: AseerCuisineChefsVideoSectionData;
 }
 
-const AseerCuisineChefsVideoSection = ({ data }: AseerCuisineChefsVideoSectionProps) => {
+const AseerCuisineChefsVideoSection = ({
+  data,
+}: AseerCuisineChefsVideoSectionProps) => {
   const videoSrc = data.videoUrl?.trim() ?? "";
 
   return (
@@ -33,19 +36,26 @@ const AseerCuisineChefsVideoSection = ({ data }: AseerCuisineChefsVideoSectionPr
             >
               {data.title}
             </h2>
+            {/*  //! no need for now
             <p
               className="w-full text-center text-[15px] font-light leading-[119%] text-muted-foreground"
               style={{ fontFamily: ibm }}
             >
               {data.subtitle}
-            </p>
+            </p> 
+            */}
           </div>
         </div>
 
         <div className="relative h-[811px] w-full overflow-hidden">
           {videoSrc ? (
-            <AseerCuisineVideoPlayer src={videoSrc} poster={data.posterImage} ariaLabel={data.title} />
-          ) : (            <Image
+            <AseerCuisineVideoPlayer
+              src={videoSrc}
+              poster={data.posterImage}
+              ariaLabel={data.title}
+            />
+          ) : (
+            <Image
               src={data.posterImage}
               alt={data.title}
               width={1440}

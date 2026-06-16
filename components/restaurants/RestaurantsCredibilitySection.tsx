@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import WorldRegionGastronomyAwardLogo from "@/components/restaurants/WorldRegionGastronomyAwardLogo";
+import { IBM_Plex_Sans_Devanagari } from "next/font/google";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -20,13 +21,15 @@ const RestaurantsCredibilitySection = () => {
         <h2
           id="restaurants-credibility-heading"
           className="w-full max-w-[428px] text-center text-[40px] font-bold leading-[119%] text-foreground"
-          style={{ fontFamily: ara }}
         >
           {t("credibilityLine")}
         </h2>
+        <p className="w-full max-w-[704px] text-center text-[18px] font-light leading-6 text-muted-foreground">
+          {t("credibilityDescription")}
+        </p>
 
         <Link
-          href="/aseer-cuisine"
+          href="/igcat"
           className="inline-flex h-[52px] min-w-[161px] items-center justify-center rounded-[55px] border border-primary bg-primary px-[10px] py-[10px] text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           style={{ fontFamily: ara }}
         >
