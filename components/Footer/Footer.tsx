@@ -278,25 +278,25 @@ const Footer = () => {
                   </p>
                   <div className="flex w-full items-start justify-between gap-4 sm:w-[231px]">
                     <Image
-                      src="/assets/footer/PATA.png"
-                      alt={t("footer.altPata")}
-                      width={63}
-                      height={34}
-                      className="h-[34px] w-[63px] object-contain"
+                      src="/assets/footer/un-tourism1.1.png"
+                      alt={t("footer.altUnTourism")}
+                      width={50}
+                      height={50}
+                      className="h-[34px] w-[100px]"
                     />
                     <Image
-                      src="/assets/footer/GSTC.png"
+                      src="/assets/footer/GSTC2.png"
                       alt={t("footer.altGstc")}
-                      width={100}
+                      width={50}
                       height={34}
                       className="h-[34px] w-[100px] object-contain"
                     />
                     <Image
-                      src="/assets/footer/UN-tourism.png"
-                      alt={t("footer.altUnTourism")}
-                      width={36}
+                      src="/assets/footer/PATA3.png"
+                      alt={t("footer.altPata")}
+                      width={50}
                       height={34}
-                      className="h-[34px] w-9 object-contain brightness-0 invert"
+                      className="h-[34px] w-[100px] object-contain"
                     />
                   </div>
                 </div>

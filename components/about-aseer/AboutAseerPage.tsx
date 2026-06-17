@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
 import AboutAseerHero, {
   type AboutAseerHeroData,
 } from "@/components/about-aseer/AboutAseerHero";
@@ -43,13 +44,14 @@ const AboutAseerPage = async () => {
       title: t("title"),
       subtitle: t("heroSubtitle"),
       backgroundImage: "/assets/aboutAseer/about_banner.webp",
-      socialLinks: [
-        { platform: "linkedin", url: "https://www.linkedin.com/" },
-        { platform: "x", url: "https://x.com/" },
-        { platform: "youtube", url: "https://www.youtube.com/" },
-        { platform: "instagram", url: "https://www.instagram.com/" },
-        { platform: "facebook", url: "https://www.facebook.com/" },
-      ],
+      socialLinks: discoverAseerLinks
+        .filter((link) =>
+          ["x", "youtube", "instagram", "facebook"].includes(link.platform),
+        )
+        .map((link) => ({
+          platform: link.platform,
+          url: link.href,
+        })),
     },
     story: {
       sectionTitle: t("story.sectionTitle"),

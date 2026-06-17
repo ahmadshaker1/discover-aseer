@@ -6,6 +6,7 @@ import CommunityMainSlider, {
 } from "@/components/community/CommunityMainSlider";
 import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import { getTranslations } from "next-intl/server";
+import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
 
 const SLIDE_IMAGES = [
   "/assets/community/id1.webp",
@@ -32,14 +33,16 @@ const AseerCommunityPage = async () => {
       title: t("title"),
       subtitle: t("subtitle"),
       backgroundImage: "/assets/community/hero.webp",
-      ribbonPatternImage: "/hero-pattern/ribbon.jpg",
-      socialLinks: [
-        { platform: "linkedin", url: "https://www.linkedin.com/" },
-        { platform: "x", url: "https://x.com/" },
-        { platform: "youtube", url: "https://www.youtube.com/" },
-        { platform: "instagram", url: "https://www.instagram.com/" },
-        { platform: "facebook", url: "https://www.facebook.com/" },
-      ],
+      //!i dont thik we have this in the project
+      // ribbonPatternImage: "/hero-pattern/ribbon.jpg",
+      socialLinks: discoverAseerLinks
+        .filter((link) =>
+          ["x", "youtube", "instagram", "facebook"].includes(link.platform),
+        )
+        .map((link) => ({
+          platform: link.platform,
+          url: link.href,
+        })),
     },
     slider: {
       sectionTitle: t("slider.sectionTitle"),
