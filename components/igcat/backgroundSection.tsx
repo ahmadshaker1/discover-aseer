@@ -25,7 +25,12 @@ export default async function IGCatBackgroundSection() {
                 <img
                   src="/assets/igcat/moc.svg fill.png"
                   alt={t("mocAlt")}
-                  className="h-24 object-contain bg-white p-2 rounded-lg"
+                  className="h-24 object-contain bg-white p-2 rounded-lg dark:hidden"
+                />
+                <img
+                  src="/assets/igcat/dark-theme/culinary-dark.svg"
+                  alt={t("mocAlt")}
+                  className="h-24 object-contain hidden dark:block"
                 />
                 <p className="mb-2 mt-2 text-[16px] font-bold text-foreground">
                   {t("mocCaption")}
@@ -73,7 +78,12 @@ export default async function IGCatBackgroundSection() {
                 <img
                   src="/assets/igcat/award.svg.png"
                   alt="World Region of Gastronomy"
-                  className="h-16 object-contain bg-[#F8F8F8] p-2 rounded-lg"
+                  className="h-16 object-contain bg-[#F8F8F8] p-2 rounded-lg dark:hidden"
+                />
+                <img
+                  src="/assets/igcat/award.png"
+                  alt="World Region of Gastronomy"
+                  className="h-16 object-contain hidden dark:block"
                 />
               </div>
 
