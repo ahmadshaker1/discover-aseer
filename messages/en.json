@@ -600,6 +600,10 @@
         }
       }
     },
+    "heritageRestaurantsSection": {
+      "title": "Heritage restaurants",
+      "ctaLabel": "Discover all restaurants"
+    },
     "localFlavorsSection": {
       "title": "Local flavours",
       "subtitle": "A window into Aseer's most distinctive tastes",

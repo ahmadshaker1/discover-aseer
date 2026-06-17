@@ -600,6 +600,10 @@
         }
       }
     },
+    "heritageRestaurantsSection": {
+      "title": "المطاعم التراثية",
+      "ctaLabel": "أكتشف جميع المطاعم"
+    },
     "localFlavorsSection": {
       "title": "نكهات محلية",
       "subtitle": "خيرات عسير؛ نافذة نحو تجربة أطيب النكهات الفريدة",
