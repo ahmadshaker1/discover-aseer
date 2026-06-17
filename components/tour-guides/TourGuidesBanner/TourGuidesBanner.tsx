@@ -61,35 +61,6 @@ const TourGuidesBanner = async () => {
         />
       </div>
 
-      {/* Light diagonal texture (same idea as original hero) */}
-      <div
-        className="absolute inset-0 z-1 opacity-10 pointer-events-none"
-        style={{
-          backgroundImage: `repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 10px,
-            rgba(255, 255, 255, 0.1) 10px,
-            rgba(255, 255, 255, 0.1) 20px
-          )`,
-        }}
-        aria-hidden
-      />
-
-      {/* Diamond pattern — left edge, layered above the photo, below copy */}
-      <div
-        className={`pointer-events-none absolute inset-y-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)] start-0`}
-        aria-hidden
-      >
-        <Image
-          src="/hero-pattern/pattern-diamons.png"
-          alt=""
-          fill
-          className={`object-contain object-start ltr:scale-x-[-1]`}
-          sizes="(max-width: 768px) 55vw, 28rem"
-        />
-      </div>
-
       {/* Copy on top of the scene */}
       <div className="relative z-10 flex min-h-[calc(100dvh-5rem)] w-full flex-col items-center justify-center md:min-h-[calc(100dvh-6rem)]">
         <div className="mx-auto w-full max-w-[1440px] px-6 py-16 text-center sm:px-10 md:px-16 lg:px-24">

@@ -146,15 +146,6 @@ const Hero = () => {
         ))}
       </Swiper>
 
-      <Image
-        src="/hero-pattern/ribbon_column.png"
-        alt=""
-        aria-hidden
-        className={`pointer-events-none absolute top-0 z-20 h-full object-cover ${isLtr ? "left-0 -scale-x-100" : "right-0"}`}
-        width={15}
-        height={100}
-      />
-
       <div className="pointer-events-none absolute inset-0 z-30">
         <div className="pointer-events-auto absolute inset-x-0 bottom-5 flex flex-row items-center justify-center gap-2 px-3 text-white md:hidden">
           <div

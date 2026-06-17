@@ -31,7 +31,7 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
   const slides = content.slides;
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-4 py-16 sm:px-8 md:px-[60px]">
+    <section className="mx-auto w-full max-w-[1440px] px-4 py-16 sm:px-8 md:px-[60px] dark:bg-[#14091F]">
       {/* Header */}
       <div className="mx-auto mb-16 flex w-full max-w-[760px] flex-col items-center text-center">
         <h2

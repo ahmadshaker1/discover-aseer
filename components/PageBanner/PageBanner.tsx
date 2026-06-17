@@ -71,7 +71,7 @@ const PageBanner = ({
         className="pointer-events-none absolute inset-0 z-0 bg-black/35"
         aria-hidden
       />
-      <div
+      {/* <div
         className="pointer-events-none absolute inset-0 z-1 opacity-10"
         // style={{
         //   backgroundImage: `repeating-linear-gradient(
@@ -83,9 +83,9 @@ const PageBanner = ({
         //   )`,
         // }}
         aria-hidden
-      />
+      /> */}
 
-      {!hidePattern ? (
+      {/* {!hidePattern ? (
         <div
           className="pointer-events-none absolute inset-y-0 start-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)]"
           aria-hidden
@@ -98,7 +98,7 @@ const PageBanner = ({
             sizes="(max-width: 768px) 55vw, 28rem"
           />
         </div>
-      ) : null}
+      ) : null} */}
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
         <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
