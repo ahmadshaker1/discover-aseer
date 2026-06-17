@@ -4,7 +4,7 @@ import { fetchSeasonDetailPage } from "@/components/event-seasons/season-detail-
 import {
   eachDayInRange,
   parseDateOnly,
-  pickDefaultCalendarDay,
+  pickDefaultSeasonDay,
 } from "@/components/event-seasons/utils";
 import type { LocaleCode } from "@/lib/i18n/localized";
 import { getLocale } from "next-intl/server";
@@ -27,7 +27,7 @@ export default async function SeasonDetailPage({ params }: SeasonDetailPageProps
   const seasonEnd = parseDateOnly(data.season.endDate);
   const seasonDays =
     seasonStart && seasonEnd ? eachDayInRange(seasonStart, seasonEnd) : [];
-  const initialDayIso = pickDefaultCalendarDay(seasonDays);
+  const initialDayIso = pickDefaultSeasonDay(seasonDays, data.events);
 
   return (
     <div className="flex w-full flex-col bg-background">

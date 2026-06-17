@@ -11,8 +11,17 @@ export function parseDateOnly(value: string | null | undefined): Date | null {
 
   const iso = clean.split("T")[0];
   const [year, month, day] = iso.split("-").map(Number);
-  if (!year || !month || !day) return null;
-  return new Date(year, month - 1, day);
+  if (year && month && day) {
+    return new Date(year, month - 1, day);
+  }
+
+  const parsed = Date.parse(clean);
+  if (!Number.isNaN(parsed)) {
+    const d = new Date(parsed);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  return null;
 }
 
 export function toIsoDateString(date: Date): string {

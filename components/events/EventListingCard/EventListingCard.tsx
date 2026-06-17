@@ -26,6 +26,9 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   const t = useTranslations("eventSeasons");
   const isArabic = locale === "ar";
   const imageCount = event.images.length;
+  const hasPrice =
+    (event.priceLabel || "").trim() !== "" &&
+    !["Not specified", "غير محدد"].includes((event.priceLabel || "").trim());
 
   const [imageIndex, setImageIndex] = useState(0);
   const safeIndex = Math.min(imageIndex, Math.max(0, imageCount - 1));
@@ -129,17 +132,19 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             >
               {event.title}
             </h3>
-            <div className="flex w-full justify-start">
-              <div
-                className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-surface/85 px-2 py-1 text-start text-foreground"
-                style={{ fontFamily: ara }}
-              >
-                <span className="text-start text-sm font-bold leading-none">
-                  {event.priceLabel}
-                </span>
-                <CurrencyIcon className="shrink-0 text-foreground" />
+            {hasPrice ? (
+              <div className="flex w-full justify-start">
+                <div
+                  className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-surface/85 px-2 py-1 text-start text-foreground"
+                  style={{ fontFamily: ara }}
+                >
+                  <span className="text-start text-sm font-bold leading-none">
+                    {event.priceLabel}
+                  </span>
+                  <CurrencyIcon className="shrink-0 text-foreground" />
+                </div>
               </div>
-            </div>
+            ) : null}
             <div className="flex w-full flex-col items-stretch gap-3 text-start">
               <div className="flex w-full items-center gap-2 text-[#EAEAEA]">
                 <MapPinIcon />

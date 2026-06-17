@@ -18,6 +18,15 @@ const API_BASE =
   process.env.NEXT_PUBLIC_EVENTS_API_BASE?.replace(/\/$/, "") ||
   "https://tool-portal.discoveraseer.com";
 
+function getDirectusHeaders(): HeadersInit | undefined {
+  const token = process.env.DIRECTUS_READ_TOKEN?.trim();
+  return token ? { Authorization: `Bearer ${token}` } : undefined;
+}
+
+// Public role cannot read `thumbnail` or `hero_mobile` — requesting them 403s the whole query.
+const SEASON_EVENT_FIELDS =
+  "id,title,title_en,start_date,end_date,date,start_time,end_time,image,image_new,map,city,tags,description,free_event,price,not_allowed_for_kids,audience_type,event_status,unclickable";
+
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",
   "/assets/event-seasons/fallback-purple.png",
@@ -193,6 +202,7 @@ async function fetchSeasonById(id: string): Promise<ApiSeason | null> {
       "id,title,title_ar,content,content_ar,image,banner_image,start_date,end_date,status",
   });
   const response = await fetch(`${API_BASE}/items/seasons/${id}?${params}`, {
+    headers: getDirectusHeaders(),
     next: { revalidate: 3600 },
   });
   if (response.status === 404) return null;
@@ -213,6 +223,7 @@ async function fetchEventIdsForSeason(seasonId: string): Promise<number[]> {
     limit: "-1",
   });
   const response = await fetch(`${API_BASE}/items/events_seasons?${params}`, {
+    headers: getDirectusHeaders(),
     next: { revalidate: 3600 },
   });
   if (!response.ok) return [];
@@ -226,11 +237,11 @@ async function fetchEventsByIds(ids: number[]): Promise<ApiEvent[]> {
   if (ids.length === 0) return [];
   const params = new URLSearchParams({
     "filter[id][_in]": ids.join(","),
-    fields:
-      "id,title,title_en,start_date,end_date,date,start_time,end_time,image,thumbnail,hero_mobile,image_new,map,city,tags,description,free_event,price,not_allowed_for_kids,audience_type,event_status,unclickable",
+    fields: SEASON_EVENT_FIELDS,
     limit: "-1",
   });
   const response = await fetch(`${API_BASE}/items/events?${params}`, {
+    headers: getDirectusHeaders(),
     next: { revalidate: 3600 },
   });
   if (!response.ok) {

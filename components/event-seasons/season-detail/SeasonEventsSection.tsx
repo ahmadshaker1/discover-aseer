@@ -7,6 +7,7 @@ import type { SeasonDetail, SeasonDetailEvent, SeasonEventCategoryId } from "../
 import {
   calendarWindowForDay,
   eachDayInRange,
+  eventOccursOnDay,
   formatDateRangeLabel,
   formatMonth,
   parseDateOnly,
@@ -98,12 +99,32 @@ export default function SeasonEventsSection({
   const canScrollPrev = windowStart > 0;
   const canScrollNext = windowStart + VISIBLE_DAYS < seasonDays.length;
 
+  const selectedDay = useMemo(
+    () => parseDateOnly(selectedDayIso),
+    [selectedDayIso],
+  );
+
   const filteredEvents = useMemo(() => {
-    if (activeCategory === "all") return events;
-    return events.filter((event) =>
-      event.categoryIds.includes(activeCategory),
-    );
-  }, [events, activeCategory]);
+    let result = events;
+
+    if (selectedDay) {
+      result = result.filter((event) =>
+        eventOccursOnDay(
+          parseDateOnly(event.startDate),
+          parseDateOnly(event.endDate ?? event.startDate),
+          selectedDay,
+        ),
+      );
+    }
+
+    if (activeCategory !== "all") {
+      result = result.filter((event) =>
+        event.categoryIds.includes(activeCategory),
+      );
+    }
+
+    return result;
+  }, [events, activeCategory, selectedDay]);
 
   if (seasonDays.length === 0) {
     return null;
@@ -231,7 +252,9 @@ export default function SeasonEventsSection({
           </div>
         ) : (
           <p className="text-center text-lg text-muted-foreground">
-            {t("noEventsInSeason")}
+            {events.length === 0
+              ? t("noEventsInSeason")
+              : t("noEventsForDay")}
           </p>
         )}
       </div>
