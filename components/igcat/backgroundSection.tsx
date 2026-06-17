@@ -7,13 +7,13 @@ export default async function IGCatBackgroundSection() {
     <>
       <section className="bg-background py-16 md:py-24">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
             <div className="flex flex-col items-start text-start">
-              <span className=" inline-block rounded-full border border-primary bg-primary/10 px-5 py-1 text-[14px] font-bold text-primary">
+              {/* <span className=" inline-block rounded-full border border-primary bg-primary/10 px-5 py-1 text-[14px] font-bold text-primary">
                 {t("badge")}
-              </span>
+              </span> */}
 
-              <h2 className="mb-6 text-[38px] font-bold text-foreground md:text-[42px]">
+              <h2 className="mb-6 text-[38px] font-bold text-foreground md:text-[42px] leading-8">
                 {t("section1Title")}
               </h2>
 
@@ -25,7 +25,12 @@ export default async function IGCatBackgroundSection() {
                 <img
                   src="/assets/igcat/moc.svg fill.png"
                   alt={t("mocAlt")}
-                  className="h-16 object-contain"
+                  className="h-24 object-contain bg-white p-2 rounded-lg dark:hidden"
+                />
+                <img
+                  src="/assets/igcat/dark-theme/culinary-dark.svg"
+                  alt={t("mocAlt")}
+                  className="h-24 object-contain hidden dark:block"
                 />
                 <p className="mb-2 mt-2 text-[16px] font-bold text-foreground">
                   {t("mocCaption")}
@@ -44,7 +49,7 @@ export default async function IGCatBackgroundSection() {
         </div>
       </section>
 
-      <section className="bg-[#F3F4F6] py-10 md:py-10">
+      <section className="bg-surface py-10 md:py-10">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div className="order-2 w-full overflow-hidden rounded-3xl shadow-lg lg:order-1">
@@ -68,12 +73,17 @@ export default async function IGCatBackgroundSection() {
                 <img
                   src="/assets/igcat/9e1b9b83056d640d601d3203a4c278eff8285e6b.png"
                   alt="IGCAT"
-                  className="h-16 object-contain"
+                  className="h-16 object-contain bg-[#F8F8F8] p-2 rounded-lg"
                 />
                 <img
                   src="/assets/igcat/award.svg.png"
                   alt="World Region of Gastronomy"
-                  className="h-16 object-contain"
+                  className="h-16 object-contain bg-[#F8F8F8] p-2 rounded-lg dark:hidden"
+                />
+                <img
+                  src="/assets/igcat/award.png"
+                  alt="World Region of Gastronomy"
+                  className="h-16 object-contain hidden dark:block"
                 />
               </div>
 

@@ -307,6 +307,7 @@
     "title": "Restaurants",
     "subtitle": "Aseer restaurants: delight the senses and satisfy your palate",
     "credibilityLine": "Aseer World Region of Gastronomy 2024",
+    "credibilityDescription": "Asir is the first region outside Europe to achieve the (IGCAT) title from the International Institute of Culinary Arts, Culture, Arts and Tourism 2024",
     "credibilityCta": "Discover Aseeri Cuisine",
     "headerSubtitle": "Aseer is rich with attractions and experiences"
   },
@@ -559,7 +560,7 @@
     },
     "restaurantsSection": {
       "title": "Popular restaurants",
-      "ctaLabel": "Restaurants",
+      "ctaLabel": "Discover all restaurants",
       "cards": {
         "r1": {
           "title": "Haneeth House",
@@ -598,6 +599,10 @@
           "priceRange": "SAR 60–140"
         }
       }
+    },
+    "heritageRestaurantsSection": {
+      "title": "Heritage restaurants",
+      "ctaLabel": "Discover all restaurants"
     },
     "localFlavorsSection": {
       "title": "Local flavours",
@@ -749,7 +754,7 @@
     },
     "background": {
       "badge": "Title",
-      "section1Title": "Aseer 2024 is the first World Region of Gastronomy Outside Europe",
+      "section1Title": "Aseer: is the first World Region of Gastronomy Outside Europe 2024",
       "section1Body": "In September 2022, Asir was declared the winner of the title of \"World Culinary Arts Region 2024,\" making it the first region from outside Europe to win the title awarded by the International Institute of Culinary Arts, Culture, Arts and Tourism (IGCAT) to regions that joined the platform and met the criteria developed by the institute. These criteria include working across economic, cultural, social and environmental development sectors through the field of culinary arts to support sustainable regional development. The award was presented by the president of the institute, Diane Dodd, at an official ceremony held in Turin, Italy on September 24, 2022. This victory came after a jury of experts from the institute visited the region during the period (February 27 - March 1, 2022) and met with local stakeholders to assess Asir's readiness to hold the title. This visit reflected the region's efforts in supporting local cultural and food diversity, its endeavor to ensure regional biodiversity and protect the environment, preserve heritage and traditional knowledge, and empower young generations to create distinctive products and services to attract sustainable tourism.",
       "mocAlt": "Culinary Arts Commission",
       "mocCaption": "Under the supervision of the Culinary Arts Commission",
@@ -972,9 +977,9 @@
 
     "food": {
       "dishesTitle": "Traditional dishes in Aseer",
-      "dishesCta": "Aseeri cuisine",
+      "dishesCta": "Discover the Asiri cuisine",
       "restaurantsTitle": "Popular restaurants",
-      "restaurantsCta": "Restaurants",
+      "restaurantsCta": "Discover restaurants",
       "noRestaurants": "No restaurants are available at the moment.",
       "close": "Close"
     }

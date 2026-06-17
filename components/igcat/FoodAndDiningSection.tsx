@@ -34,10 +34,7 @@ export default function FoodAndDiningSection() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-6">
             <div className="flex flex-col items-start w-full sm:w-auto">
-              <span className="inline-block px-5 py-1 border border-[#7300CD] text-[#7300CD] rounded-full text-sm font-bold mb-2">
-                {tSection("dishesTitle")}
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold text-black">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">
                 {tSection("dishesTitle")}
               </h2>
             </div>
@@ -45,7 +42,7 @@ export default function FoodAndDiningSection() {
             <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-end">
               <Link
                 href="/aseer-cuisine"
-                className="inline-block px-8 py-2 border border-[#7300CD] text-[#7300CD] rounded-full text-sm font-bold hover:bg-[#F3EFFF] transition-colors"
+                className="inline-block px-8 py-2 border border-primary text-primary rounded-full text-18 hover:bg-primary/10 transition-colors dark:border-white dark:text-white dark:hover:bg-white/10"
               >
                 {tSection("dishesCta")}
               </Link>
@@ -80,10 +77,7 @@ export default function FoodAndDiningSection() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-6">
             <div className="flex flex-col items-start w-full sm:w-auto">
-              <span className="inline-block px-5 py-1 border border-[#7300CD] text-[#7300CD] rounded-full text-sm font-bold mb-2">
-                {tSection("restaurantsTitle")}
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold text-black">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">
                 {tSection("restaurantsTitle")}
               </h2>
             </div>
@@ -91,7 +85,7 @@ export default function FoodAndDiningSection() {
             <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-end">
               <Link
                 href="/restaurants"
-                className="inline-block px-8 py-2 border border-[#7300CD] text-[#7300CD] rounded-full text-sm font-bold hover:bg-[#F3EFFF] transition-colors"
+                className="inline-block px-8 py-2 border border-primary text-primary rounded-full text-18 hover:bg-primary/10 transition-colors dark:border-white dark:text-white dark:hover:bg-white/10"
               >
                 {tSection("restaurantsCta")}
               </Link>

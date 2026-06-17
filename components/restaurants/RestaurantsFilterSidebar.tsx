@@ -12,11 +12,7 @@ import {
   CUISINE_FILTER_IDS,
   type RestaurantFilterState,
 } from "@/components/restaurants/applyRestaurantFilters";
-import {
-  LocationIcon,
-  CuisineIcon,
-  ChevronDownIcon,
-} from "./Icons";
+import { LocationIcon, CuisineIcon, ChevronDownIcon } from "./Icons";
 
 interface CuisineOption {
   id: string;
@@ -127,10 +123,10 @@ const FilterCheckbox = ({ checked, onChange }: FilterCheckboxProps) => {
     <Checkbox
       checked={checked}
       onChange={onChange}
-      className="group relative inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded border-2 border-border bg-surface transition data-checked:border-primary data-checked:bg-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
+      className="group relative inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded border-2 border-border dark:border-white bg-surface transition data-[checked]:border-primary data-[checked]:bg-primary data-[focus]:outline-none data-[focus]:ring-2 data-[focus]:ring-primary data-[focus]:ring-offset-2"
     >
       <svg
-        className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
+        className="h-3 w-3 stroke-white dark:stroke-white opacity-0 group-data-[checked]:opacity-100"
         viewBox="0 0 14 14"
         fill="none"
       >
@@ -139,6 +135,7 @@ const FilterCheckbox = ({ checked, onChange }: FilterCheckboxProps) => {
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
+          stroke="white"
         />
       </svg>
     </Checkbox>
@@ -166,24 +163,24 @@ const CuisineTypeFilter = ({
           {t("chooseCuisineType")}
         </h3>
       </div>
-      <div className="space-y-3 sm:space-y-4">
+      <div className="space-y-2 sm:space-y-3">
         {cuisines.map((cuisine) => {
           const isChecked = selectedCuisines.includes(cuisine.id);
           return (
             <div
               key={cuisine.id}
-              className="flex items-center justify-between p-2 rounded transition-colors"
+              className="flex items-center justify-between p-1 rounded transition-colors"
             >
               <div className="flex items-center gap-3">
                 <FilterCheckbox
                   checked={isChecked}
                   onChange={() => onCuisineToggle(cuisine.id)}
                 />
-                <span className="text-sm text-start text-foreground">
+                <span className="text-10 text-start text-foreground">
                   {cuisine.label}
                 </span>
               </div>
-              <span className="text-sm font-medium text-muted-foreground">
+              <span className="text-10 text-muted-foreground">
                 {cuisine.count}
               </span>
             </div>

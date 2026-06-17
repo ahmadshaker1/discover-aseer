@@ -25,36 +25,38 @@ const AseerCuisineCookingExperiencesSection = ({
   data,
 }: AseerCuisineCookingExperiencesSectionProps) => {
   return (
-    <section className="w-full py-4 text-foreground sm:py-8 md:py-[60px]">
-      <div className="flex w-full flex-col gap-[50px]">
-        <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-[114px]">
-          {/* Intro column (RTL: inline-start is the visual right in Arabic) */}
-          <div className="flex w-full max-w-full flex-col gap-12 px-4 sm:px-8 md:ps-[60px] md:pe-4 lg:max-w-[400px] lg:shrink-0 lg:justify-center lg:px-0 lg:ps-[60px] lg:pe-0">
-            <div className="flex flex-col gap-5 text-start">
-              <h2
-                className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] font-bold text-secondary"
-                style={{ fontFamily: ara }}
-              >
-                {data.title}
-              </h2>
-              <p
-                className="text-[15px] font-light text-muted-foreground"
-                style={{ fontFamily: ibm }}
-              >
-                {data.description}
-              </p>
-            </div>
+    <section className="mx-auto w-full max-w-[1440px] py-4 text-foreground sm:py-8 md:py-[60px]">
+      <div className="flex w-full flex-col gap-8 lg:gap-12">
+        {/* Intro column */}
+        <div className="flex w-full flex-col gap-12 px-4 sm:px-8 md:px-[60px]">
+          <div className="flex flex-col gap-5 text-start">
+            <h2
+              className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] font-bold text-secondary"
+              style={{ fontFamily: ara }}
+            >
+              {data.title}
+            </h2>
+            <p
+              className="max-w-[800px] text-[15px] font-light text-muted-foreground"
+              style={{ fontFamily: ibm }}
+            >
+              {data.description}
+            </p>
+          </div>
 
+          {/*
+            //! no need for now 
             <Link
               href={data.ctaHref}
               className="flex h-[52px] w-[161px] items-center justify-center rounded-[55px] border border-primary/40 bg-primary p-[10px] text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
               style={{ fontFamily: ara }}
             >
               {data.ctaLabel}
-            </Link>
-          </div>
+            </Link> */}
+        </div>
 
-          {/* Backend (Directus): provide `cards` with ExperienceCard fields. */}
+        {/* Carousel */}
+        <div className="w-full">
           <AseerExperiencesCardsCarousel cards={data.cards} />
         </div>
       </div>

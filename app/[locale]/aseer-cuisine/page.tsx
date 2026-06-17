@@ -1,6 +1,7 @@
 import AseerCuisineHero from "@/components/aseer-cuisine/AseerCuisineHero";
 import AseerCuisineDishesSection from "@/components/aseer-cuisine/AseerCuisineDishesSection";
 import AseerCuisineRestaurantsSection from "@/components/aseer-cuisine/AseerCuisineRestaurantsSection";
+import AseerCuisineHeritageRestaurantsSection from "@/components/aseer-cuisine/AseerCuisineHeritageRestaurantsSection";
 import AseerCuisineLocalFlavorsSection from "@/components/aseer-cuisine/AseerCuisineLocalFlavorsSection";
 import AseerCuisineCookingExperiencesSection from "@/components/experiences/AseerExperiencesSection";
 import AseerCuisineChefsVideoSection from "@/components/aseer-cuisine/AseerCuisineChefsVideoSection";
@@ -26,8 +27,8 @@ const AseerCuisinePage = async () => {
 
   const [dishCards, flavorCards, restaurants, experiencesResult] =
     await Promise.all([
-      fetchFeaturedCuisineCards({ locale, cuisineType: "dish", count: 4 }),
-      fetchFeaturedCuisineCards({ locale, cuisineType: "flavour", count: 4 }),
+      fetchFeaturedCuisineCards({ locale, cuisineType: "dish", count: 100 }),
+      fetchFeaturedCuisineCards({ locale, cuisineType: "flavour", count: 100 }),
       fetchRestaurants(locale),
       fetchExperiences({ type: COOKING_EXPERIENCE_TYPE, locale }),
     ]);
@@ -45,6 +46,23 @@ const AseerCuisinePage = async () => {
     rating: restaurant.rating > 0 ? restaurant.rating : 4.5,
     reviewsCount: restaurant.reviewsCount ?? 0,
   }));
+
+  const heritageRestaurants = restaurants
+    .filter((restaurant) => restaurant.cuisineTypes?.includes("aseeri_cuisine"))
+    .slice(0, 6)
+    .map((restaurant) => ({
+      id: restaurant.id,
+      image: restaurant.image,
+      title: restaurant.name,
+      location: restaurant.location,
+      cuisineType: restaurant.category || tCommon("restaurant"),
+      priceRange:
+        restaurant.priceBand ||
+        restaurant.priceRange ||
+        tCommon("notSpecified"),
+      rating: restaurant.rating > 0 ? restaurant.rating : 4.5,
+      reviewsCount: restaurant.reviewsCount ?? 0,
+    }));
 
   const cuisineExperiences: ExperienceCardProps[] =
     experiencesResult.experiences.slice(0, 6).map((experience) => ({
@@ -117,6 +135,15 @@ const AseerCuisinePage = async () => {
           ctaLabel: t("restaurantsSection.ctaLabel"),
           ctaHref: "/restaurants",
           cards: cuisineRestaurants,
+        }}
+      />
+
+      <AseerCuisineHeritageRestaurantsSection
+        data={{
+          title: t("heritageRestaurantsSection.title"),
+          ctaLabel: t("heritageRestaurantsSection.ctaLabel"),
+          ctaHref: "/restaurants",
+          cards: heritageRestaurants,
         }}
       />
     </div>

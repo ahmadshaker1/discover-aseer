@@ -6,7 +6,7 @@ const VIEWBOX_WIDTH = 212;
 const VIEWBOX_HEIGHT = 150;
 
 const WorldRegionGastronomyAwardLogo = ({
-  className = "h-auto w-full max-w-[377px]",
+  className = "h-auto w-full max-w-[212px]",
 }: WorldRegionGastronomyAwardLogoProps) => (
   <svg
     viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}

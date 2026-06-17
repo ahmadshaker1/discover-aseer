@@ -21,28 +21,30 @@ import {
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
-export type AseerCuisineRestaurantCard = CuisineRestaurantCardData;
+export type AseerCuisineHeritageRestaurantCard = CuisineRestaurantCardData;
 
-export interface AseerCuisineRestaurantsSectionData {
+export interface AseerCuisineHeritageRestaurantsSectionData {
   title: string;
   subtitle?: string;
   ctaLabel: string;
   ctaHref: string;
   showFilters?: boolean;
-  cards: AseerCuisineRestaurantCard[];
+  cards: AseerCuisineHeritageRestaurantCard[];
 }
 
-interface AseerCuisineRestaurantsSectionProps {
-  data: AseerCuisineRestaurantsSectionData;
+interface AseerCuisineHeritageRestaurantsSectionProps {
+  data: AseerCuisineHeritageRestaurantsSectionData;
 }
 
 type PriceFilterId = "free" | "budget" | "mid-range" | "luxury" | null;
 
-function inferCityId(card: AseerCuisineRestaurantCard): string | undefined {
+function inferCityId(
+  card: AseerCuisineHeritageRestaurantCard,
+): string | undefined {
   return inferCityIdFromLocation(card.location);
 }
 
-function inferInterestTags(card: AseerCuisineRestaurantCard): string[] {
+function inferInterestTags(card: AseerCuisineHeritageRestaurantCard): string[] {
   const text = `${card.title} ${card.cuisineType} ${card.location}`;
   const out = new Set<string>();
   if (/مغام|تسلق|هايكنج|adventure/i.test(text)) out.add("adventure");
@@ -57,7 +59,7 @@ function inferInterestTags(card: AseerCuisineRestaurantCard): string[] {
 }
 
 function parsePriceBounds(
-  card: AseerCuisineRestaurantCard,
+  card: AseerCuisineHeritageRestaurantCard,
 ): { from: number; to: number } | null {
   const band = card.priceBand?.trim();
   if (band && /^\d+\s*-\s*\d+$/.test(band)) {
@@ -75,7 +77,7 @@ function parsePriceBounds(
 }
 
 function cardMatchesCity(
-  card: AseerCuisineRestaurantCard,
+  card: AseerCuisineHeritageRestaurantCard,
   city: string | null,
 ): boolean {
   if (!city) return true;
@@ -93,9 +95,9 @@ function scrollStepPx(scroller: HTMLElement): number {
   return firstCard.getBoundingClientRect().width + gap;
 }
 
-const AseerCuisineRestaurantsSection = ({
+const AseerCuisineHeritageRestaurantsSection = ({
   data,
-}: AseerCuisineRestaurantsSectionProps) => {
+}: AseerCuisineHeritageRestaurantsSectionProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
@@ -316,4 +318,4 @@ const AseerCuisineRestaurantsSection = ({
   );
 };
 
-export default AseerCuisineRestaurantsSection;
+export default AseerCuisineHeritageRestaurantsSection;

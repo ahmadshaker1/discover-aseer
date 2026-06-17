@@ -13,9 +13,9 @@ export default async function InitiativesSection() {
             {t("title")}
           </h2>
           <Image
-            src="/assets/igcat/king-khalid-university.png"
+            src="/assets/igcat/dark-theme/kku-logo.svg"
             alt={t("universityAlt")}
-            className="mb-6 h-24 object-contain md:h-32"
+            className="h-32 w-32 object-contain md:h-45 md:w-45"
             width={100}
             height={100}
           />

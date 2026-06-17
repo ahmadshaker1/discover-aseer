@@ -22,9 +22,6 @@ export default function FoodFilmSection() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 flex flex-col items-start justify-between  lg:flex-row lg:items-center">
           <div className="flex w-full flex-col items-start text-start">
-            <span className="mb-4 inline-block rounded-full border border-primary bg-primary/10 px-5 py-1 text-[13px] font-bold text-primary">
-              {t("badge")}
-            </span>
             <h2 className="text-[28px] font-bold text-foreground md:text-[36px]">
               {t("title")}
             </h2>
