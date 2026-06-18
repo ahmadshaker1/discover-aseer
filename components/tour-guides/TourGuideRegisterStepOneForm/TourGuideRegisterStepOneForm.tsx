@@ -257,7 +257,9 @@ const TourGuideRegisterStepOneForm = ({
     );
   };
 
-  const languageLevelLabel = (value: (typeof LANGUAGE_LEVEL_VALUES)[number]) => {
+  const languageLevelLabel = (
+    value: (typeof LANGUAGE_LEVEL_VALUES)[number],
+  ) => {
     if (value === "beginner") return t("form.levelBeginner");
     if (value === "intermediate") return t("form.levelIntermediate");
     return t("form.levelAdvanced");
@@ -449,7 +451,7 @@ const TourGuideRegisterStepOneForm = ({
             type="date"
             value={values.License_expiry_date}
             onChange={(e) => setField("License_expiry_date", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4"
+            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 dark:[color-scheme:dark]"
             style={{ fontFamily: ibm }}
           />
         </div>
@@ -733,7 +735,10 @@ const TourGuideRegisterStepOneForm = ({
               checked={values.commitment1}
               onChange={(e) => setField("commitment1", e.target.checked)}
             />
-            <span className="flex-1 text-sm text-start" style={{ fontFamily: ibm }}>
+            <span
+              className="flex-1 text-sm text-start"
+              style={{ fontFamily: ibm }}
+            >
               {t("form.commitment1")}
             </span>
           </label>
@@ -744,7 +749,10 @@ const TourGuideRegisterStepOneForm = ({
               checked={values.commitment2}
               onChange={(e) => setField("commitment2", e.target.checked)}
             />
-            <span className="flex-1 text-sm text-start" style={{ fontFamily: ibm }}>
+            <span
+              className="flex-1 text-sm text-start"
+              style={{ fontFamily: ibm }}
+            >
               {t("form.commitment2")}
             </span>
           </label>
@@ -755,7 +763,10 @@ const TourGuideRegisterStepOneForm = ({
               checked={values.commitment3}
               onChange={(e) => setField("commitment3", e.target.checked)}
             />
-            <span className="flex-1 text-sm text-start" style={{ fontFamily: ibm }}>
+            <span
+              className="flex-1 text-sm text-start"
+              style={{ fontFamily: ibm }}
+            >
               {t("form.commitment3")}
             </span>
           </label>
@@ -879,7 +890,9 @@ const TourGuideRegisterStepOneForm = ({
           className="flex h-[62px] w-full items-center justify-center gap-[10px] rounded-[100px] bg-primary px-[22px] py-[14px] text-lg font-bold text-primary-foreground transition-opacity hover:enabled:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-45"
           style={{ fontFamily: araBold }}
         >
-          {submitState === "submitting" ? t("form.submitting") : t("form.submit")}
+          {submitState === "submitting"
+            ? t("form.submitting")
+            : t("form.submit")}
         </button>
       </section>
     </form>

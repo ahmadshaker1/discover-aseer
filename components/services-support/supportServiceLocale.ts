@@ -5,10 +5,9 @@ import {
 import type { LocaleCode } from "@/lib/i18n/localized";
 import type { ApiSupportService } from "./types";
 
-/** Canonical filter keys for support service categories (API `tags` values). */
 export const SUPPORT_CATEGORY_FILTER_KEYS = [
-  "مراكز الشرطة",
   "مستشفيات",
+  "مراكز الشرطة",
   "المطارات",
 ] as const;
 
@@ -49,10 +48,7 @@ export function translateSupportLabel(
   return LABEL_EN[trimmed] ?? trimmed;
 }
 
-export function translateSupportCity(
-  city: string,
-  locale: LocaleCode,
-): string {
+export function translateSupportCity(city: string, locale: LocaleCode): string {
   const trimmed = normalizeLabelKey(city);
   if (!trimmed || locale !== "en") return trimmed;
 

@@ -86,7 +86,9 @@ const ServicesSupportFilterSidebar = ({
   const t = useTranslations("servicesSupport");
   const tCommon = useTranslations("common");
   const locale = useLocale() as "ar" | "en";
-  const useCategoryFilter = categoryOptions.length > 0;
+  const categoryMatchCount = categoryOptions.reduce((acc, o) => acc + (SUPPORT_CATEGORY_FILTER_KEYS.includes(o.value as any) ? o.count : 0), 0);
+  const typeMatchCount = typeOptions.reduce((acc, o) => acc + (SUPPORT_CATEGORY_FILTER_KEYS.includes(o.value as any) ? o.count : 0), 0);
+  const useCategoryFilter = categoryMatchCount > typeMatchCount;
   const allTypeOptions = useCategoryFilter ? categoryOptions : typeOptions;
   const serviceTypeOptions: TypeRowOption[] = SUPPORT_CATEGORY_FILTER_KEYS.map(
     (filterKey) => ({

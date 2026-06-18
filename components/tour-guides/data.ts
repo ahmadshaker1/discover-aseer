@@ -98,13 +98,20 @@ function inferGuideCityId(api: ApiTouristGuide): string | undefined {
 
 export function filterTourGuidesByCityId(
   guides: TourGuideWithFilterMeta[],
-  cityId: string
+  cityId: string,
 ): TourGuideWithFilterMeta[] {
   return guides.filter((g) => g.cityId === cityId);
 }
 
-export function toTourGuideCardData(guide: TourGuideWithFilterMeta): TourGuideData {
-  const { filterSpecializations: _fs, gender: _g, hasTransportation: _ht, cityId: _c, ...rest } = guide;
+export function toTourGuideCardData(
+  guide: TourGuideWithFilterMeta,
+): TourGuideData {
+  const {
+    filterSpecializations: _fs,
+    hasTransportation: _ht,
+    cityId: _c,
+    ...rest
+  } = guide;
   return rest;
 }
 
@@ -173,9 +180,13 @@ function pickGuideDescription(
   }
 
   return (
-    (api.description || api.content || api.description_en || api.content_en || "")
-      .trim() ||
-    (api.specializations || api.specializations_en || "").trim()
+    (
+      api.description ||
+      api.content ||
+      api.description_en ||
+      api.content_en ||
+      ""
+    ).trim() || (api.specializations || api.specializations_en || "").trim()
   );
 }
 
@@ -209,9 +220,12 @@ export function transformTourGuide(
     api.image && typeof api.image === "string" && api.image.startsWith("http")
       ? api.image
       : DEFAULT_IMAGE;
-  let phone = (api.whatsapp ?? api.phone_number ?? "").toString().replace(/\D/g, "");
+  let phone = (api.whatsapp ?? api.phone_number ?? "")
+    .toString()
+    .replace(/\D/g, "");
   if (phone.length === 9 && phone.startsWith("5")) phone = `966${phone}`;
-  else if (phone.length === 10 && phone.startsWith("05")) phone = `966${phone.slice(1)}`;
+  else if (phone.length === 10 && phone.startsWith("05"))
+    phone = `966${phone.slice(1)}`;
   const whatsappUrl = phone ? `https://wa.me/${phone}` : "#";
   const description =
     pickGuideDescription(api, locale, specLabelMap) ||
@@ -314,13 +328,16 @@ function buildFilterOptions(
   const genderOptions = Array.from(genderCounts.entries())
     .map(([id, count]) => ({
       id,
-      label: locale === "en" ? localizeTourGuideFilterLabel(id, "en", specLabelMap) : id,
+      label:
+        locale === "en"
+          ? localizeTourGuideFilterLabel(id, "en", specLabelMap)
+          : id,
       count,
     }))
     .sort((a, b) => b.count - a.count);
 
   const transportation = [
-    { id: "yes", label: "متوفر", count: withTransport },
+    { id: "yes", label: "توفر مواصلات", count: withTransport },
     { id: "no", label: "غير متوفر", count: withoutTransport },
   ];
 
@@ -332,7 +349,9 @@ function resultFromApiRows(
   locale: LocaleCode,
 ): FetchTourGuidesResult {
   const specLabelMap = buildSpecLabelMapFromApi(rows);
-  const guides = rows.map((api) => transformTourGuide(api, locale, specLabelMap));
+  const guides = rows.map((api) =>
+    transformTourGuide(api, locale, specLabelMap),
+  );
   const filterOptions = buildFilterOptions(rows, locale);
   return { guides, filterOptions };
 }
@@ -340,13 +359,16 @@ function resultFromApiRows(
 export async function fetchTourGuides(
   locale: LocaleCode = "ar",
 ): Promise<FetchTourGuidesResult> {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(
+    /\/$/,
+    "",
+  );
   const forceDummy = process.env.NEXT_PUBLIC_TOUR_GUIDES_USE_DUMMY === "true";
 
   if (forceDummy || !directusUrl) {
     if (!directusUrl && !forceDummy) {
       console.warn(
-        "[tour-guides] NEXT_PUBLIC_DIRECTUS_APP_URL is not set — using dummy data. See components/tour-guides/data.ts"
+        "[tour-guides] NEXT_PUBLIC_DIRECTUS_APP_URL is not set — using dummy data. See components/tour-guides/data.ts",
       );
     }
     return resultFromApiRows(DUMMY_TOURIST_GUIDES, locale);
@@ -359,7 +381,9 @@ export async function fetchTourGuides(
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch tour guides: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to fetch tour guides: ${response.status} ${response.statusText}`,
+      );
     }
 
     const apiData: TouristGuidesApiResponse = await response.json();

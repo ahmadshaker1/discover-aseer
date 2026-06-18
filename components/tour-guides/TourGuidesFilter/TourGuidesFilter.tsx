@@ -30,6 +30,9 @@ const TourGuidesFilter = ({
   const tCommon = useTranslations("common");
   const { specializations, gender, transportation } = filterOptions;
 
+  const yesOption = transportation.find((opt) => opt.id === "yes");
+  const isTransportSelected = filters.transportation === "yes";
+
   const handleSpecializationToggle = (id: string) => {
     onFiltersChange({
       ...filters,
@@ -78,7 +81,7 @@ const TourGuidesFilter = ({
               {t("specializations")}
             </h3>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-2">
             {specializations.map((item) => {
               const isChecked = filters.specializations.includes(item.id);
               return (
@@ -127,7 +130,7 @@ const TourGuidesFilter = ({
               {t("gender")}
             </h3>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-2">
             {gender.map((item) => {
               const isChecked = filters.gender.includes(item.id);
               return (
@@ -170,31 +173,24 @@ const TourGuidesFilter = ({
 
       {/* Transportation */}
       <div>
-        <div className="flex items-center gap-2 mb-4">
-          <WalletIcon />
-          <h3 className="text-base font-bold text-foreground sm:text-lg">
-            {t("transportation")}
-          </h3>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {transportation.map((option) => {
-            const isSelected = filters.transportation === option.id;
-            return (
-              <Button
-                key={option.id}
-                onClick={() => handleTransportationSelect(option.id)}
-                disabled={option.count === 0}
-                className={`cursor-pointer rounded-lg border-2 px-3 py-2 text-sm font-medium transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
-                  isSelected
-                    ? "border-primary bg-muted text-foreground"
-                    : "border-border text-foreground hover:border-muted-foreground"
-                }`}
-              >
-                {option.id === "yes" ? t("transportAvailable") : t("transportNotAvailable")}
-                <span className="me-1 text-muted-foreground">({option.count})</span>
-              </Button>
-            );
-          })}
+        <div className="flex items-center gap-2 mb-4"></div>
+        <div className="flex flex-col gap-3">
+          {yesOption && (
+            <Button
+              onClick={() => handleTransportationSelect("yes")}
+              disabled={yesOption.count === 0}
+              className={`cursor-pointer rounded-lg border-2 px-3 py-2 text-sm font-medium transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                isTransportSelected
+                  ? "border-primary bg-muted text-foreground"
+                  : "border-border text-foreground hover:border-muted-foreground"
+              }`}
+            >
+              {t("transportAvailable")}
+              <span className="me-1 text-muted-foreground">
+                ({yesOption.count})
+              </span>
+            </Button>
+          )}
         </div>
       </div>
     </div>

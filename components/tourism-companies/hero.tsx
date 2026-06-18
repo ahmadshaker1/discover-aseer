@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 
 function BreadcrumbChevron() {
   return (
@@ -26,7 +27,17 @@ export default async function TourismCompaniesHero() {
 
   return (
     <section className="relative flex h-[70vh] w-full items-center justify-center overflow-hidden bg-black text-white">
-      <div className="absolute inset-0 bg-black" aria-hidden />
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/assets/tourism-companies/MAN_0983.JPG"
+          alt=""
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/40" aria-hidden />
+      </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 text-center sm:px-10 md:px-16">
         <div className="mb-4 flex flex-wrap items-center justify-center gap-2 text-sm font-medium sm:text-base">

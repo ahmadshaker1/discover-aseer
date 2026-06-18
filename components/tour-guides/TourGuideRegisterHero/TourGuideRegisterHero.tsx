@@ -91,15 +91,19 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
       aria-labelledby="tour-guide-register-hero-title"
     >
       <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-[calc(139px+5rem)] sm:px-6 md:px-10 lg:px-8 lg:pt-[200px]">
-        <Link
-          href="/tour-guides"
-          className={`mb-10 inline-flex h-[42px] min-w-[98px] items-center justify-center gap-[10px] ${backAlignClass} rounded-[43px] bg-background px-[10px] py-[10px] text-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:absolute lg:mb-0 lg:top-[291px] lg:right-[68px]`}
-          style={{ fontFamily: araBold }}
-          prefetch={false}
-        >
-          <span className="text-base font-bold leading-none">{t("back")}</span>
-          <BackChevronIcon />
-        </Link>
+        <div className="relative mx-auto w-full max-w-[1026px]">
+          <Link
+            href="/tour-guides"
+            className={`mb-10 inline-flex h-[42px] min-w-[98px] items-center justify-center gap-[10px] ${backAlignClass} rounded-[43px] bg-background px-[10px] py-[10px] text-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:absolute lg:mb-0 lg:top-[91px]`}
+            style={{ fontFamily: araBold }}
+            prefetch={false}
+          >
+            <span className="text-base font-bold leading-none">
+              {t("back")}
+            </span>
+            <BackChevronIcon />
+          </Link>
+        </div>
 
         <div className="mx-auto mt-20 flex w-full max-w-[590px] flex-col items-stretch gap-[33px] sm:mt-24 lg:mt-30 xl:mt-32">
           <h1
@@ -141,7 +145,9 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
         </div>
 
         {bottomSlot ? (
-          <div className="mx-auto mt-12 w-full max-w-[1026px] sm:mt-14 lg:mt-16">{bottomSlot}</div>
+          <div className="mx-auto mt-12 w-full max-w-[1026px] sm:mt-14 lg:mt-16">
+            {bottomSlot}
+          </div>
         ) : null}
       </div>
     </section>

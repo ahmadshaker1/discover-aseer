@@ -281,7 +281,7 @@ const Footer = () => {
                       src="/assets/footer/un-tourism1.1.png"
                       alt={t("footer.altUnTourism")}
                       width={50}
-                      height={50}
+                      height={34}
                       className="h-[34px] w-[100px]"
                     />
                     <Image
