@@ -41,7 +41,12 @@ interface CheckboxRowProps {
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
-const CheckboxRow = ({ option, label, checked, onToggle }: CheckboxRowProps) => {
+const CheckboxRow = ({
+  option,
+  label,
+  checked,
+  onToggle,
+}: CheckboxRowProps) => {
   return (
     <label className="flex w-full min-w-0 cursor-pointer items-center justify-between gap-2 py-1.5 sm:gap-3">
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -80,7 +85,21 @@ const ServicesSupportFilterSidebar = ({
   const t = useTranslations("servicesSupport");
   const tCommon = useTranslations("common");
   const locale = useLocale() as "ar" | "en";
-  const serviceTypeOptions: TypeRowOption[] = SUPPORT_TYPE_FILTER_KEYS.map(
+  const categoryMatchCount = categoryOptions.reduce(
+    (acc, o) =>
+      acc +
+      (SUPPORT_CATEGORY_FILTER_KEYS.includes(o.value as any) ? o.count : 0),
+    0,
+  );
+  const typeMatchCount = typeOptions.reduce(
+    (acc, o) =>
+      acc +
+      (SUPPORT_CATEGORY_FILTER_KEYS.includes(o.value as any) ? o.count : 0),
+    0,
+  );
+  const useCategoryFilter = categoryMatchCount > typeMatchCount;
+  const allTypeOptions = useCategoryFilter ? categoryOptions : typeOptions;
+  const serviceTypeOptions: TypeRowOption[] = SUPPORT_CATEGORY_FILTER_KEYS.map(
     (filterKey) => ({
       value: filterKey,
       count: typeOptions.find((o) => o.value === filterKey)?.count ?? 0,
@@ -134,22 +153,33 @@ const ServicesSupportFilterSidebar = ({
                 {selectedCityLabel ?? t("chooseDestination")}
               </span>
             </div>
-            <svg className="text-foreground" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 7.4L0 1.4L1.4 0L6 4.6L10.6 0L12 1.4L6 7.4Z" fill="currentColor" />
+            <svg
+              className="text-foreground"
+              width="12"
+              height="8"
+              viewBox="0 0 12 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 7.4L0 1.4L1.4 0L6 4.6L10.6 0L12 1.4L6 7.4Z"
+                fill="currentColor"
+              />
             </svg>
-
           </div>
         </div>
       </section>
       <div className="my-5 h-px w-full bg-border" />
       <section>
         <div className="mb-4 flex items-center justify-start gap-2">
-          <h3 className="text-start text-[20px] font-bold leading-[119%] text-foreground" style={{ fontFamily: ara }}>
+          <h3
+            className="text-start text-[20px] font-bold leading-[119%] text-foreground"
+            style={{ fontFamily: ara }}
+          >
             {t("chooseServiceType")}
           </h3>
 
           <ServiceTypeIcon />
-
         </div>
 
         <div className="space-y-2">

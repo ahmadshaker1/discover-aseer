@@ -45,6 +45,15 @@ const TourGuideModal = ({
   const t = useTranslations("tourGuides");
   if (!guide) return null;
 
+  const isFemale = guide.gender && /^(أنثى|female|f)$/i.test(guide.gender);
+  const fallbackImage =
+    !guide.profileImage ||
+    guide.profileImage === "/assets/experiences/experiences.png"
+      ? isFemale
+        ? "/assets/tourist-guides/female.png"
+        : "/assets/tourist-guides/male.png"
+      : guide.profileImage;
+
   const firstName = guide.name.split(" ")[0] || guide.name;
 
   return (
@@ -55,13 +64,6 @@ const TourGuideModal = ({
       {/* Modal Container with Animation */}
       <div className="fixed inset-0 flex items-end sm:items-center justify-center p-2 sm:p-4">
         <DialogPanel className="relative mx-2 w-full max-w-2xl max-h-[95vh] overflow-y-auto rounded-2xl bg-surface text-foreground shadow-xl sm:mx-4 sm:max-h-[90vh] sm:rounded-3xl modal-enter">
-          <Button
-            onClick={onClose}
-            className="absolute top-3 right-3 z-10 rounded-full p-2 transition-colors hover:bg-muted sm:top-4 sm:right-4"
-          >
-            <CloseIcon />
-          </Button>
-
           <div className="p-4 sm:p-6">
             {/* Profile Section */}
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-4 sm:mb-6">
@@ -70,7 +72,7 @@ const TourGuideModal = ({
                 <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
                   <div className="relative h-full w-full overflow-hidden rounded-full bg-surface">
                     <Image
-                      src={guide.profileImage}
+                      src={fallbackImage}
                       alt={guide.name}
                       fill
                       className="object-cover"
@@ -92,7 +94,9 @@ const TourGuideModal = ({
                   {guide.languages.map((lang) => (
                     <div key={lang.code} className="flex items-center gap-1.5">
                       <LanguageFlag code={lang.code} />
-                      <span className="text-sm text-foreground">{lang.name}</span>
+                      <span className="text-sm text-foreground">
+                        {lang.name}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -102,7 +106,7 @@ const TourGuideModal = ({
                   href={guide.whatsappUrl}
                   className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-2 text-xs font-medium transition-colors hover:bg-muted sm:px-4 sm:text-sm"
                 >
-                  <span className="text-green-600">
+                  <span className="text-green-600 dark:text-white">
                     <WhatsAppIcon />
                   </span>
                   <span>{t("contactWhatsApp")}</span>

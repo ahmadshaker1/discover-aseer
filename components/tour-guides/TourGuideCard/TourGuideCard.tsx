@@ -18,6 +18,7 @@ export interface TourGuideData {
   transportation?: string;
   availability?: string;
   specialties?: string[];
+  gender?: string;
 }
 
 export interface TourGuideCardProps extends TourGuideData {
@@ -37,9 +38,18 @@ const TourGuideCard = ({
   whatsappUrl,
   description,
   onCardClick,
+  gender,
 }: TourGuideCardProps) => {
   const t = useTranslations("tourGuides");
   const tCommon = useTranslations("common");
+
+  const isFemale = gender && /^(أنثى|female|f)$/i.test(gender);
+  const fallbackImage =
+    !profileImage || profileImage === "/assets/experiences/experiences.png"
+      ? isFemale
+        ? "/assets/tourist-guides/female.png"
+        : "/assets/tourist-guides/male.png"
+      : profileImage;
   return (
     <div
       className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md"
@@ -51,7 +61,7 @@ const TourGuideCard = ({
           <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
             <div className="relative w-full h-full rounded-full overflow-hidden">
               <Image
-                src={profileImage}
+                src={fallbackImage}
                 alt={name}
                 fill
                 className="object-cover"
@@ -80,7 +90,7 @@ const TourGuideCard = ({
           onClick={(e) => e.stopPropagation()}
           className="mb-4 flex w-full max-w-[240px] items-center justify-center gap-2 rounded-full border-2 border-border bg-surface px-4 py-2 text-center transition-colors hover:bg-muted"
         >
-          <span className="shrink-0 text-green-600">
+          <span className="shrink-0 text-green-600 dark:text-white">
             <WhatsAppIcon />
           </span>
           <span className="text-sm font-bold leading-tight whitespace-normal">

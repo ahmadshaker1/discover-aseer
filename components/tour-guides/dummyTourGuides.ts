@@ -10,8 +10,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     id: 9001,
     name: "أحمد العسيري",
     name_en: "Ahmed Al-Asiri",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+    image: null,
     phone_number: "966501234567",
     whatsapp: "966501234567",
     content: null,
@@ -36,8 +35,7 @@ export const DUMMY_TOURIST_GUIDES: ApiTouristGuide[] = [
     id: 9002,
     name: "نورة الغامدي",
     name_en: "Noura Al-Ghamdi",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
+    image: null,
     phone_number: "966507654321",
     whatsapp: "966507654321",
     content: null,
