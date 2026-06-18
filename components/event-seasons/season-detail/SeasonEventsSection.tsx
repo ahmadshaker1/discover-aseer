@@ -43,16 +43,15 @@ const FILTER_LABEL_KEYS = {
 interface SeasonEventsSectionProps {
   season: SeasonDetail;
   events: SeasonDetailEvent[];
-  initialDayIso: string;
 }
 
 export default function SeasonEventsSection({
   season,
   events,
-  initialDayIso,
 }: SeasonEventsSectionProps) {
   const locale = useLocale();
   const t = useTranslations("eventSeasons");
+  const tCommon = useTranslations("common");
   const localeCode = locale === "ar" ? "ar" : "en";
   const seasonDays = useMemo(() => {
     const start = parseDateOnly(season.startDate);
@@ -61,17 +60,13 @@ export default function SeasonEventsSection({
     return eachDayInRange(start, end);
   }, [season.startDate, season.endDate]);
 
-  const [selectedDayIso, setSelectedDayIso] = useState(initialDayIso);
-  const [windowStart, setWindowStart] = useState(() => {
-    const dayIndex = seasonDays.findIndex(
-      (d) => toIsoDateString(d) === initialDayIso,
-    );
-    return calendarWindowForDay(dayIndex, seasonDays.length, VISIBLE_DAYS);
-  });
+  const [selectedDayIso, setSelectedDayIso] = useState<string | null>(null);
+  const [windowStart, setWindowStart] = useState(0);
   const [activeCategory, setActiveCategory] =
     useState<SeasonEventCategoryId>("all");
 
   useEffect(() => {
+    if (!selectedDayIso) return;
     const idx = seasonDays.findIndex(
       (d) => toIsoDateString(d) === selectedDayIso,
     );
@@ -100,7 +95,7 @@ export default function SeasonEventsSection({
   const canScrollNext = windowStart + VISIBLE_DAYS < seasonDays.length;
 
   const selectedDay = useMemo(
-    () => parseDateOnly(selectedDayIso),
+    () => (selectedDayIso ? parseDateOnly(selectedDayIso) : null),
     [selectedDayIso],
   );
 
@@ -177,7 +172,11 @@ export default function SeasonEventsSection({
                 <button
                   key={iso}
                   type="button"
-                  onClick={() => setSelectedDayIso(iso)}
+                  onClick={() =>
+                    setSelectedDayIso((current) =>
+                      current === iso ? null : iso,
+                    )
+                  }
                   className={`flex h-[103px] w-[66px] shrink-0 flex-col items-center justify-center gap-2 rounded-[20px] border px-3 py-4 transition ${isSelected
                     ? "border-transparent bg-[url('/assets/event-seasons/selected-day-bg.png')] bg-cover bg-center text-white shadow-sm"
                     : "border-border bg-surface text-[#5C5C5C] dark:text-muted-foreground"
@@ -254,7 +253,9 @@ export default function SeasonEventsSection({
           <p className="text-center text-lg text-muted-foreground">
             {events.length === 0
               ? t("noEventsInSeason")
-              : t("noEventsForDay")}
+              : selectedDayIso
+                ? t("noEventsForDay")
+                : tCommon("noEventsFilter")}
           </p>
         )}
       </div>

@@ -1,11 +1,6 @@
 import SeasonDetailHero from "@/components/event-seasons/season-detail/SeasonDetailHero";
 import SeasonEventsSection from "@/components/event-seasons/season-detail/SeasonEventsSection";
 import { fetchSeasonDetailPage } from "@/components/event-seasons/season-detail-data";
-import {
-  eachDayInRange,
-  parseDateOnly,
-  pickDefaultSeasonDay,
-} from "@/components/event-seasons/utils";
 import type { LocaleCode } from "@/lib/i18n/localized";
 import { getLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -23,20 +18,10 @@ export default async function SeasonDetailPage({ params }: SeasonDetailPageProps
     notFound();
   }
 
-  const seasonStart = parseDateOnly(data.season.startDate);
-  const seasonEnd = parseDateOnly(data.season.endDate);
-  const seasonDays =
-    seasonStart && seasonEnd ? eachDayInRange(seasonStart, seasonEnd) : [];
-  const initialDayIso = pickDefaultSeasonDay(seasonDays, data.events);
-
   return (
     <div className="flex w-full flex-col bg-background">
       <SeasonDetailHero season={data.season} />
-      <SeasonEventsSection
-        season={data.season}
-        events={data.events}
-        initialDayIso={initialDayIso}
-      />
+      <SeasonEventsSection season={data.season} events={data.events} />
     </div>
   );
 }
