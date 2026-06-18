@@ -1,7 +1,7 @@
 "use client";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  SUPPORT_CATEGORY_FILTER_KEYS,
+  SUPPORT_TYPE_FILTER_KEYS,
   translateSupportCity,
   translateSupportLabel,
 } from "./supportServiceLocale";
@@ -19,13 +19,10 @@ interface FilterOption {
 
 interface ServicesSupportFilterSidebarProps {
   cityOptions: FilterOption[];
-  categoryOptions: FilterOption[];
   typeOptions: FilterOption[];
   selectedCity: string | null;
-  selectedCategories: string[];
   selectedTypes: string[];
   onCityChange: (value: string | null) => void;
-  onToggleCategory: (value: string) => void;
   onToggleType: (value: string) => void;
   onReset: () => void;
 }
@@ -73,36 +70,25 @@ const CheckboxRow = ({ option, label, checked, onToggle }: CheckboxRowProps) => 
 
 const ServicesSupportFilterSidebar = ({
   cityOptions,
-  categoryOptions,
   typeOptions,
   selectedCity,
-  selectedCategories,
   selectedTypes,
   onCityChange,
-  onToggleCategory,
   onToggleType,
   onReset,
 }: ServicesSupportFilterSidebarProps) => {
   const t = useTranslations("servicesSupport");
   const tCommon = useTranslations("common");
   const locale = useLocale() as "ar" | "en";
-  const useCategoryFilter = categoryOptions.length > 0;
-  const allTypeOptions = useCategoryFilter ? categoryOptions : typeOptions;
-  const serviceTypeOptions: TypeRowOption[] = SUPPORT_CATEGORY_FILTER_KEYS.map(
+  const serviceTypeOptions: TypeRowOption[] = SUPPORT_TYPE_FILTER_KEYS.map(
     (filterKey) => ({
       value: filterKey,
-      count: allTypeOptions.find((o) => o.value === filterKey)?.count ?? 0,
+      count: typeOptions.find((o) => o.value === filterKey)?.count ?? 0,
     }),
   );
   const selectedCityLabel = selectedCity
     ? translateSupportCity(selectedCity, locale)
     : null;
-  const selectedServiceTypes = useCategoryFilter
-    ? selectedCategories
-    : selectedTypes;
-  const onToggleServiceType = useCategoryFilter
-    ? onToggleCategory
-    : onToggleType;
 
   return (
     <aside className="w-full max-w-full rounded-2xl bg-surface p-4 text-foreground sm:p-5 lg:max-w-[320px]">
@@ -172,8 +158,8 @@ const ServicesSupportFilterSidebar = ({
               key={option.value}
               option={option}
               label={translateSupportLabel(option.value, locale)}
-              checked={selectedServiceTypes.includes(option.value)}
-              onToggle={onToggleServiceType}
+              checked={selectedTypes.includes(option.value)}
+              onToggle={onToggleType}
             />
           ))}
         </div>

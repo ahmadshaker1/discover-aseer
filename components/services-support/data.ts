@@ -27,20 +27,18 @@ function transformApiSupportService(
   item: ApiSupportService,
   locale: LocaleCode,
 ): SupportService {
-  const filterCategory = normalizeText(item.tags, "غير مصنف");
   const filterCity = normalizeText(item.city, "غير محدد");
-  const filterType = normalizeText(item.type, "الخدمات المساندة");
+  const filterType = normalizeText(item.type, "غير مصنف");
   const title = pickLocalizedTitle(item, locale);
 
   return {
     id: String(item.id),
     title,
-    category: translateSupportLabel(filterCategory, locale),
+    category: translateSupportLabel(filterType, locale),
     city: translateSupportCity(filterCity, locale),
     type: translateSupportLabel(filterType, locale),
     supportNumber: normalizeSupportNumber(item.support_services_number, locale),
     mapsUrl: normalizeMapsUrl(item.location, title),
-    filterCategory,
     filterCity,
     filterType,
   };

@@ -76,7 +76,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
         <span className="inline-flex h-7 min-w-[95px] max-w-full items-center justify-center gap-1 rounded-[20px] bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
           <span className="min-w-0 truncate text-start">{service.category}</span>
           <span className="shrink-0" aria-hidden>
-            <ServiceTagIcon categoryKey={service.filterCategory} />
+            <ServiceTagIcon categoryKey={service.filterType} />
           </span>
         </span>
       </div>

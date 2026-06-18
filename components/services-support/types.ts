@@ -2,7 +2,6 @@ export interface ApiSupportService {
   id: number | string;
   title_ar?: string | null;
   title_en?: string | null;
-  tags?: string | null;
   city?: string | null;
   type?: string | null;
   location?: string | null;
@@ -19,7 +18,6 @@ export interface SupportService {
   supportNumber: string;
   mapsUrl: string;
   /** Raw CMS values used for filter matching (Arabic from API). */
-  filterCategory: string;
   filterCity: string;
   filterType: string;
 }

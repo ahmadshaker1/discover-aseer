@@ -5,8 +5,8 @@ import {
 import type { LocaleCode } from "@/lib/i18n/localized";
 import type { ApiSupportService } from "./types";
 
-/** Canonical filter keys for support service categories (API `tags` values). */
-export const SUPPORT_CATEGORY_FILTER_KEYS = [
+/** Canonical filter keys for support service types (API `type` values). */
+export const SUPPORT_TYPE_FILTER_KEYS = [
   "مراكز الشرطة",
   "مستشفيات",
   "المطارات",

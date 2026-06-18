@@ -37,18 +37,11 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
   const t = useTranslations("servicesSupport");
   const locale = useLocale() as "ar" | "en";
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const cityOptions = useMemo(
     () => buildOptions(services.map((service) => service.filterCity), locale),
-    [services, locale],
-  );
-
-  const categoryOptions = useMemo(
-    () =>
-      buildOptions(services.map((service) => service.filterCategory), locale),
     [services, locale],
   );
 
@@ -60,15 +53,13 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
   const filteredServices = useMemo(() => {
     return services.filter((service) => {
       const cityMatch = !selectedCity || selectedCity === service.filterCity;
-      const categoryMatch =
-        selectedCategories.length === 0 ||
-        selectedCategories.includes(service.filterCategory);
       const typeMatch =
-        selectedTypes.length === 0 || selectedTypes.includes(service.filterType);
+        selectedTypes.length === 0 ||
+        selectedTypes.includes(service.filterType);
 
-      return cityMatch && categoryMatch && typeMatch;
+      return cityMatch && typeMatch;
     });
-  }, [services, selectedCity, selectedCategories, selectedTypes]);
+  }, [services, selectedCity, selectedTypes]);
 
   const totalPages = Math.max(
     1,
@@ -94,7 +85,6 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
 
   const resetFilters = () => {
     setSelectedCity(null);
-    setSelectedCategories([]);
     setSelectedTypes([]);
     setCurrentPage(1);
   };
@@ -123,18 +113,13 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
         <div className="order-1 w-full shrink-0 lg:order-1 lg:w-[min(100%,320px)] lg:max-w-[320px]">
           <ServicesSupportFilterSidebar
             cityOptions={cityOptions}
-            categoryOptions={categoryOptions}
             typeOptions={typeOptions}
             selectedCity={selectedCity}
-            selectedCategories={selectedCategories}
             selectedTypes={selectedTypes}
             onCityChange={(value) => {
               setSelectedCity(value);
               setCurrentPage(1);
             }}
-            onToggleCategory={(value) =>
-              toggleInList(setSelectedCategories, value)
-            }
             onToggleType={(value) => toggleInList(setSelectedTypes, value)}
             onReset={resetFilters}
           />
