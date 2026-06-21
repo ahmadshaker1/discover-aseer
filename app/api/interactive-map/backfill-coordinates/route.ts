@@ -9,6 +9,7 @@ const getBackfillSecret = (): string | undefined =>
 
 const isAuthorized = (request: Request): boolean => {
   const secret = getBackfillSecret();
+
   if (!secret) return false;
 
   const headerSecret = request.headers.get("x-backfill-secret")?.trim();
