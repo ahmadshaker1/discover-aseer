@@ -10,7 +10,7 @@ export default function TravelLandSection() {
         className="mt-12 h-[300px] w-full"
         style={{
           backgroundImage:
-            "linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(102, 102, 102, 0.5) 100%), url('/assets/Getting-here-and-around/b508a57eb99cf2e6f865588877b7c2da00e3ec1b.jpg')",
+            "linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0%, rgba(102, 102, 102, 0.25) 100%), url('/assets/Getting-here-and-around/b508a57eb99cf2e6f865588877b7c2da00e3ec1b.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "70% 65%",
           backgroundRepeat: "no-repeat",
@@ -35,46 +35,18 @@ export default function TravelLandSection() {
           </p>
         </div>
 
+        <div className="mb-2 text-start">
+          <h3 className="text-[24px] font-bold text-secondary leading-tight">
+            {t("drivingToAseer")}
+          </h3>
+          <p className="text-[16px] text-muted-foreground mt-1 leading-normal">
+            {t("distancesFromMajorCities")}
+          </p>
+        </div>
         {/* القسم السفلي: شبكة من عمودين */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           {/* العمود الأيمن (قائمة المسافات) */}
           <div className="flex flex-col gap-4">
-            {/* الرياض */}
-            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                    <circle cx="7" cy="17" r="2" />
-                    <path d="M9 17h6" />
-                    <circle cx="17" cy="17" r="2" />
-                  </svg>
-                </div>
-                <div className="text-start">
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">
-                    {t("fromRiyadh")}
-                  </p>
-                  <p className="text-[18px] font-bold text-foreground">
-                    {t("hours950")}
-                  </p>
-                </div>
-              </div>
-              <div className="text-start">
-                <p className="text-[18px] font-bold text-foreground">
-                  {t("time910")}
-                </p>
-              </div>
-            </div>
-
             {/* جدة */}
             <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
               <div className="flex items-center gap-4">
@@ -100,13 +72,85 @@ export default function TravelLandSection() {
                     {t("fromJeddah")}
                   </p>
                   <p className="text-[18px] font-bold text-foreground">
-                    {t("hours630")}
+                    {t("hours650")}
                   </p>
                 </div>
               </div>
               <div className="text-start">
                 <p className="text-[18px] font-bold text-foreground">
-                  {t("time67")}
+                  {t("time8")}
+                </p>
+              </div>
+            </div>
+
+            {/* الرياض */}
+            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+                    <circle cx="7" cy="17" r="2" />
+                    <path d="M9 17h6" />
+                    <circle cx="17" cy="17" r="2" />
+                  </svg>
+                </div>
+                <div className="text-start">
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                    {t("fromRiyadh")}
+                  </p>
+                  <p className="text-[18px] font-bold text-foreground">
+                    {t("hours900")}
+                  </p>
+                </div>
+              </div>
+              <div className="text-start">
+                <p className="text-[18px] font-bold text-foreground">
+                  {t("time10")}
+                </p>
+              </div>
+            </div>
+
+            {/* المدينة المنورة */}
+            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+                    <circle cx="7" cy="17" r="2" />
+                    <path d="M9 17h6" />
+                    <circle cx="17" cy="17" r="2" />
+                  </svg>
+                </div>
+                <div className="text-start">
+                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                    {t("fromMadinah")}
+                  </p>
+                  <p className="text-[18px] font-bold text-foreground">
+                    {t("hours1039")}
+                  </p>
+                </div>
+              </div>
+              <div className="text-start">
+                <p className="text-[18px] font-bold text-foreground">
+                  {t("time11")}
                 </p>
               </div>
             </div>
@@ -136,35 +180,43 @@ export default function TravelLandSection() {
                     {t("fromDammam")}
                   </p>
                   <p className="text-[18px] font-bold text-foreground">
-                    {t("hours1400")}
+                    {t("hours1200")}
                   </p>
                 </div>
               </div>
               <div className="text-start">
                 <p className="text-[18px] font-bold text-foreground">
-                  {t("time1314")}
+                  {t("time13")}
                 </p>
               </div>
             </div>
           </div>
 
           {/* العمود الأيسر (بطاقة سابتكو) */}
-          <div className="flex flex-col justify-between rounded-4xl border border-border bg-secondary p-8 shadow-lg text-secondary-foreground">
+          <div
+            className="relative flex flex-col justify-between rounded-4xl border border-border p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/Getting-here-and-around/SAPTCO.png')",
+            }}
+          >
             <div>
               <div className="mb-6 flex items-center justify-start gap-3">
-                <h3 className="text-[28px] font-bold">{t("saptcoTitle")}</h3>
-                <div className="text-primary">
+                <h3 className="text-[28px] font-bold text-white">
+                  {t("saptcoTitle")}
+                </h3>
+                <div className="text-white">
                   <Image
                     src="/assets/Getting-here-and-around/sapitco.png"
                     alt={t("saptcoAlt") || "Saptco"}
                     width={70}
                     height={40}
-                    className="object-contain"
+                    className="object-contain brightness-0 invert"
                   />
                 </div>
               </div>
               <p
-                className={`mb-8 text-[16px] leading-[1.8] opacity-80 text-start`}
+                className={`mb-8 text-[16px] leading-[1.8] text-white/90 text-start`}
               >
                 {t("saptcoBody")}
               </p>
@@ -172,7 +224,7 @@ export default function TravelLandSection() {
 
             <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-start gap-4 mt-auto">
               <a
-                href="https://saptco.com.sa/intercity-transport"
+                href={t("saptcoLink")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center rounded-xl bg-primary px-8 py-3 text-[16px] font-bold text-primary-foreground transition hover:opacity-90"
@@ -184,7 +236,7 @@ export default function TravelLandSection() {
                   href="https://play.google.com/store/apps/details?id=com.sat.passenger&hl=ar&pli=1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-muted px-6 py-3 text-[16px] font-bold text-foreground transition hover:opacity-90"
+                  className="flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 text-[16px] font-bold text-white transition hover:bg-white/20"
                 >
                   Android
                 </a>
@@ -193,7 +245,7 @@ export default function TravelLandSection() {
                   href="https://apps.apple.com/us/app/saptco/id1074204412"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-muted px-6 py-3 text-[16px] font-bold text-foreground transition hover:opacity-90"
+                  className="flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 text-[16px] font-bold text-white transition hover:bg-white/20"
                 >
                   iPhone
                 </a>
@@ -219,12 +271,12 @@ export default function TravelLandSection() {
           <div className="group relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-4xl shadow-md">
             {/* الصورة الخلفية */}
             <img
-              src="/assets/Getting-here-and-around/89fb030a28469fcdf2237c498d9867f61d4ab7f0.jpg"
+              src="/assets/Getting-here-and-around/Taxis.png"
               alt={t("airportTaxiAlt")}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             {/* تدرج لوني عشان النص يكون واضح */}
-            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
 
             {/* المحتوى النصي */}
             <div className={`relative z-10 p-8 text-start`}>
@@ -265,89 +317,97 @@ export default function TravelLandSection() {
             </h3>
 
             {/* شبكة كروت التطبيقات */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* كرت بولت */}
-              <div className="flex flex-col items-center justify-between rounded-2xl bg-muted p-6 transition-all hover:shadow-md">
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-[#2EBA7F] text-[24px] font-bold text-white">
-                  B
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* كرت أوبر */}
+              <div
+                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/Uber.png')",
+                }}
+              >
+                <div className="mt-4 text-center">
+                  <p className="text-[20px] font-bold text-white leading-tight">
+                    {t("uber")}
+                  </p>
                 </div>
-                <p className="mb-4 text-[18px] font-bold text-secondary">
-                  {t("bolt")}
-                </p>
-                <div className="flex items-center gap-2">
-                  <a
-                    href="https://play.google.com/store/apps/details?id=ee.mtakso.client&hl=ar"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
-                  >
-                    Android
-                  </a>
-                  <a
-                    href="https://apps.apple.com/us/app/bolt-request-a-ride/id675033630"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
-                  >
-                    iPhone
-                  </a>
-                </div>
+                <a
+                  href={t("uberLink")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[14px] font-bold text-white transition hover:bg-white/35"
+                >
+                  {t("visitWebsite")}
+                </a>
               </div>
 
               {/* كرت كريم */}
-              <div className="flex flex-col items-center justify-between rounded-2xl bg-muted p-6 transition-all hover:shadow-md">
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-[#48D52A] text-[24px] font-bold text-white">
-                  C
+              <div
+                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/careem.jpg')",
+                }}
+              >
+                <div className="mt-4 text-center">
+                  <p className="text-[20px] font-bold text-white leading-tight">
+                    {t("careem")}
+                  </p>
                 </div>
-                <p className="mb-4 text-[18px] font-bold text-secondary">
-                  {t("careem")}
-                </p>
-                <div className="flex items-center gap-2">
-                  <a
-                    href="https://play.google.com/store/apps/details?id=com.careem.acma&hl=ar"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
-                  >
-                    Android
-                  </a>
-                  <a
-                    href="https://apps.apple.com/us/app/careem-rides-food-grocery/id592978487"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
-                  >
-                    iPhone
-                  </a>
-                </div>
+                <a
+                  href={t("careemLink")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[14px] font-bold text-white transition hover:bg-white/35"
+                >
+                  {t("visitWebsite")}
+                </a>
               </div>
 
-              {/* كرت أوبر */}
-              <div className="flex flex-col items-center justify-between rounded-2xl bg-muted p-6 transition-all hover:shadow-md">
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-black text-[24px] font-bold text-white">
-                  U
+              {/* كرت بولت */}
+              <div
+                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/bolt.png')",
+                }}
+              >
+                <div className="mt-4 text-center">
+                  <p className="text-[20px] font-bold text-white leading-tight">
+                    {t("bolt")}
+                  </p>
                 </div>
-                <p className="mb-4 text-[18px] font-bold text-secondary">
-                  {t("uber")}
-                </p>
-                <div className="flex items-center gap-2">
-                  <a
-                    href="https://play.google.com/store/apps/details?id=com.ubercab&hl=ar"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
-                  >
-                    Android
-                  </a>
-                  <a
-                    href="https://apps.apple.com/us/app/uber-request-a-ride/id368677368"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
-                  >
-                    iPhone
-                  </a>
+                <a
+                  href={t("boltLink")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[14px] font-bold text-white transition hover:bg-white/35"
+                >
+                  {t("visitWebsite")}
+                </a>
+              </div>
+
+              {/* كرت جيني */}
+              <div
+                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/jeeny.png')",
+                }}
+              >
+                <div className="mt-4 text-center">
+                  <p className="text-[20px] font-bold text-white leading-tight">
+                    {t("jeeny")}
+                  </p>
                 </div>
+                <a
+                  href={t("jeenyLink")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[14px] font-bold text-white transition hover:bg-white/35"
+                >
+                  {t("visitWebsite")}
+                </a>
               </div>
             </div>
           </div>
@@ -371,26 +431,27 @@ export default function TravelLandSection() {
           </p>
         </div>
 
-        {/* كرت ذيب - كرت واحد كما طلبت */}
+        {/* كرت ذيب  */}
         <div className="mb-16 flex justify-start">
           <div className="relative flex w-full flex-col rounded-4xl bg-surface p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 md:w-[350px]">
-            {/* أيقونة B في اليسار */}
-            <div
-              className={`absolute top-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2EBA7F] text-white font-bold end-6`}
-            >
-              B
-            </div>
-
-            <div className={`mt-8 text-start`}>
-              <h3 className="mb-6 text-[24px] font-bold text-secondary">
-                {t("theebTitle")}
-              </h3>
+            <div className="text-start">
+              <div className="mb-6 flex items-center justify-start gap-3">
+                <h3 className="text-[24px] font-bold text-secondary">
+                  {t("theebTitle")}
+                </h3>
+                <Image
+                  src="/assets/Getting-here-and-around/Theeb.webp"
+                  alt="Theeb"
+                  width={80}
+                  height={32}
+                  className="object-contain"
+                />
+              </div>
 
               {/* رقم الجوال */}
               <div
                 className={`mb-4 flex items-center gap-3 text-[14px] font-medium text-foreground justify-start`}
               >
-                <span dir="ltr">+966 9200000890</span>
                 <svg
                   className="h-5 w-5 text-secondary"
                   viewBox="0 0 24 24"
@@ -402,13 +463,16 @@ export default function TravelLandSection() {
                 >
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
+                <span dir="ltr">+966 9200000890</span>
               </div>
 
               {/* الموقع الإلكتروني */}
-              <div
-                className={`mb-8 flex items-center gap-3 text-[14px] font-bold text-secondary justify-start`}
+              <a
+                href={t("theebLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`mb-8 flex w-fit items-center gap-3 text-[14px] font-bold text-secondary justify-start hover:underline`}
               >
-                <span>theeb.sa</span>
                 <svg
                   className="h-5 w-5 text-secondary"
                   viewBox="0 0 24 24"
@@ -422,7 +486,8 @@ export default function TravelLandSection() {
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                   <path d="M2 12h20" />
                 </svg>
-              </div>
+                <span>theebonline.com</span>
+              </a>
 
               {/* رابط التحميل */}
               <div className="flex items-center gap-2">
