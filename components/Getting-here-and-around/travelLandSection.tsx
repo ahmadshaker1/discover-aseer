@@ -68,7 +68,7 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
                 <div className="text-start">
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                  <p className="mb-0.5 text-[16px] text-muted-foreground">
                     {t("fromJeddah")}
                   </p>
                   <p className="text-[18px] font-bold text-foreground">
@@ -104,7 +104,7 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
                 <div className="text-start">
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                  <p className="mb-0.5 text-[16px] text-muted-foreground">
                     {t("fromRiyadh")}
                   </p>
                   <p className="text-[18px] font-bold text-foreground">
@@ -140,7 +140,7 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
                 <div className="text-start">
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                  <p className="mb-0.5 text-[16px] text-muted-foreground">
                     {t("fromMadinah")}
                   </p>
                   <p className="text-[18px] font-bold text-foreground">
@@ -176,7 +176,7 @@ export default function TravelLandSection() {
                   </svg>
                 </div>
                 <div className="text-start">
-                  <p className="mb-0.5 text-[14px] text-muted-foreground">
+                  <p className="mb-0.5 text-[16px] text-muted-foreground">
                     {t("fromDammam")}
                   </p>
                   <p className="text-[18px] font-bold text-foreground">
@@ -302,7 +302,7 @@ export default function TravelLandSection() {
               <h3 className="mb-3 text-[24px] font-bold text-white">
                 {t("airportTaxiTitle")}
               </h3>
-              <p className="text-[14px] leading-[1.8] text-white/80">
+              <p className="text-[16px] leading-[1.8] text-white/80">
                 {t("airportTaxiBody")}
               </p>
             </div>
@@ -335,7 +335,7 @@ export default function TravelLandSection() {
                   href={t("uberLink")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[14px] font-bold text-white transition hover:bg-white/35"
+                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
                 >
                   {t("visitWebsite")}
                 </a>
@@ -358,7 +358,7 @@ export default function TravelLandSection() {
                   href={t("careemLink")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[14px] font-bold text-white transition hover:bg-white/35"
+                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
                 >
                   {t("visitWebsite")}
                 </a>
@@ -381,7 +381,7 @@ export default function TravelLandSection() {
                   href={t("boltLink")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[14px] font-bold text-white transition hover:bg-white/35"
+                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
                 >
                   {t("visitWebsite")}
                 </a>
@@ -404,7 +404,7 @@ export default function TravelLandSection() {
                   href={t("jeenyLink")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[14px] font-bold text-white transition hover:bg-white/35"
+                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
                 >
                   {t("visitWebsite")}
                 </a>
@@ -450,7 +450,7 @@ export default function TravelLandSection() {
 
               {/* رقم الجوال */}
               <div
-                className={`mb-4 flex items-center gap-3 text-[14px] font-medium text-foreground justify-start`}
+                className={`mb-4 flex items-center gap-3 text-[16px] font-medium text-foreground justify-start`}
               >
                 <svg
                   className="h-5 w-5 text-secondary"
@@ -471,7 +471,7 @@ export default function TravelLandSection() {
                 href={t("theebLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`mb-8 flex w-fit items-center gap-3 text-[14px] font-bold text-secondary justify-start hover:underline`}
+                className={`mb-8 flex w-fit items-center gap-3 text-[16px] font-bold text-secondary justify-start hover:underline`}
               >
                 <svg
                   className="h-5 w-5 text-secondary"
@@ -495,7 +495,7 @@ export default function TravelLandSection() {
                   href="https://play.google.com/store/search?q=theeb&c=apps"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                  className="flex items-center justify-center rounded-xl bg-muted dark:bg-white/10 px-4 py-2 text-[16px] font-bold text-primary dark:text-white transition hover:opacity-90"
                 >
                   Android
                 </a>
@@ -503,7 +503,7 @@ export default function TravelLandSection() {
                   href="https://apps.apple.com/us/app/theeb-%D8%B0%D9%8A%D8%A8-%D9%84%D8%AA%D8%A3%D8%AC%D9%8A%D8%B1-%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA/id1417199904"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-muted px-4 py-2 text-[14px] font-bold text-primary transition hover:opacity-90"
+                  className="flex items-center justify-center rounded-xl bg-muted dark:bg-white/10 px-4 py-2 text-[16px] font-bold text-primary dark:text-white transition hover:opacity-90"
                 >
                   iPhone
                 </a>
