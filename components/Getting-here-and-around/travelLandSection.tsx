@@ -205,15 +205,6 @@ export default function TravelLandSection() {
                 <h3 className="text-[28px] font-bold text-white">
                   {t("saptcoTitle")}
                 </h3>
-                {/* <div className="text-white">
-                  <Image
-                    src="/assets/Getting-here-and-around/sapitco.png"
-                    alt={t("saptcoAlt") || "Saptco"}
-                    width={70}
-                    height={40}
-                    className="object-contain brightness-0 invert"
-                  />
-                </div> */}
               </div>
               <p
                 className={`mb-8 text-[16px] leading-[1.8] text-white/90 text-start`}
@@ -231,25 +222,6 @@ export default function TravelLandSection() {
               >
                 {t("bookOnWebsite")}
               </a>
-              {/* <div className="flex items-center gap-3">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.sat.passenger&hl=ar&pli=1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 text-[16px] font-bold text-white transition hover:bg-white/20"
-                >
-                  Android
-                </a>
-
-                <a
-                  href="https://apps.apple.com/us/app/saptco/id1074204412"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 text-[16px] font-bold text-white transition hover:bg-white/20"
-                >
-                  iPhone
-                </a>
-              </div> */}
             </div>
           </div>
         </div>
@@ -319,96 +291,76 @@ export default function TravelLandSection() {
             {/* شبكة كروت التطبيقات */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {/* كرت أوبر */}
-              <div
-                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+              <a
+                href={t("uberLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 style={{
                   backgroundImage:
                     "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/Uber.png')",
                 }}
               >
-                <div className="mt-4 text-center">
+                <div className="text-center absolute top-7">
                   <p className="text-[20px] font-bold text-white leading-tight">
                     {t("uber")}
                   </p>
                 </div>
-                <a
-                  href={t("uberLink")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
-                >
-                  {t("visitWebsite")}
-                </a>
-              </div>
+              </a>
 
               {/* كرت كريم */}
-              <div
-                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+              <a
+                href={t("careemLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 style={{
                   backgroundImage:
                     "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/careem.jpg')",
                 }}
               >
-                <div className="mt-4 text-center">
+                <div className="text-center absolute top-7">
                   <p className="text-[20px] font-bold text-white leading-tight">
                     {t("careem")}
                   </p>
                 </div>
-                <a
-                  href={t("careemLink")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
-                >
-                  {t("visitWebsite")}
-                </a>
-              </div>
+              </a>
 
               {/* كرت بولت */}
-              <div
-                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+              <a
+                href={t("boltLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 style={{
                   backgroundImage:
                     "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/bolt.png')",
                 }}
               >
-                <div className="mt-4 text-center">
+                <div className="text-center absolute top-7">
                   <p className="text-[20px] font-bold text-white leading-tight">
                     {t("bolt")}
                   </p>
                 </div>
-                <a
-                  href={t("boltLink")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
-                >
-                  {t("visitWebsite")}
-                </a>
-              </div>
+              </a>
 
               {/* كرت جيني */}
-              <div
-                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+              <a
+                href={t("jeenyLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 style={{
                   backgroundImage:
                     "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/jeeny.png')",
                 }}
               >
-                <div className="mt-4 text-center">
+                <div className="text-center absolute top-7">
                   <p className="text-[20px] font-bold text-white leading-tight">
                     {t("jeeny")}
                   </p>
                 </div>
-                <a
-                  href={t("jeenyLink")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
-                >
-                  {t("visitWebsite")}
-                </a>
-              </div>
+              </a>
             </div>
           </div>
         </div>
