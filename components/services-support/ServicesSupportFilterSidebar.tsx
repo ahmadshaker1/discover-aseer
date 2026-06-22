@@ -115,32 +115,53 @@ const ServicesSupportFilterSidebar = ({
       </div>
 
       <section className="mb-6">
-        <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-border px-6 py-3">
+        <div className="group relative h-12 w-full overflow-hidden rounded-[55px] border border-border bg-muted/20 px-6 py-3 transition-all duration-200 hover:bg-muted/40 hover:border-primary/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
           <select
-            style={{ fontFamily: "Ara Hamah 1964 B" }}
+            style={{
+              fontFamily: "Ara Hamah 1964 B",
+              backgroundColor: "var(--surface)",
+              color: "var(--foreground)",
+            }}
             aria-label={t("chooseDestination")}
             value={selectedCity ?? ""}
             onChange={(e) => onCityChange(e.target.value || null)}
-            className="absolute inset-0 z-10 cursor-pointer opacity-0"
+            className="absolute inset-0 z-10 cursor-pointer bg-surface text-foreground opacity-0 dark:[color-scheme:dark]"
           >
-            <option value="">{t("chooseDestination")}</option>
+            <option
+              value=""
+              className="bg-surface text-foreground"
+              style={{
+                backgroundColor: "var(--surface)",
+                color: "var(--foreground)",
+              }}
+            >
+              {t("chooseDestination")}
+            </option>
             {cityOptions.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option
+                key={option.value}
+                value={option.value}
+                className="bg-surface text-foreground"
+                style={{
+                  backgroundColor: "var(--surface)",
+                  color: "var(--foreground)",
+                }}
+              >
                 {translateSupportCity(option.value, locale)}
               </option>
             ))}
           </select>
           <div className="flex h-full min-w-0 items-center justify-between gap-2">
             <div className="flex min-w-0 flex-1 items-center gap-2">
-              <span className="shrink-0 text-muted-foreground">
+              <span className="shrink-0 text-muted-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
                 <LocationIcon />
               </span>
-              <span className="truncate text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground">
+              <span className="truncate text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground transition-colors duration-200 group-hover:text-primary/90">
                 {selectedCityLabel ?? t("chooseDestination")}
               </span>
             </div>
             <svg
-              className="text-foreground"
+              className="text-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary"
               width="12"
               height="8"
               viewBox="0 0 12 8"
