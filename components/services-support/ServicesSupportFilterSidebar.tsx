@@ -1,7 +1,7 @@
 "use client";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  SUPPORT_TYPE_FILTER_KEYS,
+  SUPPORT_CATEGORY_FILTER_KEYS,
   translateSupportCity,
   translateSupportLabel,
 } from "./supportServiceLocale";
@@ -85,20 +85,6 @@ const ServicesSupportFilterSidebar = ({
   const t = useTranslations("servicesSupport");
   const tCommon = useTranslations("common");
   const locale = useLocale() as "ar" | "en";
-  const categoryMatchCount = categoryOptions.reduce(
-    (acc, o) =>
-      acc +
-      (SUPPORT_CATEGORY_FILTER_KEYS.includes(o.value as any) ? o.count : 0),
-    0,
-  );
-  const typeMatchCount = typeOptions.reduce(
-    (acc, o) =>
-      acc +
-      (SUPPORT_CATEGORY_FILTER_KEYS.includes(o.value as any) ? o.count : 0),
-    0,
-  );
-  const useCategoryFilter = categoryMatchCount > typeMatchCount;
-  const allTypeOptions = useCategoryFilter ? categoryOptions : typeOptions;
   const serviceTypeOptions: TypeRowOption[] = SUPPORT_CATEGORY_FILTER_KEYS.map(
     (filterKey) => ({
       value: filterKey,
