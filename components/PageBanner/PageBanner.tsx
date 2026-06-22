@@ -136,7 +136,7 @@ const PageBanner = ({
           </h1>
 
           <p
-            className="w-full text-center text-[16px] font-normal leading-6 text-white/70"
+            className="w-full text-center text-[18px] font-normal leading-6 text-white"
             style={{ fontFamily: ara }}
           >
             {subtitle}

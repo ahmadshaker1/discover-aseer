@@ -91,7 +91,9 @@ const AttractionsMainPageContent = ({
    * - If backend doesn't return some metadata yet, cards still render and
    *   filters gracefully fall back (won't break page rendering).
    */
-  const [filters, setFilters] = useState<FilterState>(() => buildInitialFilters());
+  const [filters, setFilters] = useState<FilterState>(() =>
+    buildInitialFilters(),
+  );
   const [selectedInterests, setSelectedInterests] = useState<string[]>(
     () => terrainInterests,
   );
@@ -196,7 +198,11 @@ const AttractionsMainPageContent = ({
                 <button
                   type="button"
                   onClick={() => {
-                    setFilters({ city: null, attractionType: null, interests: [] });
+                    setFilters({
+                      city: null,
+                      attractionType: null,
+                      interests: [],
+                    });
                     setSelectedInterests([]);
                   }}
                   className="flex h-8 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-3 text-center text-sm font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:text-[18px]"
@@ -206,7 +212,7 @@ const AttractionsMainPageContent = ({
                 </button>
               </div>
 
-              <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-border px-6 py-3">
+              <div className="group relative h-12 w-full overflow-hidden rounded-[55px] border border-border bg-muted/20 px-6 py-3 transition-all duration-200 hover:bg-muted/40 hover:border-primary/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
                 <select
                   aria-label={tCommon("city")}
                   value={filters.city ?? ""}
@@ -216,11 +222,32 @@ const AttractionsMainPageContent = ({
                       city: event.target.value ? event.target.value : null,
                     }))
                   }
-                  className="absolute inset-0 z-10 cursor-pointer opacity-0"
+                  style={{
+                    backgroundColor: "var(--surface)",
+                    color: "var(--foreground)",
+                  }}
+                  className="absolute inset-0 z-10 cursor-pointer bg-surface text-foreground opacity-0 dark:[color-scheme:dark]"
                 >
-                  <option value="">{tCommon("city")}</option>
+                  <option
+                    value=""
+                    className="bg-surface text-foreground"
+                    style={{
+                      backgroundColor: "var(--surface)",
+                      color: "var(--foreground)",
+                    }}
+                  >
+                    {tCommon("city")}
+                  </option>
                   {cityOptions.map((option) => (
-                    <option key={option.id} value={option.id}>
+                    <option
+                      key={option.id}
+                      value={option.id}
+                      className="bg-surface text-foreground"
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        color: "var(--foreground)",
+                      }}
+                    >
                       {option.label}
                     </option>
                   ))}
@@ -228,21 +255,25 @@ const AttractionsMainPageContent = ({
 
                 <div className="flex h-full items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <LocationIcon />
+                    <span className="shrink-0 text-muted-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
+                      <LocationIcon />
+                    </span>
                     <span
-                      className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground"
+                      className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground transition-colors duration-200 group-hover:text-primary/90"
                       style={{ fontFamily: "Inter, sans-serif" }}
                     >
                       {cityOptions.find((option) => option.id === filters.city)
                         ?.label ?? tCommon("city")}
                     </span>
                   </div>
-                  <ChevronDownIcon />
+                  <span className="text-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
+                    <ChevronDownIcon />
+                  </span>
                 </div>
               </div>
 
               {attractionTypeOptions.length > 0 ? (
-                <div className="relative h-12 w-full overflow-hidden rounded-[55px] border border-border px-6 py-3">
+                <div className="group relative h-12 w-full overflow-hidden rounded-[55px] border border-border bg-muted/20 px-6 py-3 transition-all duration-200 hover:bg-muted/40 hover:border-primary/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
                   <select
                     aria-label={tCommon("attractionType")}
                     value={filters.attractionType ?? ""}
@@ -254,11 +285,32 @@ const AttractionsMainPageContent = ({
                           : null,
                       }))
                     }
-                    className="absolute inset-0 z-10 cursor-pointer opacity-0"
+                    style={{
+                      backgroundColor: "var(--surface)",
+                      color: "var(--foreground)",
+                    }}
+                    className="absolute inset-0 z-10 cursor-pointer bg-surface text-foreground opacity-0 dark:[color-scheme:dark]"
                   >
-                    <option value="">{tCommon("attractionType")}</option>
+                    <option
+                      value=""
+                      className="bg-surface text-foreground"
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        color: "var(--foreground)",
+                      }}
+                    >
+                      {tCommon("attractionType")}
+                    </option>
                     {attractionTypeOptions.map((value) => (
-                      <option key={value} value={value}>
+                      <option
+                        key={value}
+                        value={value}
+                        className="bg-surface text-foreground"
+                        style={{
+                          backgroundColor: "var(--surface)",
+                          color: "var(--foreground)",
+                        }}
+                      >
                         {value}
                       </option>
                     ))}
@@ -266,9 +318,11 @@ const AttractionsMainPageContent = ({
 
                   <div className="flex h-full items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <ClockIcon />
+                      <span className="shrink-0 text-muted-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
+                        <ClockIcon />
+                      </span>
                       <span
-                        className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground"
+                        className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground transition-colors duration-200 group-hover:text-primary/90"
                         style={{ fontFamily: "Inter, sans-serif" }}
                       >
                         {attractionTypeOptions.includes(
@@ -278,7 +332,9 @@ const AttractionsMainPageContent = ({
                           : tCommon("attractionType")}
                       </span>
                     </div>
-                    <ChevronDownIcon />
+                    <span className="text-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
+                      <ChevronDownIcon />
+                    </span>
                   </div>
                 </div>
               ) : null}

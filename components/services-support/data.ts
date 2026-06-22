@@ -27,12 +27,10 @@ function transformApiSupportService(
   item: ApiSupportService,
   locale: LocaleCode,
 ): SupportService {
-  let filterCategory = normalizeText(item.tags, "غير مصنف");
   let filterCity = normalizeText(item.city, "غير محدد");
   let filterType = normalizeText(item.type, "الخدمات المساندة");
 
   if (filterType === "الخدمات مستشفيات") filterType = "مستشفيات";
-  if (filterCategory === "الخدمات مستشفيات") filterCategory = "مستشفيات";
   const title = pickLocalizedTitle(item, locale);
 
   return {

@@ -58,7 +58,10 @@ const AttractionsHero = ({
             style={{ fontFamily: ara }}
           >
             {breadcrumbs.map((crumb, index) => (
-              <span key={`${crumb.label}-${index}`} className="inline-flex items-center gap-1.5 sm:gap-2">
+              <span
+                key={`${crumb.label}-${index}`}
+                className="inline-flex items-center gap-1.5 sm:gap-2"
+              >
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
@@ -67,7 +70,9 @@ const AttractionsHero = ({
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span className="text-[16px] font-normal leading-6 text-white">{crumb.label}</span>
+                  <span className="text-[16px] font-normal leading-6 text-white">
+                    {crumb.label}
+                  </span>
                 )}
                 {index < breadcrumbs.length - 1 ? <BreadcrumbChevron /> : null}
               </span>
@@ -81,7 +86,10 @@ const AttractionsHero = ({
             {title}
           </h1>
 
-          <p className="w-full text-center text-[16px] font-normal leading-6 text-white/80" style={{ fontFamily: ara }}>
+          <p
+            className="w-full text-center text-[18px] font-normal leading-6 text-white"
+            style={{ fontFamily: ara }}
+          >
             {subtitle}
           </p>
         </div>
