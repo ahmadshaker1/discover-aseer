@@ -29,8 +29,9 @@ const DestinationsLandmarksSection = async ({
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
         <div
-          className={`mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center ${true ? "justify-between" : "justify-start"
-            }`}
+          className={`mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center ${
+            true ? "justify-between" : "justify-start"
+          }`}
         >
           <h2
             className="min-w-0 flex-1 whitespace-nowrap text-start text-[48px] font-bold leading-[100%] text-secondary"

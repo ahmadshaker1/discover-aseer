@@ -28,6 +28,18 @@ const DestinationsIntroSection = ({
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]">
       <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:flex-row lg:items-start">
+        {!hideImage ? (
+          <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
+            <div className="relative h-full w-full">
+              <img
+                src={imageUrl}
+                alt={imageAlt}
+                className="h-full w-full object-cover"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-black/15" />
+            </div>
+          </div>
+        ) : null}
         <div
           className={`flex w-full flex-col gap-6 ${hideImage ? "max-w-[900px]" : "max-w-[704px]"} ${centerContent ? "mx-auto items-center text-center" : "text-start"}`}
         >
@@ -55,19 +67,6 @@ const DestinationsIntroSection = ({
             )}
           </div>
         </div>
-
-        {!hideImage ? (
-          <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
-            <div className="relative h-full w-full">
-              <img
-                src={imageUrl}
-                alt={imageAlt}
-                className="h-full w-full object-cover"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-black/15" />
-            </div>
-          </div>
-        ) : null}
       </div>
     </section>
   );
