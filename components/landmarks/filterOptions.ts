@@ -12,7 +12,6 @@ const CITY_DEFS = [
   { id: "tanomah", ar: "تنومة", en: "Tanomah" },
   { id: "bisha", ar: "بيشة", en: "Bisha" },
   { id: "mahayil", ar: "محايل عسير", en: "Mahayil Asir" },
-  { id: "najran", ar: "نجران", en: "Najran" },
 ] as const;
 
 const INTEREST_DEFS = [
@@ -74,7 +73,7 @@ function pickLocale(locale: string): "ar" | "en" {
 
 function mapDefs<T extends { id: string; ar: string; en: string }>(
   defs: readonly T[],
-  locale: string
+  locale: string,
 ): LabeledFilterOption[] {
   const lang = pickLocale(locale);
   return defs.map((d) => ({ id: d.id, label: d[lang] }));
@@ -105,7 +104,7 @@ export function getTravelerOptions(locale: string): LabeledFilterOption[] {
 /** Match free-text locations against both Arabic and English city labels */
 export function locationMatchesCityId(
   haystack: string,
-  cityId: string | null
+  cityId: string | null,
 ): boolean {
   if (!cityId) return true;
   const row = CITY_DEFS.find((c) => c.id === cityId);
@@ -114,7 +113,9 @@ export function locationMatchesCityId(
 }
 
 /** Known filter city ids (`CITY_DEFS`). */
-export function isValidAttractionsCityId(id: string | null | undefined): id is string {
+export function isValidAttractionsCityId(
+  id: string | null | undefined,
+): id is string {
   if (!id?.trim()) return false;
   return CITY_DEFS.some((c) => c.id === id);
 }
@@ -126,7 +127,9 @@ export function getCityLabelById(cityId: string, locale: string): string {
 }
 
 /** Normalize CMS free text (Arabic/English/id) to a `CITY_DEFS` id when possible. */
-export function coerceCityId(raw: string | null | undefined): string | undefined {
+export function coerceCityId(
+  raw: string | null | undefined,
+): string | undefined {
   if (!raw?.trim()) return undefined;
   const t = raw.trim().toLowerCase();
   for (const c of CITY_DEFS) {
@@ -136,7 +139,10 @@ export function coerceCityId(raw: string | null | undefined): string | undefined
 }
 
 /** Same rule as attractions grid city filter: `cityId` when set, else text match on location/area. */
-export function landmarkBelongsToCity(landmark: Landmark, cityId: string): boolean {
+export function landmarkBelongsToCity(
+  landmark: Landmark,
+  cityId: string,
+): boolean {
   if (landmark.cityId) return landmark.cityId === cityId;
   return locationMatchesCityId(`${landmark.location} ${landmark.area}`, cityId);
 }
@@ -155,10 +161,8 @@ export const cityOptions: LabeledFilterOption[] = getCityOptions("ar");
 /** @deprecated Prefer getInterestOptions(locale) */
 export const interestOptions: LabeledFilterOption[] = getInterestOptions("ar");
 /** @deprecated Prefer getDurationOptions(locale) */
-export const durationOptions: LabeledFilterOption[] =
-  getDurationOptions("ar");
+export const durationOptions: LabeledFilterOption[] = getDurationOptions("ar");
 /** @deprecated Prefer getPriceOptions(locale) */
 export const priceOptions: LabeledFilterOption[] = getPriceOptions("ar");
 /** @deprecated Prefer getTravelerOptions(locale) */
-export const travelerOptions: LabeledFilterOption[] =
-  getTravelerOptions("ar");
+export const travelerOptions: LabeledFilterOption[] = getTravelerOptions("ar");
