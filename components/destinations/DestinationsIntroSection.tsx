@@ -28,6 +28,18 @@ const DestinationsIntroSection = ({
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[62px]">
       <div className="mx-auto flex w-full max-w-[1316px] flex-col-reverse justify-between gap-8 lg:flex-row lg:items-start">
+        {!hideImage ? (
+          <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
+            <div className="relative h-full w-full">
+              <img
+                src={imageUrl}
+                alt={imageAlt}
+                className="h-full w-full object-cover"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-black/15" />
+            </div>
+          </div>
+        ) : null}
         <div
           className={`flex w-full flex-col gap-6 ${hideImage ? "max-w-[900px]" : "max-w-[704px]"} ${centerContent ? "mx-auto items-center text-center" : "text-start"}`}
         >
@@ -41,7 +53,7 @@ const DestinationsIntroSection = ({
           <IntroPageShareRow title={title} />
 
           <div
-            className={`w-full text-[15px] font-light leading-[130%] text-muted-foreground ${centerContent ? "text-center" : "text-start"}`}
+            className={`w-full text-[18px] font-light leading-7.5 text-muted-foreground ${centerContent ? "text-center" : "text-start"}`}
             style={{ fontFamily: ibm }}
           >
             {descriptionHtml ? (
@@ -55,15 +67,6 @@ const DestinationsIntroSection = ({
             )}
           </div>
         </div>
-
-        {!hideImage ? (
-          <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
-            <div className="relative h-full w-full">
-              <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover" />
-              <div className="pointer-events-none absolute inset-0 bg-black/15" />
-            </div>
-          </div>
-        ) : null}
       </div>
     </section>
   );

@@ -131,6 +131,7 @@ const AttractionsPage = async ({ searchParams }: AttractionsPageProps) => {
    * - `FALLBACK_ATTRACTIONS` keeps the UI available when API is empty.
    * - Optional `?city=` matches filter city ids (`filterOptions` CITY_DEFS).
    */
+  // @ts-ignore
   const landmarks = await fetchLandmarks(locale);
   const displayLandmarks =
     landmarks.length > 0 ? landmarks : FALLBACK_ATTRACTIONS;

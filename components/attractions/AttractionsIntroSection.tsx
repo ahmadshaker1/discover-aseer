@@ -32,13 +32,16 @@ const AttractionsIntroSection = ({
 
           <IntroPageShareRow title={title} />
 
-          <div
-            className="w-full text-start text-[15px] font-light leading-[119%] text-muted-foreground"
-            style={{ fontFamily: ibm }}
-          >
-            {descriptionHtml ? (
-              <SafeHtml html={descriptionHtml} className="space-y-4" />
-            ) : null}
+          <div className="relative w-full flex-1 overflow-hidden">
+            <div
+              className="h-full w-full overflow-y-auto hide-scrollbar text-start text-[18px] font-light leading-10 text-muted-foreground"
+              style={{ fontFamily: ibm }}
+            >
+              {descriptionHtml ? (
+                <SafeHtml html={descriptionHtml} className="space-y-4 pb-8" />
+              ) : null}
+            </div>
+            <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-background to-transparent" />
           </div>
         </div>
 

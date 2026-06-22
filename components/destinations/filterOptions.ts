@@ -3,15 +3,14 @@ import type { LabeledFilterOption } from "@/components/landmarks/filterOptions";
 /** CMS `destination_filter` values — four categories only. */
 export const DESTINATION_FILTER_DEFS = [
   {
-    id: "desert-nature",
-    ar: "الطبيعة الصحراوية",
-    en: "Desert nature",
-    aliases: ["الطبيعة ألصحروية"],
-  },
-  {
     id: "mountain-peaks",
     ar: "القمم الجبلية",
     en: "Mountain peaks",
+  },
+  {
+    id: "tihama-plains",
+    ar: "السهول التهامية",
+    en: "Tihama plains",
   },
   {
     id: "coastal-beaches",
@@ -19,13 +18,15 @@ export const DESTINATION_FILTER_DEFS = [
     en: "Coastal beaches",
   },
   {
-    id: "tihama-plains",
-    ar: "السهول التهامية",
-    en: "Tihama plains",
+    id: "desert-nature",
+    ar: "الطبيعة الصحراوية",
+    en: "Desert nature",
+    aliases: ["الطبيعة ألصحروية"],
   },
 ] as const;
 
-export type DestinationFilterId = (typeof DESTINATION_FILTER_DEFS)[number]["id"];
+export type DestinationFilterId =
+  (typeof DESTINATION_FILTER_DEFS)[number]["id"];
 
 /** Landscape keys used on About Aseer / film pages (same card order). */
 export const LANDSCAPE_TO_DESTINATION_FILTER = {
@@ -36,12 +37,13 @@ export const LANDSCAPE_TO_DESTINATION_FILTER = {
 } as const satisfies Record<string, DestinationFilterId>;
 
 /** About Aseer highlight cards → `/destinations?filter=` values (h1–h4). */
-export const ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS: DestinationFilterId[] = [
-  LANDSCAPE_TO_DESTINATION_FILTER.mountains,
-  LANDSCAPE_TO_DESTINATION_FILTER.plains,
-  LANDSCAPE_TO_DESTINATION_FILTER.beaches,
-  LANDSCAPE_TO_DESTINATION_FILTER.desert,
-];
+export const ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS: DestinationFilterId[] =
+  [
+    LANDSCAPE_TO_DESTINATION_FILTER.mountains,
+    LANDSCAPE_TO_DESTINATION_FILTER.plains,
+    LANDSCAPE_TO_DESTINATION_FILTER.beaches,
+    LANDSCAPE_TO_DESTINATION_FILTER.desert,
+  ];
 
 /** Landscape card images (mountains → desert), shared by About Aseer and film pages. */
 export const LANDSCAPE_HIGHLIGHT_IMAGES = [
@@ -55,7 +57,9 @@ function pickLocale(locale: string): "ar" | "en" {
   return locale === "en" ? "en" : "ar";
 }
 
-export function getDestinationFilterOptions(locale: string): LabeledFilterOption[] {
+export function getDestinationFilterOptions(
+  locale: string,
+): LabeledFilterOption[] {
   const lang = pickLocale(locale);
   return DESTINATION_FILTER_DEFS.map((d) => ({ id: d.id, label: d[lang] }));
 }
@@ -78,7 +82,11 @@ export function resolveDestinationFilterId(
 
   for (const def of DESTINATION_FILTER_DEFS) {
     if (trimmed === def.ar) return def.id;
-    if ("aliases" in def && def.aliases.includes(trimmed)) return def.id;
+    if (
+      "aliases" in def &&
+      (def.aliases as readonly string[]).includes(trimmed)
+    )
+      return def.id;
   }
 
   return undefined;

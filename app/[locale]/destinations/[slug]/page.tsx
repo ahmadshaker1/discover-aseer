@@ -6,7 +6,6 @@ import DestinationsLandmarksSection from "@/components/destinations/Destinations
 import DestinationsMapSection from "@/components/destinations/DestinationsMapSection";
 import {
   fetchDestinations,
-  filterDestinationsByArea,
   getDestinationBySlug,
   resolveDestinationMapCenter,
 } from "@/components/destinations/data";
@@ -28,10 +27,8 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
 
   if (!destination) notFound();
 
-  const areaDestinations = filterDestinationsByArea(
-    allDestinations,
-    destination.destinationFilterId ?? destination.destinationFilter,
-    destination.slug,
+  const areaDestinations = allDestinations.filter(
+    (d) => d.city === destination.city && d.slug !== destination.slug,
   );
   const mapCenter = resolveDestinationMapCenter(destination);
 
