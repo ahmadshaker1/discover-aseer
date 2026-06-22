@@ -91,7 +91,9 @@ const AttractionsMainPageContent = ({
    * - If backend doesn't return some metadata yet, cards still render and
    *   filters gracefully fall back (won't break page rendering).
    */
-  const [filters, setFilters] = useState<FilterState>(() => buildInitialFilters());
+  const [filters, setFilters] = useState<FilterState>(() =>
+    buildInitialFilters(),
+  );
   const [selectedInterests, setSelectedInterests] = useState<string[]>(
     () => terrainInterests,
   );
@@ -196,7 +198,11 @@ const AttractionsMainPageContent = ({
                 <button
                   type="button"
                   onClick={() => {
-                    setFilters({ city: null, attractionType: null, interests: [] });
+                    setFilters({
+                      city: null,
+                      attractionType: null,
+                      interests: [],
+                    });
                     setSelectedInterests([]);
                   }}
                   className="flex h-8 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-3 text-center text-sm font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:text-[18px]"
@@ -228,7 +234,7 @@ const AttractionsMainPageContent = ({
 
                 <div className="flex h-full items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <LocationIcon />
+                    <ClockIcon />
                     <span
                       className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground"
                       style={{ fontFamily: "Inter, sans-serif" }}
