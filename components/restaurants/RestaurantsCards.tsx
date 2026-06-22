@@ -2,7 +2,11 @@
 
 import { useRef, useCallback } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { formatCuisineTypes } from "./restaurantLocale";
+import {
+  ASEERI_CUISINE_NAME_BADGE,
+  formatCuisineTypes,
+  hasAseeriCuisine,
+} from "./restaurantLocale";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -66,6 +70,7 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
         >
           {restaurants.map((restaurant) => {
             const cuisineLabel = formatCuisineTypes(restaurant.cuisineTypes, locale);
+            const showAseeriBadge = hasAseeriCuisine(restaurant.cuisineTypes);
 
             return (
             <SwiperSlide key={restaurant.id}>
@@ -86,8 +91,17 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
 
                 <div className="flex flex-col justify-between px-5 py-4 flex-1">
                   <div className="space-y-2">
-                    <h3 className="text-start text-lg font-bold text-foreground md:text-xl">
+                    <h3 className="text-start text-lg font-bold text-foreground [unicode-bidi:plaintext] md:text-xl">
                       {restaurant.name}
+                      {showAseeriBadge ? (
+                        <img
+                          src={ASEERI_CUISINE_NAME_BADGE}
+                          alt=""
+                          width={55}
+                          height={28}
+                          className="ms-2 inline-block h-7 w-[55px] shrink-0 align-middle object-contain [unicode-bidi:isolate]"
+                        />
+                      ) : null}
                     </h3>
                     <div className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
                       {restaurant.distanceKm > 0 && (

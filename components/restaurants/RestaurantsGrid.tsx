@@ -3,7 +3,11 @@
 import { useCallback } from "react";
 import { useLocale } from "next-intl";
 import { Restaurant } from "./data";
-import { formatCuisineTypes } from "./restaurantLocale";
+import {
+  ASEERI_CUISINE_NAME_BADGE,
+  formatCuisineTypes,
+  hasAseeriCuisine,
+} from "./restaurantLocale";
 
 interface RestaurantsGridProps {
   restaurants: Restaurant[];
@@ -78,6 +82,7 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
         {restaurants.map((restaurant) => {
           const cuisineLabel = formatCuisineTypes(restaurant.cuisineTypes, locale);
+          const showAseeriBadge = hasAseeriCuisine(restaurant.cuisineTypes);
 
           return (
             <button
@@ -100,10 +105,19 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
 
               <div className="flex flex-col gap-2 px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5">
                 <h3
-                  className="line-clamp-2 text-[24px] font-bold leading-[119%] text-foreground"
+                  className="line-clamp-2 text-[24px] font-bold leading-[119%] text-foreground [unicode-bidi:plaintext]"
                   style={{ fontFamily: ara }}
                 >
                   {restaurant.name}
+                  {showAseeriBadge ? (
+                    <img
+                      src={ASEERI_CUISINE_NAME_BADGE}
+                      alt=""
+                      width={55}
+                      height={28}
+                      className="ms-2 inline-block h-7 w-[55px] shrink-0 align-middle object-contain [unicode-bidi:isolate]"
+                    />
+                  ) : null}
                 </h3>
 
                 <div className="flex w-full items-center justify-start gap-1.5">

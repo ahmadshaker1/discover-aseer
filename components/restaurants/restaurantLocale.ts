@@ -5,6 +5,16 @@ import {
 import type { LocaleCode } from "@/lib/i18n/localized";
 import type { Restaurant } from "./types";
 
+/** Same badge assets as exceptional accommodation filters/cards. */
+export const ASEERI_CUISINE_NAME_BADGE =
+  "/assets/accommodation/exceptional-name-badge.svg";
+export const ASEERI_CUISINE_FILTER_BADGE =
+  "/assets/accommodation/exceptional-filter-badge.svg";
+
+export function hasAseeriCuisine(cuisineTypes?: string[]): boolean {
+  return cuisineTypes?.includes("aseeri_cuisine") ?? false;
+}
+
 /** CMS `cuisine_type` slug → display label per locale. */
 const CUISINE_SLUG_LABELS: Record<string, { ar: string; en: string }> = {
   aseeri_cuisine: { ar: "المطبخ العسيري", en: "Aseeri cuisine" },
