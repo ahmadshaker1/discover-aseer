@@ -40,7 +40,6 @@ export interface ApiLandmark {
   name?: string | null;
   name_en?: string | null;
   name_ar?: string | null;
-  name_en?: string | null;
   location?: string | null;
   address?: string | null;
   description?: string | null;
@@ -96,7 +95,9 @@ function normalizeText(value: string): string {
     .toLowerCase();
 }
 
-const toNumber = (value: number | string | null | undefined): number | undefined => {
+const toNumber = (
+  value: number | string | null | undefined,
+): number | undefined => {
   if (typeof value === "number" && Number.isFinite(value)) return value;
   if (typeof value === "string" && value.trim().length > 0) {
     const parsed = Number(value);
@@ -151,7 +152,10 @@ function resolveImageUrl(
   return `${directusUrl.replace(/\/$/, "")}/assets/${trimmed}`;
 }
 
-function parseGallery(raw: string | null | undefined, directusUrl: string): string[] {
+function parseGallery(
+  raw: string | null | undefined,
+  directusUrl: string,
+): string[] {
   if (!raw?.trim()) return [];
   try {
     const parsed = JSON.parse(raw) as unknown;
@@ -159,7 +163,8 @@ function parseGallery(raw: string | null | undefined, directusUrl: string): stri
     const urls: string[] = [];
     for (const item of parsed) {
       if (!item || typeof item !== "object") continue;
-      const image = (item as { image?: { url?: string; permalink?: string } }).image;
+      const image = (item as { image?: { url?: string; permalink?: string } })
+        .image;
       const url = image?.url?.trim() || image?.permalink?.trim() || "";
       if (url) urls.push(url);
     }
@@ -248,20 +253,20 @@ export const transformLandmark = (
 
   const cityMap: Record<string, string> = {
     abha: "abha",
-    "أبها": "abha",
+    أبها: "abha",
     السودة: "abha",
     "خميس مشيط": "khamis",
     khamis: "khamis",
     tanomah: "tanomah",
-    "تنومة": "tanomah",
+    تنومة: "tanomah",
     bisha: "bisha",
-    "بيشة": "bisha",
+    بيشة: "bisha",
     mahayil: "mahayil",
     "محايل عسير": "mahayil",
     "رجال ألمع": "mahayil",
     najran: "najran",
-    "نجران": "najran",
-    "البرك": "abha",
+    نجران: "najran",
+    البرك: "abha",
   };
   const citySource = `${city} ${location} ${area}`;
   const cityId =
@@ -271,7 +276,8 @@ export const transformLandmark = (
 
   const sourceText = `${title} ${description}`;
   const fallbackInterests: string[] = [];
-  if (/تاريخ|تراث|قصر|سوق/i.test(sourceText)) fallbackInterests.push("historical", "culture");
+  if (/تاريخ|تراث|قصر|سوق/i.test(sourceText))
+    fallbackInterests.push("historical", "culture");
   if (/جبل|حديقة|طبيعة|منتزه|وادي|قمم|السودة/i.test(sourceText))
     fallbackInterests.push("nature", "adventure");
   if (/تسوق|سوق/i.test(sourceText)) fallbackInterests.push("shopping");
@@ -286,7 +292,12 @@ export const transformLandmark = (
           .map((tag) => tag.trim())
           .filter(Boolean)
       : [];
-  const rawTags = [...rawInterestTags, ...rawTagsField, ...fallbackInterests, sourceText];
+  const rawTags = [
+    ...rawInterestTags,
+    ...rawTagsField,
+    ...fallbackInterests,
+    sourceText,
+  ];
   const interestTags = Array.from(
     new Set(
       rawTags
@@ -311,7 +322,10 @@ export const transformLandmark = (
 
   const rawAttractionType = (apiLandmark.type || "").trim();
   const categoryLabel = (rawAttractionType || apiLandmark.tags || "").trim();
-  const galleryImages = parseGallery(apiLandmark.attraction_gallery, directusUrl);
+  const galleryImages = parseGallery(
+    apiLandmark.attraction_gallery,
+    directusUrl,
+  );
   const lat = toNumber(apiLandmark.latitude);
   const lon = toNumber(apiLandmark.longitude);
   const mapLink = apiLandmark.map_link?.trim() || undefined;
@@ -342,8 +356,13 @@ export const transformLandmark = (
   };
 };
 
-export const fetchLandmarks = async (locale: LocaleCode = "ar"): Promise<Landmark[]> => {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
+export const fetchLandmarks = async (
+  locale: LocaleCode = "ar",
+): Promise<Landmark[]> => {
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(
+    /\/$/,
+    "",
+  );
 
   if (!directusUrl) {
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
@@ -445,7 +464,9 @@ export const getRelatedLandmarks = (
     .slice(0, limit);
 };
 
-export const resolveLandmarkMapTarget = (landmark: Landmark): ResolvedLandmarkMap => {
+export const resolveLandmarkMapTarget = (
+  landmark: Landmark,
+): ResolvedLandmarkMap => {
   if (typeof landmark.lat === "number" && typeof landmark.lon === "number") {
     return {
       kind: "interactive",

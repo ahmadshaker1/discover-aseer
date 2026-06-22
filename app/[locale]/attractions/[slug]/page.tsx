@@ -18,7 +18,9 @@ interface AttractionSlugPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-export default async function AttractionSlugPage({ params }: AttractionSlugPageProps) {
+export default async function AttractionSlugPage({
+  params,
+}: AttractionSlugPageProps) {
   const locale = (await getLocale()) as LocaleCode;
   const t = await getTranslations();
   const tAttr = await getTranslations("attractionsPage");
@@ -33,7 +35,41 @@ export default async function AttractionSlugPage({ params }: AttractionSlugPageP
     notFound();
   }
 
-  const related = getRelatedAttractions(attraction, allAttractions, 4);
+  let related = allAttractions.filter((item) => item.id !== attraction.id);
+
+  related = related
+    .sort((a, b) => {
+      let scoreA = 0;
+      const aCity =
+        a.cityId && attraction.cityId && a.cityId === attraction.cityId;
+      const aType =
+        attraction.attractionType &&
+        a.attractionType === attraction.attractionType;
+      const aTags = a.interestTags?.some((tag) =>
+        attraction.interestTags?.includes(tag),
+      );
+      if (aCity && aType) scoreA = 3;
+      else if (aType) scoreA = 2;
+      else if (aCity) scoreA = 1;
+      if (aTags) scoreA += 0.5;
+
+      let scoreB = 0;
+      const bCity =
+        b.cityId && attraction.cityId && b.cityId === attraction.cityId;
+      const bType =
+        attraction.attractionType &&
+        b.attractionType === attraction.attractionType;
+      const bTags = b.interestTags?.some((tag) =>
+        attraction.interestTags?.includes(tag),
+      );
+      if (bCity && bType) scoreB = 3;
+      else if (bType) scoreB = 2;
+      else if (bCity) scoreB = 1;
+      if (bTags) scoreB += 0.5;
+
+      return scoreB - scoreA;
+    })
+    .slice(0, 4);
   const mapTarget = resolveAttractionMapTarget(attraction);
 
   return (
@@ -69,7 +105,10 @@ export default async function AttractionSlugPage({ params }: AttractionSlugPageP
         />
       ) : null}
 
-      <AttractionsMapSection areaLabel={attraction.title} mapTarget={mapTarget} />
+      <AttractionsMapSection
+        areaLabel={attraction.title}
+        mapTarget={mapTarget}
+      />
 
       <EventsInfo />
     </div>
