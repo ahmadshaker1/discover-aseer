@@ -41,7 +41,7 @@ const DestinationsIntroSection = ({
           <IntroPageShareRow title={title} />
 
           <div
-            className={`w-full text-[15px] font-light leading-[130%] text-muted-foreground ${centerContent ? "text-center" : "text-start"}`}
+            className={`w-full text-[18px] font-light leading-7.5 text-muted-foreground ${centerContent ? "text-center" : "text-start"}`}
             style={{ fontFamily: ibm }}
           >
             {descriptionHtml ? (
@@ -59,7 +59,11 @@ const DestinationsIntroSection = ({
         {!hideImage ? (
           <div className="h-[395px] w-full max-w-[559px] overflow-hidden rounded-[10px]">
             <div className="relative h-full w-full">
-              <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover" />
+              <img
+                src={imageUrl}
+                alt={imageAlt}
+                className="h-full w-full object-cover"
+              />
               <div className="pointer-events-none absolute inset-0 bg-black/15" />
             </div>
           </div>

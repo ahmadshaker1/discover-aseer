@@ -184,7 +184,7 @@ const DestinationsHero = ({
 
             {subtitle.trim() ? (
               <p
-                className="w-full text-[16px] font-normal leading-6 text-white/80"
+                className="w-full text-[18px] font-normal leading-6 text-white"
                 style={{ fontFamily: ara }}
               >
                 {subtitle}
