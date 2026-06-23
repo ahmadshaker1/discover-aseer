@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
-export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 19;
+export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 21;
 
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
@@ -49,12 +49,14 @@ type FormValues = {
   name_en: string;
   gender: "" | "ذكر" | "أنثى";
   National_ID_number: string;
+  residence: "" | "aseer" | "other";
   About_me: string;
   License_number: string;
   License_expiry_date: string;
   english_language: "" | "beginner" | "intermediate" | "advanced";
   Arabic_language: "" | "beginner" | "intermediate" | "advanced";
   Other_languages: string;
+  Other_languages_level: "" | "beginner" | "intermediate" | "advanced";
   Specialization: string;
   Email: string;
   transportation: "" | "yes" | "no";
@@ -67,6 +69,7 @@ type FormValues = {
   commitment1: boolean;
   commitment2: boolean;
   commitment3: boolean;
+  commitment4: boolean;
 };
 
 const EMPTY_VALUES: FormValues = {
@@ -74,12 +77,14 @@ const EMPTY_VALUES: FormValues = {
   name_en: "",
   gender: "",
   National_ID_number: "",
+  residence: "",
   About_me: "",
   License_number: "",
   License_expiry_date: "",
   english_language: "",
   Arabic_language: "",
   Other_languages: "",
+  Other_languages_level: "",
   Specialization: "",
   Email: "",
   transportation: "",
@@ -92,6 +97,7 @@ const EMPTY_VALUES: FormValues = {
   commitment1: false,
   commitment2: false,
   commitment3: false,
+  commitment4: false,
 };
 
 function UploadAreaIcon() {
@@ -180,6 +186,7 @@ const TourGuideRegisterStepOneForm = ({
       values.name_en.trim() !== "",
       values.gender !== "",
       values.National_ID_number.trim() !== "",
+      values.residence !== "",
       profileImageFile != null,
       values.About_me.trim() !== "",
       values.License_number.trim() !== "",
@@ -195,6 +202,7 @@ const TourGuideRegisterStepOneForm = ({
       values.commitment1,
       values.commitment2,
       values.commitment3,
+      values.commitment4,
     ].filter(Boolean).length;
   }, [values, profileImageFile, licenseAttachmentFile, specializationValue]);
 
@@ -325,330 +333,511 @@ const TourGuideRegisterStepOneForm = ({
 
   return (
     <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit}>
-      <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-name-ar`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.nameAr")}
-          </label>
-          <input
-            id={`${baseId}-name-ar`}
-            value={values.name_ar}
-            onChange={(e) => setField("name_ar", e.target.value)}
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-            dir="rtl"
-          />
-        </div>
-
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-name-en`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.nameEn")}
-          </label>
-          <input
-            id={`${baseId}-name-en`}
-            value={values.name_en}
-            onChange={(e) => setField("name_en", e.target.value)}
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-            dir="ltr"
-          />
-        </div>
-
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-gender`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.gender")}
-          </label>
-          <select
-            id={`${baseId}-gender`}
-            value={values.gender}
-            onChange={(e) =>
-              setField("gender", e.target.value as FormValues["gender"])
-            }
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-          >
-            <option value="">{t("form.select")}</option>
-            <option value="ذكر">{t("form.genderMale")}</option>
-            <option value="أنثى">{t("form.genderFemale")}</option>
-          </select>
-        </div>
-
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-nid`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.nationalId")}
-          </label>
-          <input
-            id={`${baseId}-nid`}
-            value={values.National_ID_number}
-            onChange={(e) => setField("National_ID_number", e.target.value)}
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-            inputMode="numeric"
-          />
-        </div>
-
-        <div className="md:col-span-2 flex flex-col gap-2 text-start">
-          <label
-            htmlFor={`${baseId}-bio`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.aboutMe")}
-          </label>
-          <textarea
-            id={`${baseId}-bio`}
-            value={values.About_me}
-            onChange={(e) => setField("About_me", e.target.value)}
-            className="min-h-[110px] w-full rounded-lg border border-border bg-background text-foreground p-4 text-start"
-            style={{ fontFamily: ibm }}
-            dir={locale === "ar" ? "rtl" : "ltr"}
-          />
-        </div>
-
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-license-number`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.licenseNumber")}
-          </label>
-          <input
-            id={`${baseId}-license-number`}
-            value={values.License_number}
-            onChange={(e) => setField("License_number", e.target.value)}
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-          />
-        </div>
-
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-license-date`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.licenseExpiry")}
-          </label>
-          <input
-            id={`${baseId}-license-date`}
-            type="date"
-            value={values.License_expiry_date}
-            onChange={(e) => setField("License_expiry_date", e.target.value)}
-            className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 dark:[color-scheme:dark]"
-            style={{ fontFamily: ibm }}
-          />
-        </div>
-
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-arabic-level`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.arabicLanguage")}
-          </label>
-          <select
-            id={`${baseId}-arabic-level`}
-            value={values.Arabic_language}
-            onChange={(e) =>
-              setField(
-                "Arabic_language",
-                e.target.value as FormValues["Arabic_language"],
-              )
-            }
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-          >
-            <option value="">{t("form.select")}</option>
-            {LANGUAGE_LEVEL_VALUES.map((value) => (
-              <option key={value} value={value}>
-                {languageLevelLabel(value)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-english-level`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.englishLanguage")}
-          </label>
-          <select
-            id={`${baseId}-english-level`}
-            value={values.english_language}
-            onChange={(e) =>
-              setField(
-                "english_language",
-                e.target.value as FormValues["english_language"],
-              )
-            }
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-          >
-            <option value="">{t("form.select")}</option>
-            {LANGUAGE_LEVEL_VALUES.map((value) => (
-              <option key={value} value={value}>
-                {languageLevelLabel(value)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="md:col-span-2 flex flex-col gap-2 text-start">
-          <label
-            htmlFor={`${baseId}-other-languages`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.otherLanguages")}
-          </label>
-          <input
-            id={`${baseId}-other-languages`}
-            value={values.Other_languages}
-            onChange={(e) => setField("Other_languages", e.target.value)}
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-            placeholder={t("form.otherLanguagesPlaceholder")}
-          />
-        </div>
-
-        <div className="md:col-span-2 flex flex-col gap-3 text-start">
-          <p
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.specialization")}
-          </p>
-          <div className="grid grid-cols-1 gap-2">
-            {SPECIALIZATION_IDS.map((item) => (
-              <label key={item} className={CHECK_ROW}>
-                <input
-                  type="checkbox"
-                  className="mt-0.5 shrink-0"
-                  checked={selectedSpecializations.includes(item)}
-                  onChange={() => toggleSpecialization(item)}
-                />
-                <span
-                  className="flex-1 text-sm text-start text-foreground"
-                  style={{ fontFamily: ibm }}
-                >
-                  {t(`form.specializations.${item}`)}
-                </span>
-              </label>
-            ))}
-          </div>
-          {selectedSpecializations.includes("other") ? (
+      <div className="mb-10">
+        <h2
+          className="mb-6 text-2xl font-bold text-foreground text-start"
+          style={{ fontFamily: araBold }}
+        >
+          {t("form.personalInfo")}
+        </h2>
+        <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-name-ar`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.nameAr")}
+            </label>
             <input
-              value={otherSpecialization}
-              onChange={(e) => onOtherSpecializationChange(e.target.value)}
+              id={`${baseId}-name-ar`}
+              value={values.name_ar}
+              onChange={(e) => setField("name_ar", e.target.value)}
               className={FIELD_INPUT}
               style={{ fontFamily: ibm }}
-              placeholder={t("form.otherSpecializationPlaceholder")}
+              dir="rtl"
             />
-          ) : null}
-        </div>
+          </div>
 
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-transportation`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.transportation")}
-          </label>
-          <select
-            id={`${baseId}-transportation`}
-            value={values.transportation}
-            onChange={(e) =>
-              setField(
-                "transportation",
-                e.target.value as FormValues["transportation"],
-              )
-            }
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-          >
-            <option value="">{t("form.select")}</option>
-            <option value="yes">{t("form.yes")}</option>
-            <option value="no">{t("form.no")}</option>
-          </select>
-        </div>
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-name-en`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.nameEn")}
+            </label>
+            <input
+              id={`${baseId}-name-en`}
+              value={values.name_en}
+              onChange={(e) => setField("name_en", e.target.value)}
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+              dir="ltr"
+            />
+          </div>
 
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-email`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.email")}
-          </label>
-          <input
-            id={`${baseId}-email`}
-            type="email"
-            value={values.Email}
-            onChange={(e) => setField("Email", e.target.value)}
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-            dir="ltr"
-          />
-        </div>
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-gender`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.gender")}
+            </label>
+            <select
+              id={`${baseId}-gender`}
+              value={values.gender}
+              onChange={(e) =>
+                setField("gender", e.target.value as FormValues["gender"])
+              }
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+            >
+              <option value="">{t("form.select")}</option>
+              <option value="ذكر">{t("form.genderMale")}</option>
+              <option value="أنثى">{t("form.genderFemale")}</option>
+            </select>
+          </div>
 
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-mobile`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.mobile")}
-          </label>
-          <input
-            id={`${baseId}-mobile`}
-            value={values.Mobile_number}
-            onChange={(e) => setField("Mobile_number", e.target.value)}
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-            inputMode="tel"
-          />
-        </div>
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-nid`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.nationalId")}
+            </label>
+            <input
+              id={`${baseId}-nid`}
+              value={values.National_ID_number}
+              onChange={(e) => setField("National_ID_number", e.target.value)}
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+              inputMode="numeric"
+            />
+          </div>
 
-        <div className={FIELD_GROUP}>
-          <label
-            htmlFor={`${baseId}-whatsapp`}
-            className="text-base font-bold text-foreground"
-            style={{ fontFamily: araBold }}
-          >
-            {t("form.whatsapp")}
-          </label>
-          <input
-            id={`${baseId}-whatsapp`}
-            value={values.WhatsApp_number}
-            onChange={(e) => setField("WhatsApp_number", e.target.value)}
-            className={FIELD_INPUT}
-            style={{ fontFamily: ibm }}
-            inputMode="tel"
-          />
-        </div>
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-residence`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.residence")}
+            </label>
+            <select
+              id={`${baseId}-residence`}
+              value={values.residence}
+              onChange={(e) =>
+                setField("residence", e.target.value as FormValues["residence"])
+              }
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+            >
+              <option value="">{t("form.select")}</option>
+              <option value="aseer">{t("form.residenceAseer")}</option>
+              <option value="other">{t("form.residenceOther")}</option>
+            </select>
+          </div>
 
+          <div className="md:col-span-2 flex flex-col gap-2 text-start">
+            <label
+              htmlFor={`${baseId}-bio`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.aboutMe")}
+            </label>
+            <textarea
+              id={`${baseId}-bio`}
+              value={values.About_me}
+              onChange={(e) => setField("About_me", e.target.value)}
+              className="min-h-[110px] w-full rounded-lg border border-border bg-background text-foreground p-4 text-start"
+              style={{ fontFamily: ibm }}
+              dir={locale === "ar" ? "rtl" : "ltr"}
+            />
+          </div>
+          <div className={FIELD_GROUP}>
+            <p
+              className="mb-1 text-start text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.profilePhoto")}
+            </p>
+            <label
+              htmlFor={`${baseId}-profile-image`}
+              className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border bg-surface px-6 py-8 text-center transition-colors hover:border-primary/50 hover:bg-primary/5"
+            >
+              <input
+                id={`${baseId}-profile-image`}
+                type="file"
+                className="sr-only"
+                accept=".jpg,.jpeg,.png,.webp"
+                onChange={(e) => onProfileImageChange(e.target.files)}
+              />
+              <span
+                className="flex h-[33px] w-[33px] shrink-0 items-center justify-center rounded-[49px] bg-primary/10"
+                aria-hidden
+              >
+                <UploadAreaIcon />
+              </span>
+              <span
+                className="text-center text-[14px] font-bold leading-[120%] text-primary"
+                style={{ fontFamily: araBold }}
+              >
+                {t("form.browsePhoto")}
+              </span>
+              <span
+                className="text-xs text-muted-foreground"
+                style={{ fontFamily: ibm }}
+              >
+                {t("form.fileTypesImage")}
+              </span>
+              {profileImageFile ? (
+                <span
+                  className="mt-2 text-xs text-primary"
+                  style={{ fontFamily: ibm }}
+                >
+                  {profileImageFile.name}
+                </span>
+              ) : null}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <h2
+          className="mb-6 text-2xl font-bold text-foreground text-start"
+          style={{ fontFamily: araBold }}
+        >
+          {t("form.generalInfo")}
+        </h2>
+        <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-license-number`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.licenseNumber")}
+            </label>
+            <input
+              id={`${baseId}-license-number`}
+              value={values.License_number}
+              onChange={(e) => setField("License_number", e.target.value)}
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+            />
+          </div>
+
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-license-date`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.licenseExpiry")}
+            </label>
+            <input
+              id={`${baseId}-license-date`}
+              type="date"
+              value={values.License_expiry_date}
+              onChange={(e) => setField("License_expiry_date", e.target.value)}
+              className="h-12 w-full rounded-lg border border-border bg-background text-foreground px-4 dark:[color-scheme:dark]"
+              style={{ fontFamily: ibm }}
+            />
+          </div>
+
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-arabic-level`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.arabicLanguage")}
+            </label>
+            <select
+              id={`${baseId}-arabic-level`}
+              value={values.Arabic_language}
+              onChange={(e) =>
+                setField(
+                  "Arabic_language",
+                  e.target.value as FormValues["Arabic_language"],
+                )
+              }
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+            >
+              <option value="">{t("form.select")}</option>
+              {LANGUAGE_LEVEL_VALUES.map((value) => (
+                <option key={value} value={value}>
+                  {languageLevelLabel(value)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-english-level`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.englishLanguage")}
+            </label>
+            <select
+              id={`${baseId}-english-level`}
+              value={values.english_language}
+              onChange={(e) =>
+                setField(
+                  "english_language",
+                  e.target.value as FormValues["english_language"],
+                )
+              }
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+            >
+              <option value="">{t("form.select")}</option>
+              {LANGUAGE_LEVEL_VALUES.map((value) => (
+                <option key={value} value={value}>
+                  {languageLevelLabel(value)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="md:col-span-2 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className={FIELD_GROUP}>
+              <label
+                htmlFor={`${baseId}-other-languages`}
+                className="text-base font-bold text-foreground"
+                style={{ fontFamily: araBold }}
+              >
+                {t("form.otherLanguages")}
+              </label>
+              <input
+                id={`${baseId}-other-languages`}
+                value={values.Other_languages}
+                onChange={(e) => setField("Other_languages", e.target.value)}
+                className={FIELD_INPUT}
+                style={{ fontFamily: ibm }}
+                placeholder={t("form.otherLanguagesPlaceholder")}
+              />
+            </div>
+            <div className={FIELD_GROUP}>
+              <label
+                htmlFor={`${baseId}-other-languages-level`}
+                className="text-base font-bold text-foreground"
+                style={{ fontFamily: araBold }}
+              >
+                {t("form.otherLanguagesLevel")}
+              </label>
+              <select
+                id={`${baseId}-other-languages-level`}
+                value={values.Other_languages_level}
+                onChange={(e) =>
+                  setField(
+                    "Other_languages_level",
+                    e.target.value as FormValues["Other_languages_level"],
+                  )
+                }
+                className={FIELD_INPUT}
+                style={{ fontFamily: ibm }}
+              >
+                <option value="">{t("form.select")}</option>
+                {LANGUAGE_LEVEL_VALUES.map((value) => (
+                  <option key={value} value={value}>
+                    {languageLevelLabel(value)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="md:col-span-2 flex flex-col gap-3 text-start">
+            <p
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.specialization")}
+            </p>
+            <div className="grid grid-cols-1 gap-2">
+              {SPECIALIZATION_IDS.map((item) => (
+                <label key={item} className={CHECK_ROW}>
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 shrink-0"
+                    checked={selectedSpecializations.includes(item)}
+                    onChange={() => toggleSpecialization(item)}
+                  />
+                  <span
+                    className="flex-1 text-sm text-start text-foreground"
+                    style={{ fontFamily: ibm }}
+                  >
+                    {t(`form.specializations.${item}`)}
+                  </span>
+                </label>
+              ))}
+            </div>
+            {selectedSpecializations.includes("other") ? (
+              <input
+                value={otherSpecialization}
+                onChange={(e) => onOtherSpecializationChange(e.target.value)}
+                className={FIELD_INPUT}
+                style={{ fontFamily: ibm }}
+                placeholder={t("form.otherSpecializationPlaceholder")}
+              />
+            ) : null}
+          </div>
+
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-transportation`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.transportation")}
+            </label>
+            <select
+              id={`${baseId}-transportation`}
+              value={values.transportation}
+              onChange={(e) =>
+                setField(
+                  "transportation",
+                  e.target.value as FormValues["transportation"],
+                )
+              }
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+            >
+              <option value="">{t("form.select")}</option>
+              <option value="yes">{t("form.yes")}</option>
+              <option value="no">{t("form.no")}</option>
+            </select>
+          </div>
+          <div className={FIELD_GROUP}>
+            <p
+              className="mb-1 text-start text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.licenseAttachment")}
+            </p>
+            <label
+              htmlFor={`${baseId}-license-attachment`}
+              className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border bg-surface px-6 py-8 text-center transition-colors hover:border-primary/50 hover:bg-primary/5"
+            >
+              <input
+                id={`${baseId}-license-attachment`}
+                type="file"
+                className="sr-only"
+                accept=".jpg,.jpeg,.pdf"
+                onChange={(e) => onLicenseAttachmentChange(e.target.files)}
+              />
+              <span
+                className="flex h-[33px] w-[33px] shrink-0 items-center justify-center rounded-[49px] bg-primary/10"
+                aria-hidden
+              >
+                <UploadAreaIcon />
+              </span>
+              <span
+                className="text-center text-[14px] font-bold leading-[120%] text-primary"
+                style={{ fontFamily: araBold }}
+              >
+                {t("form.browseAttachment")}
+              </span>
+              <span
+                className="text-xs text-muted-foreground"
+                style={{ fontFamily: ibm }}
+              >
+                {t("form.fileTypesLicense")}
+              </span>
+              {licenseAttachmentFile ? (
+                <span
+                  className="mt-2 text-xs text-primary"
+                  style={{ fontFamily: ibm }}
+                >
+                  {licenseAttachmentFile.name}
+                </span>
+              ) : null}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <h2
+          className="mb-6 text-2xl font-bold text-foreground text-start"
+          style={{ fontFamily: araBold }}
+        >
+          {t("form.contactInfo")}
+        </h2>
+        <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-email`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.email")}
+            </label>
+            <input
+              id={`${baseId}-email`}
+              type="email"
+              value={values.Email}
+              onChange={(e) => setField("Email", e.target.value)}
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+              dir="ltr"
+            />
+          </div>
+
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-mobile`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.mobile")}
+            </label>
+            <input
+              id={`${baseId}-mobile`}
+              value={values.Mobile_number}
+              onChange={(e) => setField("Mobile_number", e.target.value)}
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+              inputMode="tel"
+            />
+          </div>
+
+          <div className={FIELD_GROUP}>
+            <label
+              htmlFor={`${baseId}-whatsapp`}
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {t("form.whatsapp")}
+            </label>
+            <input
+              id={`${baseId}-whatsapp`}
+              value={values.WhatsApp_number}
+              onChange={(e) => setField("WhatsApp_number", e.target.value)}
+              className={FIELD_INPUT}
+              style={{ fontFamily: ibm }}
+              inputMode="tel"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <h2
+          className="mb-6 text-2xl font-bold text-foreground text-start"
+          style={{ fontFamily: araBold }}
+        >
+          {t("form.socialAccounts")}
+        </h2>
         <div className={FIELD_GROUP}>
           <label
             htmlFor={`${baseId}-website`}
@@ -770,102 +959,20 @@ const TourGuideRegisterStepOneForm = ({
               {t("form.commitment3")}
             </span>
           </label>
-        </div>
-
-        <div className="md:col-span-2 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className={FIELD_GROUP}>
-            <p
-              className="mb-1 text-start text-base font-bold text-foreground"
-              style={{ fontFamily: araBold }}
+          <label className={CHECK_LABEL}>
+            <input
+              type="checkbox"
+              className="mt-1 shrink-0"
+              checked={values.commitment4}
+              onChange={(e) => setField("commitment4", e.target.checked)}
+            />
+            <span
+              className="flex-1 text-sm text-start"
+              style={{ fontFamily: ibm }}
             >
-              {t("form.profilePhoto")}
-            </p>
-            <label
-              htmlFor={`${baseId}-profile-image`}
-              className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border bg-surface px-6 py-8 text-center transition-colors hover:border-primary/50 hover:bg-primary/5"
-            >
-              <input
-                id={`${baseId}-profile-image`}
-                type="file"
-                className="sr-only"
-                accept=".jpg,.jpeg,.png,.webp"
-                onChange={(e) => onProfileImageChange(e.target.files)}
-              />
-              <span
-                className="flex h-[33px] w-[33px] shrink-0 items-center justify-center rounded-[49px] bg-primary/10"
-                aria-hidden
-              >
-                <UploadAreaIcon />
-              </span>
-              <span
-                className="text-center text-[14px] font-bold leading-[120%] text-primary"
-                style={{ fontFamily: araBold }}
-              >
-                {t("form.browsePhoto")}
-              </span>
-              <span
-                className="text-xs text-muted-foreground"
-                style={{ fontFamily: ibm }}
-              >
-                {t("form.fileTypesImage")}
-              </span>
-              {profileImageFile ? (
-                <span
-                  className="mt-2 text-xs text-primary"
-                  style={{ fontFamily: ibm }}
-                >
-                  {profileImageFile.name}
-                </span>
-              ) : null}
-            </label>
-          </div>
-
-          <div className={FIELD_GROUP}>
-            <p
-              className="mb-1 text-start text-base font-bold text-foreground"
-              style={{ fontFamily: araBold }}
-            >
-              {t("form.licenseAttachment")}
-            </p>
-            <label
-              htmlFor={`${baseId}-license-attachment`}
-              className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border bg-surface px-6 py-8 text-center transition-colors hover:border-primary/50 hover:bg-primary/5"
-            >
-              <input
-                id={`${baseId}-license-attachment`}
-                type="file"
-                className="sr-only"
-                accept=".jpg,.jpeg,.pdf"
-                onChange={(e) => onLicenseAttachmentChange(e.target.files)}
-              />
-              <span
-                className="flex h-[33px] w-[33px] shrink-0 items-center justify-center rounded-[49px] bg-primary/10"
-                aria-hidden
-              >
-                <UploadAreaIcon />
-              </span>
-              <span
-                className="text-center text-[14px] font-bold leading-[120%] text-primary"
-                style={{ fontFamily: araBold }}
-              >
-                {t("form.browseAttachment")}
-              </span>
-              <span
-                className="text-xs text-muted-foreground"
-                style={{ fontFamily: ibm }}
-              >
-                {t("form.fileTypesLicense")}
-              </span>
-              {licenseAttachmentFile ? (
-                <span
-                  className="mt-2 text-xs text-primary"
-                  style={{ fontFamily: ibm }}
-                >
-                  {licenseAttachmentFile.name}
-                </span>
-              ) : null}
-            </label>
-          </div>
+              {t("form.commitment4")}
+            </span>
+          </label>
         </div>
       </div>
 

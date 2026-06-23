@@ -105,17 +105,9 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
           </Link>
         </div>
 
-        <div className="mx-auto mt-20 flex w-full max-w-[590px] flex-col items-stretch gap-[33px] sm:mt-24 lg:mt-30 xl:mt-32">
-          <h1
-            id="tour-guide-register-hero-title"
-            className="w-full text-start text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary"
-            style={{ fontFamily: araBold }}
-          >
-            {t("formTitle")}
-          </h1>
-
+        <div className="mx-auto mt-20 flex w-full max-w-[590px] flex-col items-stretch gap-[33px] sm:mt-24 lg:mt-30 xl:mt-32 text-center">
           <nav
-            className="flex w-full max-w-[543px] flex-wrap items-center justify-start gap-1.5 text-secondary"
+            className="flex w-full max-w-[543px] flex-wrap items-center justify-center mx-auto gap-1.5 text-secondary"
             aria-label={t("breadcrumbLabel")}
           >
             <Link
@@ -135,13 +127,26 @@ const TourGuideRegisterHero = ({ bottomSlot }: TourGuideRegisterHeroProps) => {
             </Link>
             <BreadcrumbChevronSmall />
             <span
-              className="text-start text-[24px] font-normal leading-[180%] text-secondary"
+              className="text-center text-[24px] font-normal leading-[180%] text-secondary"
               style={{ fontFamily: araBold }}
               aria-current="page"
             >
-              {t("formTitle")}
+              {t("correntPage")}
             </span>
           </nav>
+          <h1
+            id="tour-guide-register-hero-title"
+            className="w-full text-center text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary"
+            style={{ fontFamily: araBold }}
+          >
+            {t("formTitle")}
+          </h1>
+          <p className="text-center text-lg md:text-xl font-normal leading-relaxed text-secondary opacity-80 max-w-[590px] mx-auto">
+            {t("formSubtitle")}
+          </p>
+          <p className="text-center text-[18px] font-normal leading-relaxed text-red-600 max-w-[590px] mx-auto">
+            {t("notes")}
+          </p>
         </div>
 
         {bottomSlot ? (
