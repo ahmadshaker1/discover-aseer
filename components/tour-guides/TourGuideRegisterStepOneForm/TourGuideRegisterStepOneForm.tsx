@@ -2,8 +2,9 @@
 
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
-export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 21;
+export const TOUR_GUIDE_REQUIRED_FIELDS_COUNT = 18;
 
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
@@ -186,9 +187,7 @@ const TourGuideRegisterStepOneForm = ({
       values.name_en.trim() !== "",
       values.gender !== "",
       values.National_ID_number.trim() !== "",
-      values.residence !== "",
       profileImageFile != null,
-      values.About_me.trim() !== "",
       values.License_number.trim() !== "",
       isLicenseDateValid(values.License_expiry_date),
       licenseAttachmentFile != null,
@@ -198,7 +197,6 @@ const TourGuideRegisterStepOneForm = ({
       specializationValue.trim() !== "",
       values.Email.trim() !== "",
       values.Mobile_number.trim() !== "",
-      values.WhatsApp_number.trim() !== "",
       values.commitment1,
       values.commitment2,
       values.commitment3,
@@ -347,7 +345,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.nameAr")}
+              {t("form.nameAr")} <span className="text-red-600">*</span>
             </label>
             <input
               id={`${baseId}-name-ar`}
@@ -365,7 +363,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.nameEn")}
+              {t("form.nameEn")} <span className="text-red-600">*</span>
             </label>
             <input
               id={`${baseId}-name-en`}
@@ -383,7 +381,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.gender")}
+              {t("form.gender")} <span className="text-red-600">*</span>
             </label>
             <select
               id={`${baseId}-gender`}
@@ -406,7 +404,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.nationalId")}
+              {t("form.nationalId")} <span className="text-red-600">*</span>
             </label>
             <input
               id={`${baseId}-nid`}
@@ -463,7 +461,7 @@ const TourGuideRegisterStepOneForm = ({
               className="mb-1 text-start text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.profilePhoto")}
+              {t("form.profilePhoto")} <span className="text-red-600">*</span>
             </p>
             <label
               htmlFor={`${baseId}-profile-image`}
@@ -521,7 +519,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.licenseNumber")}
+              {t("form.licenseNumber")} <span className="text-red-600">*</span>
             </label>
             <input
               id={`${baseId}-license-number`}
@@ -538,7 +536,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.licenseExpiry")}
+              {t("form.licenseExpiry")} <span className="text-red-600">*</span>
             </label>
             <input
               id={`${baseId}-license-date`}
@@ -556,7 +554,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.arabicLanguage")}
+              {t("form.arabicLanguage")} <span className="text-red-600">*</span>
             </label>
             <select
               id={`${baseId}-arabic-level`}
@@ -585,7 +583,8 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.englishLanguage")}
+              {t("form.englishLanguage")}{" "}
+              <span className="text-red-600">*</span>
             </label>
             <select
               id={`${baseId}-english-level`}
@@ -661,7 +660,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.specialization")}
+              {t("form.specialization")} <span className="text-red-600">*</span>
             </p>
             <div className="grid grid-cols-1 gap-2">
               {SPECIALIZATION_IDS.map((item) => (
@@ -698,7 +697,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.transportation")}
+              {t("form.transportation")} <span className="text-red-600">*</span>
             </label>
             <select
               id={`${baseId}-transportation`}
@@ -722,7 +721,8 @@ const TourGuideRegisterStepOneForm = ({
               className="mb-1 text-start text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.licenseAttachment")}
+              {t("form.licenseAttachment")}{" "}
+              <span className="text-red-600">*</span>
             </p>
             <label
               htmlFor={`${baseId}-license-attachment`}
@@ -780,7 +780,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.email")}
+              {t("form.email")} <span className="text-red-600">*</span>
             </label>
             <input
               id={`${baseId}-email`}
@@ -799,7 +799,7 @@ const TourGuideRegisterStepOneForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {t("form.mobile")}
+              {t("form.mobile")} <span className="text-red-600">*</span>
             </label>
             <input
               id={`${baseId}-mobile`}
@@ -915,7 +915,7 @@ const TourGuideRegisterStepOneForm = ({
             className="text-base font-bold text-foreground"
             style={{ fontFamily: araBold }}
           >
-            {t("form.commitmentsTitle")}
+            {t("form.commitmentsTitle")} <span className="text-red-600">*</span>
           </p>
           <label className={CHECK_LABEL}>
             <input
@@ -928,7 +928,7 @@ const TourGuideRegisterStepOneForm = ({
               className="flex-1 text-sm text-start"
               style={{ fontFamily: ibm }}
             >
-              {t("form.commitment1")}
+              {t("form.commitment1")} <span className="text-red-600">*</span>
             </span>
           </label>
           <label className={CHECK_LABEL}>
@@ -942,7 +942,7 @@ const TourGuideRegisterStepOneForm = ({
               className="flex-1 text-sm text-start"
               style={{ fontFamily: ibm }}
             >
-              {t("form.commitment2")}
+              {t("form.commitment2")} <span className="text-red-600">*</span>
             </span>
           </label>
           <label className={CHECK_LABEL}>
@@ -956,7 +956,7 @@ const TourGuideRegisterStepOneForm = ({
               className="flex-1 text-sm text-start"
               style={{ fontFamily: ibm }}
             >
-              {t("form.commitment3")}
+              {t("form.commitment3")} <span className="text-red-600">*</span>
             </span>
           </label>
           <label className={CHECK_LABEL}>
@@ -970,7 +970,14 @@ const TourGuideRegisterStepOneForm = ({
               className="flex-1 text-sm text-start"
               style={{ fontFamily: ibm }}
             >
-              {t("form.commitment4")}
+              <Link
+                href="/privacy"
+                className="underline hover:opacity-80"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {t("form.commitment4")}
+              </Link>{" "}
+              <span className="text-red-600">*</span>
             </span>
           </label>
         </div>
