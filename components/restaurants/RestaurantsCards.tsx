@@ -2,8 +2,8 @@
 
 import { useRef, useCallback } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import AseeriCuisineBadge from "./AseeriCuisineBadge";
 import {
-  ASEERI_CUISINE_NAME_BADGE,
   formatCuisineTypes,
   hasAseeriCuisine,
 } from "./restaurantLocale";
@@ -69,8 +69,11 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
           className="overflow-visible"
         >
           {restaurants.map((restaurant) => {
-            const cuisineLabel = formatCuisineTypes(restaurant.cuisineTypes, locale);
             const showAseeriBadge = hasAseeriCuisine(restaurant.cuisineTypes);
+            const otherCuisineLabel = formatCuisineTypes(
+              restaurant.cuisineTypes?.filter((type) => type !== "aseeri_cuisine"),
+              locale,
+            );
 
             return (
             <SwiperSlide key={restaurant.id}>
@@ -93,15 +96,6 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
                   <div className="space-y-2">
                     <h3 className="text-start text-lg font-bold text-foreground [unicode-bidi:plaintext] md:text-xl">
                       {restaurant.name}
-                      {showAseeriBadge ? (
-                        <img
-                          src={ASEERI_CUISINE_NAME_BADGE}
-                          alt=""
-                          width={55}
-                          height={28}
-                          className="ms-2 inline-block h-7 w-[55px] shrink-0 align-middle object-contain [unicode-bidi:isolate]"
-                        />
-                      ) : null}
                     </h3>
                     <div className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
                       {restaurant.distanceKm > 0 && (
@@ -122,10 +116,16 @@ const RestaurantsCards = ({ restaurants }: RestaurantsCardsProps) => {
                         <span>{restaurant.nationality}</span>
                       </div>
                     )}
-                    {cuisineLabel ? (
+                    {showAseeriBadge ? (
                       <div className="flex items-center gap-1">
                         <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/70" />
-                        <span>{cuisineLabel}</span>
+                        <AseeriCuisineBadge variant="card" />
+                      </div>
+                    ) : null}
+                    {otherCuisineLabel ? (
+                      <div className="flex items-center gap-1">
+                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/70" />
+                        <span>{otherCuisineLabel}</span>
                       </div>
                     ) : null}
                   </div>

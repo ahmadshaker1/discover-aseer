@@ -13,7 +13,6 @@ import {
 const INITIAL_FILTERS: RestaurantFilterState = {
   city: null,
   cuisineTypes: [],
-  onlyAseeriCuisine: false,
 };
 
 interface RestaurantsListingProps {

@@ -6,15 +6,13 @@ import { Button, Checkbox, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { getCityOptions } from "@/components/landmarks/filterOptions";
 import type { Restaurant } from "@/components/restaurants/types";
+import AseeriCuisineBadge from "@/components/restaurants/AseeriCuisineBadge";
 import {
-  countAseeriCuisineRestaurants,
   countRestaurantsForCuisine,
   countRestaurantsForCity,
   CUISINE_FILTER_IDS,
   type RestaurantFilterState,
 } from "@/components/restaurants/applyRestaurantFilters";
-import { ASEERI_CUISINE_FILTER_BADGE } from "@/components/restaurants/restaurantLocale";
-import { CheckboxCheckIcon } from "@/components/accommodation/Icons";
 import { LocationIcon, CuisineIcon, ChevronDownIcon } from "./Icons";
 
 const ASEERI_CUISINE_FILTER_ID = "aseeri_cuisine";
@@ -147,48 +145,6 @@ const FilterCheckbox = ({ checked, onChange }: FilterCheckboxProps) => {
   );
 };
 
-// Aseeri cuisine badge filter — same pattern as exceptional accommodation filter
-interface AseeriCuisineFilterProps {
-  checked: boolean;
-  onChange: (value: boolean) => void;
-  count: number;
-}
-
-const AseeriCuisineFilter = ({
-  checked,
-  onChange,
-  count,
-}: AseeriCuisineFilterProps) => {
-  const t = useTranslations("common");
-
-  return (
-    <section className="mb-6 border-b border-border pb-6 sm:mb-8">
-      <label className="flex w-full cursor-pointer items-center gap-3 rounded-lg py-2 pe-1 transition-colors hover:bg-muted">
-        <div className="relative shrink-0">
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={() => onChange(!checked)}
-            className="peer h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0px_1px_2px_0px_#0000000D] checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-          />
-          <CheckboxCheckIcon />
-        </div>
-        <img
-          src={ASEERI_CUISINE_FILTER_BADGE}
-          alt={t("cuisineAseeri")}
-          width={55}
-          height={22}
-          className="h-[22px] w-[55px] shrink-0 object-contain [unicode-bidi:isolate]"
-        />
-        <span className="min-w-0 flex-1" aria-hidden="true" />
-        <span className="shrink-0 rounded-[8px] bg-muted px-2 py-0.5 text-xs text-foreground">
-          {count}
-        </span>
-      </label>
-    </section>
-  );
-};
-
 // Cuisine Type Filter Component
 interface CuisineTypeFilterProps {
   cuisines: CuisineOption[];
@@ -213,19 +169,24 @@ const CuisineTypeFilter = ({
       <div className="space-y-2 sm:space-y-3">
         {cuisines.map((cuisine) => {
           const isChecked = selectedCuisines.includes(cuisine.id);
+          const isAseeri = cuisine.id === ASEERI_CUISINE_FILTER_ID;
           return (
             <div
               key={cuisine.id}
               className="flex items-center justify-between p-1 rounded transition-colors"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex min-w-0 items-center gap-3">
                 <FilterCheckbox
                   checked={isChecked}
                   onChange={() => onCuisineToggle(cuisine.id)}
                 />
-                <span className="text-10 text-start text-foreground">
-                  {cuisine.label}
-                </span>
+                {isAseeri ? (
+                  <AseeriCuisineBadge variant="filter" />
+                ) : (
+                  <span className="text-10 text-start text-foreground">
+                    {cuisine.label}
+                  </span>
+                )}
               </div>
               <span className="text-10 text-muted-foreground">
                 {cuisine.count}
@@ -270,15 +231,11 @@ const RestaurantsFilterSidebar = ({
     (opt) => countRestaurantsForCity(restaurants, opt.id) > 0,
   );
 
-  const cuisinesWithCounts: CuisineOption[] = CUISINE_FILTER_IDS.filter(
-    (id) => id !== ASEERI_CUISINE_FILTER_ID,
-  ).map((id) => ({
+  const cuisinesWithCounts: CuisineOption[] = CUISINE_FILTER_IDS.map((id) => ({
     id,
     label: t(CUISINE_LABEL_KEYS[id]),
     count: countRestaurantsForCuisine(restaurants, id),
   }));
-
-  const aseeriCuisineCount = countAseeriCuisineRestaurants(restaurants);
 
   const handleCuisineToggle = (cuisineId: string) => {
     onFiltersChange((prev) => ({
@@ -296,13 +253,6 @@ const RestaurantsFilterSidebar = ({
     }));
   };
 
-  const handleOnlyAseeriCuisineChange = (value: boolean) => {
-    onFiltersChange((prev) => ({
-      ...prev,
-      onlyAseeriCuisine: value,
-    }));
-  };
-
   return (
     <div className="w-full max-w-md rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-none">
       <FilterHeader onReset={onReset} />
@@ -310,11 +260,6 @@ const RestaurantsFilterSidebar = ({
         cityOptions={cityOptions}
         selectedCity={filters.city}
         onCityChange={handleCityChange}
-      />
-      <AseeriCuisineFilter
-        checked={filters.onlyAseeriCuisine}
-        onChange={handleOnlyAseeriCuisineChange}
-        count={aseeriCuisineCount}
       />
       <CuisineTypeFilter
         cuisines={cuisinesWithCounts}

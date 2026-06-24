@@ -3,8 +3,8 @@
 import { useCallback } from "react";
 import { useLocale } from "next-intl";
 import { Restaurant } from "./data";
+import AseeriCuisineBadge from "./AseeriCuisineBadge";
 import {
-  ASEERI_CUISINE_NAME_BADGE,
   formatCuisineTypes,
   hasAseeriCuisine,
 } from "./restaurantLocale";
@@ -81,8 +81,11 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
     <div className="w-full">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
         {restaurants.map((restaurant) => {
-          const cuisineLabel = formatCuisineTypes(restaurant.cuisineTypes, locale);
           const showAseeriBadge = hasAseeriCuisine(restaurant.cuisineTypes);
+          const otherCuisineLabel = formatCuisineTypes(
+            restaurant.cuisineTypes?.filter((type) => type !== "aseeri_cuisine"),
+            locale,
+          );
 
           return (
             <button
@@ -109,15 +112,6 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   style={{ fontFamily: ara }}
                 >
                   {restaurant.name}
-                  {showAseeriBadge ? (
-                    <img
-                      src={ASEERI_CUISINE_NAME_BADGE}
-                      alt=""
-                      width={55}
-                      height={28}
-                      className="ms-2 inline-block h-7 w-[55px] shrink-0 align-middle object-contain [unicode-bidi:isolate]"
-                    />
-                  ) : null}
                 </h3>
 
                 <div className="flex w-full items-center justify-start gap-1.5">
@@ -130,17 +124,22 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   </span>
                 </div>
 
-                {cuisineLabel ? (
-                  <div className="flex w-full items-start justify-start gap-1 pb-1">
+                {showAseeriBadge || otherCuisineLabel ? (
+                  <div className="flex w-full flex-wrap items-center justify-start gap-2 pb-1">
                     <span className="mt-0.5 shrink-0">
                       <CardUtensilIcon />
                     </span>
-                    <span
-                      className="line-clamp-2 text-xs font-bold leading-[1.5] text-foreground"
-                      style={{ fontFamily: ibm }}
-                    >
-                      {cuisineLabel}
-                    </span>
+                    {showAseeriBadge ? (
+                      <AseeriCuisineBadge variant="card" />
+                    ) : null}
+                    {otherCuisineLabel ? (
+                      <span
+                        className="line-clamp-2 text-xs font-bold leading-[1.5] text-foreground"
+                        style={{ fontFamily: ibm }}
+                      >
+                        {otherCuisineLabel}
+                      </span>
+                    ) : null}
                   </div>
                 ) : null}
               </div>

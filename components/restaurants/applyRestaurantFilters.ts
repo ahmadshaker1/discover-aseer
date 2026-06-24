@@ -7,7 +7,6 @@ import type { Restaurant } from "./types";
 export interface RestaurantFilterState {
   city: string | null;
   cuisineTypes: string[];
-  onlyAseeriCuisine: boolean;
 }
 
 /** Fixed filter order — ids match CMS `cuisine_type` slugs. */
@@ -62,9 +61,6 @@ export function applyRestaurantFilters(
 ): Restaurant[] {
   return restaurants.filter((r) => {
     if (f.city && !restaurantMatchesCity(r, f.city)) return false;
-    if (f.onlyAseeriCuisine && !restaurantMatchesCuisine(r, "aseeri_cuisine")) {
-      return false;
-    }
     if (
       f.cuisineTypes.length > 0 &&
       !f.cuisineTypes.some((id) => restaurantMatchesCuisine(r, id))
