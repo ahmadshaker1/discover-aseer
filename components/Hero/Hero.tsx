@@ -10,21 +10,13 @@ import HeroSocialLinks, {
   heroSocialLinkClassDesktop,
   heroSocialLinkClassMobile,
 } from "@/components/Hero/HeroSocialLinks";
+import type { HeroSlide } from "@/components/Hero/types";
+
+export type { HeroSlide } from "@/components/Hero/types";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const AUTOPLAY_MS = 5000;
-
-export type HeroSlide = {
-  id: string;
-  image: string;
-  title: string;
-  subtitle: string;
-  cta: string;
-  href: string;
-  largeTitle: boolean;
-  logo?: string;
-};
 
 type HeroProps = {
   slides: HeroSlide[];

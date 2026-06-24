@@ -1,6 +1,7 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
 const PRIVACY_POLICY_PATH = "/items/privacy_policy" as const;
+const DEFAULT_DIRECTUS_BASE = "https://tool-portal.discoveraseer.com";
 
 export interface ApiPrivacyPolicy {
   privacy_policy?: string | null;
@@ -9,9 +10,11 @@ export interface ApiPrivacyPolicy {
   [key: string]: unknown;
 }
 
-function getDirectusBaseUrl(): string | null {
-  const url = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.trim();
-  return url ? url.replace(/\/$/, "") : null;
+function getDirectusBaseUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.trim().replace(/\/$/, "") ||
+    DEFAULT_DIRECTUS_BASE
+  );
 }
 
 /**
@@ -22,7 +25,6 @@ export async function fetchPrivacyPolicyHtml(
   locale: LocaleCode,
 ): Promise<string | null> {
   const directusUrl = getDirectusBaseUrl();
-  if (!directusUrl) return null;
 
   try {
     const response = await fetch(`${directusUrl}${PRIVACY_POLICY_PATH}`, {

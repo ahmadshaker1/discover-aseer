@@ -1,11 +1,13 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
-import type { HeroSlide } from "./Hero";
+import type { HeroSlide } from "./types";
 
 const BANNERS_PATH = "/items/banners" as const;
+const DEFAULT_DIRECTUS_BASE = "https://tool-portal.discoveraseer.com";
 
 export interface ApiBanner {
   id?: string | number;
   status?: string | null;
+  image?: string | null;
   title?: string | null;
   title_ar?: string | null;
   subtitle?: string | null;
@@ -40,8 +42,35 @@ const SLIDE_ASSETS: Pick<
 ];
 
 type HeroSlidesTranslator = (
-  key: "slide1.title" | "slide1.subtitle" | "slide1.cta" | "slide2.title" | "slide2.subtitle" | "slide2.cta",
+  key:
+    | "slide1.title"
+    | "slide1.subtitle"
+    | "slide1.cta"
+    | "slide2.title"
+    | "slide2.subtitle"
+    | "slide2.cta",
 ) => string;
+
+function getDirectusBaseUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.trim().replace(/\/$/, "") ||
+    DEFAULT_DIRECTUS_BASE
+  );
+}
+
+function resolveBannerImage(
+  image: string | null | undefined,
+  directusUrl: string,
+  fallback: string,
+): string {
+  const trimmed = (image || "").trim();
+  if (!trimmed) return fallback;
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("//")) {
+    return trimmed;
+  }
+  if (trimmed.startsWith("/")) return trimmed;
+  return `${directusUrl}/assets/${trimmed}`;
+}
 
 /** Static slide copy from `messages` — used when CMS banners are missing or fields are empty. */
 export function buildFallbackHeroSlides(t: HeroSlidesTranslator): HeroSlide[] {
@@ -61,18 +90,13 @@ export function buildFallbackHeroSlides(t: HeroSlidesTranslator): HeroSlide[] {
   ];
 }
 
-function getDirectusBaseUrl(): string | null {
-  const url = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.trim();
-  return url ? url.replace(/\/$/, "") : null;
-}
-
-async function fetchBannersFromCms(): Promise<ApiBanner[]> {
-  const directusUrl = getDirectusBaseUrl();
-  if (!directusUrl) return [];
-
+async function fetchBannersFromCms(directusUrl: string): Promise<ApiBanner[]> {
   try {
-    const response = await fetch(`${directusUrl}${BANNERS_PATH}`, {
-      next: { revalidate: 3600 },
+    const url = new URL(`${directusUrl}${BANNERS_PATH}`);
+    url.searchParams.set("filter[status][_eq]", "published");
+
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 300 },
     });
     if (!response.ok) return [];
 
@@ -91,6 +115,7 @@ function mergeBannerWithFallback(
   banner: ApiBanner,
   fallback: HeroSlide,
   locale: LocaleCode,
+  directusUrl: string,
 ): HeroSlide {
   const record = banner as Record<string, unknown>;
   const title = pickLocalizedField(record, "title", locale) || fallback.title;
@@ -99,10 +124,11 @@ function mergeBannerWithFallback(
   const cta =
     pickLocalizedField(record, "button_text", locale) || fallback.cta;
   const href = (banner.button_link || "").trim() || fallback.href;
+  const image = resolveBannerImage(banner.image, directusUrl, fallback.image);
 
   return {
     id: banner.id != null ? String(banner.id) : fallback.id,
-    image: fallback.image,
+    image,
     logo: fallback.logo,
     largeTitle: fallback.largeTitle,
     title,
@@ -119,12 +145,13 @@ export async function resolveHomeHeroSlides(
   locale: LocaleCode,
   fallbacks: HeroSlide[],
 ): Promise<HeroSlide[]> {
-  const banners = await fetchBannersFromCms();
+  const directusUrl = getDirectusBaseUrl();
+  const banners = await fetchBannersFromCms(directusUrl);
   if (banners.length === 0) return fallbacks;
 
   return banners.map((banner, index) => {
     const fallback =
       fallbacks[index] ?? fallbacks[fallbacks.length - 1] ?? fallbacks[0];
-    return mergeBannerWithFallback(banner, fallback, locale);
+    return mergeBannerWithFallback(banner, fallback, locale, directusUrl);
   });
 }
