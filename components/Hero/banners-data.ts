@@ -8,6 +8,8 @@ export interface ApiBanner {
   id?: string | number;
   status?: string | null;
   image?: string | null;
+  /** Optional overlay logo (e.g. World Region of Gastronomy badge). */
+  logo?: string | null;
   title?: string | null;
   title_ar?: string | null;
   subtitle?: string | null;
@@ -125,11 +127,15 @@ function mergeBannerWithFallback(
     pickLocalizedField(record, "button_text", locale) || fallback.cta;
   const href = (banner.button_link || "").trim() || fallback.href;
   const image = resolveBannerImage(banner.image, directusUrl, fallback.image);
+  const cmsLogo = (banner.logo || "").trim();
+  const logo = cmsLogo
+    ? resolveBannerImage(cmsLogo, directusUrl, "")
+    : undefined;
 
   return {
     id: banner.id != null ? String(banner.id) : fallback.id,
     image,
-    logo: fallback.logo,
+    logo,
     largeTitle: fallback.largeTitle,
     title,
     subtitle,
