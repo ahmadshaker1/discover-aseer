@@ -25,8 +25,8 @@ const DesktopActionLinks = () => {
   const handleBookletDownload = (e: React.MouseEvent) => {
     e.preventDefault();
     const link = document.createElement("a");
-    link.href = "/assets/booklet/bookletV1.pdf";
-    link.download = "bookletV1.pdf";
+    link.href = "/api/booklet";
+    link.download = "booklet";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

@@ -155,9 +155,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                             onClick={(e) => {
                               e.preventDefault();
                               const downloadLink = document.createElement("a");
-                              downloadLink.href =
-                                "/assets/booklet/bookletV1.pdf";
-                              downloadLink.download = "bookletV1.pdf";
+                              downloadLink.href = "/api/booklet";
+                              downloadLink.download = "booklet";
                               document.body.appendChild(downloadLink);
                               downloadLink.click();
                               document.body.removeChild(downloadLink);
