@@ -280,21 +280,21 @@ const Footer = () => {
                     <Image
                       src="/assets/footer/un-tourism1.1.png"
                       alt={t("footer.altUnTourism")}
-                      width={50}
+                      width={100}
                       height={34}
-                      className="h-[34px] w-[100px]"
+                      className="h-[34px] w-[100px] object-contain"
                     />
                     <Image
                       src="/assets/footer/GSTC2.png"
                       alt={t("footer.altGstc")}
-                      width={50}
+                      width={100}
                       height={34}
                       className="h-[34px] w-[100px] object-contain"
                     />
                     <Image
                       src="/assets/footer/PATA3.png"
                       alt={t("footer.altPata")}
-                      width={50}
+                      width={100}
                       height={34}
                       className="h-[34px] w-[100px] object-contain"
                     />
