@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -15,44 +15,29 @@ const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const AUTOPLAY_MS = 5000;
 
-type HeroSlideConfig = {
+export type HeroSlide = {
   id: string;
   image: string;
-  titleKey: "slide1.title" | "slide2.title";
-  subtitleKey: "slide1.subtitle" | "slide2.subtitle";
-  ctaKey: "slide1.cta" | "slide2.cta";
-  href: "/interactive-map" | "/aseer-cuisine";
+  title: string;
+  subtitle: string;
+  cta: string;
+  href: string;
   largeTitle: boolean;
   logo?: string;
 };
 
-const HERO_SLIDES: HeroSlideConfig[] = [
-  {
-    id: "aseer",
-    image: "/assets/landing/hero-slide-aseer.png",
-    titleKey: "slide1.title",
-    subtitleKey: "slide1.subtitle",
-    ctaKey: "slide1.cta",
-    href: "/interactive-map",
-    largeTitle: true,
-  },
-  {
-    id: "cuisine",
-    image: "/assets/landing/hero-slide-cuisine.png",
-    logo: "/assets/landing/hero-slide-cuisine-logo.png",
-    titleKey: "slide2.title",
-    subtitleKey: "slide2.subtitle",
-    ctaKey: "slide2.cta",
-    href: "/aseer-cuisine",
-    largeTitle: true,
-  },
-];
+type HeroProps = {
+  slides: HeroSlide[];
+};
 
 const CTA_CLASS =
   "inline-flex min-h-[44px] max-w-[260px] cursor-pointer items-center justify-center rounded-full border border-white/20 bg-gray-500/50 px-6 py-2 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:border-[#6027D2] hover:bg-[#6027D2] md:max-w-none";
 
-const Hero = () => {
-  const t = useTranslations("home.heroSlides");
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
+
+const Hero = ({ slides }: HeroProps) => {
   const locale = useLocale();
   const isLtr = locale === "en";
 
@@ -62,15 +47,15 @@ const Hero = () => {
         modules={[Autoplay]}
         className="hero-main-swiper h-[756px] w-full"
         dir={isLtr ? "ltr" : "rtl"}
-        loop={HERO_SLIDES.length > 1}
+        loop={slides.length > 1}
         speed={600}
         autoplay={
-          HERO_SLIDES.length > 1
+          slides.length > 1
             ? { delay: AUTOPLAY_MS, disableOnInteraction: false }
             : false
         }
       >
-        {HERO_SLIDES.map((slide, index) => (
+        {slides.map((slide, index) => (
           <SwiperSlide key={slide.id} className="relative h-[756px] w-full">
             <Image
               src={slide.image}
@@ -123,23 +108,34 @@ const Hero = () => {
                           }),
                     }}
                   >
-                    {t(slide.titleKey)}
+                    {slide.title}
                   </h1>
 
                   <p
                     className="w-full text-base leading-[1.33] text-white md:text-[clamp(18px,1.9vw,24px)]"
                     style={{ fontFamily: ara, fontWeight: 700 }}
                   >
-                    {t(slide.subtitleKey)}
+                    {slide.subtitle}
                   </p>
                 </div>
 
-                <Link
-                  href={slide.href}
-                  className={`${CTA_CLASS} mt-6 ${isLtr ? "mr-auto" : "ml-auto"}`}
-                >
-                  {t(slide.ctaKey)}
-                </Link>
+                {isExternalHref(slide.href) ? (
+                  <a
+                    href={slide.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${CTA_CLASS} mt-6 ${isLtr ? "mr-auto" : "ml-auto"}`}
+                  >
+                    {slide.cta}
+                  </a>
+                ) : (
+                  <Link
+                    href={slide.href}
+                    className={`${CTA_CLASS} mt-6 ${isLtr ? "mr-auto" : "ml-auto"}`}
+                  >
+                    {slide.cta}
+                  </Link>
+                )}
               </div>
             </div>
           </SwiperSlide>

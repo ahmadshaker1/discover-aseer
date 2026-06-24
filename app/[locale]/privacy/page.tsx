@@ -1,4 +1,6 @@
-import { Link } from "@/i18n/navigation";
+import SafeHtml from "@/components/common/SafeHtml";
+import { fetchPrivacyPolicyHtml } from "@/components/privacy/data";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
@@ -274,6 +276,53 @@ export default async function PrivacyPage({
   const { locale } = await params;
   const isArabic = locale === "ar";
   const data = isArabic ? privacyContent.ar : privacyContent.en;
+  const cmsHtml = await fetchPrivacyPolicyHtml(locale as LocaleCode);
+
+  if (cmsHtml) {
+    return (
+      <div className="min-h-screen bg-neutral-50 pb-20 text-neutral-800 dark:bg-neutral-950 dark:text-neutral-200">
+        <div className="relative overflow-hidden bg-[linear-gradient(359.31deg,#280048_43.01%,#3B016B_99.52%)] py-20 text-white md:py-28">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-white blur-3xl"></div>
+            <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-amber-500 blur-3xl"></div>
+          </div>
+          <div className="relative mx-auto max-w-[1440px] px-6 text-center md:px-12">
+            <h1 className="text-3xl font-extrabold tracking-tight md:text-5xl lg:text-6xl font-readex">
+              {data.title}
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-300 md:text-lg">
+              {data.subtitle}
+            </p>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-medium backdrop-blur-md text-white/80">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              {data.lastUpdated}
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-4xl px-6 pt-12 md:px-12">
+          <div
+            className="overflow-hidden rounded-3xl border border-white/20 bg-white p-6 shadow-xl dark:bg-neutral-900 md:p-10 text-[18px] leading-relaxed text-justify text-neutral-600 dark:text-neutral-300"
+            style={{ fontFamily: ibm }}
+          >
+            <SafeHtml html={cmsHtml} className="space-y-4" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-neutral-50 pb-20 text-neutral-800 dark:bg-neutral-950 dark:text-neutral-200">

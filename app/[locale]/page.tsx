@@ -1,5 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import Hero from "@/components/Hero/Hero";
+import HeroSection from "@/components/Hero/HeroSection";
 import LandingWelcomeSection from "@/components/landing/LandingWelcomeSection";
 import AttractionsLandmarksSection from "@/components/attractions/AttractionsLandmarksSection";
 import AseerExperiencesSection from "@/components/experiences/AseerExperiencesSection";
@@ -23,7 +23,7 @@ export default async function LocalizedHomePage() {
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
-      <Hero />
+      <HeroSection />
       <LandingWelcomeSection />
       <PointsOfInterest />
       <AttractionsLandmarksSection
