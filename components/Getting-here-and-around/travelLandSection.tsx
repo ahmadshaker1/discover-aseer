@@ -10,7 +10,7 @@ export default function TravelLandSection() {
         className="mt-12 h-[300px] w-full"
         style={{
           backgroundImage:
-            "linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0%, rgba(102, 102, 102, 0.25) 100%), url('/assets/Getting-here-and-around/b508a57eb99cf2e6f865588877b7c2da00e3ec1b.jpg')",
+            "linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0%, rgba(102, 102, 102, 0.25) 100%), url('/assets/Getting-here-and-around/landSectionImage.jpeg')",
           backgroundSize: "cover",
           backgroundPosition: "70% 65%",
           backgroundRepeat: "no-repeat",
@@ -205,15 +205,6 @@ export default function TravelLandSection() {
                 <h3 className="text-[28px] font-bold text-white">
                   {t("saptcoTitle")}
                 </h3>
-                <div className="text-white">
-                  <Image
-                    src="/assets/Getting-here-and-around/sapitco.png"
-                    alt={t("saptcoAlt") || "Saptco"}
-                    width={70}
-                    height={40}
-                    className="object-contain brightness-0 invert"
-                  />
-                </div>
               </div>
               <p
                 className={`mb-8 text-[16px] leading-[1.8] text-white/90 text-start`}
@@ -231,25 +222,6 @@ export default function TravelLandSection() {
               >
                 {t("bookOnWebsite")}
               </a>
-              <div className="flex items-center gap-3">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.sat.passenger&hl=ar&pli=1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 text-[16px] font-bold text-white transition hover:bg-white/20"
-                >
-                  Android
-                </a>
-
-                <a
-                  href="https://apps.apple.com/us/app/saptco/id1074204412"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 text-[16px] font-bold text-white transition hover:bg-white/20"
-                >
-                  iPhone
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -319,96 +291,76 @@ export default function TravelLandSection() {
             {/* شبكة كروت التطبيقات */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {/* كرت أوبر */}
-              <div
-                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+              <a
+                href={t("uberLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 style={{
                   backgroundImage:
                     "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/Uber.png')",
                 }}
               >
-                <div className="mt-4 text-center">
+                <div className="text-center absolute top-7">
                   <p className="text-[20px] font-bold text-white leading-tight">
                     {t("uber")}
                   </p>
                 </div>
-                <a
-                  href={t("uberLink")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
-                >
-                  {t("visitWebsite")}
-                </a>
-              </div>
+              </a>
 
               {/* كرت كريم */}
-              <div
-                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+              <a
+                href={t("careemLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 style={{
                   backgroundImage:
                     "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/careem.jpg')",
                 }}
               >
-                <div className="mt-4 text-center">
+                <div className="text-center absolute top-7">
                   <p className="text-[20px] font-bold text-white leading-tight">
                     {t("careem")}
                   </p>
                 </div>
-                <a
-                  href={t("careemLink")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
-                >
-                  {t("visitWebsite")}
-                </a>
-              </div>
+              </a>
 
               {/* كرت بولت */}
-              <div
-                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+              <a
+                href={t("boltLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 style={{
                   backgroundImage:
                     "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/bolt.png')",
                 }}
               >
-                <div className="mt-4 text-center">
+                <div className="text-center absolute top-7">
                   <p className="text-[20px] font-bold text-white leading-tight">
                     {t("bolt")}
                   </p>
                 </div>
-                <a
-                  href={t("boltLink")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
-                >
-                  {t("visitWebsite")}
-                </a>
-              </div>
+              </a>
 
               {/* كرت جيني */}
-              <div
-                className="group relative flex flex-col items-center justify-between rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:shadow-md"
+              <a
+                href={t("jeenyLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
                 style={{
                   backgroundImage:
                     "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/jeeny.png')",
                 }}
               >
-                <div className="mt-4 text-center">
+                <div className="text-center absolute top-7">
                   <p className="text-[20px] font-bold text-white leading-tight">
                     {t("jeeny")}
                   </p>
                 </div>
-                <a
-                  href={t("jeenyLink")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 px-4 py-2 text-[16px] font-bold text-white transition hover:bg-white/35"
-                >
-                  {t("visitWebsite")}
-                </a>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -433,83 +385,23 @@ export default function TravelLandSection() {
 
         {/* كرت ذيب  */}
         <div className="mb-16 flex justify-start">
-          <div className="relative flex w-full flex-col rounded-4xl bg-surface p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-transform hover:-translate-y-1 md:w-[350px]">
-            <div className="text-start">
-              <div className="mb-6 flex items-center justify-start gap-3">
-                <h3 className="text-[24px] font-bold text-secondary">
-                  {t("theebTitle")}
-                </h3>
-                <Image
-                  src="/assets/Getting-here-and-around/Theeb.webp"
-                  alt="Theeb"
-                  width={80}
-                  height={32}
-                  className="object-contain"
-                />
-              </div>
-
-              {/* رقم الجوال */}
-              <div
-                className={`mb-4 flex items-center gap-3 text-[16px] font-medium text-foreground justify-start`}
-              >
-                <svg
-                  className="h-5 w-5 text-secondary"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-                <span dir="ltr">+966 9200000890</span>
-              </div>
-
-              {/* الموقع الإلكتروني */}
-              <a
-                href={t("theebLink")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`mb-8 flex w-fit items-center gap-3 text-[16px] font-bold text-secondary justify-start hover:underline`}
-              >
-                <svg
-                  className="h-5 w-5 text-secondary"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                  <path d="M2 12h20" />
-                </svg>
-                <span>theebonline.com</span>
-              </a>
-
-              {/* رابط التحميل */}
-              <div className="flex items-center gap-2">
-                <a
-                  href="https://play.google.com/store/search?q=theeb&c=apps"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-muted dark:bg-white/10 px-4 py-2 text-[16px] font-bold text-primary dark:text-white transition hover:opacity-90"
-                >
-                  Android
-                </a>
-                <a
-                  href="https://apps.apple.com/us/app/theeb-%D8%B0%D9%8A%D8%A8-%D9%84%D8%AA%D8%A3%D8%AC%D9%8A%D8%B1-%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA/id1417199904"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center rounded-xl bg-muted dark:bg-white/10 px-4 py-2 text-[16px] font-bold text-primary dark:text-white transition hover:opacity-90"
-                >
-                  iPhone
-                </a>
-              </div>
-            </div>
-          </div>
+          <a
+            href={t("theebLink")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative flex h-[250px] w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-1 hover:shadow-lg md:w-[350px]"
+          >
+            <div
+              className="absolute inset-0 bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105"
+              style={{
+                backgroundImage:
+                  "url('/assets/Getting-here-and-around/Theeb.webp')",
+                backgroundSize: "contain",
+                margin: "2rem",
+              }}
+            />
+            <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5" />
+          </a>
         </div>
 
         {/* ================= قسم انظر أيضًا ================= */}

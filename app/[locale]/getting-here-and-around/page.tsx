@@ -22,9 +22,6 @@ export default async function GettingHereAndAround() {
       <GettingHereAndAroundBanner />
       <TravelSection />
       <TravelLandSection />
-      <MapSection />
-      <ExperiencesSection experiences={experiences} />
-      <AttractionsSection attractions={attractions} />
     </div>
   );
 }

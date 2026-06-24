@@ -5,7 +5,7 @@ export default async function GettingHereAndAroundBanner() {
   const t = await getTranslations("gettingHere.banner");
 
   return (
-    <section className="relative w-full min-h-[420px] h-[60vh] max-h-[720px] overflow-hidden">
+    <section className="relative w-full min-h-[420px] h-[100vh] overflow-hidden">
       <Image
         src="/assets/Getting-here-and-around/hero.JPG"
         alt="Getting Here and Around"

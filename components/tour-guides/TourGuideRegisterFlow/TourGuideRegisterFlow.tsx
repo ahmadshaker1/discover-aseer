@@ -18,15 +18,7 @@ const TourGuideRegisterFlow = () => {
 
   return (
     <>
-      <TourGuideRegisterHero
-        bottomSlot={
-          <TourGuideRegisterProgress
-            completedCount={completedCount}
-            totalCount={TOTAL_TRACKED_FIELDS}
-            currentStep={1}
-          />
-        }
-      />
+      <TourGuideRegisterHero />
       <div className="w-full px-4 pb-24 pt-10 sm:px-6 sm:pb-28 sm:pt-12 md:px-10 lg:px-8 lg:pb-32 lg:pt-14">
         <TourGuideRegisterStepOneForm onCompletionChange={onCompletionChange} />
       </div>
