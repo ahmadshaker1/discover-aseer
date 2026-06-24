@@ -1080,6 +1080,33 @@
       "close": "Close"
     }
   },
+  "contactUs": {
+    "metaTitle": "Contact us | Discover Aseer",
+    "metaDescription": "Get in touch with the Discover Aseer team.",
+    "back": "Back",
+    "breadcrumbLabel": "Breadcrumb",
+    "home": "Home",
+    "breadcrumb": "Contact us",
+    "title": "Contact us",
+    "formSubtitle": "Send us your request and our team will get back to you as soon as possible.",
+    "form": {
+      "sectionTitle": "Your details",
+      "name": "Name",
+      "phone": "Phone number",
+      "phoneHint": "Include country code if outside Saudi Arabia.",
+      "email": "Email",
+      "fromAseer": "Are you from Aseer?",
+      "description": "Your request or message",
+      "submit": "Submit",
+      "success": "Thank you — your message was received.",
+      "errorRequired": "Please complete all required fields.",
+      "formActionsAria": "Form actions",
+      "fromAseerOptions": {
+        "yes": "Yes",
+        "no": "No"
+      }
+    }
+  },
   "filmmakerForm": {
     "metaTitle": "Filmmaker form | Discover Aseer",
     "metaDescription": "Contact the Discover Aseer film team with your details and message.",

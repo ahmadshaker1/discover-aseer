@@ -234,7 +234,7 @@ const Footer = () => {
                   {t("footer.contactTitle")}
                 </h3>
                 <Link
-                  href="/services-support"
+                  href="/contact-us"
                   className="block w-full text-start text-[18px] font-bold leading-[197%] hover:opacity-80"
                   style={{ fontFamily: ara }}
                 >

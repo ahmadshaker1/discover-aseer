@@ -6,6 +6,8 @@ import {
   Field,
   Input,
   Label,
+  Radio,
+  RadioGroup,
   Select,
   Textarea,
 } from "@headlessui/react";
@@ -304,6 +306,68 @@ export function FormCheckboxField({
       >
         {children}
       </Label>
+    </Field>
+  );
+}
+
+type FormYesNoFieldProps = {
+  label: string;
+  required?: boolean;
+  value: boolean | null;
+  onChange: (value: boolean) => void;
+  yesLabel: string;
+  noLabel: string;
+};
+
+const RADIO_OPTION =
+  "group flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-background px-4 py-3 transition-colors data-checked:border-primary data-checked:bg-primary/5 data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2";
+
+export function FormYesNoField({
+  label,
+  required,
+  value,
+  onChange,
+  yesLabel,
+  noLabel,
+}: FormYesNoFieldProps) {
+  return (
+    <Field className={FIELD_GROUP}>
+      <Label
+        className="text-base font-bold text-foreground"
+        style={{ fontFamily: araBold }}
+      >
+        {label}
+        {required ? <RequiredMark /> : null}
+      </Label>
+      <RadioGroup
+        value={value ?? undefined}
+        onChange={onChange}
+        className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+        aria-required={required}
+      >
+        <Radio value={true} className={RADIO_OPTION}>
+          <span
+            className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-border bg-surface group-data-checked:border-primary"
+            aria-hidden
+          >
+            <span className="h-2 w-2 rounded-full bg-primary opacity-0 group-data-checked:opacity-100" />
+          </span>
+          <span className="text-base text-foreground" style={{ fontFamily: ibm }}>
+            {yesLabel}
+          </span>
+        </Radio>
+        <Radio value={false} className={RADIO_OPTION}>
+          <span
+            className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-border bg-surface group-data-checked:border-primary"
+            aria-hidden
+          >
+            <span className="h-2 w-2 rounded-full bg-primary opacity-0 group-data-checked:opacity-100" />
+          </span>
+          <span className="text-base text-foreground" style={{ fontFamily: ibm }}>
+            {noLabel}
+          </span>
+        </Radio>
+      </RadioGroup>
     </Field>
   );
 }
