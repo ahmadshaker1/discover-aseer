@@ -46,11 +46,13 @@ export interface ApiLandmark {
   content?: string | null;
   content_ar?: string | null;
   content_home_page_card_content?: string | null;
+  content_home_page_card_content_ar?: string | null;
   cover_image?: string | null;
   hero_image?: string | null;
   hero_image_new?: string | null;
   destination_image?: string | null;
   city?: string | null;
+  city_ar?: string | null;
   traveller_types?: string[] | null;
   tags?: string | null;
   type?: string | null;
@@ -59,6 +61,7 @@ export interface ApiLandmark {
   interest_tags?: string[] | null;
   slug?: string | null;
   sub_title?: string | null;
+  sub_title_ar?: string | null;
   latitude?: number | string | null;
   longitude?: number | string | null;
   map_link?: string | null;
@@ -234,12 +237,20 @@ export const transformLandmark = (
     "/assets/experiences/experiences.png";
 
   const title = pickTitle(apiLandmark, locale);
-  const city = (apiLandmark.city || "").trim();
+  const record = toLocalizedRecord(apiLandmark);
+  const city =
+    pickLocalizedField(record, "city", locale) ||
+    (apiLandmark.city || "").trim();
   const location =
     apiLandmark.location?.trim() || apiLandmark.address?.trim() || city;
   const contentHtml = pickContentHtml(apiLandmark, locale);
-  const cardHtml = (apiLandmark.content_home_page_card_content || "").trim();
+  const cardHtml =
+    pickLocalizedField(record, "content_home_page_card_content", locale) ||
+    (apiLandmark.content_home_page_card_content || "").trim();
   const description = cardHtml || contentHtml;
+  const subtitle =
+    pickLocalizedField(record, "sub_title", locale) ||
+    (apiLandmark.sub_title || "").trim();
 
   let guideName = "";
   if (description) {
@@ -334,7 +345,7 @@ export const transformLandmark = (
     id: String(apiLandmark.id),
     slug: resolveLandmarkSlug(apiLandmark),
     title,
-    subtitle: (apiLandmark.sub_title || "").trim(),
+    subtitle,
     location,
     area,
     city,
