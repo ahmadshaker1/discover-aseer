@@ -23,6 +23,7 @@ export interface ApiExperience {
   price: number | string | null;
   booking_link: string | null;
   target_audience: string | null;
+  status?: string | null;
   [key: string]: unknown;
 }
 
@@ -56,6 +57,16 @@ const DEFAULT_IMAGE = "/assets/experiences/experiences.png";
 
 /** CMS `type` value for cooking experiences (Aseer cuisine page). */
 export const COOKING_EXPERIENCE_TYPE = "فن الطهي";
+
+function isPublishedExperience(api: ApiExperience): boolean {
+  return api.status === "published";
+}
+
+function buildExperiencesListUrl(directusUrl: string): string {
+  const url = new URL(`${directusUrl.replace(/\/$/, "")}/items/experiences`);
+  url.searchParams.set("filter[status][_eq]", "published");
+  return url.toString();
+}
 
 const EMPTY_FETCH_RESULT: FetchExperiencesResult = {
   experiences: [],
@@ -383,13 +394,18 @@ export async function fetchExperienceById(
 
 
   try {
-    const res = await fetch(`${directusUrl}/items/experiences/${encodeURIComponent(trimmed)}`, {
+    const listUrl = new URL(`${directusUrl}/items/experiences`);
+    listUrl.searchParams.set("filter[id][_eq]", trimmed);
+    listUrl.searchParams.set("filter[status][_eq]", "published");
+    listUrl.searchParams.set("limit", "1");
+
+    const res = await fetch(listUrl.toString(), {
       next: { revalidate: 3600 },
     });
     if (res.ok) {
-      const json: { data?: ApiExperience } = await res.json();
-      const item = json.data;
-      if (item && item.id != null) {
+      const json: ExperiencesApiResponse = await res.json();
+      const item = json.data[0];
+      if (item && item.id != null && isPublishedExperience(item)) {
         return transformExperience(item, locale);
       }
     }
@@ -423,7 +439,7 @@ export async function fetchExperiences(
   }
 
   try {
-    const response = await fetch(`${directusUrl}/items/experiences`, {
+    const response = await fetch(buildExperiencesListUrl(directusUrl), {
       next: { revalidate: 3600 },
     });
 
@@ -434,12 +450,13 @@ export async function fetchExperiences(
     const apiData: ExperiencesApiResponse = await response.json();
     const locale = options?.locale ?? "ar";
     const typeFilter = options?.type?.trim();
+    const publishedRows = apiData.data.filter(isPublishedExperience);
     const rows = typeFilter
-      ? apiData.data.filter((row) => matchesExperienceType(row, typeFilter))
-      : apiData.data;
+      ? publishedRows.filter((row) => matchesExperienceType(row, typeFilter))
+      : publishedRows;
 
     const experiences = rows.map((row) => transformExperience(row, locale));
-    const filterOptions = buildFilterOptions(apiData.data, locale);
+    const filterOptions = buildFilterOptions(publishedRows, locale);
     return { experiences, filterOptions };
   } catch (error) {
     console.error("Error fetching experiences:", error);
