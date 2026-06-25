@@ -8,6 +8,7 @@ import {
   getTourGuideSession,
   getValidAccessToken,
   logoutTourGuide,
+  syncTourGuideSession,
   type DirectusAuthSession,
 } from "@/lib/directus/tourGuideAuth";
 import { fetchMyTourGuideProfile } from "@/lib/directus/tourGuideProfile";
@@ -28,6 +29,10 @@ const TourGuidePortalFlow = () => {
       setSession(null);
       setProfile(null);
       return;
+    }
+    const synced = await syncTourGuideSession();
+    if (synced) {
+      setSession(synced);
     }
     const item = await fetchMyTourGuideProfile();
     setProfile(item);
@@ -122,7 +127,11 @@ const TourGuidePortalFlow = () => {
               </p>
             )}
 
-            <TourGuidePortalProfileForm profile={profile} onSaved={onSaved} />
+            <TourGuidePortalProfileForm
+              profile={profile}
+              accountEmail={session.user.email ?? ""}
+              onSaved={onSaved}
+            />
           </div>
         )}
       </div>

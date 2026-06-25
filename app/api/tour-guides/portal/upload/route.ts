@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import {
-  directusFetchCurrentUser,
   directusUploadFile,
   getBearerToken,
   getDirectusServerUrl,
@@ -20,13 +19,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
-  try {
-    await directusFetchCurrentUser(baseUrl, accessToken);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unauthorized.";
-    return NextResponse.json({ error: message }, { status: 401 });
-  }
-
   let formData: FormData;
   try {
     formData = await request.formData();
@@ -40,7 +32,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const id = await directusUploadFile(baseUrl, accessToken, file);
+    const id = await directusUploadFile(baseUrl, file);
     return NextResponse.json({ data: { id } });
   } catch (error) {
     const message =

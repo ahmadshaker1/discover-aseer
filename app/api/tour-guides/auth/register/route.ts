@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     }
 
     const b = body as Record<string, unknown>;
-    const email = String(b.email ?? "").trim();
+    const email = String(b.email ?? "").trim().toLowerCase();
     const password = String(b.password ?? "");
     const first_name = String(b.first_name ?? "").trim();
     const last_name = String(b.last_name ?? "").trim();
@@ -38,18 +38,28 @@ export async function POST(request: Request) {
       );
     }
 
-    const session = await directusRegister(baseUrl, {
+    const result = await directusRegister(baseUrl, {
       email,
       password,
       first_name,
       last_name,
     });
 
+    if (result.kind === "registered") {
+      return NextResponse.json({
+        registered: true,
+        message: result.message,
+      });
+    }
+
     return NextResponse.json({
-      access_token: session.access_token,
-      refresh_token: session.refresh_token,
-      expires: session.expires,
-      user: session.user,
+      access_token: result.access_token,
+      refresh_token: result.refresh_token,
+      expires: result.expires,
+      user: {
+        ...result.user,
+        email: result.user.email ?? email,
+      },
     });
   } catch (error) {
     const message =

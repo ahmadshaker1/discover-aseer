@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type { DirectusUser } from "@/lib/directus/types";
 import {
   directusCreateGuideProfile,
   directusFetchCurrentUser,
@@ -27,8 +28,13 @@ async function requireAuth(request: Request) {
   }
 
   try {
-    const user = await directusFetchCurrentUser(baseUrl, accessToken);
-    return { baseUrl, accessToken, user };
+    const knownEmail = request.headers.get("x-account-email")?.trim().toLowerCase();
+    const user = await directusFetchCurrentUser(
+      baseUrl,
+      accessToken,
+      knownEmail || undefined,
+    );
+    return { baseUrl, user, accessToken };
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Unauthorized.";
@@ -42,17 +48,17 @@ export async function GET(request: Request) {
   const auth = await requireAuth(request);
   if ("error" in auth && auth.error) return auth.error;
 
-  const { baseUrl, accessToken, user } = auth as {
+  const { baseUrl, user, accessToken } = auth as {
     baseUrl: string;
+    user: DirectusUser;
     accessToken: string;
-    user: { id: string };
   };
 
   try {
     const profile = await directusFetchMyGuideProfile(
       baseUrl,
+      user,
       accessToken,
-      user.id,
     );
     return NextResponse.json({ data: profile });
   } catch (error) {
@@ -66,8 +72,9 @@ export async function POST(request: Request) {
   const auth = await requireAuth(request);
   if ("error" in auth && auth.error) return auth.error;
 
-  const { baseUrl, accessToken } = auth as {
+  const { baseUrl, user, accessToken } = auth as {
     baseUrl: string;
+    user: DirectusUser;
     accessToken: string;
   };
 
@@ -85,8 +92,9 @@ export async function POST(request: Request) {
   try {
     const data = await directusCreateGuideProfile(
       baseUrl,
-      accessToken,
+      user,
       body as Record<string, unknown>,
+      accessToken,
     );
     return NextResponse.json({ data });
   } catch (error) {
@@ -100,10 +108,10 @@ export async function PATCH(request: Request) {
   const auth = await requireAuth(request);
   if ("error" in auth && auth.error) return auth.error;
 
-  const { baseUrl, accessToken, user } = auth as {
+  const { baseUrl, user, accessToken } = auth as {
     baseUrl: string;
+    user: DirectusUser;
     accessToken: string;
-    user: { id: string };
   };
 
   let body: unknown;
@@ -125,10 +133,10 @@ export async function PATCH(request: Request) {
   try {
     const data = await directusUpdateGuideProfile(
       baseUrl,
-      accessToken,
       id,
-      user.id,
+      user,
       payload,
+      accessToken,
     );
     return NextResponse.json({ data });
   } catch (error) {

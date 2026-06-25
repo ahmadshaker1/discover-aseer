@@ -36,6 +36,8 @@ export interface ApiTouristGuide {
   commitment_3?: boolean | null;
   /** `draft` until an admin publishes; `published` items appear on the public listing. */
   status?: string | null;
+  /** M2O → directus_users; links portal profile to signed-in account. */
+  account?: string | { id: string } | null;
   user_created?: string | null;
   [key: string]: unknown;
 }

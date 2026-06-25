@@ -18,7 +18,13 @@ interface SessionResponse {
   expires?: number;
   user?: DirectusUser;
   error?: string;
+  registered?: boolean;
+  message?: string;
 }
+
+export type RegisterTourGuideResult =
+  | { kind: "session"; session: DirectusAuthSession }
+  | { kind: "registered"; message: string };
 
 function readStoredSession(): DirectusAuthSession | null {
   if (typeof window === "undefined") return null;
@@ -44,15 +50,25 @@ function storeSession(session: DirectusAuthSession | null) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
 }
 
-function buildSession(data: SessionResponse): DirectusAuthSession {
+function buildSession(
+  data: SessionResponse,
+  fallbackEmail?: string,
+): DirectusAuthSession {
   if (!data.access_token || !data.refresh_token || !data.user?.id) {
     throw new Error("Invalid session response.");
   }
+  const email =
+    data.user.email?.trim().toLowerCase() ||
+    fallbackEmail?.trim().toLowerCase() ||
+    null;
   return {
     access_token: data.access_token,
     refresh_token: data.refresh_token,
     expires: Date.now() + (data.expires ?? 900_000),
-    user: data.user,
+    user: {
+      ...data.user,
+      email,
+    },
   };
 }
 
@@ -89,7 +105,7 @@ export async function loginTourGuide(
   }
 
   const data = (await response.json()) as SessionResponse;
-  const session = buildSession(data);
+  const session = buildSession(data, email);
   storeSession(session);
   return session;
 }
@@ -99,12 +115,12 @@ export async function registerTourGuide(input: {
   password: string;
   first_name: string;
   last_name: string;
-}): Promise<DirectusAuthSession> {
+}): Promise<RegisterTourGuideResult> {
   const response = await fetch("/api/tour-guides/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: input.email.trim(),
+      email: input.email.trim().toLowerCase(),
       password: input.password,
       first_name: input.first_name.trim(),
       last_name: input.last_name.trim(),
@@ -116,9 +132,17 @@ export async function registerTourGuide(input: {
   }
 
   const data = (await response.json()) as SessionResponse;
-  const session = buildSession(data);
+
+  if (data.registered) {
+    return {
+      kind: "registered",
+      message: data.message ?? "Account created. Please sign in.",
+    };
+  }
+
+  const session = buildSession(data, input.email);
   storeSession(session);
-  return session;
+  return { kind: "session", session };
 }
 
 export async function refreshTourGuideSession(
@@ -136,7 +160,44 @@ export async function refreshTourGuideSession(
   }
 
   const data = (await response.json()) as SessionResponse;
-  const next = buildSession(data);
+  const next = buildSession(data, session.user.email ?? undefined);
+  storeSession(next);
+  return next;
+}
+
+/** Refresh user fields (e.g. email) from the server into the stored session. */
+export async function syncTourGuideSession(): Promise<DirectusAuthSession | null> {
+  const session = readStoredSession();
+  if (!session) return null;
+
+  const token = await getValidAccessToken();
+  if (!token) return null;
+
+  const response = await fetch("/api/tour-guides/auth/me", {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    return session;
+  }
+
+  const body = (await response.json()) as { user?: DirectusUser };
+  if (!body.user?.id) {
+    return session;
+  }
+
+  const next: DirectusAuthSession = {
+    ...session,
+    user: {
+      ...session.user,
+      ...body.user,
+      email:
+        body.user.email?.trim().toLowerCase() ||
+        session.user.email?.trim().toLowerCase() ||
+        null,
+    },
+  };
   storeSession(next);
   return next;
 }
@@ -170,5 +231,10 @@ export async function portalFetch(
 ): Promise<Response> {
   const headers = new Headers(init?.headers);
   headers.set("Authorization", `Bearer ${accessToken}`);
+  const session = readStoredSession();
+  const accountEmail = session?.user.email?.trim().toLowerCase();
+  if (accountEmail) {
+    headers.set("X-Account-Email", accountEmail);
+  }
   return fetch(path, { ...init, headers });
 }

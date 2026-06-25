@@ -18,7 +18,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
     }
 
-    const email = String((body as { email?: string })?.email ?? "").trim();
+    const email = String((body as { email?: string })?.email ?? "")
+      .trim()
+      .toLowerCase();
     const password = String((body as { password?: string })?.password ?? "");
 
     if (!email || !password) {
@@ -33,7 +35,10 @@ export async function POST(request: Request) {
       access_token: session.access_token,
       refresh_token: session.refresh_token,
       expires: session.expires,
-      user: session.user,
+      user: {
+        ...session.user,
+        email: session.user.email ?? email,
+      },
     });
   } catch (error) {
     const message =

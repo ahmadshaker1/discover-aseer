@@ -657,7 +657,27 @@
       "saving": "Saving…",
       "savedDraft": "Profile saved as draft. An administrator will review and publish it.",
       "sessionExpired": "Your session expired. Please sign in again.",
-      "errorGeneric": "Could not save your profile. Please try again."
+      "errorGeneric": "Could not save your profile. Please try again.",
+      "missingTitle": "Still required before you can save:",
+      "missing": {
+        "nameAr": "Arabic name",
+        "nameEn": "English name",
+        "gender": "Gender",
+        "nationalId": "National ID",
+        "profilePhoto": "Profile photo (choose a file to upload)",
+        "licenseNumber": "License number",
+        "licenseExpiry": "License expiry date",
+        "licenseAttachment": "License attachment (choose a file to upload)",
+        "arabicLanguage": "Arabic language level",
+        "englishLanguage": "English language level",
+        "transportation": "Transportation availability",
+        "specialization": "Specialization",
+        "email": "Email (sign in with an account that has an email)",
+        "mobile": "Mobile number",
+        "commitment1": "First declaration checkbox",
+        "commitment2": "Second declaration checkbox",
+        "commitment3": "Third declaration checkbox"
+      }
     }
   },
   "aseerCommunity": {

@@ -57,28 +57,42 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
   const [lastName, setLastName] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const switchMode = (next: AuthMode) => {
     setMode(next);
     setError("");
+    setSuccessMessage("");
   };
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setSubmitting(true);
     setError("");
+    setSuccessMessage("");
 
     try {
-      const session =
-        mode === "login"
-          ? await loginTourGuide(email, password)
-          : await registerTourGuide({
-              email,
-              password,
-              first_name: firstName,
-              last_name: lastName,
-            });
-      onAuthenticated(session);
+      if (mode === "login") {
+        const session = await loginTourGuide(email, password);
+        onAuthenticated(session);
+        return;
+      }
+
+      const result = await registerTourGuide({
+        email,
+        password,
+        first_name: firstName,
+        last_name: lastName,
+      });
+
+      if (result.kind === "session") {
+        onAuthenticated(result.session);
+        return;
+      }
+
+      setSuccessMessage(result.message);
+      setMode("login");
+      setPassword("");
     } catch (err) {
       setError(err instanceof Error ? err.message : t("errorGeneric"));
     } finally {
@@ -175,6 +189,16 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
             role="alert"
           >
             {error}
+          </p>
+        ) : null}
+
+        {successMessage ? (
+          <p
+            className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 text-start"
+            style={{ fontFamily: ibm }}
+            role="status"
+          >
+            {successMessage}
           </p>
         ) : null}
 
