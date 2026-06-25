@@ -148,7 +148,7 @@ export function FormSelectField({
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={FIELD_INPUT}
+        className={`${FIELD_INPUT} cursor-pointer`}
         style={{ fontFamily: ibm }}
       >
         <option value="">{placeholder}</option>

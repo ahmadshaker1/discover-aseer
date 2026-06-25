@@ -34,6 +34,9 @@ export interface ApiTouristGuide {
   commitment_1?: boolean | null;
   commitment_2?: boolean | null;
   commitment_3?: boolean | null;
+  /** `draft` until an admin publishes; `published` items appear on the public listing. */
+  status?: string | null;
+  user_created?: string | null;
   [key: string]: unknown;
 }
 

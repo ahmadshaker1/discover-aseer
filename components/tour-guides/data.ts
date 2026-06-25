@@ -376,9 +376,10 @@ export async function fetchTourGuides(
 
   try {
     // TODO(backend): Confirm collection slug and query params (?fields=*, etc.) with the API owner.
-    const response = await fetch(`${directusUrl}/items/tourist_guides`, {
-      next: { revalidate: 3600 },
-    });
+    const response = await fetch(
+      `${directusUrl}/items/tourist_guides?filter[status][_eq]=published`,
+      { next: { revalidate: 3600 } },
+    );
 
     if (!response.ok) {
       throw new Error(

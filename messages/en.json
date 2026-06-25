@@ -618,6 +618,48 @@
       }
     }
   },
+  "tourGuidePortal": {
+    "title": "Tour guide portal",
+    "subtitle": "Sign in to create or update your guide profile. Changes are saved as draft until reviewed and published by our team.",
+    "metaTitle": "Tour guide portal | Discover Aseer",
+    "metaDescription": "Sign in or register as a tour guide and manage your profile on Discover Aseer.",
+    "breadcrumbLabel": "Breadcrumb",
+    "home": "Home",
+    "tourGuides": "Tour guides",
+    "back": "Back",
+    "loading": "Loading…",
+    "signedInAs": "Signed in as {email}",
+    "logout": "Sign out",
+    "auth": {
+      "loginTitle": "Sign in",
+      "registerTitle": "Create account",
+      "loginSubtitle": "Use your Directus account to manage your guide profile.",
+      "registerSubtitle": "Create an account to submit and update your guide profile.",
+      "tabLogin": "Sign in",
+      "tabRegister": "Register",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "loginButton": "Sign in",
+      "registerButton": "Create account",
+      "submitting": "Please wait…",
+      "errorGeneric": "Something went wrong. Please try again.",
+      "modeSwitcherAria": "Sign in or register",
+      "passwordHint": "At least 8 characters"
+    },
+    "profile": {
+      "createHint": "Complete the form below to submit your guide profile for review.",
+      "statusDraft": "Your profile is in draft. It will not appear on the public listing until an administrator publishes it.",
+      "statusPublished": "Your profile is published and visible on the tour guides page. Saving changes will move it back to draft for review.",
+      "currentFileKept": "Current file on record — upload only if you want to replace it.",
+      "saveDraft": "Save profile (draft)",
+      "saving": "Saving…",
+      "savedDraft": "Profile saved as draft. An administrator will review and publish it.",
+      "sessionExpired": "Your session expired. Please sign in again.",
+      "errorGeneric": "Could not save your profile. Please try again."
+    }
+  },
   "aseerCommunity": {
     "title": "Aseer community",
     "subtitle": "Values of genuine nobility, exceptional hospitality, and authentic courage welcome you in Aseer",
