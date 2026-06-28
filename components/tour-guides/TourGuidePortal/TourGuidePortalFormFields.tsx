@@ -6,7 +6,10 @@ import {
   Field,
   Input,
   Label,
-  Select,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
   Textarea,
 } from "@headlessui/react";
 import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
@@ -128,6 +131,23 @@ type FormSelectFieldProps = {
   options: SelectOption[];
 };
 
+function SelectChevron() {
+  return (
+    <svg
+      className="h-4 w-4 shrink-0 text-muted-foreground"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path
+        fillRule="evenodd"
+        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 export function FormSelectField({
   id,
   label,
@@ -137,6 +157,9 @@ export function FormSelectField({
   onChange,
   options,
 }: FormSelectFieldProps) {
+  const selectedLabel =
+    options.find((option) => option.value === value)?.label ?? placeholder;
+
   return (
     <Field className={FIELD_GROUP}>
       <Label
@@ -147,20 +170,49 @@ export function FormSelectField({
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
-      <Select
-        id={id}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`${FIELD_CONTROL} cursor-pointer`}
-        style={{ fontFamily: ibm }}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </Select>
+      <Listbox value={value} onChange={onChange}>
+        <div className="relative">
+          <ListboxButton
+            id={id}
+            aria-required={required}
+            className={`${FIELD_CONTROL} flex cursor-pointer items-center justify-between gap-2`}
+            style={{ fontFamily: ibm }}
+          >
+            <span
+              className={`min-w-0 truncate text-start ${
+                value ? "text-foreground" : "text-muted-foreground"
+              }`}
+            >
+              {selectedLabel}
+            </span>
+            <SelectChevron />
+          </ListboxButton>
+          <ListboxOptions
+            anchor="bottom start"
+            transition
+            modal={false}
+            className="z-50 max-h-56 w-(--button-width) overflow-auto rounded-lg border border-border bg-background py-1 shadow-lg [--anchor-gap:4px] transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0 data-[anchor~=end]:origin-top-end"
+          >
+            <ListboxOption
+              value=""
+              className="cursor-pointer px-4 py-2.5 text-muted-foreground data-focus:bg-muted data-selected:bg-primary/10"
+              style={{ fontFamily: ibm }}
+            >
+              {placeholder}
+            </ListboxOption>
+            {options.map((option) => (
+              <ListboxOption
+                key={option.value}
+                value={option.value}
+                className="cursor-pointer px-4 py-2.5 text-foreground data-focus:bg-muted data-selected:bg-primary/10 data-selected:font-semibold"
+                style={{ fontFamily: ibm }}
+              >
+                {option.label}
+              </ListboxOption>
+            ))}
+          </ListboxOptions>
+        </div>
+      </Listbox>
     </Field>
   );
 }
@@ -225,7 +277,7 @@ export function FormFileUpload({
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
-      <label
+      <Label
         htmlFor={id}
         className="flex min-h-[130px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border bg-surface px-6 py-8 text-center transition-colors hover:border-primary/50 hover:bg-primary/5 has-[:focus-visible]:border-primary/50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2"
       >
@@ -278,7 +330,7 @@ export function FormFileUpload({
             {noFileLabel}
           </span>
         )}
-      </label>
+      </Label>
     </Field>
   );
 }
