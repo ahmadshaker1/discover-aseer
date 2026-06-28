@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { MapPinOutlineIcon } from "./Icons";
 
 export default function DiscoverMoreSection() {
   const t = useTranslations("gettingHere.land");
@@ -138,6 +139,7 @@ export default function DiscoverMoreSection() {
               marginTop: "24px",
             }}
           >
+            <MapPinOutlineIcon />
             {t("discoverMoreMapBtn")}
           </Link>
         </div>
