@@ -64,7 +64,7 @@ export default function DiscoverMoreSection() {
           </div>
           <Link
             href="/experiences"
-            className="border-[rgba(40,0,72,0.16)] dark:border-border text-[#7300CD] dark:text-[#d39aff]"
+            className="binline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
             style={{
               display: "flex",
               height: "36px",
@@ -125,7 +125,7 @@ export default function DiscoverMoreSection() {
           </div>
           <Link
             href="/interactive-map"
-            className="border-[rgba(40,0,72,0.16)] dark:border-border text-[#7300CD] dark:text-[#d39aff]"
+            className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
             style={{
               display: "flex",
               height: "36px",

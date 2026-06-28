@@ -189,7 +189,7 @@ export default function TravelSection() {
                 href="https://www.flydubai.com/ar-ae/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-3 rounded-full px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-300 transition-colors hover:bg-primary/15 dark:hover:bg-white/10"
+                className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
               >
                 {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
@@ -217,7 +217,7 @@ export default function TravelSection() {
                 href="https://www.airarabia.com/ar"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-3 rounded-full px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-300 transition-colors hover:bg-primary/15 dark:hover:bg-white/10"
+                className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
               >
                 {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
@@ -245,7 +245,7 @@ export default function TravelSection() {
                 href="https://www.nileair.com/ar"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-3 rounded-full px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-300 transition-colors hover:bg-primary/15 dark:hover:bg-white/10"
+                className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
               >
                 {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
@@ -273,7 +273,7 @@ export default function TravelSection() {
                 href="https://aircairo.com/ar-sa/homepage"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-3 rounded-full px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-300 transition-colors hover:bg-primary/15 dark:hover:bg-white/10"
+                className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
               >
                 {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
