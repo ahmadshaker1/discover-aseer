@@ -1212,7 +1212,14 @@
       "planStayTitle": "خطط إقامتك",
       "planStayAlt": "خطط إقامتك",
       "pickDestinationAlt": "اختر وجهتك",
-      "pickDestinationTitle": "اختر وجهتك"
+      "pickDestinationTitle": "اختر وجهتك",
+      "discoverMoreTitle": "اكتشف المزيد",
+      "discoverMoreExperiencesTitle": " التجارب السياحية",
+      "discoverMoreExperiencesDesc": "مغامرات وأنشطة تستحق التجربة",
+      "discoverMoreExperiencesBtn": "عرض المزيد",
+      "discoverMoreMapTitle": "الخريطة التفاعلية",
+      "discoverMoreMapDesc": "دليلك الشامل لاستكشاف عسير",
+      "discoverMoreMapBtn": "عرض الخريطة"
     },
     "experiences": {
       "title": "تجارب في عسير",

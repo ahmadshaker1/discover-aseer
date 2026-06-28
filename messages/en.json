@@ -1212,7 +1212,14 @@
       "planStayTitle": "Plan your stay",
       "planStayAlt": "Plan your stay",
       "pickDestinationAlt": "Pick your destination",
-      "pickDestinationTitle": "Choose your destination"
+      "pickDestinationTitle": "Choose your destination",
+      "discoverMoreTitle": "Discover more",
+      "discoverMoreExperiencesTitle": "Experiences",
+      "discoverMoreExperiencesDesc": "Adventures and activities worth trying",
+      "discoverMoreExperiencesBtn": "Show more",
+      "discoverMoreMapTitle": "Interactive map",
+      "discoverMoreMapDesc": "Your guide to discovering aseer",
+      "discoverMoreMapBtn": "View map"
     },
     "experiences": {
       "title": "Experiences in Asir",
