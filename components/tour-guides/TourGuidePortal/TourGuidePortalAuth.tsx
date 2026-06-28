@@ -6,7 +6,8 @@ import {
   FormSectionTitle,
   FormSubmitButton,
   FormTextInput,
-} from "@/components/experiences/submit/ExperienceFormFields";
+} from "@/components/tour-guides/TourGuidePortal/TourGuidePortalFormFields";
+import { Button } from "@headlessui/react";
 import { araBold, ibm } from "@/components/experiences/submit/experienceFormStyles";
 import {
   loginTourGuide,
@@ -30,19 +31,19 @@ function AuthTab({
   children: ReactNode;
 }) {
   return (
-    <button
+    <Button
       type="button"
       onClick={onClick}
-      className={`flex h-[52px] flex-1 cursor-pointer items-center justify-center rounded-[100px] px-6 text-base font-bold transition-all ${
+      aria-pressed={active}
+      className={`flex h-[52px] flex-1 cursor-pointer items-center justify-center rounded-[100px] px-6 text-base font-bold transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 ${
         active
           ? "bg-primary text-primary-foreground shadow-sm"
           : "bg-transparent text-secondary hover:bg-primary/5"
       }`}
       style={{ fontFamily: araBold }}
-      aria-pressed={active}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 

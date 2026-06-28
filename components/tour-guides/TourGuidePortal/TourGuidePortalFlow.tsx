@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { Button } from "@headlessui/react";
 import { useTranslations } from "next-intl";
 import type { ApiTouristGuide } from "@/components/tour-guides/types";
 import { araBold, ibm } from "@/components/experiences/submit/experienceFormStyles";
@@ -11,7 +12,11 @@ import {
   syncTourGuideSession,
   type DirectusAuthSession,
 } from "@/lib/directus/tourGuideAuth";
-import { fetchMyTourGuideProfile } from "@/lib/directus/tourGuideProfile";
+import {
+  fetchMyTourGuideProfile,
+  getStoredTourGuideProfileId,
+  setStoredTourGuideProfileId,
+} from "@/lib/directus/tourGuideProfile";
 import TourGuidePortalAuth from "./TourGuidePortalAuth";
 import TourGuidePortalHero from "./TourGuidePortalHero";
 import TourGuidePortalProfileForm from "./TourGuidePortalProfileForm";
@@ -34,7 +39,23 @@ const TourGuidePortalFlow = () => {
     if (synced) {
       setSession(synced);
     }
-    const item = await fetchMyTourGuideProfile();
+    const userId = synced?.user.id ?? getTourGuideSession()?.user.id;
+    const userEmail =
+      synced?.user.email ?? getTourGuideSession()?.user.email ?? null;
+    let hintId = userId ? getStoredTourGuideProfileId(userId, userEmail) : null;
+    if (typeof window !== "undefined" && userId) {
+      const params = new URLSearchParams(window.location.search);
+      const rawHint = params.get("profileId") ?? params.get("guideId");
+      const parsedHint = rawHint ? Number.parseInt(rawHint, 10) : Number.NaN;
+      if (Number.isFinite(parsedHint) && parsedHint > 0) {
+        hintId = parsedHint;
+        setStoredTourGuideProfileId(userId, parsedHint, userEmail);
+      }
+    }
+    const item = await fetchMyTourGuideProfile(hintId);
+    if (item?.id && userId) {
+      setStoredTourGuideProfileId(userId, item.id, userEmail);
+    }
     setProfile(item);
   }, []);
 
@@ -107,14 +128,14 @@ const TourGuidePortalFlow = () => {
               >
                 {t("signedInAs", { email: session.user.email ?? "" })}
               </p>
-              <button
+              <Button
                 type="button"
                 onClick={onLogout}
-                className="inline-flex h-[42px] shrink-0 cursor-pointer items-center justify-center rounded-[43px] border border-border bg-background px-5 text-sm font-bold text-foreground transition-opacity hover:opacity-90"
+                className="inline-flex h-[42px] shrink-0 cursor-pointer items-center justify-center rounded-[43px] border border-border bg-background px-5 text-sm font-bold text-foreground transition-opacity hover:opacity-90 data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
                 style={{ fontFamily: araBold }}
               >
                 {t("logout")}
-              </button>
+              </Button>
             </div>
 
             {loadError && (

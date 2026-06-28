@@ -35,6 +35,11 @@ import {
 } from "@/components/landmarks/filterOptions";
 import type { LocaleCode } from "@/lib/i18n/localized";
 import {
+  isPublishedTourGuide,
+  publishedTourGuidesSearchParams,
+} from "@/lib/directus/config";
+import { resolveTourGuideFileUrl } from "@/lib/directus/resolveTourGuideFileUrl";
+import {
   buildSpecLabelMapFromApi,
   canonicalEnglishSpecLabel,
   localizeTourGuideFilterLabel,
@@ -217,9 +222,7 @@ export function transformTourGuide(
   specLabelMap: Map<string, string> = new Map(),
 ): TourGuideWithFilterMeta {
   const imageUrl =
-    api.image && typeof api.image === "string" && api.image.startsWith("http")
-      ? api.image
-      : DEFAULT_IMAGE;
+    resolveTourGuideFileUrl(api.image) ?? DEFAULT_IMAGE;
   let phone = (api.whatsapp ?? api.phone_number ?? "")
     .toString()
     .replace(/\D/g, "");
@@ -375,9 +378,9 @@ export async function fetchTourGuides(
   }
 
   try {
-    // TODO(backend): Confirm collection slug and query params (?fields=*, etc.) with the API owner.
+    const query = publishedTourGuidesSearchParams().toString();
     const response = await fetch(
-      `${directusUrl}/items/tourist_guides?filter[status][_eq]=published`,
+      `${directusUrl}/items/tourist_guides?${query}`,
       { next: { revalidate: 3600 } },
     );
 
@@ -395,7 +398,9 @@ export async function fetchTourGuides(
       };
     }
 
-    return resultFromApiRows(apiData.data, locale);
+    // Defense in depth: never surface drafts on the public listing page.
+    const publishedRows = apiData.data.filter(isPublishedTourGuide);
+    return resultFromApiRows(publishedRows, locale);
   } catch (error) {
     console.error("Error fetching tour guides:", error);
     // TODO(backend): Optionally fall back to DUMMY_TOURIST_GUIDES in development.

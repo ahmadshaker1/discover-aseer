@@ -1,7 +1,9 @@
 import {
+  TOUR_GUIDE_ACCOUNT_FIELD,
   TOUR_GUIDE_DRAFT_STATUS,
+  TOUR_GUIDE_EMAIL_FIELD,
+  TOUR_GUIDE_PUBLISHED_STATUS,
   TOUR_GUIDES_COLLECTION,
-  TOUR_GUIDE_OWNER_FIELD,
 } from "./config";
 
 import type { DirectusUser } from "./types";
@@ -15,6 +17,16 @@ export function getDirectusServerUrl(): string | null {
     process.env.NEXT_PUBLIC_TOOL_PORTAL_DIRECTUS_URL?.trim();
   if (!raw) return null;
   return raw.replace(/\/+$/, "");
+}
+
+/** Server-only static token for profile lookup when Guide/Public rules miss linked rows. */
+function getDirectusAdminToken(): string | null {
+  return process.env.DIRECTUS_ADMIN_TOKEN?.trim() || null;
+}
+
+function directusAdminAuthHeaders(): HeadersInit | undefined {
+  const token = getDirectusAdminToken();
+  return token ? { Authorization: `Bearer ${token}` } : undefined;
 }
 
 export function getBearerToken(request: Request): string | null {
@@ -69,22 +81,40 @@ function directusUserAuthHeaders(accessToken: string): HeadersInit {
   return { Authorization: `Bearer ${accessToken}` };
 }
 
-/** Optional static token for server-side profile CRUD fallback. */
-function getDirectusPortalToken(): string | null {
-  return process.env.DIRECTUS_WRITE_TOKEN?.trim() || null;
-}
-
 type ProfileDirectusAuth =
   | { mode: "user"; accessToken: string }
-  | { mode: "admin" }
   | { mode: "public" };
 
-function resolveProfileDirectusAuth(
+/** Writes prefer the guide token; fall back to Public when the Guide role has no access. */
+function resolvePortalProfileWriteAuth(
   userAccessToken?: string | null,
 ): ProfileDirectusAuth {
-  if (userAccessToken) return { mode: "user", accessToken: userAccessToken };
-  if (getDirectusPortalToken()) return { mode: "admin" };
+  if (userAccessToken) {
+    return { mode: "user", accessToken: userAccessToken };
+  }
   return { mode: "public" };
+}
+
+function isDirectusCollectionPermissionError(message: string): boolean {
+  return /don't have permission to access collection/i.test(message);
+}
+
+async function directusWriteWithAuthFallback(
+  userAccessToken: string | null | undefined,
+  request: (auth: ProfileDirectusAuth) => Promise<Response>,
+): Promise<Response> {
+  const primaryAuth = resolvePortalProfileWriteAuth(userAccessToken);
+  const response = await request(primaryAuth);
+  if (response.ok || primaryAuth.mode !== "user") {
+    return response;
+  }
+
+  const message = await parseDirectusError(response.clone());
+  if (!isDirectusCollectionPermissionError(message)) {
+    return response;
+  }
+
+  return request({ mode: "public" });
 }
 
 function directusProfileHeaders(
@@ -95,8 +125,6 @@ function directusProfileHeaders(
   const headers: Record<string, string> = {};
   if (auth.mode === "user") {
     headers.Authorization = `Bearer ${auth.accessToken}`;
-  } else if (auth.mode === "admin") {
-    headers.Authorization = `Bearer ${getDirectusPortalToken()!}`;
   }
   if (json) headers["Content-Type"] = "application/json";
   if (returnRepresentation) headers.Prefer = "return=representation";
@@ -220,9 +248,7 @@ async function directusRegisterPublic(
     last_name: string;
   },
 ) {
-  const verificationUrl =
-    process.env.DIRECTUS_TOUR_GUIDE_VERIFICATION_URL?.trim() ||
-    process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const verificationUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 
   const body: Record<string, string> = {
     email: input.email.trim().toLowerCase(),
@@ -259,7 +285,34 @@ export async function directusRegister(
     email: input.email.trim().toLowerCase(),
   };
 
-  await directusRegisterPublic(baseUrl, normalized);
+  // Avoid duplicate Directus users when "Create account" is used with existing credentials.
+  try {
+    const session = await directusLogin(
+      baseUrl,
+      normalized.email,
+      normalized.password,
+    );
+    return { kind: "session", ...session };
+  } catch (loginError) {
+    const loginMessage =
+      loginError instanceof Error ? loginError.message : "Sign-in failed.";
+    if (!/invalid user credentials/i.test(loginMessage)) {
+      throw loginError;
+    }
+  }
+
+  try {
+    await directusRegisterPublic(baseUrl, normalized);
+  } catch (registerError) {
+    const registerMessage =
+      registerError instanceof Error ? registerError.message : "Registration failed.";
+    if (/unique|already|duplicate|exists/i.test(registerMessage)) {
+      throw new Error(
+        "An account with this email already exists. Use the Sign in tab with your password.",
+      );
+    }
+    throw registerError;
+  }
 
   try {
     const session = await directusLogin(
@@ -314,26 +367,144 @@ export async function directusRefresh(
   };
 }
 
+/** Guide-facing saves must never accept status from the client. */
+export function sanitizeTourGuidePortalPayload(
+  payload: Record<string, unknown>,
+): Record<string, unknown> {
+  const next = { ...payload };
+  delete next.status;
+  delete next.id;
+  delete next[TOUR_GUIDE_EMAIL_FIELD];
+  delete next[TOUR_GUIDE_ACCOUNT_FIELD];
+  return next;
+}
+
 export function buildTourGuideProfilePayload(
   fields: Record<string, unknown>,
+  user: DirectusUser,
 ): TourGuideProfilePayload {
-  return { ...fields, status: TOUR_GUIDE_DRAFT_STATUS };
+  return withOwnerOnPayload(
+    {
+      ...sanitizeTourGuidePortalPayload(fields),
+      status: TOUR_GUIDE_DRAFT_STATUS,
+    },
+    user,
+  );
+}
+
+function normalizeSavedGuideProfile(
+  profile: Record<string, unknown>,
+): Record<string, unknown> {
+  return { ...profile, status: TOUR_GUIDE_DRAFT_STATUS };
+}
+
+export function coerceDirectusId(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value) && value > 0) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const id = Number.parseInt(value.trim(), 10);
+    return Number.isFinite(id) && id > 0 ? id : null;
+  }
+  return null;
+}
+
+function extractCreatedItemId(response: Response): number | null {
+  const location = response.headers.get("location");
+  if (!location) return null;
+  const match = location.match(/\/items\/[^/]+\/(\d+)\/?$/);
+  return match ? coerceDirectusId(match[1]) : null;
+}
+
+function buildProfileFromSavePayload(
+  payload: TourGuideProfilePayload,
+  user: DirectusUser,
+  id?: number | null,
+): Record<string, unknown> {
+  const profile = buildTourGuideProfilePayload(payload, user);
+  if (id != null) profile.id = id;
+  return normalizeSavedGuideProfile(profile);
+}
+
+async function resolveSavedProfileAfterWrite(
+  baseUrl: string,
+  user: DirectusUser,
+  payload: TourGuideProfilePayload,
+  response: Response,
+  userAccessToken: string | null | undefined,
+  options: { id?: number | null; profileIdHint?: number | null },
+): Promise<Record<string, unknown>> {
+  const json = await parseDirectusJson<{ data?: Record<string, unknown> }>(
+    response,
+  );
+
+  const resolvedId =
+    coerceDirectusId(json?.data?.id) ??
+    extractCreatedItemId(response) ??
+    options.id ??
+    options.profileIdHint ??
+    null;
+
+  if (json?.data && typeof json.data === "object") {
+    const data = normalizeProfileRecord(json.data, resolvedId);
+    return finalizeSavedGuideProfile(baseUrl, user, data, userAccessToken);
+  }
+
+  if (resolvedId != null) {
+    const snapshot = buildProfileFromSavePayload(payload, user, resolvedId);
+    return finalizeSavedGuideProfile(baseUrl, user, snapshot, userAccessToken);
+  }
+
+  const refetched = await findPortalGuideProfileByUser(
+    baseUrl,
+    user,
+    options.profileIdHint ?? options.id ?? coerceDirectusId(resolvedId),
+    { userAccessToken },
+  );
+  if (refetched && typeof refetched === "object") {
+    return finalizeSavedGuideProfile(
+      baseUrl,
+      user,
+      refetched as Record<string, unknown>,
+      userAccessToken,
+    );
+  }
+
+  // Directus accepted the write but Public Read cannot load the row back.
+  return buildProfileFromSavePayload(payload, user, resolvedId);
 }
 
 export type TourGuideProfilePayload = Record<string, unknown>;
+
+function normalizeGuideEmail(email: string | null | undefined): string {
+  return email?.trim().toLowerCase() ?? "";
+}
 
 function withOwnerOnPayload(
   payload: TourGuideProfilePayload,
   user: DirectusUser,
 ): TourGuideProfilePayload {
-  return { ...payload, [TOUR_GUIDE_OWNER_FIELD]: user.id };
+  const next = { ...payload };
+  const email = normalizeGuideEmail(user.email);
+  if (email) next[TOUR_GUIDE_EMAIL_FIELD] = email;
+  next[TOUR_GUIDE_ACCOUNT_FIELD] = user.id;
+  return next;
+}
+
+function profileEmailMatches(
+  profile: Record<string, unknown>,
+  userEmail: string | null | undefined,
+): boolean {
+  const expected = normalizeGuideEmail(userEmail);
+  if (!expected) return false;
+  return normalizeGuideEmail(profile[TOUR_GUIDE_EMAIL_FIELD] as string | null) === expected;
 }
 
 function profileAccountMatches(
   profile: Record<string, unknown>,
   userId: string,
 ): boolean {
-  const owner = profile[TOUR_GUIDE_OWNER_FIELD];
+  const owner = profile[TOUR_GUIDE_ACCOUNT_FIELD];
   if (typeof owner === "string") return owner === userId;
   if (owner && typeof owner === "object" && "id" in owner) {
     return String((owner as { id: string }).id) === userId;
@@ -341,25 +512,111 @@ function profileAccountMatches(
   return false;
 }
 
-/**
- * Profile CRUD prefers the **signed-in user's** Directus token so role rules
- * (`account` = `$CURRENT_USER`) apply. Falls back to admin token, then Public.
- */
-async function directusListGuideProfiles(
+function isUnlinkedLegacyProfile(
+  profile: Record<string, unknown>,
+): boolean {
+  return (
+    !normalizeGuideEmail(profile[TOUR_GUIDE_EMAIL_FIELD] as string | null) &&
+    profile[TOUR_GUIDE_ACCOUNT_FIELD] == null
+  );
+}
+
+/** Rows with email match by email; legacy rows without email match by account. */
+function profileOwnedByUser(
+  profile: Record<string, unknown>,
+  user: DirectusUser,
+): boolean {
+  const rowEmail = normalizeGuideEmail(
+    profile[TOUR_GUIDE_EMAIL_FIELD] as string | null,
+  );
+  if (rowEmail) {
+    return profileEmailMatches(profile, user.email);
+  }
+  return profileAccountMatches(profile, user.id);
+}
+
+function profileAccessibleViaHint(
+  profile: Record<string, unknown>,
+  user: DirectusUser,
+  profileIdHint?: number | null,
+): boolean {
+  const id = coerceDirectusId(profile.id);
+  const hintId = coerceDirectusId(profileIdHint);
+  if (!hintId || id !== hintId) return false;
+
+  const rowEmail = normalizeGuideEmail(
+    profile[TOUR_GUIDE_EMAIL_FIELD] as string | null,
+  );
+  if (rowEmail && !profileEmailMatches(profile, user.email)) return false;
+
+  if (
+    profile[TOUR_GUIDE_ACCOUNT_FIELD] != null &&
+    !profileAccountMatches(profile, user.id)
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+const directusPublicListTourGuides = async (
   baseUrl: string,
   params: URLSearchParams,
-  auth: ProfileDirectusAuth,
-) {
+): Promise<Record<string, unknown>[]> => {
   const response = await fetch(
     `${baseUrl}/items/${TOUR_GUIDES_COLLECTION}?${params}`,
-    {
-      headers: directusProfileHeaders(auth),
-      cache: "no-store",
-    },
+    { cache: "no-store" },
   );
 
   if (!response.ok) {
-    throw new Error(await parseDirectusError(response));
+    const message = await parseDirectusError(response);
+    throw new Error(message);
+  }
+
+  const json = await parseDirectusJson<{ data?: Record<string, unknown>[] }>(
+    response,
+  );
+  return json?.data ?? [];
+};
+
+async function directusListTourGuides(
+  baseUrl: string,
+  params: URLSearchParams,
+  userAccessToken?: string | null,
+): Promise<Record<string, unknown>[]> {
+  const url = `${baseUrl}/items/${TOUR_GUIDES_COLLECTION}?${params}`;
+
+  if (userAccessToken) {
+    const authedResponse = await fetch(url, {
+      headers: { Authorization: `Bearer ${userAccessToken}` },
+      cache: "no-store",
+    });
+
+    if (authedResponse.ok) {
+      const json = await parseDirectusJson<{ data?: Record<string, unknown>[] }>(
+        authedResponse,
+      );
+      if (json?.data?.length) return json.data;
+    }
+  }
+
+  return directusPublicListTourGuides(baseUrl, params);
+}
+
+async function directusAdminListTourGuides(
+  baseUrl: string,
+  params: URLSearchParams,
+): Promise<Record<string, unknown>[]> {
+  const headers = directusAdminAuthHeaders();
+  if (!headers) return [];
+
+  const response = await fetch(
+    `${baseUrl}/items/${TOUR_GUIDES_COLLECTION}?${params}`,
+    { headers, cache: "no-store" },
+  );
+
+  if (!response.ok) {
+    return [];
   }
 
   const json = await parseDirectusJson<{ data?: Record<string, unknown>[] }>(
@@ -368,88 +625,323 @@ async function directusListGuideProfiles(
   return json?.data ?? [];
 }
 
-function profileOwnedByUser(
+async function findLegacyGuideByNationalId(
+  baseUrl: string,
+  nationalId: string,
+): Promise<Record<string, unknown> | null> {
+  const normalized = nationalId.trim();
+  if (!normalized) return null;
+
+  const params = new URLSearchParams({
+    limit: "3",
+    sort: "-id",
+    fields: "*",
+  });
+  params.set("filter[national_id][_eq]", normalized);
+
+  const rows = await directusPublicListTourGuides(baseUrl, params);
+  const unlinked = rows.filter(isUnlinkedLegacyProfile);
+  return unlinked.length === 1 ? unlinked[0]! : null;
+}
+
+function profileLinkedToUser(
   profile: Record<string, unknown>,
   user: DirectusUser,
-  auth: ProfileDirectusAuth,
 ): boolean {
-  if (auth.mode === "user") return true;
-  return profileAccountMatches(profile, user.id);
+  return profileOwnedByUser(profile, user);
+}
+
+async function findPortalGuideProfileByUser(
+  baseUrl: string,
+  user: DirectusUser,
+  profileIdHint?: number | null,
+  options?: {
+    userAccessToken?: string | null;
+    nationalIdHint?: string | null;
+  },
+): Promise<Record<string, unknown> | null> {
+  const email = normalizeGuideEmail(user.email);
+
+  if (email) {
+    const params = new URLSearchParams({
+      limit: "1",
+      sort: "-id",
+      fields: "*",
+    });
+    params.set(`filter[${TOUR_GUIDE_EMAIL_FIELD}][_eq]`, email);
+
+    const rows = await directusListTourGuides(
+      baseUrl,
+      params,
+      options?.userAccessToken,
+    );
+
+    const match = rows.find((row) => profileEmailMatches(row, email));
+    if (match) return match;
+
+    const adminRows = await directusAdminListTourGuides(baseUrl, params);
+    const adminMatch = adminRows.find((row) => profileEmailMatches(row, email));
+    if (adminMatch) return adminMatch;
+  }
+
+  const hintId = coerceDirectusId(profileIdHint);
+  if (hintId) {
+    const hinted = await directusFetchGuideProfileById(
+      baseUrl,
+      hintId,
+      options?.userAccessToken ?? null,
+      { throwOnError: false },
+    );
+    if (hinted && typeof hinted === "object") {
+      return hinted as Record<string, unknown>;
+    }
+  }
+
+  if (user.id) {
+    const accountParams = new URLSearchParams({
+      limit: "1",
+      sort: "-id",
+      fields: "*",
+    });
+    accountParams.set(`filter[${TOUR_GUIDE_ACCOUNT_FIELD}][_eq]`, user.id);
+
+    const byAccount = await directusAdminListTourGuides(baseUrl, accountParams);
+    const accountMatch = byAccount.find((row) => profileOwnedByUser(row, user));
+    if (accountMatch) return accountMatch;
+  }
+
+  const nationalId = options?.nationalIdHint?.trim();
+  if (nationalId) {
+    const byNationalId = await findLegacyGuideByNationalId(baseUrl, nationalId);
+    if (byNationalId) return byNationalId;
+  }
+
+  return null;
+}
+
+function appendPortalProfileFields(params: URLSearchParams): void {
+  params.set("fields", "*");
+}
+
+export function parseProfileIdHint(raw: string | null): number | null {
+  if (!raw) return null;
+  const id = Number.parseInt(raw.trim(), 10);
+  return Number.isFinite(id) && id > 0 ? id : null;
+}
+
+async function directusFetchGuideProfileByIdForPortal(
+  baseUrl: string,
+  id: number,
+): Promise<Record<string, unknown> | null> {
+  const profile = await directusFetchGuideProfileById(
+    baseUrl,
+    id,
+    null,
+    { throwOnError: false },
+  );
+  if (!profile || typeof profile !== "object") return null;
+  const record = profile as Record<string, unknown>;
+  return coerceDirectusId(record.id) === id ? record : null;
+}
+
+async function directusPatchGuideProfileFields(
+  baseUrl: string,
+  id: number,
+  fields: Record<string, unknown>,
+  userAccessToken?: string | null,
+): Promise<boolean> {
+  const response = await directusWriteWithAuthFallback(
+    userAccessToken,
+    (auth) =>
+      fetch(`${baseUrl}/items/${TOUR_GUIDES_COLLECTION}/${id}`, {
+        method: "PATCH",
+        headers: directusProfileHeaders(auth, true, true),
+        body: JSON.stringify(fields),
+        cache: "no-store",
+      }),
+  );
+  return response.ok;
+}
+
+async function ensureGuideProfileLinked(
+  baseUrl: string,
+  id: number,
+  user: DirectusUser,
+  saved: Record<string, unknown>,
+  userAccessToken?: string | null,
+): Promise<Record<string, unknown>> {
+  if (profileLinkedToUser(saved, user)) return saved;
+
+  const linkPatch = withOwnerOnPayload({}, user);
+
+  if (
+    await directusPatchGuideProfileFields(
+      baseUrl,
+      id,
+      linkPatch,
+      userAccessToken,
+    )
+  ) {
+    const refetched = await directusFetchGuideProfileById(
+      baseUrl,
+      id,
+      userAccessToken,
+    );
+    if (refetched && typeof refetched === "object") {
+      return refetched as Record<string, unknown>;
+    }
+  }
+
+  return saved;
 }
 
 export async function directusFetchMyGuideProfile(
   baseUrl: string,
   user: DirectusUser,
   userAccessToken?: string | null,
+  profileIdHint?: number | null,
 ) {
-  const auth = resolveProfileDirectusAuth(userAccessToken);
-  const params = new URLSearchParams({ limit: "1" });
-
-  if (auth.mode !== "user") {
-    params.set(`filter[${TOUR_GUIDE_OWNER_FIELD}][_eq]`, user.id);
-  }
-
-  const items = await directusListGuideProfiles(baseUrl, params, auth);
-  const item = items[0] ?? null;
-  if (!item) return null;
-  if (!profileOwnedByUser(item, user, auth)) return null;
-  return item;
-}
-
-async function directusFindGuideProfileForUser(
-  baseUrl: string,
-  user: DirectusUser,
-  userAccessToken?: string | null,
-) {
-  const auth = resolveProfileDirectusAuth(userAccessToken);
-  const byAccount = await directusFetchMyGuideProfile(
-    baseUrl,
-    user,
+  return findPortalGuideProfileByUser(baseUrl, user, profileIdHint, {
     userAccessToken,
-  );
-  if (byAccount) return byAccount;
-
-  if (auth.mode === "user") return null;
-
-  const params = new URLSearchParams({
-    limit: "25",
-    sort: "-id",
-    fields: `id,status,${TOUR_GUIDE_OWNER_FIELD}`,
   });
-  const items = await directusListGuideProfiles(baseUrl, params, auth);
-  return (
-    items.find((item) => profileAccountMatches(item, user.id)) ?? null
-  );
 }
 
-function buildProfileLoadError(): string {
-  return [
-    "Profile saved in Directus but could not be loaded.",
-    "On the guide user role, allow Create/Read/Update on tourist_guides with rule",
-    `{ "account": { "_eq": "$CURRENT_USER" } } and writable account on create.`,
-  ].join(" ");
-}
 
 async function directusFetchGuideProfileById(
   baseUrl: string,
   id: number,
   userAccessToken?: string | null,
+  options?: { throwOnError?: boolean },
 ) {
-  const auth = resolveProfileDirectusAuth(userAccessToken);
-  const response = await fetch(
-    `${baseUrl}/items/${TOUR_GUIDES_COLLECTION}/${id}`,
-    {
-      headers: directusProfileHeaders(auth),
-      cache: "no-store",
-    },
-  );
+  const params = new URLSearchParams();
+  appendPortalProfileFields(params);
+  const url = `${baseUrl}/items/${TOUR_GUIDES_COLLECTION}/${id}?${params}`;
 
-  if (!response.ok) {
-    throw new Error(await parseDirectusError(response));
+  const authAttempts: HeadersInit[] = [];
+  if (userAccessToken) {
+    authAttempts.push({ Authorization: `Bearer ${userAccessToken}` });
+  }
+  const adminHeaders = directusAdminAuthHeaders();
+  if (adminHeaders) {
+    authAttempts.push(adminHeaders);
+  }
+  authAttempts.push({});
+
+  let lastError = `Could not load tourist guide profile ${id}.`;
+
+  for (const headers of authAttempts) {
+    const response = await fetch(url, { headers, cache: "no-store" });
+    if (response.ok) {
+      const json = await parseDirectusJson<{ data?: unknown }>(response);
+      if (json?.data && typeof json.data === "object") {
+        return json.data;
+      }
+      continue;
+    }
+
+    lastError = await parseDirectusError(response);
+    if (response.status === 403 || response.status === 404) {
+      continue;
+    }
+    if (options?.throwOnError === false) {
+      return null;
+    }
+    throw new Error(lastError);
   }
 
-  const json = await parseDirectusJson<{ data?: unknown }>(response);
-  return json?.data ?? null;
+  if (options?.throwOnError === false) return null;
+  throw new Error(lastError);
+}
+
+function ensureGuideProfileDraftAfterSave(
+  saved: Record<string, unknown>,
+): Record<string, unknown> {
+  return normalizeSavedGuideProfile(saved);
+}
+
+async function finalizeSavedGuideProfile(
+  baseUrl: string,
+  user: DirectusUser,
+  saved: Record<string, unknown>,
+  userAccessToken?: string | null,
+): Promise<Record<string, unknown>> {
+  const id = coerceDirectusId(saved.id);
+  if (!id) {
+    return normalizeSavedGuideProfile(saved);
+  }
+
+  const withId = { ...saved, id };
+  const linked = await ensureGuideProfileLinked(
+    baseUrl,
+    id,
+    user,
+    withId,
+    userAccessToken,
+  );
+  const linkedId = coerceDirectusId(linked.id) ?? id;
+  return ensureGuideProfileDraftAfterSave({ ...linked, id: linkedId });
+}
+
+function normalizeProfileRecord(
+  profile: Record<string, unknown>,
+  resolvedId?: number | null,
+): Record<string, unknown> {
+  const id = coerceDirectusId(resolvedId ?? profile.id);
+  return id != null ? { ...profile, id } : profile;
+}
+
+export async function directusUpsertGuideProfile(
+  baseUrl: string,
+  user: DirectusUser,
+  payload: TourGuideProfilePayload,
+  userAccessToken?: string | null,
+  profileIdHint?: number | null,
+) {
+  const knownProfileId = coerceDirectusId(profileIdHint);
+  if (knownProfileId) {
+    return directusUpdateGuideProfile(
+      baseUrl,
+      knownProfileId,
+      user,
+      payload,
+      userAccessToken,
+    );
+  }
+
+  const nationalIdHint =
+    typeof payload.national_id === "string"
+      ? payload.national_id
+      : payload.national_id != null
+        ? String(payload.national_id)
+        : null;
+
+  const existing = await findPortalGuideProfileByUser(
+    baseUrl,
+    user,
+    profileIdHint,
+    { userAccessToken, nationalIdHint },
+  );
+  const existingId = existing
+    ? coerceDirectusId((existing as { id?: unknown }).id)
+    : null;
+
+  if (existingId) {
+    return directusUpdateGuideProfile(
+      baseUrl,
+      existingId,
+      user,
+      payload,
+      userAccessToken,
+    );
+  }
+
+  return directusCreateGuideProfile(
+    baseUrl,
+    user,
+    payload,
+    userAccessToken,
+    profileIdHint,
+  );
 }
 
 export async function directusCreateGuideProfile(
@@ -457,47 +949,36 @@ export async function directusCreateGuideProfile(
   user: DirectusUser,
   payload: TourGuideProfilePayload,
   userAccessToken?: string | null,
+  profileIdHint?: number | null,
 ) {
-  const auth = resolveProfileDirectusAuth(userAccessToken);
-  const response = await fetch(`${baseUrl}/items/${TOUR_GUIDES_COLLECTION}`, {
-    method: "POST",
-    headers: directusProfileHeaders(auth, true, true),
-    body: JSON.stringify(
-      buildTourGuideProfilePayload(withOwnerOnPayload(payload, user)),
-    ),
-  });
+  const response = await directusWriteWithAuthFallback(
+    userAccessToken,
+    (auth) =>
+      fetch(`${baseUrl}/items/${TOUR_GUIDES_COLLECTION}`, {
+        method: "POST",
+        headers: directusProfileHeaders(auth, true, true),
+        body: JSON.stringify(buildTourGuideProfilePayload(payload, user)),
+      }),
+  );
 
   if (!response.ok) {
     throw new Error(await parseDirectusError(response));
   }
 
-  const json = await parseDirectusJson<{ data?: Record<string, unknown> }>(
-    response,
-  );
-  if (json?.data) {
-    if (profileOwnedByUser(json.data, user, auth)) {
-      return json.data;
-    }
-    if (typeof json.data.id === "number") {
-      const byId = await directusFetchGuideProfileById(
-        baseUrl,
-        json.data.id,
-        userAccessToken,
-      );
-      if (byId) return byId;
-      return json.data;
-    }
-  }
+  const createdId =
+    coerceDirectusId(
+      (await parseDirectusJson<{ data?: { id?: unknown } }>(response.clone()))
+        ?.data?.id,
+    ) ?? extractCreatedItemId(response);
 
-  const refetched = await directusFindGuideProfileForUser(
+  return resolveSavedProfileAfterWrite(
     baseUrl,
     user,
+    payload,
+    response,
     userAccessToken,
+    { id: createdId, profileIdHint },
   );
-  if (!refetched) {
-    throw new Error(buildProfileLoadError());
-  }
-  return refetched;
 }
 
 export async function directusUpdateGuideProfile(
@@ -507,54 +988,34 @@ export async function directusUpdateGuideProfile(
   payload: TourGuideProfilePayload,
   userAccessToken?: string | null,
 ) {
-  const auth = resolveProfileDirectusAuth(userAccessToken);
-  const existing = await directusFetchMyGuideProfile(
-    baseUrl,
-    user,
+  const response = await directusWriteWithAuthFallback(
     userAccessToken,
-  );
-  if (
-    !existing ||
-    (existing as { id?: number }).id !== id ||
-    !profileOwnedByUser(existing as Record<string, unknown>, user, auth)
-  ) {
-    throw new Error("Profile not found or access denied.");
-  }
-
-  const response = await fetch(
-    `${baseUrl}/items/${TOUR_GUIDES_COLLECTION}/${id}`,
-    {
-      method: "PATCH",
-      headers: directusProfileHeaders(auth, true, true),
-      body: JSON.stringify(
-        buildTourGuideProfilePayload(withOwnerOnPayload(payload, user)),
-      ),
-    },
+    (auth) =>
+      fetch(`${baseUrl}/items/${TOUR_GUIDES_COLLECTION}/${id}`, {
+        method: "PATCH",
+        headers: directusProfileHeaders(auth, true, true),
+        body: JSON.stringify(buildTourGuideProfilePayload(payload, user)),
+      }),
   );
 
   if (!response.ok) {
     throw new Error(await parseDirectusError(response));
   }
 
-  const json = await parseDirectusJson<{ data?: unknown }>(response);
-  if (json?.data) return json.data;
-
-  const refetched =
-    (await directusFetchGuideProfileById(baseUrl, id, userAccessToken)) ??
-    (await directusFindGuideProfileForUser(baseUrl, user, userAccessToken));
-  if (!refetched) {
-    throw new Error(buildProfileLoadError());
-  }
-  return refetched;
+  return resolveSavedProfileAfterWrite(
+    baseUrl,
+    user,
+    payload,
+    response,
+    userAccessToken,
+    { id, profileIdHint: id },
+  );
 }
 
 /**
- * File uploads use Public or admin token — not the guide session token.
- * Guides rarely have `directus_files` on their role; Public Create is enough.
+ * File uploads use Public Create on `directus_files` (no guide token).
  */
 function directusFileUploadHeaders(): HeadersInit | undefined {
-  const admin = getDirectusPortalToken();
-  if (admin) return { Authorization: `Bearer ${admin}` };
   return undefined;
 }
 

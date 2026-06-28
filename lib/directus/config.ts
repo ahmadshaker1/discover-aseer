@@ -13,6 +13,25 @@ export const TOUR_GUIDES_COLLECTION = "tourist_guides";
 export const TOUR_GUIDE_DRAFT_STATUS = "draft";
 export const TOUR_GUIDE_PUBLISHED_STATUS = "published";
 
-/** M2O on `tourist_guides` → `directus_users`; links a profile to the signed-in account. */
-export const TOUR_GUIDE_OWNER_FIELD =
-  process.env.DIRECTUS_TOUR_GUIDE_OWNER_FIELD?.trim() || "account";
+/** M2O on `tourist_guides` → `directus_users`. */
+export const TOUR_GUIDE_ACCOUNT_FIELD = "account";
+
+/** Text field on `tourist_guides`; matched to the signed-in user's login email. */
+export const TOUR_GUIDE_EMAIL_FIELD = "email";
+
+/** Directus file fields on `tourist_guides`. */
+export const TOUR_GUIDE_IMAGE_FIELD = "image";
+export const TOUR_GUIDE_LICENSE_FIELD = "license_attachment";
+
+/** Directus query: public `/tour-guides` listing — published rows only. */
+export function publishedTourGuidesSearchParams(): URLSearchParams {
+  return new URLSearchParams({
+    [`filter[status][_eq]`]: TOUR_GUIDE_PUBLISHED_STATUS,
+  });
+}
+
+export function isPublishedTourGuide(
+  row: { status?: string | null },
+): boolean {
+  return row.status === TOUR_GUIDE_PUBLISHED_STATUS;
+}

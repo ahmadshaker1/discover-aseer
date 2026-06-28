@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import type { DirectusUser } from "@/lib/directus/types";
 import {
-  directusCreateGuideProfile,
+  coerceDirectusId,
   directusFetchCurrentUser,
   directusFetchMyGuideProfile,
   directusUpdateGuideProfile,
+  directusUpsertGuideProfile,
   getBearerToken,
   getDirectusServerUrl,
+  parseProfileIdHint,
 } from "@/lib/directus/server";
 
 async function requireAuth(request: Request) {
@@ -55,11 +57,16 @@ export async function GET(request: Request) {
   };
 
   try {
+    const profileIdHint = parseProfileIdHint(
+      request.headers.get("x-profile-id"),
+    );
     const profile = await directusFetchMyGuideProfile(
       baseUrl,
       user,
       accessToken,
+      profileIdHint,
     );
+
     return NextResponse.json({ data: profile });
   } catch (error) {
     const message =
@@ -90,16 +97,23 @@ export async function POST(request: Request) {
   }
 
   try {
-    const data = await directusCreateGuideProfile(
+    const bodyRecord = body as Record<string, unknown>;
+    const profileIdHint =
+      parseProfileIdHint(request.headers.get("x-profile-id")) ??
+      coerceDirectusId(bodyRecord.id);
+
+    const { id: _ignoredId, ...payload } = bodyRecord;
+    const data = await directusUpsertGuideProfile(
       baseUrl,
       user,
-      body as Record<string, unknown>,
+      payload,
       accessToken,
+      profileIdHint,
     );
     return NextResponse.json({ data });
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Could not create profile.";
+      error instanceof Error ? error.message : "Could not save profile.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
@@ -126,14 +140,18 @@ export async function PATCH(request: Request) {
   }
 
   const { id, ...payload } = body as { id?: number } & Record<string, unknown>;
-  if (!id || typeof id !== "number") {
+  const profileIdHint =
+    typeof id === "number" && id > 0
+      ? id
+      : parseProfileIdHint(request.headers.get("x-profile-id"));
+  if (!profileIdHint) {
     return NextResponse.json({ error: "Profile id is required." }, { status: 400 });
   }
 
   try {
     const data = await directusUpdateGuideProfile(
       baseUrl,
-      id,
+      profileIdHint,
       user,
       payload,
       accessToken,

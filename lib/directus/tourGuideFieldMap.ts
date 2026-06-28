@@ -70,7 +70,7 @@ export function apiProfileToPortalForm(
       "",
     Other_languages: api.other_languages ?? "",
     Specialization: api.specializations ?? "",
-    Email: "",
+    Email: api.email ?? "",
     transportation: api.transportation === true ? "yes" : api.transportation === false ? "no" : "",
     WhatsApp_number: api.whatsapp ?? "",
     Mobile_number: api.phone_number ?? "",
