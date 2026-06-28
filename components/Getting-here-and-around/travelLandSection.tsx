@@ -295,14 +295,20 @@ export default function TravelLandSection() {
                 href={t("uberLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/Uber.png')",
-                }}
+                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                style={{ gap: "16px" }}
               >
-                <div className="text-center absolute top-7">
-                  <p className="text-[20px] font-bold text-white leading-tight">
+                <div
+                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  style={{
+                    width: "156px",
+                    height: "150px",
+                    backgroundImage:
+                      "url('/assets/Getting-here-and-around/appDrive/Uber.png')",
+                  }}
+                ></div>
+                <div className="text-center">
+                  <p className="text-[20px] font-bold text-foreground leading-tight">
                     {t("uber")}
                   </p>
                 </div>
@@ -313,14 +319,20 @@ export default function TravelLandSection() {
                 href={t("careemLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/careem.jpg')",
-                }}
+                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                style={{ gap: "16px" }}
               >
-                <div className="text-center absolute top-7">
-                  <p className="text-[20px] font-bold text-white leading-tight">
+                <div
+                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  style={{
+                    width: "156px",
+                    height: "150px",
+                    backgroundImage:
+                      "url('/assets/Getting-here-and-around/appDrive/careem.jpg')",
+                  }}
+                ></div>
+                <div className="text-center">
+                  <p className="text-[20px] font-bold text-foreground leading-tight">
                     {t("careem")}
                   </p>
                 </div>
@@ -331,14 +343,20 @@ export default function TravelLandSection() {
                 href={t("boltLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/bolt.png')",
-                }}
+                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                style={{ gap: "16px" }}
               >
-                <div className="text-center absolute top-7">
-                  <p className="text-[20px] font-bold text-white leading-tight">
+                <div
+                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  style={{
+                    width: "156px",
+                    height: "150px",
+                    backgroundImage:
+                      "url('/assets/Getting-here-and-around/appDrive/bolt.png')",
+                  }}
+                ></div>
+                <div className="text-center">
+                  <p className="text-[20px] font-bold text-foreground leading-tight">
                     {t("bolt")}
                   </p>
                 </div>
@@ -349,14 +367,20 @@ export default function TravelLandSection() {
                 href={t("jeenyLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex flex-col items-center justify-center rounded-2xl p-6 h-[200px] overflow-hidden bg-cover bg-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.2)), url('/assets/Getting-here-and-around/appDrive/jeeny.png')",
-                }}
+                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                style={{ gap: "16px" }}
               >
-                <div className="text-center absolute top-7">
-                  <p className="text-[20px] font-bold text-white leading-tight">
+                <div
+                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  style={{
+                    width: "156px",
+                    height: "150px",
+                    backgroundImage:
+                      "url('/assets/Getting-here-and-around/appDrive/jeeny.png')",
+                  }}
+                ></div>
+                <div className="text-center">
+                  <p className="text-[20px] font-bold text-foreground leading-tight">
                     {t("jeeny")}
                   </p>
                 </div>
