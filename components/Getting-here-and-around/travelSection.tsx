@@ -172,24 +172,21 @@ export default function TravelSection() {
         </p>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {/* الكرت الأول: فلاي دبي */}
-          <div className="flex h-[150px] w-full flex-row rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
-            <div className="w-[130px] h-full flex-shrink-0 bg-[#FFFFFF] flex items-center justify-center border-e border-border">
+          <div className="relative flex h-[200px] w-full flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
+            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
               <img
                 src="/assets/Getting-here-and-around/flay/flydubai.png"
                 alt=""
                 aria-hidden="true"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain scale-[2]"
               />
             </div>
-            <div className="flex flex-1 flex-col p-4 text-start justify-between h-full">
-              <p className="text-[22px] font-bold leading-[1.1] text-secondary">
-                {t("flyDubai")}
-              </p>
+            <div className="relative z-10 flex w-full justify-center">
               <a
                 href="https://www.flydubai.com/ar-ae/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
+                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 bg-primary/15 px-3 py-2 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/25 backdrop-blur-md"
               >
                 {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
@@ -200,24 +197,21 @@ export default function TravelSection() {
           </div>
 
           {/* الكرت الثاني: العربية للطيران */}
-          <div className="flex h-[150px] w-full flex-row rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
-            <div className="w-[130px] h-full flex-shrink-0 bg-[#FFFFFF] flex items-center justify-center border-e border-border">
+          <div className="relative flex h-[200px] w-full flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
+            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
               <img
                 src="/assets/Getting-here-and-around/flay/air-arabia.png"
                 alt=""
                 aria-hidden="true"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain scale-[2]"
               />
             </div>
-            <div className="flex flex-1 flex-col p-4 text-start justify-between h-full">
-              <p className="text-[22px] font-bold leading-[1.1] text-secondary">
-                {t("airArabia")}
-              </p>
+            <div className="relative z-10 flex w-full justify-center">
               <a
                 href="https://www.airarabia.com/ar"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
+                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 bg-primary/15 px-3 py-2 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/25 backdrop-blur-md"
               >
                 {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
@@ -228,24 +222,21 @@ export default function TravelSection() {
           </div>
 
           {/* الكرت الثالث: النيل للطيران */}
-          <div className="flex h-[150px] w-full flex-row rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
-            <div className="w-[130px] h-full flex-shrink-0 bg-[#FFFFFF] flex items-center justify-center  border-e border-border">
+          <div className="relative flex h-[200px] w-full flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
+            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
               <img
                 src="/assets/Getting-here-and-around/flay/nile-air.png"
                 alt=""
                 aria-hidden="true"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain scale-[2]"
               />
             </div>
-            <div className="flex flex-1 flex-col p-4 text-start justify-between h-full">
-              <p className="text-[22px] font-bold leading-[1.1] text-secondary">
-                {t("nileAir")}
-              </p>
+            <div className="relative z-10 flex w-full justify-center">
               <a
                 href="https://www.nileair.com/ar"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
+                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 bg-primary/15 px-3 py-2 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/25 backdrop-blur-md"
               >
                 {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">
@@ -256,24 +247,21 @@ export default function TravelSection() {
           </div>
 
           {/* الكرت الرابع: إير كايرو */}
-          <div className="flex h-[150px] w-full flex-row rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
-            <div className="w-[130px] h-full flex-shrink-0 bg-[#FFFFFF] flex items-center justify-center border-e border-border">
+          <div className="relative flex h-[200px] w-full flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
+            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
               <img
                 src="/assets/Getting-here-and-around/flay/air-cairo.png"
                 alt=""
                 aria-hidden="true"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain scale-[2]"
               />
             </div>
-            <div className="flex flex-1 flex-col p-4 text-start justify-between h-full">
-              <p className="text-[22px] font-bold leading-[1.1] text-secondary">
-                {t("airCairo")}
-              </p>
+            <div className="relative z-10 flex w-full justify-center">
               <a
                 href="https://aircairo.com/ar-sa/homepage"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
+                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 bg-primary/15 px-3 py-2 text-[16px] font-bold leading-none text-primary transition-colors hover:bg-primary/25 backdrop-blur-md"
               >
                 {t("bookingSite")}
                 <span aria-hidden="true" className="text-[24px]">

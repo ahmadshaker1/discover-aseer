@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import AseerMap from "./AseerMap";
 
 export default function TravelLandSection() {
   const t = useTranslations("gettingHere.land");
@@ -20,7 +21,7 @@ export default function TravelLandSection() {
         {/* العنوان */}
         <div className="mb-6 border-b border-border pb-4 pt-6">
           <h2
-            className={`text-[32px] font-bold text-foreground sm:text-[40px] text-start`}
+            className={`text-[48px] font-bold text-foreground sm:text-[54px] text-start`}
           >
             {t("travelByRoad")}
           </h2>
@@ -34,167 +35,14 @@ export default function TravelLandSection() {
             {t("roadLead")}
           </p>
         </div>
-
-        <div className="mb-2 text-start">
-          <h3 className="text-[24px] font-bold text-secondary leading-tight">
-            {t("drivingToAseer")}
-          </h3>
-          <p className="text-[16px] text-muted-foreground mt-1 leading-normal">
-            {t("distancesFromMajorCities")}
-          </p>
-        </div>
         {/* القسم السفلي: شبكة من عمودين */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-          {/* العمود الأيمن (قائمة المسافات) */}
-          <div className="flex flex-col gap-4">
-            {/* جدة */}
-            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                    <circle cx="7" cy="17" r="2" />
-                    <path d="M9 17h6" />
-                    <circle cx="17" cy="17" r="2" />
-                  </svg>
-                </div>
-                <div className="text-start">
-                  <p className="mb-0.5 text-[16px] text-muted-foreground">
-                    {t("fromJeddah")}
-                  </p>
-                  <p className="text-[18px] font-bold text-foreground">
-                    {t("hours650")}
-                  </p>
-                </div>
-              </div>
-              <div className="text-start">
-                <p className="text-[18px] font-bold text-foreground">
-                  {t("time8")}
-                </p>
-              </div>
-            </div>
-
-            {/* الرياض */}
-            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                    <circle cx="7" cy="17" r="2" />
-                    <path d="M9 17h6" />
-                    <circle cx="17" cy="17" r="2" />
-                  </svg>
-                </div>
-                <div className="text-start">
-                  <p className="mb-0.5 text-[16px] text-muted-foreground">
-                    {t("fromRiyadh")}
-                  </p>
-                  <p className="text-[18px] font-bold text-foreground">
-                    {t("hours900")}
-                  </p>
-                </div>
-              </div>
-              <div className="text-start">
-                <p className="text-[18px] font-bold text-foreground">
-                  {t("time10")}
-                </p>
-              </div>
-            </div>
-
-            {/* المدينة المنورة */}
-            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                    <circle cx="7" cy="17" r="2" />
-                    <path d="M9 17h6" />
-                    <circle cx="17" cy="17" r="2" />
-                  </svg>
-                </div>
-                <div className="text-start">
-                  <p className="mb-0.5 text-[16px] text-muted-foreground">
-                    {t("fromMadinah")}
-                  </p>
-                  <p className="text-[18px] font-bold text-foreground">
-                    {t("hours1039")}
-                  </p>
-                </div>
-              </div>
-              <div className="text-start">
-                <p className="text-[18px] font-bold text-foreground">
-                  {t("time11")}
-                </p>
-              </div>
-            </div>
-
-            {/* الدمام */}
-            <div className="flex items-center justify-between rounded-2xl bg-surface p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                    <circle cx="7" cy="17" r="2" />
-                    <path d="M9 17h6" />
-                    <circle cx="17" cy="17" r="2" />
-                  </svg>
-                </div>
-                <div className="text-start">
-                  <p className="mb-0.5 text-[16px] text-muted-foreground">
-                    {t("fromDammam")}
-                  </p>
-                  <p className="text-[18px] font-bold text-foreground">
-                    {t("hours1200")}
-                  </p>
-                </div>
-              </div>
-              <div className="text-start">
-                <p className="text-[18px] font-bold text-foreground">
-                  {t("time13")}
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-col gap-8">
+          {/* الخريطة التفاعلية */}
+          <AseerMap />
 
           {/* العمود الأيسر (بطاقة سابتكو) */}
           <div
-            className="relative flex flex-col justify-between rounded-4xl border border-border p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
+            className="relative flex flex-col justify-between w-full max-w-[720px] rounded-4xl border border-border p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
             style={{
               backgroundImage:
                 "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/Getting-here-and-around/SAPTCO.png')",
