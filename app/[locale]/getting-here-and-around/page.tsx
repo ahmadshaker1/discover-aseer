@@ -2,6 +2,8 @@ import GettingHereAndAroundBanner from "@/components/Getting-here-and-around/Get
 import MapSection from "@/components/Getting-here-and-around/map";
 import TravelSection from "@/components/Getting-here-and-around/travelSection";
 import TravelLandSection from "@/components/Getting-here-and-around/travelLandSection";
+import DiscoverMoreSection from "@/components/Getting-here-and-around/discoverMoreSection";
+import SeeAlsoSection from "@/components/Getting-here-and-around/seeAlsoSection";
 import ExperiencesSection from "@/components/Getting-here-and-around/experiences-section";
 import AttractionsSection from "@/components/Getting-here-and-around/attractions-section";
 import { getLocale } from "next-intl/server";
@@ -22,6 +24,8 @@ export default async function GettingHereAndAround() {
       <GettingHereAndAroundBanner />
       <TravelSection />
       <TravelLandSection />
+      <DiscoverMoreSection />
+      <SeeAlsoSection />
     </div>
   );
 }
