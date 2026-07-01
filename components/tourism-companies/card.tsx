@@ -1,17 +1,6 @@
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
-
-interface TourismCompanyCardData {
-  name: string;
-  phone: string;
-  email: string;
-  website: string;
-  logo: string;
-}
-
-function getCompanyKeys() {
-  return ["campany1", "campany2", "campany3", "campany4"] as const;
-}
+import { getTranslations, getLocale } from "next-intl/server";
+import { getTourismProviders } from "./data";
 
 function formatPhoneLink(phone: string) {
   const digits = phone.replace(/\D+/g, "");
@@ -28,13 +17,15 @@ function formatWebsiteLink(website: string) {
 
 export default async function TourismCompaniesCardSection() {
   const t = await getTranslations("tourismCompanies");
+  const locale = await getLocale();
+  const providers = await getTourismProviders();
 
-  const companies: TourismCompanyCardData[] = getCompanyKeys().map((key) => ({
-    name: t(`${key}.name`),
-    phone: t(`${key}.phone`),
-    email: t(`${key}.email`),
-    website: t(`${key}.website`),
-    logo: t(`${key}.logo`),
+  const companies = providers.map((provider) => ({
+    name: locale === "ar" ? provider.title_ar : provider.title_en,
+    phone: provider.phone || "",
+    email: provider.email || "",
+    website: provider.website || "",
+    logo: provider.logo_url,
   }));
 
   return (
