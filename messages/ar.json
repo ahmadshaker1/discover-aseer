@@ -1295,35 +1295,7 @@
       "home": "الرئيسية",
       "companies": "الخدمات المساندة"
     },
-    "title": "الشركات السياحية",
-    "campany1": {
-      "name": "روح الجنوب",
-      "phone": "557574477",
-      "email": "info@visitsouthsaudi.com",
-      "website": "NA",
-      "logo": "/assets/tourism-companies/c1.webp"
-    },
-    "campany2": {
-      "name": "رفاهية المستقبل",
-      "phone": "553740200",
-      "email": "futuer.luxury@gmail.com",
-      "website": "https://futuer-luxury.com/ar/",
-      "logo": "/assets/tourism-companies/c2.webp"
-    },
-    "campany3": {
-      "name": "تماشي",
-      "phone": "530250000",
-      "email": "info@tmashi.sa",
-      "website": "https://tmashi.sa/",
-      "logo": "/assets/tourism-companies/c3.webp"
-    },
-    "campany4": {
-      "name": "أيفا ترافل",
-      "phone": "591277555",
-      "email": "abha_travel@hotmail.com",
-      "website": "NA",
-      "logo": "/assets/tourism-companies/c4.webp"
-    }
+    "title": "الشركات السياحية"
   },
   "identityfiles": {
     "navigation": {
