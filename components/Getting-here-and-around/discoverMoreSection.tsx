@@ -23,8 +23,12 @@ export default function DiscoverMoreSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Card 1: Experiences */}
         <div
-          className="bg-[#F8F8F8] dark:bg-surface border-[rgba(204,204,204,0.37)] dark:border-border"
+          className="bg-[#F8F8F8] dark:bg-surface border-[rgba(204,204,204,0.37)] dark:border-border overflow-hidden"
           style={{
+            backgroundImage:
+              "url('/assets/Getting-here-and-around/Discover.JPEG')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             display: "flex",
             padding: "32px",
             flexDirection: "column",
@@ -38,7 +42,7 @@ export default function DiscoverMoreSection() {
         >
           <div className="flex flex-col gap-2 w-full items-start">
             <h3
-              className="text-[#280048] dark:text-foreground"
+              className="text-white"
               style={{
                 textAlign: "right",
                 fontSize: "32px",
@@ -50,7 +54,7 @@ export default function DiscoverMoreSection() {
               {t("discoverMoreExperiencesTitle")}
             </h3>
             <p
-              className="text-black dark:text-foreground"
+              className="text-white"
               style={{
                 textAlign: "right",
                 fontSize: "18px",
@@ -64,7 +68,7 @@ export default function DiscoverMoreSection() {
           </div>
           <Link
             href="/experiences"
-            className="binline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
+            className="inline-flex w-fit items-center gap-3 rounded-full border border-border-violet-400/30 bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-violet-200 transition-colors hover:bg-primary/35"
             style={{
               display: "flex",
               height: "36px",
@@ -84,8 +88,11 @@ export default function DiscoverMoreSection() {
 
         {/* Card 2: Interactive map */}
         <div
-          className="bg-[#F8F8F8] dark:bg-surface border-[rgba(204,204,204,0.37)] dark:border-border"
+          className="bg-[#F8F8F8] dark:bg-surface border-[rgba(204,204,204,0.37)] dark:border-border overflow-hidden"
           style={{
+            backgroundImage: "url('/assets/Getting-here-and-around/map.JPEG')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             display: "flex",
             padding: "32px",
             flexDirection: "column",
@@ -99,7 +106,7 @@ export default function DiscoverMoreSection() {
         >
           <div className="flex flex-col gap-2 w-full items-start">
             <h3
-              className="text-[#280048] dark:text-foreground"
+              className="text-white"
               style={{
                 textAlign: "right",
                 fontSize: "32px",
@@ -111,7 +118,7 @@ export default function DiscoverMoreSection() {
               {t("discoverMoreMapTitle")}
             </h3>
             <p
-              className="text-black dark:text-foreground"
+              className="text-white"
               style={{
                 textAlign: "right",
                 fontSize: "18px",
@@ -125,7 +132,7 @@ export default function DiscoverMoreSection() {
           </div>
           <Link
             href="/interactive-map"
-            className="inline-flex w-fit items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35"
+            className="inline-flex w-fit items-center gap-3 rounded-full border border-border-violet-400/30 bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-violet-200 transition-colors hover:bg-primary/35"
             style={{
               display: "flex",
               height: "36px",

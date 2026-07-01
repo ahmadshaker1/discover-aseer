@@ -23,9 +23,9 @@ function getDirectusHeaders(): HeadersInit | undefined {
   return token ? { Authorization: `Bearer ${token}` } : undefined;
 }
 
-// Public role cannot read `thumbnail` or `hero_mobile` — requesting them 403s the whole query.
+// Public role cannot read `thumbnail`, `hero_mobile`, `start_time`, or `end_time` — requesting them 403s the whole query.
 const SEASON_EVENT_FIELDS =
-  "id,title,title_en,start_date,end_date,date,start_time,end_time,image,image_new,map,city,tags,description,free_event,price,not_allowed_for_kids,audience_type,event_status,unclickable";
+  "id,title,title_en,start_date,end_date,date,image,image_new,map,city,tags,description,free_event,price,not_allowed_for_kids,audience_type,event_status,unclickable";
 
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",
