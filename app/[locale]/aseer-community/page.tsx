@@ -28,7 +28,7 @@ const AseerCommunityPage = async () => {
     hero: {
       breadcrumbs: [
         { label: tCommon("breadcrumbHome"), href: "/" },
-        { label: tServices("bannerCrumb") },
+        { label: t("breadcrumb") },
       ],
       title: t("title"),
       subtitle: t("subtitle"),

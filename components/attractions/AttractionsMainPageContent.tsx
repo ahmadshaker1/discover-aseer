@@ -256,7 +256,7 @@ const AttractionsMainPageContent = ({
                 <div className="flex h-full items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="shrink-0 text-muted-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
-                      <LocationIcon />
+                      <ClockIcon />
                     </span>
                     <span
                       className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground transition-colors duration-200 group-hover:text-primary/90"

@@ -16,7 +16,7 @@
     "shareOnWhatsApp": "Share {title} on WhatsApp",
     "shareOnFacebook": "Share {title} on Facebook",
     "shareOnX": "Share {title} on X",
-    "destinations": "Destinations",
+    "destinations": "Main destinations",
     "experiences": "Experiences",
     "events": "Events",
     "accommodation": "Accommodation",
@@ -293,7 +293,7 @@
     "eventOver": "Event ended"
   },
   "experiencesPage": {
-    "breadcrumb": "Experiences",
+    "breadcrumb": "Tourist experiences",
     "title": "Experiences waiting for you in Aseer",
     "subtitle": "One visit is never enough with all the activities and experiences on offer.",
     "costSection": "Cost"
@@ -663,6 +663,7 @@
     }
   },
   "aseerCommunity": {
+    "breadcrumb": "Asir community",
     "title": "Aseer community",
     "subtitle": "Values of genuine nobility, exceptional hospitality, and authentic courage welcome you in Aseer",
     "slider": {
@@ -1175,7 +1176,7 @@
       "crumbExperiences": "Experiences",
       "crumbGettingHere": "Getting here & around",
       "title": "Getting here & around",
-      "subtitle": "One visit is rarely enough—with so many activities and experiences to explore."
+      "subtitle": "Aseer, diverse routes, unique adventures"
     },
     "air": {
       "flyByAir": "Flying in",
@@ -1183,11 +1184,11 @@
       "abhaAirportBody": "The main arrival point for Aseer visitors",
       "bishaAirportTitle": "Bisha Domestic Airport (BHH)",
       "bishaAirportBody": "The main arrival point for visitors to Bisha and surrounding areas",
-      "viewOnMap": "View on map",
+      "viewOnMap": "Location ",
       "domesticFlights": "Domestic flights",
       "internationalFlights": "International flights",
       "bookNow": "Book now",
-      "bookingSite": "Booking site",
+      "bookingSite": "Book now",
       "featured": "Featured",
       "budget": "Budget",
       "saudiLabel": "Saudia",
@@ -1236,7 +1237,7 @@
       "saptcoBody": "Regular services connecting Abha Central Station with major cities across the Kingdom.",
       "saptcoAlt": "SAPTCO",
       "saptcoLink": "https://saptco.com.sa/en",
-      "bookOnWebsite": "Book online",
+      "bookOnWebsite": "Book Now",
       "downloadApp": "Download app",
       "gettingAroundTitle": "Getting Around Aseer",
       "airportTaxiTitle": "Taxis",
@@ -1293,7 +1294,7 @@
   "tourismCompanies": {
     "navigation": {
       "home": "Home",
-      "companies": "Support services"
+      "companies": "Tourism companies"
     },
     "title": "Tourism Companies"
   },

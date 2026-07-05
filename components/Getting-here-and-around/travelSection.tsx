@@ -7,7 +7,7 @@ export default function TravelSection() {
   return (
     <section className={`py-12 text-foreground text-start`}>
       <div className="container mx-auto px-6 mb-12">
-        <h2 className="travel-section-title">{t("flyByAir")}</h2>
+        <h2 className="travel-section-title text-start">{t("flyByAir")}</h2>
         <div className="mb-6 border-b border-border" />
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <article className="rounded-2xl border border-border bg-surface p-6">
@@ -66,17 +66,11 @@ export default function TravelSection() {
                 alt="Saudia"
                 className="w-full h-full object-cover"
               />
-              <span className="absolute top-4 right-4 rounded-full bg-muted px-4 py-1 text-[12px] font-bold leading-none text-muted-foreground">
-                {t("featured")}
-              </span>
             </div>
             <div className="flex flex-1 flex-col p-6 text-start justify-between">
               <div>
                 <p className="text-[24px] font-bold leading-[1.05] text-secondary">
                   {t("saudiLabel")}
-                </p>
-                <p className="mt-3 text-[16px] leading-[1.2] text-muted-foreground">
-                  {t("saudiCarrier")}
                 </p>
               </div>
               <a
@@ -101,17 +95,11 @@ export default function TravelSection() {
                 alt="flynas"
                 className="w-full h-full object-cover"
               />
-              <span className="absolute top-4 right-4 rounded-full bg-muted px-4 py-1 text-[12px] font-bold leading-none text-muted-foreground">
-                {t("budget")}
-              </span>
             </div>
             <div className="flex flex-1 flex-col p-6 text-start justify-between">
               <div>
                 <p className="text-[24px] font-bold leading-[1.05] text-secondary">
                   {t("flyNasLabel")}
-                </p>
-                <p className="mt-3 text-[16px] leading-[1.2] text-muted-foreground">
-                  {t("flyNasTagline")}
                 </p>
               </div>
               <a
@@ -136,17 +124,11 @@ export default function TravelSection() {
                 alt="flyadeal"
                 className="w-full h-full object-cover"
               />
-              <span className="absolute top-4 right-4 rounded-full bg-muted px-4 py-1 text-[12px] font-bold leading-none text-muted-foreground">
-                {t("budget")}
-              </span>
             </div>
             <div className="flex flex-1 flex-col p-6 text-start justify-between">
               <div>
                 <p className="text-[24px] font-bold leading-[1.05] text-secondary">
                   {t("flyadealLabel")}
-                </p>
-                <p className="mt-3 text-[16px] leading-[1.2] text-muted-foreground">
-                  {t("flyadealTagline")}
                 </p>
               </div>
               <a
