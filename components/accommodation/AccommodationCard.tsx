@@ -7,6 +7,7 @@ import { accommodationMapsHref } from "./data";
 const LOCATION_PIN = "/assets/accommodation/hotel-location-pin.svg";
 const EXCEPTIONAL_NAME_BADGE =
   "/assets/accommodation/exceptional-name-badge.svg";
+const EN_EXCEPTIONAL_NAME_BADGE = "/assets/accommodation/Tag2.svg";
 
 interface AccommodationCardProps {
   accommodation: Accommodation;
@@ -31,7 +32,7 @@ const AccommodationCard = ({
 
   return (
     <article
-      className={`flex h-[400px] flex-col overflow-hidden rounded-[16px] border border-border bg-surface text-foreground shadow-sm ${widthClass}`}
+      className={`flex h-[430px] flex-col overflow-hidden rounded-[16px] border border-border bg-surface text-foreground shadow-sm ${widthClass}`}
       lang={locale}
     >
       <div className="relative h-[190px] w-full shrink-0 overflow-hidden">
@@ -49,16 +50,22 @@ const AccommodationCard = ({
 
       <div className="flex flex-1 flex-col p-4">
         <h3 className="mb-2 w-full min-w-0 text-start text-[28px] font-bold leading-tight text-foreground [unicode-bidi:plaintext]">
-          {accommodation.name}
           {showBadge ? (
             <img
-              src={EXCEPTIONAL_NAME_BADGE}
+              src={
+                locale === "en"
+                  ? EN_EXCEPTIONAL_NAME_BADGE
+                  : EXCEPTIONAL_NAME_BADGE
+              }
               alt=""
-              width={55}
-              height={28}
-              className="ms-2 inline-block h-7 w-[55px] shrink-0 align-middle object-contain [unicode-bidi:isolate]"
+              width={locale === "en" ? 85 : 55}
+              height={locale === "en" ? 44 : 28}
+              className={`shrink-0 object-contain [unicode-bidi:isolate] ${
+                locale === "en" ? "h-[44px] w-[85px]" : "h-7 w-[55px]"
+              }`}
             />
           ) : null}
+          {accommodation.name}
         </h3>
         <p className="line-clamp-3 text-start text-[14px] leading-6 text-muted-foreground [unicode-bidi:plaintext]">
           {accommodation.description}
