@@ -10,6 +10,8 @@ import {
   resolveDestinationMapCenter,
 } from "@/components/destinations/data";
 import EventsInfo from "@/components/EventsInfo/EventsInfo";
+import AttractionsLandmarksSection from "@/components/attractions/AttractionsLandmarksSection";
+import { fetchAttractions } from "@/components/attractions/data";
 
 interface DestinationSlugPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -19,16 +21,21 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
   const locale = (await getLocale()) as "ar" | "en";
   const tCommon = await getTranslations("common");
   const tDest = await getTranslations("destinations");
+  const tAttr = await getTranslations("attractionsPage");
   const { slug } = await params;
-  const [destination, allDestinations] = await Promise.all([
+  const [destination, allDestinations, allAttractions] = await Promise.all([
     getDestinationBySlug(slug, locale),
     fetchDestinations(locale),
+    fetchAttractions(locale as any),
   ]);
 
   if (!destination) notFound();
 
   const areaDestinations = allDestinations.filter(
     (d) => d.city === destination.city && d.slug !== destination.slug,
+  );
+  const cityAttractions = allAttractions.filter(
+    (a) => a.city === destination.city,
   );
   const mapCenter = resolveDestinationMapCenter(destination);
 
@@ -63,6 +70,14 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
         })}
         excludeSlug={destination.slug}
       />
+
+      {cityAttractions.length > 0 ? (
+        <AttractionsLandmarksSection
+          landmarks={cityAttractions}
+          title={tAttr("relatedAttractionsTitle")}
+          showFilters={false}
+        />
+      ) : null}
 
       <DestinationsMapSection
         areaLabel={destination.title}
