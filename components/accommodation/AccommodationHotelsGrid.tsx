@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { Accommodation } from "./data";
 import AccommodationCard from "./AccommodationCard";
 
@@ -14,13 +14,13 @@ const AccommodationHotelsGrid = ({
   showTopDivider,
 }: AccommodationHotelsGridProps) => {
   const t = useTranslations("common");
+  const locale = useLocale();
   if (items.length === 0) return null;
 
   return (
     <section
       className={`min-w-0 ${showTopDivider ? "border-t border-border pt-10 lg:pt-12" : ""}`}
-
-      lang="ar"
+      lang={locale}
     >
       <h2
 

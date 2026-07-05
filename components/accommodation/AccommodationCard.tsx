@@ -1,11 +1,13 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { Accommodation } from "./data";
 import { accommodationMapsHref } from "./data";
 
 const LOCATION_PIN = "/assets/accommodation/hotel-location-pin.svg";
-const EXCEPTIONAL_NAME_BADGE = "/assets/accommodation/exceptional-name-badge.svg";
+const EXCEPTIONAL_NAME_BADGE =
+  "/assets/accommodation/exceptional-name-badge.svg";
+const EN_EXCEPTIONAL_NAME_BADGE = "/assets/accommodation/Tag2.svg";
 
 interface AccommodationCardProps {
   accommodation: Accommodation;
@@ -20,6 +22,7 @@ const AccommodationCard = ({
   showExceptionalTag = false,
 }: AccommodationCardProps) => {
   const t = useTranslations("common");
+  const locale = useLocale();
   const mapsHref = accommodationMapsHref(accommodation);
   const showBadge = showExceptionalTag || Boolean(accommodation.exceptional);
   const widthClass =
@@ -29,10 +32,10 @@ const AccommodationCard = ({
 
   return (
     <article
-      className={`overflow-hidden rounded-[16px] border border-border bg-surface text-foreground shadow-sm ${widthClass}`}
-      lang="ar"
+      className={`flex h-[430px] flex-col overflow-hidden rounded-[16px] border border-border bg-surface text-foreground shadow-sm ${widthClass}`}
+      lang={locale}
     >
-      <div className="relative h-[190px] w-full overflow-hidden">
+      <div className="relative h-[190px] w-full shrink-0 overflow-hidden">
         <img
           src={accommodation.image}
           alt={accommodation.name}
@@ -45,18 +48,24 @@ const AccommodationCard = ({
         </div>
       </div>
 
-      <div className="space-y-2 p-4">
-        <h3 className="w-full min-w-0 text-start text-[28px] font-bold leading-tight text-foreground [unicode-bidi:plaintext]">
-          {accommodation.name}
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="mb-2 w-full min-w-0 text-start text-[28px] font-bold leading-tight text-foreground [unicode-bidi:plaintext]">
           {showBadge ? (
             <img
-              src={EXCEPTIONAL_NAME_BADGE}
+              src={
+                locale === "en"
+                  ? EN_EXCEPTIONAL_NAME_BADGE
+                  : EXCEPTIONAL_NAME_BADGE
+              }
               alt=""
-              width={55}
-              height={28}
-              className="ms-2 inline-block h-7 w-[55px] shrink-0 align-middle object-contain [unicode-bidi:isolate]"
+              width={locale === "en" ? 85 : 55}
+              height={locale === "en" ? 44 : 28}
+              className={`shrink-0 object-contain [unicode-bidi:isolate] ${
+                locale === "en" ? "h-[44px] w-[85px]" : "h-7 w-[55px]"
+              }`}
             />
           ) : null}
+          {accommodation.name}
         </h3>
         <p className="line-clamp-3 text-start text-[14px] leading-6 text-muted-foreground [unicode-bidi:plaintext]">
           {accommodation.description}
@@ -65,10 +74,16 @@ const AccommodationCard = ({
           href={mapsHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-primary/15 px-4 py-2.5 text-[16px] font-bold text-primary transition-colors hover:bg-primary/25"
+          className="mt-auto pt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-primary/15 px-4 py-2.5 text-[16px] font-bold text-primary transition-colors hover:bg-primary/25"
         >
           <span className="text-start">{t("location")}</span>
-          <img src={LOCATION_PIN} alt="" width={15} height={15} className="shrink-0" />
+          <img
+            src={LOCATION_PIN}
+            alt=""
+            width={15}
+            height={15}
+            className="shrink-0"
+          />
         </a>
       </div>
     </article>

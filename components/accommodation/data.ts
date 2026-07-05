@@ -254,22 +254,32 @@ export const transformAccommodation = (
       (locale === "ar" ? "مكان إقامة" : "Accommodation"),
   );
 
-  const city = String(apiAccommodation.city || (locale === "ar" ? "أبها" : "Abha"));
+  const city = String(
+    pickLocalizedField(apiAccommodation, "city", locale) ||
+      apiAccommodation.city ||
+      (locale === "ar" ? "أبها" : "Abha"),
+  );
 
-  const locationValue = String(apiAccommodation.location || "").trim();
+  const locationValue = String(
+    pickLocalizedField(apiAccommodation, "location", locale) ||
+      apiAccommodation.location ||
+      "",
+  ).trim();
   const location =
     (locationValue && !isHttpUrl(locationValue) ? locationValue : "") ||
-    String(apiAccommodation.area || city || DEFAULT_LOCATION);
+    String(
+      pickLocalizedField(apiAccommodation, "area", locale) ||
+        apiAccommodation.area ||
+        city ||
+        DEFAULT_LOCATION,
+    );
 
   const hotelRating = toNumber(apiAccommodation.hotel_rating, 4);
 
   const mapsUrlRaw = String(
-    apiAccommodation.maps_url ||
-      apiAccommodation.google_maps_url ||
-      "",
+    apiAccommodation.maps_url || apiAccommodation.google_maps_url || "",
   ).trim();
-  const mapsUrl =
-    mapsUrlRaw && isHttpUrl(mapsUrlRaw) ? mapsUrlRaw : undefined;
+  const mapsUrl = mapsUrlRaw && isHttpUrl(mapsUrlRaw) ? mapsUrlRaw : undefined;
 
   const exceptional = Boolean(
     apiAccommodation.exceptional ?? apiAccommodation.is_exceptional,
@@ -281,9 +291,9 @@ export const transformAccommodation = (
     city,
     location,
     description: String(
-      apiAccommodation.content ||
-        apiAccommodation.short_description ||
-        apiAccommodation.description ||
+      pickLocalizedField(apiAccommodation, "content", locale) ||
+        pickLocalizedField(apiAccommodation, "short_description", locale) ||
+        pickLocalizedField(apiAccommodation, "description", locale) ||
         (locale === "ar"
           ? "إقامة مميزة بخدمات فندقية وتجربة مريحة."
           : "A premium stay with comfortable hospitality services."),

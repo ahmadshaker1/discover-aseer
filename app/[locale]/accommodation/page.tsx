@@ -2,8 +2,12 @@ import AccommodationBanner from "@/components/accommodation/AccommodationBanner"
 import AccommodationGrid from "@/components/accommodation/AccommodationGrid";
 import { fetchAccommodations } from "@/components/accommodation/data";
 
+import { getLocale } from "next-intl/server";
+import type { AppLocale } from "@/i18n/routing";
+
 const AccommodationPage = async () => {
-  const accommodations = await fetchAccommodations();
+  const locale = (await getLocale()) as AppLocale;
+  const accommodations = await fetchAccommodations(locale);
 
   return (
     <div className="flex flex-col w-full">
