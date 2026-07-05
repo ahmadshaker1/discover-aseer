@@ -31,10 +31,10 @@ const AccommodationCard = ({
 
   return (
     <article
-      className={`overflow-hidden rounded-[16px] border border-border bg-surface text-foreground shadow-sm ${widthClass}`}
+      className={`flex h-[400px] flex-col overflow-hidden rounded-[16px] border border-border bg-surface text-foreground shadow-sm ${widthClass}`}
       lang={locale}
     >
-      <div className="relative h-[190px] w-full overflow-hidden">
+      <div className="relative h-[190px] w-full shrink-0 overflow-hidden">
         <img
           src={accommodation.image}
           alt={accommodation.name}
@@ -47,8 +47,8 @@ const AccommodationCard = ({
         </div>
       </div>
 
-      <div className="space-y-2 p-4">
-        <h3 className="w-full min-w-0 text-start text-[28px] font-bold leading-tight text-foreground [unicode-bidi:plaintext]">
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="mb-2 w-full min-w-0 text-start text-[28px] font-bold leading-tight text-foreground [unicode-bidi:plaintext]">
           {accommodation.name}
           {showBadge ? (
             <img
@@ -67,7 +67,7 @@ const AccommodationCard = ({
           href={mapsHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-primary/15 px-4 py-2.5 text-[16px] font-bold text-primary transition-colors hover:bg-primary/25"
+          className="mt-auto pt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-primary/15 px-4 py-2.5 text-[16px] font-bold text-primary transition-colors hover:bg-primary/25"
         >
           <span className="text-start">{t("location")}</span>
           <img
