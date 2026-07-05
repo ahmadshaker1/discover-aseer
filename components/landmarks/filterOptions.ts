@@ -18,8 +18,6 @@ const INTEREST_DEFS = [
   { id: "adventure", ar: "المغامرات", en: "Adventure" },
   { id: "culture", ar: "الثقافة والتراث", en: "Culture & heritage" },
   { id: "nature", ar: "الطبيعة والهواء الطلق", en: "Nature & outdoors" },
-  { id: "food", ar: "الطعام والمطاعم", en: "Food & dining" },
-  { id: "relaxation", ar: "الاسترخاء", en: "Relaxation" },
   { id: "shopping", ar: "التسوق", en: "Shopping" },
   { id: "historical", ar: "المواقع التاريخية", en: "Historic sites" },
 ] as const;

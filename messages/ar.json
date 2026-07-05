@@ -16,7 +16,7 @@
     "shareOnWhatsApp": "مشاركة {title} على واتساب",
     "shareOnFacebook": "مشاركة {title} على فيسبوك",
     "shareOnX": "مشاركة {title} على X",
-    "destinations": "الوجهات",
+    "destinations": "الوجهات الرئيسية",
     "experiences": "التجارب",
     "events": "الفعاليات",
     "accommodation": "أماكن الإقامة",
@@ -293,7 +293,7 @@
     "eventOver": "انتهت الفعالية"
   },
   "experiencesPage": {
-    "breadcrumb": "التجارب",
+    "breadcrumb": "التجارب السياحية",
     "title": "تجارب تنتظرك في عسير",
     "subtitle": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب.",
     "costSection": "التكلفة"
@@ -619,6 +619,7 @@
     }
   },
   "aseerCommunity": {
+    "breadcrumb": "مجتمع عسير",
     "title": "مجتمع عسير",
     "subtitle": "قيم الشيم الأصيلة، وحُسن الضيافة، وأصالة المواقف والشجاعة تستقبلك في عسير",
     "slider": {
@@ -1131,7 +1132,7 @@
       "crumbExperiences": "التجارب",
       "crumbGettingHere": "الوصول والتجول",
       "title": "الوصول والتجول",
-      "subtitle": "زيارة واحدة لا تكفي مع وفرة الخيارات من الأنشطة والتجارب."
+      "subtitle": "دليلك للوصول إلى عسير والتنقل بين وجهاتها وتجاربها بكل سهولة"
     },
     "air": {
       "flyByAir": "السفر جواً",
@@ -1139,11 +1140,11 @@
       "abhaAirportBody": "نقطة الوصول الرئيسية للزوار القادمين إلى عسير",
       "bishaAirportTitle": "مطار بيشة (BHH)",
       "bishaAirportBody": "نقطة وصول للرحلات الداخلية تخدم محافظة بيشة والمناطق المجاورة لها",
-      "viewOnMap": "عرض على الخريطة",
-      "domesticFlights": "الرحلات الداخليه",
+      "viewOnMap": "عرض الموقع",
+      "domesticFlights": "الرحلات المحلية",
       "internationalFlights": "الرحلات الدوليه",
       "bookNow": "احجز الأن",
-      "bookingSite": "موقع الحجز",
+      "bookingSite": "احجز الأن",
       "featured": "مميز",
       "budget": "اقتصادي",
       "saudiLabel": "السعودية",
@@ -1192,7 +1193,7 @@
       "saptcoBody": "رحلات منتظمة من المدن الرئيسية مباشرة من وإلى محطة أبها المركزية",
       "saptcoAlt": "سابتكو",
       "saptcoLink": "https://www.saptco.com.sa/",
-      "bookOnWebsite": "احجز عبر الموقع",
+      "bookOnWebsite": "احجز الأن",
       "downloadApp": "تحميل التطبيق",
       "gettingAroundTitle": "التجول في عسير",
       "airportTaxiTitle": "سيارات الأجرة",
@@ -1248,8 +1249,8 @@
   },
   "tourismCompanies": {
     "navigation": {
-      "home": "الرئيسية",
-      "companies": "الخدمات المساندة"
+      "home": "الصفحة الرئيسية",
+      "companies": "الشركات السياحية"
     },
     "title": "الشركات السياحية"
   },

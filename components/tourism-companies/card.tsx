@@ -126,14 +126,14 @@ export default async function TourismCompaniesCardSection() {
                   </div>
                 </div>
 
-                <div className="flex h-[180px] sm:h-[220px] lg:h-auto lg:w-1/2 items-center justify-center bg-white dark:bg-[#14091F] p-8 w-[500px] shrink-0">
-                  <div className="relative h-full w-[500px]">
+                <div className="flex h-[240px] sm:h-[280px] lg:h-auto lg:w-1/2 items-center justify-center bg-white dark:bg-[#14091F] p-6 sm:p-8 shrink-0">
+                  <div className="relative h-[150px] w-[280px] sm:h-[180px] sm:w-[360px]">
                     <Image
                       src={company.logo}
                       alt={company.name}
                       fill
                       className="object-contain transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 80vw, 40vw"
+                      sizes="(max-width: 640px) 280px, 360px"
                     />
                   </div>
                 </div>
