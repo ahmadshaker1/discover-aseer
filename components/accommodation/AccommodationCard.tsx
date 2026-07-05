@@ -1,11 +1,12 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { Accommodation } from "./data";
 import { accommodationMapsHref } from "./data";
 
 const LOCATION_PIN = "/assets/accommodation/hotel-location-pin.svg";
-const EXCEPTIONAL_NAME_BADGE = "/assets/accommodation/exceptional-name-badge.svg";
+const EXCEPTIONAL_NAME_BADGE =
+  "/assets/accommodation/exceptional-name-badge.svg";
 
 interface AccommodationCardProps {
   accommodation: Accommodation;
@@ -20,6 +21,7 @@ const AccommodationCard = ({
   showExceptionalTag = false,
 }: AccommodationCardProps) => {
   const t = useTranslations("common");
+  const locale = useLocale();
   const mapsHref = accommodationMapsHref(accommodation);
   const showBadge = showExceptionalTag || Boolean(accommodation.exceptional);
   const widthClass =
@@ -30,7 +32,7 @@ const AccommodationCard = ({
   return (
     <article
       className={`overflow-hidden rounded-[16px] border border-border bg-surface text-foreground shadow-sm ${widthClass}`}
-      lang="ar"
+      lang={locale}
     >
       <div className="relative h-[190px] w-full overflow-hidden">
         <img
@@ -68,7 +70,13 @@ const AccommodationCard = ({
           className="mt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-primary/15 px-4 py-2.5 text-[16px] font-bold text-primary transition-colors hover:bg-primary/25"
         >
           <span className="text-start">{t("location")}</span>
-          <img src={LOCATION_PIN} alt="" width={15} height={15} className="shrink-0" />
+          <img
+            src={LOCATION_PIN}
+            alt=""
+            width={15}
+            height={15}
+            className="shrink-0"
+          />
         </a>
       </div>
     </article>

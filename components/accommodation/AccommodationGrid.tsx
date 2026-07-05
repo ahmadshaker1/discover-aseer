@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import AccommodationExceptionalCarousel from "./AccommodationExceptionalCarousel";
@@ -15,6 +15,7 @@ interface AccommodationGridProps {
 
 const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
   const t = useTranslations("common");
+  const locale = useLocale();
   const [selectedCity, setSelectedCity] = useState<string>("all");
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
   const [onlyExceptional, setOnlyExceptional] = useState(false);
@@ -100,7 +101,10 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
           onReset={resetFilters}
         />
 
-        <div className="flex min-w-0 flex-1 flex-col gap-8 lg:gap-10" lang="ar">
+        <div
+          className="flex min-w-0 flex-1 flex-col gap-8 lg:gap-10"
+          lang={locale}
+        >
           <AccommodationExceptionalCarousel items={carousel} />
           <AccommodationHotelsGrid
             items={grid}
