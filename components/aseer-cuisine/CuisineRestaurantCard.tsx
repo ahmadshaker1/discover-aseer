@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import type { CuisineRestaurantCardData } from "./cuisineRestaurantCardData";
 import {
   CardCurrencyIcon,
@@ -32,7 +33,8 @@ const CuisineRestaurantCard = ({
   className = "",
 }: CuisineRestaurantCardProps) => {
   return (
-    <article
+    <Link
+      href="/restaurants"
       className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-border bg-surface text-start transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl ${className}`}
     >
       <div className="relative h-[190px] w-full overflow-hidden">
@@ -98,7 +100,7 @@ const CuisineRestaurantCard = ({
           </div>
         </div>
       </div>
-    </article>
+    </Link>
   );
 };
 
