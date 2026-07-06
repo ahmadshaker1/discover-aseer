@@ -6,9 +6,7 @@ import { MinusIcon, PlusIcon } from "./Icons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
-
 // Backend: GET FAQ list → map each row to { id, question, answer }. Pass the array as `items`.
-// `id` must be stable (API id or slug) for React keys and open-state tracking.
 export interface TravelFaqItem {
   id: string;
   question: string;
@@ -29,10 +27,7 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
   }, []);
 
   return (
-    <section
-      className="w-full max-w-[1440px] mx-auto px-4 py-10 sm:px-8 md:px-[60px] md:py-12"
-     
-    >
+    <section className="w-full max-w-[1440px] mx-auto px-4 py-10 sm:px-8 md:px-[60px] md:py-12">
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8 text-foreground">
         <h2
           className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-foreground text-start`}
@@ -60,7 +55,10 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                       >
                         {item.question}
                       </span>
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center text-foreground" aria-hidden>
+                      <span
+                        className="flex h-6 w-6 shrink-0 items-center justify-center text-foreground"
+                        aria-hidden
+                      >
                         <MinusIcon />
                       </span>
                     </button>
@@ -86,7 +84,10 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                     >
                       {item.question}
                     </span>
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-foreground" aria-hidden>
+                    <span
+                      className="flex h-6 w-6 shrink-0 items-center justify-center text-foreground"
+                      aria-hidden
+                    >
                       <PlusIcon />
                     </span>
                   </button>
