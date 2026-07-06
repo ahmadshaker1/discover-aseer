@@ -41,12 +41,20 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const cityOptions = useMemo(
-    () => buildOptions(services.map((service) => service.filterCity), locale),
+    () =>
+      buildOptions(
+        services.map((service) => service.filterCity),
+        locale,
+      ),
     [services, locale],
   );
 
   const typeOptions = useMemo(
-    () => buildOptions(services.map((service) => service.filterType), locale),
+    () =>
+      buildOptions(
+        services.map((service) => service.filterType),
+        locale,
+      ),
     [services, locale],
   );
 
@@ -94,10 +102,7 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
       <div className="flex w-full min-w-0 flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
         <div className="order-2 min-w-0 flex-1 lg:order-2">
           {services.length === 0 ? (
-            <div
-              className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-center text-muted-foreground"
-             
-            >
+            <div className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-border bg-surface p-6 text-center text-muted-foreground">
               {t("noServicesData")}
             </div>
           ) : (
