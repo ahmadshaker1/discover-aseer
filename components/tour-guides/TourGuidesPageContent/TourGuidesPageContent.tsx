@@ -47,7 +47,7 @@ interface TourGuidesPageContentProps {
   filterOptions: TourGuidesFilterOptions;
 }
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 50;
 
 const TourGuidesPageContent = ({
   guides,
