@@ -114,7 +114,7 @@ export default function FoodAndDiningSection() {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none"></div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-right z-10">
+                <div className="absolute bottom-0 start-0 end-0 p-6 md:p-8 text-start z-10">
                   <h3 className="text-white font-bold text-2xl mb-2 drop-shadow-md">
                     {tRestaurants(`items.${id}.title`)}
                   </h3>
