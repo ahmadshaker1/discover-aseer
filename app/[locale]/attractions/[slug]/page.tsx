@@ -35,39 +35,15 @@ export default async function AttractionSlugPage({
     notFound();
   }
 
-  let related = allAttractions.filter((item) => item.id !== attraction.id);
-
-  related = related
-    .sort((a, b) => {
-      let scoreA = 0;
-      const aCity =
-        a.cityId && attraction.cityId && a.cityId === attraction.cityId;
-      const aType =
+  const related = allAttractions
+    .filter((item) => {
+      if (item.id === attraction.id) return false;
+      const sameCity =
+        item.cityId && attraction.cityId && item.cityId === attraction.cityId;
+      const sameType =
         attraction.attractionType &&
-        a.attractionType === attraction.attractionType;
-      const aTags = a.interestTags?.some((tag) =>
-        attraction.interestTags?.includes(tag),
-      );
-      if (aCity && aType) scoreA = 3;
-      else if (aType) scoreA = 2;
-      else if (aCity) scoreA = 1;
-      if (aTags) scoreA += 0.5;
-
-      let scoreB = 0;
-      const bCity =
-        b.cityId && attraction.cityId && b.cityId === attraction.cityId;
-      const bType =
-        attraction.attractionType &&
-        b.attractionType === attraction.attractionType;
-      const bTags = b.interestTags?.some((tag) =>
-        attraction.interestTags?.includes(tag),
-      );
-      if (bCity && bType) scoreB = 3;
-      else if (bType) scoreB = 2;
-      else if (bCity) scoreB = 1;
-      if (bTags) scoreB += 0.5;
-
-      return scoreB - scoreA;
+        item.attractionType === attraction.attractionType;
+      return sameCity && sameType;
     })
     .slice(0, 4);
   const mapTarget = resolveAttractionMapTarget(attraction);
