@@ -134,7 +134,7 @@ const AccommodationFilters = ({
               type="checkbox"
               checked={onlyExceptional}
               onChange={() => onOnlyExceptionalChange(!onlyExceptional)}
-              className="peer h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0px_1px_2px_0px_#0000000D] checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="h-4 w-4 shrink-0 rounded border-border text-primary focus:ring-primary"
             />
             <CheckboxCheckIcon />
           </div>

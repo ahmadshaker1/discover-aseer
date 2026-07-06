@@ -60,7 +60,7 @@ const AccommodationCard = ({
               alt=""
               width={locale === "en" ? 85 : 55}
               height={locale === "en" ? 44 : 28}
-              className={`shrink-0 object-contain [unicode-bidi:isolate] ${
+              className={`shrink-0 object-contain [unicode-bidi:isolate] dark:brightness-0 dark:invert ${
                 locale === "en" ? "h-[44px] w-[85px]" : "h-7 w-[55px]"
               }`}
             />
@@ -74,7 +74,7 @@ const AccommodationCard = ({
           href={mapsHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto pt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-primary/15 px-4 py-2.5 text-[16px] font-bold text-primary transition-colors hover:bg-primary/25"
+          className="mt-auto pt-3 inline-flex w-full flex-row items-center justify-center gap-2 rounded-full bg-primary/15 px-4 py-2.5 text-[16px] font-bold text-primary transition-colors hover:bg-primary/25 dark:text-white"
         >
           <span className="text-start">{t("location")}</span>
           <img
@@ -82,7 +82,7 @@ const AccommodationCard = ({
             alt=""
             width={15}
             height={15}
-            className="shrink-0"
+            className="shrink-0 dark:brightness-0 dark:invert"
           />
         </a>
       </div>
