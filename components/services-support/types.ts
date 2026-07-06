@@ -3,10 +3,12 @@ export interface ApiSupportService {
   title_ar?: string | null;
   title_en?: string | null;
   city?: string | null;
+  city_en?: string | null;
   type?: string | null;
   location?: string | null;
   support_services_number?: number | string | null;
   status?: string | null;
+  [key: string]: unknown;
 }
 
 export interface SupportService {

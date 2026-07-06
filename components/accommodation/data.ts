@@ -24,6 +24,7 @@ export interface ApiAccommodation {
   name_en?: string | null;
   name?: string | null;
   city?: string | null;
+  city_en?: string | null;
   area?: string | null;
   location?: string | null;
   content?: string | null;
@@ -238,6 +239,37 @@ const buildAssetUrl = (directusUrl: string, assetId?: string | null) => {
   return `${directusUrl}/assets/${assetId}`;
 };
 
+const normalizeCity = (city: string, locale: LocaleCode): string => {
+  const c = city.trim();
+  if (locale === "en") {
+    const map: Record<string, string> = {
+      أبها: "Abha",
+      "خميس مشيط": "Khamis Mushait",
+      السودة: "Al Soudah",
+      بيشة: "Bisha",
+      تنومة: "Tanomah",
+      النماص: "Al Namas",
+      "محايل عسير": "Mahayil Aseer",
+      "رجال ألمع": "Rijal Almaa",
+    };
+    return map[c] || c;
+  }
+  if (locale === "ar") {
+    const map: Record<string, string> = {
+      Abha: "أبها",
+      "Khamis Mushait": "خميس مشيط",
+      "Al Soudah": "السودة",
+      Bisha: "بيشة",
+      Tanomah: "تنومة",
+      "Al Namas": "النماص",
+      "Mahayil Aseer": "محايل عسير",
+      "Rijal Almaa": "رجال ألمع",
+    };
+    return map[c] || c;
+  }
+  return c;
+};
+
 export const transformAccommodation = (
   apiAccommodation: ApiAccommodation,
   directusUrl: string,
@@ -254,11 +286,12 @@ export const transformAccommodation = (
       (locale === "ar" ? "مكان إقامة" : "Accommodation"),
   );
 
-  const city = String(
+  const rawCity = String(
     pickLocalizedField(apiAccommodation, "city", locale) ||
       apiAccommodation.city ||
       (locale === "ar" ? "أبها" : "Abha"),
   );
+  const city = normalizeCity(rawCity, locale);
 
   const locationValue = String(
     pickLocalizedField(apiAccommodation, "location", locale) ||
@@ -368,7 +401,7 @@ export const fetchAccommodations = async (
 
   try {
     const response = await fetch(`${directusUrl}${ACCOMMODATION_ITEMS_PATH}`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
+      next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 3600 },
     });
 
     if (!response.ok) {
