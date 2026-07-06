@@ -52,7 +52,7 @@ const TourGuideCard = ({
       : profileImage;
   return (
     <div
-      className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md"
+      className="cursor-pointer overflow-hidden rounded-lg bg-surface texst-foreground shadow-sm transition-shadow hover:shadow-md h-85"
       onClick={onCardClick}
     >
       <div className="p-4 sm:p-6 flex flex-col items-center">
