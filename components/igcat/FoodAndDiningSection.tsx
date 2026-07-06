@@ -94,9 +94,10 @@ export default function FoodAndDiningSection() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {RESTAURANT_IDS.map((id) => (
-              <div
+              <Link
                 key={id}
-                className="relative w-full h-[400px] md:h-[450px] rounded-[2rem] overflow-hidden group shadow-md"
+                href="/restaurants"
+                className="relative w-full h-[400px] md:h-[450px] rounded-[2rem] overflow-hidden group shadow-md block"
               >
                 {tRestaurants(`items.${id}.image`) ? (
                   <img
@@ -122,7 +123,7 @@ export default function FoodAndDiningSection() {
                     {tRestaurants(`items.${id}.description`)}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
