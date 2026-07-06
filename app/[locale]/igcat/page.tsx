@@ -7,12 +7,34 @@ import FoodFilmSection from "@/components/igcat/FoodFilmSection";
 import InitiativesSection from "@/components/igcat/InitiativesSection";
 import FoodAndDiningSection from "@/components/igcat/FoodAndDiningSection";
 import EventsInfo from "@/components/EventsInfo/EventsInfo";
-import { getLocale } from "next-intl/server";
+import AseerCuisineHeritageRestaurantsSection from "@/components/aseer-cuisine/AseerCuisineHeritageRestaurantsSection";
+import { fetchRestaurants } from "@/components/restaurants/data";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export const revalidate = 300;
 
 export default async function IGCatPage() {
   const locale = (await getLocale()) as "ar" | "en";
+  const t = await getTranslations("aseerCuisine");
+  const tCommon = await getTranslations("common");
+
+  const restaurants = await fetchRestaurants(locale);
+  const heritageRestaurants = restaurants
+    .filter((restaurant) => restaurant.cuisineTypes?.includes("aseeri_cuisine"))
+    .slice(0, 6)
+    .map((restaurant) => ({
+      id: restaurant.id,
+      image: restaurant.image,
+      title: restaurant.name,
+      location: restaurant.location,
+      cuisineType: restaurant.category || tCommon("restaurant"),
+      priceRange:
+        restaurant.priceBand ||
+        restaurant.priceRange ||
+        tCommon("notSpecified"),
+      rating: restaurant.rating > 0 ? restaurant.rating : 4.5,
+      reviewsCount: restaurant.reviewsCount ?? 0,
+    }));
 
   return (
     <main className="flex w-full flex-col bg-background text-foreground">
@@ -23,7 +45,15 @@ export default async function IGCatPage() {
       <InitiativesSection />
       <WinnersSection />
       <FoodFilmSection />
-      <FoodAndDiningSection />
+      {/* <FoodAndDiningSection /> */}
+      <AseerCuisineHeritageRestaurantsSection
+        data={{
+          title: t("heritageRestaurantsSection.title"),
+          ctaLabel: t("heritageRestaurantsSection.ctaLabel"),
+          ctaHref: "/restaurants",
+          cards: heritageRestaurants,
+        }}
+      />
       <EventsInfo />
     </main>
   );
