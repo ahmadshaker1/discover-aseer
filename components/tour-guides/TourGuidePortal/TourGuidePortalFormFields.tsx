@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import {
   Button,
   Checkbox,
@@ -12,7 +14,11 @@ import {
   ListboxOptions,
   Textarea,
 } from "@headlessui/react";
-import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
+import type {
+  InputHTMLAttributes,
+  ReactNode,
+  TextareaHTMLAttributes,
+} from "react";
 import { useEffect, useState } from "react";
 import {
   araBold,
@@ -23,11 +29,9 @@ import {
   ibm,
   SUBMIT_BUTTON,
 } from "@/components/experiences/submit/experienceFormStyles";
-const FIELD_CONTROL =
-  `${FIELD_INPUT} data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2`;
+const FIELD_CONTROL = `${FIELD_INPUT} data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2`;
 
-const FIELD_TEXTAREA_CONTROL =
-  `${FIELD_TEXTAREA} data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2`;
+const FIELD_TEXTAREA_CONTROL = `${FIELD_TEXTAREA} data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2`;
 
 function RequiredMark() {
   return <span className="text-red-600"> *</span>;
@@ -58,8 +62,13 @@ export function FormTextInput({
   required,
   hint,
   className = "",
+  type,
   ...inputProps
-}: FormTextInputProps) {
+}: FormTextInputProps & { type?: string }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = type === "password";
+  const inputType = isPassword ? (showPassword ? "text" : "password") : type;
+
   return (
     <Field className={`${FIELD_GROUP} ${className}`.trim()}>
       <Label
@@ -70,14 +79,45 @@ export function FormTextInput({
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
-      <Input
-        id={id}
-        className={`${FIELD_CONTROL} ${inputProps.readOnly ? "bg-muted text-muted-foreground" : ""}`.trim()}
-        style={{ fontFamily: ibm }}
-        {...inputProps}
-      />
+      <div className="relative flex items-center">
+        <Input
+          id={id}
+          type={inputType}
+          className={`${FIELD_CONTROL} w-full ${isPassword ? "pr-10" : ""} ${inputProps.readOnly ? "bg-muted text-muted-foreground" : ""}`.trim()}
+          style={{ fontFamily: ibm }}
+          {...inputProps}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            className="absolute right-3 flex h-10 w-10 items-center justify-center text-muted-foreground hover:text-foreground"
+            onClick={() => setShowPassword(!showPassword)}
+            tabIndex={-1}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? (
+              <Image
+                src="/assets/tourist-form-portal/invisible.png"
+                alt="Hide password"
+                width={20}
+                height={20}
+              />
+            ) : (
+              <Image
+                src="/assets/tourist-form-portal/show.png"
+                alt="Show password"
+                width={20}
+                height={20}
+              />
+            )}
+          </button>
+        )}
+      </div>
       {hint ? (
-        <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+        <p
+          className="text-xs text-muted-foreground"
+          style={{ fontFamily: ibm }}
+        >
           {hint}
         </p>
       ) : null}
@@ -303,11 +343,17 @@ export function FormFileUpload({
         >
           {chooseFileLabel}
         </Button>
-        <span className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+        <span
+          className="text-xs text-muted-foreground"
+          style={{ fontFamily: ibm }}
+        >
           {hint}
         </span>
         {file?.name ? (
-          <span className="mt-2 text-xs text-primary" style={{ fontFamily: ibm }}>
+          <span
+            className="mt-2 text-xs text-primary"
+            style={{ fontFamily: ibm }}
+          >
             {file.name}
           </span>
         ) : previewUrl && !showImagePreview ? (
@@ -322,11 +368,17 @@ export function FormFileUpload({
             {existingFileLabel ?? viewFileLabel}
           </a>
         ) : previewUrl && showImagePreview && !file ? (
-          <span className="mt-2 text-xs text-primary" style={{ fontFamily: ibm }}>
+          <span
+            className="mt-2 text-xs text-primary"
+            style={{ fontFamily: ibm }}
+          >
             {existingFileLabel ?? viewFileLabel}
           </span>
         ) : (
-          <span className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+          <span
+            className="text-xs text-muted-foreground"
+            style={{ fontFamily: ibm }}
+          >
             {noFileLabel}
           </span>
         )}

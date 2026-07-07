@@ -4,7 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "@headlessui/react";
 import { useTranslations } from "next-intl";
 import type { ApiTouristGuide } from "@/components/tour-guides/types";
-import { araBold, ibm } from "@/components/experiences/submit/experienceFormStyles";
+import {
+  araBold,
+  ibm,
+} from "@/components/experiences/submit/experienceFormStyles";
 import {
   getTourGuideSession,
   getValidAccessToken,

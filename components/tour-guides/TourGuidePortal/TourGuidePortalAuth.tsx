@@ -8,7 +8,10 @@ import {
   FormTextInput,
 } from "@/components/tour-guides/TourGuidePortal/TourGuidePortalFormFields";
 import { Button } from "@headlessui/react";
-import { araBold, ibm } from "@/components/experiences/submit/experienceFormStyles";
+import {
+  araBold,
+  ibm,
+} from "@/components/experiences/submit/experienceFormStyles";
 import {
   loginTourGuide,
   registerTourGuide,
