@@ -61,7 +61,6 @@ export default async function LocaleLayout({
     <html
       lang={appLocale}
       dir={appLocale === "ar" ? "rtl" : "ltr"}
-      data-theme="light"
       suppressHydrationWarning
     >
       <body
