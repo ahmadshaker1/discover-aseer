@@ -10,7 +10,8 @@ import {
 } from "@/components/film/landscapeFilters";
 import type { Landmark } from "@/components/landmarks/data";
 import {
-  getCityOptions,
+  getCityLabelById,
+  isValidAttractionsCityId,
   locationMatchesCityId,
 } from "@/components/landmarks/filterOptions";
 import {
@@ -59,7 +60,28 @@ const AttractionsMainPageContent = ({
   const tCommon = useTranslations("common");
   const tFilm = useTranslations("film");
 
-  const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
+  const cityOptions = useMemo(() => {
+    const unique = new Map<string, string>();
+    for (const landmark of landmarks) {
+      const id = (landmark.cityId || landmark.city || "").trim();
+      if (!id) continue;
+
+      let label = (landmark.city || id).trim();
+      if (landmark.cityId) {
+        const defLabel = getCityLabelById(landmark.cityId, locale);
+        if (defLabel !== landmark.cityId) {
+          label = defLabel;
+        }
+      }
+
+      if (!unique.has(id)) {
+        unique.set(id, label);
+      }
+    }
+    return Array.from(unique.entries())
+      .map(([id, label]) => ({ id, label }))
+      .sort((a, b) => a.label.localeCompare(b.label, locale));
+  }, [landmarks, locale]);
 
   const terrainInterests = useMemo(
     () => (initialTerrain ? TERRAIN_TO_INTERESTS[initialTerrain] : []),
@@ -68,8 +90,20 @@ const AttractionsMainPageContent = ({
 
   const includesCity = (landmark: Landmark, city: string | null): boolean => {
     if (!city) return true;
-    if (landmark.cityId) return landmark.cityId === city;
-    return locationMatchesCityId(`${landmark.location} ${landmark.area}`, city);
+
+    const id = (landmark.cityId || landmark.city || "").trim();
+    if (id) {
+      return id === city;
+    }
+
+    if (isValidAttractionsCityId(city)) {
+      return locationMatchesCityId(
+        `${landmark.location} ${landmark.area}`,
+        city,
+      );
+    }
+
+    return false;
   };
 
   const includesAttractionType = (
@@ -280,7 +314,7 @@ const AttractionsMainPageContent = ({
                   <div className="mb-4 h-px w-full bg-border" />
 
                   <div className="mb-4 flex items-center gap-2 text-muted-foreground">
-                    <ClockIcon />
+                    <HeartIcon />
                     <h4
                       className={`text-lg font-bold leading-[119%] tracking-[0] text-foreground text-start sm:text-[20px]`}
                       style={{ fontFamily: ara }}
