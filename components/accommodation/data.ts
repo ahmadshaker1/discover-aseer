@@ -6,7 +6,7 @@ export interface Accommodation {
   city: string;
   location: string;
   description: string;
-  image: string;
+  hero_image: string;
   rating: number;
   reviewsCount: number;
   stars: number;
@@ -32,6 +32,7 @@ export interface ApiAccommodation {
   short_description?: string | null;
   cover_image?: string | null;
   image?: string | null;
+  hero_image?: string | null;
   hotel_rating?: number | string | null;
   average_rating?: number | string | null;
   reviews_count?: number | string | null;
@@ -83,7 +84,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     location: "طريق الملك فهد، أبها",
     description:
       "من أرقى أماكن الإقامة الفاخرة في أبها مع خدمات فندقية وسياحية مميزة.",
-    image: u("1590490360182-c33d57733427"),
+    hero_image: u("1590490360182-c33d57733427"),
     rating: 4.8,
     reviewsCount: 233,
     stars: 5,
@@ -98,7 +99,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     location: "حي السد، أبها",
     description:
       "إقامة عصرية بإطلالة رائعة وغرف مريحة وخيارات مناسبة للعائلات والأفراد.",
-    image: u("1566665797739-1674de7a421a"),
+    hero_image: u("1566665797739-1674de7a421a"),
     rating: 4.8,
     reviewsCount: 233,
     stars: 4,
@@ -113,7 +114,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     location: "طريق الأمير سلطان، أبها",
     description:
       "تجربة إقامة فاخرة في قلب المدينة مع سهولة الوصول لأبرز الوجهات السياحية.",
-    image: u("1590490359689-bf3f6f7ea1f5"),
+    hero_image: u("1590490359689-bf3f6f7ea1f5"),
     rating: 4.7,
     reviewsCount: 188,
     stars: 5,
@@ -128,7 +129,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     location: "مرتفعات السودة",
     description:
       "إقامة جبلية هادئة وسط الطبيعة والضباب مع أجواء استثنائية لمحبي الهدوء.",
-    image: u("1505693416388-ac5ce068fe85"),
+    hero_image: u("1505693416388-ac5ce068fe85"),
     rating: 4.6,
     reviewsCount: 120,
     stars: 4,
@@ -143,7 +144,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     location: "مركز خميس مشيط",
     description:
       "فندق مريح بخدمات متكاملة وموقع قريب من الأسواق والمطاعم في المدينة.",
-    image: u("1631049307264-da0ec9d70304"),
+    hero_image: u("1631049307264-da0ec9d70304"),
     rating: 4.5,
     reviewsCount: 97,
     stars: 3,
@@ -158,7 +159,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     location: "حي المنسك، أبها",
     description:
       "أجنحة فندقية حديثة مناسبة للإقامات القصيرة والطويلة مع خدمات يومية.",
-    image: u("1522708323590-d24dbb6b0267"),
+    hero_image: u("1522708323590-d24dbb6b0267"),
     rating: 4.4,
     reviewsCount: 76,
     stars: 3,
@@ -172,7 +173,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     city: "أبها",
     location: "حي الموظفين، أبها",
     description: "فندق بخدمات راقية وموقع مميز قرب المطار وطريق الملك فهد.",
-    image: u("1618773928121-ec2e2058ed99"),
+    hero_image: u("1618773928121-ec2e2058ed99"),
     rating: 4.9,
     reviewsCount: 312,
     stars: 5,
@@ -186,7 +187,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     city: "السودة",
     location: "قرية رجال ألمع",
     description: "إقامة تراثية فاخرة مع إطلالة جبلية وضباب الصباح.",
-    image: u("1582719478250-c89cae4dc85b"),
+    hero_image: u("1582719478250-c89cae4dc85b"),
     rating: 4.85,
     reviewsCount: 156,
     stars: 4,
@@ -200,7 +201,7 @@ export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
     city: "خميس مشيط",
     location: "طريق الملك عبدالله",
     description: "فيلا فندقية بمسبح داخلي وخدمة خاصة للعائلات الكبيرة.",
-    image: u("1571896349842-33c89424de2d"),
+    hero_image: u("1571896349842-33c89424de2d"),
     rating: 4.75,
     reviewsCount: 201,
     stars: 5,
@@ -277,7 +278,12 @@ export const transformAccommodation = (
 ): Accommodation => {
   const imageUrl = buildAssetUrl(
     directusUrl,
-    String(apiAccommodation.cover_image || apiAccommodation.image || ""),
+    String(
+      apiAccommodation.hero_image ||
+        apiAccommodation.cover_image ||
+        apiAccommodation.image ||
+        "",
+    ),
   );
 
   const name = String(
@@ -331,7 +337,7 @@ export const transformAccommodation = (
           ? "إقامة مميزة بخدمات فندقية وتجربة مريحة."
           : "A premium stay with comfortable hospitality services."),
     ),
-    image: imageUrl,
+    hero_image: imageUrl,
     rating: toNumber(apiAccommodation.average_rating, 4.5),
     reviewsCount: toNumber(apiAccommodation.reviews_count, 100),
     stars: toNumber(apiAccommodation.stars, hotelRating),

@@ -37,7 +37,7 @@ const AccommodationCard = ({
     >
       <div className="relative h-[190px] w-full shrink-0 overflow-hidden">
         <img
-          src={accommodation.image}
+          src={accommodation.hero_image}
           alt={accommodation.name}
           className="h-full w-full object-cover"
           loading="lazy"
