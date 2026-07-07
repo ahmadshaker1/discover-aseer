@@ -56,6 +56,7 @@ export interface ApiLandmark {
   traveller_types?: string[] | null;
   tags?: string | null;
   type?: string | null;
+  type_en?: string | null;
   price_range_from?: number | null;
   price_range_to?: number | null;
   interest_tags?: string[] | null;
@@ -331,7 +332,14 @@ export const transformLandmark = (
     interestTags.push("culture");
   }
 
-  const rawAttractionType = (apiLandmark.type || "").trim();
+  let rawAttractionType = (apiLandmark.type || "").trim();
+  if (
+    locale === "en" &&
+    apiLandmark.type_en &&
+    apiLandmark.type_en.trim() !== ""
+  ) {
+    rawAttractionType = apiLandmark.type_en.trim();
+  }
   const categoryLabel = (rawAttractionType || apiLandmark.tags || "").trim();
   const galleryImages = parseGallery(
     apiLandmark.attraction_gallery,
@@ -385,12 +393,12 @@ export const fetchLandmarks = async (
     listUrl.searchParams.set("sort", "-date_created,-id");
 
     let response = await fetch(listUrl.toString(), {
-      next: { revalidate: 3600 },
+      cache: "no-store",
     });
 
     if (!response.ok) {
       const fallback = await fetch(`${directusUrl}/items/attractions`, {
-        next: { revalidate: 3600 },
+        cache: "no-store",
       });
       if (!fallback.ok) {
         throw new Error(
