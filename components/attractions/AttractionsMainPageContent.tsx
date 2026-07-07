@@ -11,7 +11,6 @@ import {
 import type { Landmark } from "@/components/landmarks/data";
 import {
   getCityOptions,
-  getInterestOptions,
   locationMatchesCityId,
 } from "@/components/landmarks/filterOptions";
 import {
@@ -32,15 +31,13 @@ interface AttractionsMainPageContentProps {
 
 interface FilterState {
   city: string | null;
-  attractionType: string | null;
-  interests: string[];
+  attractionType: string[];
 }
 
 function buildInitialFilters(initialCityId?: string | null): FilterState {
   return {
     city: initialCityId?.trim() || null,
-    attractionType: null,
-    interests: [],
+    attractionType: [],
   };
 }
 
@@ -63,7 +60,6 @@ const AttractionsMainPageContent = ({
   const tFilm = useTranslations("film");
 
   const cityOptions = useMemo(() => getCityOptions(locale), [locale]);
-  const interestOptions = useMemo(() => getInterestOptions(locale), [locale]);
 
   const terrainInterests = useMemo(
     () => (initialTerrain ? TERRAIN_TO_INTERESTS[initialTerrain] : []),
@@ -78,11 +74,11 @@ const AttractionsMainPageContent = ({
 
   const includesAttractionType = (
     landmark: Landmark,
-    type: string | null,
+    types: string[],
   ): boolean => {
-    if (!type) return true;
+    if (types.length === 0) return true;
     const value = (landmark.attractionType || "").trim();
-    return value === type;
+    return types.includes(value);
   };
   /**
    * Backend handoff:
@@ -113,11 +109,16 @@ const AttractionsMainPageContent = ({
   }, [cityScopedLandmarks, locale]);
 
   useEffect(() => {
-    if (!filters.attractionType) return;
-    if (!attractionTypeOptions.includes(filters.attractionType)) {
-      setFilters((prev) => ({ ...prev, attractionType: null }));
-    }
-  }, [attractionTypeOptions, filters.attractionType]);
+    setFilters((prev) => {
+      const valid = prev.attractionType.filter((t) =>
+        attractionTypeOptions.includes(t),
+      );
+      if (valid.length !== prev.attractionType.length) {
+        return { ...prev, attractionType: valid };
+      }
+      return prev;
+    });
+  }, [attractionTypeOptions]);
 
   const typeScopedLandmarks = useMemo(
     () =>
@@ -127,14 +128,17 @@ const AttractionsMainPageContent = ({
     [cityScopedLandmarks, filters.attractionType],
   );
 
-  const interestCounts = useMemo(() => {
-    return interestOptions.reduce<Record<string, number>>((acc, option) => {
-      acc[option.id] = typeScopedLandmarks.filter((landmark) =>
-        (landmark.interestTags ?? []).includes(option.id),
-      ).length;
-      return acc;
-    }, {});
-  }, [interestOptions, typeScopedLandmarks]);
+  const attractionTypeCounts = useMemo(() => {
+    return attractionTypeOptions.reduce<Record<string, number>>(
+      (acc, option) => {
+        acc[option] = cityScopedLandmarks.filter(
+          (landmark) => (landmark.attractionType || "").trim() === option,
+        ).length;
+        return acc;
+      },
+      {},
+    );
+  }, [attractionTypeOptions, cityScopedLandmarks]);
 
   const visibleLandmarks = useMemo(() => {
     return typeScopedLandmarks.filter((landmark) => {
@@ -200,8 +204,7 @@ const AttractionsMainPageContent = ({
                   onClick={() => {
                     setFilters({
                       city: null,
-                      attractionType: null,
-                      interests: [],
+                      attractionType: [],
                     });
                     setSelectedInterests([]);
                   }}
@@ -273,125 +276,65 @@ const AttractionsMainPageContent = ({
               </div>
 
               {attractionTypeOptions.length > 0 ? (
-                <div className="group relative h-12 w-full overflow-hidden rounded-[55px] border border-border bg-muted/20 px-6 py-3 transition-all duration-200 hover:bg-muted/40 hover:border-primary/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
-                  <select
-                    aria-label={tCommon("attractionType")}
-                    value={filters.attractionType ?? ""}
-                    onChange={(event) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        attractionType: event.target.value
-                          ? event.target.value
-                          : null,
-                      }))
-                    }
-                    style={{
-                      backgroundColor: "var(--surface)",
-                      color: "var(--foreground)",
-                    }}
-                    className="absolute inset-0 z-10 cursor-pointer bg-surface text-foreground opacity-0 dark:[color-scheme:dark]"
-                  >
-                    <option
-                      value=""
-                      className="bg-surface text-foreground"
-                      style={{
-                        backgroundColor: "var(--surface)",
-                        color: "var(--foreground)",
-                      }}
+                <div className="w-full pt-2">
+                  <div className="mb-4 h-px w-full bg-border" />
+
+                  <div className="mb-4 flex items-center gap-2 text-muted-foreground">
+                    <ClockIcon />
+                    <h4
+                      className={`text-lg font-bold leading-[119%] tracking-[0] text-foreground text-start sm:text-[20px]`}
+                      style={{ fontFamily: ara }}
                     >
                       {tCommon("attractionType")}
-                    </option>
-                    {attractionTypeOptions.map((value) => (
-                      <option
-                        key={value}
-                        value={value}
-                        className="bg-surface text-foreground"
-                        style={{
-                          backgroundColor: "var(--surface)",
-                          color: "var(--foreground)",
-                        }}
-                      >
-                        {value}
-                      </option>
-                    ))}
-                  </select>
+                    </h4>
+                  </div>
 
-                  <div className="flex h-full items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="shrink-0 text-muted-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
-                        <ClockIcon />
-                      </span>
-                      <span
-                        className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground transition-colors duration-200 group-hover:text-primary/90"
-                        style={{ fontFamily: "Inter, sans-serif" }}
-                      >
-                        {attractionTypeOptions.includes(
-                          filters.attractionType ?? "",
-                        )
-                          ? (filters.attractionType as string)
-                          : tCommon("attractionType")}
-                      </span>
-                    </div>
-                    <span className="text-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
-                      <ChevronDownIcon />
-                    </span>
+                  <div className="w-full space-y-3">
+                    {attractionTypeOptions.map((option) => {
+                      const checked = filters.attractionType.includes(option);
+                      const count = attractionTypeCounts[option] ?? 0;
+                      return (
+                        <label
+                          key={option}
+                          className="flex w-full cursor-pointer items-center justify-between gap-2"
+                        >
+                          <div className="flex min-w-0 flex-1 items-center gap-3">
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() =>
+                                setFilters((prev) => ({
+                                  ...prev,
+                                  attractionType: prev.attractionType.includes(
+                                    option,
+                                  )
+                                    ? prev.attractionType.filter(
+                                        (t) => t !== option,
+                                      )
+                                    : [...prev.attractionType, option],
+                                }))
+                              }
+                              className="h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            />
+                            <span
+                              className={`min-w-0 text-sm font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
+                              style={{ fontFamily: "Inter, sans-serif" }}
+                            >
+                              {option}
+                            </span>
+                          </div>
+                          <span
+                            className="inline-flex h-7 shrink-0 items-center justify-center rounded-[8px] bg-muted px-2 text-base leading-[100%] text-muted-foreground sm:text-lg"
+                            style={{ fontFamily: ara }}
+                          >
+                            {count}
+                          </span>
+                        </label>
+                      );
+                    })}
                   </div>
                 </div>
               ) : null}
-
-              <div className="w-full pt-2">
-                <div className="mb-4 h-px w-full bg-border" />
-
-                <div className="mb-4 flex items-center gap-2 text-muted-foreground">
-                  <HeartIcon />
-                  <h4
-                    className={`text-lg font-bold leading-[119%] tracking-[0] text-foreground text-start sm:text-[20px]`}
-                    style={{ fontFamily: ara }}
-                  >
-                    {tCommon("interests")}
-                  </h4>
-                </div>
-
-                <div className="w-full space-y-3">
-                  {interestOptions.map((option) => {
-                    const checked = selectedInterests.includes(option.id);
-                    const count = interestCounts[option.id] ?? 0;
-                    return (
-                      <label
-                        key={option.id}
-                        className="flex w-full cursor-pointer items-center justify-between gap-2"
-                      >
-                        <div className="flex min-w-0 flex-1 items-center gap-3">
-                          <input
-                            type="checkbox"
-                            checked={checked}
-                            onChange={() =>
-                              setSelectedInterests((prev) =>
-                                prev.includes(option.id)
-                                  ? prev.filter((id) => id !== option.id)
-                                  : [...prev, option.id],
-                              )
-                            }
-                            className="h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                          />
-                          <span
-                            className={`min-w-0 text-sm font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
-                            style={{ fontFamily: "Inter, sans-serif" }}
-                          >
-                            {option.label}
-                          </span>
-                        </div>
-                        <span
-                          className="inline-flex h-7 shrink-0 items-center justify-center rounded-[8px] bg-muted px-2 text-base leading-[100%] text-muted-foreground sm:text-lg"
-                          style={{ fontFamily: ara }}
-                        >
-                          {count}
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
             </div>
           </aside>
         </div>
