@@ -28,16 +28,19 @@ function AuthTab({
   active,
   onClick,
   children,
+  disabled,
 }: {
   active: boolean;
   onClick: () => void;
   children: ReactNode;
+  disabled?: boolean;
 }) {
   return (
     <Button
       type="button"
       onClick={onClick}
       aria-pressed={active}
+      disabled={disabled}
       className={`flex h-[52px] flex-1 cursor-pointer items-center justify-center rounded-[100px] px-6 text-base font-bold transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 ${
         active
           ? "bg-primary text-primary-foreground shadow-sm"
@@ -111,12 +114,17 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
         role="tablist"
         aria-label={t("modeSwitcherAria")}
       >
-        <AuthTab active={mode === "login"} onClick={() => switchMode("login")}>
+        <AuthTab
+          active={mode === "login"}
+          onClick={() => switchMode("login")}
+          disabled={submitting}
+        >
           {t("tabLogin")}
         </AuthTab>
         <AuthTab
           active={mode === "register"}
           onClick={() => switchMode("register")}
+          disabled={submitting}
         >
           {t("tabRegister")}
         </AuthTab>
@@ -145,6 +153,7 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
                   onChange={(e) => setFirstName(e.target.value)}
                   autoComplete="given-name"
                   dir={locale === "ar" ? "rtl" : "ltr"}
+                  disabled={submitting}
                 />
                 <FormTextInput
                   id={`${baseId}-last-name`}
@@ -154,6 +163,7 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
                   onChange={(e) => setLastName(e.target.value)}
                   autoComplete="family-name"
                   dir={locale === "ar" ? "rtl" : "ltr"}
+                  disabled={submitting}
                 />
               </div>
             )}
@@ -167,6 +177,7 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               dir="ltr"
+              disabled={submitting}
             />
 
             <FormTextInput
@@ -182,6 +193,7 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
               onChange={(e) => setPassword(e.target.value)}
               dir="ltr"
               hint={mode === "register" ? t("passwordHint") : undefined}
+              disabled={submitting}
             />
           </div>
         </div>
