@@ -54,6 +54,10 @@ interface MapPlace {
   tag?: string;
   mapsUrl?: string;
   imageUrl?: string;
+  image?: string;
+  image_new?: string;
+  picture_url?: string;
+  picture_url_new?: string;
 }
 
 interface MapLoadStats {

@@ -63,6 +63,10 @@ export interface LocationMapPlace {
   tag?: string;
   mapsUrl?: string;
   imageUrl?: string;
+  image?: string;
+  image_new?: string;
+  picture_url?: string;
+  picture_url_new?: string;
 }
 
 const asText = (value: unknown): string =>
@@ -155,18 +159,16 @@ function resolveLocationImageUrl(row: DirectusLocationRow): string | undefined {
     if (/^https?:\/\//i.test(raw)) return raw;
     if (raw.startsWith("//")) return `https:${raw}`;
     if (raw.startsWith("/")) return raw;
+
+    // Assume it's a Directus UUID or file ID
+    if (!raw.includes(" ")) return raw;
   }
 
   return undefined;
 }
 
 function resolveEventImageUrl(row: DirectusEventRow): string | undefined {
-  const candidates = [
-    row.image_new,
-    row.hero_mobile,
-    row.thumbnail,
-    row.image,
-  ]
+  const candidates = [row.image_new, row.hero_mobile, row.thumbnail, row.image]
     .map((value) => asText(value))
     .filter(Boolean);
 
@@ -174,6 +176,9 @@ function resolveEventImageUrl(row: DirectusEventRow): string | undefined {
     if (/^https?:\/\//i.test(raw)) return raw;
     if (raw.startsWith("//")) return `https:${raw}`;
     if (raw.startsWith("/")) return raw;
+
+    // Assume it's a Directus UUID or file ID
+    if (!raw.includes(" ")) return raw;
   }
 
   return undefined;
@@ -226,6 +231,8 @@ export const buildEventMapPlace = (
     tag: tag || undefined,
     mapsUrl,
     imageUrl: resolveEventImageUrl(row),
+    image: asText(row.image),
+    image_new: asText(row.image_new),
   };
 };
 
@@ -252,17 +259,13 @@ export const buildLocationMapPlace = (
   const categoryAr = asText(row.category_ar);
   const categoryEn = asText(row.category_en);
   const category =
-    locale === "en"
-      ? categoryEn || categoryAr
-      : categoryAr || categoryEn;
+    locale === "en" ? categoryEn || categoryAr : categoryAr || categoryEn;
 
   const city =
     pickLocalizedField(record, "city", locale) ||
     (locale === "en" ? "Aseer" : "عسير");
 
-  const tag =
-    pickLocalizedField(record, "type", locale) ||
-    undefined;
+  const tag = pickLocalizedField(record, "type", locale) || undefined;
 
   const mapsUrl = asText(row.google_maps_url) || undefined;
 
@@ -281,6 +284,8 @@ export const buildLocationMapPlace = (
     tag: tag || undefined,
     mapsUrl,
     imageUrl: resolveLocationImageUrl(row),
+    picture_url: asText(row.picture_url),
+    picture_url_new: asText(row.picture_url_new),
   };
 };
 
