@@ -9,7 +9,9 @@ interface SeasonDetailHeroProps {
   season: SeasonDetail;
 }
 
-export default async function SeasonDetailHero({ season }: SeasonDetailHeroProps) {
+export default async function SeasonDetailHero({
+  season,
+}: SeasonDetailHeroProps) {
   const t = await getTranslations("eventSeasons");
   const tCommon = await getTranslations("common");
 
@@ -35,7 +37,7 @@ export default async function SeasonDetailHero({ season }: SeasonDetailHeroProps
           aria-label={t("breadcrumb")}
         >
           <span className="text-[16px] font-bold leading-[119%] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]">
-            {season.title}
+            {tCommon("breadcrumbHome")}
           </span>
           <BreadcrumbChevron />
           <Link
@@ -49,7 +51,7 @@ export default async function SeasonDetailHero({ season }: SeasonDetailHeroProps
             href="/"
             className="text-[16px] font-bold leading-[119%] text-white transition-opacity [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] hover:opacity-85"
           >
-            {tCommon("breadcrumbHome")}
+            {season.title}
           </Link>
         </nav>
 

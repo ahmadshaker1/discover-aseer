@@ -182,7 +182,7 @@
     "altUnTourism": "UN Tourism",
     "altPata": "PATA",
     "altGstc": "GSTC",
-    "identityfiles": "Asir Identity files",
+    "identityfiles": "Aseer Identity files",
     "tourism-companies": "Tourism companies",
     "media-kit": "Media kit"
   },
@@ -392,7 +392,7 @@
     "title": "Restaurants",
     "subtitle": "Aseer restaurants: delight the senses and satisfy your palate",
     "credibilityLine": "Aseer World Region of Gastronomy 2024",
-    "credibilityDescription": "Asir is the first region outside Europe to achieve the (IGCAT) title from the International Institute of Culinary Arts, Culture, Arts and Tourism 2024",
+    "credibilityDescription": "Aseer is the first region outside Europe to achieve the (IGCAT) title from the International Institute of Culinary Arts, Culture, Arts and Tourism 2024",
     "credibilityCta": "Discover Aseeri Cuisine",
     "headerSubtitle": "Aseer is rich with attractions and experiences"
   },
@@ -663,7 +663,7 @@
     }
   },
   "aseerCommunity": {
-    "breadcrumb": "Asir community",
+    "breadcrumb": "Aseer community",
     "title": "Aseer community",
     "subtitle": "Values of genuine nobility, exceptional hospitality, and authentic courage welcome you in Aseer",
     "slider": {
@@ -1204,7 +1204,7 @@
     },
     "map": {
       "eyebrow": "Route map",
-      "title": "Find your way around Asir",
+      "title": "Find your way around Aseer",
       "description": "Use this quick reference map to orient yourself across the region and plan the most practical route.",
       "alt": "Map of the Getting here and around section in Asir",
       "viewInteractiveMap": "View Interactive Map"
@@ -1274,11 +1274,11 @@
       "discoverMoreMapBtn": "View map"
     },
     "experiences": {
-      "title": "Experiences in Asir",
+      "title": "Experiences in Aseer",
       "subtitle": "Discover exceptional activities and unforgettable experiences during your stay in Asir."
     },
     "attractions": {
-      "title": "Attractions in Asir",
+      "title": "Attractions in Aseer",
       "subtitle": "Explore iconic landmarks and natural wonders that make Asir a destination worth discovering."
     }
   },
@@ -1303,7 +1303,7 @@
       "home": "Home",
       "companies": "Support services"
     },
-    "title": "Asir Identity files"
+    "title": "Aseer Identity files"
   },
   "media-kit": {
     "navigation": {
