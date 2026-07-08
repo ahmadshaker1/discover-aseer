@@ -11,49 +11,48 @@ interface FilmServicesSectionProps {
 function CrewIcon() {
   return (
     <svg
+      xmlns="http://www.w3.org/2000/svg"
       width="74"
       height="78"
       viewBox="0 0 74 78"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       className="text-foreground"
       aria-hidden
     >
       <g clipPath="url(#clip0_1844_13450)">
         <path
           d="M73.8466 39C73.8466 18.8343 57.4991 2.48682 37.3335 2.48682C17.1678 2.48682 0.820312 18.8343 0.820312 39C0.820312 59.1656 17.1678 75.5131 37.3335 75.5131C57.4991 75.5131 73.8466 59.1656 73.8466 39Z"
-          fill="currentColor"
-          className="opacity-20"
+          fill="white"
         />
         <path
           d="M73.8466 39C73.8466 18.8343 57.4991 2.48682 37.3335 2.48682C17.1678 2.48682 0.820312 18.8343 0.820312 39C0.820312 59.1656 17.1678 75.5131 37.3335 75.5131C57.4991 75.5131 73.8466 59.1656 73.8466 39Z"
-          stroke="currentColor"
+          stroke="#E8E8E8"
           strokeWidth="0.973684"
         />
         <path
           d="M49.0169 38.7566V32.1842L42.4445 24.8816H27.109C26.3024 24.8816 25.6484 25.5355 25.6484 26.3421V52.6316C25.6484 53.4382 26.3024 54.0921 27.109 54.0921H34.4116"
-          stroke="currentColor"
+          stroke="#1E1E1E"
           strokeWidth="1.94737"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M44.6359 48.2501C46.2492 48.2501 47.5569 46.9423 47.5569 45.329C47.5569 43.7157 46.2492 42.408 44.6359 42.408C43.0226 42.408 41.7148 43.7157 41.7148 45.329C41.7148 46.9423 43.0226 48.2501 44.6359 48.2501Z"
-          stroke="currentColor"
+          stroke="#1E1E1E"
           strokeWidth="1.94737"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M50.4772 54.0921C50.4772 50.8656 47.8616 48.25 44.6351 48.25C41.4086 48.25 38.793 50.8656 38.793 54.0921"
-          stroke="currentColor"
+          stroke="#1E1E1E"
           strokeWidth="1.94737"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M41.7148 24.8816V32.1842H49.0175"
-          stroke="currentColor"
+          stroke="#1E1E1E"
           strokeWidth="1.94737"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -71,20 +70,52 @@ function CrewIcon() {
 function LocationsIcon() {
   return (
     <svg
-      width="31"
-      height="31"
-      viewBox="0 0 31 31"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="74"
+      height="144"
+      viewBox="0 0 74 144"
+      fill="none"
       aria-hidden
     >
-      <path
-        d="M0.730469 7.39354H29.6628M27.4372 0.730225H2.95602C2.36577 0.730225 1.79967 0.964689 1.38225 1.38201C0.964931 1.79943 0.730469 2.36553 0.730469 2.95578V27.4369C0.730469 28.0273 0.964931 28.5933 1.38225 29.0107C1.79967 29.428 2.36577 29.6626 2.95602 29.6626H27.4372C28.0274 29.6626 28.5935 29.428 29.0109 29.0107C29.4283 28.5933 29.6628 28.0273 29.6628 27.4369V2.95578C29.6628 2.36553 29.4283 1.79943 29.0109 1.38201C28.5935 0.964689 28.0274 0.730225 27.4372 0.730225Z"
-        stroke="currentColor"
-        strokeWidth="1.46053"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <g clipPath="url(#clip0_1844_13436)">
+        <path
+          d="M73.5146 72C73.5146 51.8343 57.1671 35.4868 37.0014 35.4868C16.8358 35.4868 0.488281 51.8343 0.488281 72C0.488281 92.1656 16.8358 108.513 37.0014 108.513C57.1671 108.513 73.5146 92.1656 73.5146 72Z"
+          fill="white"
+        />
+        <path
+          d="M73.5146 72C73.5146 51.8343 57.1671 35.4868 37.0014 35.4868C16.8358 35.4868 0.488281 51.8343 0.488281 72C0.488281 92.1656 16.8358 108.513 37.0014 108.513C57.1671 108.513 73.5146 92.1656 73.5146 72Z"
+          stroke="#E8E8E8"
+          strokeWidth="0.973684"
+        />
+        <mask
+          id="mask0_1844_13436"
+          style={{ maskType: "luminance" }}
+          maskUnits="userSpaceOnUse"
+          x="21"
+          y="56"
+          width="32"
+          height="32"
+        >
+          <path
+            d="M52.5798 56.4211H21.4219V87.579H52.5798V56.4211Z"
+            fill="white"
+          />
+        </mask>
+        <g mask="url(#mask0_1844_13436)">
+          <path
+            d="M22.5352 64.197H51.4675M49.2419 57.5337H24.7607C24.1705 57.5337 23.6044 57.7682 23.1869 58.1855C22.7696 58.6029 22.5352 59.169 22.5352 59.7592V84.2404C22.5352 84.8307 22.7696 85.3967 23.1869 85.8142C23.6044 86.2315 24.1705 86.466 24.7607 86.466H49.2419C49.8321 86.466 50.3982 86.2315 50.8156 85.8142C51.2329 85.3967 51.4675 84.8307 51.4675 84.2404V59.7592C51.4675 59.169 51.2329 58.6029 50.8156 58.1855C50.3982 57.7682 49.8321 57.5337 49.2419 57.5337Z"
+            stroke="#1E1E1E"
+            strokeWidth="1.46053"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </g>
+      </g>
+      <defs>
+        <clipPath id="clip0_1844_13436">
+          <rect width="74" height="144" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   );
 }
@@ -92,20 +123,42 @@ function LocationsIcon() {
 function PermitsIcon() {
   return (
     <svg
-      width="24"
-      height="31"
-      viewBox="0 0 24 31"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="74"
+      height="144"
+      viewBox="0 0 74 144"
+      fill="none"
       aria-hidden
     >
-      <path
-        d="M5.35424 7.546H9.73581M5.35424 15.2138H18.499M5.35424 19.5953H18.499M5.35424 23.9769H9.73581M3.16345 29.4539H20.6898C21.2708 29.4539 21.828 29.223 22.2389 28.8122C22.6497 28.4013 22.8806 27.8441 22.8806 27.2631V3.16442C22.8806 2.58342 22.6497 2.02619 22.2389 1.61529C21.828 1.20449 21.2708 0.973633 20.6898 0.973633H3.16345C2.58245 0.973633 2.02521 1.20449 1.61431 1.61529C1.20352 2.02619 0.972656 2.58342 0.972656 3.16442V27.2631C0.972656 27.8441 1.20352 28.4013 1.61431 28.8122C2.02521 29.223 2.58245 29.4539 3.16345 29.4539Z"
-        stroke="currentColor"
-        strokeWidth="1.94737"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <g clipPath="url(#clip0_1844_13425)">
+        <path
+          d="M73.5146 72C73.5146 51.8343 57.1671 35.4868 37.0014 35.4868C16.8358 35.4868 0.488281 51.8343 0.488281 72C0.488281 92.1656 16.8358 108.513 37.0014 108.513C57.1671 108.513 73.5146 92.1656 73.5146 72Z"
+          fill="white"
+        />
+        <path
+          d="M73.5146 72C73.5146 51.8343 57.1671 35.4868 37.0014 35.4868C16.8358 35.4868 0.488281 51.8343 0.488281 72C0.488281 92.1656 16.8358 108.513 37.0014 108.513C57.1671 108.513 73.5146 92.1656 73.5146 72Z"
+          stroke="#E8E8E8"
+          strokeWidth="0.973684"
+        />
+        <path
+          d="M30.4285 64.3321H34.81M30.4285 71.9999H43.5732M30.4285 76.3815H43.5732M30.4285 80.7631H34.81M28.2377 86.24H45.764C46.345 86.24 46.9022 86.0092 47.3131 85.5984C47.7239 85.1875 47.9548 84.6302 47.9548 84.0492V59.9506C47.9548 59.3696 47.7239 58.8123 47.3131 58.4014C46.9022 57.9906 46.345 57.7598 45.764 57.7598H28.2377C27.6567 57.7598 27.0994 57.9906 26.6885 58.4014C26.2777 58.8123 26.0469 59.3696 26.0469 59.9506V84.0492C26.0469 84.6302 26.2777 85.1875 26.6885 85.5984C27.0994 86.0092 27.6567 86.24 28.2377 86.24Z"
+          stroke="#1E1E1E"
+          strokeWidth="1.94737"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M43.5711 64.8798C43.8737 64.8798 44.1188 64.6346 44.1188 64.3321C44.1188 64.0296 43.8737 63.7844 43.5711 63.7844C43.2686 63.7844 43.0234 64.0296 43.0234 64.3321C43.0234 64.6346 43.2686 64.8798 43.5711 64.8798Z"
+          fill="#1E1E1E"
+          stroke="#1E1E1E"
+          strokeWidth="0.973684"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_1844_13425">
+          <rect width="74" height="144" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   );
 }
@@ -160,13 +213,13 @@ const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
                     className={`text-[32px] font-bold leading-[30px] text-foreground text-start`}
                     style={{ fontFamily: ara }}
                   >
-                    {card.title || t(keys.title)}
+                    {t(keys.title)}
                   </h3>
                   <p
-                    className={`text-[15px] font-light leading-[119%] text-muted-foreground text-start`}
+                    className={`text-[15px] font-light leading-10 text-muted-foreground text-start`}
                     style={{ fontFamily: ibm }}
                   >
-                    {card.description || t(keys.description)}
+                    {t(keys.description)}
                   </p>
                 </div>
               </article>
