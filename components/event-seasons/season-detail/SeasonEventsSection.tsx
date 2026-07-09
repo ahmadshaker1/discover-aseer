@@ -3,7 +3,11 @@
 import EventListingCard from "@/components/events/EventListingCard/EventListingCard";
 import { useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import type { SeasonDetail, SeasonDetailEvent, SeasonEventCategoryId } from "../types";
+import type {
+  SeasonDetail,
+  SeasonDetailEvent,
+  SeasonEventCategoryId,
+} from "../types";
 import {
   calendarWindowForDay,
   eachDayInRange,
@@ -152,9 +156,7 @@ export default function SeasonEventsSection({
         >
           <button
             type="button"
-            onClick={() =>
-              setWindowStart((w) => Math.max(0, w - VISIBLE_DAYS))
-            }
+            onClick={() => setWindowStart((w) => Math.max(0, w - VISIBLE_DAYS))}
             disabled={!canScrollPrev}
             className="flex h-[55px] w-[55px] shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground opacity-50 transition enabled:opacity-100 enabled:hover:bg-muted disabled:cursor-not-allowed"
             aria-label={t("scrollDaysPrev")}
@@ -177,10 +179,11 @@ export default function SeasonEventsSection({
                       current === iso ? null : iso,
                     )
                   }
-                  className={`flex h-[103px] w-[66px] shrink-0 flex-col items-center justify-center gap-2 rounded-[20px] border px-3 py-4 transition ${isSelected
-                    ? "border-transparent bg-[url('/assets/event-seasons/selected-day-bg.png')] bg-cover bg-center text-white shadow-sm"
-                    : "border-border bg-surface text-[#5C5C5C] dark:text-muted-foreground"
-                    }`}
+                  className={`flex h-[103px] w-[66px] shrink-0 flex-col items-center justify-center gap-2 rounded-[20px] border px-3 py-4 transition ${
+                    isSelected
+                      ? "border-transparent bg-[url('/assets/event-seasons/selected-day-bg.png')] bg-cover bg-center text-white shadow-sm"
+                      : "border-border bg-surface text-[#5C5C5C] dark:text-muted-foreground"
+                  }`}
                 >
                   <span
                     className="text-center text-[14px] font-normal leading-none"
@@ -231,10 +234,11 @@ export default function SeasonEventsSection({
                 key={categoryId}
                 type="button"
                 onClick={() => setActiveCategory(categoryId)}
-                className={`inline-flex h-[33px] shrink-0 min-w-[72px] items-center justify-center rounded-[20px] border px-[18px] py-2 text-[18px] font-bold leading-none transition ${isActive
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-black/10 bg-surface text-foreground hover:border-primary/30 dark:border-border"
-                  }`}
+                className={`inline-flex h-[33px] shrink-0 min-w-[72px] items-center justify-center rounded-[20px] border px-[18px] py-2 text-[18px] font-bold leading-none transition ${
+                  isActive
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-black/10 bg-surface text-foreground hover:border-primary/30 dark:border-border"
+                }`}
                 style={{ fontFamily: ara }}
               >
                 {t(FILTER_LABEL_KEYS[categoryId])}

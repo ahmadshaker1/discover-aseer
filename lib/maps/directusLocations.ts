@@ -117,6 +117,7 @@ const fetchAllEventRows = async (
     url.searchParams.set("limit", String(limit));
     url.searchParams.set("offset", String(offset));
     url.searchParams.set("meta", "filter_count");
+    url.searchParams.set("filter[event_status][_eq]", "Now");
 
     const response = await fetch(url.toString(), {
       headers,
@@ -348,8 +349,7 @@ const resolveCoordinatesForPlaces = async ({
       return;
     }
 
-    let coords =
-      (await getCachedCoordinatesFromGoogleMapsUrl(mapsUrl)) ?? null;
+    let coords = (await getCachedCoordinatesFromGoogleMapsUrl(mapsUrl)) ?? null;
 
     if (!coords) {
       const sourceId = place.id.startsWith("locations:")
@@ -443,9 +443,11 @@ export async function fetchMapLocations(
 
   for (const row of eventRows) {
     stats.published += 1;
-    if (
-      isHiddenFromMap(mapHideFlagFromRow(row as Record<string, unknown>))
-    ) {
+    if (isHiddenFromMap(mapHideFlagFromRow(row as Record<string, unknown>))) {
+      continue;
+    }
+
+    if (row.event_status !== "Now") {
       continue;
     }
 

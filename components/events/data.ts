@@ -17,6 +17,7 @@ interface ApiEvent {
   hero_mobile?: string | null;
   map?: string | null;
   city?: string | null;
+  city_en?: string | null;
   tags?: string | null;
   start_date?: string | null;
   end_date?: string | null;
@@ -81,7 +82,8 @@ function parseInterestIds(tags: string | null | undefined): EventInterestId[] {
 
   for (const tag of tokens) {
     if (tag.includes("مغام") || tag.includes("advent")) ids.add("adventure");
-    if (tag.includes("تراث") || tag.includes("ثقاف") || tag.includes("herit")) ids.add("heritage");
+    if (tag.includes("تراث") || tag.includes("ثقاف") || tag.includes("herit"))
+      ids.add("heritage");
     if (
       tag.includes("طهي") ||
       tag.includes("أكل") ||
@@ -91,7 +93,8 @@ function parseInterestIds(tags: string | null | undefined): EventInterestId[] {
     ) {
       ids.add("culinary");
     }
-    if (tag.includes("طبيع") || tag.includes("nature") || tag.includes("بيئ")) ids.add("nature");
+    if (tag.includes("طبيع") || tag.includes("nature") || tag.includes("بيئ"))
+      ids.add("nature");
     if (tag.includes("ترفي") || tag.includes("entertain")) ids.add("adventure");
   }
 
@@ -106,14 +109,19 @@ function buildAssetUrl(assetId: string | null | undefined): string | null {
   return `${EVENTS_API_BASE}/assets/${clean}`;
 }
 
-function parseExtraImages(raw: string | unknown[] | null | undefined): string[] {
+function parseExtraImages(
+  raw: string | unknown[] | null | undefined,
+): string[] {
   if (!raw) return [];
   if (Array.isArray(raw)) {
     return raw
       .map((item) => {
-        if (typeof item === "string") return normalizeMaybeUrl(item) || buildAssetUrl(item);
+        if (typeof item === "string")
+          return normalizeMaybeUrl(item) || buildAssetUrl(item);
         if (item && typeof item === "object" && "directus_files_id" in item) {
-          const id = String((item as { directus_files_id?: string }).directus_files_id || "");
+          const id = String(
+            (item as { directus_files_id?: string }).directus_files_id || "",
+          );
           return buildAssetUrl(id);
         }
         return null;
@@ -166,7 +174,10 @@ function buildImages(apiEvent: ApiEvent): string[] {
   return unique.length > 0 ? unique : [PLACEHOLDER_IMAGE];
 }
 
-function formatDate(dateInput: string | null | undefined, locale: LocaleCode): string | null {
+function formatDate(
+  dateInput: string | null | undefined,
+  locale: LocaleCode,
+): string | null {
   const parsed = parseDateOnly(dateInput);
   if (!parsed) return null;
   return new Intl.DateTimeFormat(getDateFormatLocale(locale), {
@@ -207,7 +218,8 @@ function toPriceLabel(
   locale: LocaleCode,
 ): string {
   if (isFree) return locale === "ar" ? "مجاني" : "Free";
-  if (typeof price === "number" && Number.isFinite(price)) return `${price} ريال`;
+  if (typeof price === "number" && Number.isFinite(price))
+    return `${price} ريال`;
   const clean = typeof price === "string" ? price.trim() : "";
   if (!clean) return locale === "ar" ? "غير محدد" : "Not specified";
   if (clean.includes("ريال") || clean.includes("SAR")) return clean;
@@ -250,7 +262,9 @@ export function transformApiEventToListingItem(
   apiEvent: ApiEvent,
   locale: LocaleCode = "ar",
 ): EventListingItem {
-  const title = pickLocalizedField(apiEvent, "title", locale) || (locale === "ar" ? "فعالية بدون عنوان" : "Untitled event");
+  const title =
+    pickLocalizedField(apiEvent, "title", locale) ||
+    (locale === "ar" ? "فعالية بدون عنوان" : "Untitled event");
   const city = (apiEvent.city || "").trim();
 
   const freeFromFlag = parseIsFree(apiEvent.free_event);
@@ -272,9 +286,23 @@ export function transformApiEventToListingItem(
     ),
     isOver: isEventOver(apiEvent),
     priceLabel: toPriceLabel(isFree, apiEvent.price, locale),
-    locationLine: city ? `${city}، عسير` : locale === "ar" ? "عسير" : "Aseer",
+    locationLine:
+      locale === "ar"
+        ? city
+          ? `${city}، عسير`
+          : "عسير"
+        : apiEvent.city_en
+          ? `${apiEvent.city_en}, Aseer`
+          : "Aseer",
     mapsUrl: toMapsUrl(apiEvent.map, title),
-    mapsLinkLabel: city ? `${city}، عسير` : title,
+    mapsLinkLabel:
+      locale === "ar"
+        ? city
+          ? `${city}، عسير`
+          : title
+        : apiEvent.city_en
+          ? `${apiEvent.city_en}, Aseer`
+          : title,
     dateRange: buildDateRange(
       apiEvent.start_date,
       apiEvent.end_date,
@@ -286,20 +314,28 @@ export function transformApiEventToListingItem(
   };
 }
 
-export async function fetchEvents(locale: LocaleCode = "ar"): Promise<EventListingItem[]> {
+export async function fetchEvents(
+  locale: LocaleCode = "ar",
+): Promise<EventListingItem[]> {
   try {
     const response = await fetch(`${EVENTS_API_BASE}${EVENTS_ITEMS_PATH}`, {
       next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch events: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to fetch events: ${response.status} ${response.statusText}`,
+      );
     }
 
     const apiData: EventsApiResponse = await response.json();
 
     return apiData.data
-      .filter((item) => isPublishedEvent(item.event_status) && isClickableEvent(item.unclickable))
+      .filter(
+        (item) =>
+          isPublishedEvent(item.event_status) &&
+          isClickableEvent(item.unclickable),
+      )
       .map((item) => transformApiEventToListingItem(item, locale));
   } catch (error) {
     console.error("[events] Failed to fetch events:", error);
