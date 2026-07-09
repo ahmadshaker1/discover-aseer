@@ -13,7 +13,7 @@ function BackChevronIcon() {
       viewBox="0 0 7 11"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="shrink-0"
+      className="shrink-0 ltr:rotate-180"
       aria-hidden
     >
       <path
@@ -85,7 +85,7 @@ const TourGuidePortalHero = () => {
         <div className="relative mx-auto w-full max-w-[1026px]">
           <Link
             href="/tour-guides"
-            className={`mb-10 inline-flex h-[42px] min-w-[98px] cursor-pointer items-center justify-center gap-[10px] ${backAlignClass} rounded-[43px] bg-background px-[10px] py-[10px] text-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:absolute lg:mb-0 lg:top-[91px]`}
+            className={`mb-10 inline-flex h-[42px] min-w-[98px] cursor-pointer items-center justify-center gap-[10px] ltr:flex-row-reverse ${backAlignClass} rounded-[43px] bg-background px-[10px] py-[10px] text-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:absolute lg:mb-0 lg:top-[91px]`}
             style={{ fontFamily: araBold }}
             prefetch={false}
           >

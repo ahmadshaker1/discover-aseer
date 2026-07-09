@@ -165,6 +165,7 @@ type FormSelectFieldProps = {
   id: string;
   label: string;
   required?: boolean;
+  disabled?: boolean;
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
@@ -192,6 +193,7 @@ export function FormSelectField({
   id,
   label,
   required,
+  disabled,
   placeholder,
   value,
   onChange,
@@ -201,7 +203,7 @@ export function FormSelectField({
     options.find((option) => option.value === value)?.label ?? placeholder;
 
   return (
-    <Field className={FIELD_GROUP}>
+    <Field className={FIELD_GROUP} disabled={disabled}>
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
@@ -210,12 +212,17 @@ export function FormSelectField({
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
-      <Listbox value={value} onChange={onChange}>
+      <Listbox value={value} onChange={onChange} disabled={disabled}>
         <div className="relative">
           <ListboxButton
             id={id}
             aria-required={required}
-            className={`${FIELD_CONTROL} flex cursor-pointer items-center justify-between gap-2`}
+            disabled={disabled}
+            className={`${FIELD_CONTROL} flex items-center justify-between gap-2 ${
+              disabled
+                ? "cursor-not-allowed bg-muted text-muted-foreground"
+                : "cursor-pointer"
+            }`}
             style={{ fontFamily: ibm }}
           >
             <span

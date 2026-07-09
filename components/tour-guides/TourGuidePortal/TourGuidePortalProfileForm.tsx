@@ -105,6 +105,8 @@ const TourGuidePortalProfileForm = ({
   const existingPhotoUrl = resolveTourGuideFileUrl(profile?.image);
   const existingLicenseUrl = resolveTourGuideFileUrl(profile?.license_attachment);
 
+  /** Existing profile → lock identity fields set on first create. */
+  const lockIdentityFields = Boolean(profile?.id);
   const isPublished = profile?.status === TOUR_GUIDE_PUBLISHED_STATUS;
 
   const languageLevelOptions = useMemo(
@@ -194,10 +196,14 @@ const TourGuidePortalProfileForm = ({
         licenseId = await uploadTourGuideFile(licenseFile);
       }
 
-      const payload = portalFormToApiPayload(values, {
-        imageId,
-        licenseId,
-      });
+      const payload = portalFormToApiPayload(
+        values,
+        {
+          imageId,
+          licenseId,
+        },
+        { lockIdentityFields },
+      );
 
       const profileId =
         profile?.id ??
@@ -255,6 +261,12 @@ const TourGuidePortalProfileForm = ({
         </p>
       )}
 
+      {lockIdentityFields && (
+        <p className="mb-8 text-start text-sm text-muted-foreground" style={{ fontFamily: ibm }}>
+          {t("profile.lockedFieldsHint")}
+        </p>
+      )}
+
       <div className="mb-10">
         <FormSectionTitle>{tForm("personalInfo")}</FormSectionTitle>
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
@@ -262,6 +274,7 @@ const TourGuidePortalProfileForm = ({
             id={`${baseId}-name-ar`}
             label={tForm("nameAr")}
             required
+            readOnly={lockIdentityFields}
             value={values.name_ar}
             onChange={(e) => setField("name_ar", e.target.value)}
           />
@@ -269,6 +282,7 @@ const TourGuidePortalProfileForm = ({
             id={`${baseId}-name-en`}
             label={tForm("nameEn")}
             required
+            readOnly={lockIdentityFields}
             value={values.name_en}
             onChange={(e) => setField("name_en", e.target.value)}
           />
@@ -276,6 +290,7 @@ const TourGuidePortalProfileForm = ({
             id={`${baseId}-gender`}
             label={tForm("gender")}
             required
+            disabled={lockIdentityFields}
             placeholder={tForm("select")}
             value={values.gender}
             onChange={(value) =>
@@ -290,6 +305,7 @@ const TourGuidePortalProfileForm = ({
             id={`${baseId}-national-id`}
             label={tForm("nationalId")}
             required
+            readOnly={lockIdentityFields}
             value={values.National_ID_number}
             onChange={(e) => setField("National_ID_number", e.target.value)}
           />
@@ -361,6 +377,7 @@ const TourGuidePortalProfileForm = ({
             id={`${baseId}-license`}
             label={tForm("licenseNumber")}
             required
+            readOnly={lockIdentityFields}
             value={values.License_number}
             onChange={(e) => setField("License_number", e.target.value)}
           />

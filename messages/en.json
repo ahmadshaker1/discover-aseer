@@ -655,13 +655,14 @@
       "currentFileKept": "Current file on record — upload only if you want to replace it.",
       "viewCurrentPhoto": "Current profile photo",
       "viewCurrentLicense": "View license file",
-      "saveDraft": "Save profile (draft)",
+      "saveDraft": "Submit Application For Review",
       "saving": "Saving…",
       "savedDraft": "Profile saved as draft. An administrator will review and publish it.",
       "sessionExpired": "Your session expired. Please sign in again.",
       "errorGeneric": "Could not save your profile. Please try again.",
       "commitmentsRequired": "Please accept all declarations before saving.",
-      "specializationRequired": "Please select at least one specialization."
+      "specializationRequired": "Please select at least one specialization.",
+      "lockedFieldsHint": "Name, gender, national ID, and license number were set when you created your profile and cannot be changed here. Contact support if a correction is needed."
     }
   },
   "aseerCommunity": {

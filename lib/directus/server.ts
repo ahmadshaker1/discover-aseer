@@ -368,24 +368,40 @@ export async function directusRefresh(
 }
 
 /** Guide-facing saves must never accept status from the client. */
+/** Identity fields writable on create only — stripped from updates. */
+const PORTAL_LOCKED_ON_UPDATE_FIELDS = [
+  "name",
+  "name_en",
+  "gender",
+  "national_id",
+  "license_number",
+] as const;
+
 export function sanitizeTourGuidePortalPayload(
   payload: Record<string, unknown>,
+  options?: { lockIdentityFields?: boolean },
 ): Record<string, unknown> {
   const next = { ...payload };
   delete next.status;
   delete next.id;
   delete next[TOUR_GUIDE_EMAIL_FIELD];
   delete next[TOUR_GUIDE_ACCOUNT_FIELD];
+  if (options?.lockIdentityFields) {
+    for (const field of PORTAL_LOCKED_ON_UPDATE_FIELDS) {
+      delete next[field];
+    }
+  }
   return next;
 }
 
 export function buildTourGuideProfilePayload(
   fields: Record<string, unknown>,
   user: DirectusUser,
+  options?: { lockIdentityFields?: boolean },
 ): TourGuideProfilePayload {
   return withOwnerOnPayload(
     {
-      ...sanitizeTourGuidePortalPayload(fields),
+      ...sanitizeTourGuidePortalPayload(fields, options),
       status: TOUR_GUIDE_DRAFT_STATUS,
     },
     user,
@@ -994,7 +1010,11 @@ export async function directusUpdateGuideProfile(
       fetch(`${baseUrl}/items/${TOUR_GUIDES_COLLECTION}/${id}`, {
         method: "PATCH",
         headers: directusProfileHeaders(auth, true, true),
-        body: JSON.stringify(buildTourGuideProfilePayload(payload, user)),
+        body: JSON.stringify(
+          buildTourGuideProfilePayload(payload, user, {
+            lockIdentityFields: true,
+          }),
+        ),
       }),
   );
 

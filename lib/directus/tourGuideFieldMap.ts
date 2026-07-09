@@ -221,19 +221,37 @@ export function apiProfileToPortalForm(
   };
 }
 
+/**
+ * Identity fields that can be set on first create, then locked on later updates.
+ * (No birthday field exists on `tourist_guides` today.)
+ */
+export const PORTAL_LOCKED_ON_UPDATE_FIELDS = [
+  "name",
+  "name_en",
+  "gender",
+  "national_id",
+  "license_number",
+] as const;
+
+export function stripLockedPortalUpdateFields(
+  payload: Record<string, unknown>,
+): Record<string, unknown> {
+  const next = { ...payload };
+  for (const field of PORTAL_LOCKED_ON_UPDATE_FIELDS) {
+    delete next[field];
+  }
+  return next;
+}
+
 /** Map portal form values to `tourist_guides` collection fields. */
 export function portalFormToApiPayload(
   values: TourGuidePortalFormValues,
   fileIds: { imageId?: string | null; licenseId?: string | null },
+  options?: { lockIdentityFields?: boolean },
 ): Record<string, unknown> {
   const payload: Record<string, unknown> = {
-    name: values.name_ar.trim(),
-    name_en: values.name_en.trim(),
-    gender: values.gender,
-    national_id: values.National_ID_number.trim(),
     description: values.About_me.trim(),
     description_en: values.About_me.trim(),
-    license_number: values.License_number.trim(),
     date: values.License_expiry_date,
     arabic_language_level: values.Arabic_language,
     english_language_level: values.english_language,
@@ -253,6 +271,14 @@ export function portalFormToApiPayload(
     commitment_2: values.commitment2,
     commitment_3: values.commitment3,
   };
+
+  if (!options?.lockIdentityFields) {
+    payload.name = values.name_ar.trim();
+    payload.name_en = values.name_en.trim();
+    payload.gender = values.gender;
+    payload.national_id = values.National_ID_number.trim();
+    payload.license_number = values.License_number.trim();
+  }
 
   if (values.residence) {
     payload.residence = values.residence;
