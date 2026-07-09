@@ -25,13 +25,13 @@ interface ExperiencesWithFilterProps {
 
 function applyFilters(
   experiences: ExperienceWithFilterMeta[],
-  filters: FilterState
+  filters: FilterState,
 ): ExperienceWithFilterMeta[] {
   return experiences.filter((exp) => {
     // if (filters.city && exp.filterCity !== filters.city) return false;
     if (filters.interests.length > 0) {
       const hasInterest = exp.filterInterests.some((i) =>
-        filters.interests.includes(i)
+        filters.interests.includes(i),
       );
       if (!hasInterest) return false;
     }
@@ -39,7 +39,7 @@ function applyFilters(
     if (filters.cost === "free" && exp.isPaid) return false;
     if (filters.travelers.length > 0) {
       const hasTraveler = exp.filterTravelers.some((t) =>
-        filters.travelers.includes(t)
+        filters.travelers.includes(t),
       );
       if (!hasTraveler) return false;
     }
@@ -56,7 +56,7 @@ export default function ExperiencesWithFilter({
 
   const filteredExperiences = useMemo(
     () => applyFilters(experiences, filters),
-    [experiences, filters]
+    [experiences, filters],
   );
 
   const handleReset = () => setFilters(INITIAL_FILTERS);

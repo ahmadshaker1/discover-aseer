@@ -17,13 +17,16 @@ export interface ApiExperience {
   minimum_number_of_people: string | null;
   details: string | null;
   type: string | string[] | null;
+  type_en?: string | string[] | null;
   tags: string | string[] | null;
   date: string | null;
   tour_agency: string | null;
   price: number | string | null;
   booking_link: string | null;
   target_audience: string | null;
+  tour_audience_en?: string | null;
   status?: string | null;
+  duration_En?: string | null;
   [key: string]: unknown;
 }
 
@@ -98,7 +101,9 @@ function parseExperienceFieldTokens(raw: ExperienceFieldValue): string[] {
     try {
       const parsed = JSON.parse(trimmed) as unknown;
       if (Array.isArray(parsed)) {
-        entries = parsed.filter((value): value is string => typeof value === "string");
+        entries = parsed.filter(
+          (value): value is string => typeof value === "string",
+        );
       }
     } catch {
       entries = [trimmed];
@@ -115,7 +120,16 @@ function parseExperienceFieldTokens(raw: ExperienceFieldValue): string[] {
   return tokens;
 }
 
-function getExperienceTypeTokens(api: ApiExperience): string[] {
+function getExperienceTypeTokens(
+  api: ApiExperience,
+  locale: LocaleCode = "ar",
+): string[] {
+  if (locale === "en" && api.type_en) {
+    return [
+      ...parseExperienceFieldTokens(api.type_en),
+      ...parseExperienceFieldTokens(api.tags),
+    ];
+  }
   return [
     ...parseExperienceFieldTokens(api.type),
     ...parseExperienceFieldTokens(api.tags),
@@ -123,7 +137,7 @@ function getExperienceTypeTokens(api: ApiExperience): string[] {
 }
 
 export function isCookingExperience(api: ApiExperience): boolean {
-  const tokens = getExperienceTypeTokens(api);
+  const tokens = getExperienceTypeTokens(api, "ar");
   return tokens.some((token) =>
     COOKING_EXPERIENCE_KEYS.has(normalizeInterestKey(token)),
   );
@@ -133,19 +147,27 @@ export function matchesExperienceType(
   api: ApiExperience,
   typeFilter: string,
 ): boolean {
-  if (normalizeInterestKey(typeFilter) === normalizeInterestKey(COOKING_EXPERIENCE_TYPE)) {
+  if (
+    normalizeInterestKey(typeFilter) ===
+    normalizeInterestKey(COOKING_EXPERIENCE_TYPE)
+  ) {
     return isCookingExperience(api);
   }
 
   const want = normalizeInterestKey(typeFilter);
-  return parseExperienceFieldTokens(api.type).some(
-    (token) => normalizeInterestKey(token) === want,
-  );
+  const allTokens = [
+    ...getExperienceTypeTokens(api, "ar"),
+    ...getExperienceTypeTokens(api, "en"),
+  ];
+  return allTokens.some((token) => normalizeInterestKey(token) === want);
 }
 
 function stripHtml(html: string | null | undefined): string {
   if (!html || typeof html !== "string") return "";
-  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function pickExperienceField(
@@ -228,8 +250,20 @@ const TRAVELER_LABEL_TO_ID: Record<string, string> = {
   "عائلة واطفال": "family",
   "فردي سيدات": "female",
   "مسافرة منفردة": "female",
+
+  individual: "individual",
+  "individual trip": "individual",
+  couple: "couple",
+  groups: "groups",
+  "group trip": "groups",
+  family: "family",
+  "family & kids": "family",
+  "family and kids": "family",
+  female: "female",
+  "solo female traveler": "female",
+  "solo female": "female",
 };
-const TRAVELER_TYPES = [
+const TRAVELER_TYPES_AR = [
   { id: "female", label: "مسافرة منفردة" },
   { id: "individual", label: "رحلة فردية" },
   { id: "couple", label: "زوج" },
@@ -237,22 +271,45 @@ const TRAVELER_TYPES = [
   { id: "groups", label: "رحلة جماعية" },
 ] as const;
 
-function parseFilterInterests(api: ApiExperience): string[] {
+const TRAVELER_TYPES_EN = [
+  { id: "female", label: "Solo Female Traveler" },
+  { id: "individual", label: "Individual Trip" },
+  { id: "couple", label: "Couple" },
+  { id: "family", label: "Family & Kids" },
+  { id: "groups", label: "Group Trip" },
+] as const;
+
+function parseFilterInterests(
+  api: ApiExperience,
+  locale: LocaleCode = "ar",
+): string[] {
   const byKey = new Map<string, string>();
-  for (const label of getExperienceTypeTokens(api)) {
+  for (const label of getExperienceTypeTokens(api, locale)) {
     const key = normalizeInterestKey(label);
     if (!byKey.has(key)) byKey.set(key, label);
   }
   return Array.from(byKey.keys());
 }
 
-function parseFilterTravelers(api: ApiExperience): string[] {
-  const raw = (api.target_audience || "").trim();
+function parseFilterTravelers(
+  api: ApiExperience,
+  locale: LocaleCode = "ar",
+): string[] {
+  const raw =
+    locale === "en"
+      ? (api.tour_audience_en || api.target_audience || "").trim()
+      : (api.target_audience || "").trim();
   if (!raw) return [];
   const ids: string[] = [];
-  const parts = raw.split(",").map((p) => p.trim()).filter(Boolean);
+  const parts = raw
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
   for (const part of parts) {
-    const id = TRAVELER_LABEL_TO_ID[part] ?? TRAVELER_LABEL_TO_ID[part.replace(/\s+/g, " ")];
+    const key = part.toLowerCase();
+    const id =
+      TRAVELER_LABEL_TO_ID[key] ??
+      TRAVELER_LABEL_TO_ID[key.replace(/\s+/g, " ")];
     if (id && !ids.includes(id)) ids.push(id);
   }
   return ids;
@@ -269,16 +326,20 @@ export function transformExperience(
     pickExperienceField(api, "title", locale) ||
     (locale === "en" ? "Experience" : "تجربة");
   const category = getExperienceTypeTokens(api)[0] || "التجارب";
-  const imageUrl = (api.image && api.image.startsWith("http")) ? api.image : DEFAULT_IMAGE;
+  const imageUrl =
+    api.image && api.image.startsWith("http") ? api.image : DEFAULT_IMAGE;
   const bookUrl = (api.booking_link || api.link || "").trim() || "#";
   const price = parsePrice(api.price ?? api.price_1);
   const groupSize = parseGroupSize(api.minimum_number_of_people);
   const provider = (api.tour_agency || "").trim() || "—";
-  const duration = (api.duration || "").trim() || "—";
+  const duration =
+    locale === "en"
+      ? (api.duration_En || "").trim() || (api.duration || "").trim() || "—"
+      : (api.duration || "").trim() || "—";
   const filterCity = normalizeCityLabel(api.destination || "") || null;
-  const filterInterests = parseFilterInterests(api);
+  const filterInterests = parseFilterInterests(api, locale);
   const isPaid = price > 0;
-  const filterTravelers = parseFilterTravelers(api);
+  const filterTravelers = parseFilterTravelers(api, locale);
 
   return {
     id: api.id,
@@ -312,7 +373,10 @@ function buildFilterOptions(
   for (const api of apiItems) {
     const meta = transformExperience(api, locale);
     if (meta.filterCity) {
-      cityCounts.set(meta.filterCity, (cityCounts.get(meta.filterCity) ?? 0) + 1);
+      cityCounts.set(
+        meta.filterCity,
+        (cityCounts.get(meta.filterCity) ?? 0) + 1,
+      );
     }
     for (const label of getExperienceTypeTokens(api)) {
       const key = normalizeInterestKey(label);
@@ -328,7 +392,9 @@ function buildFilterOptions(
     }
   }
 
-  const interests: FilterOptionWithCount[] = Array.from(interestCounts.entries())
+  const interests: FilterOptionWithCount[] = Array.from(
+    interestCounts.entries(),
+  )
     .map(([id, count]) => ({ id, label: interestLabels.get(id) ?? id, count }))
     .sort((a, b) => b.count - a.count);
 
@@ -336,17 +402,25 @@ function buildFilterOptions(
     .map(([id, count]) => ({ id, label: id, count }))
     .sort((a, b) => b.count - a.count);
 
-  const costOptions: FilterOptionWithCount[] = [
-    { id: "paid", label: "مدفوعة", count: paidCount },
-    { id: "free", label: "مجانية", count: freeCount },
-  ];
+  const costOptions: FilterOptionWithCount[] =
+    locale === "en"
+      ? [
+          { id: "paid", label: "Paid", count: paidCount },
+          { id: "free", label: "Free", count: freeCount },
+        ]
+      : [
+          { id: "paid", label: "مدفوعة", count: paidCount },
+          { id: "free", label: "مجانية", count: freeCount },
+        ];
 
-  const travelerTypes: FilterOptionWithCount[] = TRAVELER_TYPES.map(
+  const travelerTypesSource =
+    locale === "en" ? TRAVELER_TYPES_EN : TRAVELER_TYPES_AR;
+  const travelerTypes: FilterOptionWithCount[] = travelerTypesSource.map(
     ({ id, label }) => ({
       id,
       label,
       count: travelerCounts.get(id) ?? 0,
-    })
+    }),
   );
 
   return { cityOptions, interests, costOptions, travelerTypes };
@@ -376,8 +450,6 @@ export interface FetchExperiencesResult {
  * - filterTravelers: traveler audience tags for sidebar filtering
  */
 
-
-
 /**
  * Load one experience by id (Directus single-item endpoint) with fallbacks to the
  * list endpoint and dummy data so `/experiences/[id]` stays in sync with home cards.
@@ -389,9 +461,10 @@ export async function fetchExperienceById(
   const trimmed = id.trim();
   if (!trimmed) return null;
 
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "");
-
-
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(
+    /\/$/,
+    "",
+  );
 
   try {
     const listUrl = new URL(`${directusUrl}/items/experiences`);
