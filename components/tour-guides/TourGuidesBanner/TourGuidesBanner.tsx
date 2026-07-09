@@ -2,14 +2,14 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-const TOUR_GUIDE_REGISTER_URL =
+const TOUR_GUIDE_PORTAL_URL =
   process.env.NEXT_PUBLIC_TOUR_GUIDE_REGISTER_URL?.trim() || "";
 
-const INTERNAL_REGISTER_PATH = "/tour-guides/register";
+const INTERNAL_PORTAL_PATH = "/tour-guides/portal";
 
-function resolveRegisterHref(): { href: string; external: boolean } {
-  const raw = TOUR_GUIDE_REGISTER_URL;
-  if (!raw) return { href: INTERNAL_REGISTER_PATH, external: false };
+function resolvePortalHref(): { href: string; external: boolean } {
+  const raw = TOUR_GUIDE_PORTAL_URL;
+  if (!raw) return { href: INTERNAL_PORTAL_PATH, external: false };
   if (raw.startsWith("http://") || raw.startsWith("https://"))
     return { href: raw, external: true };
   return { href: raw.startsWith("/") ? raw : `/${raw}`, external: false };
@@ -63,8 +63,7 @@ function BreadcrumbChevron() {
 const TourGuidesBanner = async () => {
   const tGuides = await getTranslations("tourGuides");
   const tCommon = await getTranslations("common");
-  const { href: registerHref, external: registerExternal } =
-    resolveRegisterHref();
+  const { href: portalHref, external: portalExternal } = resolvePortalHref();
 
   return (
     <section className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]">
@@ -100,8 +99,8 @@ const TourGuidesBanner = async () => {
           </p>
 
           <Link
-            href={registerHref}
-            {...(registerExternal
+            href={portalHref}
+            {...(portalExternal
               ? { target: "_blank" as const, rel: "noopener noreferrer" }
               : {})}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-medium text-primary-foreground shadow-lg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"

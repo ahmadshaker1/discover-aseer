@@ -35,7 +35,7 @@ function BreadcrumbChevronLarge() {
       viewBox="0 0 13 13"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="shrink-0 opacity-50"
+      className="shrink-0 opacity-50 ltr:rotate-180"
       aria-hidden
     >
       <g opacity="0.5">
@@ -56,7 +56,7 @@ function BreadcrumbChevronSmall() {
       viewBox="0 0 5 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="shrink-0"
+      className="shrink-0 ltr:rotate-180"
       aria-hidden
     >
       <path

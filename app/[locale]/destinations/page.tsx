@@ -4,7 +4,7 @@ import DestinationsMainPageContent from "@/components/destinations/DestinationsM
 import { fetchDestinations } from "@/components/destinations/data";
 import { parseDestinationsFilterParam } from "@/components/destinations/filterOptions";
 
-const TOUR_GUIDE_REGISTER_HREF = "/tour-guides/register";
+const TOUR_GUIDE_PORTAL_HREF = "/tour-guides/portal";
 
 interface DestinationsPageProps {
   searchParams: Promise<{ filter?: string }>;
@@ -30,7 +30,7 @@ const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
         backgroundImage="/assets/destinations/hero.jpeg"
         hidePattern
         primaryCta={{
-          href: TOUR_GUIDE_REGISTER_HREF,
+          href: TOUR_GUIDE_PORTAL_HREF,
           label: t("contributeDestinations"),
         }}
       />

@@ -43,6 +43,7 @@ Add these on **`tourist_guides`** (plus your existing CMS profile fields):
 | **`transportation`** | Boolean | Offers transportation |
 | **`instagram`**, **`website`**, **`tiktok`**, **`x_platform`** | Text | Social links |
 | **`commitment_1`**, **`commitment_2`**, **`commitment_3`** | Boolean | Commitment checkboxes |
+| **`residence`** | Text (`aseer` / `other`) | Optional residence (portal form) |
 
 On save, the portal automatically sets:
 
@@ -169,6 +170,7 @@ In that case, ensure **`account`** is set on every row (the portal sets it autom
 | `transportation` | Form |
 | `instagram`, `website`, `tiktok`, `x_platform` | Form |
 | `commitment_1`, `commitment_2`, `commitment_3` | Form |
+| `residence` | Form (optional) |
 | `image`, `license_attachment` | Form (file ids after upload) |
 
 **Read & Update — same fields as Create**, plus any existing CMS fields you want prefilled (`content`, `content_en`, `slug`, etc.).

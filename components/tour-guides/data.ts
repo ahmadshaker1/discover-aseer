@@ -15,7 +15,7 @@
  * │                                     │ headers inside fetchTourGuides (not safe for secrets).   │
  * │ Remote guide photo domains          │ next.config.ts → images.remotePatterns                   │
  * │ Page that loads the data            │ app/tour-guides/page.tsx → fetchTourGuides()             │
- * │ “Register as guide” button URL      │ TourGuidesBanner.tsx → NEXT_PUBLIC_TOUR_GUIDE_REGISTER_URL│
+ * │ “Register as guide” button URL      │ TourGuidesBanner.tsx → /tour-guides/portal (or NEXT_PUBLIC_TOUR_GUIDE_REGISTER_URL)│
  * └─────────────────────────────────────┴──────────────────────────────────────────────────────────┘
  *
  * Decision order (what runs):

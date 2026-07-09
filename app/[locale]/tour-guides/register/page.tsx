@@ -1,21 +1,10 @@
-import type { Metadata } from "next";
-import TourGuideRegisterFlow from "@/components/tour-guides/TourGuideRegisterFlow/TourGuideRegisterFlow";
-import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 
-export const generateMetadata = async (): Promise<Metadata> => {
-  const t = await getTranslations("tourGuidesRegister");
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-  };
+/** Legacy public registration URL — guides now use the authenticated portal. */
+const TourGuideRegisterRedirectPage = async () => {
+  const locale = await getLocale();
+  redirect(`/${locale}/tour-guides/portal`);
 };
 
-const TourGuideRegisterPage = () => {
-  return (
-    <div className="flex min-h-0 w-full flex-col bg-background pb-4 text-foreground sm:pb-6">
-      <TourGuideRegisterFlow />
-    </div>
-  );
-};
-
-export default TourGuideRegisterPage;
+export default TourGuideRegisterRedirectPage;

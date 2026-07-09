@@ -2,8 +2,10 @@
 
 import { useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { ApiTouristGuide } from "@/components/tour-guides/types";
 import {
+  FormCheckboxField,
   FormFileUpload,
   FormSectionTitle,
   FormSelectField,
@@ -11,11 +13,15 @@ import {
   FormTextInput,
   FormTextarea,
 } from "@/components/tour-guides/TourGuidePortal/TourGuidePortalFormFields";
-import { ibm } from "@/components/experiences/submit/experienceFormStyles";
+import { ibm, araBold } from "@/components/experiences/submit/experienceFormStyles";
 import {
   apiProfileToPortalForm,
+  buildSpecializationValue,
   EMPTY_PORTAL_FORM,
+  parseSpecializationValue,
   portalFormToApiPayload,
+  SPECIALIZATION_IDS,
+  type SpecializationId,
   type TourGuidePortalFormValues,
 } from "@/lib/directus/tourGuideFieldMap";
 import { getTourGuideSession } from "@/lib/directus/tourGuideAuth";
@@ -46,6 +52,10 @@ const TourGuidePortalProfileForm = ({
   const baseId = useId();
 
   const [values, setValues] = useState<TourGuidePortalFormValues>(EMPTY_PORTAL_FORM);
+  const [selectedSpecializations, setSelectedSpecializations] = useState<
+    SpecializationId[]
+  >([]);
+  const [otherSpecialization, setOtherSpecialization] = useState("");
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [licenseFile, setLicenseFile] = useState<File | null>(null);
   const [submitState, setSubmitState] = useState<
@@ -74,10 +84,14 @@ const TourGuidePortalProfileForm = ({
 
   useEffect(() => {
     if (profile) {
-      setValues({
+      const next = {
         ...apiProfileToPortalForm(profile),
         Email: profile.email?.trim() || accountEmail,
-      });
+      };
+      setValues(next);
+      const parsed = parseSpecializationValue(next.Specialization);
+      setSelectedSpecializations(parsed.selected);
+      setOtherSpecialization(parsed.other);
       return;
     }
     if (accountEmail) {
@@ -107,20 +121,64 @@ const TourGuidePortalProfileForm = ({
     [tForm],
   );
 
-  const setField = <K extends keyof TourGuidePortalFormValues>(
-    key: K,
-    value: TourGuidePortalFormValues[K],
-  ) => {
+  const clearSubmitFeedback = () => {
     if (submitState !== "idle") {
       setSubmitState("idle");
       setMessage("");
     }
+  };
+
+  const setField = <K extends keyof TourGuidePortalFormValues>(
+    key: K,
+    value: TourGuidePortalFormValues[K],
+  ) => {
+    clearSubmitFeedback();
     setValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const syncSpecialization = (
+    nextSelected: SpecializationId[],
+    nextOther: string,
+  ) => {
+    clearSubmitFeedback();
+    setSelectedSpecializations(nextSelected);
+    setOtherSpecialization(nextOther);
+    setValues((prev) => ({
+      ...prev,
+      Specialization: buildSpecializationValue(nextSelected, nextOther),
+    }));
+  };
+
+  const toggleSpecialization = (id: SpecializationId) => {
+    const exists = selectedSpecializations.includes(id);
+    if (exists) {
+      const next = selectedSpecializations.filter((item) => item !== id);
+      syncSpecialization(next, id === "other" ? "" : otherSpecialization);
+      return;
+    }
+    syncSpecialization([...selectedSpecializations, id], otherSpecialization);
   };
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (submitState === "submitting") return;
+
+    if (
+      !values.commitment1 ||
+      !values.commitment2 ||
+      !values.commitment3 ||
+      !values.commitment4
+    ) {
+      setSubmitState("error");
+      setMessage(t("profile.commitmentsRequired"));
+      return;
+    }
+
+    if (!values.Specialization.trim()) {
+      setSubmitState("error");
+      setMessage(t("profile.specializationRequired"));
+      return;
+    }
 
     setSubmitState("submitting");
     setMessage("");
@@ -235,6 +293,22 @@ const TourGuidePortalProfileForm = ({
             value={values.National_ID_number}
             onChange={(e) => setField("National_ID_number", e.target.value)}
           />
+          <FormSelectField
+            id={`${baseId}-residence`}
+            label={tForm("residence")}
+            placeholder={tForm("select")}
+            value={values.residence}
+            onChange={(value) =>
+              setField(
+                "residence",
+                value as TourGuidePortalFormValues["residence"],
+              )
+            }
+            options={[
+              { value: "aseer", label: tForm("residenceAseer") },
+              { value: "other", label: tForm("residenceOther") },
+            ]}
+          />
           <FormTextarea
             id={`${baseId}-about`}
             label={tForm("aboutMe")}
@@ -246,7 +320,7 @@ const TourGuidePortalProfileForm = ({
           <FormFileUpload
             id={`${baseId}-photo`}
             label={tForm("profilePhoto")}
-            required
+            required={!existingPhotoUrl}
             accept="image/jpeg,image/png,image/webp,image/jpg"
             hint={photoHint}
             file={profileImageFile}
@@ -255,11 +329,15 @@ const TourGuidePortalProfileForm = ({
             previewAsImage
             chooseFileLabel={tFiles("chooseFile")}
             noFileLabel={tFiles("noFileChosen")}
-            onChange={(files) => setProfileImageFile(files?.[0] ?? null)}
+            onChange={(files) => {
+              clearSubmitFeedback();
+              setProfileImageFile(files?.[0] ?? null);
+            }}
           />
           <FormFileUpload
             id={`${baseId}-license-file`}
             label={tForm("licenseAttachment")}
+            required={!existingLicenseUrl}
             accept="image/jpeg,image/png,image/jpg,application/pdf"
             hint={licenseHint}
             file={licenseFile}
@@ -268,7 +346,10 @@ const TourGuidePortalProfileForm = ({
             chooseFileLabel={tFiles("chooseFile")}
             noFileLabel={tFiles("noFileChosen")}
             viewFileLabel={t("profile.viewCurrentLicense")}
-            onChange={(files) => setLicenseFile(files?.[0] ?? null)}
+            onChange={(files) => {
+              clearSubmitFeedback();
+              setLicenseFile(files?.[0] ?? null);
+            }}
           />
         </div>
       </div>
@@ -326,13 +407,50 @@ const TourGuidePortalProfileForm = ({
             onChange={(e) => setField("Other_languages", e.target.value)}
             placeholder={tForm("otherLanguagesPlaceholder")}
           />
-          <FormTextInput
-            id={`${baseId}-spec`}
-            label={tForm("specialization")}
-            required
-            value={values.Specialization}
-            onChange={(e) => setField("Specialization", e.target.value)}
+          <FormSelectField
+            id={`${baseId}-other-lang-level`}
+            label={tForm("otherLanguagesLevel")}
+            placeholder={tForm("select")}
+            value={values.Other_languages_level}
+            onChange={(value) =>
+              setField(
+                "Other_languages_level",
+                value as TourGuidePortalFormValues["Other_languages_level"],
+              )
+            }
+            options={languageLevelOptions}
           />
+          <div className="md:col-span-2 flex flex-col gap-3 text-start">
+            <p
+              className="text-base font-bold text-foreground"
+              style={{ fontFamily: araBold }}
+            >
+              {tForm("specialization")}{" "}
+              <span className="text-red-600">*</span>
+            </p>
+            <div className="grid grid-cols-1 gap-2">
+              {SPECIALIZATION_IDS.map((item) => (
+                <FormCheckboxField
+                  key={item}
+                  checked={selectedSpecializations.includes(item)}
+                  onChange={() => toggleSpecialization(item)}
+                >
+                  {tForm(`specializations.${item}`)}
+                </FormCheckboxField>
+              ))}
+            </div>
+            {selectedSpecializations.includes("other") ? (
+              <FormTextInput
+                id={`${baseId}-other-spec`}
+                label={tForm("otherSpecializationPlaceholder")}
+                value={otherSpecialization}
+                onChange={(e) =>
+                  syncSpecialization(selectedSpecializations, e.target.value)
+                }
+                placeholder={tForm("otherSpecializationPlaceholder")}
+              />
+            ) : null}
+          </div>
           <FormSelectField
             id={`${baseId}-transport`}
             label={tForm("transportation")}
@@ -413,6 +531,45 @@ const TourGuidePortalProfileForm = ({
             onChange={(e) => setField("X_platform", e.target.value)}
             dir="ltr"
           />
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <FormSectionTitle>
+          {tForm("commitmentsTitle")} <span className="text-red-600">*</span>
+        </FormSectionTitle>
+        <div className="flex flex-col gap-3">
+          <FormCheckboxField
+            checked={values.commitment1}
+            onChange={(checked) => setField("commitment1", checked)}
+          >
+            {tForm("commitment1")} <span className="text-red-600">*</span>
+          </FormCheckboxField>
+          <FormCheckboxField
+            checked={values.commitment2}
+            onChange={(checked) => setField("commitment2", checked)}
+          >
+            {tForm("commitment2")} <span className="text-red-600">*</span>
+          </FormCheckboxField>
+          <FormCheckboxField
+            checked={values.commitment3}
+            onChange={(checked) => setField("commitment3", checked)}
+          >
+            {tForm("commitment3")} <span className="text-red-600">*</span>
+          </FormCheckboxField>
+          <FormCheckboxField
+            checked={values.commitment4}
+            onChange={(checked) => setField("commitment4", checked)}
+          >
+            <Link
+              href="/privacy"
+              className="underline hover:opacity-80"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {tForm("commitment4")}
+            </Link>{" "}
+            <span className="text-red-600">*</span>
+          </FormCheckboxField>
         </div>
       </div>
 

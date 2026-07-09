@@ -659,7 +659,9 @@
       "saving": "Saving…",
       "savedDraft": "Profile saved as draft. An administrator will review and publish it.",
       "sessionExpired": "Your session expired. Please sign in again.",
-      "errorGeneric": "Could not save your profile. Please try again."
+      "errorGeneric": "Could not save your profile. Please try again.",
+      "commitmentsRequired": "Please accept all declarations before saving.",
+      "specializationRequired": "Please select at least one specialization."
     }
   },
   "aseerCommunity": {

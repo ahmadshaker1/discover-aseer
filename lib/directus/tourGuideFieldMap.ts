@@ -1,17 +1,101 @@
 import type { ApiTouristGuide } from "@/components/tour-guides/types";
 
-/** Portal form shape (aligned with the public registration form field names). */
+export type SpecializationId =
+  | "land"
+  | "marine"
+  | "aerial"
+  | "heritage"
+  | "recreational"
+  | "other";
+
+export const SPECIALIZATION_IDS: SpecializationId[] = [
+  "land",
+  "marine",
+  "aerial",
+  "heritage",
+  "recreational",
+  "other",
+];
+
+/** Values stored in `specializations` (Arabic labels, matching the former public form). */
+export const SPECIALIZATION_AR: Record<SpecializationId, string> = {
+  land: "متخصص في التجارب والأنشطة البرية",
+  marine: "متخصص في التجارب والأنشطة البحرية",
+  aerial: "متخصص في التجارب والأنشطة الهوائية",
+  heritage: "متخصص في التجارب والأنشطة التراثية والثقافية",
+  recreational: "متخصص في سياحة الاستجمام",
+  other: "أخرى",
+};
+
+export function buildSpecializationValue(
+  selectedSpecializations: SpecializationId[],
+  otherSpecialization: string,
+): string {
+  const list = selectedSpecializations
+    .filter((item) => item !== "other")
+    .map((id) => SPECIALIZATION_AR[id]);
+  if (selectedSpecializations.includes("other")) {
+    const trimmedOther = otherSpecialization.trim();
+    if (trimmedOther) {
+      list.push(trimmedOther);
+    } else if (list.length === 0) {
+      list.push(SPECIALIZATION_AR.other);
+    }
+  }
+  return list.join(", ");
+}
+
+export function parseSpecializationValue(value: string): {
+  selected: SpecializationId[];
+  other: string;
+} {
+  const trimmed = value.trim();
+  if (!trimmed) return { selected: [], other: "" };
+
+  const parts = trimmed
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  const selected: SpecializationId[] = [];
+  const otherParts: string[] = [];
+
+  for (const part of parts) {
+    const known = (
+      Object.entries(SPECIALIZATION_AR) as [SpecializationId, string][]
+    ).find(([, label]) => label === part);
+    if (known) {
+      if (known[0] === "other") {
+        if (!selected.includes("other")) selected.push("other");
+      } else if (!selected.includes(known[0])) {
+        selected.push(known[0]);
+      }
+    } else {
+      otherParts.push(part);
+    }
+  }
+
+  if (otherParts.length > 0) {
+    if (!selected.includes("other")) selected.push("other");
+    return { selected, other: otherParts.join(", ") };
+  }
+
+  return { selected, other: "" };
+}
+
+/** Portal form shape (aligned with the former public registration form field names). */
 export interface TourGuidePortalFormValues {
   name_ar: string;
   name_en: string;
   gender: "" | "ذكر" | "أنثى";
   National_ID_number: string;
+  residence: "" | "aseer" | "other";
   About_me: string;
   License_number: string;
   License_expiry_date: string;
   english_language: "" | "beginner" | "intermediate" | "advanced";
   Arabic_language: "" | "beginner" | "intermediate" | "advanced";
   Other_languages: string;
+  Other_languages_level: "" | "beginner" | "intermediate" | "advanced";
   Specialization: string;
   Email: string;
   transportation: "" | "yes" | "no";
@@ -24,6 +108,7 @@ export interface TourGuidePortalFormValues {
   commitment1: boolean;
   commitment2: boolean;
   commitment3: boolean;
+  commitment4: boolean;
 }
 
 export const EMPTY_PORTAL_FORM: TourGuidePortalFormValues = {
@@ -31,12 +116,14 @@ export const EMPTY_PORTAL_FORM: TourGuidePortalFormValues = {
   name_en: "",
   gender: "",
   National_ID_number: "",
+  residence: "",
   About_me: "",
   License_number: "",
   License_expiry_date: "",
   english_language: "",
   Arabic_language: "",
   Other_languages: "",
+  Other_languages_level: "",
   Specialization: "",
   Email: "",
   transportation: "",
@@ -49,16 +136,55 @@ export const EMPTY_PORTAL_FORM: TourGuidePortalFormValues = {
   commitment1: false,
   commitment2: false,
   commitment3: false,
+  commitment4: false,
 };
+
+function parseOtherLanguages(raw: string | null | undefined): {
+  languages: string;
+  level: TourGuidePortalFormValues["Other_languages_level"];
+} {
+  const text = raw?.trim() ?? "";
+  if (!text) return { languages: "", level: "" };
+
+  const match = text.match(
+    /^(.*?)\s*[—\-–]\s*(beginner|intermediate|advanced)\s*$/i,
+  );
+  if (!match) return { languages: text, level: "" };
+
+  const level = match[2].toLowerCase() as
+    | "beginner"
+    | "intermediate"
+    | "advanced";
+  return { languages: match[1].trim(), level };
+}
+
+function formatOtherLanguages(
+  languages: string,
+  level: TourGuidePortalFormValues["Other_languages_level"],
+): string | null {
+  const trimmed = languages.trim();
+  if (!trimmed) return null;
+  if (!level) return trimmed;
+  return `${trimmed} — ${level}`;
+}
 
 export function apiProfileToPortalForm(
   api: ApiTouristGuide,
 ): TourGuidePortalFormValues {
+  const other = parseOtherLanguages(api.other_languages);
+  const residenceRaw =
+    typeof api.residence === "string" ? api.residence.trim() : "";
+  const residence =
+    residenceRaw === "aseer" || residenceRaw === "other"
+      ? residenceRaw
+      : ("" as const);
+
   return {
     name_ar: api.name ?? "",
     name_en: api.name_en ?? "",
     gender: (api.gender as TourGuidePortalFormValues["gender"]) ?? "",
     National_ID_number: api.national_id ?? "",
+    residence,
     About_me: api.description ?? api.content ?? "",
     License_number: api.license_number ?? "",
     License_expiry_date: api.date ? String(api.date).slice(0, 10) : "",
@@ -68,10 +194,16 @@ export function apiProfileToPortalForm(
     Arabic_language:
       (api.arabic_language_level as TourGuidePortalFormValues["Arabic_language"]) ??
       "",
-    Other_languages: api.other_languages ?? "",
+    Other_languages: other.languages,
+    Other_languages_level: other.level,
     Specialization: api.specializations ?? "",
     Email: api.email ?? "",
-    transportation: api.transportation === true ? "yes" : api.transportation === false ? "no" : "",
+    transportation:
+      api.transportation === true
+        ? "yes"
+        : api.transportation === false
+          ? "no"
+          : "",
     WhatsApp_number: api.whatsapp ?? "",
     Mobile_number: api.phone_number ?? "",
     Instagram: api.instagram ?? "",
@@ -81,6 +213,11 @@ export function apiProfileToPortalForm(
     commitment1: api.commitment_1 === true,
     commitment2: api.commitment_2 === true,
     commitment3: api.commitment_3 === true,
+    // Privacy acceptance is UI-only; pre-check when the stored commitments are already on file.
+    commitment4:
+      api.commitment_1 === true &&
+      api.commitment_2 === true &&
+      api.commitment_3 === true,
   };
 }
 
@@ -100,7 +237,10 @@ export function portalFormToApiPayload(
     date: values.License_expiry_date,
     arabic_language_level: values.Arabic_language,
     english_language_level: values.english_language,
-    other_languages: values.Other_languages.trim() || null,
+    other_languages: formatOtherLanguages(
+      values.Other_languages,
+      values.Other_languages_level,
+    ),
     specializations: values.Specialization.trim(),
     transportation: values.transportation === "yes",
     whatsapp: values.WhatsApp_number.trim(),
@@ -113,6 +253,10 @@ export function portalFormToApiPayload(
     commitment_2: values.commitment2,
     commitment_3: values.commitment3,
   };
+
+  if (values.residence) {
+    payload.residence = values.residence;
+  }
 
   if (fileIds.imageId) payload.image = fileIds.imageId;
   if (fileIds.licenseId) payload.license_attachment = fileIds.licenseId;
