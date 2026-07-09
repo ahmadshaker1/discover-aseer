@@ -34,7 +34,7 @@ const ExperienceCardActions = ({
         className="flex items-center gap-1 text-sm text-foreground transition-colors hover:text-muted-foreground"
       >
         <span>{t("more")}</span>
-        <span className="inline-flex ">
+        <span className="inline-flex">
           <ArrowLeftIcon />
         </span>
       </Link>
