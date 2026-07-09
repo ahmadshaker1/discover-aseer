@@ -1,8 +1,7 @@
 import {
   TOUR_GUIDE_ACCOUNT_FIELD,
-  TOUR_GUIDE_DRAFT_STATUS,
   TOUR_GUIDE_EMAIL_FIELD,
-  TOUR_GUIDE_PUBLISHED_STATUS,
+  TOUR_GUIDE_UNDER_REVIEW_STATUS,
   TOUR_GUIDES_COLLECTION,
 } from "./config";
 
@@ -402,7 +401,7 @@ export function buildTourGuideProfilePayload(
   return withOwnerOnPayload(
     {
       ...sanitizeTourGuidePortalPayload(fields, options),
-      status: TOUR_GUIDE_DRAFT_STATUS,
+      status: TOUR_GUIDE_UNDER_REVIEW_STATUS,
     },
     user,
   );
@@ -411,7 +410,7 @@ export function buildTourGuideProfilePayload(
 function normalizeSavedGuideProfile(
   profile: Record<string, unknown>,
 ): Record<string, unknown> {
-  return { ...profile, status: TOUR_GUIDE_DRAFT_STATUS };
+  return { ...profile, status: TOUR_GUIDE_UNDER_REVIEW_STATUS };
 }
 
 export function coerceDirectusId(value: unknown): number | null {

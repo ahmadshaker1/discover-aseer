@@ -9,9 +9,20 @@ export function getDirectusPublicUrl(): string {
 
 export const TOUR_GUIDES_COLLECTION = "tourist_guides";
 
-/** Draft status set on every guide self-service save; admins publish in Directus. */
+/**
+ * Guide application statuses on `tourist_guides.status`.
+ * Portal submit → under_review; admins set published / rejected in Directus.
+ */
 export const TOUR_GUIDE_DRAFT_STATUS = "draft";
+export const TOUR_GUIDE_UNDER_REVIEW_STATUS = "under_review";
 export const TOUR_GUIDE_PUBLISHED_STATUS = "published";
+export const TOUR_GUIDE_REJECTED_STATUS = "rejected";
+
+export type TourGuideStatus =
+  | typeof TOUR_GUIDE_DRAFT_STATUS
+  | typeof TOUR_GUIDE_UNDER_REVIEW_STATUS
+  | typeof TOUR_GUIDE_PUBLISHED_STATUS
+  | typeof TOUR_GUIDE_REJECTED_STATUS;
 
 /** M2O on `tourist_guides` → `directus_users`. */
 export const TOUR_GUIDE_ACCOUNT_FIELD = "account";

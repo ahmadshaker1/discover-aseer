@@ -24,7 +24,7 @@ Add these on **`tourist_guides`** (plus your existing CMS profile fields):
 |-------|------|---------|
 | **`account`** | M2O → `directus_users` | Links row to signed-in user |
 | **`email`** | Text | Links row to login email (required for portal lookup) |
-| **`status`** | Dropdown: `draft`, `published` | Draft in portal; published on public page |
+| **`status`** | Dropdown: `draft`, `under_review`, `published`, `rejected` | Portal submit → `under_review`; admins publish or reject |
 | **`name`** | Text | Arabic display name |
 | **`name_en`** | Text | English display name |
 | **`phone_number`** | Text | Mobile |
@@ -49,7 +49,16 @@ On save, the portal automatically sets:
 
 - **`account`** → current Directus user id
 - **`email`** → login email (from auth, not the form)
-- **`status`** → `draft`
+- **`status`** → `under_review`
+
+Admin workflow in Directus:
+
+| Status | Meaning |
+|--------|---------|
+| `draft` | Incomplete / not yet submitted (legacy or manual) |
+| `under_review` | Guide submitted; awaiting admin decision |
+| `published` | Live on `/tour-guides` |
+| `rejected` | Declined; guide can edit and resubmit |
 
 **Profile lookup (read):** `email` equals login email → stored profile id (from a previous save). Legacy CMS rows must have **`email`** set in Directus to prefill on login.
 
@@ -152,7 +161,7 @@ If `$CURRENT_USER.email` is not supported in your Directus version, use only:
 
 In that case, ensure **`account`** is set on every row (the portal sets it automatically on save).
 
-**Do not** add a `status: published` filter on Read — guides must load and edit **draft** profiles.
+**Do not** add a `status: published` filter on Read — guides must load and edit **draft / under_review / rejected** profiles.
 
 **Create — allow all fields** the portal writes:
 
@@ -160,7 +169,7 @@ In that case, ensure **`account`** is set on every row (the portal sets it autom
 |-------|--------|
 | `account` | Server (login user id) |
 | `email` | Server (login email) |
-| `status` | Server (`draft`) |
+| `status` | Server (`under_review`) |
 | `name`, `name_en` | Form |
 | `gender`, `national_id`, `license_number`, `date` | Form |
 | `description`, `description_en` | Form |
@@ -208,7 +217,7 @@ Portal flow:
 
 1. Guide logs in → Directus access token (Guide role)
 2. Load profile → filter `tourist_guides` by login **email**
-3. Save profile → create or update row; set `account`, `email`, `status: draft`
+3. Save profile → create or update row; set `account`, `email`, `status: under_review`
 4. Admin publishes in Directus → row appears on `/tour-guides`
 
 ---

@@ -36,7 +36,7 @@ export interface ApiTouristGuide {
   commitment_3?: boolean | null;
   /** Optional residence from portal form (`aseer` | `other`). */
   residence?: string | null;
-  /** `draft` until an admin publishes; `published` items appear on the public listing. */
+  /** `draft` / `under_review` until an admin publishes; `published` items appear on the public listing; `rejected` if declined. */
   status?: string | null;
   /** M2O → directus_users; links portal profile to signed-in account. */
   account?: string | { id: string } | null;

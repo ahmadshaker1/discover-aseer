@@ -30,7 +30,12 @@ import {
   saveTourGuideProfile,
   uploadTourGuideFile,
 } from "@/lib/directus/tourGuideProfile";
-import { TOUR_GUIDE_PUBLISHED_STATUS } from "@/lib/directus/config";
+import {
+  TOUR_GUIDE_DRAFT_STATUS,
+  TOUR_GUIDE_PUBLISHED_STATUS,
+  TOUR_GUIDE_REJECTED_STATUS,
+  TOUR_GUIDE_UNDER_REVIEW_STATUS,
+} from "@/lib/directus/config";
 import { resolveTourGuideFileUrl } from "@/lib/directus/resolveTourGuideFileUrl";
 
 const LANGUAGE_LEVELS = ["beginner", "intermediate", "advanced"] as const;
@@ -107,7 +112,33 @@ const TourGuidePortalProfileForm = ({
 
   /** Existing profile → lock identity fields set on first create. */
   const lockIdentityFields = Boolean(profile?.id);
-  const isPublished = profile?.status === TOUR_GUIDE_PUBLISHED_STATUS;
+  const profileStatus = profile?.status ?? null;
+
+  const statusBanner = (() => {
+    switch (profileStatus) {
+      case TOUR_GUIDE_PUBLISHED_STATUS:
+        return {
+          className: "border-green-300 bg-green-50 text-green-900",
+          message: t("profile.statusPublished"),
+        };
+      case TOUR_GUIDE_UNDER_REVIEW_STATUS:
+        return {
+          className: "border-blue-300 bg-blue-50 text-blue-900",
+          message: t("profile.statusUnderReview"),
+        };
+      case TOUR_GUIDE_REJECTED_STATUS:
+        return {
+          className: "border-red-300 bg-red-50 text-red-900",
+          message: t("profile.statusRejected"),
+        };
+      case TOUR_GUIDE_DRAFT_STATUS:
+      default:
+        return {
+          className: "border-amber-300 bg-amber-50 text-amber-900",
+          message: t("profile.statusDraft"),
+        };
+    }
+  })();
 
   const languageLevelOptions = useMemo(
     () =>
@@ -221,7 +252,7 @@ const TourGuidePortalProfileForm = ({
       }
 
       setSubmitState("success");
-      setMessage(t("profile.savedDraft"));
+      setMessage(t("profile.savedUnderReview"));
       onSaved(saved);
     } catch (error) {
       setSubmitState("error");
@@ -244,14 +275,10 @@ const TourGuidePortalProfileForm = ({
     <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit}>
       {profile && (
         <div
-          className={`mb-8 rounded-xl border px-4 py-3 text-start text-sm ${
-            isPublished
-              ? "border-green-300 bg-green-50 text-green-900"
-              : "border-amber-300 bg-amber-50 text-amber-900"
-          }`}
+          className={`mb-8 rounded-xl border px-4 py-3 text-start text-sm ${statusBanner.className}`}
           style={{ fontFamily: ibm }}
         >
-          {isPublished ? t("profile.statusPublished") : t("profile.statusDraft")}
+          {statusBanner.message}
         </div>
       )}
 
