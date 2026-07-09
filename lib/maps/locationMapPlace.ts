@@ -21,6 +21,7 @@ export type DirectusEventRow = Record<string, unknown> & {
   image_new?: string | null;
   type?: string | null;
   categories?: string | null;
+  event_status?: string | null;
 };
 
 export type DirectusLocationRow = Record<string, unknown> & {
