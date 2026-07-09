@@ -36,7 +36,7 @@ const ExperienceCard = ({
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md">
       {/* Image Banner Section */}
-      <div className="relative h-48 w-100">
+      <div className="relative h-48 w-full">
         <Image
           src={imageUrl}
           alt={title}
