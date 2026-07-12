@@ -15,6 +15,8 @@ interface AttractionsLandmarkCardProps {
   className?: string;
   /** Full-card tap target; share control stays above this layer. */
   cardHref?: string;
+  /** Hide the location/city line (e.g. destinations where it matches the title). */
+  hideLocation?: boolean;
 }
 
 function LocationIcon() {
@@ -39,6 +41,7 @@ const AttractionsLandmarkCard = ({
   landmark,
   className = "",
   cardHref,
+  hideLocation = false,
 }: AttractionsLandmarkCardProps) => {
   const tCommon = useTranslations("common");
   const [failedForUrl, setFailedForUrl] = useState<string | null>(null);
@@ -86,15 +89,17 @@ const AttractionsLandmarkCard = ({
           cardHref ? "pointer-events-none" : ""
         }`}
       >
-        <div className="inline-flex w-fit flex-row items-center gap-1.5 rounded-[24.51px] text-start text-[#EAD0FF]">
-          <LocationIcon />
-          <span
-            className="text-[18px] font-bold leading-[100%]"
-            style={{ fontFamily: ara }}
-          >
-            {landmark.location || tCommon("landmarkDefaultLocation")}
-          </span>
-        </div>
+        {!hideLocation ? (
+          <div className="inline-flex w-fit flex-row items-center gap-1.5 rounded-[24.51px] text-start text-[#EAD0FF]">
+            <LocationIcon />
+            <span
+              className="text-[18px] font-bold leading-[100%]"
+              style={{ fontFamily: ara }}
+            >
+              {landmark.location || tCommon("landmarkDefaultLocation")}
+            </span>
+          </div>
+        ) : null}
 
         <div
           className={`flex w-full max-w-[251px] flex-col gap-2 self-start text-start`}

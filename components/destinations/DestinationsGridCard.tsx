@@ -26,6 +26,7 @@ const DestinationsGridCard = ({
       categoryLabel={categoryLabel}
       className={className}
       cardHref={resolvedCardHref}
+      hideLocation
     />
   );
 };
