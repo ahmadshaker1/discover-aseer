@@ -23,8 +23,8 @@ export async function GET() {
     const fileId = result?.data?.booklet;
 
     if (fileId) {
-      // Redirect the user to the actual file asset with the download parameter
-      return NextResponse.redirect(`${baseUrl}/assets/${fileId}?download`);
+      // Open inline in the browser PDF viewer (omit ?download).
+      return NextResponse.redirect(`${baseUrl}/assets/${fileId}`);
     } else {
       console.error("Booklet file ID not found in the response.", result);
       return new NextResponse("Booklet not found in response", { status: 404 });
