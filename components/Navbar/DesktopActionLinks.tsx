@@ -6,7 +6,7 @@
  * TODO
  * ----
  * - Globe: locale switcher wired; moon toggles light/dark via `toggleTheme`.
- * - Booklet: opens `/api/booklet` in a new tab (inline PDF viewer).
+ * - Booklet: opens `/booklet` in a new tab (inline PDF viewer).
  */
 import { Link } from "@/i18n/navigation";
 import { LocationPinIcon } from "./Icons";
@@ -23,7 +23,7 @@ const DesktopActionLinks = () => {
 
   const handleBookletOpen = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open("/api/booklet", "_blank", "noopener,noreferrer");
+    window.open("/booklet", "_blank", "noopener,noreferrer");
   };
 
   const handleLocaleSwitch = () => {

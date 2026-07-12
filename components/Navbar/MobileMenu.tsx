@@ -153,7 +153,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                             onClick={(e) => {
                               e.preventDefault();
                               window.open(
-                                "/api/booklet",
+                                "/booklet",
                                 "_blank",
                                 "noopener,noreferrer",
                               );
