@@ -2,6 +2,7 @@ export interface MapPlaceholderSectionProps {
   ctaLabel: string;
   mapHref: string;
   imageAlt?: string;
+  ctaWidthPx?: number;
 }
 
 const PLACEHOLDER_SRC = "/assets/attractions/map-placeholder-abha.png";
@@ -11,6 +12,7 @@ const MapPlaceholderSection = ({
   ctaLabel,
   mapHref,
   imageAlt = "معاينة خريطة",
+  ctaWidthPx = 266,
 }: MapPlaceholderSectionProps) => {
   return (
     <section className="w-full bg-background py-12 text-foreground">

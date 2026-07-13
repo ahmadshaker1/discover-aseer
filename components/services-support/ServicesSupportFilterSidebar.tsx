@@ -1,4 +1,6 @@
 "use client";
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   SUPPORT_CATEGORY_FILTER_KEYS,
@@ -115,53 +117,15 @@ const ServicesSupportFilterSidebar = ({
       </div>
 
       <section className="mb-6">
-        <div className="group relative h-12 w-full overflow-hidden rounded-[55px] border border-border bg-muted/20 px-6 py-3 transition-all duration-200 hover:bg-muted/40 hover:border-primary/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
-          <select
-            style={{
-              fontFamily: "Ara Hamah 1964 B",
-              backgroundColor: "var(--surface)",
-              color: "var(--foreground)",
-            }}
-            aria-label={t("chooseDestination")}
-            value={selectedCity ?? ""}
-            onChange={(e) => onCityChange(e.target.value || null)}
-            className="absolute inset-0 z-10 cursor-pointer bg-surface text-foreground opacity-0 dark:[color-scheme:dark]"
+        <Menu as="div" className="relative">
+          <Menu.Button
+            className={`flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm flex-row`}
           >
-            <option
-              value=""
-              className="bg-surface text-foreground"
-              style={{
-                backgroundColor: "var(--surface)",
-                color: "var(--foreground)",
-              }}
-            >
-              {t("chooseDestination")}
-            </option>
-            {cityOptions.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-                className="bg-surface text-foreground"
-                style={{
-                  backgroundColor: "var(--surface)",
-                  color: "var(--foreground)",
-                }}
-              >
-                {translateSupportCity(option.value, locale)}
-              </option>
-            ))}
-          </select>
-          <div className="flex h-full min-w-0 items-center justify-between gap-2">
-            <div className="flex min-w-0 flex-1 items-center gap-2">
-              <span className="shrink-0 text-muted-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
-                <LocationIcon />
-              </span>
-              <span className="truncate text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground transition-colors duration-200 group-hover:text-primary/90">
-                {selectedCityLabel ?? t("chooseDestination")}
-              </span>
-            </div>
+            <LocationIcon />
+            <span className="flex-1 text-start">
+              {selectedCityLabel ?? t("chooseDestination")}
+            </span>
             <svg
-              className="text-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary"
               width="12"
               height="8"
               viewBox="0 0 12 8"
@@ -173,8 +137,46 @@ const ServicesSupportFilterSidebar = ({
                 fill="currentColor"
               />
             </svg>
-          </div>
-        </div>
+          </Menu.Button>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 scale-95 translate-y-1"
+            enterTo="opacity-100 scale-100 translate-y-0"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 scale-100 translate-y-0"
+            leaveTo="opacity-0 scale-95 translate-y-1"
+          >
+            <Menu.Items
+              className={`absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none start-0 origin-top-start`}
+            >
+              <div className="py-1">
+                {cityOptions.map((option) => (
+                  <Menu.Item key={option.value}>
+                    {({ active }) => (
+                      <button
+                        onClick={() =>
+                          onCityChange(
+                            selectedCity === option.value ? null : option.value,
+                          )
+                        }
+                        className={`${
+                          active ? "bg-primary/10 text-primary" : ""
+                        } ${
+                          selectedCity === option.value
+                            ? "bg-primary/5 font-semibold text-primary"
+                            : "text-foreground"
+                        } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
+                      >
+                        {translateSupportCity(option.value, locale)}
+                      </button>
+                    )}
+                  </Menu.Item>
+                ))}
+              </div>
+            </Menu.Items>
+          </Transition>
+        </Menu>
       </section>
       <div className="my-5 h-px w-full bg-border" />
       <section>

@@ -71,35 +71,6 @@ const PageBanner = ({
         className="pointer-events-none absolute inset-0 z-0 bg-black/35"
         aria-hidden
       />
-      {/* <div
-        className="pointer-events-none absolute inset-0 z-1 opacity-10"
-        // style={{
-        //   backgroundImage: `repeating-linear-gradient(
-        //     45deg,
-        //     transparent,
-        //     transparent 10px,
-        //     rgba(255, 255, 255, 0.1) 10px,
-        //     rgba(255, 255, 255, 0.1) 20px
-        //   )`,
-        // }}
-        aria-hidden
-      /> */}
-
-      {/* {!hidePattern ? (
-        <div
-          className="pointer-events-none absolute inset-y-0 start-0 z-2 w-[min(55%,20rem)] sm:w-[min(50%,24rem)] md:w-[min(45%,28rem)]"
-          aria-hidden
-        >
-          <Image
-            src="/hero-pattern/pattern-diamons.png"
-            alt=""
-            fill
-            className="object-contain object-start ltr:scale-x-[-1]"
-            sizes="(max-width: 768px) 55vw, 28rem"
-          />
-        </div>
-      ) : null} */}
-
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
         <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
           <nav
@@ -136,7 +107,7 @@ const PageBanner = ({
           </h1>
 
           <p
-            className="w-full text-center text-[18px] font-normal leading-6 text-white"
+            className="w-full text-center text-[24px] font-normal leading-6 text-white"
             style={{ fontFamily: ara }}
           >
             {subtitle}
@@ -150,10 +121,7 @@ const PageBanner = ({
                 boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)",
               }}
             >
-              <span
-                className="whitespace-nowrap text-[17px] font-bold leading-[100%]"
-                style={{ fontFamily: ara }}
-              >
+              <span className="whitespace-nowrap text-[20px] leading-[100%]">
                 {primaryCta.label || t("pageBanner.browseMore")}
               </span>
             </Link>

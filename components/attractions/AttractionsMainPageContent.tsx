@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
 import { useLocale, useTranslations } from "next-intl";
 import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmarkCard";
 import {
@@ -226,6 +227,9 @@ const AttractionsMainPageContent = ({
             className={`order-1 w-full min-w-0 lg:order-1 lg:sticky lg:top-24 lg:h-[796px] lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-e`}
           >
             <div className="mx-auto flex w-full max-w-[320px] flex-col gap-6 lg:mx-0 lg:max-w-[256px]">
+              <h3 className="whitespace-pre-line text-3xl font-bold text-foreground text-center">
+                {tCommon("discoverAttractionsTitle")}
+              </h3>
               <div className="flex w-full flex-wrap items-center justify-between gap-3">
                 <h3
                   className={`min-w-0 flex-1 text-xl font-bold leading-tight tracking-[-0.31px] text-foreground text-start sm:text-2xl`}
@@ -249,64 +253,61 @@ const AttractionsMainPageContent = ({
                 </button>
               </div>
 
-              <div className="group relative h-12 w-full overflow-hidden rounded-[55px] border border-border bg-muted/20 px-6 py-3 transition-all duration-200 hover:bg-muted/40 hover:border-primary/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
-                <select
-                  aria-label={tCommon("city")}
-                  value={filters.city ?? ""}
-                  onChange={(event) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      city: event.target.value ? event.target.value : null,
-                    }))
-                  }
-                  style={{
-                    backgroundColor: "var(--surface)",
-                    color: "var(--foreground)",
-                  }}
-                  className="absolute inset-0 z-10 cursor-pointer bg-surface text-foreground opacity-0 dark:[color-scheme:dark]"
-                >
-                  <option
-                    value=""
-                    className="bg-surface text-foreground"
-                    style={{
-                      backgroundColor: "var(--surface)",
-                      color: "var(--foreground)",
-                    }}
+              <div className="mb-6 sm:mb-8">
+                <Menu as="div" className="relative">
+                  <Menu.Button
+                    className={`flex w-full cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-3 py-2.5 text-xs text-foreground transition-all duration-200 hover:border-muted-foreground sm:px-4 sm:py-3 sm:text-sm flex-row`}
                   >
-                    {tCommon("city")}
-                  </option>
-                  {cityOptions.map((option) => (
-                    <option
-                      key={option.id}
-                      value={option.id}
-                      className="bg-surface text-foreground"
-                      style={{
-                        backgroundColor: "var(--surface)",
-                        color: "var(--foreground)",
-                      }}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-
-                <div className="flex h-full items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="shrink-0 text-muted-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
-                      <ClockIcon />
-                    </span>
-                    <span
-                      className="text-[14px] font-normal leading-5 tracking-[-0.15px] text-foreground transition-colors duration-200 group-hover:text-primary/90"
-                      style={{ fontFamily: "Inter, sans-serif" }}
-                    >
+                    <ClockIcon />
+                    <span className="flex-1 text-start">
                       {cityOptions.find((option) => option.id === filters.city)
                         ?.label ?? tCommon("city")}
                     </span>
-                  </div>
-                  <span className="text-foreground transition-colors duration-200 group-hover:text-primary group-focus-within:text-primary">
                     <ChevronDownIcon />
-                  </span>
-                </div>
+                  </Menu.Button>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-200"
+                    enterFrom="opacity-0 scale-95 translate-y-1"
+                    enterTo="opacity-100 scale-100 translate-y-0"
+                    leave="transition ease-in duration-150"
+                    leaveFrom="opacity-100 scale-100 translate-y-0"
+                    leaveTo="opacity-0 scale-95 translate-y-1"
+                  >
+                    <Menu.Items
+                      className={`absolute z-50 mt-2 w-full rounded-lg border border-border bg-surface shadow-xl ring-1 ring-border focus:outline-none start-0 origin-top-start`}
+                    >
+                      <div className="py-1">
+                        {cityOptions.map((option) => (
+                          <Menu.Item key={option.id}>
+                            {({ active }) => (
+                              <button
+                                onClick={() =>
+                                  setFilters((prev) => ({
+                                    ...prev,
+                                    city:
+                                      filters.city === option.id
+                                        ? null
+                                        : option.id,
+                                  }))
+                                }
+                                className={`${
+                                  active ? "bg-primary/10 text-primary" : ""
+                                } ${
+                                  filters.city === option.id
+                                    ? "bg-primary/5 font-semibold text-primary"
+                                    : "text-foreground"
+                                } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
+                              >
+                                {option.label}
+                              </button>
+                            )}
+                          </Menu.Item>
+                        ))}
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
               </div>
 
               {attractionTypeOptions.length > 0 ? (
