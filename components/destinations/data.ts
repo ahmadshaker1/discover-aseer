@@ -153,7 +153,10 @@ export function resolveDestinationImageUrl(
 const toLocalizedRecord = (row: ApiDestination): Record<string, unknown> =>
   row as unknown as Record<string, unknown>;
 
-const readApiText = (row: ApiDestination, key: keyof ApiDestination): string => {
+const readApiText = (
+  row: ApiDestination,
+  key: keyof ApiDestination,
+): string => {
   const value = row[key];
   return typeof value === "string" ? value.trim() : "";
 };
@@ -209,10 +212,7 @@ const pickDisplayCity = (
 ): string => {
   if (locale === "en") {
     return (
-      readApiText(row, "city_en") ||
-      title ||
-      readApiText(row, "title_en") ||
-      ""
+      readApiText(row, "city_en") || title || readApiText(row, "title_en") || ""
     );
   }
   return (
@@ -236,7 +236,8 @@ const pickSubtitle = (row: ApiDestination, locale: LocaleCode): string => {
     if (line1) return line1;
 
     // Legacy rows: English copy still in non-suffixed fields
-    const legacy1 = readApiText(row, "sub_title") || readApiText(row, "subtitle");
+    const legacy1 =
+      readApiText(row, "sub_title") || readApiText(row, "subtitle");
     const legacy2 = readApiText(row, "sub_title_orange");
     const legacy = [legacy1, legacy2].filter(Boolean).join(" ").trim();
     if (legacy && !isMostlyArabicText(legacy)) return legacy;
@@ -333,17 +334,7 @@ const pickDescription = (row: ApiDestination, locale: LocaleCode): string => {
     return "";
   }
 
-  return (
-    readApiText(row, "content_ar") ||
-    readApiText(row, "content") ||
-    readApiText(row, "description_ar") ||
-    readApiText(row, "description") ||
-    readApiText(row, "destination_content_ar") ||
-    readApiText(row, "destination_content") ||
-    readApiText(row, "content_of_home_page_ar") ||
-    readApiText(row, "content_of_home_page") ||
-    ""
-  );
+  return readApiText(row, "content_ar") || readApiText(row, "content") || "";
 };
 
 export const transformDestination = (
