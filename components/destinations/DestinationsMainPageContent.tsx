@@ -117,6 +117,9 @@ const DestinationsMainPageContent = ({
             className={`order-1 w-full min-w-0 lg:order-1 lg:sticky lg:top-24 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
           >
             <div className="mx-auto flex w-full max-w-[320px] flex-col gap-6 lg:mx-0 lg:max-w-[256px]">
+              <h3 className="whitespace-pre-line text-3xl font-bold text-foreground text-center">
+                {tCommon("discoverDestinationsTitle")}
+              </h3>
               <div className="flex w-full flex-wrap items-center justify-between gap-3">
                 <h3
                   className={`min-w-0 flex-1 text-xl font-bold leading-tight tracking-[-0.31px] text-foreground text-start sm:text-2xl`}
@@ -170,7 +173,10 @@ const DestinationsMainPageContent = ({
                                 onClick={() =>
                                   setFilters((prev) => ({
                                     ...prev,
-                                    destinationFilter: filters.destinationFilter === option.id ? null : option.id,
+                                    destinationFilter:
+                                      filters.destinationFilter === option.id
+                                        ? null
+                                        : option.id,
                                   }))
                                 }
                                 className={`${
