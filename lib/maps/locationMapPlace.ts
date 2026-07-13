@@ -47,6 +47,7 @@ export type DirectusLocationRow = Record<string, unknown> & {
   google_maps_url?: string | null;
   picture_url?: string | null;
   picture_url_new?: string | null;
+  season?: string | null;
 };
 
 export interface LocationMapPlace {
@@ -68,6 +69,7 @@ export interface LocationMapPlace {
   image_new?: string;
   picture_url?: string;
   picture_url_new?: string;
+  season?: string;
 }
 
 const asText = (value: unknown): string =>
@@ -287,6 +289,7 @@ export const buildLocationMapPlace = (
     imageUrl: resolveLocationImageUrl(row),
     picture_url: asText(row.picture_url),
     picture_url_new: asText(row.picture_url_new),
+    season: asText(row.season),
   };
 };
 
