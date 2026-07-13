@@ -25,7 +25,7 @@ const AttractionsMapSection = ({
     return (
       <MapPlaceholderSection
         ctaLabel={tDest("mapViewOnMap", { area: areaLabel })}
-        // ctaWidthPx={266}
+        ctaWidthPx={266}
         mapHref={mapTarget.href}
         imageAlt={t("mapPalacesAlt")}
       />
