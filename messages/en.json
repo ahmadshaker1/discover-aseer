@@ -1208,7 +1208,10 @@
       "flyDubai": "flydubai",
       "airArabia": "Air Arabia",
       "nileAir": "Nile Air",
-      "airCairo": "Air Cairo"
+      "airCairo": "Air Cairo",
+      "qatarAirways": "Qatar Airways",
+      "egyptAir": "EgyptAir",
+      "salamAir": "SalamAir"
     },
     "map": {
       "eyebrow": "Route map",
