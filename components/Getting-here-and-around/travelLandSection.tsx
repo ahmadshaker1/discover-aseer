@@ -291,25 +291,74 @@ export default function TravelLandSection() {
           </p>
         </div>
 
-        {/* كرت ذيب  */}
-        <div className="mb-16 flex justify-start">
-          <a
-            href={t("theebLink")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative flex h-[250px] w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-1 hover:shadow-lg md:w-[350px]"
-          >
-            <div
-              className="absolute inset-0 bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105"
-              style={{
-                backgroundImage:
-                  "url('/assets/Getting-here-and-around/Theeb.webp')",
-                backgroundSize: "contain",
-                margin: "2rem",
-              }}
-            />
-            <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5" />
-          </a>
+        {/* كروت تأجير السيارات */}
+        <div className="mb-16 flex flex-wrap gap-6 justify-center">
+          {[
+            {
+              name: "Theeb",
+              link: t("theebLink"),
+              image: "/assets/Getting-here-and-around/Theeb.webp",
+            },
+            {
+              name: "Yelo",
+              link: "https://www.iyelo.com/en",
+              image: "/assets/Getting-here-and-around/car-rental/yelo.png",
+            },
+            {
+              name: "Ajar",
+              link: "https://www.enterprise.com.sa/en/home",
+              image: "/assets/Getting-here-and-around/car-rental/ajar.jpg",
+            },
+            {
+              name: "Key Car Rental",
+              link: "https://www.key.sa/en",
+              image: "/assets/Getting-here-and-around/car-rental/key.png",
+            },
+            {
+              name: "Abu Diyab Rent Car",
+              link: "https://www.rent.abudiyab.com.sa/",
+              image: "/assets/Getting-here-and-around/car-rental/abudiyab.png",
+            },
+            {
+              name: "AlRehaili Car Rental",
+              link: "https://www.alrehaili.sa/",
+              image: "/assets/Getting-here-and-around/car-rental/alrehaili.png",
+            },
+            {
+              name: "AlFaris Rent Car",
+              link: "https://alfaris.sa/ar/",
+              image: "/assets/Getting-here-and-around/car-rental/alfaris.png",
+            },
+            {
+              name: "Bin Hadi Rent Car",
+              link: "https://www.ebinhadi.com/ar",
+              image: "/assets/Getting-here-and-around/car-rental/bin-hadi.png",
+            },
+            {
+              name: "AlRehaili Car Rental 2",
+              link: "https://alrehilyest.com/ar/index.html",
+              image:
+                "/assets/Getting-here-and-around/car-rental/alrehily2(blue).png",
+            },
+          ].map((rental, index) => (
+            <a
+              key={index}
+              href={rental.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex h-[200px] w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-1 hover:shadow-lg md:w-[200px]"
+            >
+              <div
+                className="absolute inset-0 bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105"
+                style={{
+                  backgroundImage: `url('${rental.image}')`,
+                  backgroundSize: "contain",
+                  margin: "2rem",
+                }}
+              />
+              <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5" />
+            </a>
+          ))}
         </div>
       </div>
     </section>
