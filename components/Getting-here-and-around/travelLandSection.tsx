@@ -42,20 +42,20 @@ export default function TravelLandSection() {
 
           {/* العمود الأيسر (بطاقة سابتكو) */}
           <div
-            className="relative flex flex-col justify-between w-full max-w-[720px] rounded-4xl border border-border p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
+            className="relative flex flex-col justify-between w-full h-[350px] sm:h-[360px] md:h-[450px] rounded-3xl md:rounded-4xl border border-border p-6 md:p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
             style={{
               backgroundImage:
                 "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/Getting-here-and-around/SAPTCO.png')",
             }}
           >
             <div>
-              <div className="mb-6 flex items-center justify-start gap-3">
-                <h3 className="text-[28px] font-bold text-white">
+              <div className="mb-4 md:mb-6 flex items-center justify-start gap-3">
+                <h3 className="text-2xl md:text-[28px] font-bold text-white">
                   {t("saptcoTitle")}
                 </h3>
               </div>
               <p
-                className={`mb-8 text-[16px] leading-[1.8] text-white/90 text-start`}
+                className={`mb-6 md:mb-8 text-sm md:text-[16px] leading-[1.6] md:leading-[1.8] text-white/90 text-start`}
               >
                 {t("saptcoBody")}
               </p>
@@ -66,7 +66,7 @@ export default function TravelLandSection() {
                 href={t("saptcoLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-xl bg-primary px-8 py-3 text-[16px] font-bold text-primary-foreground transition hover:opacity-90"
+                className="flex items-center justify-center rounded-xl bg-primary px-8 py-3 text-sm md:text-[16px] font-bold text-primary-foreground transition hover:opacity-90"
               >
                 {t("bookOnWebsite")}
               </a>
@@ -137,26 +137,24 @@ export default function TravelLandSection() {
             </h3>
 
             {/* شبكة كروت التطبيقات */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
               {/* كرت أوبر */}
               <a
                 href={t("uberLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
-                    width: "156px",
-                    height: "150px",
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/Uber.png')",
                   }}
                 ></div>
                 <div className="text-center">
-                  <p className="text-[20px] font-bold text-foreground leading-tight">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("uber")}
                   </p>
                 </div>
@@ -167,20 +165,18 @@ export default function TravelLandSection() {
                 href={t("careemLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
-                    width: "156px",
-                    height: "150px",
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/careem.jpg')",
                   }}
                 ></div>
                 <div className="text-center">
-                  <p className="text-[20px] font-bold text-foreground leading-tight">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("careem")}
                   </p>
                 </div>
@@ -191,20 +187,18 @@ export default function TravelLandSection() {
                 href={t("boltLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
-                    width: "156px",
-                    height: "150px",
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/bolt.png')",
                   }}
                 ></div>
                 <div className="text-center">
-                  <p className="text-[20px] font-bold text-foreground leading-tight">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("bolt")}
                   </p>
                 </div>
@@ -215,21 +209,63 @@ export default function TravelLandSection() {
                 href={t("jeenyLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
-                    width: "156px",
-                    height: "150px",
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/jeeny.png')",
                   }}
                 ></div>
                 <div className="text-center">
-                  <p className="text-[20px] font-bold text-foreground leading-tight">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("jeeny")}
+                  </p>
+                </div>
+              </a>
+
+              {/* كرت رحلة */}
+              <a
+                href={t("rehlaLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
+                style={{ gap: "16px" }}
+              >
+                <div
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  style={{
+                    backgroundImage:
+                      "url('/assets/Getting-here-and-around/appDrive/rehla.jpg')",
+                  }}
+                ></div>
+                <div className="text-center">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
+                    {t("rehla")}
+                  </p>
+                </div>
+              </a>
+
+              {/* كرت مواصلات العاصمة */}
+              <a
+                href={t("ctcLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
+                style={{ gap: "16px" }}
+              >
+                <div
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  style={{
+                    backgroundImage:
+                      "url('/assets/Getting-here-and-around/appDrive/CTC.png')",
+                  }}
+                ></div>
+                <div className="text-center">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
+                    {t("ctc")}
                   </p>
                 </div>
               </a>
@@ -255,25 +291,74 @@ export default function TravelLandSection() {
           </p>
         </div>
 
-        {/* كرت ذيب  */}
-        <div className="mb-16 flex justify-start">
-          <a
-            href={t("theebLink")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative flex h-[250px] w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-1 hover:shadow-lg md:w-[350px]"
-          >
-            <div
-              className="absolute inset-0 bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105"
-              style={{
-                backgroundImage:
-                  "url('/assets/Getting-here-and-around/Theeb.webp')",
-                backgroundSize: "contain",
-                margin: "2rem",
-              }}
-            />
-            <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5" />
-          </a>
+        {/* كروت تأجير السيارات */}
+        <div className="mb-16 flex flex-wrap gap-6 justify-center">
+          {[
+            {
+              name: "Theeb",
+              link: t("theebLink"),
+              image: "/assets/Getting-here-and-around/Theeb.webp",
+            },
+            {
+              name: "Yelo",
+              link: "https://www.iyelo.com/en",
+              image: "/assets/Getting-here-and-around/car-rental/yelo.png",
+            },
+            {
+              name: "Ajar",
+              link: "https://www.enterprise.com.sa/en/home",
+              image: "/assets/Getting-here-and-around/car-rental/ajar.jpg",
+            },
+            {
+              name: "Key Car Rental",
+              link: "https://www.key.sa/en",
+              image: "/assets/Getting-here-and-around/car-rental/key.png",
+            },
+            {
+              name: "Abu Diyab Rent Car",
+              link: "https://www.rent.abudiyab.com.sa/",
+              image: "/assets/Getting-here-and-around/car-rental/abudiyab.png",
+            },
+            {
+              name: "AlRehaili Car Rental",
+              link: "https://www.alrehaili.sa/",
+              image: "/assets/Getting-here-and-around/car-rental/alrehaili.png",
+            },
+            {
+              name: "AlFaris Rent Car",
+              link: "https://alfaris.sa/ar/",
+              image: "/assets/Getting-here-and-around/car-rental/alfaris.png",
+            },
+            {
+              name: "Bin Hadi Rent Car",
+              link: "https://www.ebinhadi.com/ar",
+              image: "/assets/Getting-here-and-around/car-rental/bin-hadi.png",
+            },
+            {
+              name: "AlRehaili Car Rental 2",
+              link: "https://alrehilyest.com/ar/index.html",
+              image:
+                "/assets/Getting-here-and-around/car-rental/alrehily2(blue).png",
+            },
+          ].map((rental, index) => (
+            <a
+              key={index}
+              href={rental.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex h-[200px] w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-1 hover:shadow-lg md:w-[200px]"
+            >
+              <div
+                className="absolute inset-0 bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105"
+                style={{
+                  backgroundImage: `url('${rental.image}')`,
+                  backgroundSize: "contain",
+                  margin: "2rem",
+                }}
+              />
+              <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5" />
+            </a>
+          ))}
         </div>
       </div>
     </section>
