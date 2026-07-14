@@ -42,7 +42,7 @@ export default function TravelLandSection() {
 
           {/* العمود الأيسر (بطاقة سابتكو) */}
           <div
-            className="relative flex flex-col justify-between w-full h-[350px] sm:h-[420px] md:h-[500px] rounded-3xl md:rounded-4xl border border-border p-6 md:p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
+            className="relative flex flex-col justify-between w-full h-[350px] sm:h-[360px] md:h-[450px] rounded-3xl md:rounded-4xl border border-border p-6 md:p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
             style={{
               backgroundImage:
                 "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/Getting-here-and-around/SAPTCO.png')",
@@ -137,26 +137,24 @@ export default function TravelLandSection() {
             </h3>
 
             {/* شبكة كروت التطبيقات */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-4 justify-items-center">
               {/* كرت أوبر */}
               <a
                 href={t("uberLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
-                    width: "156px",
-                    height: "150px",
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/Uber.png')",
                   }}
                 ></div>
                 <div className="text-center">
-                  <p className="text-[20px] font-bold text-foreground leading-tight">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("uber")}
                   </p>
                 </div>
@@ -167,20 +165,18 @@ export default function TravelLandSection() {
                 href={t("careemLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
-                    width: "156px",
-                    height: "150px",
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/careem.jpg')",
                   }}
                 ></div>
                 <div className="text-center">
-                  <p className="text-[20px] font-bold text-foreground leading-tight">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("careem")}
                   </p>
                 </div>
@@ -191,20 +187,18 @@ export default function TravelLandSection() {
                 href={t("boltLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
-                    width: "156px",
-                    height: "150px",
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/bolt.png')",
                   }}
                 ></div>
                 <div className="text-center">
-                  <p className="text-[20px] font-bold text-foreground leading-tight">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("bolt")}
                   </p>
                 </div>
@@ -215,20 +209,18 @@ export default function TravelLandSection() {
                 href={t("jeenyLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center transition-all hover:-translate-y-1"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
-                    width: "156px",
-                    height: "150px",
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/jeeny.png')",
                   }}
                 ></div>
                 <div className="text-center">
-                  <p className="text-[20px] font-bold text-foreground leading-tight">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("jeeny")}
                   </p>
                 </div>
