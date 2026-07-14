@@ -137,7 +137,7 @@ export default function TravelLandSection() {
             </h3>
 
             {/* شبكة كروت التطبيقات */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-4 justify-items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
               {/* كرت أوبر */}
               <a
                 href={t("uberLink")}
@@ -222,6 +222,50 @@ export default function TravelLandSection() {
                 <div className="text-center">
                   <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
                     {t("jeeny")}
+                  </p>
+                </div>
+              </a>
+
+              {/* كرت رحلة */}
+              <a
+                href={t("rehlaLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
+                style={{ gap: "16px" }}
+              >
+                <div
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  style={{
+                    backgroundImage:
+                      "url('/assets/Getting-here-and-around/appDrive/rehla.jpg')",
+                  }}
+                ></div>
+                <div className="text-center">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
+                    {t("rehla")}
+                  </p>
+                </div>
+              </a>
+
+              {/* كرت مواصلات العاصمة */}
+              <a
+                href={t("ctcLink")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center w-full max-w-[156px] transition-all hover:-translate-y-1"
+                style={{ gap: "16px" }}
+              >
+                <div
+                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  style={{
+                    backgroundImage:
+                      "url('/assets/Getting-here-and-around/appDrive/CTC.png')",
+                  }}
+                ></div>
+                <div className="text-center">
+                  <p className="text-lg md:text-[20px] font-bold text-foreground leading-tight">
+                    {t("ctc")}
                   </p>
                 </div>
               </a>
