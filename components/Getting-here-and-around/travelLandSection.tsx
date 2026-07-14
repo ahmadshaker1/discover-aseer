@@ -42,20 +42,20 @@ export default function TravelLandSection() {
 
           {/* العمود الأيسر (بطاقة سابتكو) */}
           <div
-            className="relative flex flex-col justify-between w-full max-w-[720px] rounded-4xl border border-border p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
+            className="relative flex flex-col justify-between w-full h-[350px] sm:h-[420px] md:h-[500px] rounded-3xl md:rounded-4xl border border-border p-6 md:p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
             style={{
               backgroundImage:
                 "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/Getting-here-and-around/SAPTCO.png')",
             }}
           >
             <div>
-              <div className="mb-6 flex items-center justify-start gap-3">
-                <h3 className="text-[28px] font-bold text-white">
+              <div className="mb-4 md:mb-6 flex items-center justify-start gap-3">
+                <h3 className="text-2xl md:text-[28px] font-bold text-white">
                   {t("saptcoTitle")}
                 </h3>
               </div>
               <p
-                className={`mb-8 text-[16px] leading-[1.8] text-white/90 text-start`}
+                className={`mb-6 md:mb-8 text-sm md:text-[16px] leading-[1.6] md:leading-[1.8] text-white/90 text-start`}
               >
                 {t("saptcoBody")}
               </p>
@@ -66,7 +66,7 @@ export default function TravelLandSection() {
                 href={t("saptcoLink")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-xl bg-primary px-8 py-3 text-[16px] font-bold text-primary-foreground transition hover:opacity-90"
+                className="flex items-center justify-center rounded-xl bg-primary px-8 py-3 text-sm md:text-[16px] font-bold text-primary-foreground transition hover:opacity-90"
               >
                 {t("bookOnWebsite")}
               </a>
