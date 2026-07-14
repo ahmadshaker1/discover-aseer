@@ -50,12 +50,12 @@ const DiscoverAseerDropdown = ({
       >
         {({ open }) => (
           <>
+            <span>{label}</span>
             <ChevronIcon
               className={`shrink-0 opacity-90 transition-transform duration-200 ${
                 open ? "rotate-180" : ""
               }`}
             />
-            <span>{label}</span>
           </>
         )}
       </Menu.Button>
