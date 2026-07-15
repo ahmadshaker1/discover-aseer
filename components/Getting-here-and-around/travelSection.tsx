@@ -1,5 +1,51 @@
 import { MapPinOutlineIcon } from "./Icons";
 import { useTranslations } from "next-intl";
+import LogoCarousel from "./LogoCarousel";
+
+const internationalAirlines = [
+  {
+    key: "qatar",
+    image: "/assets/Getting-here-and-around/flay/qatar.png",
+    altKey: "qatarAirways" as const,
+    href: "https://www.qatarairways.com/en/homepage.html",
+  },
+  {
+    key: "flydubai",
+    image: "/assets/Getting-here-and-around/flay/flydubai.png",
+    altKey: "flyDubai" as const,
+    href: "https://www.flydubai.com/ar-ae/",
+  },
+  {
+    key: "egypt-air",
+    image: "/assets/Getting-here-and-around/flay/egypt-air.png",
+    altKey: "egyptAir" as const,
+    href: "https://www.egyptair.com/en/pages/HomePage.aspx",
+  },
+  {
+    key: "air-arabia",
+    image: "/assets/Getting-here-and-around/flay/air-arabia.png",
+    altKey: "airArabia" as const,
+    href: "https://www.airarabia.com/ar",
+  },
+  {
+    key: "salam-air",
+    image: "/assets/Getting-here-and-around/flay/salam-air.png",
+    altKey: "salamAir" as const,
+    href: "https://www.salamair.com/ar/",
+  },
+  {
+    key: "air-cairo",
+    image: "/assets/Getting-here-and-around/flay/air-cairo.png",
+    altKey: "airCairo" as const,
+    href: "https://aircairo.com/",
+  },
+  {
+    key: "nile-air",
+    image: "/assets/Getting-here-and-around/flay/nile-air.png",
+    altKey: "nileAir" as const,
+    href: "https://www.nileair.com/ar",
+  },
+];
 
 export default function TravelSection() {
   const t = useTranslations("gettingHere.air");
@@ -152,174 +198,37 @@ export default function TravelSection() {
         >
           {t("internationalFlights")}
         </p>
-        <div className="mt-6 flex flex-wrap gap-6 justify-center">
-          {/* الكرت الأول: قطر */}
-          <div className="relative flex h-[200px] w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-20px)] flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] dark:bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
-            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
-              <img
-                src="/assets/Getting-here-and-around/flay/qatar.png"
-                alt={t("qatarAirways")}
-                className="w-full h-full object-contain scale-[1]"
-              />
-            </div>
-            <div className="relative z-10 flex w-full justify-center">
-              <a
-                href="https://www.qatarairways.com/en/homepage.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-2 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35 backdrop-blur-md"
-              >
-                {t("bookingSite")}
-                <span aria-hidden="true" className="text-[24px]">
-                  ↗
-                </span>
-              </a>
-            </div>
-          </div>
-
-          {/* الكرت الثاني: فلاي دبي */}
-          <div className="relative flex h-[200px] w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-20px)] flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] dark:bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
-            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
-              <img
-                src="/assets/Getting-here-and-around/flay/flydubai.png"
-                alt={t("flyDubai")}
-                className="w-full h-full object-contain scale-[1]"
-              />
-            </div>
-            <div className="relative z-10 flex w-full justify-center">
-              <a
-                href="https://www.flydubai.com/ar-ae/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-2 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35 backdrop-blur-md"
-              >
-                {t("bookingSite")}
-                <span aria-hidden="true" className="text-[24px]">
-                  ↗
-                </span>
-              </a>
-            </div>
-          </div>
-
-          {/* الكرت الثالث: ايجبت اير */}
-          <div className="relative flex h-[200px] w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-20px)] flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] dark:bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
-            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
-              <img
-                src="/assets/Getting-here-and-around/flay/egypt-air.png"
-                alt={t("egyptAir")}
-                className="w-full h-full object-contain scale-[1]"
-              />
-            </div>
-            <div className="relative z-10 flex w-full justify-center">
-              <a
-                href="https://www.egyptair.com/en/pages/HomePage.aspx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-2 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35 backdrop-blur-md"
-              >
-                {t("bookingSite")}
-                <span aria-hidden="true" className="text-[24px]">
-                  ↗
-                </span>
-              </a>
-            </div>
-          </div>
-
-          {/* الكرت الرابع: العربية للطيران */}
-          <div className="relative flex h-[200px] w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-20px)] flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] dark:bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
-            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
-              <img
-                src="/assets/Getting-here-and-around/flay/air-arabia.png"
-                alt={t("airArabia")}
-                className="w-full h-full object-contain scale-[1]"
-              />
-            </div>
-            <div className="relative z-10 flex w-full justify-center">
-              <a
-                href="https://www.airarabia.com/ar"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-2 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35 backdrop-blur-md"
-              >
-                {t("bookingSite")}
-                <span aria-hidden="true" className="text-[24px]">
-                  ↗
-                </span>
-              </a>
-            </div>
-          </div>
-
-          {/* الكرت الخامس: سلام اير */}
-          <div className="relative flex h-[200px] w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-20px)] flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] dark:bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
-            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
-              <img
-                src="/assets/Getting-here-and-around/flay/salam-air.png"
-                alt={t("salamAir")}
-                className="w-full h-full object-contain scale-[1]"
-              />
-            </div>
-            <div className="relative z-10 flex w-full justify-center">
-              <a
-                href="https://www.salamair.com/ar/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-2 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35 backdrop-blur-md"
-              >
-                {t("bookingSite")}
-                <span aria-hidden="true" className="text-[24px]">
-                  ↗
-                </span>
-              </a>
-            </div>
-          </div>
-
-          {/* الكرت السادس: اير كايرو */}
-          <div className="relative flex h-[200px] w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-20px)] flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] dark:bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
-            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
-              <img
-                src="/assets/Getting-here-and-around/flay/air-cairo.png"
-                alt={t("airCairo")}
-                className="w-full h-full object-contain scale-[1]"
-              />
-            </div>
-            <div className="relative z-10 flex w-full justify-center">
-              <a
-                href="https://aircairo.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-2 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35 backdrop-blur-md"
-              >
-                {t("bookingSite")}
-                <span aria-hidden="true" className="text-[24px]">
-                  ↗
-                </span>
-              </a>
-            </div>
-          </div>
-
-          {/* الكرت السابع: النيل للطيران */}
-          <div className="relative flex h-[200px] w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-20px)] flex-col justify-end rounded-2xl border border-border bg-[#FFFFFF] dark:bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-4">
-            <div className="absolute inset-0 flex items-center justify-center pb-14 p-2">
-              <img
-                src="/assets/Getting-here-and-around/flay/nile-air.png"
-                alt={t("nileAir")}
-                className="w-full h-full object-contain scale-[1]"
-              />
-            </div>
-            <div className="relative z-10 flex w-full justify-center">
-              <a
-                href="https://www.nileair.com/ar"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full justify-center items-center gap-3 rounded-full border border-primary/30 dark:border-violet-400/30 bg-primary/15 dark:bg-primary/25 px-3 py-2 text-[16px] font-bold leading-none text-primary dark:text-violet-200 transition-colors hover:bg-primary/25 dark:hover:bg-primary/35 backdrop-blur-md"
-              >
-                {t("bookingSite")}
-                <span aria-hidden="true" className="text-[24px]">
-                  ↗
-                </span>
-              </a>
-            </div>
-          </div>
+        <div className="mt-6">
+          <LogoCarousel
+            slideClassName="w-[220px]! max-w-[220px] shrink-0"
+            slides={internationalAirlines.map((airline) => ({
+              key: airline.key,
+              content: (
+                <div className="relative flex h-[200px] w-full flex-col justify-end overflow-hidden rounded-2xl border border-border bg-[#FFFFFF] p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:bg-surface">
+                  <div className="absolute inset-0 flex items-center justify-center p-2 pb-14">
+                    <img
+                      src={airline.image}
+                      alt={t(airline.altKey)}
+                      className="h-full w-full scale-[1] object-contain"
+                    />
+                  </div>
+                  <div className="relative z-10 flex w-full justify-center">
+                    <a
+                      href={airline.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex w-full items-center justify-center gap-3 rounded-full border border-primary/30 bg-primary/15 px-3 py-2 text-[16px] font-bold leading-none text-primary backdrop-blur-md transition-colors hover:bg-primary/25 dark:border-violet-400/30 dark:bg-primary/25 dark:text-violet-200 dark:hover:bg-primary/35"
+                    >
+                      {t("bookingSite")}
+                      <span aria-hidden="true" className="text-[24px]">
+                        ↗
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              ),
+            }))}
+          />
         </div>
       </div>
     </section>
