@@ -331,7 +331,10 @@ export function transformExperience(
   const bookUrl = (api.booking_link || api.link || "").trim() || "#";
   const price = parsePrice(api.price ?? api.price_1);
   const groupSize = parseGroupSize(api.minimum_number_of_people);
-  const provider = (api.tour_agency || "").trim() || "—";
+  const provider =
+    (locale === "en"
+      ? (api.tour_audience_en || api.tour_agency || "").trim()
+      : (api.tour_agency || "").trim()) || "—";
   const duration =
     locale === "en"
       ? (api.duration_En || "").trim() || (api.duration || "").trim() || "—"
