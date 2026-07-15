@@ -307,9 +307,9 @@ export const resolveDestinationHeroImageUrl = (
   directusUrl: string,
 ): string =>
   resolveDestinationImageUrl(
-    row.hero_image_new ||
+    row.hero_image_1 ||
       row.hero_image ||
-      row.hero_image_1 ||
+      row.hero_image_new ||
       row.cover_image ||
       row.destination_image,
     directusUrl,
@@ -343,9 +343,9 @@ export const transformDestination = (
   locale: LocaleCode = "ar",
 ): Destination => {
   const heroImage = resolveDestinationImageUrl(
-    row.hero_image_new ||
+    row.hero_image_1 ||
       row.hero_image ||
-      row.hero_image_1 ||
+      row.hero_image_new ||
       row.cover_image ||
       row.destination_image,
     directusUrl,
