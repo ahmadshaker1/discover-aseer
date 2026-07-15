@@ -1,6 +1,11 @@
 "use client";
 
-import { useCallback, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules";
@@ -93,7 +98,9 @@ export default function LogoCarousel({
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.key} className={slideClassName}>
-            {slide.content}
+            <div key={slide.key} className="h-full w-full">
+              {slide.content}
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -110,7 +117,7 @@ export default function LogoCarousel({
               else swiperRef.current?.slidePrev(320);
             }}
           >
-            <ChevronLeftIcon />
+            <ChevronLeftIcon className="ltr:rotate-180" />
           </button>
           <button
             type="button"
@@ -122,7 +129,7 @@ export default function LogoCarousel({
               else swiperRef.current?.slideNext(320);
             }}
           >
-            <ChevronRightIcon />
+            <ChevronRightIcon className="ltr:rotate-180" />
           </button>
         </div>
       ) : null}
