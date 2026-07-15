@@ -49,7 +49,7 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
         ]}
         title={destination.title}
         subtitle={destination.subtitle}
-        backgroundImage="/assets/destinations/hero.jpeg"
+        backgroundImage={destination.image || "/assets/destinations/hero.jpeg"}
         weatherArea={destination.title}
         weatherLat={mapCenter.lat}
         weatherLon={mapCenter.lon}
