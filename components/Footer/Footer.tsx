@@ -317,10 +317,9 @@ const Footer = () => {
           </div>
           {/* Section 3 */}
           <div className="mx-auto w-full max-w-[1180px]">
-            <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
-              {/* Left block */}
+            {/* Newsletter */}
+            {/* <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
               <div className="flex w-full flex-col gap-6 sm:flex-row sm:items-center sm:justify-between lg:max-w-[589px] lg:gap-4">
-                {/* Newsletter text */}
                 <div className="flex w-full flex-col items-start gap-4 text-start sm:w-[138px]">
                   <p
                     className="text-start text-[18px] font-bold leading-[110%]"
@@ -332,7 +331,6 @@ const Footer = () => {
                     {t("common.newsletterDescription")}
                   </p>
                 </div>
-                {/* Input + button */}
                 <div className="flex w-full flex-col gap-3 sm:max-w-[397px] sm:flex-row sm:items-center">
                   <button
                     type="button"
@@ -349,7 +347,7 @@ const Footer = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Copyright row below single divider */}
             <div className="mt-4 border-t border-white/20 pt-4">
