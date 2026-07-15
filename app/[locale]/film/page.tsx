@@ -40,7 +40,7 @@ const FilmPage = async () => {
       <section className="relative w-full overflow-hidden">
         <div className="relative h-[343px] w-full">
           <Image
-            src="/assets/film/imghorizontal.png"
+            src="/assets/film/WhyAseer.jpeg"
             alt=""
             fill
             className="object-cover object-center"
@@ -48,15 +48,15 @@ const FilmPage = async () => {
           />
           <div className="absolute inset-0 z-10 flex items-center px-4 sm:px-8 md:px-[62px]">
             <div className="mx-auto flex h-full w-full max-w-[1442px] items-center justify-start">
-              <div className="flex h-[165.5px] w-full max-w-[383px] shrink-0 flex-col items-end justify-center gap-[15.5px] p-[41px] text-start sm:w-[383px]">
+              <div className="flex min-h-[165.5px] w-full max-w-full shrink-0 flex-col items-start justify-center gap-[15.5px] py-[41px] text-start">
                 <h3
-                  className="w-full max-w-[301px] text-start text-[32px] font-bold leading-[33.92px] text-white"
+                  className="w-full text-start text-[50px] font-bold leading-[33.92px] text-white"
                   style={{ fontFamily: ara }}
                 >
                   {t("bannerTitle")}
                 </h3>
                 <p
-                  className="w-full max-w-[301px] text-start text-[48px] font-bold leading-[33.92px] text-white"
+                  className="w-full text-start text-[32px] sm:text-[48px] font-bold leading-[1.2] text-white"
                   style={{ fontFamily: ara }}
                 >
                   {t("bannerSubtitle")}
