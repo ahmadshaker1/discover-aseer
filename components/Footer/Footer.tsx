@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Button } from "@headlessui/react";
 import { Link } from "@/i18n/navigation";
 
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
@@ -275,14 +276,14 @@ const Footer = () => {
                   )}
                 </div>
                 {/* Middle block */}
-                <div className="flex w-full flex-col items-start gap-3 text-start sm:w-[231px]">
+                <div className="flex w-full flex-col items-start gap-3 text-start">
                   <p
                     className="text-start text-[16px] font-bold leading-[110%] text-white"
                     style={{ fontFamily: ara }}
                   >
                     {t("common.memberOf")}
                   </p>
-                  <div className="flex w-full items-start justify-between gap-4 sm:w-[231px]">
+                  <div className="flex w-full flex-wrap items-center gap-4">
                     <Image
                       src="/assets/footer/un-tourism1.1.png"
                       alt={t("footer.altUnTourism")}
@@ -304,14 +305,15 @@ const Footer = () => {
                       height={34}
                       className="h-[34px] w-[100px] object-contain"
                     />
+                    <Button
+                      as={Link}
+                      href="/tour-guides/portal"
+                      className="inline-flex h-[44px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-white bg-transparent px-5 text-center text-[14px] font-bold leading-[119%] text-white transition-colors duration-200 hover:bg-white hover:text-[#280048] data-hover:bg-white data-hover:text-[#280048]"
+                      style={{ fontFamily: ara }}
+                    >
+                      {t("footer.tourGuideLogin")}
+                    </Button>
                   </div>
-                  {/* <Link
-                    href="/tour-guides/portal"
-                    className="mt-1 inline-flex h-[44px] w-full items-center justify-center rounded-full bg-white px-5 text-center text-[14px] font-bold leading-[119%] text-[#280048] transition-opacity hover:opacity-90 sm:w-auto"
-                    style={{ fontFamily: ara }}
-                  >
-                    {t("footer.tourGuideLogin")}
-                  </Link> */}
                 </div>
               </div>
             </div>
