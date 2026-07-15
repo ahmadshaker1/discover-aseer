@@ -152,12 +152,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                             type="button"
                             onClick={(e) => {
                               e.preventDefault();
-                              const downloadLink = document.createElement("a");
-                              downloadLink.href = "/api/booklet";
-                              downloadLink.download = "booklet";
-                              document.body.appendChild(downloadLink);
-                              downloadLink.click();
-                              document.body.removeChild(downloadLink);
+                              window.open(
+                                "/booklet",
+                                "_blank",
+                                "noopener,noreferrer",
+                              );
                               onClose();
                             }}
                             className="flex h-12 w-12 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"

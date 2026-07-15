@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Button } from "@headlessui/react";
 import { Link } from "@/i18n/navigation";
 
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
@@ -169,12 +170,6 @@ const Footer = () => {
                     {t("footer.linkTourGuides")}
                   </Link>
                   <Link
-                    href="/tour-guides/portal"
-                    className="block w-full text-start hover:opacity-80"
-                  >
-                    {t("footer.tourGuideLogin")}
-                  </Link>
-                  <Link
                     href="/getting-here-and-around"
                     className="block w-full text-start hover:opacity-80"
                   >
@@ -281,14 +276,14 @@ const Footer = () => {
                   )}
                 </div>
                 {/* Middle block */}
-                <div className="flex w-full flex-col items-start gap-3 text-start sm:w-[231px]">
+                <div className="flex w-full flex-col items-start gap-3 text-start">
                   <p
                     className="text-start text-[16px] font-bold leading-[110%] text-white"
                     style={{ fontFamily: ara }}
                   >
                     {t("common.memberOf")}
                   </p>
-                  <div className="flex w-full items-start justify-between gap-4 sm:w-[231px]">
+                  <div className="flex w-full flex-wrap items-center gap-4">
                     <Image
                       src="/assets/footer/un-tourism1.1.png"
                       alt={t("footer.altUnTourism")}
@@ -310,6 +305,14 @@ const Footer = () => {
                       height={34}
                       className="h-[34px] w-[100px] object-contain"
                     />
+                    <Button
+                      as={Link}
+                      href="/tour-guides/portal"
+                      className="inline-flex h-[44px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-white bg-transparent px-5 text-center text-[14px] font-bold leading-[119%] text-white transition-colors duration-200 hover:bg-white hover:text-[#280048] data-hover:bg-white data-hover:text-[#280048]"
+                      style={{ fontFamily: ara }}
+                    >
+                      {t("footer.tourGuideLogin")}
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -317,10 +320,9 @@ const Footer = () => {
           </div>
           {/* Section 3 */}
           <div className="mx-auto w-full max-w-[1180px]">
-            <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
-              {/* Left block */}
+            {/* Newsletter */}
+            {/* <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
               <div className="flex w-full flex-col gap-6 sm:flex-row sm:items-center sm:justify-between lg:max-w-[589px] lg:gap-4">
-                {/* Newsletter text */}
                 <div className="flex w-full flex-col items-start gap-4 text-start sm:w-[138px]">
                   <p
                     className="text-start text-[18px] font-bold leading-[110%]"
@@ -332,7 +334,6 @@ const Footer = () => {
                     {t("common.newsletterDescription")}
                   </p>
                 </div>
-                {/* Input + button */}
                 <div className="flex w-full flex-col gap-3 sm:max-w-[397px] sm:flex-row sm:items-center">
                   <button
                     type="button"
@@ -349,7 +350,7 @@ const Footer = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Copyright row below single divider */}
             <div className="mt-4 border-t border-white/20 pt-4">

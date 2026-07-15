@@ -25,7 +25,6 @@ export default function AseerMap() {
   const cityDotsRef = useRef<{ [key: string]: SVGGElement | null }>({});
 
   const activeCity = cities.find((c) => c.id === activeCityId);
-  const activeCityRef = activeCity ? cityDotsRef.current[activeCity.id] : null;
 
   // Touch detection
   useEffect(() => {
@@ -53,17 +52,14 @@ export default function AseerMap() {
     }
   };
 
-  const clearPinned = () => {
-    if (pinnedCityId) {
+  useEffect(() => {
+    const handleWindowClick = () => {
       setPinnedCityId(null);
       setActiveCityId(null);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("click", clearPinned);
-    return () => window.removeEventListener("click", clearPinned);
-  });
+    };
+    window.addEventListener("click", handleWindowClick);
+    return () => window.removeEventListener("click", handleWindowClick);
+  }, []);
 
   // Tooltip positioning
   const [tooltipPos, setTooltipPos] = useState({
@@ -73,39 +69,42 @@ export default function AseerMap() {
   });
 
   useEffect(() => {
-    if (activeCity && activeCityRef && wrapRef.current && tooltipRef.current) {
-      const outerDot = activeCityRef.querySelector(".dot-outer");
-      if (outerDot) {
-        const m = outerDot.getBoundingClientRect();
-        const w = wrapRef.current.getBoundingClientRect();
-        const pad = 12;
-        const cx = m.left - w.left + m.width / 2;
-        const cy = m.top - w.top + m.height / 2;
-        const tw = tooltipRef.current.offsetWidth;
-        const th = tooltipRef.current.offsetHeight;
+    if (!activeCityId || !wrapRef.current || !tooltipRef.current) return;
 
-        const below = cy - th - 22 < 0;
-        const left = Math.max(
-          pad + tw / 2,
-          Math.min(cx, w.width - pad - tw / 2),
-        );
-        const top = below ? cy + m.height / 2 : cy - m.height / 2;
+    const cityEl = cityDotsRef.current[activeCityId];
+    if (!cityEl) return;
 
-        setTooltipPos({ left, top, below });
-      }
-    }
-  }, [activeCity, activeCityRef]);
+    const outerDot = cityEl.querySelector(".dot-outer");
+    if (!outerDot) return;
 
-  // Window resize handler for tooltip
-  useEffect(() => {
-    const handleResize = () => {
-      if (activeCityId) {
-        // Trigger a re-render to update tooltip pos
-        setActiveCityId((prev) => prev);
-      }
+    const updatePos = () => {
+      if (!wrapRef.current || !tooltipRef.current) return;
+
+      const m = outerDot.getBoundingClientRect();
+      const w = wrapRef.current.getBoundingClientRect();
+      const pad = 12;
+      const cx = m.left - w.left + m.width / 2;
+      const cy = m.top - w.top + m.height / 2;
+      const tw = tooltipRef.current.offsetWidth;
+      const th = tooltipRef.current.offsetHeight;
+
+      const below = cy - th - 22 < 0;
+      const left = Math.max(
+        pad + tw / 2,
+        Math.min(cx, w.width - pad - tw / 2),
+      );
+      const top = below ? cy + m.height / 2 : cy - m.height / 2;
+
+      setTooltipPos((prev) =>
+        prev.left === left && prev.top === top && prev.below === below
+          ? prev
+          : { left, top, below },
+      );
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    updatePos();
+    window.addEventListener("resize", updatePos);
+    return () => window.removeEventListener("resize", updatePos);
   }, [activeCityId]);
 
   return (

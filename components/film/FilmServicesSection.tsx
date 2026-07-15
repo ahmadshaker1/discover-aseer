@@ -192,22 +192,22 @@ const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
           </h2>
         </div>
 
-        <div className="flex h-auto w-full flex-col justify-between gap-4 lg:h-[290px] lg:flex-row">
+        <div className="flex h-auto w-full flex-col justify-between gap-4 lg:flex-row lg:items-stretch">
           {cards.slice(0, 3).map((card) => {
             const keys = SERVICE_KEYS[card.iconKey];
             return (
               <article
                 key={card.id}
-                className={`flex h-[290px] w-full max-w-[434.666687px] flex-col gap-6 rounded-[13px] border border-border bg-surface px-8 py-[50px] items-start`}
+                className={`flex min-h-[290px] w-full max-w-[434.666687px] flex-1 flex-col gap-6 overflow-hidden rounded-[13px] border border-border bg-surface px-8 py-[50px] items-start`}
               >
                 <div
-                  className={`flex h-[73.026314px] w-[73.026314px] items-center justify-center rounded-full border border-border bg-muted text-foreground self-start`}
+                  className={`flex h-[73.026314px] w-[73.026314px] shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-muted text-foreground self-start`}
                 >
                   {iconByKey[card.iconKey]}
                 </div>
 
                 <div
-                  className={`flex w-full max-w-[370.666687px] flex-col gap-3 text-start`}
+                  className={`flex min-w-0 w-full flex-col gap-3 text-start`}
                 >
                   <h3
                     className={`text-[32px] font-bold leading-[30px] text-foreground text-start`}
@@ -216,7 +216,7 @@ const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
                     {t(keys.title)}
                   </h3>
                   <p
-                    className={`text-[15px] font-light leading-10 text-muted-foreground text-start`}
+                    className={`text-[15px] font-light leading-6 text-muted-foreground text-start break-words`}
                     style={{ fontFamily: ibm }}
                   >
                     {t(keys.description)}

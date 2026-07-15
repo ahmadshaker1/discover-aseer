@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -26,7 +26,7 @@ const showcaseCardClass =
 const showcaseCardLinkClass = `${showcaseCardClass} cursor-pointer`;
 
 const NAV_BTN_CLASS =
-  "flex h-11 w-11 rotate-180 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
+  "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
 
 interface FilmShowcaseSectionProps {
   cards: FilmShowcaseCard[];
@@ -35,6 +35,8 @@ interface FilmShowcaseSectionProps {
 const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
   const t = useTranslations("film");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const swiperRef = useRef<SwiperType | null>(null);
   const [nav, setNav] = useState({
     show: false,
@@ -112,7 +114,7 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
               <>
                 <Swiper
                   key={selected}
-                  dir="rtl"
+                  dir={isRtl ? "rtl" : "ltr"}
                   initialSlide={0}
                   modules={[FreeMode, Mousewheel]}
                   grabCursor
@@ -186,24 +188,30 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                 </Swiper>
 
                 {nav.show ? (
-                  <div className="mt-4 flex flex-row items-center justify-center gap-3 sm:justify-start">
+                  <div className="mt-4 flex flex-row items-center justify-center gap-3 sm:justify-start rtl:justify-end [direction:ltr]">
                     <button
                       type="button"
-                      aria-label={tCommon("previous")}
-                      disabled={!nav.canPrev}
+                      aria-label={isRtl ? tCommon("next") : tCommon("previous")}
+                      disabled={isRtl ? !nav.canNext : !nav.canPrev}
                       className={NAV_BTN_CLASS}
-                      onClick={() => swiperRef.current?.slidePrev(320)}
+                      onClick={() => {
+                        if (isRtl) swiperRef.current?.slideNext(320);
+                        else swiperRef.current?.slidePrev(320);
+                      }}
                     >
-                      <ChevronRightIcon />
+                      <ChevronLeftIcon />
                     </button>
                     <button
                       type="button"
-                      aria-label={tCommon("next")}
-                      disabled={!nav.canNext}
+                      aria-label={isRtl ? tCommon("previous") : tCommon("next")}
+                      disabled={isRtl ? !nav.canPrev : !nav.canNext}
                       className={NAV_BTN_CLASS}
-                      onClick={() => swiperRef.current?.slideNext(320)}
+                      onClick={() => {
+                        if (isRtl) swiperRef.current?.slidePrev(320);
+                        else swiperRef.current?.slideNext(320);
+                      }}
                     >
-                      <ChevronLeftIcon />
+                      <ChevronRightIcon />
                     </button>
                   </div>
                 ) : null}

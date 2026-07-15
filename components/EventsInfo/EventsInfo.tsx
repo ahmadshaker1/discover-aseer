@@ -196,7 +196,7 @@ function ChevronIcon() {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="rtl:rotate-180"
+      className="ltr:rotate-180"
       aria-hidden
     >
       <path

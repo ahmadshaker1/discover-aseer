@@ -334,7 +334,7 @@ export interface FilmServiceCard {
 export const FALLBACK_FILM_SERVICE_CARDS: FilmServiceCard[] = [
   {
     id: "film-service-1",
-    title: ".طاقم العمل",
+    title: "طاقم العمل",
     description:
       "الدعم في الوصول الى الطاقات البشرية والكفاءات المتنوعة ف مجال انتاج الأفلام من المجتمع المحلي في منطقة عسير.",
     iconKey: "crew",

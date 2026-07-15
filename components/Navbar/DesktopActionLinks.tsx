@@ -6,8 +6,7 @@
  * TODO
  * ----
  * - Globe: locale switcher wired; moon toggles light/dark via `toggleTheme`.
- * - Booklet: replace hardcoded `/assets/booklet/booklet.pdf` if CMS or CDN URL differs;
- *   consider env e.g. NEXT_PUBLIC_BOOKLET_PDF_URL.
+ * - Booklet: opens `/booklet` in a new tab (inline PDF viewer).
  */
 import { Link } from "@/i18n/navigation";
 import { LocationPinIcon } from "./Icons";
@@ -22,14 +21,9 @@ const DesktopActionLinks = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleBookletDownload = (e: React.MouseEvent) => {
+  const handleBookletOpen = (e: React.MouseEvent) => {
     e.preventDefault();
-    const link = document.createElement("a");
-    link.href = "/api/booklet";
-    link.download = "booklet";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    window.open("/booklet", "_blank", "noopener,noreferrer");
   };
 
   const handleLocaleSwitch = () => {
@@ -56,7 +50,7 @@ const DesktopActionLinks = () => {
             <button
               key={index}
               type="button"
-              onClick={handleBookletDownload}
+              onClick={handleBookletOpen}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
               aria-label="تحميل الدليل"
             >
