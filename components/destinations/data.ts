@@ -319,12 +319,8 @@ const pickDescription = (row: ApiDestination, locale: LocaleCode): string => {
   if (locale === "en") {
     const candidates: (keyof ApiDestination)[] = [
       "content_en",
-      "description_en",
-      "destination_content_en",
-      "content_of_home_page_en",
       "content",
-      "description",
-      "destination_content",
+      "content_of_home_page_en",
       "content_of_home_page",
     ];
     for (const key of candidates) {
@@ -334,7 +330,17 @@ const pickDescription = (row: ApiDestination, locale: LocaleCode): string => {
     return "";
   }
 
-  return readApiText(row, "content_ar") || readApiText(row, "content") || "";
+  const candidatesAr: (keyof ApiDestination)[] = [
+    "content_ar",
+    "content",
+    "content_of_home_page_ar",
+    "content_of_home_page",
+  ];
+  for (const key of candidatesAr) {
+    const text = readApiText(row, key);
+    if (text) return text;
+  }
+  return "";
 };
 
 export const transformDestination = (
@@ -351,7 +357,10 @@ export const transformDestination = (
     directusUrl,
   );
   const introImage = resolveDestinationImageUrl(
-    row.hero_image_1 || row.hero_image || row.hero_image_new || row.cover_image,
+    row.destination_image ||
+      row.hero_image_1 ||
+      row.hero_image ||
+      row.hero_image_new,
     directusUrl,
   );
 
