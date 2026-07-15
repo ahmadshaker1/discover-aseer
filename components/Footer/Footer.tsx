@@ -47,7 +47,7 @@ const Footer = () => {
           </div>
 
           {/* Section 2 */}
-          <div className="h-auto pb-6 lg:h-[344px] lg:pb-0">
+          <div className="h-auto pb-6 lg:h-auto lg:pb-0">
             <div className="grid h-full grid-cols-1 gap-8 text-start sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
               {/* اكتشف عسير */}
               <div className="flex w-full justify-self-start flex-col items-start text-start">
@@ -283,38 +283,38 @@ const Footer = () => {
                   >
                     {t("common.memberOf")}
                   </p>
-                  <div className="flex w-full flex-wrap items-center gap-4">
+                  <div className="flex w-full flex-row items-center justify-between gap-2">
                     <Image
                       src="/assets/footer/un-tourism1.1.png"
                       alt={t("footer.altUnTourism")}
                       width={100}
                       height={34}
-                      className="h-[34px] w-[100px] object-contain"
+                      className="h-auto w-[30%] max-w-[100px] object-contain"
                     />
                     <Image
                       src="/assets/footer/GSTC2.png"
                       alt={t("footer.altGstc")}
                       width={100}
                       height={34}
-                      className="h-[34px] w-[100px] object-contain"
+                      className="h-auto w-[30%] max-w-[100px] object-contain"
                     />
                     <Image
                       src="/assets/footer/PATA3.png"
                       alt={t("footer.altPata")}
-                      width={100}
+                      width={60}
                       height={34}
-                      className="h-[34px] w-[100px] object-contain"
+                      className="h-auto w-[30%] max-w-[60px] object-contain"
                     />
-                    <Button
-                      as={Link}
-                      href="/tour-guides/portal"
-                      className="inline-flex h-[44px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-white bg-transparent px-5 text-center text-[14px] font-bold leading-[119%] text-white transition-colors duration-200 hover:bg-white hover:text-[#280048] data-hover:bg-white data-hover:text-[#280048]"
-                      style={{ fontFamily: ara }}
-                    >
-                      {t("footer.tourGuideLogin")}
-                    </Button>
                   </div>
                 </div>
+                <Button
+                  as={Link}
+                  href="/tour-guides/portal"
+                  className="flex w-full h-[44px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent px-5 text-center text-[14px] font-bold leading-[119%] text-white transition-colors duration-200 hover:bg-white hover:text-[#280048] data-hover:bg-white data-hover:text-[#280048]"
+                  style={{ fontFamily: ara }}
+                >
+                  {t("footer.tourGuideLogin")}
+                </Button>
               </div>
             </div>
           </div>
