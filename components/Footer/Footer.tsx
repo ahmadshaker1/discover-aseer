@@ -169,12 +169,6 @@ const Footer = () => {
                     {t("footer.linkTourGuides")}
                   </Link>
                   <Link
-                    href="/tour-guides/portal"
-                    className="block w-full text-start hover:opacity-80"
-                  >
-                    {t("footer.tourGuideLogin")}
-                  </Link>
-                  <Link
                     href="/getting-here-and-around"
                     className="block w-full text-start hover:opacity-80"
                   >
@@ -311,6 +305,13 @@ const Footer = () => {
                       className="h-[34px] w-[100px] object-contain"
                     />
                   </div>
+                  {/* <Link
+                    href="/tour-guides/portal"
+                    className="mt-1 inline-flex h-[44px] w-full items-center justify-center rounded-full bg-white px-5 text-center text-[14px] font-bold leading-[119%] text-[#280048] transition-opacity hover:opacity-90 sm:w-auto"
+                    style={{ fontFamily: ara }}
+                  >
+                    {t("footer.tourGuideLogin")}
+                  </Link> */}
                 </div>
               </div>
             </div>
