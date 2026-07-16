@@ -381,14 +381,14 @@ export function FormFileUpload({
           >
             {existingFileLabel ?? viewFileLabel}
           </span>
-        ) : (
+        ) : noFileLabel ? (
           <span
             className="text-xs text-muted-foreground"
             style={{ fontFamily: ibm }}
           >
             {noFileLabel}
           </span>
-        )}
+        ) : null}
       </Label>
     </Field>
   );

@@ -69,6 +69,7 @@ function BreadcrumbChevronSmall() {
 
 const TourGuidePortalHero = () => {
   const t = useTranslations("tourGuidePortal");
+  const tForm = useTranslations("tourGuidesRegister");
   const locale = useLocale();
   const backAlignClass = locale === "ar" ? "self-start" : "self-end";
 
@@ -122,7 +123,7 @@ const TourGuidePortalHero = () => {
               style={{ fontFamily: araBold }}
               aria-current="page"
             >
-              {t("title")}
+              {tForm("correntPage")}
             </span>
           </nav>
           <h1
@@ -130,13 +131,19 @@ const TourGuidePortalHero = () => {
             className="w-full text-center text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary"
             style={{ fontFamily: araBold }}
           >
-            {t("title")}
+            {tForm("formTitle")}
           </h1>
           <p
             className="mx-auto max-w-[590px] text-center text-lg font-normal leading-relaxed text-secondary opacity-80 md:text-xl"
             style={{ fontFamily: araBold }}
           >
-            {t("subtitle")}
+            {tForm("formSubtitle")}
+          </p>
+          <p
+            className="mx-auto max-w-[590px] text-center text-[18px] font-normal leading-relaxed text-red-600"
+            style={{ fontFamily: araBold }}
+          >
+            {tForm("notes")}
           </p>
         </div>
       </div>

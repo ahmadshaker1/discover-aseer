@@ -593,6 +593,8 @@
       "licenseAttachment": "رخصة الإرشاد السياحي",
       "browsePhoto": "تحميل الصورة",
       "browseAttachment": "تحميل الرخصة",
+      "addLanguageLevel": "إضافة مستوى اللغة",
+      "hideLanguageLevel": "إخفاء مستوى اللغة",
       "fileTypesImage": "JPG, JPEG, PNG, WEBP",
       "fileTypesLicense": "JPG, JPEG, PDF",
       "select": "اختر",
