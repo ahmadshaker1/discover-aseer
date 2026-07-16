@@ -8,7 +8,14 @@ interface ExperienceDetailsPageProps {
   params: Promise<{ locale: string; id: string }>;
 }
 
-const TRAVELER_MESSAGE_KEYS: Record<string, "travelerFemale" | "travelerIndividual" | "travelerCouple" | "travelerFamily" | "travelerGroups"> = {
+const TRAVELER_MESSAGE_KEYS: Record<
+  string,
+  | "travelerFemale"
+  | "travelerIndividual"
+  | "travelerCouple"
+  | "travelerFamily"
+  | "travelerGroups"
+> = {
   female: "travelerFemale",
   individual: "travelerIndividual",
   couple: "travelerCouple",
@@ -36,6 +43,28 @@ export default async function ExperienceDetailsPage({
 
   const currency = experience.currency ?? t("currencyFallback");
 
+  const getDisplayCategory = () => {
+    const rawCategory =
+      locale === "en" && experience.type_en
+        ? experience.type_en
+        : experience.type;
+    if (Array.isArray(rawCategory)) {
+      return rawCategory.join(", ");
+    }
+    if (typeof rawCategory === "string" && rawCategory.trim() !== "") {
+      if (rawCategory.trim().startsWith("[")) {
+        try {
+          const parsed = JSON.parse(rawCategory);
+          if (Array.isArray(parsed)) return parsed.join(", ");
+        } catch {}
+      }
+      return rawCategory;
+    }
+    return experience.category;
+  };
+
+  const displayCategory = getDisplayCategory();
+
   return (
     <main className="bg-background pb-16 text-foreground">
       <section className="relative h-[360px] w-full overflow-hidden md:h-[500px]">
@@ -49,9 +78,9 @@ export default async function ExperienceDetailsPage({
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/30 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-6xl px-4 pb-8 text-white md:px-6">
-          <div className="mb-4 flex items-center justify-between gap-3 text-sm">
+          <div className="mb-4 flex items-center justify-between gap-3 text-16">
             <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur-sm">
-              {experience.category}
+              {displayCategory}
             </span>
             <Link
               href="/experiences"
@@ -63,7 +92,9 @@ export default async function ExperienceDetailsPage({
           <h1 className="text-3xl font-bold leading-tight md:text-5xl">
             {experience.title}
           </h1>
-          <p className="mt-3 text-base text-white/90 md:text-lg">{experience.duration}</p>
+          <p className="mt-3 text-base text-white/90 md:text-lg">
+            {experience.duration}
+          </p>
         </div>
       </section>
 
@@ -71,7 +102,9 @@ export default async function ExperienceDetailsPage({
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
           <article className="space-y-8">
             <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
-              <h2 className="mb-4 text-xl font-bold text-foreground">{t("aboutExperience")}</h2>
+              <h2 className="mb-4 text-xl font-bold text-foreground">
+                {t("aboutExperience")}
+              </h2>
               <div className="space-y-4 text-[15px] leading-8 text-muted-foreground">
                 {(detailsParagraphs.length > 0
                   ? detailsParagraphs
@@ -84,24 +117,36 @@ export default async function ExperienceDetailsPage({
 
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
-                <p className="mb-1 text-sm text-muted-foreground">{t("providerLabel")}</p>
-                <p className="text-base font-semibold text-foreground">{experience.provider}</p>
+                <p className="mb-1 text-sm text-muted-foreground">
+                  {t("providerLabel")}
+                </p>
+                <p className="text-base font-semibold text-foreground capitalize">
+                  {experience.provider}
+                </p>
               </div>
               <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
-                <p className="mb-1 text-sm text-muted-foreground">{t("priceLabel")}</p>
+                <p className="mb-1 text-sm text-muted-foreground">
+                  {t("priceLabel")}
+                </p>
                 <p className="text-base font-semibold text-foreground">
                   {experience.price} {currency}
                 </p>
               </div>
               <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
-                <p className="mb-1 text-sm text-muted-foreground">{t("groupSizeLabel")}</p>
-                <p className="text-base font-semibold text-foreground">x{experience.groupSize}</p>
+                <p className="mb-1 text-sm text-muted-foreground">
+                  {t("groupSizeLabel")}
+                </p>
+                <p className="text-base font-semibold text-foreground">
+                  x{experience.groupSize}
+                </p>
               </div>
             </section>
 
             {experience.filterInterests.length > 0 ? (
               <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
-                <h3 className="mb-4 text-lg font-bold text-foreground">{t("interestsHeading")}</h3>
+                <h3 className="mb-4 text-lg font-bold text-foreground">
+                  {t("interestsHeading")}
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {experience.filterInterests.map((interest) => (
                     <span
@@ -117,7 +162,9 @@ export default async function ExperienceDetailsPage({
 
             {experience.filterTravelers.length > 0 ? (
               <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm md:p-8">
-                <h3 className="mb-4 text-lg font-bold text-foreground">{t("travelersHeading")}</h3>
+                <h3 className="mb-4 text-lg font-bold text-foreground">
+                  {t("travelersHeading")}
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {experience.filterTravelers.map((traveler) => {
                     const msgKey = TRAVELER_MESSAGE_KEYS[traveler];
@@ -138,7 +185,9 @@ export default async function ExperienceDetailsPage({
 
           <aside className="lg:sticky lg:top-24 lg:h-fit">
             <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
-              <p className="text-sm text-muted-foreground">{t("bookingTitle")}</p>
+              <p className="text-sm text-muted-foreground">
+                {t("bookingTitle")}
+              </p>
               <p className="mt-2 text-2xl font-bold text-foreground">
                 {experience.price} {currency}
               </p>

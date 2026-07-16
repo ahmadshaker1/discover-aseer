@@ -359,6 +359,8 @@ export function transformExperience(
     filterInterests,
     isPaid,
     filterTravelers,
+    type: api.type,
+    type_en: api.type_en,
   };
 }
 

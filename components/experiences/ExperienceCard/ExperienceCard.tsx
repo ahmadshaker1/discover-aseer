@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import ExperienceCardShareButton from "./ExperienceCardShareButton";
 import ExperienceCardActions from "./ExperienceCardActions";
 import { BuildingIcon, PersonIcon, SaudiRiyalIcon } from "./Icons";
@@ -18,6 +18,8 @@ export interface ExperienceCardProps {
   currency?: string;
   groupSize: number;
   bookUrl: string;
+  type?: string | string[] | null;
+  type_en?: string | string[] | null;
 }
 
 const ExperienceCard = ({
@@ -31,8 +33,32 @@ const ExperienceCard = ({
   price,
   groupSize,
   bookUrl,
+  type,
+  type_en,
 }: ExperienceCardProps) => {
   const t = useTranslations("common");
+  const locale = useLocale();
+
+  const getDisplayCategory = () => {
+    const rawCategory = locale === "en" && type_en ? type_en : type;
+    if (Array.isArray(rawCategory)) {
+      return rawCategory.join(", ");
+    }
+    if (typeof rawCategory === "string" && rawCategory.trim() !== "") {
+      // Sometimes it might be a JSON string array
+      if (rawCategory.trim().startsWith("[")) {
+        try {
+          const parsed = JSON.parse(rawCategory);
+          if (Array.isArray(parsed)) return parsed.join(", ");
+        } catch {}
+      }
+      return rawCategory;
+    }
+    return category;
+  };
+
+  const displayCategory = getDisplayCategory();
+
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md">
       {/* Image Banner Section */}
@@ -46,7 +72,7 @@ const ExperienceCard = ({
         />
         <ExperienceCardShareButton experienceId={id} title={title} />
         <div className="absolute start-3 top-3 rounded-full bg-black/70 px-3 py-1.5 backdrop-blur-sm">
-          <span className="text-white text-xs font-medium">{category}</span>
+          <span className="text-white text-16">{displayCategory}</span>
         </div>
       </div>
 
@@ -66,7 +92,7 @@ const ExperienceCard = ({
         {/* Provider */}
         <div className="mb-4 flex items-center justify-start gap-2">
           <BuildingIcon />
-          <span className="text-sm text-foreground">{provider}</span>
+          <span className="text-sm text-foreground capitalize">{provider}</span>
         </div>
 
         {/* Price and Group Size */}
