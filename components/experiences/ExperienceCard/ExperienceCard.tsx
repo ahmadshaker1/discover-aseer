@@ -92,7 +92,7 @@ const ExperienceCard = ({
         {/* Provider */}
         <div className="mb-4 flex items-center justify-start gap-2">
           <BuildingIcon />
-          <span className="text-sm text-foreground">{provider}</span>
+          <span className="text-sm text-foreground capitalize">{provider}</span>
         </div>
 
         {/* Price and Group Size */}

@@ -120,7 +120,7 @@ export default async function ExperienceDetailsPage({
                 <p className="mb-1 text-sm text-muted-foreground">
                   {t("providerLabel")}
                 </p>
-                <p className="text-base font-semibold text-foreground">
+                <p className="text-base font-semibold text-foreground capitalize">
                   {experience.provider}
                 </p>
               </div>
