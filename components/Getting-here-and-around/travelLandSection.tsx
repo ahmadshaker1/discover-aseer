@@ -343,7 +343,7 @@ export default function TravelLandSection() {
         {/* كروت تأجير السيارات */}
         <div className="mb-16">
           <LogoCarousel
-            slideClassName="w-[200px]! max-w-[200px] shrink-0"
+            slideClassName="w-[156px]! max-w-[156px] shrink-0"
             slides={carRentals.map((rental) => ({
               key: rental.name,
               content: (
@@ -352,17 +352,20 @@ export default function TravelLandSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={rental.name}
-                  className="group relative flex h-[200px] w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-1 hover:shadow-lg"
+                  className="group flex w-full flex-col items-center transition-all hover:-translate-y-1"
+                  style={{ gap: "16px" }}
                 >
                   <div
-                    className="absolute inset-0 bg-center bg-no-repeat transition-transform duration-300 group-hover:scale-105"
+                    className="aspect-[156/150] w-full rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                     style={{
                       backgroundImage: `url('${rental.image}')`,
-                      backgroundSize: "contain",
-                      margin: "2rem",
                     }}
                   />
-                  <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5" />
+                  <div className="text-center">
+                    <p className="text-lg font-bold leading-tight text-foreground md:text-[20px]">
+                      {rental.name}
+                    </p>
+                  </div>
                 </a>
               ),
             }))}
