@@ -182,7 +182,7 @@ const ExperiencesFilter = ({
                         />
                       </svg>
                     </Checkbox>
-                    <span className="text-sm text-foreground">
+                    <span className="text-sm text-foreground capitalize">
                       {interest.label}
                     </span>
                   </div>
