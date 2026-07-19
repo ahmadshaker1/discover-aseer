@@ -184,7 +184,7 @@ const Footer = () => {
                 </div>
               </div>
               {/* كتيبات */}
-              <div className="flex w-full justify-self-start flex-col items-start text-start">
+              <div className="flex w-full justify-self-start flex-col items-start text-start lg:h-full">
                 <h3
                   className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
                   style={{ fontFamily: ara }}
@@ -192,7 +192,7 @@ const Footer = () => {
                   {t("footer.bookletsTitle")}
                 </h3>
                 <div
-                  className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
+                  className="flex w-full flex-1 flex-col items-start text-[18px] font-bold leading-[197%]"
                   style={{ fontFamily: ara }}
                 >
                   <Link
@@ -227,7 +227,7 @@ const Footer = () => {
                   <Button
                     as={Link}
                     href="/tour-guides/portal"
-                    className="flex w-[200px] h-[44px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent px-5 text-center text-[14px] font-bold leading-[119%] text-white transition-colors duration-200 hover:bg-white hover:text-[#280048] data-hover:bg-white data-hover:text-[#280048]"
+                    className="mt-6 lg:mt-auto flex w-[200px] h-[44px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent px-5 text-center text-[14px] font-bold leading-[119%] text-white transition-colors duration-200 hover:bg-white hover:text-[#280048] data-hover:bg-white data-hover:text-[#280048]"
                     style={{ fontFamily: ara }}
                   >
                     {t("footer.tourGuideLogin")}
