@@ -92,7 +92,7 @@ export default function FloatingAmbientSound({
                   className="ambient-sound-wave-bar"
                   style={{
                     transformBox: "fill-box",
-                    transformOrigin: "bottom center",
+                    transformOrigin: "center",
                     animationDelay: `${i * 0.09}s`,
                     animationDuration: `${0.42 + i * 0.05}s`,
                   }}
