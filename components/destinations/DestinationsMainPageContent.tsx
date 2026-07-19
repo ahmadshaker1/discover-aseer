@@ -117,7 +117,7 @@ const DestinationsMainPageContent = ({
             className={`order-1 w-full min-w-0 lg:order-1 lg:sticky lg:top-24 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
           >
             <div className="mx-auto flex w-full max-w-[320px] flex-col gap-6 lg:mx-0 lg:max-w-[256px]">
-              <h3 className="whitespace-pre-line text-3xl font-bold text-foreground text-center">
+              <h3 className="whitespace-pre-line text-3xl font-bold text-foreground text-start">
                 {tCommon("discoverDestinationsTitle")}
               </h3>
               <div className="flex w-full flex-wrap items-center justify-between gap-3">
