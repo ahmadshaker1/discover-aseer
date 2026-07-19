@@ -18,18 +18,33 @@ export default function FloatingAmbientSound({
 }: Props) {
   const t = useTranslations("common");
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  /** User intent: music should stay on unless they pause it. */
+  const wantsPlayingRef = useRef(true);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   const cornerClass =
     locale === "ar" ? "left-6 bottom-6" : "right-6 bottom-6";
+
+  const tryPlay = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || !wantsPlayingRef.current) return;
+    void audio.play().catch(() => {
+      // Autoplay often blocked until a user gesture; keep UI "on".
+      setIsPlaying(true);
+    });
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     const onPlay = () => setIsPlaying(true);
-    const onPause = () => setIsPlaying(false);
-    const onEnded = () => setIsPlaying(false);
+    const onPause = () => {
+      if (!wantsPlayingRef.current) setIsPlaying(false);
+    };
+    const onEnded = () => {
+      if (!wantsPlayingRef.current) setIsPlaying(false);
+    };
 
     audio.addEventListener("play", onPlay);
     audio.addEventListener("pause", onPause);
@@ -42,27 +57,57 @@ export default function FloatingAmbientSound({
     };
   }, []);
 
+  useEffect(() => {
+    tryPlay();
+
+    const unlock = () => {
+      if (!wantsPlayingRef.current) return;
+      tryPlay();
+      const audio = audioRef.current;
+      if (audio && !audio.paused) {
+        document.removeEventListener("pointerdown", unlock);
+        document.removeEventListener("keydown", unlock);
+      }
+    };
+
+    document.addEventListener("pointerdown", unlock);
+    document.addEventListener("keydown", unlock);
+
+    return () => {
+      document.removeEventListener("pointerdown", unlock);
+      document.removeEventListener("keydown", unlock);
+      wantsPlayingRef.current = false;
+      audioRef.current?.pause();
+    };
+  }, [tryPlay]);
+
   const toggle = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (audio.paused) {
+
+    if (audio.paused || !wantsPlayingRef.current) {
+      wantsPlayingRef.current = true;
+      setIsPlaying(true);
       void audio.play().catch(() => {
-        setIsPlaying(false);
+        setIsPlaying(true);
       });
     } else {
+      wantsPlayingRef.current = false;
       audio.pause();
+      setIsPlaying(false);
     }
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      audioRef.current?.pause();
-    };
   }, []);
 
   return (
     <div className={`fixed z-9998 ${cornerClass}`}>
-      <audio ref={audioRef} src={src} preload="none" loop playsInline />
+      <audio
+        ref={audioRef}
+        src={src}
+        preload="auto"
+        loop
+        playsInline
+        autoPlay
+      />
       <button
         type="button"
         onClick={toggle}
