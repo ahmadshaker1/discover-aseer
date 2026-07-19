@@ -2,30 +2,59 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { getNavbarDropdownLinks, navigationLinks } from "./navbarData";
-import DiscoverAseerDropdown from "./DiscoverAseerDropdown";
+import { navigationLinks } from "./navbarData";
+import { MegaMenuTrigger } from "./MegaMenu";
+import { LocationPinIcon } from "./Icons";
 
-const DesktopNavigationLinks = () => {
+interface DesktopNavigationLinksProps {
+  openMenuKey: string | null;
+  onOpenChange: (key: string | null) => void;
+  panelIds: Record<string, string>;
+}
+
+const DesktopNavigationLinks = ({
+  openMenuKey,
+  onOpenChange,
+  panelIds,
+}: DesktopNavigationLinksProps) => {
   const t = useTranslations();
 
-  // Shift toward logo: lower `gap-*`, or add e.g. `-ms-2` / `-ms-4` on the wrapper below
   return (
-    <div className="hidden lg:flex flex-row items-center gap-8 ms-10">
+    <div className="hidden lg:flex flex-row items-center gap-6 xl:gap-8">
       {navigationLinks.map((link) => {
         if (link.isDropdown) {
           return (
-            <DiscoverAseerDropdown
+            <MegaMenuTrigger
               key={link.labelKey}
+              menuKey={link.labelKey}
               label={t(link.labelKey)}
-              links={getNavbarDropdownLinks(link.labelKey)}
+              openMenuKey={openMenuKey}
+              onOpenChange={onOpenChange}
+              panelId={panelIds[link.labelKey] ?? link.labelKey}
             />
           );
         }
+
+        if ("isMap" in link && link.isMap) {
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              onMouseEnter={() => onOpenChange(null)}
+              className="inline-flex items-center gap-2 text-base font-medium whitespace-nowrap text-white transition-opacity hover:opacity-80"
+            >
+              <LocationPinIcon />
+              <span>{t(link.labelKey)}</span>
+            </Link>
+          );
+        }
+
         return (
           <Link
             key={link.href}
             href={link.href}
-            className="text-white text-base font-medium hover:opacity-80 transition-opacity whitespace-nowrap"
+            onMouseEnter={() => onOpenChange(null)}
+            className="text-base font-medium whitespace-nowrap text-white transition-opacity hover:opacity-80"
           >
             {t(link.labelKey)}
           </Link>

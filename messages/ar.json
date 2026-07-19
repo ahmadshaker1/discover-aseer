@@ -132,7 +132,11 @@
     "browseDestinations": "تصفح الوجهات",
     "indoorAttractions": "المعالم السياحية الداخلية",
     "film": "الأفلام",
-    "igcat": "IGCAT"
+    "igcat": "IGCAT",
+    "localeArabic": "العربية",
+    "localeEnglish": "English",
+    "localeChinese": "中文",
+    "localeComingSoon": "قريباً"
   },
   "navLinks": {
     "aboutAseer": "عن عسير",
@@ -144,12 +148,13 @@
     "film": "فيلم عسير"
   },
   "navPlanTripLinks": {
-    "aiPlanner": "صمم خطة باستخدام الذكاء الاصطناعي",
+    "aiPlanner": "مخطط الرحلات الذكي",
     "accommodation": "أماكن الإقامة",
-    "restaurants": "المطاعم",
+    "restaurants": "المطاعم والمقاهي",
     "tourGuides": "المرشدين السياحيين",
+    "tourismCompanies": "الشركات السياحية",
     "sopportingServices": "الخدمات المساندة",
-    "gettingAround": "الوصول و التجول"
+    "gettingAround": "الوصول والتجول"
   },
   "footer": {
     "discoverAseerTitle": "اكتشف عسير",

@@ -132,7 +132,11 @@
     "browseDestinations": "Browse destinations",
     "indoorAttractions": "Indoor attractions",
     "film": "Film",
-    "igcat": "IGCAT"
+    "igcat": "IGCAT",
+    "localeArabic": "العربية",
+    "localeEnglish": "English",
+    "localeChinese": "中文",
+    "localeComingSoon": "Soon"
   },
   "navLinks": {
     "aboutAseer": "About Aseer",
@@ -144,12 +148,13 @@
     "film": "Film Aseer"
   },
   "navPlanTripLinks": {
-    "aiPlanner": "Make a plan with AI",
-    "accommodation": "Accommodation",
-    "restaurants": "Restaurants",
-    "tourGuides": "Tour guides",
-    "sopportingServices": "Supporting services",
-    "gettingAround": "Getting Here And Around"
+    "aiPlanner": "AI Trip Planner",
+    "accommodation": "Accommodations",
+    "restaurants": "Restaurants & Cafes",
+    "tourGuides": "Tour Guides",
+    "tourismCompanies": "Destination Management Companies",
+    "sopportingServices": "Supporting Services",
+    "gettingAround": "Getting Here and Around"
   },
   "footer": {
     "discoverAseerTitle": "Discover Aseer",
