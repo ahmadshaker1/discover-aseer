@@ -8,9 +8,20 @@ export default getRequestConfig(async ({requestLocale}) => {
     ? requested
     : routing.defaultLocale;
 
+  const mainMessages = (await import(`../messages/${locale}.json`)).default;
+  let plannerMessages = {};
+  try {
+    plannerMessages = (await import(`../messages/planner/${locale}.json`)).default;
+  } catch (error) {
+    console.warn(`Could not load planner messages for locale: ${locale}`);
+  }
+
   return {
     locale,
-    messages: (await import(`../messages/${locale}.json`)).default,
+    messages: {
+      ...mainMessages,
+      Planner: plannerMessages
+    },
   };
 });
 
