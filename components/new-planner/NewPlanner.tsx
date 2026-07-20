@@ -47,7 +47,11 @@ export default function NewPlanner() {
       )}
 
       {currentStep === 2 && (
-        <Step2 onPrev={() => setCurrentStep(1)} plannerData={plannerData} />
+        <Step2
+          onPrev={() => setCurrentStep(1)}
+          onNext={() => setCurrentStep(3)}
+          plannerData={plannerData}
+        />
       )}
     </>
   );
