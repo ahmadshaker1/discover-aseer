@@ -23,5 +23,9 @@
   "styleBalanced": "متوازن",
   "styleBalancedDesc": "3 محطات في اليوم",
   "styleIntensive": "مكثف",
-  "styleIntensiveDesc": "4 محطات في اليوم"
+  "styleIntensiveDesc": "4 محطات في اليوم",
+  "budgetTitle": "الميزانية",
+  "budgetEconomy": "اقتصادي",
+  "budgetMedium": "متوسط",
+  "budgetPremium": "مميز"
 }

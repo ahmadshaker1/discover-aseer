@@ -19,6 +19,7 @@ export default function NewPlanner() {
     selectedDays: null,
     selectedDate: null,
     tripStyle: null,
+    budget: null,
   });
 
   const updatePlannerData = (updates: Partial<PlannerData>) => {

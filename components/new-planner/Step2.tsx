@@ -228,6 +228,77 @@ export default function Step2({
           </div>
         </div>
 
+        {/* Budget Selection */}
+        <div className="mb-12 w-full max-w-[600px] flex flex-col items-start gap-4">
+          <h2
+            className=" text-black dark:text-white"
+            style={{
+              fontSize: "26px",
+              fontStyle: "normal",
+              fontWeight: 700,
+            }}
+          >
+            {t("budgetTitle")}
+          </h2>
+
+          <div
+            className="w-full flex flex-wrap gap-2"
+            style={{
+              alignItems: "flex-start",
+              alignContent: "flex-start",
+              fontFamily: "IBM Plex Sans Arabic",
+            }}
+          >
+            {[
+              {
+                id: "economy",
+                titleKey: "budgetEconomy",
+                icon: "/assets/planner/Step2/bank-card-line.svg",
+              },
+              {
+                id: "medium",
+                titleKey: "budgetMedium",
+                icon: "/assets/planner/Step2/refund-2-fill.svg",
+              },
+              {
+                id: "premium",
+                titleKey: "budgetPremium",
+                icon: "/assets/planner/Step2/vip-crown-line.svg",
+              },
+            ].map((budgetOption) => {
+              const isSelected = plannerData.budget === budgetOption.id;
+              return (
+                <button
+                  key={budgetOption.id}
+                  onClick={() => updatePlannerData({ budget: budgetOption.id })}
+                  className={`cursor-pointer transition-colors flex items-center ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"}`}
+                  style={{
+                    padding: "8px 16px",
+                    gap: "6px",
+                    borderRadius: "55px",
+                    border: isSelected
+                      ? "2px solid #00BBB4"
+                      : "1px solid rgba(0, 0, 0, 0.10)",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                  }}
+                >
+                  <Image
+                    src={budgetOption.icon}
+                    alt={t(budgetOption.titleKey)}
+                    width={20}
+                    height={20}
+                    className={
+                      !isSelected ? "dark:brightness-0 dark:invert" : ""
+                    }
+                  />
+                  {t(budgetOption.titleKey)}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Navigation Buttons */}
         <div className="w-full flex items-center justify-start gap-4 mt-8 max-w-[300px]">
           <button

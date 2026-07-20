@@ -23,5 +23,9 @@
   "styleBalanced": "Balanced",
   "styleBalancedDesc": "3 stops per day",
   "styleIntensive": "Intensive",
-  "styleIntensiveDesc": "4 stops per day"
+  "styleIntensiveDesc": "4 stops per day",
+  "budgetTitle": "Budget",
+  "budgetEconomy": "Economy",
+  "budgetMedium": "Medium",
+  "budgetPremium": "Premium"
 }
