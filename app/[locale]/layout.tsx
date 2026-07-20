@@ -10,6 +10,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import ConditionalFooter from "@/components/Footer/ConditionalFooter";
 import ThemeInitScript from "@/components/theme/ThemeInitScript";
 import TikTokPixel from "@/components/analytics/TikTokPixel";
+import MetaPixel from "@/components/analytics/MetaPixel";
 
 import { routing, type AppLocale } from "@/i18n/routing";
 
@@ -71,6 +72,7 @@ export default async function LocaleLayout({
         <ThemeInitScript />
         <Suspense fallback={null}>
           <TikTokPixel />
+          <MetaPixel />
         </Suspense>
         <NextIntlClientProvider locale={appLocale} messages={messages}>
           <Navbar />
