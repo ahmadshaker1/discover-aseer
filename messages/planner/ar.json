@@ -1,7 +1,18 @@
 {
   "homePage": "الصفحة الرئيسية",
-  "crumbPlanner": "خطط رحلتك",
+  "crumbPlanner": "خطط مسار رحلتك",
   "heroTitle": "خطّط رحلتك في عسير",
   "heroSubtitle": "برنامج رحلة مبني على اهتماماتك، لتكتشف عسير على طريقتك.",
-  "startPlanning": "ابدأ التخطيط"
+  "startPlanning": "ابدأ التخطيط",
+  "stepXofY": "الخطوة {step} من {total}",
+  "visitDetailsTitle": "تفاصيل زيارتك",
+  "howManyDays": "كم يومًا ستقضي في عسير؟",
+  "daysDesc": "سنعدّ لك خطة تصل إلى ٧ أيام.",
+  "oneDay": "يوم واحد",
+  "twoDays": "يومان",
+  "daysFormat": "{count} أيام",
+  "arrivalDateTitle": "متى ستصل؟",
+  "selectArrivalDate": "اختر تاريخ الوصول",
+  "next": "التالي",
+  "previous": "السابق"
 }

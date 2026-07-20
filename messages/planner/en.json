@@ -1,7 +1,18 @@
 {
   "homePage": "Home Page",
-  "crumbPlanner": "Plan Your Trip",
+  "crumbPlanner": "Plan Your Itinerary",
   "heroTitle": "Plan Your Trip In Aseer",
   "heroSubtitle": "A trip itinerary based on your interests, to discover Aseer your way.",
-  "startPlanning": "Start Planning"
+  "startPlanning": "Start Planning",
+  "stepXofY": "Step {step} of {total}",
+  "visitDetailsTitle": "Your Visit Details",
+  "howManyDays": "How many days will you spend in Aseer?",
+  "daysDesc": "We will prepare a plan for up to 7 days.",
+  "oneDay": "1 day",
+  "twoDays": "2 days",
+  "daysFormat": "{count} days",
+  "arrivalDateTitle": "When will you arrive?",
+  "selectArrivalDate": "Select arrival date",
+  "next": "Next",
+  "previous": "Previous"
 }

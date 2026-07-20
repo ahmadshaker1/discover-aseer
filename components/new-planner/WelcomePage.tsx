@@ -29,7 +29,7 @@ export default function WelcomePage({ onStartPlanning }: WelcomePageProps) {
   const locale = useLocale();
 
   return (
-    <div className="min-h-screen w-full flex items-center bg-[linear-gradient(180deg,rgba(255,255,255,0.25)_0%,rgba(21,21,131,0.25)_100%)] relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center bg-[linear-gradient(180deg,rgba(21,21,131,0.25)_0%,rgba(255,255,255,0.25)_100%)] dark:bg-none dark:bg-[#14091F] relative overflow-hidden">
       <div className="container mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between relative z-10 w-full gap-8">
         {/* Text Section */}
         <div className="flex w-full md:w-1/2 max-w-[650px] flex-col items-start pt-20 md:pt-0">

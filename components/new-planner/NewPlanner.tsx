@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import WelcomePage from "./WelcomePage";
+import Step1 from "./Step1";
 
+/**
+ * --- Planner State Management Strategy ---
+ * We use a State-based approach combined with LocalStorage:
+ * 1. Navigation: `currentStep` is managed via React state.
+ * 2. Data Collection: All user inputs (destinations, dates, interests) will be gathered in a central State (or Context) here.
+ * 3. Persistence: The data state will be synced with `localStorage` so if the user refreshes, they won't lose their progress.
+ */
 export default function NewPlanner() {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
@@ -20,17 +28,10 @@ export default function NewPlanner() {
 
       {/*For the steps*/}
       {currentStep === 1 && (
-        <div className="min-h-screen flex items-center justify-center flex-col gap-4">
-          <h2 className="text-3xl font-bold">
-            Step 1: Choose your preferences
-          </h2>
-          <button
-            className="px-4 py-2 bg-gray-200 rounded-md"
-            onClick={() => setCurrentStep(0)}
-          >
-            Back to Welcome
-          </button>
-        </div>
+        <Step1
+          onNext={() => setCurrentStep(2)}
+          onPrev={() => setCurrentStep(0)}
+        />
       )}
     </>
   );
