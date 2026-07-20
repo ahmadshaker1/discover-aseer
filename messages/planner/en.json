@@ -16,5 +16,12 @@
   "next": "Next",
   "previous": "Previous",
   "tripStyleTitle": "Your Trip Style",
-  "tripStyleDesc": "We select destinations and experiences tailored to your companion and close to your accommodation."
+  "tripStyleDesc": "We select destinations and experiences tailored to your companion and close to your accommodation.",
+  "styleTitle": "The Style",
+  "styleLight": "Light",
+  "styleLightDesc": "2 stops per day",
+  "styleBalanced": "Balanced",
+  "styleBalancedDesc": "3 stops per day",
+  "styleIntensive": "Intensive",
+  "styleIntensiveDesc": "4 stops per day"
 }

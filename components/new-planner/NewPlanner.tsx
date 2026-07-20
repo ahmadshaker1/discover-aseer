@@ -18,6 +18,7 @@ export default function NewPlanner() {
   const [plannerData, setPlannerData] = useState<PlannerData>({
     selectedDays: null,
     selectedDate: null,
+    tripStyle: null,
   });
 
   const updatePlannerData = (updates: Partial<PlannerData>) => {
@@ -51,6 +52,7 @@ export default function NewPlanner() {
           onPrev={() => setCurrentStep(1)}
           onNext={() => setCurrentStep(3)}
           plannerData={plannerData}
+          updatePlannerData={updatePlannerData}
         />
       )}
     </>

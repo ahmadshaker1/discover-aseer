@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { PlannerData } from "./types";
 
 interface Step2Props {
   onPrev: () => void;
   onNext: () => void;
   plannerData: PlannerData;
+  updatePlannerData: (updates: Partial<PlannerData>) => void;
 }
 
 function BreadcrumbChevron() {
@@ -27,7 +29,12 @@ function BreadcrumbChevron() {
   );
 }
 
-export default function Step2({ onPrev, onNext, plannerData }: Step2Props) {
+export default function Step2({
+  onPrev,
+  onNext,
+  plannerData,
+  updatePlannerData,
+}: Step2Props) {
   const t = useTranslations("Planner");
 
   useEffect(() => {
@@ -121,6 +128,104 @@ export default function Step2({ onPrev, onNext, plannerData }: Step2Props) {
           >
             {t("tripStyleDesc")}
           </p>
+        </div>
+
+        {/* Style Selection */}
+        <div className="mb-12 w-full max-w-[600px] flex flex-col items-start gap-4">
+          <h2
+            className=" text-black dark:text-white"
+            style={{
+              fontSize: "26px",
+              fontStyle: "normal",
+              fontWeight: 700,
+            }}
+          >
+            {t("styleTitle")}
+          </h2>
+
+          <div
+            className="w-full flex flex-wrap gap-4"
+            style={{
+              alignItems: "flex-start",
+              alignContent: "flex-start",
+              fontFamily: "IBM Plex Sans Arabic",
+            }}
+          >
+            {[
+              {
+                id: "light",
+                titleKey: "styleLight",
+                descKey: "styleLightDesc",
+                icon: "/assets/planner/Step2/Vector1.svg",
+              },
+              {
+                id: "balanced",
+                titleKey: "styleBalanced",
+                descKey: "styleBalancedDesc",
+                icon: "/assets/planner/Step2/Vector2.svg",
+              },
+              {
+                id: "intensive",
+                titleKey: "styleIntensive",
+                descKey: "styleIntensiveDesc",
+                icon: "/assets/planner/Step2/Vector3.svg",
+              },
+            ].map((styleOption) => {
+              const isSelected = plannerData.tripStyle === styleOption.id;
+              return (
+                <button
+                  key={styleOption.id}
+                  onClick={() =>
+                    updatePlannerData({ tripStyle: styleOption.id })
+                  }
+                  className={`cursor-pointer transition-colors ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"}`}
+                  style={{
+                    display: "flex",
+                    height: "120px",
+                    padding: "0 12px",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "start",
+                    gap: "6px",
+                    borderRadius: "12px",
+                    border: isSelected
+                      ? "2px solid #00BBB4"
+                      : "1px solid rgba(0, 0, 0, 0.10)",
+                    flex: "1 1 0",
+                    minWidth: "140px",
+                  }}
+                >
+                  <Image
+                    src={styleOption.icon}
+                    alt={t(styleOption.titleKey)}
+                    width={24}
+                    height={24}
+                    className={
+                      !isSelected ? "dark:brightness-0 dark:invert" : ""
+                    }
+                  />
+                  <span style={{ fontSize: "18px", fontWeight: 700 }}>
+                    {t(styleOption.titleKey)}
+                  </span>
+                  <span
+                    className={
+                      isSelected
+                        ? "text-black dark:text-black"
+                        : "text-[#535353] dark:text-gray-300"
+                    }
+                    style={{
+                      fontSize: "14px",
+                      fontStyle: "normal",
+                      fontWeight: 400,
+                      fontFamily: "IBM Plex Sans Arabic",
+                    }}
+                  >
+                    {t(styleOption.descKey)}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Navigation Buttons */}

@@ -16,5 +16,12 @@
   "next": "التالي",
   "previous": "السابق",
   "tripStyleTitle": "أسلوب رحلتك",
-  "tripStyleDesc": "نختار وجهات و تجارب تناسب رفقتك و قريبة من مقرّ إقامتك."
+  "tripStyleDesc": "نختار وجهات و تجارب تناسب رفقتك و قريبة من مقرّ إقامتك.",
+  "styleTitle": "الأسلوب",
+  "styleLight": "خفيف",
+  "styleLightDesc": "محطتان في اليوم",
+  "styleBalanced": "متوازن",
+  "styleBalancedDesc": "3 محطات في اليوم",
+  "styleIntensive": "مكثف",
+  "styleIntensiveDesc": "4 محطات في اليوم"
 }
