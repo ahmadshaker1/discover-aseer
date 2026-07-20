@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { IBM_Plex_Sans_Arabic, Readex_Pro } from "next/font/google";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
@@ -8,6 +9,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar/Navbar";
 import ConditionalFooter from "@/components/Footer/ConditionalFooter";
 import ThemeInitScript from "@/components/theme/ThemeInitScript";
+import TikTokPixel from "@/components/analytics/TikTokPixel";
 
 import { routing, type AppLocale } from "@/i18n/routing";
 
@@ -67,6 +69,9 @@ export default async function LocaleLayout({
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >
         <ThemeInitScript />
+        <Suspense fallback={null}>
+          <TikTokPixel />
+        </Suspense>
         <NextIntlClientProvider locale={appLocale} messages={messages}>
           <Navbar />
           {children}
