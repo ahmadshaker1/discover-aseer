@@ -38,7 +38,7 @@ export default function Step1({ onNext, onPrev }: Step1Props) {
   };
 
   return (
-    <div className="min-h-screen w-full flex justify-center pt-32 pb-12 md:pt-40 md:pb-20 bg-[linear-gradient(180deg,#E5D6F2,rgba(255,255,255,0.25)_50%)] dark:bg-none dark:bg-[#14091F] relative overflow-hidden">
+    <div className="min-h-screen w-full flex justify-center pt-32 pb-12 md:pt-40 md:pb-20 bg-[linear-gradient(180deg,#E5D6F2,rgba(255,255,255,0.25)_50%)] dark:bg-none dark:bg-[#14091F] relative z-20">
       <div className="container mx-auto px-6 max-w-[800px] flex flex-col items-start">
         {/* Breadcrumb */}
         <div className="mb-10 flex w-full items-center gap-2 text-sm md:text-base text-gray-500 justify-start  dark:text-white">
@@ -55,7 +55,7 @@ export default function Step1({ onNext, onPrev }: Step1Props) {
           <p
             className="dark:text-white"
             style={{
-              color: "var(--Main-Text-Color, #292D30) dark:text-white",
+              color: "var(--Main-Text-Color, #292D30)",
               fontSize: "18px",
               fontStyle: "normal",
               fontWeight: 700,
