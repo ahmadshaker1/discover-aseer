@@ -97,6 +97,32 @@ export default function Step2({ onPrev, onNext, plannerData }: Step2Props) {
           </div>
         </div>
 
+        {/* Titles */}
+        <div className="flex flex-col items-start mb-10">
+          <h1
+            className=" text-black dark:text-white"
+            style={{
+              fontSize: "48px",
+              fontStyle: "normal",
+              fontWeight: 700,
+            }}
+          >
+            {t("tripStyleTitle")}
+          </h1>
+
+          <p
+            className="text-[#535353] dark:text-gray-300"
+            style={{
+              fontSize: "18px",
+              fontStyle: "normal",
+              fontWeight: 400,
+              fontFamily: "IBM Plex Sans Arabic",
+            }}
+          >
+            {t("tripStyleDesc")}
+          </p>
+        </div>
+
         {/* Navigation Buttons */}
         <div className="w-full flex items-center justify-start gap-4 mt-8 max-w-[300px]">
           <button

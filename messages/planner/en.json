@@ -14,5 +14,7 @@
   "arrivalDateTitle": "When will you arrive?",
   "selectArrivalDate": "Select arrival date",
   "next": "Next",
-  "previous": "Previous"
+  "previous": "Previous",
+  "tripStyleTitle": "Your Trip Style",
+  "tripStyleDesc": "We select destinations and experiences tailored to your companion and close to your accommodation."
 }

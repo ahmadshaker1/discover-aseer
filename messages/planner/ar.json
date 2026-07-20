@@ -14,5 +14,7 @@
   "arrivalDateTitle": "متى ستصل؟",
   "selectArrivalDate": "اختر تاريخ الوصول",
   "next": "التالي",
-  "previous": "السابق"
+  "previous": "السابق",
+  "tripStyleTitle": "أسلوب رحلتك",
+  "tripStyleDesc": "نختار وجهات و تجارب تناسب رفقتك و قريبة من مقرّ إقامتك."
 }
