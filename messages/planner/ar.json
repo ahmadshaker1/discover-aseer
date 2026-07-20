@@ -27,5 +27,11 @@
   "budgetTitle": "الميزانية",
   "budgetEconomy": "اقتصادي",
   "budgetMedium": "متوسط",
-  "budgetPremium": "مميز"
+  "budgetPremium": "مميز",
+  "companionTitle": "رفقة السفر",
+  "companionCouple": "شريكان",
+  "companionFamily": "عائلة و أطفال",
+  "companionSolo": "بمفردي",
+  "companionFriends": "أصدقاء",
+  "companionGroup": "رحلة جماعية"
 }

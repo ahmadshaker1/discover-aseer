@@ -27,5 +27,11 @@
   "budgetTitle": "Budget",
   "budgetEconomy": "Economy",
   "budgetMedium": "Medium",
-  "budgetPremium": "Premium"
+  "budgetPremium": "Premium",
+  "companionTitle": "Travel Companion",
+  "companionCouple": "Couple",
+  "companionFamily": "Family & Kids",
+  "companionSolo": "Solo",
+  "companionFriends": "Friends",
+  "companionGroup": "Group Trip"
 }

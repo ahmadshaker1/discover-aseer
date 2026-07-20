@@ -4,6 +4,7 @@ import { useState } from "react";
 import WelcomePage from "./WelcomePage";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
+import Step3 from "./Step3";
 import { PlannerData } from "./types";
 
 /**
@@ -20,6 +21,7 @@ export default function NewPlanner() {
     selectedDate: null,
     tripStyle: null,
     budget: null,
+    companion: null,
   });
 
   const updatePlannerData = (updates: Partial<PlannerData>) => {
@@ -55,6 +57,10 @@ export default function NewPlanner() {
           plannerData={plannerData}
           updatePlannerData={updatePlannerData}
         />
+      )}
+
+      {currentStep === 3 && (
+        <Step3 onPrev={() => setCurrentStep(2)} plannerData={plannerData} />
       )}
     </>
   );

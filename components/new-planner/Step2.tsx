@@ -299,6 +299,89 @@ export default function Step2({
           </div>
         </div>
 
+        {/* Companion Selection */}
+        <div className="mb-12 w-full max-w-[600px] flex flex-col items-start gap-4">
+          <h2
+            className=" text-black dark:text-white"
+            style={{
+              fontSize: "26px",
+              fontStyle: "normal",
+              fontWeight: 700,
+            }}
+          >
+            {t("companionTitle")}
+          </h2>
+
+          <div
+            className="w-full flex flex-wrap gap-2"
+            style={{
+              alignItems: "flex-start",
+              alignContent: "flex-start",
+              fontFamily: "IBM Plex Sans Arabic",
+            }}
+          >
+            {[
+              {
+                id: "couple",
+                titleKey: "companionCouple",
+                icon: "/assets/planner/Step2/group-line.svg",
+              },
+              {
+                id: "family",
+                titleKey: "companionFamily",
+                icon: "/assets/planner/Step2/team-line.svg",
+              },
+              {
+                id: "solo",
+                titleKey: "companionSolo",
+                icon: "/assets/planner/Step2/user-3-line.svg",
+              },
+              {
+                id: "friends",
+                titleKey: "companionFriends",
+                icon: "/assets/planner/Step2/emotion-happy-line.svg",
+              },
+              {
+                id: "group",
+                titleKey: "companionGroup",
+                icon: "/assets/planner/Step2/bus-2-line.svg",
+              },
+            ].map((companionOption) => {
+              const isSelected = plannerData.companion === companionOption.id;
+              return (
+                <button
+                  key={companionOption.id}
+                  onClick={() =>
+                    updatePlannerData({ companion: companionOption.id })
+                  }
+                  className={`cursor-pointer transition-colors flex items-center ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"}`}
+                  style={{
+                    padding: "8px 16px",
+                    gap: "6px",
+                    borderRadius: "55px",
+                    border: isSelected
+                      ? "2px solid #00BBB4"
+                      : "1px solid rgba(0, 0, 0, 0.10)",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                  }}
+                >
+                  <Image
+                    src={companionOption.icon}
+                    alt={t(companionOption.titleKey)}
+                    width={20}
+                    height={20}
+                    className={
+                      !isSelected ? "dark:brightness-0 dark:invert" : ""
+                    }
+                  />
+                  {t(companionOption.titleKey)}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Navigation Buttons */}
         <div className="w-full flex items-center justify-start gap-4 mt-8 max-w-[300px]">
           <button
@@ -337,7 +420,10 @@ export default function Step2({
           </button>
 
           <button
-            onClick={onNext}
+            onClick={() => {
+              console.log("Collected Planner Data after Step 2:", plannerData);
+              onNext();
+            }}
             className={`cursor-pointer border border-[rgba(40,0,72,0.16)] dark:border-white/20 bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD]`}
             style={{
               display: "flex",
