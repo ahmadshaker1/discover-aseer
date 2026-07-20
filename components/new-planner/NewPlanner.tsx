@@ -3,6 +3,8 @@
 import { useState } from "react";
 import WelcomePage from "./WelcomePage";
 import Step1 from "./Step1";
+import Step2 from "./Step2";
+import { PlannerData } from "./types";
 
 /**
  * --- Planner State Management Strategy ---
@@ -13,6 +15,14 @@ import Step1 from "./Step1";
  */
 export default function NewPlanner() {
   const [currentStep, setCurrentStep] = useState<number>(0);
+  const [plannerData, setPlannerData] = useState<PlannerData>({
+    selectedDays: null,
+    selectedDate: null,
+  });
+
+  const updatePlannerData = (updates: Partial<PlannerData>) => {
+    setPlannerData((prev) => ({ ...prev, ...updates }));
+  };
 
   const handleStartPlanning = () => {
     // Proceed to the first actual planning step
@@ -31,7 +41,13 @@ export default function NewPlanner() {
         <Step1
           onNext={() => setCurrentStep(2)}
           onPrev={() => setCurrentStep(0)}
+          plannerData={plannerData}
+          updatePlannerData={updatePlannerData}
         />
+      )}
+
+      {currentStep === 2 && (
+        <Step2 onPrev={() => setCurrentStep(1)} plannerData={plannerData} />
       )}
     </>
   );

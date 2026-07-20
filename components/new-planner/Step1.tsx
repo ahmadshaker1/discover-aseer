@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Calendar from "./Calendar";
+import { PlannerData } from "./types";
 
 function BreadcrumbChevron() {
   return (
@@ -24,12 +24,17 @@ function BreadcrumbChevron() {
 interface Step1Props {
   onNext: () => void;
   onPrev: () => void;
+  plannerData: PlannerData;
+  updatePlannerData: (updates: Partial<PlannerData>) => void;
 }
 
-export default function Step1({ onNext, onPrev }: Step1Props) {
+export default function Step1({
+  onNext,
+  onPrev,
+  plannerData,
+  updatePlannerData,
+}: Step1Props) {
   const t = useTranslations("Planner");
-  const [selectedDays, setSelectedDays] = useState<number | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const renderDaysText = (count: number) => {
     if (count === 1) return t("oneDay");
@@ -53,9 +58,9 @@ export default function Step1({ onNext, onPrev }: Step1Props) {
         {/* Progress Bar Container */}
         <div className="w-full flex flex-col items-start gap-3 mb-5">
           <p
-            className="dark:text-white"
+            className=""
             style={{
-              color: "var(--Main-Text-Color, #292D30)",
+              color: "var(--Main-Text-Color, #292D30) dark:text-white",
               fontSize: "18px",
               fontStyle: "normal",
               fontWeight: 700,
@@ -144,12 +149,12 @@ export default function Step1({ onNext, onPrev }: Step1Props) {
           }}
         >
           {[1, 2, 3, 4, 5, 6, 7].map((day) => {
-            const isSelected = selectedDays === day;
+            const isSelected = plannerData.selectedDays === day;
             return (
               <button
                 key={day}
-                onClick={() => setSelectedDays(day)}
-                className={`transition-colors ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"}`}
+                onClick={() => updatePlannerData({ selectedDays: day })}
+                className={`cursor-pointer transition-colors ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"}`}
                 style={{
                   display: "flex",
                   padding: "8px 16px",
@@ -170,12 +175,12 @@ export default function Step1({ onNext, onPrev }: Step1Props) {
           })}
         </div>
         {/* Calendar Component */}
-        <Calendar selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+        <Calendar selectedDate={plannerData.selectedDate} onSelectDate={(date) => updatePlannerData({ selectedDate: date })} />
         {/* Navigation Buttons */}
         <div className="w-full flex items-center justify-start gap-4 mt-8 max-w-[300px]">
           <button
             onClick={onPrev}
-            className="text-black dark:text-white border border-[rgba(40,0,72,0.16)] dark:border-white dark:bg-[#1C0F2A]"
+            className="cursor-pointer text-black dark:text-white border border-[rgba(40,0,72,0.16)] dark:border-white dark:bg-[#1C0F2A]"
             style={{
               display: "flex",
               height: "46px",
@@ -210,9 +215,9 @@ export default function Step1({ onNext, onPrev }: Step1Props) {
 
           <button
             onClick={onNext}
-            disabled={!selectedDays || !selectedDate} // Disable if no day or date selected
-            className={`border border-[rgba(40,0,72,0.16)] dark:border-white/20 ${
-              selectedDays && selectedDate
+            disabled={!plannerData.selectedDays || !plannerData.selectedDate} // Disable if no day or date selected
+            className={`cursor-pointerborder border-[rgba(40,0,72,0.16)] dark:border-white/20 ${
+              plannerData.selectedDays && plannerData.selectedDate
                 ? "bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD]"
                 : "bg-[#D8D3E0] text-[#888] dark:bg-white/5 dark:text-gray-400"
             }`}
@@ -227,7 +232,7 @@ export default function Step1({ onNext, onPrev }: Step1Props) {
               borderRadius: "86px",
               fontSize: "20px",
               fontWeight: 600,
-              cursor: selectedDays && selectedDate ? "pointer" : "not-allowed",
+              cursor: plannerData.selectedDays && plannerData.selectedDate ? "pointer" : "not-allowed",
               transition: "all 0.2s ease-in-out",
             }}
           >
@@ -242,7 +247,7 @@ export default function Step1({ onNext, onPrev }: Step1Props) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="rtl:rotate-180"
+              className="rtl:rotate-180 "
             >
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />

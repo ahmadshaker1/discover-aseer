@@ -211,7 +211,7 @@ export default function Calendar({
             <div className="flex items-center gap-4">
               <button
                 onClick={handlePrevMonth}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-full transition-colors text-black dark:text-white"
+                className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-full transition-colors text-black dark:text-white"
               >
                 <CalendarChevron direction="prev" />
               </button>
@@ -226,7 +226,7 @@ export default function Calendar({
               </span>
               <button
                 onClick={handleNextMonth}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-full transition-colors text-black dark:text-white"
+                className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-full transition-colors text-black dark:text-white"
               >
                 <CalendarChevron direction="next" />
               </button>
