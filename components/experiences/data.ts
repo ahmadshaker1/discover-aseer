@@ -1,4 +1,5 @@
 import type { LocaleCode } from "@/lib/i18n/localized";
+import { isMostlyArabicText } from "@/lib/i18n/localized";
 import type { ExperienceCardProps } from "./ExperienceCard/ExperienceCard";
 
 /** Directus API item shape for the experiences collection */
@@ -60,6 +61,16 @@ const DEFAULT_IMAGE = "/assets/experiences/experiences.png";
 
 /** CMS `type` value for cooking experiences (Aseer cuisine page). */
 export const COOKING_EXPERIENCE_TYPE = "فن الطهي";
+
+/** Common Arabic experience type labels → English when `type_en` is missing. */
+const EXPERIENCE_TYPE_AR_TO_EN: Record<string, string> = {
+  الطبيعة: "Nature",
+  مغامرات: "Adventures",
+  "فن الطهي": "Culinary arts",
+  ثقافة: "Culture",
+  تراث: "Heritage",
+  استرخاء: "Relaxation",
+};
 
 function isPublishedExperience(api: ApiExperience): boolean {
   return api.status === "published";
@@ -124,11 +135,17 @@ function getExperienceTypeTokens(
   api: ApiExperience,
   locale: LocaleCode = "ar",
 ): string[] {
-  if (locale === "en" && api.type_en) {
-    return [
+  if (locale === "en") {
+    const enTokens = [
       ...parseExperienceFieldTokens(api.type_en),
       ...parseExperienceFieldTokens(api.tags),
     ];
+    if (enTokens.length > 0) return enTokens;
+
+    // Fall back to Arabic type labels only when we can map them to English.
+    return parseExperienceFieldTokens(api.type)
+      .map((token) => EXPERIENCE_TYPE_AR_TO_EN[token] ?? "")
+      .filter(Boolean);
   }
   return [
     ...parseExperienceFieldTokens(api.type),
@@ -192,7 +209,16 @@ function pickExperienceField(
         ? api.description
         : api.description_eng;
 
-  return (primary || fallback || "").trim();
+  const primaryText = (primary || "").trim();
+  if (primaryText) return primaryText;
+
+  const fallbackText = (fallback || "").trim();
+  if (!fallbackText) return "";
+
+  // Don't surface Arabic CMS copy on English pages when the EN field is empty.
+  if (locale === "en" && isMostlyArabicText(fallbackText)) return "";
+
+  return fallbackText;
 }
 
 function formatExperienceDescription(raw: string): string {
@@ -325,7 +351,9 @@ export function transformExperience(
   const title =
     pickExperienceField(api, "title", locale) ||
     (locale === "en" ? "Experience" : "تجربة");
-  const category = getExperienceTypeTokens(api)[0] || "التجارب";
+  const category =
+    getExperienceTypeTokens(api, locale)[0] ||
+    (locale === "en" ? "Experiences" : "التجارب");
   const imageUrl =
     api.image && api.image.startsWith("http") ? api.image : DEFAULT_IMAGE;
   const bookUrl = (api.booking_link || api.link || "").trim() || "#";
@@ -333,12 +361,18 @@ export function transformExperience(
   const groupSize = parseGroupSize(api.minimum_number_of_people);
   const provider =
     (locale === "en"
-      ? (api.tour_audience_en || api.tour_agency || "").trim()
+      ? (api.tour_agency || api.tour_audience_en || "").trim()
       : (api.tour_agency || "").trim()) || "—";
-  const duration =
+  const durationRaw =
     locale === "en"
-      ? (api.duration_En || "").trim() || (api.duration || "").trim() || "—"
-      : (api.duration || "").trim() || "—";
+      ? (api.duration_En || "").trim() || (api.duration || "").trim()
+      : (api.duration || "").trim();
+  const duration =
+    !durationRaw
+      ? "—"
+      : locale === "en" && isMostlyArabicText(durationRaw)
+        ? "—"
+        : durationRaw;
   const filterCity = normalizeCityLabel(api.destination || "") || null;
   const filterInterests = parseFilterInterests(api, locale);
   const isPaid = price > 0;
@@ -383,7 +417,7 @@ function buildFilterOptions(
         (cityCounts.get(meta.filterCity) ?? 0) + 1,
       );
     }
-    for (const label of getExperienceTypeTokens(api)) {
+    for (const label of getExperienceTypeTokens(api, locale)) {
       const key = normalizeInterestKey(label);
       if (!interestLabels.has(key)) interestLabels.set(key, label);
     }

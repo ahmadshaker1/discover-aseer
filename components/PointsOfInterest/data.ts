@@ -7,6 +7,10 @@ import {
   pickDestinationTitle,
   resolveDestinationHeroImageUrl,
 } from "@/components/destinations/data";
+import {
+  getDestinationFilterLabel,
+  resolveDestinationFilterId,
+} from "@/components/destinations/filterOptions";
 import type { LocaleCode } from "@/lib/i18n/localized";
 
 /** Home carousel destinations (Al Birk → Bisha → Abha → Rijal Almaa). */
@@ -22,7 +26,7 @@ export interface PointOfInterest {
   id: string;
   image: string;
   title: string;
-  /** Terrain / area label from Directus `tda`. */
+  /** Terrain / area label from Directus `tda` (localized). */
   tda: string;
   subtitle: string;
   location: string;
@@ -54,6 +58,24 @@ const excerptFromHtml = (
   return truncatePlainText(stripHtml(html), maxLength);
 };
 
+/** Localize CMS `tda` / `destination_filter` Arabic labels for the active locale. */
+const pickDestinationTda = (
+  row: ApiDestination,
+  locale: LocaleCode,
+): string => {
+  const raw =
+    (typeof row.tda === "string" ? row.tda.trim() : "") ||
+    (typeof row.destination_filter === "string"
+      ? row.destination_filter.trim()
+      : "");
+  if (!raw) return "";
+
+  const filterId = resolveDestinationFilterId(raw);
+  if (filterId) return getDestinationFilterLabel(filterId, locale);
+
+  return raw;
+};
+
 const transformDestinationToPointOfInterest = (
   row: ApiDestination,
   directusUrl: string,
@@ -69,7 +91,7 @@ const transformDestinationToPointOfInterest = (
     id: String(row.id),
     image,
     title,
-    tda: typeof row.tda === "string" ? row.tda.trim() : "",
+    tda: pickDestinationTda(row, locale),
     subtitle,
     location: subtitle,
     description: excerptFromHtml(descriptionHtml),
