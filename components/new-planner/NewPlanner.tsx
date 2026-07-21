@@ -22,6 +22,7 @@ export default function NewPlanner() {
     tripStyle: null,
     budget: null,
     companion: null,
+    interests: [],
   });
 
   const updatePlannerData = (updates: Partial<PlannerData>) => {
@@ -60,7 +61,12 @@ export default function NewPlanner() {
       )}
 
       {currentStep === 3 && (
-        <Step3 onPrev={() => setCurrentStep(2)} plannerData={plannerData} />
+        <Step3
+          onPrev={() => setCurrentStep(2)}
+          onNext={() => setCurrentStep(4)}
+          plannerData={plannerData}
+          updatePlannerData={updatePlannerData}
+        />
       )}
     </>
   );

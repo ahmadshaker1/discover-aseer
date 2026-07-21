@@ -4,4 +4,5 @@ export interface PlannerData {
   tripStyle: string | null;
   budget: string | null;
   companion: string | null;
+  interests: string[];
 }

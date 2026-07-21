@@ -33,5 +33,14 @@
   "companionFamily": "عائلة و أطفال",
   "companionSolo": "بمفردي",
   "companionFriends": "أصدقاء",
-  "companionGroup": "رحلة جماعية"
+  "companionGroup": "رحلة جماعية",
+  "interestsTitle": "أهتماماتك",
+  "exploreTitle": "مالذي ترغب في استكشافه؟",
+  "exploreDesc": "اختر اهتمامًا واحدًا أو أكثر",
+  "interestNature": "الطبيعة",
+  "interestHeritage": "التراث",
+  "interestFamily": "أنشطة عائلية",
+  "interestCulture": "الفنون و الثقافة",
+  "interestFood": "المطبخ و القهوة",
+  "interestAdventure": "المغامرة"
 }

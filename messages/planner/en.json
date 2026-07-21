@@ -33,5 +33,14 @@
   "companionFamily": "Family & Kids",
   "companionSolo": "Solo",
   "companionFriends": "Friends",
-  "companionGroup": "Group Trip"
+  "companionGroup": "Group Trip",
+  "interestsTitle": "Your Interests",
+  "exploreTitle": "What would you like to explore?",
+  "exploreDesc": "Select one or more interests",
+  "interestNature": "Nature",
+  "interestHeritage": "Heritage",
+  "interestFamily": "Family Activities",
+  "interestCulture": "Arts & Culture",
+  "interestFood": "Food & Coffee",
+  "interestAdventure": "Adventure"
 }
