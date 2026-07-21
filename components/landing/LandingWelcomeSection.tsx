@@ -39,12 +39,12 @@ const LandingWelcomeSection = ({
     {
       title: tCommon("eventsSeasonsCard"),
       href: "/event-seasons",
-      image: "/assets/landing/fireworks.png",
+      image: "/assets/landing/welcome-seasons-events.jpg",
     },
     {
       title: tCommon("experiencesCard"),
       href: "/experiences",
-      image: "/assets/landing/experience-card.png",
+      image: "/assets/landing/welcome-experiences-hiking.jpg",
     },
     {
       title: tCommon("mainDestinationsCard"),
@@ -59,7 +59,7 @@ const LandingWelcomeSection = ({
     {
       title: tCommon("cuisineNavTitle"),
       href: "/aseer-cuisine",
-      image: "/assets/landing/cuisine-card.png",
+      image: "/assets/landing/welcome-aseeri-cuisine.jpg",
     },
     {
       title: tCommon("attractionsCard"),
