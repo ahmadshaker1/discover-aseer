@@ -128,8 +128,8 @@ const AttractionsLandmarksSection = ({
         />
       ) : null}
       <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-4 sm:px-8 md:px-[60px]">
-        <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-start justify-between gap-4">
-          <div className={`space-y-2 text-start`}>
+        <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-center justify-between gap-4">
+          <div className={`min-w-0 space-y-2 text-start`}>
             <h2
               className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
               style={{ fontFamily: ara }}
@@ -145,6 +145,17 @@ const AttractionsLandmarksSection = ({
               </p>
             ) : null}
           </div>
+          <Link
+            href="/attractions"
+            className="inline-flex h-[52px] min-w-[161px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-primary/30 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
+            style={{ fontFamily: ara }}
+          >
+            <span
+              className={`whitespace-nowrap text-[20px] font-bold leading-[100%] text-start`}
+            >
+              {t("browseMore")}
+            </span>
+          </Link>
         </div>
 
         {showFilters ? (
@@ -227,20 +238,6 @@ const AttractionsLandmarksSection = ({
               cardHref={landmarkCardHref ?? `/attractions/${landmark.slug}`}
             />
           ))}
-        </div>
-
-        <div className="mx-auto mt-8 flex w-full max-w-[1320px] justify-center">
-          <Link
-            href="/attractions"
-            className="inline-flex h-[52px] min-w-[161px] cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-primary/30 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
-            style={{ fontFamily: ara }}
-          >
-            <span
-              className={`whitespace-nowrap text-[20px] font-bold leading-[100%] text-start`}
-            >
-              {t("browseMore")}
-            </span>
-          </Link>
         </div>
       </div>
     </section>
