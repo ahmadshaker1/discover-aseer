@@ -135,9 +135,9 @@ export default function Step4({
         </div>
 
         {/* Section 1: Meals Count */}
-        <div className="w-full flex flex-col gap-4 mb-12">
+        <div className="w-full flex flex-col mb-12">
           <h2
-            className="mb-2 text-black dark:text-white"
+            className=" text-black dark:text-white"
             style={{
               fontSize: "26px",
               fontStyle: "normal",
@@ -188,9 +188,9 @@ export default function Step4({
         </div>
 
         {/* Section 2: Food Preferences */}
-        <div className="w-full flex flex-col gap-4 mb-12">
+        <div className="w-full flex flex-col  mb-12">
           <h2
-            className="mb-2 text-black dark:text-white"
+            className=" text-black dark:text-white"
             style={{
               fontSize: "26px",
               fontStyle: "normal",
