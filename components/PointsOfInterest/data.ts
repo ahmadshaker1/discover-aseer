@@ -22,6 +22,8 @@ export interface PointOfInterest {
   id: string;
   image: string;
   title: string;
+  /** Terrain / area label from Directus `tda`. */
+  tda: string;
   subtitle: string;
   location: string;
   description: string;
@@ -67,6 +69,7 @@ const transformDestinationToPointOfInterest = (
     id: String(row.id),
     image,
     title,
+    tda: typeof row.tda === "string" ? row.tda.trim() : "",
     subtitle,
     location: subtitle,
     description: excerptFromHtml(descriptionHtml),

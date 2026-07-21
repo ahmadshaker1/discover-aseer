@@ -19,7 +19,7 @@ export const TextOverlay = ({
   return (
     <div className="pointer-events-none absolute inset-0 z-20 p-4 sm:p-6 md:p-12 lg:p-24">
       <div className="mx-auto flex h-full min-h-0 w-full max-w-[min(100%,1180px)] flex-col items-start justify-between">
-        {/* Top — section heading + category */}
+        {/* Top — section heading + tda */}
         <div className="mt-4 w-full max-w-[720px] self-start text-start sm:mt-6 md:mt-8">
           <h1
             className="w-full pb-3 text-[32px] font-bold text-white sm:pb-4 sm:text-[44px] md:pb-6 md:text-[56px] lg:text-[64px]"
@@ -27,9 +27,9 @@ export const TextOverlay = ({
           >
             {sectionTitle}
           </h1>
-          {point.subtitle ? (
+          {point.tda ? (
             <h2 className="text-[18px] font-light text-white/90 sm:text-[22px] md:text-[28px]">
-              {point.subtitle}
+              {point.tda}
             </h2>
           ) : null}
         </div>

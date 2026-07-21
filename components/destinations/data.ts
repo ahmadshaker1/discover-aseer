@@ -97,6 +97,8 @@ export interface ApiDestination {
   city_ar?: string | null;
   temp_ar?: string | null;
   temp_en?: string | null;
+  /** Terrain / area label shown under destination name on the home POI carousel. */
+  tda?: string | null;
   destination_filter?: string | null;
   tags?: string | null;
   interest_tags?: string[] | null;
