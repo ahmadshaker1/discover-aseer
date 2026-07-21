@@ -33,23 +33,17 @@ export default async function LocalizedHomePage() {
         description={tHome("landmarksDescription")}
         decorationImageSrc="/assets/landing/landmarks-zigzag.png"
       />
-      <div
-        className="w-full"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(21, 21, 131, 0.25) 100%)",
+      <AseerExperiencesSection
+        featuredCount={4}
+        decorationImageSrc="/assets/landing/landmarks-zigzag.png"
+        data={{
+          title: tHome("experiencesTitle"),
+          description: tHome("experiencesDescription"),
+          ctaLabel: tHome("experiencesCta"),
+          ctaHref: "/experiences",
+          cards: homeExperiences,
         }}
-      >
-        <AseerExperiencesSection
-          data={{
-            title: tHome("experiencesTitle"),
-            description: tHome("experiencesDescription"),
-            ctaLabel: tHome("experiencesCta"),
-            ctaHref: "/experiences",
-            cards: homeExperiences,
-          }}
-        />
-      </div>
+      />
 
       <LandingStoriesFromAseerSection />
       <EventsInfo />
