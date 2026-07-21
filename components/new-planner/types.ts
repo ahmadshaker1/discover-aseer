@@ -5,4 +5,6 @@ export interface PlannerData {
   budget: string | null;
   companion: string | null;
   interests: string[];
+  mealsCount: string | null;
+  foodPreferences: string[];
 }

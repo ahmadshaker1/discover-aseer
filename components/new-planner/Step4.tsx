@@ -1,10 +1,9 @@
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { PlannerData } from "./types";
 
-interface Step3Props {
+interface Step4Props {
   onPrev: () => void;
-  onNext: () => void;
+  onSubmit: () => void;
   plannerData: PlannerData;
   updatePlannerData: (updates: Partial<PlannerData>) => void;
 }
@@ -28,24 +27,22 @@ function BreadcrumbChevron() {
   );
 }
 
-export default function Step3({
+export default function Step4({
   onPrev,
-  onNext,
+  onSubmit,
   plannerData,
   updatePlannerData,
-}: Step3Props) {
+}: Step4Props) {
   const t = useTranslations("Planner");
 
-  const toggleInterest = (id: string) => {
-    const currentInterests = plannerData.interests || [];
-    if (currentInterests.includes(id)) {
+  const toggleFoodPreference = (id: string) => {
+    const current = plannerData.foodPreferences || [];
+    if (current.includes(id)) {
       updatePlannerData({
-        interests: currentInterests.filter((item) => item !== id),
+        foodPreferences: current.filter((item) => item !== id),
       });
     } else {
-      updatePlannerData({
-        interests: [...currentInterests, id],
-      });
+      updatePlannerData({ foodPreferences: [...current, id] });
     }
   };
 
@@ -74,7 +71,7 @@ export default function Step3({
               fontWeight: 700,
             }}
           >
-            {t("stepXofY", { step: 3, total: 4 })}
+            {t("stepXofY", { step: 4, total: 4 })}
           </p>
           <div className="flex gap-2 w-full">
             <div
@@ -106,7 +103,7 @@ export default function Step3({
                 height: "5px",
                 flex: "1 0 0",
                 borderRadius: "2px",
-                background: "#D8D3E0",
+                background: "#7300CD",
               }}
             ></div>
           </div>
@@ -115,32 +112,17 @@ export default function Step3({
         {/* Titles */}
         <div className="flex flex-col items-start mb-10">
           <h1
-            className=" text-black dark:text-white"
+            className="mb-2 text-black dark:text-white"
             style={{
               fontSize: "48px",
               fontStyle: "normal",
               fontWeight: 700,
             }}
           >
-            {t("interestsTitle")}
+            {t("foodPreferencesTitle")}
           </h1>
-        </div>
-
-        {/* Style Selection */}
-        <div className="mb-12 w-full max-w-[600px] flex flex-col items-start">
-          <h2
-            className=" text-black dark:text-white"
-            style={{
-              fontSize: "26px",
-              fontStyle: "normal",
-              fontWeight: 700,
-            }}
-          >
-            {t("exploreTitle")}
-          </h2>
-
           <p
-            className="text-[#535353] dark:text-gray-300 mb-2"
+            className="text-[#535353] dark:text-gray-300"
             style={{
               fontSize: "18px",
               fontStyle: "normal",
@@ -148,9 +130,75 @@ export default function Step3({
               fontFamily: "IBM Plex Sans Arabic",
             }}
           >
-            {t("exploreDesc")}
+            {t("foodPreferencesDesc")}
           </p>
+        </div>
 
+        {/* Section 1: Meals Count */}
+        <div className="w-full flex flex-col gap-4 mb-12">
+          <h2
+            className="mb-2 text-black dark:text-white"
+            style={{
+              fontSize: "26px",
+              fontStyle: "normal",
+              fontWeight: 700,
+            }}
+          >
+            {t("mealsCountTitle")}
+          </h2>
+          <div
+            className="w-full flex flex-wrap gap-2 mt-4"
+            style={{
+              alignItems: "flex-start",
+              alignContent: "flex-start",
+              fontFamily: "IBM Plex Sans Arabic",
+            }}
+          >
+            {[
+              { id: "3", label: t("mealsCount3") },
+              { id: "2", label: t("mealsCount2") },
+              { id: "1", label: t("mealsCount1") },
+              { id: "0", label: t("mealsCount0") },
+            ].map((meal) => {
+              const isSelected = plannerData.mealsCount === meal.id;
+              return (
+                <button
+                  key={meal.id}
+                  onClick={() => updatePlannerData({ mealsCount: meal.id })}
+                  className={`cursor-pointer transition-colors ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"}`}
+                  style={{
+                    display: "flex",
+                    padding: "8px 16px",
+                    justifyContent: "start",
+                    alignItems: "start",
+                    gap: "6px",
+                    borderRadius: "55px",
+                    border: isSelected
+                      ? "2px solid #00BBB4"
+                      : "1px solid rgba(0, 0, 0, 0.10)",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                  }}
+                >
+                  {meal.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Section 2: Food Preferences */}
+        <div className="w-full flex flex-col gap-4 mb-12">
+          <h2
+            className="mb-2 text-black dark:text-white"
+            style={{
+              fontSize: "26px",
+              fontStyle: "normal",
+              fontWeight: 700,
+            }}
+          >
+            {t("foodTypeTitle")}
+          </h2>
           <div
             className="w-full flex flex-wrap gap-4 mt-4"
             style={{
@@ -160,49 +208,50 @@ export default function Step3({
             }}
           >
             {[
+              { id: "local", title: t("foodLocal"), desc: t("foodLocalDesc") },
               {
-                id: "nature",
-                titleKey: "interestNature",
-                icon: "/assets/planner/Step3/S3.1.svg",
+                id: "italian",
+                title: t("foodItalian"),
+                desc: t("foodItalianDesc"),
               },
               {
-                id: "heritage",
-                titleKey: "interestHeritage",
-                icon: "/assets/planner/Step3/S3.2.svg",
+                id: "indian",
+                title: t("foodIndian"),
+                desc: t("foodIndianDesc"),
               },
               {
-                id: "family",
-                titleKey: "interestFamily",
-                icon: "/assets/planner/Step3/S3.3.svg",
+                id: "american",
+                title: t("foodAmerican"),
+                desc: t("foodAmericanDesc"),
               },
               {
-                id: "culture",
-                titleKey: "interestCulture",
-                icon: "/assets/planner/Step3/S3.4.svg",
+                id: "mexican",
+                title: t("foodMexican"),
+                desc: t("foodMexicanDesc"),
               },
               {
-                id: "food",
-                titleKey: "interestFood",
-                icon: "/assets/planner/Step3/S3.5.svg",
+                id: "middle_eastern",
+                title: t("foodMiddleEastern"),
+                desc: t("foodMiddleEasternDesc"),
               },
               {
-                id: "adventure",
-                titleKey: "interestAdventure",
-                icon: "/assets/planner/Step3/S3.6.svg",
+                id: "far_eastern",
+                title: t("foodFarEastern"),
+                desc: t("foodFarEasternDesc"),
               },
-            ].map((interestOption) => {
-              const currentInterests = plannerData.interests || [];
-              const isSelected = currentInterests.includes(interestOption.id);
+            ].map((option) => {
+              const currentPrefs = plannerData.foodPreferences || [];
+              const isSelected = currentPrefs.includes(option.id);
 
               return (
                 <button
-                  key={interestOption.id}
-                  onClick={() => toggleInterest(interestOption.id)}
+                  key={option.id}
+                  onClick={() => toggleFoodPreference(option.id)}
                   className={`cursor-pointer transition-colors ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"}`}
                   style={{
                     display: "flex",
-                    height: "120px",
-                    padding: "0 12px",
+                    minHeight: "120px",
+                    padding: "16px 12px",
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "start",
@@ -215,17 +264,20 @@ export default function Step3({
                     minWidth: "140px",
                   }}
                 >
-                  <Image
-                    src={interestOption.icon}
-                    alt={t(interestOption.titleKey)}
-                    width={24}
-                    height={24}
-                    className={
-                      !isSelected ? "dark:brightness-0 dark:invert" : ""
-                    }
-                  />
-                  <span style={{ fontSize: "18px", fontWeight: 700 }}>
-                    {t(interestOption.titleKey)}
+                  <span
+                    style={{
+                      fontSize: "18px",
+                      fontWeight: 700,
+                      textAlign: "start",
+                    }}
+                  >
+                    {option.title}
+                  </span>
+                  <span
+                    className="opacity-70 text-sm text-start"
+                    style={{ fontFamily: "IBM Plex Sans Arabic" }}
+                  >
+                    {option.desc}
                   </span>
                 </button>
               );
@@ -271,10 +323,7 @@ export default function Step3({
           </button>
 
           <button
-            onClick={() => {
-              console.log("Collected Planner Data after Step 3:", plannerData);
-              onNext();
-            }}
+            onClick={onSubmit}
             className={`cursor-pointer border border-[rgba(40,0,72,0.16)] dark:border-white/20 bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD]`}
             style={{
               display: "flex",
@@ -288,9 +337,10 @@ export default function Step3({
               fontSize: "20px",
               fontWeight: 600,
               transition: "all 0.2s ease-in-out",
+              whiteSpace: "nowrap",
             }}
           >
-            {t("next")}
+            {t("planMyTrip")}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
