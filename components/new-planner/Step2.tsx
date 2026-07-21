@@ -396,7 +396,6 @@ export default function Step2({
               gap: "10px",
               flex: "1 0 0",
               borderRadius: "86px",
-              background: "rgba(248, 248, 248, 0.00)",
               fontSize: "20px",
               fontWeight: 500,
             }}

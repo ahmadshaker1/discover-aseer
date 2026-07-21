@@ -175,7 +175,10 @@ export default function Step1({
           })}
         </div>
         {/* Calendar Component */}
-        <Calendar selectedDate={plannerData.selectedDate} onSelectDate={(date) => updatePlannerData({ selectedDate: date })} />
+        <Calendar
+          selectedDate={plannerData.selectedDate}
+          onSelectDate={(date) => updatePlannerData({ selectedDate: date })}
+        />
         {/* Navigation Buttons */}
         <div className="w-full flex items-center justify-start gap-4 mt-8 max-w-[300px]">
           <button
@@ -190,7 +193,6 @@ export default function Step1({
               gap: "10px",
               flex: "1 0 0",
               borderRadius: "86px",
-              background: "rgba(248, 248, 248, 0.00)",
               fontSize: "20px",
               fontWeight: 500,
             }}
@@ -232,7 +234,10 @@ export default function Step1({
               borderRadius: "86px",
               fontSize: "20px",
               fontWeight: 600,
-              cursor: plannerData.selectedDays && plannerData.selectedDate ? "pointer" : "not-allowed",
+              cursor:
+                plannerData.selectedDays && plannerData.selectedDate
+                  ? "pointer"
+                  : "not-allowed",
               transition: "all 0.2s ease-in-out",
             }}
           >
