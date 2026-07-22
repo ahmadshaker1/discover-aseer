@@ -136,11 +136,39 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
     newDays.splice(index, 1);
     setPlanData({ ...planData, days: newDays });
 
-    // Adjust selected index if needed
     if (selectedDayIndex >= newDays.length) {
       setSelectedDayIndex(Math.max(0, newDays.length - 1));
     }
   };
+
+  useEffect(() => {
+    if (!planData || !planData.days) return;
+    const imageUrls: string[] = [];
+    planData.days.forEach((day: any) => {
+      day.events?.forEach((ev: any) => {
+        if (ev.itemData?.image) imageUrls.push(ev.itemData.image);
+        if (ev.itemData?.images)
+          ev.itemData.images.forEach((img: string) => imageUrls.push(img));
+      });
+      day.experiences?.forEach((exp: any) => {
+        if (exp.itemData?.image) imageUrls.push(exp.itemData.image);
+        if (exp.itemData?.images)
+          exp.itemData.images.forEach((img: string) => imageUrls.push(img));
+      });
+      day.restaurants?.forEach((res: any) => {
+        if (res.itemData?.image) imageUrls.push(res.itemData.image);
+        if (res.itemData?.images)
+          res.itemData.images.forEach((img: string) => imageUrls.push(img));
+      });
+    });
+
+    // Preload images into browser cache so they appear when printing all days
+    imageUrls.forEach((url) => {
+      if (!url) return;
+      const img = new window.Image();
+      img.src = url;
+    });
+  }, [planData]);
 
   const handleShare = async () => {
     if (isSharing) return;
@@ -194,8 +222,47 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
 
   return (
     <div className="flex flex-col items-start w-full gap-8">
+      <style>{`
+        @media print {
+          @page {
+            margin: 0.5cm;
+            size: auto;
+          }
+          body {
+            background-color: white !important;
+            color: black !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          .print-hidden {
+            display: none !important;
+          }
+          .shrink-0 {
+            break-inside: avoid;
+          }
+          .overflow-x-auto { 
+            overflow: visible !important;
+            flex-wrap: wrap !important;
+          }
+          /* Force Light Theme Colors for print */
+          .dark\\:bg-\\[\\#1C0F2A\\], .dark\\:bg-\\[\\#14091F\\] {
+            background-color: #F7F7F7 !important;
+          }
+          .dark\\:text-white {
+            color: black !important;
+          }
+          .dark\\:border-white\\/10, .dark\\:border-white\\/20 {
+            border-color: #e5e7eb !important;
+          }
+          img {
+            max-width: 100% !important;
+            object-fit: cover !important;
+          }
+        }
+      `}</style>
+
       {/* Header Row */}
-      <div className="flex w-full justify-between items-center mb-4">
+      <div className="flex w-full justify-between items-center mb-4 print-hidden">
         <h2 className="text-[32px] font-bold text-black dark:text-white">
           {t("yourPlan")}
         </h2>
@@ -240,7 +307,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
 
       {/* Days Cards Selector */}
       <div
-        className="w-full flex gap-4 overflow-x-auto pb-4"
+        className="w-full flex gap-4 overflow-x-auto pb-4 print-hidden"
         style={{ fontFamily: "IBM Plex Sans Arabic" }}
       >
         {days.map((day: any, index: number) => {
@@ -298,117 +365,134 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
         })}
       </div>
 
-      {/* Current Day Content */}
-      {currentDay && (
-        <div
-          className="w-full flex flex-col mt-4 p-6 bg-[#F7F7F7] dark:bg-[#14091F]"
-          style={{
-            borderRadius: "12px",
-          }}
-        >
-          <h3 className="text-2xl font-bold text-black dark:text-white text-start mb-6">
-            {t(`day${selectedDayIndex + 1}`)}
-          </h3>
+      {/* All Days Content (visible conditionally for print) */}
+      <div className="relative w-full">
+        {days.map((dayToRender: any, dIndex: number) => {
+          const isSelected = selectedDayIndex === dIndex;
+          return (
+            <div
+              key={dIndex}
+              className={`w-full flex-col p-6 bg-[#F7F7F7] dark:bg-[#14091F] print:!relative print:!flex print:!opacity-100 print:!h-auto print:!overflow-visible print:mb-8 print:!pointer-events-auto print:!mt-4 ${
+                isSelected
+                  ? "flex relative opacity-100 mt-4 z-10"
+                  : "flex absolute top-0 left-0 opacity-0 h-0 overflow-hidden pointer-events-none -z-10"
+              }`}
+              style={{
+                borderRadius: "12px",
+              }}
+            >
+              <h3 className="text-2xl font-bold text-black dark:text-white text-start mb-6">
+                {t(`day${dIndex + 1}`)}
+              </h3>
 
-          <div className="flex flex-col gap-4 w-full">
-            <h4 className="text-xl font-bold text-black dark:text-white text-start">
-              {t("events")}
-            </h4>
-            {currentDay.events && currentDay.events.length > 0 ? (
-              <div className="flex flex-wrap gap-4 w-[300px] justify-start [&>div]:!mx-0">
-                {currentDay.events.map((ev: any, idx: number) => {
-                  const apiData = ev.itemData;
-                  if (!apiData) {
-                    return (
-                      <div key={idx} className="text-sm text-gray-500">
-                        لا توجد تفاصيل لهذه الفعالية
-                      </div>
-                    );
-                  }
-                  const item = transformApiEventToListingItem(
-                    apiData,
-                    locale as any,
-                  );
-                  return <EventListingCard key={item.id || idx} event={item} />;
-                })}
+              <div className="flex flex-col gap-4 w-full">
+                <h4 className="text-xl font-bold text-black dark:text-white text-start">
+                  {t("events")}
+                </h4>
+                {dayToRender.events && dayToRender.events.length > 0 ? (
+                  <div className="flex flex-wrap gap-4 w-[300px] justify-start [&>div]:!mx-0">
+                    {dayToRender.events.map((ev: any, idx: number) => {
+                      const apiData = ev.itemData;
+                      if (!apiData) {
+                        return (
+                          <div key={idx} className="text-sm text-gray-500">
+                            لا توجد تفاصيل لهذه الفعالية
+                          </div>
+                        );
+                      }
+                      const item = transformApiEventToListingItem(
+                        apiData,
+                        locale as any,
+                      );
+                      return (
+                        <EventListingCard key={item.id || idx} event={item} />
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-start text-sm">
+                    {t("noEventsForDay")}
+                  </p>
+                )}
               </div>
-            ) : (
-              <p className="text-gray-500 text-start text-sm">
-                {t("noEventsForDay")}
-              </p>
-            )}
-          </div>
 
-          <hr className="border-gray-200 dark:border-white/10 my-6" />
+              <hr className="border-gray-200 dark:border-white/10 my-6" />
 
-          <div className="flex flex-col gap-4 w-full">
-            <h4 className="text-xl font-bold text-black dark:text-white text-start">
-              {t("experiences")}
-            </h4>
-            {currentDay.experiences && currentDay.experiences.length > 0 ? (
-              <div className="flex flex-wrap gap-4 justify-start">
-                {currentDay.experiences.map((exp: any, idx: number) => {
-                  const apiData = exp.itemData;
-                  if (!apiData) {
-                    return (
-                      <div key={idx} className="text-sm text-gray-500">
-                        لا توجد تفاصيل لهذه التجربة
-                      </div>
-                    );
-                  }
-                  const item = transformExperience(apiData, locale as any);
-                  return (
-                    <div key={item.id || idx} className="w-[300px] shrink-0">
-                      <ExperienceCard {...item} />
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-4 w-full">
+                <h4 className="text-xl font-bold text-black dark:text-white text-start">
+                  {t("experiences")}
+                </h4>
+                {dayToRender.experiences &&
+                dayToRender.experiences.length > 0 ? (
+                  <div className="flex flex-wrap gap-4 justify-start">
+                    {dayToRender.experiences.map((exp: any, idx: number) => {
+                      const apiData = exp.itemData;
+                      if (!apiData) {
+                        return (
+                          <div key={idx} className="text-sm text-gray-500">
+                            لا توجد تفاصيل لهذه التجربة
+                          </div>
+                        );
+                      }
+                      const item = transformExperience(apiData, locale as any);
+                      return (
+                        <div
+                          key={item.id || idx}
+                          className="w-[300px] shrink-0"
+                        >
+                          <ExperienceCard {...item} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-start text-sm">
+                    {t("noExperiencesForDay")}
+                  </p>
+                )}
               </div>
-            ) : (
-              <p className="text-gray-500 text-start text-sm">
-                {t("noExperiencesForDay")}
-              </p>
-            )}
-          </div>
 
-          <hr className="border-gray-200 dark:border-white/10 my-6" />
+              <hr className="border-gray-200 dark:border-white/10 my-6" />
 
-          <div className="flex flex-col gap-4 w-full">
-            <h4 className="text-xl font-bold text-black dark:text-white text-start">
-              {t("restaurants")}
-            </h4>
-            {currentDay.restaurants && currentDay.restaurants.length > 0 ? (
-              <div className="flex flex-nowrap gap-4 justify-start overflow-x-auto pb-4 w-full">
-                {currentDay.restaurants.map((res: any, idx: number) => {
-                  const apiData = res.itemData;
-                  if (!apiData) {
-                    return (
-                      <div key={idx} className="text-sm text-gray-500">
-                        لا توجد تفاصيل لهذا المطعم
-                      </div>
-                    );
-                  }
-                  const item = transformLocationToRestaurant(
-                    apiData,
-                    locale as any,
-                  );
-                  return (
-                    <PlannerRestaurantCard
-                      key={item.id || idx}
-                      restaurant={item}
-                      mealType={res.mealType || ""}
-                    />
-                  );
-                })}
+              <div className="flex flex-col gap-4 w-full">
+                <h4 className="text-xl font-bold text-black dark:text-white text-start">
+                  {t("restaurants")}
+                </h4>
+                {dayToRender.restaurants &&
+                dayToRender.restaurants.length > 0 ? (
+                  <div className="flex flex-nowrap gap-4 justify-start overflow-x-auto pb-4 w-full">
+                    {dayToRender.restaurants.map((res: any, idx: number) => {
+                      const apiData = res.itemData;
+                      if (!apiData) {
+                        return (
+                          <div key={idx} className="text-sm text-gray-500">
+                            لا توجد تفاصيل لهذا المطعم
+                          </div>
+                        );
+                      }
+                      const item = transformLocationToRestaurant(
+                        apiData,
+                        locale as any,
+                      );
+                      return (
+                        <PlannerRestaurantCard
+                          key={item.id || idx}
+                          restaurant={item}
+                          mealType={res.mealType || ""}
+                        />
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-start text-sm">
+                    {t("noRestaurantsForDay")}
+                  </p>
+                )}
               </div>
-            ) : (
-              <p className="text-gray-500 text-start text-sm">
-                {t("noRestaurantsForDay")}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
