@@ -31,7 +31,7 @@ export const discoverAseerLinks: NavbarDropdownLink[] = [
 ];
 
 export const planTripLinks: NavbarDropdownLink[] = [
-  { href: "/planner", labelKey: "navPlanTripLinks.aiPlanner" },
+  { href: "/new-planner", labelKey: "navPlanTripLinks.aiPlanner" },
   { href: "/accommodation", labelKey: "navPlanTripLinks.accommodation" },
   { href: "/restaurants", labelKey: "navPlanTripLinks.restaurants" },
   { href: "/tourism-companies", labelKey: "footer.tourism-companies" },
