@@ -108,16 +108,49 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                               >
                                 <Disclosure.Panel className="pl-4 space-y-2 overflow-hidden rtl:pl-0 rtl:pr-4">
                                   {getNavbarDropdownLinks(link.labelKey).map(
-                                    (item) => (
-                                      <Link
-                                        key={item.href}
-                                        href={item.href}
-                                        onClick={onClose}
-                                        className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
-                                      >
-                                        {t(item.labelKey)}
-                                      </Link>
-                                    ),
+                                    (item) => {
+                                      const label = (
+                                        <span className="inline-flex items-center gap-2">
+                                          <span>{t(item.labelKey)}</span>
+                                          {item.badge === "pdf" ? (
+                                            <span className="rounded-[5px] border border-white/60 px-1.5 py-px text-[9px] font-bold text-white">
+                                              {t("nav.badgePdf")}
+                                            </span>
+                                          ) : null}
+                                          {item.badge === "new" ? (
+                                            <span className="rounded-[5px] bg-[#7300CD] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                                              {t("nav.badgeNew")}
+                                            </span>
+                                          ) : null}
+                                        </span>
+                                      );
+
+                                      if (item.external) {
+                                        return (
+                                          <a
+                                            key={`${item.href}-${item.labelKey}`}
+                                            href={item.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={onClose}
+                                            className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
+                                          >
+                                            {label}
+                                          </a>
+                                        );
+                                      }
+
+                                      return (
+                                        <Link
+                                          key={`${item.href}-${item.labelKey}`}
+                                          href={item.href}
+                                          onClick={onClose}
+                                          className="block text-white/80 text-base sm:text-lg font-medium hover:opacity-80 transition-opacity py-2"
+                                        >
+                                          {label}
+                                        </Link>
+                                      );
+                                    },
                                   )}
                                 </Disclosure.Panel>
                               </Transition>

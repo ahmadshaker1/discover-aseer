@@ -7,99 +7,129 @@
  */
 import { GlobeIcon, CrescentMoonIcon, BookletIcon } from "./Icons";
 
+export type NavbarBadge = "pdf" | "new";
+
 export type NavbarDropdownLink = {
   href: string;
   labelKey: string;
-  /** Side image shown while this link is hovered in the mega menu */
+  /** Side / featured image for this link */
   image: string;
+  /** Localized subtitle for featured cards */
+  subKey: string;
+  /** Optional badge shown next to the label */
+  badge?: NavbarBadge;
+  /** Open in a new tab (e.g. PDF booklet) */
+  external?: boolean;
 };
 
 export type NavbarMegaMenu = {
   labelKey: string;
   links: NavbarDropdownLink[];
-  /** Fallback image before any link is hovered */
-  defaultImage: string;
+  /** Indices into `links` used as the two featured cards (preview order). */
+  featuredIndices: [number, number];
 };
 
-/** PDF order: Film → Community → Cuisine → Experiences → Attractions → Destinations → About */
+/** Preview order: About → Experiences → Attractions → Destinations → Cuisine → Community → Film → Outdoor PDF */
 export const discoverAseerLinks: NavbarDropdownLink[] = [
   {
-    href: "/film",
-    labelKey: "navLinks.film",
-    image: "/assets/film/film-hero.png",
-  },
-  {
-    href: "/aseer-community",
-    labelKey: "navLinks.community",
-    image: "/assets/community/hero.webp",
-  },
-  {
-    href: "/aseer-cuisine",
-    labelKey: "navLinks.cuisine",
-    image: "/assets/landing/hero-slide-cuisine.png",
+    href: "/about-aseer",
+    labelKey: "navLinks.aboutAseer",
+    image: "/assets/aboutAseer/about_banner.webp",
+    subKey: "navMega.discover.aboutAseer",
   },
   {
     href: "/experiences",
     labelKey: "navLinks.experiences",
     image: "/assets/experiences/experiences.png",
+    subKey: "navMega.discover.experiences",
   },
   {
     href: "/attractions",
     labelKey: "navLinks.attractions",
     image: "/assets/attractions/attractions-hero.png",
+    subKey: "navMega.discover.attractions",
   },
   {
     href: "/destinations",
     labelKey: "navLinks.destinations",
     image: "/assets/destinations/hero-destinations.jpg",
+    subKey: "navMega.discover.destinations",
   },
   {
-    href: "/about-aseer",
-    labelKey: "navLinks.aboutAseer",
-    image: "/assets/aboutAseer/about_banner.webp",
+    href: "/aseer-cuisine",
+    labelKey: "navLinks.cuisine",
+    image: "/assets/landing/hero-slide-cuisine.png",
+    subKey: "navMega.discover.cuisine",
+  },
+  {
+    href: "/aseer-community",
+    labelKey: "navLinks.community",
+    image: "/assets/community/hero.webp",
+    subKey: "navMega.discover.community",
+  },
+  {
+    href: "/film",
+    labelKey: "navLinks.film",
+    image: "/assets/film/film-hero.png",
+    subKey: "navMega.discover.film",
+  },
+  {
+    href: "/booklet",
+    labelKey: "navLinks.outdoorGuide",
+    image: "/assets/landing/welcome-experiences-hiking.jpg",
+    subKey: "navMega.discover.outdoorGuide",
+    badge: "pdf",
+    external: true,
   },
 ];
 
 /**
- * PDF order: Supporting services → Getting here → Tour guides → DMCs →
- * Restaurants & cafes → Accommodations → AI trip planner
+ * Preview order: Planner → Accommodation → Restaurants → Agencies →
+ * Tour guides → Getting here → Support services
  */
 export const planTripLinks: NavbarDropdownLink[] = [
   {
-    href: "/services-support",
-    labelKey: "navPlanTripLinks.sopportingServices",
-    image:
-      "/assets/services-support/f125fee16e0267a3d14ee285efd5f272ad21108c.png",
-  },
-  {
-    href: "/getting-here-and-around",
-    labelKey: "navPlanTripLinks.gettingAround",
-    image: "/assets/Getting-here-and-around/hero.JPG",
-  },
-  {
-    href: "/tour-guides",
-    labelKey: "navPlanTripLinks.tourGuides",
-    image: "/assets/tourist-guides/tourist-guide-banner.webp",
-  },
-  {
-    href: "/tourism-companies",
-    labelKey: "navPlanTripLinks.tourismCompanies",
-    image: "/assets/tourism-companies/MAN_0983.JPG",
-  },
-  {
-    href: "/restaurants",
-    labelKey: "navPlanTripLinks.restaurants",
-    image: "/assets/restaurant/restaurant-banner.webp",
+    href: "/planner",
+    labelKey: "navPlanTripLinks.aiPlanner",
+    image: "/assets/landing/discover-aseer-hero.jpg",
+    subKey: "navMega.plan.aiPlanner",
   },
   {
     href: "/accommodation",
     labelKey: "navPlanTripLinks.accommodation",
     image: "/assets/accommodation/accomodation-banner.webp",
+    subKey: "navMega.plan.accommodation",
   },
   {
-    href: "/planner",
-    labelKey: "navPlanTripLinks.aiPlanner",
-    image: "/assets/landing/discover-aseer-hero.jpg",
+    href: "/restaurants",
+    labelKey: "navPlanTripLinks.restaurants",
+    image: "/assets/restaurant/restaurant-banner.webp",
+    subKey: "navMega.plan.restaurants",
+  },
+  {
+    href: "/tourism-companies",
+    labelKey: "navPlanTripLinks.tourismCompanies",
+    image: "/assets/tourism-companies/MAN_0983.JPG",
+    subKey: "navMega.plan.tourismCompanies",
+  },
+  {
+    href: "/tour-guides",
+    labelKey: "navPlanTripLinks.tourGuides",
+    image: "/assets/tourist-guides/tourist-guide-banner.webp",
+    subKey: "navMega.plan.tourGuides",
+  },
+  {
+    href: "/getting-here-and-around",
+    labelKey: "navPlanTripLinks.gettingAround",
+    image: "/assets/Getting-here-and-around/hero.JPG",
+    subKey: "navMega.plan.gettingAround",
+  },
+  {
+    href: "/services-support",
+    labelKey: "navPlanTripLinks.sopportingServices",
+    image:
+      "/assets/services-support/f125fee16e0267a3d14ee285efd5f272ad21108c.png",
+    subKey: "navMega.plan.sopportingServices",
   },
 ];
 
@@ -107,13 +137,14 @@ export const megaMenus: Record<string, NavbarMegaMenu> = {
   "common.discoverAseer": {
     labelKey: "common.discoverAseer",
     links: discoverAseerLinks,
-    defaultImage: discoverAseerLinks[0]?.image ?? "/assets/attractions/hero.jpg",
+    /** Cuisine + Experiences — matches Immersive Preview indices [4, 1]. */
+    featuredIndices: [4, 1],
   },
   "nav.planTrip": {
     labelKey: "nav.planTrip",
     links: planTripLinks,
-    defaultImage:
-      planTripLinks[0]?.image ?? "/assets/Getting-here-and-around/hero.JPG",
+    /** Planner + Accommodation — matches Immersive Preview indices [0, 1]. */
+    featuredIndices: [0, 1],
   },
 };
 

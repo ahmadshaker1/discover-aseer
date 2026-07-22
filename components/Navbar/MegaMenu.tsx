@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, type KeyboardEvent } from "react";
+import type { KeyboardEvent } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import type { NavbarDropdownLink } from "./navbarData";
+import type { NavbarDropdownLink, NavbarMegaMenu } from "./navbarData";
 
 interface MegaMenuTriggerProps {
   label: string;
@@ -16,34 +16,50 @@ interface MegaMenuTriggerProps {
 
 interface MegaMenuPanelProps {
   label: string;
-  links: NavbarDropdownLink[];
-  defaultImage: string;
+  menu: NavbarMegaMenu;
   panelId: string;
   isOpen: boolean;
   onNavigate: () => void;
 }
 
-const ChevronIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden
-  >
-    <path
-      d="M6 9l6 6 6-6"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+function MegaLinkBadge({ badge }: { badge?: NavbarDropdownLink["badge"] }) {
+  const t = useTranslations("nav");
+  if (!badge) return null;
 
-/** Trigger button for an editorial mega menu section. */
+  if (badge === "pdf") {
+    return (
+      <span
+        style={{
+          fontSize: 9,
+          fontWeight: 700,
+          color: "#fff",
+          border: "1px solid rgba(255,255,255,.6)",
+          borderRadius: 5,
+          padding: "1px 6px",
+        }}
+      >
+        {t("badgePdf")}
+      </span>
+    );
+  }
+
+  return (
+    <span
+      style={{
+        fontSize: 9,
+        fontWeight: 700,
+        color: "#fff",
+        background: "#7300CD",
+        borderRadius: 5,
+        padding: "2px 7px",
+      }}
+    >
+      {t("badgeNew")}
+    </span>
+  );
+}
+
+/** Immersive Preview trigger: `.navlink` + ▾ caret. */
 export function MegaMenuTrigger({
   label,
   menuKey,
@@ -54,7 +70,11 @@ export function MegaMenuTrigger({
   const isOpen = openMenuKey === menuKey;
 
   const onTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+    if (
+      event.key === "ArrowDown" ||
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
       event.preventDefault();
       onOpenChange(menuKey);
     }
@@ -63,6 +83,7 @@ export function MegaMenuTrigger({
   return (
     <button
       type="button"
+      className="navlink"
       aria-expanded={isOpen}
       aria-controls={panelId}
       aria-haspopup="true"
@@ -70,46 +91,222 @@ export function MegaMenuTrigger({
       onMouseEnter={() => onOpenChange(menuKey)}
       onFocus={() => onOpenChange(menuKey)}
       onKeyDown={onTriggerKeyDown}
-      className={[
-        "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-base font-medium whitespace-nowrap text-white transition-colors cursor-pointer",
-        "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
-        isOpen ? "bg-white/15" : "hover:bg-white/10",
-      ].join(" ")}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 7,
+        padding: "6px 0",
+        fontSize: 16,
+        fontWeight: 600,
+        color: "#F4EFE4",
+        whiteSpace: "nowrap",
+        cursor: "pointer",
+        background: "none",
+        border: "none",
+      }}
     >
       <span>{label}</span>
-      <ChevronIcon
-        className={`shrink-0 opacity-90 transition-transform duration-200 ${
-          isOpen ? "rotate-180" : ""
-        }`}
-      />
+      <span
+        aria-hidden
+        style={{
+          display: "inline-block",
+          fontSize: 11,
+          color: "#fff",
+          transition: "transform .2s",
+          transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+        }}
+      >
+        ▾
+      </span>
     </button>
   );
 }
 
-/**
- * Full-width editorial mega menu panel (Neimil-inspired).
- * Image sits on the start side: left in English (LTR), right in Arabic (RTL).
- * Side image updates when a nav link is hovered.
- */
+function MegaMenuLinkRow({
+  item,
+  isOpen,
+  onNavigate,
+}: {
+  item: NavbarDropdownLink;
+  isOpen: boolean;
+  onNavigate: () => void;
+}) {
+  const t = useTranslations();
+  const style = {
+    display: "block" as const,
+    padding: "12px 2px",
+    borderBottom: "1px solid rgba(255,255,255,.09)",
+    breakInside: "avoid" as const,
+  };
+  const inner = (
+    <span
+      className="megalink-u"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        fontSize: 16,
+        fontWeight: 600,
+        color: "#F4EFE4",
+      }}
+    >
+      <span>{t(item.labelKey)}</span>
+      <MegaLinkBadge badge={item.badge} />
+    </span>
+  );
+
+  if (item.external) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="megalink"
+        tabIndex={isOpen ? 0 : -1}
+        onClick={onNavigate}
+        style={style}
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      href={item.href}
+      className="megalink"
+      tabIndex={isOpen ? 0 : -1}
+      onClick={onNavigate}
+      style={style}
+    >
+      {inner}
+    </Link>
+  );
+}
+
+function FeaturedCard({
+  item,
+  isOpen,
+  onNavigate,
+}: {
+  item: NavbarDropdownLink;
+  isOpen: boolean;
+  onNavigate: () => void;
+}) {
+  const t = useTranslations();
+  const title = t(item.labelKey);
+  const kicker = item.badge === "pdf" ? t("nav.badgePdf") : t("nav.explore");
+
+  const content = (
+    <>
+      <Image
+        src={item.image}
+        alt=""
+        fill
+        sizes="27vw"
+        className="object-cover"
+        aria-hidden
+      />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to top, rgba(24,12,40,.92), rgba(24,12,40,.05) 62%, transparent)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          insetInline: 0,
+          bottom: 0,
+          padding: "28px 26px",
+          textAlign: "start",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 11,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "#fff",
+            fontWeight: 700,
+            marginBottom: 7,
+          }}
+        >
+          {kicker}
+        </div>
+        <div
+          style={{
+            fontSize: 23,
+            fontWeight: 700,
+            color: "#fff",
+            lineHeight: 1.2,
+          }}
+        >
+          {title}
+        </div>
+        <div
+          style={{
+            fontSize: 13,
+            color: "#E7DEF0",
+            marginTop: 6,
+            lineHeight: 1.4,
+          }}
+        >
+          {t(item.subKey)}
+        </div>
+      </div>
+    </>
+  );
+
+  const style = {
+    flex: 1,
+    position: "relative" as const,
+    overflow: "hidden" as const,
+    display: "block" as const,
+    borderInlineStart: "1px solid rgba(255,255,255,.08)",
+  };
+
+  if (item.external) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        tabIndex={isOpen ? 0 : -1}
+        onClick={onNavigate}
+        style={style}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      href={item.href}
+      tabIndex={isOpen ? 0 : -1}
+      onClick={onNavigate}
+      style={style}
+    >
+      {content}
+    </Link>
+  );
+}
+
+/** Immersive Preview mega panel — exact sizes from the HTML script. */
 export function MegaMenuPanel({
   label,
-  links,
-  defaultImage,
+  menu,
   panelId,
   isOpen,
   onNavigate,
 }: MegaMenuPanelProps) {
-  const t = useTranslations();
-  const [activeHref, setActiveHref] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!isOpen) setActiveHref(null);
-  }, [isOpen]);
-
-  const activeLink =
-    links.find((link) => link.href === activeHref) ?? links[0] ?? null;
-  const activeImage = activeLink?.image ?? defaultImage;
-  const activeAlt = activeLink ? t(activeLink.labelKey) : label;
+  const featured = menu.featuredIndices
+    .map((index) => menu.links[index])
+    .filter(Boolean) as NavbarDropdownLink[];
 
   return (
     <div
@@ -117,82 +314,58 @@ export function MegaMenuPanel({
       role="region"
       aria-label={label}
       aria-hidden={!isOpen}
-      className={[
-        "absolute inset-x-0 top-full z-40 border-t border-white/10",
-        "bg-linear-to-b from-[#191919]/95 via-[#2a1a3d]/95 to-[#1a2a1a]/95",
-        "shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl",
-        "transition-[opacity,transform] duration-300 ease-out",
-        isOpen
-          ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none invisible -translate-y-2 opacity-0",
-      ].join(" ")}
+      style={{
+        position: "absolute",
+        insetInline: 0,
+        top: "100%",
+        zIndex: 40,
+        display: isOpen ? "flex" : "none",
+        background: "rgba(45,0,80,0.92)",
+        backdropFilter: "blur(20px) saturate(1.2)",
+        WebkitBackdropFilter: "blur(20px) saturate(1.2)",
+        color: "#fff",
+        height: 474,
+        overflow: "hidden",
+        animation: isOpen ? "megaIn .24s ease" : undefined,
+        boxShadow: "0 30px 60px -30px rgba(44,26,72,.6)",
+      }}
     >
-      <div className="mx-auto flex min-h-[320px] max-h-[min(70vh,560px)] w-full max-w-screen-2xl flex-row overflow-hidden">
-        {/* First in DOM → left in English (LTR), right in Arabic (RTL) */}
-        <div className="hidden w-[38%] min-w-[280px] max-w-[460px] shrink-0 self-stretch items-center justify-center p-6 md:flex lg:p-8">
-          <div className="relative h-full w-full overflow-hidden rounded-3xl">
-            {links.map((link) => {
-              const visible = link.image === activeImage;
-              return (
-                <Image
-                  key={link.href}
-                  src={link.image}
-                  alt={visible ? activeAlt : ""}
-                  fill
-                  sizes="420px"
-                  className={[
-                    "object-cover transition-opacity duration-300",
-                    visible ? "opacity-100" : "opacity-0",
-                  ].join(" ")}
-                  aria-hidden={!visible}
-                  priority={false}
-                />
-              );
-            })}
-          </div>
+      <div
+        style={{
+          width: "46%",
+          padding: "40px 44px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            columns: 2,
+            columnGap: 38,
+            marginTop: 4,
+            flex: 1,
+          }}
+        >
+          {menu.links.map((item) => (
+            <MegaMenuLinkRow
+              key={`${item.href}-${item.labelKey}`}
+              item={item}
+              isOpen={isOpen}
+              onNavigate={onNavigate}
+            />
+          ))}
         </div>
+      </div>
 
-        <div className="min-w-0 flex-1 overflow-y-auto px-4 py-8 sm:px-6 md:px-10 md:py-10 lg:px-14 xl:px-16">
-          <p className="mb-6 text-xs font-semibold tracking-[0.2em] text-white/45 uppercase md:mb-8">
-            {label}
-          </p>
-          <ul className="grid grid-cols-1 gap-x-10 gap-y-1 sm:grid-cols-2 xl:grid-cols-3">
-            {links.map((item, index) => {
-              const isActive = (activeHref ?? links[0]?.href) === item.href;
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={onNavigate}
-                    onMouseEnter={() => setActiveHref(item.href)}
-                    onFocus={() => setActiveHref(item.href)}
-                    tabIndex={isOpen ? 0 : -1}
-                    className={[
-                      "group flex items-baseline gap-4 border-b py-4 text-white transition-colors",
-                      isActive
-                        ? "border-white/40"
-                        : "border-white/10 hover:border-white/35",
-                    ].join(" ")}
-                  >
-                    <span
-                      className={[
-                        "text-sm font-medium tabular-nums transition-colors",
-                        isActive
-                          ? "text-white/70"
-                          : "text-white/35 group-hover:text-white/60",
-                      ].join(" ")}
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-xl font-medium tracking-tight transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 sm:text-2xl">
-                      {t(item.labelKey)}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+      <div style={{ flex: 1, display: "flex" }}>
+        {featured.map((item) => (
+          <FeaturedCard
+            key={`featured-${item.href}-${item.labelKey}`}
+            item={item}
+            isOpen={isOpen}
+            onNavigate={onNavigate}
+          />
+        ))}
       </div>
     </div>
   );

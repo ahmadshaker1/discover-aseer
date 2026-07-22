@@ -1,12 +1,10 @@
 "use client";
 
 /**
- * End-side circular actions (language → booklets → theme).
- * Language menu leaves room for Chinese when locale support ships.
+ * Immersive Preview end actions:
+ * language pill (globe + label + ▾) → booklet circle → dark-mode circle.
  */
 import { useEffect, useRef, useState } from "react";
-import { Link } from "@/i18n/navigation";
-import { iconButtons } from "./navbarData";
 import { useLocale, useTranslations } from "next-intl";
 import { toggleTheme } from "@/lib/theme/client";
 
@@ -16,14 +14,78 @@ const LOCALE_OPTIONS = [
   { code: "zh", labelKey: "nav.localeChinese" as const, comingSoon: true },
 ] as const;
 
+const GlobeSvg = () => (
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    aria-hidden
+  >
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18" />
+  </svg>
+);
+
+const BookletSvg = () => (
+  <svg
+    width="19"
+    height="19"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    aria-hidden
+  >
+    <path d="M12 6.5C10.5 5 8 4.3 5 4.5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1c3-.2 5.5.5 7 2 1.5-1.5 4-2.2 7-2a1 1 0 0 0 1-1v-12a1 1 0 0 0-1-1c-3-.2-5.5.5-7 2z" />
+    <path d="M12 6.5v13.5" />
+  </svg>
+);
+
+const MoonSvg = () => (
+  <svg
+    width="19"
+    height="19"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    aria-hidden
+  >
+    <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.6 6.6 0 0 0 21 12.8z" />
+  </svg>
+);
+
+const CheckSvg = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#2C1A48"
+    strokeWidth="2.4"
+    aria-hidden
+  >
+    <path d="M5 12l5 5 9-11" />
+  </svg>
+);
+
 const DesktopActionLinks = () => {
   const locale = useLocale();
   const t = useTranslations();
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
 
-  const handleBookletOpen = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const currentLangLabel =
+    locale === "ar"
+      ? t("nav.localeArabic")
+      : locale === "en"
+        ? t("nav.localeEnglish")
+        : t("nav.localeChinese");
+
+  const handleBookletOpen = () => {
     window.open("/booklet", "_blank", "noopener,noreferrer");
   };
 
@@ -49,92 +111,114 @@ const DesktopActionLinks = () => {
   }, [langOpen]);
 
   return (
-    <div className="hidden lg:flex flex-row items-center gap-3 xl:gap-4">
-      {iconButtons.map((item, index) => {
-        const Icon = item.icon;
-
-        if (item.action === "locale") {
-          return (
-            <div key={index} ref={langRef} className="relative">
-              <button
-                type="button"
-                onClick={() => setLangOpen((open) => !open)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
-                aria-label={t("nav.languageSwitchLabel")}
-                aria-expanded={langOpen}
-                aria-haspopup="listbox"
-              >
-                <Icon />
-              </button>
-              {langOpen ? (
-                <ul
-                  role="listbox"
-                  aria-label={t("nav.languageSwitchLabel")}
-                  className="absolute end-0 top-full z-50 mt-2 min-w-[10.5rem] overflow-hidden rounded-2xl border border-white/20 bg-[#191919]/95 py-1 shadow-xl backdrop-blur-xl"
-                >
-                  {LOCALE_OPTIONS.map((option) => {
-                    const selected = option.code === locale;
-                    const disabled = "comingSoon" in option && option.comingSoon;
-                    return (
-                      <li key={option.code} role="option" aria-selected={selected}>
-                        <button
-                          type="button"
-                          disabled={disabled}
-                          onClick={() => handleLocaleSwitch(option.code)}
-                          className={[
-                            "flex w-full items-center justify-between gap-3 px-4 py-2.5 text-start text-sm font-medium transition-colors",
-                            disabled
-                              ? "cursor-not-allowed text-white/35"
-                              : selected
-                                ? "bg-white/15 text-white"
-                                : "text-white/85 hover:bg-white/10 hover:text-white",
-                          ].join(" ")}
-                        >
-                          <span>{t(option.labelKey)}</span>
-                          {disabled ? (
-                            <span className="text-[10px] tracking-wide uppercase">
-                              {t("nav.localeComingSoon")}
-                            </span>
-                          ) : null}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              ) : null}
-            </div>
-          );
-        }
-
-        if (item.action === "booklet") {
-          return (
-            <button
-              key={index}
-              type="button"
-              onClick={handleBookletOpen}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
-              aria-label={t("nav.downloadGuide")}
-            >
-              <Icon />
-            </button>
-          );
-        }
-
-        return (
-          <Link
-            key={index}
-            href={item.href}
-            onClick={(e) => {
-              e.preventDefault();
-              toggleTheme();
+    <div className="hidden lg:flex flex-row items-center" style={{ gap: 8 }}>
+      <div ref={langRef} style={{ position: "relative" }}>
+        <button
+          type="button"
+          className="nav-lang-btn"
+          onClick={() => setLangOpen((open) => !open)}
+          aria-label={t("nav.languageSwitchLabel")}
+          aria-expanded={langOpen}
+          aria-haspopup="listbox"
+        >
+          <GlobeSvg />
+          <span>{currentLangLabel}</span>
+          <span
+            aria-hidden
+            style={{
+              display: "inline-block",
+              fontSize: 10,
+              transition: "transform .2s",
+              transform: langOpen ? "rotate(180deg)" : "rotate(0deg)",
             }}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/80 text-white transition-colors hover:bg-white/10"
-            aria-label={t("nav.themeSwitchLabel")}
           >
-            <Icon />
-          </Link>
-        );
-      })}
+            ▾
+          </span>
+        </button>
+        {langOpen ? (
+          <div
+            role="listbox"
+            aria-label={t("nav.languageSwitchLabel")}
+            style={{
+              position: "absolute",
+              top: "calc(100% + 10px)",
+              insetInlineEnd: 0,
+              background: "#fff",
+              border: "1px solid #EAE7DE",
+              borderRadius: 14,
+              boxShadow: "0 18px 40px -18px rgba(44,26,72,.35)",
+              padding: 6,
+              minWidth: 172,
+              zIndex: 60,
+            }}
+          >
+            {LOCALE_OPTIONS.map((option) => {
+              const selected = option.code === locale;
+              const disabled = "comingSoon" in option && option.comingSoon;
+              return (
+                <button
+                  key={option.code}
+                  type="button"
+                  role="option"
+                  aria-selected={selected}
+                  disabled={disabled}
+                  onClick={() => handleLocaleSwitch(option.code)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    padding: "10px 12px",
+                    borderRadius: 9,
+                    fontSize: 15,
+                    color: disabled ? "rgba(44,26,72,.35)" : "#2C1A48",
+                    cursor: disabled ? "not-allowed" : "pointer",
+                    background: selected ? "#F3F1EA" : "transparent",
+                    border: "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!disabled) e.currentTarget.style.background = "#F3F1EA";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = selected
+                      ? "#F3F1EA"
+                      : "transparent";
+                  }}
+                >
+                  <span>{t(option.labelKey)}</span>
+                  {disabled ? (
+                    <span style={{ fontSize: 10 }}>
+                      {t("nav.localeComingSoon")}
+                    </span>
+                  ) : selected ? (
+                    <CheckSvg />
+                  ) : null}
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
+
+      <button
+        type="button"
+        className="nav-action-btn"
+        title={t("nav.downloadGuide")}
+        aria-label={t("nav.downloadGuide")}
+        onClick={handleBookletOpen}
+      >
+        <BookletSvg />
+      </button>
+
+      <button
+        type="button"
+        className="nav-action-btn"
+        title={t("nav.themeSwitchLabel")}
+        aria-label={t("nav.themeSwitchLabel")}
+        onClick={() => toggleTheme()}
+      >
+        <MoonSvg />
+      </button>
     </div>
   );
 };

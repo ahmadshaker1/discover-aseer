@@ -123,8 +123,8 @@
     "noEventsFilter": "لا توجد فعاليات مطابقة للتصفية."
   },
   "nav": {
-    "planTrip": "خطط رحلتك",
-    "events": "المواسم و الفعاليات",
+    "planTrip": "خطط لرحلتك",
+    "events": "المواسم والفعاليات",
     "closeMenu": "إغلاق القائمة",
     "downloadGuide": "تحميل الدليل",
     "languageSwitchLabel": "تبديل اللغة",
@@ -136,7 +136,10 @@
     "localeArabic": "العربية",
     "localeEnglish": "English",
     "localeChinese": "中文",
-    "localeComingSoon": "قريباً"
+    "localeComingSoon": "قريباً",
+    "explore": "استكشف",
+    "badgePdf": "PDF",
+    "badgeNew": "جديد"
   },
   "navLinks": {
     "aboutAseer": "عن عسير",
@@ -145,7 +148,8 @@
     "experiences": "التجارب السياحية",
     "cuisine": "المطبخ العسيري",
     "community": "مجتمع عسير",
-    "film": "فيلم عسير"
+    "film": "فيلم عسير",
+    "outdoorGuide": "دليل الأنشطة الخارجية"
   },
   "navPlanTripLinks": {
     "aiPlanner": "مخطط الرحلات الذكي",
@@ -155,6 +159,27 @@
     "tourismCompanies": "الشركات السياحية",
     "sopportingServices": "الخدمات المساندة",
     "gettingAround": "الوصول والتجول"
+  },
+  "navMega": {
+    "discover": {
+      "aboutAseer": "حكاية المكان وناسه",
+      "experiences": "مغامرات ولحظات لا تُنسى",
+      "attractions": "أبرز الأماكن التي تُزار",
+      "destinations": "جبال وسهول وشواطئ وصحراء",
+      "cuisine": "منطقة طهي عالمية ٢٠٢٤، وضمن أفضل ١٠ مواقع لعشاق الطعام",
+      "community": "فنون وحرف وضيافة أصيلة",
+      "film": "عسير على الشاشة",
+      "outdoorGuide": "مسارات ومغامرات الهواء الطلق"
+    },
+    "plan": {
+      "aiPlanner": "خطط رحلتك بالذكاء الاصطناعي",
+      "accommodation": "خيارات إقامة متنوعة في عسير",
+      "restaurants": "نكهات محلية وعالمية",
+      "tourismCompanies": "وكالات ومنظمو رحلات معتمدون",
+      "tourGuides": "خبراء يرافقون رحلتك",
+      "gettingAround": "كيف تصل وتتنقل بسهولة",
+      "sopportingServices": "خدمات تُيسّر إقامتك"
+    }
   },
   "footer": {
     "discoverAseerTitle": "اكتشف عسير",

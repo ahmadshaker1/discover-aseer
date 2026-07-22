@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { navigationLinks } from "./navbarData";
 import { MegaMenuTrigger } from "./MegaMenu";
-import { LocationPinIcon } from "./Icons";
 
 interface DesktopNavigationLinksProps {
   openMenuKey: string | null;
@@ -12,6 +11,7 @@ interface DesktopNavigationLinksProps {
   panelIds: Record<string, string>;
 }
 
+/** Immersive Preview nav: 16px / 600 / gap 26, next to logo. */
 const DesktopNavigationLinks = ({
   openMenuKey,
   onOpenChange,
@@ -20,7 +20,15 @@ const DesktopNavigationLinks = ({
   const t = useTranslations();
 
   return (
-    <div className="hidden lg:flex flex-row items-center gap-6 xl:gap-8">
+    <nav
+      className="hidden items-center lg:flex"
+      style={{
+        gap: 26,
+        fontSize: 16,
+        fontWeight: 600,
+        color: "#F4EFE4",
+      }}
+    >
       {navigationLinks.map((link) => {
         if (link.isDropdown) {
           return (
@@ -35,32 +43,25 @@ const DesktopNavigationLinks = ({
           );
         }
 
-        if ("isMap" in link && link.isMap) {
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              onMouseEnter={() => onOpenChange(null)}
-              className="inline-flex items-center gap-2 text-base font-medium whitespace-nowrap text-white transition-opacity hover:opacity-80"
-            >
-              <LocationPinIcon />
-              <span>{t(link.labelKey)}</span>
-            </Link>
-          );
-        }
-
         return (
           <Link
             key={link.href}
             href={link.href}
+            className="navlink"
             onMouseEnter={() => onOpenChange(null)}
-            className="text-base font-medium whitespace-nowrap text-white transition-opacity hover:opacity-80"
+            style={{
+              padding: "6px 0",
+              fontSize: 16,
+              fontWeight: 600,
+              color: "#F4EFE4",
+              whiteSpace: "nowrap",
+            }}
           >
             {t(link.labelKey)}
           </Link>
         );
       })}
-    </div>
+    </nav>
   );
 };
 

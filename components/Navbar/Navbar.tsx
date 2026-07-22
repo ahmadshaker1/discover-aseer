@@ -16,6 +16,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMenuKey, setOpenMenuKey] = useState<string | null>(null);
   const baseId = useId();
+  const isMegaOpen = openMenuKey !== null;
 
   const dropdownLinks = useMemo(
     () => navigationLinks.filter((link) => link.isDropdown),
@@ -48,38 +49,65 @@ const Navbar = () => {
         className="fixed inset-x-0 top-0 z-50"
         onMouseLeave={() => setOpenMenuKey(null)}
       >
-        <nav className="relative w-full bg-linear-to-r from-[#191919]/40 via-[#2a1a3d]/40 to-[#1a2a1a]/40 backdrop-blur-md">
-          <div className="mx-auto flex h-20 w-full max-w-screen-2xl flex-row items-center justify-between gap-4 px-4 sm:px-6 md:h-24 md:px-12 lg:px-24 xl:px-48">
-            {/* Start (AR: right / EN: left): logo + text links */}
-            <div className="flex min-w-0 flex-row items-center gap-4 md:gap-6 xl:gap-8">
-              <Link
-                href="/"
-                aria-label={t("common.home")}
-                onMouseEnter={() => setOpenMenuKey(null)}
-                className="inline-flex shrink-0 rounded-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-              >
-                <Image
-                  src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
-                  alt=""
-                  width={120}
-                  height={55}
-                />
-              </Link>
-              <DesktopNavigationLinks
-                openMenuKey={openMenuKey}
-                onOpenChange={setOpenMenuKey}
-                panelIds={panelIds}
+        {/* Matches Immersive Preview header: logo + navlinks start-aligned */}
+        <header
+          className="relative w-full"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 28,
+            padding: "26px 40px",
+            background: isMegaOpen
+              ? "rgba(45,0,80,0.92)"
+              : "rgba(45,0,80,0.2)",
+            transition: "background .45s ease",
+            borderBottom: "1px solid rgba(255,255,255,0.14)",
+            fontFamily:
+              "var(--font-ibm-plex-sans-arabic), var(--font-ara-hamah-1964), system-ui, sans-serif",
+          }}
+        >
+          <div
+            className="flex min-w-0 items-center"
+            style={{ gap: 36 }}
+          >
+            <Link
+              href="/"
+              aria-label={t("common.home")}
+              onMouseEnter={() => setOpenMenuKey(null)}
+              className="inline-flex shrink-0"
+            >
+              <Image
+                src="https://dmmo-website-asda.oss-me-central-1.aliyuncs.com/assets/global/aseer_logo.svg"
+                alt=""
+                width={120}
+                height={56}
+                style={{ height: 56, width: "auto", display: "block" }}
+                priority
               />
+            </Link>
+
+            <DesktopNavigationLinks
+              openMenuKey={openMenuKey}
+              onOpenChange={setOpenMenuKey}
+              panelIds={panelIds}
+            />
+
+            <div className="lg:hidden">
               <MobileMenuButton onClick={() => setMobileMenuOpen(true)} />
             </div>
+          </div>
 
-            {/* End (AR: left / EN: right): language, booklets, theme */}
-            <div
-              className="flex flex-row items-center justify-end gap-3"
-              onMouseEnter={() => setOpenMenuKey(null)}
-            >
-              <DesktopActionLinks />
-            </div>
+          <div
+            onMouseEnter={() => setOpenMenuKey(null)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              color: "#EDE7F2",
+            }}
+          >
+            <DesktopActionLinks />
           </div>
 
           <div className="hidden lg:block">
@@ -90,8 +118,7 @@ const Navbar = () => {
                 <MegaMenuPanel
                   key={link.labelKey}
                   label={t(link.labelKey)}
-                  links={menu.links}
-                  defaultImage={menu.defaultImage}
+                  menu={menu}
                   panelId={panelIds[link.labelKey] ?? link.labelKey}
                   isOpen={openMenuKey === link.labelKey}
                   onNavigate={() => setOpenMenuKey(null)}
@@ -99,7 +126,7 @@ const Navbar = () => {
               );
             })}
           </div>
-        </nav>
+        </header>
       </div>
 
       <MobileMenu

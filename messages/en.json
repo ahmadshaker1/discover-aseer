@@ -123,7 +123,7 @@
     "noEventsFilter": "No events match your filters."
   },
   "nav": {
-    "planTrip": "Plan your trip",
+    "planTrip": "Plan Your Trip",
     "events": "Seasons & Events",
     "closeMenu": "Close menu",
     "downloadGuide": "Download guide",
@@ -136,25 +136,50 @@
     "localeArabic": "العربية",
     "localeEnglish": "English",
     "localeChinese": "中文",
-    "localeComingSoon": "Soon"
+    "localeComingSoon": "Soon",
+    "explore": "Explore",
+    "badgePdf": "PDF",
+    "badgeNew": "NEW"
   },
   "navLinks": {
     "aboutAseer": "About Aseer",
-    "destinations": "Destinations",
+    "destinations": "Top Destinations",
     "attractions": "Attractions",
     "experiences": "Experiences",
     "cuisine": "Aseeri Cuisine",
-    "community": "Our Community",
-    "film": "Film Aseer"
+    "community": "Aseer Community",
+    "film": "Aseer Film",
+    "outdoorGuide": "Outdoor Activities Guide"
   },
   "navPlanTripLinks": {
-    "aiPlanner": "AI Trip Planner",
-    "accommodation": "Accommodations",
-    "restaurants": "Restaurants & Cafes",
+    "aiPlanner": "Smart Trip Planner",
+    "accommodation": "Accommodation",
+    "restaurants": "Restaurants & Cafés",
     "tourGuides": "Tour Guides",
-    "tourismCompanies": "Destination Management Companies",
-    "sopportingServices": "Supporting Services",
-    "gettingAround": "Getting Here and Around"
+    "tourismCompanies": "Travel Agencies",
+    "sopportingServices": "Support Services",
+    "gettingAround": "Getting Here & Around"
+  },
+  "navMega": {
+    "discover": {
+      "aboutAseer": "The story of the land and its people",
+      "experiences": "Adventures and unforgettable moments",
+      "attractions": "The places worth seeing",
+      "destinations": "Mountains, plains, coast & desert",
+      "cuisine": "IGCAT World Region of Gastronomy 2024 — and among the Top 10 Foodie Destinations 2026",
+      "community": "Living arts, crafts & hospitality",
+      "film": "Aseer on screen",
+      "outdoorGuide": "Trails and open-air adventures"
+    },
+    "plan": {
+      "aiPlanner": "Plan your trip with AI",
+      "accommodation": "Hotels and lodges with a view",
+      "restaurants": "Local flavors and world cuisine",
+      "tourismCompanies": "Licensed agencies & tour operators",
+      "tourGuides": "Experts to guide your journey",
+      "gettingAround": "How to arrive and get around",
+      "sopportingServices": "Services that ease your stay"
+    }
   },
   "footer": {
     "discoverAseerTitle": "Discover Aseer",

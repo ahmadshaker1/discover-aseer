@@ -480,3 +480,116 @@ html.dark {
 .interactive-map-popup .mapboxgl-popup-tip {
   border-top-color: var(--background) !important;
 }
+
+/* Immersive Preview navbar / mega menu */
+@keyframes megaIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navlink {
+  position: relative;
+}
+
+.navlink::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  inset-inline: 0;
+  height: 2px;
+  background: #ffffff;
+  transform: scaleX(0);
+  transition: transform 0.34s cubic-bezier(0.62, 0, 0.2, 1);
+}
+
+.navlink:hover::after {
+  transform: scaleX(1);
+}
+
+[dir="rtl"] .navlink::after {
+  transform-origin: right;
+}
+
+[dir="ltr"] .navlink::after {
+  transform-origin: left;
+}
+
+.megalink-u {
+  position: relative;
+}
+
+.megalink-u::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  inset-inline: 0;
+  height: 2px;
+  background: #ffffff;
+  transform: scaleX(0);
+  transition: transform 0.32s cubic-bezier(0.62, 0, 0.2, 1);
+}
+
+.megalink:hover .megalink-u::after {
+  transform: scaleX(1);
+}
+
+[dir="rtl"] .megalink-u::after {
+  transform-origin: right;
+}
+
+[dir="ltr"] .megalink-u::after {
+  transform-origin: left;
+}
+
+.nav-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  color: #ede7f2;
+  background: none;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.nav-action-btn:hover {
+  background: #fff;
+  border-color: #fff;
+  color: #390066;
+  transform: translateY(-2px);
+}
+
+.nav-lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ede7f2;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  background: none;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.nav-lang-btn:hover {
+  background: #fff;
+  border-color: #fff;
+  color: #390066;
+}

@@ -83,9 +83,9 @@ export default function LandingStoriesFromAseerSection({
       <div
         className={`mx-auto flex w-full max-w-screen-2xl min-h-[94px] flex-col items-start justify-center`}
       >
-        <div className="flex w-full max-w-[319px] flex-col gap-[10px] border-b border-border pb-[10px] pt-[7px]">
+        <div className="flex w-fit max-w-full flex-col gap-[10px] border-b border-border pb-[10px] pt-[7px]">
           <h2
-            className={`text-start text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-foreground`}
+            className={`whitespace-nowrap text-start text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-foreground`}
             style={{ fontFamily: ara }}
           >
             {resolvedTitle}
