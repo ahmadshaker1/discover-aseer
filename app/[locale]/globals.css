@@ -508,7 +508,9 @@ html.dark {
   transition: transform 0.34s cubic-bezier(0.62, 0, 0.2, 1);
 }
 
-.navlink:hover::after {
+.navlink:hover::after,
+.navlink:focus-visible::after,
+.navlink[aria-expanded="true"]::after {
   transform: scaleX(1);
 }
 
@@ -535,7 +537,8 @@ html.dark {
   transition: transform 0.32s cubic-bezier(0.62, 0, 0.2, 1);
 }
 
-.megalink:hover .megalink-u::after {
+.megalink:hover .megalink-u::after,
+.megalink:focus-visible .megalink-u::after {
   transform: scaleX(1);
 }
 

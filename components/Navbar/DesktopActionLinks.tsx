@@ -111,7 +111,7 @@ const DesktopActionLinks = () => {
   }, [langOpen]);
 
   return (
-    <div className="hidden lg:flex flex-row items-center" style={{ gap: 8 }}>
+    <div className="hidden flex-row items-center sm:flex" style={{ gap: 8 }}>
       <div ref={langRef} style={{ position: "relative" }}>
         <button
           type="button"

@@ -16,7 +16,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMenuKey, setOpenMenuKey] = useState<string | null>(null);
   const baseId = useId();
-  const isMegaOpen = openMenuKey !== null;
+  const isChromeSolid = openMenuKey !== null || mobileMenuOpen;
 
   const dropdownLinks = useMemo(
     () => navigationLinks.filter((link) => link.isDropdown),
@@ -49,13 +49,12 @@ const Navbar = () => {
         className="fixed inset-x-0 top-0 z-50"
         onMouseLeave={() => setOpenMenuKey(null)}
       >
-        {/* Full-bleed bar; inner row centered — logo + nav | actions unchanged */}
         <header
           className="relative w-full"
           style={{
-            background: isMegaOpen
+            background: isChromeSolid
               ? "rgba(45,0,80,0.92)"
-              : "rgba(45,0,80,0.2)",
+              : "rgba(28,28,30,0.2)",
             transition: "background .45s ease",
             borderBottom: "1px solid rgba(255,255,255,0.14)",
             fontFamily:
@@ -63,16 +62,10 @@ const Navbar = () => {
           }}
         >
           <div
-            className="relative mx-auto flex w-full max-w-[1440px] items-center justify-between"
-            style={{
-              gap: 28,
-              padding: "26px 40px",
-            }}
+            className="relative mx-auto flex w-full max-w-[1440px] items-center justify-between px-5 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-[26px]"
+            style={{ gap: 28 }}
           >
-            <div
-              className="flex min-w-0 items-center"
-              style={{ gap: 36 }}
-            >
+            <div className="flex min-w-0 items-center" style={{ gap: 36 }}>
               <Link
                 href="/"
                 aria-label={t("common.home")}
@@ -84,7 +77,8 @@ const Navbar = () => {
                   alt=""
                   width={120}
                   height={56}
-                  style={{ height: 56, width: "auto", display: "block" }}
+                  className="h-11 w-auto lg:h-14"
+                  style={{ display: "block" }}
                   priority
                 />
               </Link>
@@ -94,22 +88,15 @@ const Navbar = () => {
                 onOpenChange={setOpenMenuKey}
                 panelIds={panelIds}
               />
-
-              <div className="lg:hidden">
-                <MobileMenuButton onClick={() => setMobileMenuOpen(true)} />
-              </div>
             </div>
 
             <div
               onMouseEnter={() => setOpenMenuKey(null)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                color: "#EDE7F2",
-              }}
+              className="flex items-center"
+              style={{ gap: 8, color: "#EDE7F2" }}
             >
               <DesktopActionLinks />
+              <MobileMenuButton onClick={() => setMobileMenuOpen(true)} />
             </div>
           </div>
 
