@@ -154,14 +154,14 @@ const Hero = ({ slides }: HeroProps) => {
           dir="ltr"
         >
           <div
-            className="mb-3 h-14 w-px shrink-0 bg-white md:mb-[15px] md:h-20"
+            className="mb-2 h-8 w-px shrink-0 bg-white md:mb-2.5 md:h-12"
             aria-hidden
           />
-          <div className="flex flex-col items-center gap-3 text-white md:gap-[15px]">
+          <div className="flex flex-col items-center gap-2 text-white md:gap-2.5">
             <HeroSocialLinks linkClassName={heroSocialLinkClassDesktop} />
           </div>
           <div
-            className="mt-3 h-14 w-px shrink-0 bg-white md:mt-[15px] md:h-20"
+            className="mt-2 h-8 w-px shrink-0 bg-white md:mt-2.5 md:h-12"
             aria-hidden
           />
         </div>
