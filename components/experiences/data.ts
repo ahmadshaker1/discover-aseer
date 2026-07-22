@@ -22,6 +22,8 @@ export interface ApiExperience {
   tags: string | string[] | null;
   date: string | null;
   tour_agency: string | null;
+  /** English tour operator label (CMS). */
+  tour_agency_en?: string | null;
   price: number | string | null;
   booking_link: string | null;
   target_audience: string | null;
@@ -341,6 +343,33 @@ function parseFilterTravelers(
   return ids;
 }
 
+function formatTourAgencyEn(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+
+  // CMS stores slug-style EN labels: tmashi, abha_trips, visit_south
+  if (/^[a-z0-9_]+$/i.test(trimmed)) {
+    return trimmed
+      .split("_")
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
+
+  return trimmed;
+}
+
+function pickTourAgency(api: ApiExperience, locale: LocaleCode): string {
+  if (locale === "en") {
+    const en = (api.tour_agency_en || "").trim();
+    if (en) return formatTourAgencyEn(en);
+    const ar = (api.tour_agency || "").trim();
+    return ar && !isMostlyArabicText(ar) ? ar : "";
+  }
+
+  return (api.tour_agency || "").trim();
+}
+
 export function transformExperience(
   api: ApiExperience,
   locale: LocaleCode = "ar",
@@ -359,10 +388,7 @@ export function transformExperience(
   const bookUrl = (api.booking_link || api.link || "").trim() || "#";
   const price = parsePrice(api.price ?? api.price_1);
   const groupSize = parseGroupSize(api.minimum_number_of_people);
-  const provider =
-    (locale === "en"
-      ? (api.tour_agency || api.tour_audience_en || "").trim()
-      : (api.tour_agency || "").trim()) || "—";
+  const provider = pickTourAgency(api, locale) || "—";
   const durationRaw =
     locale === "en"
       ? (api.duration_En || "").trim() || (api.duration || "").trim()
