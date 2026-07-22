@@ -247,6 +247,43 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // ENRICH DATA
+    if (
+      scheduleData &&
+      typeof scheduleData === "object" &&
+      "days" in scheduleData
+    ) {
+      const plan = scheduleData as any;
+      if (Array.isArray(plan.days)) {
+        plan.days.forEach((day: any) => {
+          if (Array.isArray(day.events)) {
+            day.events = day.events.map((ev: any) => {
+              const matched = eventsData.data.find(
+                (e: any) => String(e.id) === String(ev.itemId),
+              );
+              return { ...ev, itemData: matched || null };
+            });
+          }
+          if (Array.isArray(day.experiences)) {
+            day.experiences = day.experiences.map((exp: any) => {
+              const matched = experiencesData.data.find(
+                (e: any) => String(e.id) === String(exp.itemId),
+              );
+              return { ...exp, itemData: matched || null };
+            });
+          }
+          if (Array.isArray(day.restaurants)) {
+            day.restaurants = day.restaurants.map((res: any) => {
+              const matched = restaurantsData.data.find(
+                (r: any) => String(r.id) === String(res.itemId),
+              );
+              return { ...res, itemData: matched || null };
+            });
+          }
+        });
+      }
+    }
+
     console.log(
       "📤 FINAL SCHEDULE RESPONSE OBJECT:",
       JSON.stringify(scheduleData, null, 2),
