@@ -582,6 +582,7 @@ html.dark {
   color: #ede7f2;
   border: 1.5px solid rgba(255, 255, 255, 0.28);
   background: none;
+  cursor: pointer;
   transition:
     background 0.25s ease,
     color 0.25s ease,
