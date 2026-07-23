@@ -46,7 +46,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
   const counterCorner = isArabic ? "right-2" : "left-2";
 
   return (
-    <div className="relative z-0 mx-auto h-[357px] w-full max-w-[318px] justify-self-center">
+    <div className="relative z-0 mx-auto h-[440px] w-full max-w-none justify-self-stretch">
       <article className="relative h-full w-full overflow-hidden rounded-[20px] border border-border bg-neutral-900 shadow-sm">
         <div className="relative h-full w-full overflow-hidden">
           {event.images.map((src, i) => (

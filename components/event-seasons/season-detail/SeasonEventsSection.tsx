@@ -130,7 +130,7 @@ export default function SeasonEventsSection({
   }
 
   return (
-    <section className="mx-auto w-full max-w-[1009px] px-4 py-12 sm:px-6">
+    <section className="mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 md:px-8">
       <div className="flex w-full flex-col items-center gap-[46px]">
         <div className="flex w-full max-w-[640px] flex-col items-center gap-6 text-center">
           <h2
@@ -248,7 +248,7 @@ export default function SeasonEventsSection({
         </div>
 
         {filteredEvents.length > 0 ? (
-          <div className="grid w-full grid-cols-1 items-start justify-items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid w-full grid-cols-1 items-start justify-items-stretch gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
             {filteredEvents.map((event) => (
               <EventListingCard key={event.listing.id} event={event.listing} />
             ))}
