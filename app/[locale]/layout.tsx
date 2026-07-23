@@ -60,6 +60,8 @@ export default async function LocaleLayout({
   const appLocale = locale as AppLocale;
   setRequestLocale(appLocale);
   const messages = await getMessages();
+  // UserWay: 1 = bottom right, 2 = bottom left
+  const userwayPosition = appLocale === "ar" ? "2" : "1";
 
   return (
     <html
@@ -72,10 +74,25 @@ export default async function LocaleLayout({
       >
         <ThemeInitScript />
         <Script
-          src="https://cdn.userway.org/widget.js"
-          data-account="YyYRLMuqhD"
+          id="userway-widget"
           strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+(function(d){
+  var s = d.createElement("script");
+  s.setAttribute("data-position", "${userwayPosition}");
+  s.setAttribute("data-widget_layout", "full");
+  s.setAttribute("data-account", "YyYRLMuqhD");
+  s.setAttribute("src", "https://cdn.userway.org/widget.js");
+  (d.body || d.head).appendChild(s);
+})(document);
+            `.trim(),
+          }}
         />
+        <noscript>
+          Please ensure Javascript is enabled for purposes of{" "}
+          <a href="https://userway.org">website accessibility</a>
+        </noscript>
         <Suspense fallback={null}>
           <TikTokPixel />
           <MetaPixel />
