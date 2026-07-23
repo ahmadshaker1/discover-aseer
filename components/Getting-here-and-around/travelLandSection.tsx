@@ -7,47 +7,47 @@ export default function TravelLandSection() {
 
   const carRentals = [
     {
-      name: "Theeb",
+      nameKey: "theebTitle" as const,
       link: t("theebLink"),
       image: "/assets/Getting-here-and-around/Theeb.webp",
     },
     {
-      name: "Yelo",
+      nameKey: "yeloTitle" as const,
       link: "https://www.iyelo.com/en",
       image: "/assets/Getting-here-and-around/car-rental/yelo.png",
     },
     {
-      name: "Ajar",
+      nameKey: "ajarTitle" as const,
       link: "https://www.enterprise.com.sa/en/home",
       image: "/assets/Getting-here-and-around/car-rental/ajar.jpg",
     },
     {
-      name: "Key Car Rental",
+      nameKey: "keyCarRentalTitle" as const,
       link: "https://www.key.sa/en",
       image: "/assets/Getting-here-and-around/car-rental/key.png",
     },
     {
-      name: "Abu Diyab Rent Car",
+      nameKey: "abuDiyabTitle" as const,
       link: "https://www.rent.abudiyab.com.sa/",
       image: "/assets/Getting-here-and-around/car-rental/abudiyab.png",
     },
     {
-      name: "AlRehaili Car Rental",
+      nameKey: "alRehailiTitle" as const,
       link: "https://www.alrehaili.sa/",
       image: "/assets/Getting-here-and-around/car-rental/alrehaili.png",
     },
     {
-      name: "AlFaris Rent Car",
+      nameKey: "alFarisTitle" as const,
       link: "https://alfaris.sa/ar/",
       image: "/assets/Getting-here-and-around/car-rental/alfaris.png",
     },
     {
-      name: "Bin Hadi Rent Car",
+      nameKey: "binHadiTitle" as const,
       link: "https://www.ebinhadi.com/ar",
       image: "/assets/Getting-here-and-around/car-rental/bin-hadi.png",
     },
     {
-      name: "AlRehaili Car Rental 2",
+      nameKey: "alRehilyEastTitle" as const,
       link: "https://alrehilyest.com/ar/index.html",
       image:
         "/assets/Getting-here-and-around/car-rental/alrehily2(blue).png",
@@ -344,31 +344,34 @@ export default function TravelLandSection() {
         <div className="mb-16">
           <LogoCarousel
             slideClassName="w-[156px]! max-w-[156px] shrink-0"
-            slides={carRentals.map((rental) => ({
-              key: rental.name,
-              content: (
-                <a
-                  href={rental.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={rental.name}
-                  className="group flex w-full flex-col items-center transition-all hover:-translate-y-1"
-                  style={{ gap: "16px" }}
-                >
-                  <div
-                    className="aspect-[156/150] w-full rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
-                    style={{
-                      backgroundImage: `url('${rental.image}')`,
-                    }}
-                  />
-                  <div className="text-center">
-                    <p className="text-lg font-bold leading-tight text-foreground md:text-[20px]">
-                      {rental.name}
-                    </p>
-                  </div>
-                </a>
-              ),
-            }))}
+            slides={carRentals.map((rental) => {
+              const name = t(rental.nameKey);
+              return {
+                key: rental.nameKey,
+                content: (
+                  <a
+                    href={rental.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={name}
+                    className="group flex w-full flex-col items-center transition-all hover:-translate-y-1"
+                    style={{ gap: "16px" }}
+                  >
+                    <div
+                      className="aspect-[156/150] w-full rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                      style={{
+                        backgroundImage: `url('${rental.image}')`,
+                      }}
+                    />
+                    <div className="text-center">
+                      <p className="text-lg font-bold leading-tight text-foreground md:text-[20px]">
+                        {name}
+                      </p>
+                    </div>
+                  </a>
+                ),
+              };
+            })}
           />
         </div>
       </div>
