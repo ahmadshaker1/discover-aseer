@@ -89,7 +89,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           {imageCount > 1 ? (
             <div
               dir={isArabic ? "rtl" : "ltr"}
-              className="absolute inset-x-0 top-1/2 z-10 mx-auto flex h-8 w-[284px] -translate-y-1/2 items-center justify-between px-4"
+              className="absolute inset-x-0 top-1/2 z-10 mx-auto flex h-8 w-full -translate-y-1/2 items-center justify-between px-4"
             >
               <button
                 type="button"

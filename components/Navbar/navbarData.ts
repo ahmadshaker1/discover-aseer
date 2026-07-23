@@ -89,7 +89,7 @@ export const discoverAseerLinks: NavbarDropdownLink[] = [
  */
 export const planTripLinks: NavbarDropdownLink[] = [
   {
-    href: "/planner",
+    href: "/new-planner",
     labelKey: "navPlanTripLinks.aiPlanner",
     image: "/assets/landing/discover-aseer-hero.jpg",
     subKey: "navMega.plan.aiPlanner",

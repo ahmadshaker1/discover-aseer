@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.2",
-    "@headlessui/react": "^2.2.9",
+    "@headlessui/react": "^2.2.10",
     "@mapbox/mapbox-gl-rtl-text": "^0.4.0",
     "@types/mapbox-gl": "^3.4.1",
     "date-fns": "^4.1.0",
