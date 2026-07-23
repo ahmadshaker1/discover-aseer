@@ -48,7 +48,7 @@ export default async function IGCatPage() {
       {/* <FoodAndDiningSection /> */}
       <AseerCuisineHeritageRestaurantsSection
         data={{
-          title: t("heritageRestaurantsSection.title"),
+          title: tCommon("restaurants"),
           ctaLabel: t("heritageRestaurantsSection.ctaLabel"),
           ctaHref: "/restaurants",
           cards: heritageRestaurants,
