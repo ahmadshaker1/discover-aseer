@@ -71,8 +71,8 @@ const AseerCuisineCookingExperiencesSection = async ({
         />
       ) : null}
       <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-4 sm:px-8 md:px-[60px]">
-        <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-center justify-between gap-4">
-          <div className={`min-w-0 space-y-2 text-start`}>
+        <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-start justify-between gap-4">
+          <div className={`min-w-0 flex-1 space-y-2 text-start pe-4`}>
             <h2
               className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
               style={{ fontFamily: ara }}
@@ -81,7 +81,7 @@ const AseerCuisineCookingExperiencesSection = async ({
             </h2>
             {data.description ? (
               <p
-                className={`h-[11px] w-[430px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start`}
+                className={`w-full max-w-[620px] text-[18px] font-normal leading-[140%] text-muted-foreground text-start`}
                 style={{ fontFamily: ara }}
               >
                 {data.description}
