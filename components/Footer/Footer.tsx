@@ -140,7 +140,7 @@ const Footer = () => {
                   style={{ fontFamily: ara }}
                 >
                   <Link
-                    href="/new-planner"
+                    href="/planner"
                     className="block w-full text-start hover:opacity-80"
                   >
                     {t("footer.linkPlanner")}
