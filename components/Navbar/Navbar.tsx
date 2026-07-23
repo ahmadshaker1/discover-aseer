@@ -46,7 +46,7 @@ const Navbar = () => {
   return (
     <>
       <div
-        className="fixed inset-x-0 top-0 z-50"
+        className="absolute inset-x-0 top-0 z-50"
         onMouseLeave={() => setOpenMenuKey(null)}
       >
         <header
