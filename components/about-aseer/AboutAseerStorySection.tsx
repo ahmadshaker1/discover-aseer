@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { ComponentProps } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type StoryLinkHref = ComponentProps<typeof Link>["href"];
 
@@ -39,7 +39,7 @@ interface AboutAseerStorySectionProps {
   content: AboutStoryContent;
 }
 
-function ChevronRight() {
+function ChevronIcon() {
   return (
     <svg
       width="18"
@@ -48,30 +48,10 @@ function ChevronRight() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
+      className="ltr:rotate-180"
     >
       <path
         d="M10.8555 4.5L6.35547 9L10.8555 13.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ChevronLeft() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      <path
-        d="M7.14453 4.5L11.6445 9L7.14453 13.5"
         stroke="currentColor"
         strokeWidth="1.6"
         strokeLinecap="round"
@@ -87,39 +67,38 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
   const hasSlides = slides.length > 0;
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   const activeSlide = useMemo(() => slides[activeIndex], [slides, activeIndex]);
-
-  const prevSlide = useMemo(() => {
-    if (activeIndex === 0) return slides[lastIndex];
-    return slides[activeIndex - 1];
-  }, [activeIndex, slides, lastIndex]);
-
-  const nextSlide = useMemo(() => {
-    if (activeIndex >= lastIndex) return slides[0];
-    return slides[activeIndex + 1];
-  }, [activeIndex, slides, lastIndex]);
 
   useEffect(() => {
     if (!hasSlides || isPaused) return;
     const timer = window.setInterval(() => {
       setActiveIndex((prev) => (prev >= lastIndex ? 0 : prev + 1));
-    }, 5000);
+    }, 7000);
     return () => window.clearInterval(timer);
   }, [hasSlides, isPaused, lastIndex]);
+
+  useEffect(() => {
+    const container = tabsRef.current;
+    if (!container) return;
+    const activeTab = container.querySelector<HTMLElement>(
+      `[data-slide-tab="${activeIndex}"]`,
+    );
+    activeTab?.scrollIntoView({
+      behavior: "smooth",
+      inline: "nearest",
+      block: "nearest",
+    });
+  }, [activeIndex]);
 
   const goNext = () => {
     setActiveIndex((prev) => (prev >= lastIndex ? 0 : prev + 1));
   };
 
-  const goPrev = () => {
-    setActiveIndex((prev) => (prev <= 0 ? lastIndex : prev - 1));
-  };
-
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]">
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
-        {/* Backend: fill `sectionTitle`, `sectionSubtitle`, `sectionCaption` from API/CMS. */}
         <div className="mx-auto flex w-full max-w-[704px] flex-col items-center text-center">
           <h2
             className="text-[44px] font-bold leading-[180%] text-secondary"
@@ -141,7 +120,6 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
           </h4>
         </div>
 
-        {/* Backend: send exactly 4 cards in `highlightCards` to match this layout block. */}
         <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[35px] px-4 md:px-[64px]">
           <div className="grid w-full grid-cols-1 gap-[35px] sm:grid-cols-2 lg:grid-cols-4">
             {content.highlightCards.slice(0, 4).map((card) => {
@@ -194,59 +172,89 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Backend: `slides` should include all gallery images + text overlay content. */}
-          <div className="relative h-[360px] w-full sm:h-[520px] lg:h-[803px]">
+          <div className="relative h-[520px] w-full sm:h-[640px] lg:h-[803px]">
             {activeSlide ? (
               <Image
                 src={activeSlide.image}
                 alt={activeSlide.title}
                 fill
-                className="object-cover"
+                className="object-cover transition-opacity duration-500"
                 sizes="(max-width: 1024px) 100vw, 1298px"
+                priority={activeIndex === 0}
               />
             ) : null}
-            <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.35)_45%,rgba(0,0,0,0.2)_100%)]"
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[linear-gradient(to_left,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.2)_42%,transparent_72%)] rtl:bg-[linear-gradient(to_right,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.2)_42%,transparent_72%)]"
+            />
           </div>
 
-          <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 p-5 text-white sm:p-6 lg:p-8">
-            <div className={`max-w-[1200px] text-start`}>
+          <div className="absolute inset-0 flex flex-col justify-start gap-8 p-5 text-white sm:gap-10 sm:p-8 lg:p-10">
+            <div className="flex w-full items-start justify-start">
+              <div className="flex max-w-full items-start gap-2">
+                <div
+                  ref={tabsRef}
+                  className="flex min-w-0 items-start gap-2 overflow-x-auto pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                  role="tablist"
+                  aria-label={content.sectionTitle}
+                >
+                  {slides.map((slide, index) => {
+                    const isActive = index === activeIndex;
+                    return (
+                      <button
+                        key={slide.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        data-slide-tab={index}
+                        onClick={() => setActiveIndex(index)}
+                        className={`relative shrink-0 cursor-pointer rounded-[10px] px-4 py-2.5 text-[13px] font-bold leading-none transition-colors sm:px-5 sm:text-[14px] ${
+                          isActive
+                            ? "bg-primary text-white"
+                            : "border border-white/85 bg-black/30 text-white hover:bg-white/10"
+                        }`}
+                        style={{ fontFamily: ara }}
+                      >
+                        {slide.title}
+                        {isActive ? (
+                          <span
+                            aria-hidden
+                            className="absolute left-1/2 top-[calc(100%+6px)] size-0 -translate-x-1/2 border-x-[6px] border-t-[7px] border-x-transparent border-t-primary"
+                          />
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={goNext}
+                  aria-label={content.nextLabel}
+                  className="mt-0.5 flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-[10px] border border-white/35 bg-black/40 text-white transition-colors hover:bg-black/60"
+                >
+                  <ChevronIcon />
+                </button>
+              </div>
+            </div>
+
+            <div className="max-w-[720px] text-start">
               <h3
-                className="text-[40px] font-bold leading-[150%] width-full text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] mb-2"
+                className="mb-3 text-[32px] font-bold leading-[130%] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] sm:text-[40px] lg:text-[48px]"
                 style={{ fontFamily: ara }}
               >
                 {activeSlide?.title}
               </h3>
               <p
-                className="text-[20px] font-light text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] max-w-[800px] leading-10"
+                className="text-[15px] font-light leading-8 text-white/95 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] sm:text-[18px] sm:leading-9 lg:text-[20px] lg:leading-10"
                 style={{ fontFamily: ibm }}
               >
                 {activeSlide?.description}
               </p>
-            </div>
-
-            <div className="flex w-full items-center justify-start">
-              <div className="flex h-12 items-center gap-6">
-                <button
-                  type="button"
-                  onClick={goPrev}
-                  className="flex h-16 w-[200px] items-center justify-center gap-2 rounded-full p-2 text-white opacity-80 transition-colors hover:bg-white/20"
-                >
-                  <span className="inline-flex shrink-0 rtl:rotate-180">
-                    <ChevronRight />
-                  </span>
-                  <span style={{ fontFamily: ara }}>{prevSlide?.title}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={goNext}
-                  className="flex h-16 w-[200px] items-center justify-center gap-2 rounded-full p-2 text-white opacity-80 transition-colors hover:bg-white/20"
-                >
-                  <span style={{ fontFamily: ara }}>{nextSlide?.title}</span>
-                  <span className="inline-flex shrink-0 rtl:rotate-180">
-                    <ChevronLeft />
-                  </span>
-                </button>
-              </div>
             </div>
           </div>
         </div>

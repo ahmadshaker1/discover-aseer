@@ -62,32 +62,32 @@ const AboutAseerPage = async () => {
       highlightCards,
       slides: [
         {
-          id: "culture-1",
-          image: "/assets/aboutAseer/ID1.webp",
-          title: t("story.slides.culture1.title"),
-          description: t("story.slides.culture1.description"),
-        },
-        {
-          id: "nature-2",
-          image: "/assets/aboutAseer/ID2.webp",
-          title: t("story.slides.nature2.title"),
-          description: t("story.slides.nature2.description"),
-        },
-        {
           id: "heritage-3",
-          image: "/assets/aboutAseer/ID3.webp",
+          image: "/assets/aboutAseer/heritage.jpg",
           title: t("story.slides.heritage3.title"),
           description: t("story.slides.heritage3.description"),
         },
         {
+          id: "nature-2",
+          image: "/assets/aboutAseer/nature.jpg",
+          title: t("story.slides.nature2.title"),
+          description: t("story.slides.nature2.description"),
+        },
+        {
+          id: "culture-1",
+          image: "/assets/aboutAseer/culture.jpg",
+          title: t("story.slides.culture1.title"),
+          description: t("story.slides.culture1.description"),
+        },
+        {
           id: "architectural-4",
-          image: "/assets/aboutAseer/ID4.webp",
+          image: "/assets/aboutAseer/architectural.jpg",
           title: t("story.slides.architectural4.title"),
           description: t("story.slides.architectural4.description"),
         },
         {
           id: "culinaryArts-5",
-          image: "/assets/aboutAseer/ID5.webp",
+          image: "/assets/aboutAseer/culinary.jpg",
           title: t("story.slides.culinaryArts5.title"),
           description: t("story.slides.culinaryArts5.description"),
         },
