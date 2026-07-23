@@ -33,15 +33,15 @@ export async function POST(request: NextRequest) {
     // 1. Fetch from Directus
     console.log("📥 FETCHING DATA FROM DIRECTUS...");
     const [restaurantsRes, experiencesRes, eventsRes] = await Promise.all([
-      fetch("https://tool-portal.discoveraseer.com/items/restaurants").catch(
-        () => null,
-      ),
-      fetch("https://tool-portal.discoveraseer.com/items/experiences").catch(
-        () => null,
-      ),
-      fetch("https://tool-portal.discoveraseer.com/items/events").catch(
-        () => null,
-      ),
+      fetch(
+        "https://tool-portal.discoveraseer.com/items/restaurants?limit=-1",
+      ).catch(() => null),
+      fetch(
+        "https://tool-portal.discoveraseer.com/items/experiences?limit=-1",
+      ).catch(() => null),
+      fetch(
+        "https://tool-portal.discoveraseer.com/items/events?limit=-1",
+      ).catch(() => null),
     ]);
 
     const restaurantsData = restaurantsRes

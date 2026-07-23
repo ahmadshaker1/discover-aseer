@@ -129,6 +129,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   const [planData, setPlanData] = useState(data);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const [isSharing, setIsSharing] = useState(false);
+  const [replacingItemId, setReplacingItemId] = useState<string | null>(null);
   const currentDay = planData?.days?.[selectedDayIndex];
 
   const handleDeleteDay = (index: number) => {
@@ -138,6 +139,68 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
 
     if (selectedDayIndex >= newDays.length) {
       setSelectedDayIndex(Math.max(0, newDays.length - 1));
+    }
+  };
+
+  const handleReplaceItem = async (
+    dayIndex: number,
+    itemType: string,
+    itemId: string | number,
+  ) => {
+    const compositeKey = `${dayIndex}-${itemType}-${itemId}`;
+    setReplacingItemId(compositeKey);
+
+    try {
+      const payload = {
+        dayIndex,
+        itemType,
+        itemIdToReplace: itemId,
+        currentPlanData: planData,
+      };
+
+      const res = await fetch("/api/new-planner/replace", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        console.error("Backend error response:", errorData);
+        throw new Error(errorData?.error || "Failed to replace item");
+      }
+
+      const data = await res.json();
+      if (data.finalItem) {
+        const newPlanData = { ...planData };
+        const day = newPlanData.days[dayIndex];
+
+        if (itemType === "event" && day.events) {
+          const idx = day.events.findIndex(
+            (e: any) => String(e.itemId) === String(itemId),
+          );
+          if (idx !== -1) day.events[idx] = data.finalItem;
+        } else if (itemType === "experience" && day.experiences) {
+          const idx = day.experiences.findIndex(
+            (e: any) => String(e.itemId) === String(itemId),
+          );
+          if (idx !== -1) day.experiences[idx] = data.finalItem;
+        } else if (itemType === "restaurant" && day.restaurants) {
+          const idx = day.restaurants.findIndex(
+            (e: any) => String(e.itemId) === String(itemId),
+          );
+          if (idx !== -1) day.restaurants[idx] = data.finalItem;
+        }
+
+        setPlanData(newPlanData);
+      }
+    } catch (error) {
+      console.error(error);
+      alert(
+        locale === "ar" ? "حدث خطأ أثناء الاستبدال" : "Error replacing item",
+      );
+    } finally {
+      setReplacingItemId(null);
     }
   };
 
@@ -390,7 +453,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                   {t("events")}
                 </h4>
                 {dayToRender.events && dayToRender.events.length > 0 ? (
-                  <div className="flex flex-wrap gap-4 w-[300px] justify-start [&>div]:!mx-0">
+                  <div className="flex flex-wrap gap-4 w-[500px] justify-start [&>div]:!mx-0">
                     {dayToRender.events.map((ev: any, idx: number) => {
                       const apiData = ev.itemData;
                       if (!apiData) {
@@ -405,7 +468,30 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                         locale as any,
                       );
                       return (
-                        <EventListingCard key={item.id || idx} event={item} />
+                        <div
+                          key={item.id || idx}
+                          className="w-[250px] shrink-0 flex flex-col items-center gap-4"
+                        >
+                          <EventListingCard event={item} />
+                          <button
+                            onClick={() =>
+                              handleReplaceItem(dIndex, "event", ev.itemId)
+                            }
+                            disabled={
+                              replacingItemId === `${dIndex}-event-${ev.itemId}`
+                            }
+                            className="flex w-[190px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black  transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white"
+                          >
+                            {replacingItemId ===
+                            `${dIndex}-event-${ev.itemId}` ? (
+                              <span className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" />
+                            ) : locale === "ar" ? (
+                              "استبدال الفعالية"
+                            ) : (
+                              "Replace Event"
+                            )}
+                          </button>
+                        </div>
                       );
                     })}
                   </div>
@@ -438,9 +524,32 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                       return (
                         <div
                           key={item.id || idx}
-                          className="w-[300px] shrink-0"
+                          className="w-[300px] shrink-0 flex flex-col items-center gap-4"
                         >
                           <ExperienceCard {...item} />
+                          <button
+                            onClick={() =>
+                              handleReplaceItem(
+                                dIndex,
+                                "experience",
+                                exp.itemId,
+                              )
+                            }
+                            disabled={
+                              replacingItemId ===
+                              `${dIndex}-experience-${exp.itemId}`
+                            }
+                            className="flex w-[190px] h-[46px] px-4 py-2.5 justify-center items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black hover:cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white"
+                          >
+                            {replacingItemId ===
+                            `${dIndex}-experience-${exp.itemId}` ? (
+                              <span className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" />
+                            ) : locale === "ar" ? (
+                              "استبدال التجربة"
+                            ) : (
+                              "Replace Experience"
+                            )}
+                          </button>
                         </div>
                       );
                     })}
@@ -475,11 +584,38 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                         locale as any,
                       );
                       return (
-                        <PlannerRestaurantCard
+                        <div
                           key={item.id || idx}
-                          restaurant={item}
-                          mealType={res.mealType || ""}
-                        />
+                          className="flex flex-col items-center gap-4"
+                        >
+                          <PlannerRestaurantCard
+                            restaurant={item}
+                            mealType={res.mealType || ""}
+                          />
+                          <button
+                            onClick={() =>
+                              handleReplaceItem(
+                                dIndex,
+                                "restaurant",
+                                res.itemId,
+                              )
+                            }
+                            disabled={
+                              replacingItemId ===
+                              `${dIndex}-restaurant-${res.itemId}`
+                            }
+                            className="flex w-[190px] h-[46px] px-4 py-2.5 justify-center items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black hover:cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white"
+                          >
+                            {replacingItemId ===
+                            `${dIndex}-restaurant-${res.itemId}` ? (
+                              <span className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" />
+                            ) : locale === "ar" ? (
+                              "استبدال المطعم"
+                            ) : (
+                              "Replace Restaurant"
+                            )}
+                          </button>
+                        </div>
                       );
                     })}
                   </div>
