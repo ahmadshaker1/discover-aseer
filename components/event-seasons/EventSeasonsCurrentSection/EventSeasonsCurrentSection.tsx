@@ -1,10 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import type { SeasonListingItem } from "../types";
 import SeasonExpandableCard from "./SeasonExpandableCard";
-import SeasonYearFilter from "./SeasonYearFilter";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
@@ -18,32 +17,8 @@ export default function EventSeasonsCurrentSection({
   const t = useTranslations("eventSeasons");
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-
-  const filteredSeasons = useMemo(() => {
-    if (selectedYear === null) return seasons;
-    return seasons.filter((s) => s.years.includes(selectedYear));
-  }, [seasons, selectedYear]);
-
-  const displaySeasons = filteredSeasons.length > 0 ? filteredSeasons : seasons;
-
-  const safeActiveIndex = Math.min(activeIndex, displaySeasons.length - 1);
-
-  const yearOptions = useMemo(
-    () =>
-      [...new Set(seasons.flatMap((s) => s.years))].sort((a, b) => b - a),
-    [seasons],
-  );
-
-  const handleYearSelect = (year: number) => {
-    setSelectedYear(year);
-    setActiveIndex(0);
-  };
-
-  const handleYearClear = () => {
-    setSelectedYear(null);
-    setActiveIndex(0);
-  };
+  const safeActiveIndex =
+    seasons.length === 0 ? 0 : Math.min(activeIndex, seasons.length - 1);
 
   return (
     <section className="mx-auto w-full max-w-[1439px] rounded-[24px] bg-surface px-4 py-8 sm:px-8 md:px-[60px] md:py-8">
@@ -55,20 +30,13 @@ export default function EventSeasonsCurrentSection({
           >
             {t("currentSeasonsTitle")}
           </h2>
-
-          <SeasonYearFilter
-            years={yearOptions}
-            selectedYear={selectedYear}
-            onSelect={handleYearSelect}
-            onClear={handleYearClear}
-          />
         </header>
 
         <div
           className="flex w-full gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] lg:gap-8 lg:overflow-hidden [&::-webkit-scrollbar]:hidden"
           onMouseLeave={() => setActiveIndex(0)}
         >
-          {displaySeasons.map((season, index) => (
+          {seasons.map((season, index) => (
             <SeasonExpandableCard
               key={season.id}
               season={season}
