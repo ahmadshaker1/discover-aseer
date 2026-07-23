@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Script from "next/script";
 import { IBM_Plex_Sans_Arabic, Readex_Pro } from "next/font/google";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
@@ -70,6 +71,11 @@ export default async function LocaleLayout({
         className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >
         <ThemeInitScript />
+        <Script
+          src="https://cdn.userway.org/widget.js"
+          data-account="YyYRLMuqhD"
+          strategy="afterInteractive"
+        />
         <Suspense fallback={null}>
           <TikTokPixel />
           <MetaPixel />
