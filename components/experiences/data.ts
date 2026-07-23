@@ -10,6 +10,8 @@ export interface ApiExperience {
   title: string | null;
   description: string | null;
   image: string | null;
+  /** Directus file UUID (or URL) — preferred over legacy `image`. */
+  image_new?: string | null;
   link: string | null;
   highlighted: string | null;
   duration: string | null;
@@ -61,6 +63,42 @@ export interface ExperienceWithFilterMeta extends ExperienceCardProps {
 
 const DEFAULT_IMAGE = "/assets/experiences/experiences.png";
 
+function getDirectusBaseUrl(): string {
+  return (process.env.NEXT_PUBLIC_DIRECTUS_APP_URL || "").replace(/\/$/, "");
+}
+
+/**
+ * Resolve an experience image field value:
+ * - absolute http(s) URL → use as-is
+ * - site-relative path → use as-is
+ * - Directus file id/UUID → `{directus}/assets/{id}`
+ */
+function toExperienceImageUrl(
+  value: string | null | undefined,
+  directusUrl: string,
+): string | null {
+  const trimmed = typeof value === "string" ? value.trim() : "";
+  if (!trimmed) return null;
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("//")) {
+    return trimmed.startsWith("//") ? `https:${trimmed}` : trimmed;
+  }
+  if (trimmed.startsWith("/")) return trimmed;
+  if (!directusUrl) return null;
+  return `${directusUrl}/assets/${trimmed}`;
+}
+
+/** Prefer `image_new`, then legacy `image`, then local placeholder. */
+function resolveExperienceImageUrl(
+  api: ApiExperience,
+  directusUrl: string = getDirectusBaseUrl(),
+): string {
+  return (
+    toExperienceImageUrl(api.image_new, directusUrl) ??
+    toExperienceImageUrl(api.image, directusUrl) ??
+    DEFAULT_IMAGE
+  );
+}
+
 /** CMS `type` value for cooking experiences (Aseer cuisine page). */
 export const COOKING_EXPERIENCE_TYPE = "فن الطهي";
 
@@ -81,6 +119,8 @@ function isPublishedExperience(api: ApiExperience): boolean {
 function buildExperiencesListUrl(directusUrl: string): string {
   const url = new URL(`${directusUrl.replace(/\/$/, "")}/items/experiences`);
   url.searchParams.set("filter[status][_eq]", "published");
+  // Public role cannot sort by date/date_created; id desc ≈ newest first.
+  url.searchParams.set("sort", "-id");
   return url.toString();
 }
 
@@ -373,6 +413,7 @@ function pickTourAgency(api: ApiExperience, locale: LocaleCode): string {
 export function transformExperience(
   api: ApiExperience,
   locale: LocaleCode = "ar",
+  directusUrl: string = getDirectusBaseUrl(),
 ): ExperienceWithFilterMeta {
   const description = formatExperienceDescription(
     pickExperienceField(api, "description", locale),
@@ -383,8 +424,7 @@ export function transformExperience(
   const category =
     getExperienceTypeTokens(api, locale)[0] ||
     (locale === "en" ? "Experiences" : "التجارب");
-  const imageUrl =
-    api.image && api.image.startsWith("http") ? api.image : DEFAULT_IMAGE;
+  const imageUrl = resolveExperienceImageUrl(api, directusUrl);
   const bookUrl = (api.booking_link || api.link || "").trim() || "#";
   const price = parsePrice(api.price ?? api.price_1);
   const groupSize = parseGroupSize(api.minimum_number_of_people);
@@ -544,7 +584,7 @@ export async function fetchExperienceById(
       const json: ExperiencesApiResponse = await res.json();
       const item = json.data[0];
       if (item && item.id != null && isPublishedExperience(item)) {
-        return transformExperience(item, locale);
+        return transformExperience(item, locale, directusUrl || undefined);
       }
     }
   } catch (error) {
@@ -592,8 +632,11 @@ export async function fetchExperiences(
     const rows = typeFilter
       ? publishedRows.filter((row) => matchesExperienceType(row, typeFilter))
       : publishedRows;
+    const baseUrl = directusUrl.replace(/\/$/, "");
 
-    const experiences = rows.map((row) => transformExperience(row, locale));
+    const experiences = rows
+      .map((row) => transformExperience(row, locale, baseUrl))
+      .sort((a, b) => Number(b.id) - Number(a.id));
     const filterOptions = buildFilterOptions(publishedRows, locale);
     return { experiences, filterOptions };
   } catch (error) {
