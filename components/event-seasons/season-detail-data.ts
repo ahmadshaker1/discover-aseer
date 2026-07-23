@@ -5,6 +5,7 @@ import type {
   SeasonDetailEvent,
   SeasonDetailPageData,
   SeasonEventCategoryId,
+  SeasonEventDetail,
 } from "./types";
 import {
   formatDateRangeLabel,
@@ -254,6 +255,35 @@ async function fetchEventsByIds(ids: number[]): Promise<ApiEvent[]> {
   return json.data ?? [];
 }
 
+const CATEGORY_LABELS: Record<
+  Exclude<SeasonEventCategoryId, "all">,
+  { ar: string; en: string }
+> = {
+  nature: { ar: "طبيعة", en: "Nature" },
+  sports: { ar: "رياضة", en: "Sports" },
+  cultural: { ar: "ثقافي", en: "Cultural" },
+  tech: { ar: "تقنية", en: "Tech" },
+  entertainment: { ar: "ترفيه", en: "Entertainment" },
+  creative: { ar: "إبداعي", en: "Creative" },
+};
+
+function categoryLabelsForEvent(
+  categoryIds: SeasonEventCategoryId[],
+  locale: LocaleCode,
+): string[] {
+  return categoryIds
+    .filter((id): id is Exclude<SeasonEventCategoryId, "all"> => id !== "all")
+    .map((id) => CATEGORY_LABELS[id][locale === "en" ? "en" : "ar"]);
+}
+
+function pickEventDescription(apiEvent: ApiEvent, locale: LocaleCode): string {
+  const row = apiEvent as Record<string, unknown>;
+  const localized =
+    pickLocalizedField(row, "description", locale) ||
+    (typeof apiEvent.description === "string" ? apiEvent.description : "");
+  return stripHtml(localized);
+}
+
 export async function fetchSeasonDetailPage(
   id: string,
   locale: LocaleCode = "ar",
@@ -272,11 +302,72 @@ export async function fetchSeasonDetailPage(
           isVisibleSeasonEvent(e.event_status) &&
           isClickableEvent(e.unclickable),
       )
-      .map((e) => transformEvent(e, locale));
+      .map((e) => transformEvent(e, locale))
+      // Newest first — public CMS can't reliably sort by date; id is creation order.
+      .sort((a, b) => Number(b.listing.id) - Number(a.listing.id));
 
     return { season, events };
   } catch (error) {
     console.error("[event-seasons] Failed to fetch season detail:", error);
+    return null;
+  }
+}
+
+async function fetchEventById(eventId: string): Promise<ApiEvent | null> {
+  const numericId = Number(eventId);
+  if (Number.isFinite(numericId)) {
+    const byNumeric = await fetchEventsByIds([numericId]);
+    const match = byNumeric.find((e) => String(e.id) === String(eventId));
+    if (match) return match;
+  }
+
+  const params = new URLSearchParams({
+    "filter[id][_eq]": eventId,
+    fields: SEASON_EVENT_FIELDS,
+    limit: "1",
+  });
+  const response = await fetch(`${API_BASE}/items/events?${params}`, {
+    headers: getDirectusHeaders(),
+    next: { revalidate: 3600 },
+  });
+  if (!response.ok) return null;
+  const json = (await response.json()) as { data: ApiEvent[] };
+  return json.data?.[0] ?? null;
+}
+
+export async function fetchSeasonEventDetail(
+  seasonId: string,
+  eventId: string,
+  locale: LocaleCode = "ar",
+): Promise<SeasonEventDetail | null> {
+  try {
+    const apiSeason = await fetchSeasonById(seasonId);
+    if (!apiSeason) return null;
+
+    const seasonEventIds = await fetchEventIdsForSeason(seasonId);
+    const belongsToSeason = seasonEventIds.some(
+      (id) => String(id) === String(eventId),
+    );
+    if (!belongsToSeason) return null;
+
+    const apiEvent = await fetchEventById(eventId);
+    if (
+      !apiEvent ||
+      !isVisibleSeasonEvent(apiEvent.event_status) ||
+      !isClickableEvent(apiEvent.unclickable)
+    ) {
+      return null;
+    }
+
+    const event = transformEvent(apiEvent, locale);
+    return {
+      season: transformSeason(apiSeason, locale),
+      event,
+      description: pickEventDescription(apiEvent, locale),
+      categoryLabels: categoryLabelsForEvent(event.categoryIds, locale),
+    };
+  } catch (error) {
+    console.error("[event-seasons] Failed to fetch event detail:", error);
     return null;
   }
 }

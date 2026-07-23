@@ -322,7 +322,17 @@
     "kidFriendly": "Suitable for children",
     "imagePrev": "Previous image",
     "imageNext": "Next image",
-    "eventOver": "Event ended"
+    "eventOver": "Event ended",
+    "eventAboutTitle": "About the event",
+    "eventNoDescription": "More details about this event will be available soon.",
+    "eventCategory": "Category",
+    "eventDates": "Dates",
+    "eventTime": "Time",
+    "eventPrice": "Price",
+    "eventLocation": "Location",
+    "eventAudience": "Audience",
+    "backToSeason": "Back to season",
+    "openEventDetails": "View event details"
   },
   "experiencesPage": {
     "breadcrumb": "Tourist experiences",

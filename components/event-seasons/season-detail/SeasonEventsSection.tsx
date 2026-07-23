@@ -250,7 +250,11 @@ export default function SeasonEventsSection({
         {filteredEvents.length > 0 ? (
           <div className="grid w-full grid-cols-1 items-start justify-items-stretch gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
             {filteredEvents.map((event) => (
-              <EventListingCard key={event.listing.id} event={event.listing} />
+              <EventListingCard
+                key={event.listing.id}
+                event={event.listing}
+                detailHref={`/event-seasons/${season.id}/${event.listing.id}`}
+              />
             ))}
           </div>
         ) : (

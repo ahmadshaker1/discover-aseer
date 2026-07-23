@@ -322,7 +322,17 @@
     "kidFriendly": "مناسب للأطفال",
     "imagePrev": "الصورة السابقة",
     "imageNext": "الصورة التالية",
-    "eventOver": "انتهت الفعالية"
+    "eventOver": "انتهت الفعالية",
+    "eventAboutTitle": "عن الفعالية",
+    "eventNoDescription": "تفاصيل إضافية عن هذه الفعالية ستتوفر قريباً.",
+    "eventCategory": "التصنيف",
+    "eventDates": "التاريخ",
+    "eventTime": "الوقت",
+    "eventPrice": "السعر",
+    "eventLocation": "الموقع",
+    "eventAudience": "الجمهور",
+    "backToSeason": "العودة إلى الموسم",
+    "openEventDetails": "عرض تفاصيل الفعالية"
   },
   "experiencesPage": {
     "breadcrumb": "التجارب السياحية",

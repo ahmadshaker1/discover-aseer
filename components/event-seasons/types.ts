@@ -52,3 +52,10 @@ export interface SeasonDetailPageData {
   season: SeasonDetail;
   events: SeasonDetailEvent[];
 }
+
+export interface SeasonEventDetail {
+  season: SeasonDetail;
+  event: SeasonDetailEvent;
+  description: string;
+  categoryLabels: string[];
+}

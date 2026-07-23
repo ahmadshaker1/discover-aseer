@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { EventListingItem } from "../types";
 import {
   CalendarIcon,
@@ -19,9 +20,11 @@ const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface EventListingCardProps {
   event: EventListingItem;
+  /** When set, the card body navigates here (maps/image controls stay clickable). */
+  detailHref?: string;
 }
 
-const EventListingCard = ({ event }: EventListingCardProps) => {
+const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
   const locale = useLocale();
   const t = useTranslations("eventSeasons");
   const isArabic = locale === "ar";
@@ -47,14 +50,18 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
 
   return (
     <div className="relative z-0 mx-auto h-[440px] w-full max-w-none justify-self-stretch">
-      <article className="relative h-full w-full overflow-hidden rounded-[20px] border border-border bg-neutral-900 shadow-sm">
+      <article
+        className={`relative h-full w-full overflow-hidden rounded-[20px] border border-border bg-neutral-900 shadow-sm ${
+          detailHref ? "transition-opacity hover:opacity-[0.98]" : ""
+        }`}
+      >
         <div className="relative h-full w-full overflow-hidden">
           {event.images.map((src, i) => (
             <img
               key={`${event.id}-${i}-${src}`}
               src={src}
               alt={i === safeIndex ? event.title : ""}
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+              className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
                 i === safeIndex ? "opacity-100" : "opacity-0"
               }`}
               loading="lazy"
@@ -65,10 +72,17 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/90 via-black/35 to-black/10"
             aria-hidden
           />
+          {detailHref ? (
+            <Link
+              href={detailHref}
+              className="absolute inset-0 z-[1]"
+              aria-label={t("openEventDetails")}
+            />
+          ) : null}
 
           {event.isOver ? (
             <div
-              className={`absolute top-2 z-10 flex h-[29px] min-w-[89px] items-center justify-center rounded-[50px] bg-[#00000080] px-3 py-[6px] ${statusCorner}`}
+              className={`pointer-events-none absolute top-2 z-10 flex h-[29px] min-w-[89px] items-center justify-center rounded-[50px] bg-[#00000080] px-3 py-[6px] ${statusCorner}`}
             >
               <span
                 className="min-w-0 truncate text-start text-[11px] font-medium leading-none text-white"
@@ -80,7 +94,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           ) : null}
 
           <div
-            className={`absolute top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-[14px] font-bold leading-none text-white ${counterCorner}`}
+            className={`pointer-events-none absolute top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-[14px] font-bold leading-none text-white ${counterCorner}`}
             style={{ fontFamily: ara }}
           >
             {safeIndex + 1}/{imageCount}
@@ -89,13 +103,13 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
           {imageCount > 1 ? (
             <div
               dir={isArabic ? "rtl" : "ltr"}
-              className="absolute inset-x-0 top-1/2 z-10 mx-auto flex h-8 w-full -translate-y-1/2 items-center justify-between px-4"
+              className="absolute inset-x-0 top-1/2 z-20 mx-auto flex h-8 w-full -translate-y-1/2 items-center justify-between px-4"
             >
               <button
                 type="button"
                 onClick={() => setImageIndex((i) => Math.max(0, i - 1))}
                 disabled={!canGoPrev}
-                className="shrink-0 opacity-50 transition enabled:cursor-pointer enabled:opacity-100 disabled:cursor-not-allowed"
+                className="relative z-20 shrink-0 opacity-50 transition enabled:cursor-pointer enabled:opacity-100 disabled:cursor-not-allowed"
                 aria-label={t("imagePrev")}
               >
                 <CardImageNavPrev />
@@ -106,7 +120,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
                   setImageIndex((i) => Math.min(imageCount - 1, i + 1))
                 }
                 disabled={!canGoNext}
-                className="shrink-0 opacity-50 transition enabled:cursor-pointer enabled:opacity-100 disabled:cursor-not-allowed"
+                className="relative z-20 shrink-0 opacity-50 transition enabled:cursor-pointer enabled:opacity-100 disabled:cursor-not-allowed"
                 aria-label={t("imageNext")}
               >
                 <CardImageNavNext />
@@ -114,7 +128,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
             </div>
           ) : null}
 
-          <div className="absolute inset-x-0 bottom-0 z-5 flex w-full flex-col items-stretch gap-3 p-4 pt-24 text-start">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-5 flex w-full flex-col items-stretch gap-3 p-4 pt-24 text-start">
             {event.isKidFriendly ? (
               <div className="flex w-full items-center justify-start gap-1">
                 <KidFriendlyIcon />
@@ -146,7 +160,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
               </div>
             ) : null}
             <div className="flex w-full flex-col items-stretch gap-3 text-start">
-              <div className="flex w-full items-center gap-2 text-[#EAEAEA]">
+              <div className="pointer-events-auto relative z-20 flex w-full items-center gap-2 text-[#EAEAEA]">
                 <MapPinIcon />
                 <a
                   href={event.mapsUrl}
@@ -154,6 +168,7 @@ const EventListingCard = ({ event }: EventListingCardProps) => {
                   rel="noopener noreferrer"
                   className="min-w-0 flex-1 text-start text-[14px] font-medium leading-none text-white underline decoration-white underline-offset-2 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]"
                   style={{ fontFamily: ibm }}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {event.mapsLinkLabel}
                 </a>

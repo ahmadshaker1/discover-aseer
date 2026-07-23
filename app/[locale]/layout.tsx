@@ -60,8 +60,8 @@ export default async function LocaleLayout({
   const appLocale = locale as AppLocale;
   setRequestLocale(appLocale);
   const messages = await getMessages();
-  // UserWay: 1 = bottom right, 2 = bottom left
-  const userwayPosition = appLocale === "ar" ? "2" : "1";
+  // UserWay: 3 = bottom right, 5 = bottom left
+  const userwayPosition = appLocale === "ar" ? "3" : "5";
 
   return (
     <html
