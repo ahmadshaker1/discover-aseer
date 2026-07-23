@@ -130,6 +130,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const [isSharing, setIsSharing] = useState(false);
   const [replacingItemId, setReplacingItemId] = useState<string | null>(null);
+  const [isAddingDay, setIsAddingDay] = useState<number | null>(null);
   const currentDay = planData?.days?.[selectedDayIndex];
 
   const handleDeleteDay = (index: number) => {
@@ -201,6 +202,50 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       );
     } finally {
       setReplacingItemId(null);
+    }
+  };
+
+  const handleAddDay = async () => {
+    const newDayIndex = planData.days.length;
+    setIsAddingDay(newDayIndex);
+
+    try {
+      const payload = { currentPlanData: planData };
+
+      const res = await fetch("/api/new-planner/add-day", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        console.error("Backend error response:", errorData);
+        throw new Error(errorData?.error || "Failed to add day");
+      }
+
+      const data = await res.json();
+      if (data.newDay) {
+        const newPlanData = {
+          ...planData,
+          planDetails: {
+            ...planData.planDetails,
+            totalDays: planData.days.length + 1,
+          },
+          days: [...planData.days, data.newDay],
+        };
+        setPlanData(newPlanData);
+        setSelectedDayIndex(newPlanData.days.length - 1);
+      }
+    } catch (error) {
+      console.error("Error adding day:", error);
+      alert(
+        locale === "ar"
+          ? "حدث خطأ أثناء إضافة اليوم الجديد"
+          : "Error adding a new day",
+      );
+    } finally {
+      setIsAddingDay(null);
     }
   };
 
@@ -370,7 +415,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
 
       {/* Days Cards Selector */}
       <div
-        className="w-full flex gap-4 overflow-x-auto pb-4 print-hidden"
+        className="w-full flex flex-wrap gap-4 pb-4 print-hidden"
         style={{ fontFamily: "IBM Plex Sans Arabic" }}
       >
         {days.map((day: any, index: number) => {
@@ -385,11 +430,11 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                   : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"
               }`}
               style={{
-                width: "105px",
-                minHeight: "120px",
-                padding: "16px 12px",
+                width: "90px",
+                minHeight: "100px",
+                padding: "12px 8px",
                 gap: "8px",
-                borderRadius: "20px",
+                borderRadius: "16px",
                 border: isSelected
                   ? "2px solid #00BBB4"
                   : "1px solid rgba(0, 0, 0, 0.33)",
@@ -423,6 +468,52 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                   }
                 />
               </button>
+            </div>
+          );
+        })}
+
+        {/* Placeholder for remaining days up to 7 */}
+        {Array.from({ length: Math.max(0, 7 - days.length) }).map((_, i) => {
+          const newDayIndex = days.length + i;
+          const isLoadingThisDay = isAddingDay === newDayIndex;
+
+          return (
+            <div
+              key={`placeholder-${newDayIndex}`}
+              onClick={() => {
+                if (newDayIndex === days.length && !isAddingDay) {
+                  handleAddDay();
+                } else if (newDayIndex > days.length) {
+                }
+              }}
+              className={`cursor-pointer transition-colors flex flex-col justify-center items-center shrink-0 bg-transparent text-black/50 dark:text-white/50 ${newDayIndex > days.length ? "opacity-50 cursor-not-allowed" : "hover:bg-black/5 dark:hover:bg-white/5"}`}
+              style={{
+                width: "90px",
+                minHeight: "100px",
+                padding: "12px 8px",
+                gap: "8px",
+                borderRadius: "16px",
+                border: "2px dashed rgba(0, 0, 0, 0.33)",
+              }}
+            >
+              {isLoadingThisDay ? (
+                <span className="animate-spin h-6 w-6 border-2 border-black dark:border-white border-t-transparent rounded-full" />
+              ) : (
+                <>
+                  <span className="text-2xl font-bold leading-none mb-1">
+                    +
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      textAlign: "center",
+                    }}
+                  >
+                    {t(`day${newDayIndex + 1}`)}
+                  </span>
+                </>
+              )}
             </div>
           );
         })}
