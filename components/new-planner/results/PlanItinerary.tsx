@@ -250,6 +250,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   };
 
   useEffect(() => {
+    console.log("=== PLAN DATA FROM API ===", planData);
     if (!planData || !planData.days) return;
     const imageUrls: string[] = [];
     planData.days.forEach((day: any) => {

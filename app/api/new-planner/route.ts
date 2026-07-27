@@ -115,10 +115,12 @@ export async function POST(request: NextRequest) {
       "--- RULES ---",
       "1. Output valid JSON only. No markdown formatting, no extra text before or after the JSON.",
       "2. Pick appropriate items from the catalogs by matching the user's details.",
-      "3. For Events, return ONLY the itemId.",
-      "4. For Restaurants, return the itemId and the mealType (e.g. 'breakfast', 'lunch', 'dinner', 'coffee', 'tea'). Ensure you provide the number of meals requested per day.",
-      "5. For Experiences, return the itemId, a scheduled 'time', and 'travelToNext'.",
-      "6. Limit each day to reasonable activities based on the trip style.",
+      "3. Structure each day into exactly three periods: 'Morning', 'Afternoon', 'Evening'.",
+      "4. Inside each period, provide an 'items' array containing the activities for that period. You determine the order.",
+      "5. For Event items, set 'type' to 'event', and return 'itemId' and a scheduled 'time' as a time range (e.g., '09:00 AM - 11:00 AM').",
+      "6. For Restaurant items, set 'type' to 'restaurant', and return 'itemId' and 'mealType' (e.g. 'breakfast', 'lunch', 'dinner').",
+      "7. For Experience items, set 'type' to 'experience', and return 'itemId' and 'travelToNext'.",
+      "8. Limit each day to reasonable activities based on the trip style. You DO NOT need to include all item types in every period. Adjust the volume and types of items per period based on the user's requested pace and preferences.",
       "",
       "--- JSON SCHEMA ---",
       `{
@@ -137,20 +139,22 @@ export async function POST(request: NextRequest) {
         `        {
           "dayLabel": "Day ${dayNumber}",
           "date": "Day ${dayNumber} Date",
-          "events": [
-            { "itemId": 1 }
-          ],
-          "experiences": [
-            { 
-              "itemId": 2, 
-              "time": "10:00 AM",
-              "travelToNext": { "duration": "10 min" }
-            }
-          ],
-          "restaurants": [
-            { 
-              "itemId": 3, 
-              "mealType": "breakfast" 
+          "periods": [
+            {
+              "periodName": "Morning",
+              "items": [
+                { "type": "event", "itemId": 1, "time": "09:00 AM - 11:00 AM" },
+                { "type": "restaurant", "itemId": 3, "mealType": "breakfast" },
+                { "type": "experience", "itemId": 2, "travelToNext": { "duration": "15 min" } }
+              ]
+            },
+            {
+              "periodName": "Afternoon",
+              "items": []
+            },
+            {
+              "periodName": "Evening",
+              "items": []
             }
           ]
         }${i < numberOfDays - 1 ? "," : ""}`,
@@ -256,28 +260,27 @@ export async function POST(request: NextRequest) {
       const plan = scheduleData as any;
       if (Array.isArray(plan.days)) {
         plan.days.forEach((day: any) => {
-          if (Array.isArray(day.events)) {
-            day.events = day.events.map((ev: any) => {
-              const matched = eventsData.data.find(
-                (e: any) => String(e.id) === String(ev.itemId),
-              );
-              return { ...ev, itemData: matched || null };
-            });
-          }
-          if (Array.isArray(day.experiences)) {
-            day.experiences = day.experiences.map((exp: any) => {
-              const matched = experiencesData.data.find(
-                (e: any) => String(e.id) === String(exp.itemId),
-              );
-              return { ...exp, itemData: matched || null };
-            });
-          }
-          if (Array.isArray(day.restaurants)) {
-            day.restaurants = day.restaurants.map((res: any) => {
-              const matched = restaurantsData.data.find(
-                (r: any) => String(r.id) === String(res.itemId),
-              );
-              return { ...res, itemData: matched || null };
+          if (Array.isArray(day.periods)) {
+            day.periods.forEach((period: any) => {
+              if (Array.isArray(period.items)) {
+                period.items = period.items.map((item: any) => {
+                  let matched = null;
+                  if (item.type === "event") {
+                    matched = eventsData.data.find(
+                      (e: any) => String(e.id) === String(item.itemId),
+                    );
+                  } else if (item.type === "experience") {
+                    matched = experiencesData.data.find(
+                      (e: any) => String(e.id) === String(item.itemId),
+                    );
+                  } else if (item.type === "restaurant") {
+                    matched = restaurantsData.data.find(
+                      (r: any) => String(r.id) === String(item.itemId),
+                    );
+                  }
+                  return { ...item, itemData: matched || null };
+                });
+              }
             });
           }
         });
