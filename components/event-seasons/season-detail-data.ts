@@ -26,7 +26,7 @@ function getDirectusHeaders(): HeadersInit | undefined {
 
 // Public role cannot read `thumbnail`, `hero_mobile`, `start_time`, or `end_time` — requesting them 403s the whole query.
 const SEASON_EVENT_FIELDS =
-  "id,title,title_en,start_date,end_date,date,image,image_new,map,city,tags,description,free_event,price,not_allowed_for_kids,audience_type,event_status,unclickable";
+  "id,title,title_en,start_date,end_date,date,image,image_new,map,city,tags,description,description_en,free_event,price,not_allowed_for_kids,audience_type,event_status,unclickable";
 
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",
@@ -65,6 +65,7 @@ interface ApiEvent {
   city?: string | null;
   tags?: string | null;
   description?: string | null;
+  description_en?: string | null;
   free_event?: string | null;
   price?: string | number | null;
   event_status?: string | null;
