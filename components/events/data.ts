@@ -177,8 +177,9 @@ function buildImages(apiEvent: ApiEvent): string[] {
 function formatDate(
   dateInput: string | null | undefined,
   locale: LocaleCode,
+  referenceYear?: number,
 ): string | null {
-  const parsed = parseDateOnly(dateInput);
+  const parsed = parseDateOnly(dateInput, referenceYear);
   if (!parsed) return null;
   return new Intl.DateTimeFormat(getDateFormatLocale(locale), {
     day: "numeric",
@@ -192,11 +193,12 @@ function buildDateRange(
   endDate: string | null | undefined,
   fallbackDate: string | null | undefined,
   locale: LocaleCode,
+  referenceYear?: number,
 ): string {
   const resolvedStart = startDate || fallbackDate;
   const resolvedEnd = endDate || fallbackDate || startDate;
-  const start = formatDate(resolvedStart, locale);
-  const end = formatDate(resolvedEnd, locale);
+  const start = formatDate(resolvedStart, locale, referenceYear);
+  const end = formatDate(resolvedEnd, locale, referenceYear);
   if (start && end) return start === end ? start : `${start} - ${end}`;
   return start || end || (locale === "ar" ? "غير محدد" : "Not specified");
 }
@@ -245,11 +247,27 @@ function isClickableEvent(flag: string | boolean | null | undefined): boolean {
   return !["true", "1", "yes"].includes(value);
 }
 
-function isEventOver(apiEvent: ApiEvent): boolean {
+function resolveEventReferenceYear(
+  apiEvent: ApiEvent,
+  referenceYear?: number,
+): number | undefined {
+  if (referenceYear != null) return referenceYear;
+  for (const value of [apiEvent.end_date, apiEvent.start_date, apiEvent.date]) {
+    const match = String(value || "").match(/\b((?:19|20)\d{2})\b/);
+    if (match) return Number(match[1]);
+  }
+  return undefined;
+}
+
+function isEventOver(
+  apiEvent: ApiEvent,
+  referenceYear?: number,
+): boolean {
+  const year = resolveEventReferenceYear(apiEvent, referenceYear);
   const end =
-    parseDateOnly(apiEvent.end_date) ||
-    parseDateOnly(apiEvent.date) ||
-    parseDateOnly(apiEvent.start_date);
+    parseDateOnly(apiEvent.end_date, year) ||
+    parseDateOnly(apiEvent.date, year) ||
+    parseDateOnly(apiEvent.start_date, year);
   if (!end) return false;
 
   const today = new Date();
@@ -261,11 +279,13 @@ function isEventOver(apiEvent: ApiEvent): boolean {
 export function transformApiEventToListingItem(
   apiEvent: ApiEvent,
   locale: LocaleCode = "ar",
+  referenceYear?: number,
 ): EventListingItem {
   const title =
     pickLocalizedField(apiEvent, "title", locale) ||
     (locale === "ar" ? "فعالية بدون عنوان" : "Untitled event");
   const city = (apiEvent.city || "").trim();
+  const year = resolveEventReferenceYear(apiEvent, referenceYear);
 
   const freeFromFlag = parseIsFree(apiEvent.free_event);
   const isFree =
@@ -284,7 +304,7 @@ export function transformApiEventToListingItem(
       apiEvent.not_allowed_for_kids,
       apiEvent.audience_type,
     ),
-    isOver: isEventOver(apiEvent),
+    isOver: isEventOver(apiEvent, year),
     priceLabel: toPriceLabel(isFree, apiEvent.price, locale),
     locationLine:
       locale === "ar"
@@ -308,6 +328,7 @@ export function transformApiEventToListingItem(
       apiEvent.end_date,
       apiEvent.date,
       locale,
+      year,
     ),
     timeRange: buildTimeRange(apiEvent.start_time, apiEvent.end_time, locale),
     venueLabel: title,

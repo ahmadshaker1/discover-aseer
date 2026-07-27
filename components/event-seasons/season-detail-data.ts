@@ -174,24 +174,35 @@ function transformSeason(
   };
 }
 
-function resolveEventDates(apiEvent: ApiEvent): {
+function seasonReferenceYear(apiSeason: ApiSeason): number | undefined {
+  const end = parseDateOnly(apiSeason.end_date);
+  const start = parseDateOnly(apiSeason.start_date);
+  return end?.getFullYear() ?? start?.getFullYear();
+}
+
+function resolveEventDates(
+  apiEvent: ApiEvent,
+  referenceYear?: number,
+): {
   start: Date | null;
   end: Date | null;
 } {
-  const fallback = parseDateOnly(apiEvent.date);
-  const start = parseDateOnly(apiEvent.start_date) ?? fallback;
-  const end = parseDateOnly(apiEvent.end_date) ?? start ?? fallback;
+  const fallback = parseDateOnly(apiEvent.date, referenceYear);
+  const start = parseDateOnly(apiEvent.start_date, referenceYear) ?? fallback;
+  const end =
+    parseDateOnly(apiEvent.end_date, referenceYear) ?? start ?? fallback;
   return { start, end };
 }
 
 function transformEvent(
   apiEvent: ApiEvent,
   locale: LocaleCode,
+  referenceYear?: number,
 ): SeasonDetailEvent {
-  const { start, end } = resolveEventDates(apiEvent);
+  const { start, end } = resolveEventDates(apiEvent, referenceYear);
 
   return {
-    listing: transformApiEventToListingItem(apiEvent, locale),
+    listing: transformApiEventToListingItem(apiEvent, locale, referenceYear),
     categoryIds: categoriesFromTags(parseTags(apiEvent.tags)),
     startDate: start ? toIsoDateString(start) : null,
     endDate: end ? toIsoDateString(end) : null,
@@ -294,6 +305,7 @@ export async function fetchSeasonDetailPage(
     if (!apiSeason) return null;
 
     const season = transformSeason(apiSeason, locale);
+    const referenceYear = seasonReferenceYear(apiSeason);
     const eventIds = await fetchEventIdsForSeason(id);
     const apiEvents = await fetchEventsByIds(eventIds);
 
@@ -303,7 +315,7 @@ export async function fetchSeasonDetailPage(
           isVisibleSeasonEvent(e.event_status) &&
           isClickableEvent(e.unclickable),
       )
-      .map((e) => transformEvent(e, locale))
+      .map((e) => transformEvent(e, locale, referenceYear))
       // Newest first — public CMS can't reliably sort by date; id is creation order.
       .sort((a, b) => Number(b.listing.id) - Number(a.listing.id));
 
@@ -360,7 +372,11 @@ export async function fetchSeasonEventDetail(
       return null;
     }
 
-    const event = transformEvent(apiEvent, locale);
+    const event = transformEvent(
+      apiEvent,
+      locale,
+      seasonReferenceYear(apiSeason),
+    );
     return {
       season: transformSeason(apiSeason, locale),
       event,

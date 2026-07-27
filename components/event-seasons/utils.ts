@@ -1,6 +1,42 @@
 import type { LocaleCode } from "@/lib/i18n/localized";
 
-export function parseDateOnly(value: string | null | undefined): Date | null {
+const MONTH_INDEX: Record<string, number> = {
+  jan: 0,
+  january: 0,
+  feb: 1,
+  february: 1,
+  mar: 2,
+  march: 2,
+  apr: 3,
+  april: 3,
+  may: 4,
+  jun: 5,
+  june: 5,
+  jul: 6,
+  july: 6,
+  aug: 7,
+  august: 7,
+  sep: 8,
+  sept: 8,
+  september: 8,
+  oct: 9,
+  october: 9,
+  nov: 10,
+  november: 10,
+  dec: 11,
+  december: 11,
+};
+
+/**
+ * Parse CMS date strings into a local calendar date.
+ * Supports ISO (`YYYY-MM-DD`), `DD/MM/YYYY`, and day-month forms used by
+ * Directus events (`11-Jul`, `1 August 2026`). Yearless day-month values
+ * use `referenceYear` (or the current year) — never Date.parse's 2001 default.
+ */
+export function parseDateOnly(
+  value: string | null | undefined,
+  referenceYear?: number,
+): Date | null {
   const clean = (value || "").trim();
   if (!clean) return null;
 
@@ -9,16 +45,34 @@ export function parseDateOnly(value: string | null | undefined): Date | null {
     return new Date(Number(dmy[3]), Number(dmy[2]) - 1, Number(dmy[1]));
   }
 
-  const iso = clean.split("T")[0];
-  const [year, month, day] = iso.split("-").map(Number);
-  if (year && month && day) {
-    return new Date(year, month - 1, day);
+  const isoPart = clean.split("T")[0];
+  const iso = isoPart.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso) {
+    return new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
   }
 
-  const parsed = Date.parse(clean);
-  if (!Number.isNaN(parsed)) {
-    const d = new Date(parsed);
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  // `11-Jul`, `23-Aug`, `1 August 2026`, `31-Aug-2026`
+  const dayMon = clean.match(
+    /^(\d{1,2})[-\s]+([A-Za-z]+)(?:[-\s]+(\d{4}))?$/i,
+  );
+  if (dayMon) {
+    const day = Number(dayMon[1]);
+    const month = MONTH_INDEX[dayMon[2].toLowerCase()];
+    if (month != null && day >= 1 && day <= 31) {
+      const year = dayMon[3]
+        ? Number(dayMon[3])
+        : (referenceYear ?? new Date().getFullYear());
+      return new Date(year, month, day);
+    }
+  }
+
+  // Avoid Date.parse on yearless strings — V8 defaults them to 2001.
+  if (/\b(?:19|20)\d{2}\b/.test(clean)) {
+    const parsed = Date.parse(clean);
+    if (!Number.isNaN(parsed)) {
+      const d = new Date(parsed);
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
   }
 
   return null;
