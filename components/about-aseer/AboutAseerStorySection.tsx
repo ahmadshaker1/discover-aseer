@@ -29,36 +29,12 @@ export interface AboutStoryContent {
   sectionTitle: string;
   sectionSubtitle: string;
   sectionCaption: string;
-  prevLabel: string;
-  nextLabel: string;
   highlightCards: AboutStoryHighlightCard[];
   slides: AboutStorySlide[];
 }
 
 interface AboutAseerStorySectionProps {
   content: AboutStoryContent;
-}
-
-function ChevronIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-      className="ltr:rotate-180"
-    >
-      <path
-        d="M10.8555 4.5L6.35547 9L10.8555 13.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
 }
 
 const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
@@ -91,10 +67,6 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
       block: "nearest",
     });
   }, [activeIndex]);
-
-  const goNext = () => {
-    setActiveIndex((prev) => (prev >= lastIndex ? 0 : prev + 1));
-  };
 
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]">
@@ -193,52 +165,41 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
             />
           </div>
 
-          <div className="absolute inset-0 flex flex-col justify-start gap-8 p-5 text-white sm:gap-10 sm:p-8 lg:p-10">
+          <div className="absolute inset-0 flex flex-col justify-between gap-8 p-5 text-white sm:gap-10 sm:p-8 lg:p-10">
             <div className="flex w-full items-start justify-start">
-              <div className="flex max-w-full items-start gap-2">
-                <div
-                  ref={tabsRef}
-                  className="flex min-w-0 items-start gap-2 overflow-x-auto pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                  role="tablist"
-                  aria-label={content.sectionTitle}
-                >
-                  {slides.map((slide, index) => {
-                    const isActive = index === activeIndex;
-                    return (
-                      <button
-                        key={slide.id}
-                        type="button"
-                        role="tab"
-                        aria-selected={isActive}
-                        data-slide-tab={index}
-                        onClick={() => setActiveIndex(index)}
-                        className={`relative shrink-0 cursor-pointer rounded-[10px] px-4 py-2.5 text-[13px] font-bold leading-none transition-colors sm:px-5 sm:text-[14px] ${
-                          isActive
-                            ? "bg-primary text-white"
-                            : "border border-white/85 bg-black/30 text-white hover:bg-white/10"
-                        }`}
-                        style={{ fontFamily: ara }}
-                      >
-                        {slide.title}
-                        {isActive ? (
-                          <span
-                            aria-hidden
-                            className="absolute left-1/2 top-[calc(100%+6px)] size-0 -translate-x-1/2 border-x-[6px] border-t-[7px] border-x-transparent border-t-primary"
-                          />
-                        ) : null}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={goNext}
-                  aria-label={content.nextLabel}
-                  className="mt-0.5 flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-[10px] border border-white/35 bg-black/40 text-white transition-colors hover:bg-black/60"
-                >
-                  <ChevronIcon />
-                </button>
+              <div
+                ref={tabsRef}
+                className="flex min-w-0 max-w-full items-start gap-2 overflow-x-auto pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                role="tablist"
+                aria-label={content.sectionTitle}
+              >
+                {slides.map((slide, index) => {
+                  const isActive = index === activeIndex;
+                  return (
+                    <button
+                      key={slide.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      data-slide-tab={index}
+                      onClick={() => setActiveIndex(index)}
+                      className={`relative shrink-0 cursor-pointer rounded-[10px] px-4 py-2.5 text-[13px] font-bold leading-none transition-colors sm:px-5 sm:text-[14px] ${
+                        isActive
+                          ? "bg-primary text-white"
+                          : "border border-white/85 bg-black/30 text-white hover:bg-white/10"
+                      }`}
+                      style={{ fontFamily: ara }}
+                    >
+                      {slide.title}
+                      {isActive ? (
+                        <span
+                          aria-hidden
+                          className="absolute left-1/2 top-[calc(100%+6px)] size-0 -translate-x-1/2 border-x-[6px] border-t-[7px] border-x-transparent border-t-primary"
+                        />
+                      ) : null}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

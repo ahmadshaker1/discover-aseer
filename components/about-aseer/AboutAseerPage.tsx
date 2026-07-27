@@ -57,15 +57,13 @@ const AboutAseerPage = async () => {
       sectionTitle: t("story.sectionTitle"),
       sectionSubtitle: t("story.sectionSubtitle"),
       sectionCaption: t("story.sectionCaption"),
-      prevLabel: tCommon("previous"),
-      nextLabel: tCommon("next"),
       highlightCards,
       slides: [
         {
-          id: "heritage-3",
-          image: "/assets/aboutAseer/heritage.jpg",
-          title: t("story.slides.heritage3.title"),
-          description: t("story.slides.heritage3.description"),
+          id: "culture-1",
+          image: "/assets/aboutAseer/culture.jpg",
+          title: t("story.slides.culture1.title"),
+          description: t("story.slides.culture1.description"),
         },
         {
           id: "nature-2",
@@ -74,10 +72,10 @@ const AboutAseerPage = async () => {
           description: t("story.slides.nature2.description"),
         },
         {
-          id: "culture-1",
-          image: "/assets/aboutAseer/culture.jpg",
-          title: t("story.slides.culture1.title"),
-          description: t("story.slides.culture1.description"),
+          id: "heritage-3",
+          image: "/assets/aboutAseer/heritage.jpg",
+          title: t("story.slides.heritage3.title"),
+          description: t("story.slides.heritage3.description"),
         },
         {
           id: "architectural-4",
