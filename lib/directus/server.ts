@@ -247,22 +247,18 @@ async function directusRegisterPublic(
     last_name: string;
   },
 ) {
-  const verificationUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-
-  const body: Record<string, string> = {
-    email: input.email.trim().toLowerCase(),
-    password: input.password,
-    first_name: input.first_name.trim(),
-    last_name: input.last_name.trim(),
-  };
-  if (verificationUrl) {
-    body.verification_url = `${verificationUrl.replace(/\/$/, "")}/tour-guides/portal`;
-  }
-
+  // Do not send `verification_url` — Directus rejects URLs not on
+  // USER_REGISTER_URL_ALLOW_LIST. Without it, Directus uses its own
+  // PUBLIC_URL verify-email link.
   const response = await fetch(`${baseUrl}/users/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      email: input.email.trim().toLowerCase(),
+      password: input.password,
+      first_name: input.first_name.trim(),
+      last_name: input.last_name.trim(),
+    }),
   });
 
   if (!response.ok) {
