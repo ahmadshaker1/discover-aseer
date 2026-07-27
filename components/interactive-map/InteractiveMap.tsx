@@ -17,6 +17,7 @@ import {
   resolvePlaceCategoryKey,
   type MapCategoryKey,
 } from "./mapCategories";
+import { placeMatchesMapSearch } from "./mapSearch";
 
 import { MapListingsOpenIcon } from "./MapListingsOpenIcon";
 import { MapListingsSidebar } from "./MapListingsSidebar";
@@ -185,7 +186,6 @@ const InteractiveMap = ({
   }, []);
 
   const filteredPlaces = useMemo(() => {
-    const normalizedSearch = searchTerm.trim().toLowerCase();
     return places.filter((place) => {
       const placeCategoryKey = resolvePlaceCategoryKey(place);
       const categoryMatch =
@@ -195,10 +195,7 @@ const InteractiveMap = ({
       const cityMatch = selectedCity === ui.all || place.city === selectedCity;
       const seasonMatch =
         selectedSeason === ui.all || place.season === selectedSeason;
-      const searchMatch =
-        normalizedSearch.length === 0 ||
-        place.title.toLowerCase().includes(normalizedSearch) ||
-        place.description.toLowerCase().includes(normalizedSearch);
+      const searchMatch = placeMatchesMapSearch(place, searchTerm);
       return categoryMatch && cityMatch && seasonMatch && searchMatch;
     });
   }, [
