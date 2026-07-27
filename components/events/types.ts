@@ -29,6 +29,9 @@ export interface EventListingItem {
   mapsLinkLabel: string;
   dateRange: string;
   timeRange: string;
+  price?: string | number | null;
+  startDate?: string | null;
+  endDate?: string | null;
   /** Expanded header subtitle / venue (e.g. under title). */
   venueLabel?: string;
 }

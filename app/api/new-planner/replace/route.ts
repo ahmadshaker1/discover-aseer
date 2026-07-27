@@ -62,22 +62,21 @@ export async function POST(request: NextRequest) {
 
     // Also filter out items already in that day
     const dayData = currentPlanData.days[dayIndex];
-    if (itemType === "restaurant" && dayData.restaurants) {
-      const existingIds = dayData.restaurants.map((r: any) => String(r.itemId));
-      mappedCatalog = mappedCatalog.filter(
-        (item: any) => !existingIds.includes(String(item.id)),
-      );
-    } else if (itemType === "experience" && dayData.experiences) {
-      const existingIds = dayData.experiences.map((r: any) => String(r.itemId));
-      mappedCatalog = mappedCatalog.filter(
-        (item: any) => !existingIds.includes(String(item.id)),
-      );
-    } else if (itemType === "event" && dayData.events) {
-      const existingIds = dayData.events.map((r: any) => String(r.itemId));
-      mappedCatalog = mappedCatalog.filter(
-        (item: any) => !existingIds.includes(String(item.id)),
-      );
+    const existingIds: string[] = [];
+    if (dayData.periods) {
+      dayData.periods.forEach((period: any) => {
+        if (period.items) {
+          period.items.forEach((item: any) => {
+            if (item.type === itemType) {
+              existingIds.push(String(item.itemId));
+            }
+          });
+        }
+      });
     }
+    mappedCatalog = mappedCatalog.filter(
+      (item: any) => !existingIds.includes(String(item.id)),
+    );
 
     // 4. Build Prompt
     const prompt = `
@@ -97,11 +96,8 @@ JSON Schema:
 {
   "newItemId": 123
 ${itemType === "restaurant" ? ', "mealType": "lunch"' : ""}
-${
-  itemType === "experience"
-    ? ', "time": "10:00 AM", "travelToNext": { "duration": "15 min" }'
-    : ""
-}
+${itemType === "event" ? ', "time": "09:00 AM - 11:00 AM"' : ""}
+${itemType === "experience" ? ', "travelToNext": { "duration": "15 min" }' : ""}
 }
 `;
 
@@ -162,14 +158,17 @@ ${
     }
 
     const finalItem = {
+      type: itemType,
       itemId: replacementData.newItemId,
       itemData: matchedItemData,
       ...(itemType === "restaurant"
         ? { mealType: replacementData.mealType || "lunch" }
         : {}),
+      ...(itemType === "event"
+        ? { time: replacementData.time || "09:00 AM - 11:00 AM" }
+        : {}),
       ...(itemType === "experience"
         ? {
-            time: replacementData.time || "10:00 AM",
             travelToNext: replacementData.travelToNext || {
               duration: "15 min",
             },

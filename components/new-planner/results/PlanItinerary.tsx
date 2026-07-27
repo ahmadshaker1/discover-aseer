@@ -20,103 +20,333 @@ interface PlanItineraryProps {
   data: any;
 }
 
-const PlannerRestaurantCard = ({
+const TimelinePeriodHeader = ({ periodName }: { periodName: string }) => {
+  return (
+    <div className="flex items-center gap-3 mb-6 mt-8 w-full print:mt-4">
+      <Image
+        src="/assets/planner/haze-line.svg"
+        alt="Period"
+        width={24}
+        height={24}
+        className="dark:brightness-0 dark:invert"
+      />
+      <h4 className="text-2xl font-bold text-black dark:text-white capitalize">
+        {periodName}
+      </h4>
+    </div>
+  );
+};
+
+const PlannerRestaurantCardNew = ({
   restaurant,
   mealType,
-}: {
-  restaurant: Restaurant;
-  mealType: string;
-}) => {
-  const locale = useLocale() as "ar" | "en";
-  const tCommon = useTranslations("common");
-
-  const mealTypeTranslations: Record<string, string> = {
-    breakfast: "إفطار",
-    lunch: "غداء",
-    dinner: "عشاء",
-    coffee: "قهوة",
-    tea: "شاي",
-  };
-  const localizedMealType =
-    locale === "ar"
-      ? mealTypeTranslations[mealType.toLowerCase()] || mealType
-      : mealType;
-
-  const showAseeriBadge = hasAseeriCuisine(restaurant.cuisineTypes);
-  const otherCuisineLabel = formatCuisineTypes(
-    restaurant.cuisineTypes?.filter((type) => type !== "aseeri_cuisine"),
-    locale,
-  );
-
+  onReplace,
+  isReplacing,
+  locale,
+}: any) => {
   return (
-    <div className="flex flex-col gap-2 w-[220px] shrink-0">
+    <div className="flex flex-col gap-2 w-full mb-6">
       <div className="flex items-center gap-2">
         <Image
           src="/assets/planner/restaurant-2-line.svg"
           alt="Restaurant"
-          width={20}
-          height={20}
+          width={24}
+          height={24}
           className="dark:brightness-0 dark:invert"
         />
-        <span className="text-base font-bold text-[#6027D2] dark:text-white capitalize">
-          {localizedMealType}
+        <span className="text-lg font-bold text-[#6027D2] dark:text-white capitalize">
+          {locale === "ar" ? "مطعم" : "Restaurant"}
         </span>
       </div>
-      <button
-        type="button"
-        onClick={() =>
-          window.open(restaurant.mapsUrl, "_blank", "noopener,noreferrer")
-        }
-        className="group flex h-[260px] w-full flex-col overflow-hidden rounded-2xl bg-surface text-foreground shadow-lg transition-transform duration-300 hover:-translate-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary text-start"
-      >
-        <div className="relative h-32 w-full overflow-hidden shrink-0">
+      <div className="flex flex-row p-4 items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full">
+        <div className="w-[120px] h-[120px] shrink-0 rounded-[8px] overflow-hidden">
           <img
             src={restaurant.image}
             alt={restaurant.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/0 to-black/10" />
         </div>
-
-        <div className="flex flex-col justify-between px-4 py-3 flex-1">
-          <div className="space-y-1">
-            <h3 className="text-start text-base font-bold text-foreground [unicode-bidi:plaintext] line-clamp-1">
-              {restaurant.name}
-            </h3>
-            <div className="flex items-center justify-start  text-xs text-muted-foreground">
-              {restaurant.distanceKm > 0 && (
-                <>
-                  <span className="text-[10px]">{tCommon("kmShort")}</span>
-                  <span>{restaurant.distanceKm}</span>
-                  <span className="mx-1 text-muted-foreground">•</span>
-                </>
-              )}
-              <span className="truncate">{restaurant.location}</span>
-            </div>
+        <div className="flex flex-col flex-1 px-4 gap-2">
+          <h3 className="text-xl font-bold text-black dark:text-white">
+            {restaurant.name}
+          </h3>
+          <div className="flex items-center gap-1">
+            <img
+              src="/assets/planner/map-pin.svg"
+              alt="Location"
+              className="w-4 h-4 dark:brightness-0 dark:invert opacity-70"
+            />
+            <span className="text-sm text-gray-500">{restaurant.location}</span>
           </div>
+          {restaurant.cuisineTypes && restaurant.cuisineTypes.length > 0 && (
+            <div className="flex items-center gap-1">
+              <img
+                src="/assets/planner/restaurant-2-line copy.svg"
+                alt="Cuisine"
+                className="w-4 h-4 dark:brightness-0 dark:invert opacity-70"
+              />
+              <span className="text-sm text-black dark:text-gray-400">
+                {formatCuisineTypes(restaurant.cuisineTypes, locale)}
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col items-center gap-4 shrink-0 px-2 justify-start h-full pt-2 ">
+          <button
+            onClick={() =>
+              window.open(restaurant.mapsUrl, "_blank", "noopener,noreferrer")
+            }
+            className="flex h-[36px] px-[16px] py-[10px] justify-center items-center gap-[12px] rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white text-sm font-medium"
+          >
+            <img
+              src={"/assets/planner/direction-line.svg"}
+              alt={"direction"}
+              className="w-full h-full object-cover dark:brightness-0 dark:invert"
+            />
+            {locale === "ar" ? "الاتجاهات" : "Directions"}
+          </button>
+        </div>
+      </div>
+      <button
+        onClick={onReplace}
+        disabled={isReplacing}
+        className="flex w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+      >
+        <img
+          src={"/assets/planner/Rotate.svg"}
+          alt={"direction"}
+          className="w-[15px] h-[15px] object-cover dark:brightness-0 dark:invert"
+        />
+        {isReplacing ? (
+          <span className="animate-spin h-5 w-5 border-2 border-black dark:border-white border-t-transparent rounded-full" />
+        ) : locale === "ar" ? (
+          "تبديل المطعم"
+        ) : (
+          "Replace Restaurant"
+        )}
+      </button>
+    </div>
+  );
+};
 
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground">
-            {restaurant.nationality && (
-              <div className="flex items-center gap-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground" />
-                <span>{restaurant.nationality}</span>
+const PlannerEventCardNew = ({
+  event,
+  aiTime,
+  onReplace,
+  isReplacing,
+  locale,
+}: any) => {
+  return (
+    <div className="flex flex-col gap-2 w-full mb-6">
+      <div className="flex items-center gap-2">
+        <Image
+          src="/assets/planner/open-arm-fill.svg"
+          alt="Event"
+          width={24}
+          height={24}
+          className="dark:brightness-0 dark:invert"
+        />
+        <span className="text-lg font-bold text-[#6027D2] dark:text-white capitalize">
+          {locale === "ar" ? "فعالية" : "Event"}
+        </span>
+      </div>
+      <div className="flex flex-row p-4 items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full">
+        <div className="w-[120px] h-[120px] shrink-0 rounded-[8px] overflow-hidden">
+          <img
+            src={event.image || event.images?.[0]}
+            alt={event.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="flex flex-col flex-1 px-4 gap-2">
+          <div className="flex items-center gap-4">
+            <h3 className="text-xl font-bold text-black dark:text-white">
+              {event.title}
+            </h3>
+            {event.price != null && String(event.price).trim() !== "" && (
+              <div className="flex items-center gap-1 text-[#00BBB4] font-bold">
+                <span>{event.price}</span>
+                <Image
+                  src="/assets/planner/Saudi_Riyal_Symbol-2%201.svg"
+                  alt="SAR"
+                  width={16}
+                  height={16}
+                />
               </div>
             )}
-            {showAseeriBadge ? (
-              <div className="flex items-center gap-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/70" />
-                <AseeriCuisineBadge variant="card" />
+          </div>
+          <div className="flex items-center gap-1">
+            {/* <img
+              src="/assets/planner/map-pin.svg"
+              alt="Location"
+              className="w-4 h-4 dark:brightness-0 dark:invert opacity-70"
+            />
+            <span className="text-sm text-gray-500">
+              {event.location?.title || event.location}
+            </span> */}
+          </div>
+          {(event.startDate || event.endDate) && (
+            <div className="flex items-center gap-1">
+              <img
+                src="/assets/planner/calendar-line.svg"
+                alt="Calendar"
+                className="w-4 h-4 dark:brightness-0 dark:invert opacity-70"
+              />
+              <span className="text-sm text-gray-500">
+                {event.startDate &&
+                event.endDate &&
+                event.startDate !== event.endDate
+                  ? `${event.startDate} - ${event.endDate}`
+                  : event.startDate || event.endDate}
+              </span>
+            </div>
+          )}
+          <span className="text-sm font-semibold text-black dark:text-white">
+            {aiTime}
+          </span>
+        </div>
+        <div className="flex flex-col items-center gap-4 shrink-0 px-2 justify-start h-full pt-2">
+          <button
+            onClick={() =>
+              window.open(
+                event.location?.mapsUrl || event.mapsUrl,
+                "_blank",
+                "noopener,noreferrer",
+              )
+            }
+            className="flex h-[36px] px-[16px] py-[10px] justify-center items-center gap-[12px] rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white text-sm font-medium"
+          >
+            <img
+              src={"/assets/planner/direction-line.svg"}
+              alt={"direction"}
+              className="w-full h-full object-cover dark:brightness-0 dark:invert"
+            />
+            {locale === "ar" ? "الاتجاهات" : "Directions"}
+          </button>
+        </div>
+      </div>
+      <button
+        onClick={onReplace}
+        disabled={isReplacing}
+        className="flex w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+      >
+        <img
+          src={"/assets/planner/Rotate.svg"}
+          alt={"direction"}
+          className="w-[15px] h-[15px] object-cover dark:brightness-0 dark:invert"
+        />
+        {isReplacing ? (
+          <span className="animate-spin h-5 w-5 border-2 border-black dark:border-white border-t-transparent rounded-full" />
+        ) : locale === "ar" ? (
+          "تبديل الفعالية"
+        ) : (
+          "Replace Event"
+        )}
+      </button>
+    </div>
+  );
+};
+
+const PlannerExperienceCardNew = ({
+  experience,
+  onReplace,
+  isReplacing,
+  locale,
+}: any) => {
+  return (
+    <div className="flex flex-col gap-2 w-full mb-6">
+      <div className="flex items-center gap-2">
+        <Image
+          src="/assets/planner/open-arm-fill.svg"
+          alt="Experience"
+          width={24}
+          height={24}
+          className="fill -[#6027D2] dark:brightness-0 dark:invert"
+        />
+        <span className="text-lg font-bold text-[#6027D2] dark:text-white capitalize">
+          {locale === "ar" ? "تجربة" : "Experience"}
+        </span>
+      </div>
+      <div className="flex flex-row p-4 items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full">
+        <div className="w-[140px] h-[160px] shrink-0 rounded-[8px] overflow-hidden">
+          <img
+            src={experience.imageUrl}
+            alt={experience.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="flex flex-col flex-1 px-4 py-2 gap-3 justify-between h-full">
+          <div>
+            {experience.category && (
+              <div className="flex w-[80px] h-[25px] justify-center items-center gap-[10px] rounded-[12px] border border-[rgba(0,0,0,0.80)] dark:border-white/80 mb-3">
+                <span className="text-xs font-semibold whitespace-nowrap">
+                  {experience.category}
+                </span>
               </div>
-            ) : null}
-            {otherCuisineLabel ? (
-              <div className="flex items-center gap-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/70" />
-                <span>{otherCuisineLabel}</span>
+            )}
+            <h3 className="text-xl font-bold text-black dark:text-white mb-2">
+              {experience.title}
+            </h3>
+            <p className="text-sm text-gray-500 line-clamp-2">
+              {experience.description}
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between w-full">
+            {experience.price && (
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-400">
+                  {locale === "ar" ? "يبدأ من" : "Starts from"}
+                </span>
+                <div className="flex items-center gap-1 text-black dark:text-white font-bold">
+                  <span>{experience.price}</span>
+                  <Image
+                    src="/assets/planner/Saudi_Riyal_Symbol-2%201%20(1).svg"
+                    alt="SAR"
+                    width={16}
+                    height={16}
+                    className="dark:brightness-0 dark:invert"
+                  />
+                  {experience.groupSize > 0 && (
+                    <span className="text-xs text-gray-500 font-normal ml-1 rtl:mr-1 rtl:ml-0">
+                      /{" "}
+                      {locale === "ar"
+                        ? experience.groupSize === 1
+                          ? "لشخص "
+                          : experience.groupSize === 2
+                            ? "لشخصين "
+                            : experience.groupSize >= 3 &&
+                                experience.groupSize <= 10
+                              ? `لـ ${experience.groupSize} أشخاص`
+                              : `لـ ${experience.groupSize} شخص`
+                        : experience.groupSize === 1
+                          ? " per person"
+                          : ` for ${experience.groupSize} people`}
+                    </span>
+                  )}
+                </div>
               </div>
-            ) : null}
+            )}
           </div>
         </div>
+      </div>
+      <button
+        onClick={onReplace}
+        disabled={isReplacing}
+        className="flex w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+      >
+        <img
+          src={"/assets/planner/Rotate.svg"}
+          alt={"direction"}
+          className="w-[15px] h-[15px] object-cover dark:brightness-0 dark:invert"
+        />
+        {isReplacing ? (
+          <span className="animate-spin h-5 w-5 border-2 border-black dark:border-white border-t-transparent rounded-full" />
+        ) : locale === "ar" ? (
+          "تبديل التجربة"
+        ) : (
+          "Replace Experience"
+        )}
       </button>
     </div>
   );
@@ -176,21 +406,21 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
         const newPlanData = { ...planData };
         const day = newPlanData.days[dayIndex];
 
-        if (itemType === "event" && day.events) {
-          const idx = day.events.findIndex(
-            (e: any) => String(e.itemId) === String(itemId),
-          );
-          if (idx !== -1) day.events[idx] = data.finalItem;
-        } else if (itemType === "experience" && day.experiences) {
-          const idx = day.experiences.findIndex(
-            (e: any) => String(e.itemId) === String(itemId),
-          );
-          if (idx !== -1) day.experiences[idx] = data.finalItem;
-        } else if (itemType === "restaurant" && day.restaurants) {
-          const idx = day.restaurants.findIndex(
-            (e: any) => String(e.itemId) === String(itemId),
-          );
-          if (idx !== -1) day.restaurants[idx] = data.finalItem;
+        let replaced = false;
+        if (day.periods) {
+          day.periods.forEach((period: any) => {
+            if (!replaced && period.items) {
+              const idx = period.items.findIndex(
+                (item: any) =>
+                  item.type === itemType &&
+                  String(item.itemId) === String(itemId),
+              );
+              if (idx !== -1) {
+                period.items[idx] = data.finalItem;
+                replaced = true;
+              }
+            }
+          });
         }
 
         setPlanData(newPlanData);
@@ -254,20 +484,13 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
     if (!planData || !planData.days) return;
     const imageUrls: string[] = [];
     planData.days.forEach((day: any) => {
-      day.events?.forEach((ev: any) => {
-        if (ev.itemData?.image) imageUrls.push(ev.itemData.image);
-        if (ev.itemData?.images)
-          ev.itemData.images.forEach((img: string) => imageUrls.push(img));
-      });
-      day.experiences?.forEach((exp: any) => {
-        if (exp.itemData?.image) imageUrls.push(exp.itemData.image);
-        if (exp.itemData?.images)
-          exp.itemData.images.forEach((img: string) => imageUrls.push(img));
-      });
-      day.restaurants?.forEach((res: any) => {
-        if (res.itemData?.image) imageUrls.push(res.itemData.image);
-        if (res.itemData?.images)
-          res.itemData.images.forEach((img: string) => imageUrls.push(img));
+      day.periods?.forEach((period: any) => {
+        period.items?.forEach((item: any) => {
+          if (item.itemData?.image) imageUrls.push(item.itemData.image);
+          if (item.itemData?.images) {
+            item.itemData.images.forEach((img: string) => imageUrls.push(img));
+          }
+        });
       });
     });
 
@@ -540,182 +763,121 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                 {t(`day${dIndex + 1}`)}
               </h3>
 
-              <div className="flex flex-col gap-4 w-full">
-                <h4 className="text-xl font-bold text-black dark:text-white text-start">
-                  {t("events")}
-                </h4>
-                {dayToRender.events && dayToRender.events.length > 0 ? (
-                  <div className="flex flex-wrap gap-4 w-[500px] justify-start [&>div]:!mx-0">
-                    {dayToRender.events.map((ev: any, idx: number) => {
-                      const apiData = ev.itemData;
-                      if (!apiData) {
-                        return (
-                          <div key={idx} className="text-sm text-gray-500">
-                            لا توجد تفاصيل لهذه الفعالية
-                          </div>
-                        );
-                      }
-                      const item = transformApiEventToListingItem(
-                        apiData,
-                        locale as any,
-                      );
-                      return (
-                        <div
-                          key={item.id || idx}
-                          className="w-[250px] shrink-0 flex flex-col items-center gap-4"
-                        >
-                          <EventListingCard event={item} />
-                          <button
-                            onClick={() =>
-                              handleReplaceItem(dIndex, "event", ev.itemId)
-                            }
-                            disabled={
-                              replacingItemId === `${dIndex}-event-${ev.itemId}`
-                            }
-                            className="flex w-[190px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black  transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white"
-                          >
-                            {replacingItemId ===
-                            `${dIndex}-event-${ev.itemId}` ? (
-                              <span className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" />
-                            ) : locale === "ar" ? (
-                              "استبدال الفعالية"
-                            ) : (
-                              "Replace Event"
-                            )}
-                          </button>
+              <div className="flex flex-col w-full relative">
+                {/* Vertical Timeline Line */}
+                <div className="absolute top-10 bottom-10 rtl:right-[15px] ltr:left-[15px] w-[2px] bg-gray-200 dark:bg-white/10 z-0" />
+
+                {dayToRender.periods?.map((period: any, pIdx: number) => {
+                  const localizedPeriod =
+                    locale === "ar"
+                      ? period.periodName === "Morning"
+                        ? "الصباح"
+                        : period.periodName === "Afternoon"
+                          ? "الظهيرة"
+                          : period.periodName === "Evening"
+                            ? "المساء"
+                            : period.periodName
+                      : period.periodName;
+
+                  return (
+                    <div
+                      key={pIdx}
+                      className="w-full flex flex-col mb-4 relative z-10"
+                    >
+                      <TimelinePeriodHeader periodName={localizedPeriod} />
+
+                      {period.items && period.items.length > 0 ? (
+                        <div className="flex flex-col gap-6 w-full">
+                          {period.items.map((item: any, iIdx: number) => {
+                            const apiData = item.itemData;
+                            if (!apiData) return null;
+
+                            return (
+                              <div
+                                key={iIdx}
+                                className="relative flex w-full group items-center"
+                              >
+                                {/* Dot */}
+                                <div className="absolute top-1/2 -translate-y-1/2 rtl:right-[11px] ltr:left-[11px] w-[10px] h-[10px] rounded-full bg-black dark:bg-white border-[2px] border-white dark:border-[#14091F] z-10" />
+
+                                <div className="w-full rtl:pr-[40px] ltr:pl-[40px]">
+                                  {item.type === "event" && (
+                                    <PlannerEventCardNew
+                                      event={transformApiEventToListingItem(
+                                        apiData,
+                                        locale as any,
+                                      )}
+                                      aiTime={item.time}
+                                      onReplace={() =>
+                                        handleReplaceItem(
+                                          dIndex,
+                                          "event",
+                                          item.itemId,
+                                        )
+                                      }
+                                      isReplacing={
+                                        replacingItemId ===
+                                        `${dIndex}-event-${item.itemId}`
+                                      }
+                                      locale={locale}
+                                    />
+                                  )}
+                                  {item.type === "experience" && (
+                                    <PlannerExperienceCardNew
+                                      experience={transformExperience(
+                                        apiData,
+                                        locale as any,
+                                      )}
+                                      onReplace={() =>
+                                        handleReplaceItem(
+                                          dIndex,
+                                          "experience",
+                                          item.itemId,
+                                        )
+                                      }
+                                      isReplacing={
+                                        replacingItemId ===
+                                        `${dIndex}-experience-${item.itemId}`
+                                      }
+                                      locale={locale}
+                                    />
+                                  )}
+                                  {item.type === "restaurant" && (
+                                    <PlannerRestaurantCardNew
+                                      restaurant={transformLocationToRestaurant(
+                                        apiData,
+                                        locale as any,
+                                      )}
+                                      mealType={item.mealType}
+                                      onReplace={() =>
+                                        handleReplaceItem(
+                                          dIndex,
+                                          "restaurant",
+                                          item.itemId,
+                                        )
+                                      }
+                                      isReplacing={
+                                        replacingItemId ===
+                                        `${dIndex}-restaurant-${item.itemId}`
+                                      }
+                                      locale={locale}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-start text-sm">
-                    {t("noEventsForDay")}
-                  </p>
-                )}
-              </div>
-
-              <hr className="border-gray-200 dark:border-white/10 my-6" />
-
-              <div className="flex flex-col gap-4 w-full">
-                <h4 className="text-xl font-bold text-black dark:text-white text-start">
-                  {t("experiences")}
-                </h4>
-                {dayToRender.experiences &&
-                dayToRender.experiences.length > 0 ? (
-                  <div className="flex flex-wrap gap-4 justify-start">
-                    {dayToRender.experiences.map((exp: any, idx: number) => {
-                      const apiData = exp.itemData;
-                      if (!apiData) {
-                        return (
-                          <div key={idx} className="text-sm text-gray-500">
-                            لا توجد تفاصيل لهذه التجربة
-                          </div>
-                        );
-                      }
-                      const item = transformExperience(apiData, locale as any);
-                      return (
-                        <div
-                          key={item.id || idx}
-                          className="w-[300px] shrink-0 flex flex-col items-center gap-4"
-                        >
-                          <ExperienceCard {...item} />
-                          <button
-                            onClick={() =>
-                              handleReplaceItem(
-                                dIndex,
-                                "experience",
-                                exp.itemId,
-                              )
-                            }
-                            disabled={
-                              replacingItemId ===
-                              `${dIndex}-experience-${exp.itemId}`
-                            }
-                            className="flex w-[190px] h-[46px] px-4 py-2.5 justify-center items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black hover:cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white"
-                          >
-                            {replacingItemId ===
-                            `${dIndex}-experience-${exp.itemId}` ? (
-                              <span className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" />
-                            ) : locale === "ar" ? (
-                              "استبدال التجربة"
-                            ) : (
-                              "Replace Experience"
-                            )}
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-start text-sm">
-                    {t("noExperiencesForDay")}
-                  </p>
-                )}
-              </div>
-
-              <hr className="border-gray-200 dark:border-white/10 my-6" />
-
-              <div className="flex flex-col gap-4 w-full">
-                <h4 className="text-xl font-bold text-black dark:text-white text-start">
-                  {t("restaurants")}
-                </h4>
-                {dayToRender.restaurants &&
-                dayToRender.restaurants.length > 0 ? (
-                  <div className="flex flex-nowrap gap-4 justify-start overflow-x-auto pb-4 w-full">
-                    {dayToRender.restaurants.map((res: any, idx: number) => {
-                      const apiData = res.itemData;
-                      if (!apiData) {
-                        return (
-                          <div key={idx} className="text-sm text-gray-500">
-                            لا توجد تفاصيل لهذا المطعم
-                          </div>
-                        );
-                      }
-                      const item = transformLocationToRestaurant(
-                        apiData,
-                        locale as any,
-                      );
-                      return (
-                        <div
-                          key={item.id || idx}
-                          className="flex flex-col items-center gap-4"
-                        >
-                          <PlannerRestaurantCard
-                            restaurant={item}
-                            mealType={res.mealType || ""}
-                          />
-                          <button
-                            onClick={() =>
-                              handleReplaceItem(
-                                dIndex,
-                                "restaurant",
-                                res.itemId,
-                              )
-                            }
-                            disabled={
-                              replacingItemId ===
-                              `${dIndex}-restaurant-${res.itemId}`
-                            }
-                            className="flex w-[190px] h-[46px] px-4 py-2.5 justify-center items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black hover:cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white"
-                          >
-                            {replacingItemId ===
-                            `${dIndex}-restaurant-${res.itemId}` ? (
-                              <span className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full" />
-                            ) : locale === "ar" ? (
-                              "استبدال المطعم"
-                            ) : (
-                              "Replace Restaurant"
-                            )}
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-start text-sm">
-                    {t("noRestaurantsForDay")}
-                  </p>
-                )}
+                      ) : (
+                        <p className="text-gray-500 text-start text-sm rtl:pr-[40px] ltr:pl-[40px]">
+                          {locale === "ar"
+                            ? "لا توجد نشاطات في هذه الفترة"
+                            : "No activities for this period"}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           );

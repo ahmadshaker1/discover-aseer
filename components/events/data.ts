@@ -259,10 +259,7 @@ function resolveEventReferenceYear(
   return undefined;
 }
 
-function isEventOver(
-  apiEvent: ApiEvent,
-  referenceYear?: number,
-): boolean {
+function isEventOver(apiEvent: ApiEvent, referenceYear?: number): boolean {
   const year = resolveEventReferenceYear(apiEvent, referenceYear);
   const end =
     parseDateOnly(apiEvent.end_date, year) ||
@@ -331,6 +328,9 @@ export function transformApiEventToListingItem(
       year,
     ),
     timeRange: buildTimeRange(apiEvent.start_time, apiEvent.end_time, locale),
+    price: apiEvent.price,
+    startDate: apiEvent.start_date,
+    endDate: apiEvent.end_date,
     venueLabel: title,
   };
 }
