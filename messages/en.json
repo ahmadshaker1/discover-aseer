@@ -597,6 +597,7 @@
     "formProgressAria": "Form completion progress",
     "form": {
       "personalInfo": "Personal Information",
+      "licenseInfo": "Tour guide license information",
       "generalInfo": "General Information",
       "contactInfo": "Contact Information",
       "socialAccounts": "Website and social media accounts",

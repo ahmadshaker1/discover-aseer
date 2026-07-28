@@ -464,7 +464,7 @@ const TourGuidePortalProfileForm = ({
       </div>
 
       <div className="mb-10">
-        <FormSectionTitle>{tForm("generalInfo")}</FormSectionTitle>
+        <FormSectionTitle>{tForm("licenseInfo")}</FormSectionTitle>
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
           <FormTextInput
             id={`${baseId}-license`}
@@ -485,6 +485,29 @@ const TourGuidePortalProfileForm = ({
             value={values.License_expiry_date}
             onChange={(e) => setField("License_expiry_date", e.target.value)}
           />
+          <FormFileUpload
+            id={`${baseId}-license-file`}
+            label={tForm("licenseAttachment")}
+            required={!existingLicenseUrl}
+            accept="image/jpeg,image/png,image/jpg,application/pdf"
+            hint={licenseHint}
+            file={licenseFile}
+            existingFileUrl={existingLicenseUrl}
+            existingFileLabel={t("profile.viewCurrentLicense")}
+            chooseFileLabel={tForm("browseAttachment")}
+            noFileLabel=""
+            viewFileLabel={t("profile.viewCurrentLicense")}
+            onChange={(files) => {
+              clearSubmitFeedback();
+              setLicenseFile(files?.[0] ?? null);
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <FormSectionTitle>{tForm("generalInfo")}</FormSectionTitle>
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
           <FormSelectField
             id={`${baseId}-ar-level`}
             label={tForm("arabicLanguage")}
@@ -617,23 +640,6 @@ const TourGuidePortalProfileForm = ({
               { value: "yes", label: tForm("yes") },
               { value: "no", label: tForm("no") },
             ]}
-          />
-          <FormFileUpload
-            id={`${baseId}-license-file`}
-            label={tForm("licenseAttachment")}
-            required={!existingLicenseUrl}
-            accept="image/jpeg,image/png,image/jpg,application/pdf"
-            hint={licenseHint}
-            file={licenseFile}
-            existingFileUrl={existingLicenseUrl}
-            existingFileLabel={t("profile.viewCurrentLicense")}
-            chooseFileLabel={tForm("browseAttachment")}
-            noFileLabel=""
-            viewFileLabel={t("profile.viewCurrentLicense")}
-            onChange={(files) => {
-              clearSubmitFeedback();
-              setLicenseFile(files?.[0] ?? null);
-            }}
           />
         </div>
       </div>
