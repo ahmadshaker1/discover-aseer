@@ -258,6 +258,18 @@ const TourGuidePortalProfileForm = ({
       return;
     }
 
+    if (values.National_ID_number.trim().length !== 10) {
+      setSubmitState("error");
+      setMessage(t("profile.errorInvalidNationalId"));
+      return;
+    }
+
+    if (values.License_number.trim().length !== 8) {
+      setSubmitState("error");
+      setMessage(t("profile.errorInvalidLicense"));
+      return;
+    }
+
     if (
       !values.commitment1 ||
       !values.commitment2 ||
@@ -402,7 +414,10 @@ const TourGuidePortalProfileForm = ({
             required
             readOnly={lockIdentityFields}
             value={values.National_ID_number}
-            onChange={(e) => setField("National_ID_number", e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, "");
+              if (val.length <= 10) setField("National_ID_number", val);
+            }}
           />
           <FormSelectField
             id={`${baseId}-residence`}
@@ -457,7 +472,10 @@ const TourGuidePortalProfileForm = ({
             required
             readOnly={lockIdentityFields}
             value={values.License_number}
-            onChange={(e) => setField("License_number", e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, "");
+              if (val.length <= 8) setField("License_number", val);
+            }}
           />
           <FormTextInput
             id={`${baseId}-license-date`}
