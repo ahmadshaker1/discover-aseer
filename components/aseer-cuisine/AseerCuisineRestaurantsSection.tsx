@@ -186,7 +186,7 @@ const AseerCuisineRestaurantsSection = ({
   }, []);
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] py-8 text-foreground">
+    <section className="mx-auto w-full max-w-[1440px] py-8 text-foreground px-2 sm:px-8 md:px-[60px]">
       <div className="flex w-full flex-col gap-8">
         <div className="">
           <div className="flex w-full items-center justify-between">

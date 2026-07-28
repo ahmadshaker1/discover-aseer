@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { ApiTouristGuide } from "@/components/tour-guides/types";
@@ -13,7 +20,10 @@ import {
   FormTextInput,
   FormTextarea,
 } from "@/components/tour-guides/TourGuidePortal/TourGuidePortalFormFields";
-import { ibm, araBold } from "@/components/experiences/submit/experienceFormStyles";
+import {
+  ibm,
+  araBold,
+} from "@/components/experiences/submit/experienceFormStyles";
 import {
   apiProfileToPortalForm,
   buildSpecializationValue,
@@ -55,7 +65,8 @@ const TourGuidePortalProfileForm = ({
   const tForm = useTranslations("tourGuidesRegister.form");
   const baseId = useId();
 
-  const [values, setValues] = useState<TourGuidePortalFormValues>(EMPTY_PORTAL_FORM);
+  const [values, setValues] =
+    useState<TourGuidePortalFormValues>(EMPTY_PORTAL_FORM);
   const [selectedSpecializations, setSelectedSpecializations] = useState<
     SpecializationId[]
   >([]);
@@ -111,7 +122,9 @@ const TourGuidePortalProfileForm = ({
   }, [profile, accountEmail]);
 
   const existingPhotoUrl = resolveTourGuideFileUrl(profile?.image);
-  const existingLicenseUrl = resolveTourGuideFileUrl(profile?.license_attachment);
+  const existingLicenseUrl = resolveTourGuideFileUrl(
+    profile?.license_attachment,
+  );
 
   /** Existing profile → lock identity fields set on first create. */
   const lockIdentityFields = Boolean(profile?.id);
@@ -200,6 +213,33 @@ const TourGuidePortalProfileForm = ({
     if (submitState === "submitting") return;
 
     if (
+      !values.name_ar?.trim() ||
+      !values.name_en?.trim() ||
+      !values.gender ||
+      !values.National_ID_number?.trim() ||
+      (!existingPhotoUrl && !profileImageFile) ||
+      !values.License_number?.trim() ||
+      !values.License_expiry_date?.trim() ||
+      !values.Arabic_language ||
+      !values.english_language ||
+      !values.transportation ||
+      (!existingLicenseUrl && !licenseFile) ||
+      !(values.Email || accountEmail)?.trim() ||
+      !values.Mobile_number?.trim()
+    ) {
+      setSubmitState("error");
+      setMessage(t("profile.errorRequired"));
+      return;
+    }
+
+    const mobileRegex = /^(05\d{8}|\+9665\d{8})$/;
+    if (!mobileRegex.test(values.Mobile_number?.trim() || "")) {
+      setSubmitState("error");
+      setMessage(t("profile.errorInvalidMobile"));
+      return;
+    }
+
+    if (
       !values.commitment1 ||
       !values.commitment2 ||
       !values.commitment3 ||
@@ -286,13 +326,19 @@ const TourGuidePortalProfileForm = ({
       )}
 
       {!profile && (
-        <p className="mb-8 text-start text-muted-foreground" style={{ fontFamily: ibm }}>
+        <p
+          className="mb-8 text-start text-muted-foreground"
+          style={{ fontFamily: ibm }}
+        >
           {t("profile.createHint")}
         </p>
       )}
 
       {lockIdentityFields && (
-        <p className="mb-8 text-start text-sm text-muted-foreground" style={{ fontFamily: ibm }}>
+        <p
+          className="mb-8 text-start text-sm text-muted-foreground"
+          style={{ fontFamily: ibm }}
+        >
           {t("profile.lockedFieldsHint")}
         </p>
       )}
@@ -483,8 +529,7 @@ const TourGuidePortalProfileForm = ({
               className="text-base font-bold text-foreground"
               style={{ fontFamily: araBold }}
             >
-              {tForm("specialization")}{" "}
-              <span className="text-red-600">*</span>
+              {tForm("specialization")} <span className="text-red-600">*</span>
             </p>
             <div className="grid grid-cols-1 gap-2">
               {SPECIALIZATION_IDS.map((item) => (
@@ -660,9 +705,13 @@ const TourGuidePortalProfileForm = ({
         </p>
       )}
 
-      <FormSubmitButton disabled={submitState === "submitting"}>
-        {submitState === "submitting" ? t("profile.saving") : t("profile.saveDraft")}
-      </FormSubmitButton>
+      {submitState !== "success" && (
+        <FormSubmitButton disabled={submitState === "submitting"}>
+          {submitState === "submitting"
+            ? t("profile.saving")
+            : t("profile.saveDraft")}
+        </FormSubmitButton>
+      )}
     </form>
   );
 };
