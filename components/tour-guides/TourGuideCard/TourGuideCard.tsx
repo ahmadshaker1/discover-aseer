@@ -52,10 +52,10 @@ const TourGuideCard = ({
       : profileImage;
   return (
     <div
-      className="cursor-pointer overflow-hidden rounded-lg bg-surface texst-foreground shadow-sm transition-shadow hover:shadow-md h-85"
+      className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md h-90"
       onClick={onCardClick}
     >
-      <div className="p-4 sm:p-6 flex flex-col items-center">
+      <div className="p-4 sm:p-6 flex flex-col items-center h-full">
         {/* Profile Picture */}
         <div className="relative w-24 h-24 mb-4">
           <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
@@ -109,7 +109,7 @@ const TourGuideCard = ({
             e.stopPropagation();
             onCardClick();
           }}
-          className="cursor-pointer text-sm font-medium text-foreground hover:underline"
+          className="cursor-pointer text-sm font-medium text-foreground hover:underline mt-auto"
         >
           {tCommon("more")}
         </Button>
