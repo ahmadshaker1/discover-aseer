@@ -26,6 +26,7 @@ import TourGuidePortalProfileForm from "./TourGuidePortalProfileForm";
 
 const TourGuidePortalFlow = () => {
   const t = useTranslations("tourGuidePortal");
+  const tForm = useTranslations("tourGuidesRegister");
   const [session, setSession] = useState<DirectusAuthSession | null>(null);
   const [profile, setProfile] = useState<ApiTouristGuide | null>(null);
   const [loading, setLoading] = useState(true);
@@ -150,6 +151,13 @@ const TourGuidePortalFlow = () => {
                 {loadError}
               </p>
             )}
+
+            <p
+              className="mx-auto max-w-[590px] text-center text-[18px] font-normal leading-relaxed text-red-600"
+              style={{ fontFamily: araBold }}
+            >
+              {tForm("notes")}
+            </p>
 
             <TourGuidePortalProfileForm
               profile={profile}
