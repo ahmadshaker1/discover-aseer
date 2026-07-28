@@ -94,8 +94,7 @@ export interface TourGuidePortalFormValues {
   License_expiry_date: string;
   english_language: "" | "beginner" | "intermediate" | "advanced";
   Arabic_language: "" | "beginner" | "intermediate" | "advanced";
-  Other_languages: string;
-  Other_languages_level: "" | "beginner" | "intermediate" | "advanced";
+  Other_languages: { language: string; level: "" | "beginner" | "intermediate" | "advanced" }[];
   Specialization: string;
   Email: string;
   transportation: "" | "yes" | "no";
@@ -122,8 +121,7 @@ export const EMPTY_PORTAL_FORM: TourGuidePortalFormValues = {
   License_expiry_date: "",
   english_language: "",
   Arabic_language: "",
-  Other_languages: "",
-  Other_languages_level: "",
+  Other_languages: [],
   Specialization: "",
   Email: "",
   transportation: "",
@@ -140,32 +138,41 @@ export const EMPTY_PORTAL_FORM: TourGuidePortalFormValues = {
 };
 
 function parseOtherLanguages(raw: string | null | undefined): {
-  languages: string;
-  level: TourGuidePortalFormValues["Other_languages_level"];
-} {
+  language: string;
+  level: "" | "beginner" | "intermediate" | "advanced";
+}[] {
   const text = raw?.trim() ?? "";
-  if (!text) return { languages: "", level: "" };
+  if (!text) return [];
 
-  const match = text.match(
-    /^(.*?)\s*[—\-–]\s*(beginner|intermediate|advanced)\s*$/i,
-  );
-  if (!match) return { languages: text, level: "" };
-
-  const level = match[2].toLowerCase() as
-    | "beginner"
-    | "intermediate"
-    | "advanced";
-  return { languages: match[1].trim(), level };
+  return text
+    .split(/,|\n/)
+    .map((part) => {
+      const p = part.trim();
+      const match = p.match(
+        /^(.*?)\s*[—\-–]\s*(beginner|intermediate|advanced)\s*$/i,
+      );
+      if (!match) return { language: p, level: "" as const };
+      const level = match[2].toLowerCase() as
+        | "beginner"
+        | "intermediate"
+        | "advanced";
+      return { language: match[1].trim(), level };
+    })
+    .filter((l) => l.language);
 }
 
 function formatOtherLanguages(
-  languages: string,
-  level: TourGuidePortalFormValues["Other_languages_level"],
+  languages: { language: string; level: "" | "beginner" | "intermediate" | "advanced" }[],
 ): string | null {
-  const trimmed = languages.trim();
-  if (!trimmed) return null;
-  if (!level) return trimmed;
-  return `${trimmed} — ${level}`;
+  const items = languages
+    .map((l) => {
+      const trimmed = l.language.trim();
+      if (!trimmed) return null;
+      if (!l.level) return trimmed;
+      return `${trimmed} — ${l.level}`;
+    })
+    .filter(Boolean);
+  return items.length > 0 ? items.join(", ") : null;
 }
 
 export function apiProfileToPortalForm(
@@ -194,8 +201,7 @@ export function apiProfileToPortalForm(
     Arabic_language:
       (api.arabic_language_level as TourGuidePortalFormValues["Arabic_language"]) ??
       "",
-    Other_languages: other.languages,
-    Other_languages_level: other.level,
+    Other_languages: other,
     Specialization: api.specializations ?? "",
     Email: api.email ?? "",
     transportation:
@@ -255,10 +261,7 @@ export function portalFormToApiPayload(
     date: values.License_expiry_date,
     arabic_language_level: values.Arabic_language,
     english_language_level: values.english_language,
-    other_languages: formatOtherLanguages(
-      values.Other_languages,
-      values.Other_languages_level,
-    ),
+    other_languages: formatOtherLanguages(values.Other_languages),
     specializations: values.Specialization.trim(),
     transportation: values.transportation === "yes",
     whatsapp: values.WhatsApp_number.trim(),

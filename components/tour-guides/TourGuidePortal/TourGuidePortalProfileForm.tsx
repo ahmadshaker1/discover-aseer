@@ -73,7 +73,6 @@ const TourGuidePortalProfileForm = ({
   const [otherSpecialization, setOtherSpecialization] = useState("");
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [licenseFile, setLicenseFile] = useState<File | null>(null);
-  const [showOtherLanguageLevel, setShowOtherLanguageLevel] = useState(false);
   const [submitState, setSubmitState] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
@@ -108,9 +107,6 @@ const TourGuidePortalProfileForm = ({
       const parsed = parseSpecializationValue(next.Specialization);
       setSelectedSpecializations(parsed.selected);
       setOtherSpecialization(parsed.other);
-      setShowOtherLanguageLevel(
-        Boolean(next.Other_languages_level || next.Other_languages.trim()),
-      );
       return;
     }
     if (accountEmail) {
@@ -183,6 +179,29 @@ const TourGuidePortalProfileForm = ({
   ) => {
     clearSubmitFeedback();
     setValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const addOtherLanguage = () => {
+    setField("Other_languages", [
+      ...values.Other_languages,
+      { language: "", level: "" },
+    ]);
+  };
+
+  const removeOtherLanguage = (index: number) => {
+    const next = [...values.Other_languages];
+    next.splice(index, 1);
+    setField("Other_languages", next);
+  };
+
+  const updateOtherLanguage = (
+    index: number,
+    fieldKey: "language" | "level",
+    val: string,
+  ) => {
+    const next = [...values.Other_languages];
+    next[index] = { ...next[index], [fieldKey]: val } as any;
+    setField("Other_languages", next);
   };
 
   const syncSpecialization = (
@@ -476,54 +495,64 @@ const TourGuidePortalProfileForm = ({
             }
             options={languageLevelOptions}
           />
-          <div className="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-end">
-            <div className="min-w-0 flex-1">
-              <FormTextInput
-                id={`${baseId}-other-lang`}
-                label={tForm("otherLanguages")}
-                value={values.Other_languages}
-                onChange={(e) => setField("Other_languages", e.target.value)}
-                placeholder={tForm("otherLanguagesPlaceholder")}
-              />
+          <div className="md:col-span-2 flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <p
+                className="text-base font-bold text-foreground"
+                style={{ fontFamily: araBold }}
+              >
+                {tForm("otherLanguages")}
+              </p>
+              <button
+                type="button"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-background text-xl font-bold leading-none text-primary transition-colors hover:border-primary/50 hover:bg-primary/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                style={{ fontFamily: araBold }}
+                aria-label={tForm("addLanguageLevel")}
+                onClick={addOtherLanguage}
+              >
+                +
+              </button>
             </div>
-            <button
-              type="button"
-              className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-background text-2xl font-bold leading-none text-primary transition-colors hover:border-primary/50 hover:bg-primary/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              style={{ fontFamily: araBold }}
-              aria-expanded={showOtherLanguageLevel}
-              aria-label={
-                showOtherLanguageLevel
-                  ? tForm("hideLanguageLevel")
-                  : tForm("addLanguageLevel")
-              }
-              onClick={() => {
-                clearSubmitFeedback();
-                if (showOtherLanguageLevel) {
-                  setField("Other_languages_level", "");
-                  setShowOtherLanguageLevel(false);
-                  return;
-                }
-                setShowOtherLanguageLevel(true);
-              }}
-            >
-              {showOtherLanguageLevel ? "−" : "+"}
-            </button>
+            {values.Other_languages.map((lang, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-3 sm:flex-row sm:items-end rounded-xl border border-border p-4 bg-surface"
+              >
+                <div className="min-w-0 flex-1">
+                  <FormTextInput
+                    id={`${baseId}-other-lang-${index}`}
+                    label={tForm("otherLanguages")}
+                    value={lang.language}
+                    onChange={(e) =>
+                      updateOtherLanguage(index, "language", e.target.value)
+                    }
+                    placeholder={tForm("otherLanguagesPlaceholder")}
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <FormSelectField
+                    id={`${baseId}-other-lang-level-${index}`}
+                    label={tForm("otherLanguagesLevel")}
+                    placeholder={tForm("select")}
+                    value={lang.level}
+                    onChange={(value) =>
+                      updateOtherLanguage(index, "level", value)
+                    }
+                    options={languageLevelOptions}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="mt-2 inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-red-200 bg-red-50 text-xl font-bold leading-none text-red-600 transition-colors hover:border-red-300 hover:bg-red-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 sm:mt-0"
+                  style={{ fontFamily: araBold }}
+                  aria-label={tForm("hideLanguageLevel")}
+                  onClick={() => removeOtherLanguage(index)}
+                >
+                  −
+                </button>
+              </div>
+            ))}
           </div>
-          {showOtherLanguageLevel ? (
-            <FormSelectField
-              id={`${baseId}-other-lang-level`}
-              label={tForm("otherLanguagesLevel")}
-              placeholder={tForm("select")}
-              value={values.Other_languages_level}
-              onChange={(value) =>
-                setField(
-                  "Other_languages_level",
-                  value as TourGuidePortalFormValues["Other_languages_level"],
-                )
-              }
-              options={languageLevelOptions}
-            />
-          ) : null}
           <div className="md:col-span-2 flex flex-col gap-3 text-start">
             <p
               className="text-base font-bold text-foreground"
