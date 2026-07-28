@@ -139,7 +139,8 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
             className="-mt-4 mb-8 text-base leading-relaxed text-muted-foreground text-start"
             style={{ fontFamily: ibm }}
           >
-            {mode === "login" ? t("loginSubtitle") : t("registerSubtitle")}
+            {/* //* we dont need it for now maybe we can use it in the future */}
+            {/* {mode === "login" ? t("loginSubtitle") : t("registerSubtitle")} */}
           </p>
 
           <div className="grid grid-cols-1 gap-x-8 gap-y-10">
