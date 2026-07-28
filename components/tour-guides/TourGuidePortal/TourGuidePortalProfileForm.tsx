@@ -236,7 +236,6 @@ const TourGuidePortalProfileForm = ({
       !values.name_en?.trim() ||
       !values.gender ||
       !values.National_ID_number?.trim() ||
-      (!existingPhotoUrl && !profileImageFile) ||
       !values.License_number?.trim() ||
       !values.License_expiry_date?.trim() ||
       !values.Arabic_language ||
@@ -446,7 +445,6 @@ const TourGuidePortalProfileForm = ({
           <FormFileUpload
             id={`${baseId}-photo`}
             label={tForm("profilePhoto")}
-            required={!existingPhotoUrl}
             accept="image/jpeg,image/png,image/webp,image/jpg"
             hint={photoHint}
             file={profileImageFile}
@@ -460,6 +458,29 @@ const TourGuidePortalProfileForm = ({
               setProfileImageFile(files?.[0] ?? null);
             }}
           />
+          <div className="md:col-span-2 rounded-xl border border-blue-200 bg-blue-50/50 p-4 mt-2">
+            <p
+              className="text-md font-normal text-blue-900 leading-relaxed text-start"
+              style={{ fontFamily: ibm }}
+            >
+              {tForm("photoGuidelinesTitle")}
+            </p>
+            <p
+              className="text-md font-normal text-blue-900 mt-3 text-start"
+              style={{ fontFamily: ibm }}
+            >
+              {tForm("photoGuidelinesDoNot")}
+            </p>
+            <ul
+              className="mt-1 flex flex-col gap-1 list-disc list-inside text-sm text-blue-900 text-start"
+              style={{ fontFamily: ibm }}
+            >
+              <li>{tForm("photoGuidelinesList1")}</li>
+              <li>{tForm("photoGuidelinesList2")}</li>
+              <li>{tForm("photoGuidelinesList3")}</li>
+              <li>{tForm("photoGuidelinesList4")}</li>
+            </ul>
+          </div>
         </div>
       </div>
 
