@@ -38,20 +38,39 @@ function levenshteinAtMost(a: string, b: string, max: number): boolean {
   return prev[lb] <= max;
 }
 
-/** Token matches if contained in haystack, or 1 edit from a haystack word. */
-function tokenMatches(haystack: string, token: string): boolean {
-  if (!token) return true;
-  // Contiguous substring (contains / includes)
-  if (haystack.includes(token)) return true;
+/**
+ * Find the earliest match for `token` in `haystack` at/after `fromIndex`.
+ * Letter order is strict. Only allowance: one-letter typo on a whole word.
+ */
+function findTokenInOrder(
+  haystack: string,
+  token: string,
+  fromIndex: number,
+): number {
+  if (!token) return fromIndex;
 
-  // One-letter typo only for tokens long enough that a single edit is meaningful
-  if (token.length < 4) return false;
+  const sliceStart = Math.max(0, fromIndex);
 
-  const words = haystack.split(" ").filter((word) => word.length >= 3);
-  for (const word of words) {
-    if (levenshteinAtMost(word, token, 1)) return true;
+  // Strict ordered contains / includes
+  const exactAt = haystack.indexOf(token, sliceStart);
+  if (exactAt !== -1) {
+    return exactAt + token.length;
   }
-  return false;
+
+  // Single-letter mismatch only (insert/delete/substitute), for longer tokens
+  if (token.length < 4) return -1;
+
+  const wordRe = /\S+/g;
+  let match: RegExpExecArray | null;
+  while ((match = wordRe.exec(haystack)) !== null) {
+    if (match.index < sliceStart) continue;
+    const word = match[0];
+    if (word.length < 3) continue;
+    if (levenshteinAtMost(word, token, 1)) {
+      return match.index + word.length;
+    }
+  }
+  return -1;
 }
 
 export interface MapSearchablePlace {
@@ -65,8 +84,9 @@ export interface MapSearchablePlace {
 }
 
 /**
- * Soft search: every query token must match somewhere via contains / light fuzzy.
- * Empty query matches all.
+ * Map search: contains match with strict letter order.
+ * Typo tolerance: at most one letter difference per token (len >= 4).
+ * Query tokens must appear in order. Empty query matches all.
  */
 export function placeMatchesMapSearch(
   place: MapSearchablePlace,
@@ -92,5 +112,11 @@ export function placeMatchesMapSearch(
   if (haystack.includes(query)) return true;
 
   const tokens = query.split(" ").filter(Boolean);
-  return tokens.every((token) => tokenMatches(haystack, token));
+  let fromIndex = 0;
+  for (const token of tokens) {
+    const next = findTokenInOrder(haystack, token, fromIndex);
+    if (next === -1) return false;
+    fromIndex = next;
+  }
+  return true;
 }
