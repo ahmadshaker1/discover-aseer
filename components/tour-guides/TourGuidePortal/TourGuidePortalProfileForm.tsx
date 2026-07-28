@@ -325,14 +325,14 @@ const TourGuidePortalProfileForm = ({
         </div>
       )}
 
-      {!profile && (
+      {/* {!profile && (
         <p
           className="mb-8 text-start text-muted-foreground"
           style={{ fontFamily: ibm }}
         >
           {t("profile.createHint")}
         </p>
-      )}
+      )} */}
 
       {lockIdentityFields && (
         <p
