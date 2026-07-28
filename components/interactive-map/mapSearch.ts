@@ -36,17 +36,18 @@ function levenshteinAtMost(a: string, b: string, max: number): boolean {
   return prev[lb] <= max;
 }
 
-/** Token matches if contained in haystack, or ≈1 edit from a haystack word. */
+/** Token matches if contained in haystack, or 1 edit from a haystack word. */
 function tokenMatches(haystack: string, token: string): boolean {
   if (!token) return true;
+  // Contiguous substring (contains / includes)
   if (haystack.includes(token)) return true;
 
-  // Prefix / partial word: "abha" matches "abhabuilding", "cafe" matches "cafes"
-  const words = haystack.split(" ").filter(Boolean);
+  // One-letter typo only for tokens long enough that a single edit is meaningful
+  if (token.length < 4) return false;
+
+  const words = haystack.split(" ").filter((word) => word.length >= 3);
   for (const word of words) {
-    if (word.includes(token) || token.includes(word)) return true;
-    const maxEdits = token.length >= 5 ? 2 : token.length >= 3 ? 1 : 0;
-    if (maxEdits > 0 && levenshteinAtMost(word, token, maxEdits)) return true;
+    if (levenshteinAtMost(word, token, 1)) return true;
   }
   return false;
 }
