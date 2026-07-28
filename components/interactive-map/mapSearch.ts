@@ -8,6 +8,8 @@ export function normalizeMapSearchText(value: string): string {
     .replace(/[أإآٱ]/g, "ا")
     .replace(/ة/g, "ه")
     .replace(/ى/g, "ي")
+    // Ignore hyphens/dashes so "Al-Soudah" matches "AlSoudah" / "Al Soudah"
+    .replace(/[-‐‑‒–—―]/g, "")
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
