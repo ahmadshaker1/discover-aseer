@@ -809,9 +809,9 @@
       }
     },
     "cookingExperiencesSection": {
-      "title": "Cooking experiences",
+      "title": "Tourism experiences",
       "description": "",
-      "ctaLabel": "View all experiences",
+      "ctaLabel": "Discover all experiences",
       "cards": {
         "cookExp1": {
           "category": "Cooking",

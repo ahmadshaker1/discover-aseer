@@ -809,9 +809,9 @@
       }
     },
     "cookingExperiencesSection": {
-      "title": "تجارب الطهي",
+      "title": "التجارب السياحية",
       "description": "",
-      "ctaLabel": "عرض جميع التجارب",
+      "ctaLabel": "اكتشف جميع التجارب",
       "cards": {
         "cookExp1": {
           "category": "فن الطهي",

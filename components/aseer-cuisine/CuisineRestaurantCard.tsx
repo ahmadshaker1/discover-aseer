@@ -26,15 +26,18 @@ function formatPriceBand(card: CuisineRestaurantCardData): string {
 interface CuisineRestaurantCardProps {
   card: CuisineRestaurantCardData;
   className?: string;
+  /** Defaults to `/restaurants`. */
+  href?: string;
 }
 
 const CuisineRestaurantCard = ({
   card,
   className = "",
+  href = "/restaurants",
 }: CuisineRestaurantCardProps) => {
   return (
     <Link
-      href="/restaurants"
+      href={href}
       className={`group flex w-[282px] flex-col overflow-hidden rounded-2xl border border-border bg-surface text-start transition-transform duration-300 hover:-translate-y-1 sm:rounded-3xl ${className}`}
     >
       <div className="relative h-[190px] w-full overflow-hidden">

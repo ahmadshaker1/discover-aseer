@@ -1,21 +1,24 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
 import { Link } from "@/i18n/navigation";
-import AttractionsLandmarkCard from "@/components/attractions/AttractionsLandmarkCard";
-import type { ExperienceCardProps } from "@/components/experiences/ExperienceCard/ExperienceCard";
-import type { Landmark } from "@/components/landmarks/data";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import CuisineRestaurantCard, {
+  type CuisineRestaurantCardData,
+} from "@/components/aseer-cuisine/CuisineRestaurantCard";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@/components/shared/icons/CarouselChevrons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 export interface AseerCuisineCookingExperiencesSectionData {
-  // Backend (Directus): right panel heading.
   title: string;
-  // Backend (Directus): right panel description.
   description: string;
-  // Backend (Directus): CTA text + target route.
   ctaLabel: string;
   ctaHref: string;
-  // Backend (Directus): cards mapped 1:1 to ExperienceCardProps.
-  cards: ExperienceCardProps[];
+  cards: CuisineRestaurantCardData[];
 }
 
 interface AseerCuisineCookingExperiencesSectionProps {
@@ -25,39 +28,89 @@ interface AseerCuisineCookingExperiencesSectionProps {
   decorationImageSrc?: string;
 }
 
-function experienceToLandmark(card: ExperienceCardProps): Landmark {
-  return {
-    id: String(card.id),
-    slug: String(card.id),
-    title: card.title,
-    subtitle: card.duration || card.category || "",
-    location: card.category || card.provider || "",
-    area: "",
-    city: "",
-    description: card.description,
-    contentHtml: "",
-    guideName: card.provider || "",
-    image: card.imageUrl,
-    galleryImages: [],
-    categoryLabel: card.category || "",
-  };
+function scrollStepPx(scroller: HTMLElement): number {
+  const row = scroller.firstElementChild as HTMLElement | null;
+  const firstCard = row?.firstElementChild as HTMLElement | null;
+  if (!row || !firstCard) return 306;
+  const gapRaw = getComputedStyle(row).columnGap || getComputedStyle(row).gap;
+  const gap = Number.parseFloat(gapRaw || "24") || 24;
+  return firstCard.getBoundingClientRect().width + gap;
 }
 
-const AseerCuisineCookingExperiencesSection = async ({
+const AseerCuisineCookingExperiencesSection = ({
   data,
   featuredCount,
   decorationImageSrc,
 }: AseerCuisineCookingExperiencesSectionProps) => {
-  const t = await getTranslations("common");
+  const locale = useLocale();
+  const tCommon = useTranslations("common");
   const displayCards =
     featuredCount == null ? data.cards : data.cards.slice(0, featuredCount);
 
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const scrollDir = locale === "ar" ? "rtl" : "ltr";
+  const isRtl = locale === "ar";
+
+  const syncScrollState = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    const eps = 2;
+    if (max <= eps) {
+      setCanPrev(false);
+      setCanNext(false);
+      return;
+    }
+    const rtl = getComputedStyle(el).direction === "rtl";
+    const sl = el.scrollLeft;
+    if (rtl && sl < 0) {
+      setCanPrev(sl < -eps);
+      setCanNext(sl > -(max - eps));
+      return;
+    }
+    setCanPrev(sl > eps);
+    setCanNext(sl < max - eps);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const raf = requestAnimationFrame(() => {
+      el.scrollLeft = 0;
+      syncScrollState();
+    });
+
+    syncScrollState();
+    el.addEventListener("scroll", syncScrollState, { passive: true });
+    const ro = new ResizeObserver(syncScrollState);
+    ro.observe(el);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener("scroll", syncScrollState);
+      ro.disconnect();
+    };
+  }, [displayCards, syncScrollState]);
+
+  const scrollByOne = useCallback((direction: -1 | 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.scrollBy({
+      left: direction * scrollStepPx(el),
+      behavior: "smooth",
+    });
+  }, []);
+
   return (
-    <section className="relative w-full overflow-hidden bg-background py-12 text-foreground">
+    <section className="relative w-full overflow-hidden bg-background py-8 text-foreground">
       {decorationImageSrc ? (
         <div
           aria-hidden
-          className={`pointer-events-none absolute top-1/2 z-1 h-[450px] w-[750px] -translate-y-1/2 bg-primary opacity-40 start-0`}
+          className="pointer-events-none absolute top-1/2 z-1 h-[450px] w-[750px] -translate-y-1/2 bg-primary opacity-40 start-0"
           style={{
             WebkitMaskImage: `url(${decorationImageSrc})`,
             maskImage: `url(${decorationImageSrc})`,
@@ -70,46 +123,73 @@ const AseerCuisineCookingExperiencesSection = async ({
           }}
         />
       ) : null}
-      <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-4 sm:px-8 md:px-[60px]">
-        <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-start justify-between gap-4">
-          <div className={`min-w-0 flex-1 space-y-2 text-start pe-4`}>
-            <h2
-              className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
-              style={{ fontFamily: ara }}
-            >
-              {data.title}
-            </h2>
-            {data.description ? (
-              <p
-                className={`w-full max-w-[620px] text-[18px] font-normal leading-[140%] text-muted-foreground text-start`}
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-2 sm:px-8 md:px-[60px]">
+        <div className="flex w-full flex-col gap-8">
+          <div className="flex w-full items-center justify-between gap-4">
+            <div className="flex min-w-0 flex-col gap-2 items-start justify-start text-start">
+              <h2
+                className="w-full text-[48px] font-bold leading-[119%] text-foreground sm:text-[64px] text-start"
                 style={{ fontFamily: ara }}
               >
-                {data.description}
-              </p>
-            ) : null}
-          </div>
-          <Link
-            href={data.ctaHref}
-            className="inline-flex h-[52px] min-w-[161px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-primary/30 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
-            style={{ fontFamily: ara }}
-          >
-            <span
-              className={`whitespace-nowrap text-[20px] font-bold leading-[100%] text-start`}
-            >
-              {t("browseMore")}
-            </span>
-          </Link>
-        </div>
+                {data.title}
+              </h2>
+              {data.description ? (
+                <p
+                  className="w-full max-w-[620px] text-[18px] font-normal leading-[140%] text-muted-foreground text-start"
+                  style={{ fontFamily: ara }}
+                >
+                  {data.description}
+                </p>
+              ) : null}
+            </div>
 
-        <div className="mx-auto grid w-full max-w-[1320px] grid-cols-1 justify-items-center gap-6 pb-2 sm:grid-cols-2 sm:justify-items-stretch lg:grid-cols-4">
-          {displayCards.map((card) => (
-            <AttractionsLandmarkCard
-              key={card.id}
-              landmark={experienceToLandmark(card)}
-              className="max-w-none"
-              cardHref={`/experiences/${card.id}`}
-            />
-          ))}
+            <Link
+              href={data.ctaHref}
+              className="flex h-[52px] min-w-[161px] shrink-0 items-center justify-center gap-2 rounded-[55px] border border-primary/40 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90 whitespace-nowrap"
+              style={{ fontFamily: ara }}
+            >
+              {data.ctaLabel}
+            </Link>
+          </div>
+
+          <div
+            ref={scrollerRef}
+            dir={scrollDir}
+            className="hide-scrollbar h-[337px] w-full overflow-x-auto overflow-y-hidden pb-5 scroll-smooth"
+          >
+            <div className="flex min-w-max gap-6">
+              {displayCards.map((card) => (
+                <CuisineRestaurantCard
+                  key={card.id}
+                  card={card}
+                  href={`/experiences/${card.id}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {displayCards.length > 0 ? (
+            <div className="flex flex-row items-center justify-start rtl:justify-end gap-3 [direction:ltr]">
+              <button
+                type="button"
+                aria-label={isRtl ? tCommon("next") : tCommon("previous")}
+                disabled={isRtl ? !canNext : !canPrev}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
+                onClick={() => scrollByOne(-1)}
+              >
+                <ChevronLeftIcon />
+              </button>
+              <button
+                type="button"
+                aria-label={isRtl ? tCommon("previous") : tCommon("next")}
+                disabled={isRtl ? !canPrev : !canNext}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
+                onClick={() => scrollByOne(1)}
+              >
+                <ChevronRightIcon />
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

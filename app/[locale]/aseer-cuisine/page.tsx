@@ -5,7 +5,6 @@ import AseerCuisineLocalFlavorsSection from "@/components/aseer-cuisine/AseerCui
 import AseerCuisineCookingExperiencesSection from "@/components/experiences/AseerExperiencesSection";
 import AseerCuisineChefsVideoSection from "@/components/aseer-cuisine/AseerCuisineChefsVideoSection";
 import { fetchFeaturedCuisineCards } from "@/components/aseer-cuisine/data";
-import type { ExperienceCardProps } from "@/components/experiences/ExperienceCard/ExperienceCard";
 import {
   COOKING_EXPERIENCE_TYPE,
   fetchExperiences,
@@ -29,6 +28,7 @@ const AseerCuisinePage = async () => {
       fetchFeaturedCuisineCards({ locale, cuisineType: "dish", count: 100 }),
       fetchFeaturedCuisineCards({ locale, cuisineType: "flavour", count: 100 }),
       fetchRestaurants(locale),
+      // Same idea as restaurants: page shows cooking experiences; CTA opens all.
       fetchExperiences({ type: COOKING_EXPERIENCE_TYPE, locale }),
     ]);
   const posterImage =
@@ -51,19 +51,20 @@ const AseerCuisinePage = async () => {
       reviewsCount: restaurant.reviewsCount ?? 0,
     }));
 
-  const cuisineExperiences: ExperienceCardProps[] =
-    experiencesResult.experiences.slice(0, 6).map((experience) => ({
-      id: experience.id,
-      imageUrl: experience.imageUrl,
-      category: experience.category,
+  const cuisineExperiences = experiencesResult.experiences
+    .slice(0, 6)
+    .map((experience) => ({
+      id: String(experience.id),
+      image: experience.imageUrl,
       title: experience.title,
-      duration: experience.duration,
-      description: experience.description,
-      provider: experience.provider,
-      price: experience.price,
-      currency: experience.currency,
-      groupSize: experience.groupSize,
-      bookUrl: experience.bookUrl,
+      location: experience.provider || experience.category || "",
+      cuisineType: experience.category || experience.duration || "",
+      priceRange:
+        experience.price > 0
+          ? String(experience.price)
+          : tCommon("notSpecified"),
+      rating: 4.5,
+      reviewsCount: 0,
     }));
 
   return (
