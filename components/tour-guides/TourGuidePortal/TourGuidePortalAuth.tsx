@@ -2,6 +2,7 @@
 
 import { useId, useState, type FormEvent, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   FormSectionTitle,
   FormSubmitButton,
@@ -139,7 +140,8 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
             className="-mt-4 mb-8 text-base leading-relaxed text-muted-foreground text-start"
             style={{ fontFamily: ibm }}
           >
-            {mode === "login" ? t("loginSubtitle") : t("registerSubtitle")}
+            {/* //* we dont need it for now maybe we can use it in the future */}
+            {/* {mode === "login" ? t("loginSubtitle") : t("registerSubtitle")} */}
           </p>
 
           <div className="grid grid-cols-1 gap-x-8 gap-y-10">
@@ -196,6 +198,15 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
               disabled={submitting}
             />
           </div>
+        </div>
+        <div className="w-full flex justify-start">
+          <Link
+            href="/tour-guides/forgot-password"
+            className="text-sm font-medium text-primary hover:underline"
+            style={{ fontFamily: araBold }}
+          >
+            {locale === "ar" ? "نسيت كلمة المرور؟" : "Forgot Password?"}
+          </Link>
         </div>
 
         {error ? (

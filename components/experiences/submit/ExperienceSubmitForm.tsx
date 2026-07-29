@@ -9,7 +9,10 @@ import {
   FormTextarea,
   FormTextInput,
 } from "@/components/experiences/submit/ExperienceFormFields";
-import { ibm, araBold } from "@/components/experiences/submit/experienceFormStyles";
+import {
+  ibm,
+  araBold,
+} from "@/components/experiences/submit/experienceFormStyles";
 import { useId, useMemo, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -95,13 +98,18 @@ const ExperienceSubmitForm = () => {
   const [permitFile, setPermitFile] = useState<File | null>(null);
   const [commercialRegistrationFile, setCommercialRegistrationFile] =
     useState<File | null>(null);
-  const [companyProfileFile, setCompanyProfileFile] = useState<File | null>(null);
-  const [submitState, setSubmitState] = useState<"idle" | "success" | "error">(
-    "idle",
+  const [companyProfileFile, setCompanyProfileFile] = useState<File | null>(
+    null,
   );
+  const [submitState, setSubmitState] = useState<
+    "idle" | "success" | "error" | "submitting"
+  >("idle");
   const [submitMessage, setSubmitMessage] = useState("");
 
-  const setField = <K extends keyof FormValues>(key: K, value: FormValues[K]) => {
+  const setField = <K extends keyof FormValues>(
+    key: K,
+    value: FormValues[K],
+  ) => {
     setValues((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -164,21 +172,70 @@ const ExperienceSubmitForm = () => {
     isValidPhone(values.contactPhone) &&
     values.permitCommitment;
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!canSubmit) {
       setSubmitState("error");
       setSubmitMessage(t("form.errorRequired"));
       return;
     }
-    setSubmitState("success");
-    setSubmitMessage(t("form.success"));
+
+    setSubmitState("submitting");
+    setSubmitMessage("");
+
+    try {
+      const { submitExperienceForm } =
+        await import("@/components/experiences/submit/actions");
+      const formData = new FormData();
+      Object.entries(values).forEach(([key, value]) => {
+        formData.append(key, value as string);
+      });
+      if (eventLogoFile) formData.append("eventLogoFile", eventLogoFile);
+      eventPhotosFiles.forEach((file) =>
+        formData.append("eventPhotosFiles", file),
+      );
+      if (eventProfileFile)
+        formData.append("eventProfileFile", eventProfileFile);
+      if (permitFile) formData.append("permitFile", permitFile);
+      if (commercialRegistrationFile)
+        formData.append(
+          "commercialRegistrationFile",
+          commercialRegistrationFile,
+        );
+      if (companyProfileFile)
+        formData.append("companyProfileFile", companyProfileFile);
+
+      const res = await submitExperienceForm(formData);
+
+      if (res.success) {
+        setSubmitState("success");
+        setSubmitMessage(t("form.success"));
+        setValues(EMPTY_VALUES);
+        setEventLogoFile(null);
+        setEventPhotosFiles([]);
+        setEventProfileFile(null);
+        setPermitFile(null);
+        setCommercialRegistrationFile(null);
+        setCompanyProfileFile(null);
+      } else {
+        setSubmitState("error");
+        setSubmitMessage(res.message || t("form.errorRequired"));
+      }
+    } catch (error) {
+      console.error(error);
+      setSubmitState("error");
+      setSubmitMessage("تعذر إرسال الطلب، يرجى المحاولة مرة أخرى لاحقاً.");
+    }
   };
 
   const textDir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit} noValidate>
+    <form
+      className="mx-auto w-full max-w-[1026px]"
+      onSubmit={onSubmit}
+      noValidate
+    >
       <div className="mb-10">
         <FormSectionTitle>{t("form.sectionDetails")}</FormSectionTitle>
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
@@ -215,7 +272,9 @@ const ExperienceSubmitForm = () => {
             required
             placeholder={t("form.select")}
             value={values.period}
-            onChange={(value) => setField("period", value as FormValues["period"])}
+            onChange={(value) =>
+              setField("period", value as FormValues["period"])
+            }
             options={periodOptions}
           />
           <FormTextarea
@@ -463,7 +522,8 @@ const ExperienceSubmitForm = () => {
           className="mb-4 text-base font-bold text-foreground text-start"
           style={{ fontFamily: araBold }}
         >
-          {t("form.permitCommitmentTitle")} <span className="text-red-600">*</span>
+          {t("form.permitCommitmentTitle")}{" "}
+          <span className="text-red-600">*</span>
         </p>
         <FormCheckboxField
           checked={values.permitCommitment}
@@ -488,7 +548,7 @@ const ExperienceSubmitForm = () => {
             {submitMessage}
           </p>
         ) : null}
-        <FormSubmitButton disabled={!canSubmit}>
+        <FormSubmitButton disabled={!canSubmit || submitState === "submitting"}>
           {t("form.submit")}
         </FormSubmitButton>
       </section>

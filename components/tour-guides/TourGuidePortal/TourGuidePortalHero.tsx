@@ -139,12 +139,6 @@ const TourGuidePortalHero = () => {
           >
             {tForm("formSubtitle")}
           </p>
-          <p
-            className="mx-auto max-w-[590px] text-center text-[18px] font-normal leading-relaxed text-red-600"
-            style={{ fontFamily: araBold }}
-          >
-            {tForm("notes")}
-          </p>
         </div>
       </div>
     </section>

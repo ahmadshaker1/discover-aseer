@@ -597,6 +597,7 @@
     "formProgressAria": "Form completion progress",
     "form": {
       "personalInfo": "Personal Information",
+      "licenseInfo": "Tour guide license information",
       "generalInfo": "General Information",
       "contactInfo": "Contact Information",
       "socialAccounts": "Website and social media accounts",
@@ -630,9 +631,15 @@
       "commitment3": "I commit to fully providing tour guide services for any requests received from visitors through any means (personal account on the website, email, phone call, or WhatsApp) and to respond promptly. Visitors will rate my services, and any delays or failures in providing satisfactory service will be sufficient grounds for lowering my rating and potentially removing me from the website.",
       "commitment4": "I agree to Privacy Policy",
       "profilePhoto": "Profile photo",
-      "licenseAttachment": "Tour guide license",
+      "licenseAttachment": "License attachment (PDF or images)",
       "browsePhoto": "Upload photo",
       "browseAttachment": "Upload license",
+      "photoGuidelinesTitle": "We recommend uploading a clear, recent profile photo, as it will appear on your public profile and help visitors recognize you, increasing your chances of being contacted.",
+      "photoGuidelinesDoNot": "Please do not:",
+      "photoGuidelinesList1": "Upload IDs or other documents.",
+      "photoGuidelinesList2": "Upload screenshots, logos, or graphics.",
+      "photoGuidelinesList3": "Upload photos of other people or any blurry images.",
+      "photoGuidelinesList4": "Upload vertical images.",
       "addLanguageLevel": "Add language level",
       "hideLanguageLevel": "Hide language level",
       "fileTypesImage": "JPG, JPEG, PNG, WEBP",
@@ -711,6 +718,8 @@
       "specializationRequired": "Please select at least one specialization.",
       "errorRequired": "Please complete all required fields before saving.",
       "errorInvalidMobile": "Invalid mobile number. It must be 10 digits starting with 05 or 13 characters starting with +9665.",
+      "errorInvalidNationalId": "Invalid National ID. It must be exactly 10 digits.",
+      "errorInvalidLicense": "Invalid License number. It must be exactly 8 digits.",
       "lockedFieldsHint": "Name, gender, national ID, and license number were set when you created your profile and cannot be changed here. Contact support if a correction is needed."
     }
   },

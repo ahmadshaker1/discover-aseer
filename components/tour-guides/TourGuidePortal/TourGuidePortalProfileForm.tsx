@@ -73,7 +73,6 @@ const TourGuidePortalProfileForm = ({
   const [otherSpecialization, setOtherSpecialization] = useState("");
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [licenseFile, setLicenseFile] = useState<File | null>(null);
-  const [showOtherLanguageLevel, setShowOtherLanguageLevel] = useState(false);
   const [submitState, setSubmitState] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
@@ -108,9 +107,6 @@ const TourGuidePortalProfileForm = ({
       const parsed = parseSpecializationValue(next.Specialization);
       setSelectedSpecializations(parsed.selected);
       setOtherSpecialization(parsed.other);
-      setShowOtherLanguageLevel(
-        Boolean(next.Other_languages_level || next.Other_languages.trim()),
-      );
       return;
     }
     if (accountEmail) {
@@ -185,6 +181,29 @@ const TourGuidePortalProfileForm = ({
     setValues((prev) => ({ ...prev, [key]: value }));
   };
 
+  const addOtherLanguage = () => {
+    setField("Other_languages", [
+      ...values.Other_languages,
+      { language: "", level: "" },
+    ]);
+  };
+
+  const removeOtherLanguage = (index: number) => {
+    const next = [...values.Other_languages];
+    next.splice(index, 1);
+    setField("Other_languages", next);
+  };
+
+  const updateOtherLanguage = (
+    index: number,
+    fieldKey: "language" | "level",
+    val: string,
+  ) => {
+    const next = [...values.Other_languages];
+    next[index] = { ...next[index], [fieldKey]: val } as any;
+    setField("Other_languages", next);
+  };
+
   const syncSpecialization = (
     nextSelected: SpecializationId[],
     nextOther: string,
@@ -217,7 +236,6 @@ const TourGuidePortalProfileForm = ({
       !values.name_en?.trim() ||
       !values.gender ||
       !values.National_ID_number?.trim() ||
-      (!existingPhotoUrl && !profileImageFile) ||
       !values.License_number?.trim() ||
       !values.License_expiry_date?.trim() ||
       !values.Arabic_language ||
@@ -236,6 +254,18 @@ const TourGuidePortalProfileForm = ({
     if (!mobileRegex.test(values.Mobile_number?.trim() || "")) {
       setSubmitState("error");
       setMessage(t("profile.errorInvalidMobile"));
+      return;
+    }
+
+    if (values.National_ID_number.trim().length !== 10) {
+      setSubmitState("error");
+      setMessage(t("profile.errorInvalidNationalId"));
+      return;
+    }
+
+    if (values.License_number.trim().length !== 8) {
+      setSubmitState("error");
+      setMessage(t("profile.errorInvalidLicense"));
       return;
     }
 
@@ -325,14 +355,14 @@ const TourGuidePortalProfileForm = ({
         </div>
       )}
 
-      {!profile && (
+      {/* {!profile && (
         <p
           className="mb-8 text-start text-muted-foreground"
           style={{ fontFamily: ibm }}
         >
           {t("profile.createHint")}
         </p>
-      )}
+      )} */}
 
       {lockIdentityFields && (
         <p
@@ -383,7 +413,10 @@ const TourGuidePortalProfileForm = ({
             required
             readOnly={lockIdentityFields}
             value={values.National_ID_number}
-            onChange={(e) => setField("National_ID_number", e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, "");
+              if (val.length <= 10) setField("National_ID_number", val);
+            }}
           />
           <FormSelectField
             id={`${baseId}-residence`}
@@ -412,7 +445,6 @@ const TourGuidePortalProfileForm = ({
           <FormFileUpload
             id={`${baseId}-photo`}
             label={tForm("profilePhoto")}
-            required={!existingPhotoUrl}
             accept="image/jpeg,image/png,image/webp,image/jpg"
             hint={photoHint}
             file={profileImageFile}
@@ -426,11 +458,34 @@ const TourGuidePortalProfileForm = ({
               setProfileImageFile(files?.[0] ?? null);
             }}
           />
+          <div className="md:col-span-2 rounded-xl border border-blue-200 bg-blue-50/50 p-4 mt-2">
+            <p
+              className="text-md font-normal text-blue-900 leading-relaxed text-start"
+              style={{ fontFamily: ibm }}
+            >
+              {tForm("photoGuidelinesTitle")}
+            </p>
+            <p
+              className="text-md font-normal text-blue-900 mt-3 text-start"
+              style={{ fontFamily: ibm }}
+            >
+              {tForm("photoGuidelinesDoNot")}
+            </p>
+            <ul
+              className="mt-1 flex flex-col gap-1 list-disc list-inside text-sm text-blue-900 text-start"
+              style={{ fontFamily: ibm }}
+            >
+              <li>{tForm("photoGuidelinesList1")}</li>
+              <li>{tForm("photoGuidelinesList2")}</li>
+              <li>{tForm("photoGuidelinesList3")}</li>
+              <li>{tForm("photoGuidelinesList4")}</li>
+            </ul>
+          </div>
         </div>
       </div>
 
       <div className="mb-10">
-        <FormSectionTitle>{tForm("generalInfo")}</FormSectionTitle>
+        <FormSectionTitle>{tForm("licenseInfo")}</FormSectionTitle>
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
           <FormTextInput
             id={`${baseId}-license`}
@@ -438,7 +493,10 @@ const TourGuidePortalProfileForm = ({
             required
             readOnly={lockIdentityFields}
             value={values.License_number}
-            onChange={(e) => setField("License_number", e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, "");
+              if (val.length <= 8) setField("License_number", val);
+            }}
           />
           <FormTextInput
             id={`${baseId}-license-date`}
@@ -448,6 +506,29 @@ const TourGuidePortalProfileForm = ({
             value={values.License_expiry_date}
             onChange={(e) => setField("License_expiry_date", e.target.value)}
           />
+          <FormFileUpload
+            id={`${baseId}-license-file`}
+            label={tForm("licenseAttachment")}
+            required={!existingLicenseUrl}
+            accept="image/jpeg,image/png,image/jpg,application/pdf"
+            hint={licenseHint}
+            file={licenseFile}
+            existingFileUrl={existingLicenseUrl}
+            existingFileLabel={t("profile.viewCurrentLicense")}
+            chooseFileLabel={tForm("browseAttachment")}
+            noFileLabel=""
+            viewFileLabel={t("profile.viewCurrentLicense")}
+            onChange={(files) => {
+              clearSubmitFeedback();
+              setLicenseFile(files?.[0] ?? null);
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <FormSectionTitle>{tForm("generalInfo")}</FormSectionTitle>
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
           <FormSelectField
             id={`${baseId}-ar-level`}
             label={tForm("arabicLanguage")}
@@ -476,54 +557,64 @@ const TourGuidePortalProfileForm = ({
             }
             options={languageLevelOptions}
           />
-          <div className="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:items-end">
-            <div className="min-w-0 flex-1">
-              <FormTextInput
-                id={`${baseId}-other-lang`}
-                label={tForm("otherLanguages")}
-                value={values.Other_languages}
-                onChange={(e) => setField("Other_languages", e.target.value)}
-                placeholder={tForm("otherLanguagesPlaceholder")}
-              />
+          <div className="md:col-span-2 flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <p
+                className="text-base font-bold text-foreground"
+                style={{ fontFamily: araBold }}
+              >
+                {tForm("otherLanguages")}
+              </p>
+              <button
+                type="button"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-background text-xl font-bold leading-none text-primary transition-colors hover:border-primary/50 hover:bg-primary/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                style={{ fontFamily: araBold }}
+                aria-label={tForm("addLanguageLevel")}
+                onClick={addOtherLanguage}
+              >
+                +
+              </button>
             </div>
-            <button
-              type="button"
-              className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-background text-2xl font-bold leading-none text-primary transition-colors hover:border-primary/50 hover:bg-primary/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              style={{ fontFamily: araBold }}
-              aria-expanded={showOtherLanguageLevel}
-              aria-label={
-                showOtherLanguageLevel
-                  ? tForm("hideLanguageLevel")
-                  : tForm("addLanguageLevel")
-              }
-              onClick={() => {
-                clearSubmitFeedback();
-                if (showOtherLanguageLevel) {
-                  setField("Other_languages_level", "");
-                  setShowOtherLanguageLevel(false);
-                  return;
-                }
-                setShowOtherLanguageLevel(true);
-              }}
-            >
-              {showOtherLanguageLevel ? "−" : "+"}
-            </button>
+            {values.Other_languages.map((lang, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-3 sm:flex-row sm:items-end rounded-xl border border-border p-4 bg-surface"
+              >
+                <div className="min-w-0 flex-1">
+                  <FormTextInput
+                    id={`${baseId}-other-lang-${index}`}
+                    label={tForm("otherLanguages")}
+                    value={lang.language}
+                    onChange={(e) =>
+                      updateOtherLanguage(index, "language", e.target.value)
+                    }
+                    placeholder={tForm("otherLanguagesPlaceholder")}
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <FormSelectField
+                    id={`${baseId}-other-lang-level-${index}`}
+                    label={tForm("otherLanguagesLevel")}
+                    placeholder={tForm("select")}
+                    value={lang.level}
+                    onChange={(value) =>
+                      updateOtherLanguage(index, "level", value)
+                    }
+                    options={languageLevelOptions}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="mt-2 inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-red-200 bg-red-50 text-xl font-bold leading-none text-red-600 transition-colors hover:border-red-300 hover:bg-red-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 sm:mt-0"
+                  style={{ fontFamily: araBold }}
+                  aria-label={tForm("hideLanguageLevel")}
+                  onClick={() => removeOtherLanguage(index)}
+                >
+                  −
+                </button>
+              </div>
+            ))}
           </div>
-          {showOtherLanguageLevel ? (
-            <FormSelectField
-              id={`${baseId}-other-lang-level`}
-              label={tForm("otherLanguagesLevel")}
-              placeholder={tForm("select")}
-              value={values.Other_languages_level}
-              onChange={(value) =>
-                setField(
-                  "Other_languages_level",
-                  value as TourGuidePortalFormValues["Other_languages_level"],
-                )
-              }
-              options={languageLevelOptions}
-            />
-          ) : null}
           <div className="md:col-span-2 flex flex-col gap-3 text-start">
             <p
               className="text-base font-bold text-foreground"
@@ -570,23 +661,6 @@ const TourGuidePortalProfileForm = ({
               { value: "yes", label: tForm("yes") },
               { value: "no", label: tForm("no") },
             ]}
-          />
-          <FormFileUpload
-            id={`${baseId}-license-file`}
-            label={tForm("licenseAttachment")}
-            required={!existingLicenseUrl}
-            accept="image/jpeg,image/png,image/jpg,application/pdf"
-            hint={licenseHint}
-            file={licenseFile}
-            existingFileUrl={existingLicenseUrl}
-            existingFileLabel={t("profile.viewCurrentLicense")}
-            chooseFileLabel={tForm("browseAttachment")}
-            noFileLabel=""
-            viewFileLabel={t("profile.viewCurrentLicense")}
-            onChange={(files) => {
-              clearSubmitFeedback();
-              setLicenseFile(files?.[0] ?? null);
-            }}
           />
         </div>
       </div>
