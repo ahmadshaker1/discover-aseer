@@ -48,7 +48,7 @@ function getSiteOrigin(): string {
   const raw =
     process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
     process.env.NEXT_PUBLIC_APP_URL?.trim() ||
-    "https://discoveraseer.com";
+    "https://discover-aseer.vercel.app";
   return raw.replace(/\/+$/, "");
 }
 
@@ -59,7 +59,6 @@ function portalUrlForGuide(): string {
 function normalizeStatus(raw: unknown): TourGuideStatusEmailKind | null {
   if (typeof raw !== "string") return null;
   const status = raw.trim().toLowerCase();
-  // Directus approval = `published`. Accept `approved` as an alias from flows.
   if (status === TOUR_GUIDE_PUBLISHED_STATUS || status === "approved") {
     return "published";
   }
@@ -74,50 +73,84 @@ function asRecord(value: unknown): Record<string, unknown> | null {
   return value as Record<string, unknown>;
 }
 
+/** Directus templates sometimes stringify objects; parse when needed. */
+function coerceRecord(value: unknown): Record<string, unknown> | null {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed || trimmed === "[object Object]") return null;
+    try {
+      return asRecord(JSON.parse(trimmed));
+    } catch {
+      return null;
+    }
+  }
+  return asRecord(value);
+}
+
+function pushKey(keys: Set<string>, value: unknown): void {
+  if (value == null) return;
+  if (Array.isArray(value)) {
+    for (const item of value) pushKey(keys, item);
+    return;
+  }
+  if (typeof value === "number" && Number.isFinite(value)) {
+    keys.add(String(value));
+    return;
+  }
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed || trimmed.includes("{{")) return;
+    // Handle "1,2" or JSON array strings
+    if (trimmed.startsWith("[")) {
+      try {
+        pushKey(keys, JSON.parse(trimmed));
+        return;
+      } catch {
+        // fall through
+      }
+    }
+    for (const part of trimmed.split(/[,\s]+/)) {
+      if (part && !part.includes("{{")) keys.add(part);
+    }
+  }
+}
+
 function collectKeys(payload: Record<string, unknown>): string[] {
   const keys = new Set<string>();
+  pushKey(keys, payload.key);
+  pushKey(keys, payload.keys);
+  pushKey(keys, payload.id);
 
-  const push = (value: unknown) => {
-    if (value == null) return;
-    if (Array.isArray(value)) {
-      for (const item of value) push(item);
-      return;
-    }
-    if (typeof value === "number" || typeof value === "string") {
-      const id = String(value).trim();
-      if (id) keys.add(id);
-    }
-  };
-
-  push(payload.key);
-  push(payload.keys);
-  push(payload.id);
-
-  const body = asRecord(payload.body);
+  const body = coerceRecord(payload.body);
   if (body) {
-    push(body.key);
-    push(body.keys);
-    push(body.id);
+    pushKey(keys, body.key);
+    pushKey(keys, body.keys);
+    pushKey(keys, body.id);
   }
 
-  const item = asRecord(payload.item) || asRecord(body?.item);
-  if (item) push(item.id);
+  const item = coerceRecord(payload.item) || coerceRecord(body?.item);
+  if (item) pushKey(keys, item.id);
 
   return [...keys];
 }
 
 function extractStatus(payload: Record<string, unknown>): string | null {
+  const payloadObj =
+    coerceRecord(payload.payload) ||
+    coerceRecord(coerceRecord(payload.body)?.payload);
+
   const candidates: unknown[] = [
     payload.status,
-    asRecord(payload.payload)?.status,
-    asRecord(payload.body)?.status,
-    asRecord(asRecord(payload.body)?.payload)?.status,
-    asRecord(payload.item)?.status,
-    asRecord(asRecord(payload.body)?.item)?.status,
+    payloadObj?.status,
+    coerceRecord(payload.body)?.status,
+    coerceRecord(payload.item)?.status,
+    coerceRecord(coerceRecord(payload.body)?.item)?.status,
   ];
 
   for (const value of candidates) {
-    if (typeof value === "string" && value.trim()) return value.trim();
+    if (typeof value === "string" && value.trim() && !value.includes("{{")) {
+      return value.trim();
+    }
   }
   return null;
 }
@@ -126,10 +159,10 @@ function extractInlineGuide(
   payload: Record<string, unknown>,
 ): DirectusGuideRow | null {
   const candidates = [
-    asRecord(payload.item),
-    asRecord(asRecord(payload.body)?.item),
-    asRecord(payload.payload),
-    asRecord(asRecord(payload.body)?.payload),
+    coerceRecord(payload.item),
+    coerceRecord(coerceRecord(payload.body)?.item),
+    coerceRecord(payload.payload),
+    coerceRecord(coerceRecord(payload.body)?.payload),
     payload,
   ];
 
@@ -182,10 +215,13 @@ async function fetchGuideById(id: string): Promise<DirectusGuideRow | null> {
   return json.data ?? null;
 }
 
-async function sendStatusEmail(guide: DirectusGuideRow, kind: TourGuideStatusEmailKind) {
+async function sendStatusEmail(
+  guide: DirectusGuideRow,
+  kind: TourGuideStatusEmailKind,
+) {
   const email = guide.email?.trim();
   if (!email) {
-    return { ok: false as const, reason: "missing_email" };
+    return { ok: false as const, reason: "missing_email" as const };
   }
 
   const { subject, html } = buildTourGuideStatusEmail({
@@ -226,11 +262,17 @@ export async function POST(request: Request) {
   }
 
   const payload = asRecord(raw) ?? {};
-  const collection =
+  const collectionRaw =
     (typeof payload.collection === "string" && payload.collection) ||
-    (typeof asRecord(payload.body)?.collection === "string" &&
-      String(asRecord(payload.body)?.collection)) ||
-    TOUR_GUIDES_COLLECTION;
+    (typeof coerceRecord(payload.body)?.collection === "string" &&
+      String(coerceRecord(payload.body)?.collection)) ||
+    "";
+
+  // Empty / templated collection → assume tourist_guides (Flow may send full $trigger)
+  const collection =
+    collectionRaw && !collectionRaw.includes("{{")
+      ? collectionRaw
+      : TOUR_GUIDES_COLLECTION;
 
   if (collection !== TOUR_GUIDES_COLLECTION) {
     return NextResponse.json({
@@ -241,20 +283,61 @@ export async function POST(request: Request) {
     });
   }
 
-  const statusRaw = extractStatus(payload);
-  const kind = normalizeStatus(statusRaw);
+  let statusRaw = extractStatus(payload);
+  let kind = normalizeStatus(statusRaw);
+  const keys = collectKeys(payload);
+  const inline = extractInlineGuide(payload);
+  const results: Array<Record<string, unknown>> = [];
+
+  // If status missing/unusable but we have an id, load the guide and use live status.
+  if (!kind && keys.length > 0) {
+    const guide = await fetchGuideById(keys[0]!);
+    if (guide) {
+      statusRaw = guide.status ?? statusRaw;
+      kind = normalizeStatus(guide.status);
+      if (kind) {
+        try {
+          const sent = await sendStatusEmail(guide, kind);
+          results.push({
+            id: keys[0],
+            source: "directus_fallback_status",
+            ...sent,
+            kind,
+            status: statusRaw,
+          });
+          return NextResponse.json({
+            ok: true,
+            kind,
+            sent: sent.ok ? 1 : 0,
+            results,
+            note: "Status resolved from Directus row because webhook payload status was missing/unusable.",
+          });
+        } catch (error) {
+          console.error("[tour-guide-status-webhook] send failed", error);
+          return NextResponse.json(
+            {
+              error:
+                error instanceof Error
+                  ? error.message
+                  : "Failed to send email.",
+            },
+            { status: 500 },
+          );
+        }
+      }
+    }
+  }
+
   if (!kind) {
     return NextResponse.json({
       ok: true,
       skipped: true,
       reason: "status_not_notifiable",
       status: statusRaw,
+      keys,
+      receivedKeys: Object.keys(payload),
     });
   }
-
-  const inline = extractInlineGuide(payload);
-  const keys = collectKeys(payload);
-  const results: Array<Record<string, unknown>> = [];
 
   if (inline?.email) {
     try {
@@ -300,7 +383,8 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Missing guide id/keys or email in webhook payload. Configure the Directus Flow to send key/keys or the full item.",
+          "Missing guide id/keys or email in webhook payload. Configure the Directus Flow body to {{$trigger}}.",
+        receivedKeys: Object.keys(payload),
       },
       { status: 400 },
     );
