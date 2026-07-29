@@ -8,9 +8,14 @@ The app behavior is **fixed in code** — no tour-guide-specific `.env` toggles.
 NEXT_PUBLIC_DIRECTUS_APP_URL=https://tool-portal.discoveraseer.com
 DIRECTUS_WRITE_BASE_URL=https://tool-portal.discoveraseer.com
 DIRECTUS_ADMIN_TOKEN=your-admin-static-token
+SENDGRID_API_KEY=your-sendgrid-api-key
+DIRECTUS_WEBHOOK_SECRET=long-random-shared-secret
+NEXT_PUBLIC_SITE_URL=https://discoveraseer.com
 ```
 
 `DIRECTUS_ADMIN_TOKEN` is used **server-side only** so the portal can load linked guide rows when Directus Guide/Public policies cannot filter on `email` yet. Never expose it to the client.
+
+`DIRECTUS_WEBHOOK_SECRET` + `SENDGRID_API_KEY` power status emails when an admin sets a guide to **`published`** (approved) or **`rejected`** (see §9).
 
 Directus base URL used by the app: `https://tool-portal.discoveraseer.com`
 
@@ -376,3 +381,87 @@ Works with **Directus 11+** (policies API) and falls back to **Directus 10** (ro
 ### 5. Manual setup (if you prefer the UI)
 
 Use sections **2–3** above. The script is optional — it mirrors the same rules.
+
+---
+
+## 9. Status change emails (Directus Flow → Next.js → SendGrid)
+
+When an admin sets `tourist_guides.status` to **`published`** (approved) or **`rejected`**, Directus should call this app; the app emails the guide via SendGrid with branded HTML.
+
+### Endpoints
+
+| Host | URL |
+|------|-----|
+| Current (Vercel) | `https://discover-aseer.vercel.app/api/tour-guides/webhooks/status` |
+| Production (later) | `https://discoveraseer.com/api/tour-guides/webhooks/status` |
+
+Right now only the **Vercel** URL is wired in the Directus Flow. Add the production URL as a second webhook operation after `discoveraseer.com` points at this Next.js app.
+
+### App env (Vercel + local)
+
+```env
+SENDGRID_API_KEY=...
+DIRECTUS_ADMIN_TOKEN=...
+DIRECTUS_WEBHOOK_SECRET=generate-a-long-random-string
+NEXT_PUBLIC_SITE_URL=https://discoveraseer.com
+```
+
+### Directus Flow setup
+
+1. **Settings → Flows → Create Flow**
+2. **Trigger:** Event Hook  
+   - Type: **Action (Non-Blocking)**  
+   - Scope: **`items.update`**  
+   - Collections: **`tourist_guides`**
+3. **(Optional) Condition** — only continue when status is notify-worthy:
+
+```json
+{
+  "status": {
+    "_in": ["published", "rejected"]
+  }
+}
+```
+
+   Or filter on `{{$trigger.payload.status}}` depending on your Directus version UI.
+
+4. **Operation → Webhook / Request URL** (add two operations, one per host):
+   - Method: `POST`
+   - URL: `https://discoveraseer.com/api/tour-guides/webhooks/status`  
+     and `https://discover-aseer.vercel.app/api/tour-guides/webhooks/status`
+   - Headers:
+     - `Content-Type: application/json`
+     - `x-webhook-secret: <same value as DIRECTUS_WEBHOOK_SECRET>`
+   - Body (JSON) — send the trigger so the app gets `key` + new status:
+
+```json
+{
+  "collection": "tourist_guides",
+  "key": "{{$trigger.key}}",
+  "keys": "{{$trigger.keys}}",
+  "payload": "{{$trigger.payload}}"
+}
+```
+
+   If your Flow UI only supports a raw expression, use `{{$trigger}}` as the body.
+
+5. Save & enable the Flow.
+
+### Behaviour
+
+| New status | Email |
+|------------|--------|
+| `published` | Approval email (AR + EN), CTA → `/ar/tour-guides/portal` |
+| `rejected` | Rejection email (AR + EN), CTA → portal to update & resubmit |
+| Other (`draft`, `under_review`, …) | Ignored (200 + `skipped`) |
+
+If the webhook body has no `email`, the app loads the guide with **`DIRECTUS_ADMIN_TOKEN`** and uses the row’s `email` / `name` / `name_en`.
+
+### Quick test
+
+```bash
+curl -X POST "https://discoveraseer.com/api/tour-guides/webhooks/status" \
+  -H "Content-Type: application/json" \
+  -H "x-webhook-secret: YOUR_SECRET" \
+  -d '{"collection":"tourist_guides","key":123,"payload":{"status":"published"}}'
+```
