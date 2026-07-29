@@ -38,12 +38,15 @@ export default function ContactUsForm() {
   const locale = useLocale();
   const baseId = useId();
   const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
-  const [submitState, setSubmitState] = useState<"idle" | "success" | "error">(
-    "idle",
-  );
+  const [submitState, setSubmitState] = useState<
+    "idle" | "success" | "error" | "submitting"
+  >("idle");
   const [submitMessage, setSubmitMessage] = useState("");
 
-  const setField = <K extends keyof FormValues>(key: K, value: FormValues[K]) => {
+  const setField = <K extends keyof FormValues>(
+    key: K,
+    value: FormValues[K],
+  ) => {
     setValues((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -54,22 +57,51 @@ export default function ContactUsForm() {
     values.fromAseer !== null &&
     values.description.trim() !== "";
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!canSubmit) {
       setSubmitState("error");
       setSubmitMessage(t("form.errorRequired"));
       return;
     }
-    setSubmitState("success");
-    setSubmitMessage(t("form.success"));
-    setValues(EMPTY_VALUES);
+
+    setSubmitState("submitting");
+    setSubmitMessage("");
+
+    try {
+      const { submitContactUsForm } =
+        await import("@/components/contact/actions");
+      const res = await submitContactUsForm({
+        name: values.name,
+        phone: values.phone,
+        email: values.email,
+        fromAseer: values.fromAseer,
+        description: values.description,
+      });
+
+      if (res.success) {
+        setSubmitState("success");
+        setSubmitMessage(t("form.success"));
+        setValues(EMPTY_VALUES);
+      } else {
+        setSubmitState("error");
+        setSubmitMessage(res.message || t("form.errorRequired"));
+      }
+    } catch (error) {
+      console.error(error);
+      setSubmitState("error");
+      setSubmitMessage(t("form.errorRequired"));
+    }
   };
 
   const textDir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <form className="mx-auto w-full max-w-[1026px]" onSubmit={onSubmit} noValidate>
+    <form
+      className="mx-auto w-full max-w-[1026px]"
+      onSubmit={onSubmit}
+      noValidate
+    >
       <FormSectionTitle>{t("form.sectionTitle")}</FormSectionTitle>
 
       <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
@@ -141,7 +173,7 @@ export default function ContactUsForm() {
             {submitMessage}
           </p>
         ) : null}
-        <FormSubmitButton disabled={!canSubmit}>
+        <FormSubmitButton disabled={!canSubmit || submitState === "submitting"}>
           {t("form.submit")}
         </FormSubmitButton>
       </section>

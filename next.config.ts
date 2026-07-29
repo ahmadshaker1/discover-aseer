@@ -29,6 +29,11 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "30mb",
+    },
+  },
 };
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
