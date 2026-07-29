@@ -2,6 +2,7 @@
 
 import { useId, useState, type FormEvent, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   FormSectionTitle,
   FormSubmitButton,
@@ -197,6 +198,15 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
               disabled={submitting}
             />
           </div>
+        </div>
+        <div className="w-full flex justify-start">
+          <Link
+            href="/tour-guides/forgot-password"
+            className="text-sm font-medium text-primary hover:underline"
+            style={{ fontFamily: araBold }}
+          >
+            {locale === "ar" ? "نسيت كلمة المرور؟" : "Forgot Password?"}
+          </Link>
         </div>
 
         {error ? (
