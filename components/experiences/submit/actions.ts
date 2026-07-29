@@ -60,7 +60,7 @@ export async function submitExperienceForm(
       .join("\n");
 
     const msg = {
-      to: ["aseercalendar@asda.gov.sa", "m.batais@aqwas.sa"],
+      to: ["aseercalendar@asda.gov.sa"],
       from: "noreply@discoveraseer.com",
       subject: `New Event/Experience Submission - ${data.titleEn || data.titleAr || "Unknown"}`,
       text: textContent,
