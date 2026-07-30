@@ -65,12 +65,12 @@ const AttractionsHero = ({
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
-                    className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                    className="text-[18px] font-bold leading-6 text-white/70 transition-opacity hover:opacity-85 sm:text-[20px]"
                   >
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span className="text-[16px] font-normal leading-6 text-white">
+                  <span className="text-[18px] font-bold leading-6 text-white sm:text-[20px]">
                     {crumb.label}
                   </span>
                 )}
