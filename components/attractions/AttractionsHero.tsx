@@ -80,14 +80,14 @@ const AttractionsHero = ({
           </div>
 
           <h1
-            className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
+            className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white"
             style={{ fontFamily: ara }}
           >
             {title}
           </h1>
 
           <p
-            className="w-full text-center text-[18px] font-normal leading-6 text-white"
+            className="w-full text-center text-[22px] font-bold leading-8 text-white sm:text-[24px]"
             style={{ fontFamily: ara }}
           >
             {subtitle}
