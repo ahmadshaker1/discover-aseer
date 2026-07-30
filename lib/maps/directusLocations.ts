@@ -187,6 +187,79 @@ const mergeLocationAndEventPlaces = (
   return [...byUrl.values(), ...noUrl];
 };
 
+type HiddenRestaurantMatch = {
+  names: Set<string>;
+};
+
+const normalizeMatchText = (value: unknown): string =>
+  String(value ?? "")
+    .normalize("NFKC")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+/** Restaurants flagged `hide_from_interactive_map` should not appear as map pins. */
+const fetchHiddenRestaurantMatches = async (
+  baseUrl: string,
+  readToken?: string,
+): Promise<HiddenRestaurantMatch> => {
+  const names = new Set<string>();
+  const headers: HeadersInit | undefined = readToken
+    ? { Authorization: `Bearer ${readToken}` }
+    : undefined;
+
+  try {
+    const url = new URL(`${baseUrl}/items/restaurants`);
+    url.searchParams.set("limit", "-1");
+    url.searchParams.set(
+      "fields",
+      "title_en,title_ar,hide_from_interactive_map",
+    );
+
+    const response = await fetch(url.toString(), {
+      headers,
+      cache: "no-store",
+    });
+    if (!response.ok) return { names };
+
+    const json = (await response.json()) as {
+      data?: Array<Record<string, unknown>>;
+    };
+    for (const row of json.data ?? []) {
+      if (!isHiddenFromMap(mapHideFlagFromRow(row))) continue;
+      for (const key of ["title_en", "title_ar"] as const) {
+        const name = normalizeMatchText(row[key]);
+        if (name) names.add(name);
+      }
+    }
+  } catch (error) {
+    console.warn(
+      "[directusLocations] failed to load hidden restaurants for map filter",
+      error,
+    );
+  }
+
+  return { names };
+};
+
+const isPlaceHiddenByRestaurantFlag = (
+  place: LocationMapPlace,
+  row: DirectusLocationRow,
+  hidden: HiddenRestaurantMatch,
+): boolean => {
+  if (hidden.names.size === 0) return false;
+
+  const title = normalizeMatchText(place.title);
+  if (title && hidden.names.has(title)) return true;
+
+  for (const key of ["name_en", "name_ar"] as const) {
+    const name = normalizeMatchText(row[key]);
+    if (name && hidden.names.has(name)) return true;
+  }
+
+  return false;
+};
+
 const recountListedStats = (
   places: LocationMapPlace[],
   stats: MapLocationsStats,
@@ -402,9 +475,10 @@ export async function fetchMapLocations(
   const shouldResolve = options.resolve === true;
   const shouldPersist = options.geocode === true;
 
-  const [rows, eventResult] = await Promise.all([
+  const [rows, eventResult, hiddenRestaurants] = await Promise.all([
     fetchAllLocationRows(baseUrl, readToken),
     fetchAllEventRows(baseUrl, readToken),
+    fetchHiddenRestaurantMatches(baseUrl, readToken),
   ]);
   const eventRows = eventResult.rows;
   const eventsCollectionReady = eventResult.ok;
@@ -435,6 +509,7 @@ export async function fetchMapLocations(
 
     const place = buildLocationMapPlace(row, options.locale);
     if (!place) continue;
+    if (isPlaceHiddenByRestaurantFlag(place, row, hiddenRestaurants)) continue;
 
     locationPlaces.push(place);
   }
