@@ -34,7 +34,6 @@ export default async function LocalizedHomePage() {
         decorationImageSrc="/assets/landing/landmarks-zigzag.png"
       />
       <AseerExperiencesSection
-        featuredCount={4}
         decorationImageSrc="/assets/landing/landmarks-zigzag.png"
         data={{
           title: tHome("experiencesTitle"),

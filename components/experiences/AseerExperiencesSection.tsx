@@ -136,10 +136,16 @@ const AseerCuisineCookingExperiencesSection = ({
   const scrollByOne = useCallback((direction: -1 | 1) => {
     const el = scrollerRef.current;
     if (!el) return;
-    el.scrollBy({
-      left: direction * scrollStepPx(el),
-      behavior: "smooth",
-    });
+    let delta = direction * scrollStepPx(el);
+    // RTL scrollLeft sign differs by engine; buttons pass Chrome-oriented deltas.
+    if (getComputedStyle(el).direction === "rtl") {
+      const original = el.scrollLeft;
+      el.scrollLeft = 1;
+      const positiveModel = el.scrollLeft > 0;
+      el.scrollLeft = original;
+      if (!positiveModel) delta = -delta;
+    }
+    el.scrollBy({ left: delta, behavior: "smooth" });
   }, []);
 
   return (
@@ -199,6 +205,7 @@ const AseerCuisineCookingExperiencesSection = ({
                 <CuisineRestaurantCard
                   key={card.id}
                   card={card}
+                  className="shrink-0"
                   href={`/experiences/${card.id}`}
                 />
               ))}
@@ -212,7 +219,7 @@ const AseerCuisineCookingExperiencesSection = ({
                 aria-label={isRtl ? tCommon("next") : tCommon("previous")}
                 disabled={isRtl ? !canNext : !canPrev}
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
-                onClick={() => scrollByOne(-1)}
+                onClick={() => scrollByOne(isRtl ? 1 : -1)}
               >
                 <ChevronLeftIcon />
               </button>
@@ -221,7 +228,7 @@ const AseerCuisineCookingExperiencesSection = ({
                 aria-label={isRtl ? tCommon("previous") : tCommon("next")}
                 disabled={isRtl ? !canPrev : !canNext}
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35"
-                onClick={() => scrollByOne(1)}
+                onClick={() => scrollByOne(isRtl ? -1 : 1)}
               >
                 <ChevronRightIcon />
               </button>
