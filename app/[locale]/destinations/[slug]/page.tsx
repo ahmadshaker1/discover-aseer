@@ -76,6 +76,7 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
           landmarks={cityAttractions}
           title={tAttr("relatedAttractionsTitle")}
           showFilters={false}
+          featuredCount={4}
         />
       ) : null}
 
