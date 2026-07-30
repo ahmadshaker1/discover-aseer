@@ -221,8 +221,7 @@ export function transformTourGuide(
   locale: LocaleCode = "ar",
   specLabelMap: Map<string, string> = new Map(),
 ): TourGuideWithFilterMeta {
-  const imageUrl =
-    resolveTourGuideFileUrl(api.image) ?? DEFAULT_IMAGE;
+  const imageUrl = resolveTourGuideFileUrl(api.image) ?? DEFAULT_IMAGE;
   let phone = (api.whatsapp ?? api.phone_number ?? "")
     .toString()
     .replace(/\D/g, "");
@@ -379,10 +378,17 @@ export async function fetchTourGuides(
 
   try {
     // TODO(backend): Confirm collection slug and query params (?fields=*, etc.) with the API owner.
+    const adminToken = process.env.DIRECTUS_ADMIN_TOKEN;
+    const headers: HeadersInit = {};
+    if (adminToken) {
+      headers["Authorization"] = `Bearer ${adminToken}`;
+    }
+
     const response = await fetch(
       `${directusUrl}/items/tourist_guides?limit=-1`,
       {
-        next: { revalidate: 3600 },
+        cache: "no-store",
+        headers,
       },
     );
 

@@ -717,7 +717,7 @@
       "commitmentsRequired": "Please accept all declarations before saving.",
       "specializationRequired": "Please select at least one specialization.",
       "errorRequired": "Please complete all required fields before saving.",
-      "errorInvalidMobile": "Invalid mobile number. It must be 10 digits starting with 05 or 13 characters starting with +9665.",
+      "errorInvalidMobile": "Invalid mobile number. It must be 10 digits starting with 05 or 12 characters starting with +9665.",
       "errorInvalidNationalId": "Invalid National ID. It must be exactly 10 digits.",
       "errorInvalidLicense": "Invalid License number. It must be exactly 8 digits.",
       "lockedFieldsHint": "Name, gender, national ID, and license number were set when you created your profile and cannot be changed here. Contact support if a correction is needed."
