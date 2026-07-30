@@ -17,6 +17,8 @@ export { mapRestaurantToCuisineCard } from "./cuisineRestaurantCardData";
 const ara = "var(--font-ara-hamah-1964), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
+const FALLBACK_CARD_IMAGE = "/assets/experiences/experiences.png";
+
 function formatPriceBand(card: CuisineRestaurantCardData): string {
   if (card.priceBand?.trim()) return card.priceBand.trim();
   if (card.priceRange?.trim()) return card.priceRange.trim();
@@ -35,6 +37,8 @@ const CuisineRestaurantCard = ({
   className = "",
   href = "/restaurants",
 }: CuisineRestaurantCardProps) => {
+  const imageSrc = card.image?.trim() || FALLBACK_CARD_IMAGE;
+
   return (
     <Link
       href={href}
@@ -42,8 +46,8 @@ const CuisineRestaurantCard = ({
     >
       <div className="relative h-[190px] w-full overflow-hidden">
         <Image
-          src={card.image}
-          alt={card.title}
+          src={imageSrc}
+          alt={card.title || ""}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="282px"

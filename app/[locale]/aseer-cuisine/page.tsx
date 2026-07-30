@@ -55,7 +55,8 @@ const AseerCuisinePage = async () => {
     .slice(0, 6)
     .map((experience) => ({
       id: String(experience.id),
-      image: experience.imageUrl,
+      image:
+        experience.imageUrl?.trim() || "/assets/experiences/experiences.png",
       title: experience.title,
       location: experience.provider || experience.category || "",
       cuisineType: experience.category || experience.duration || "",

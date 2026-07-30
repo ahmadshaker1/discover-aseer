@@ -1,24 +1,31 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import CuisineRestaurantCard, {
   type CuisineRestaurantCardData,
 } from "@/components/aseer-cuisine/CuisineRestaurantCard";
+import type { ExperienceCardProps } from "@/components/experiences/ExperienceCard/ExperienceCard";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@/components/shared/icons/CarouselChevrons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const FALLBACK_CARD_IMAGE = "/assets/experiences/experiences.png";
+
+/** Home passes ExperienceCardProps; cuisine page passes CuisineRestaurantCardData. */
+export type AseerExperiencesSectionCard =
+  | CuisineRestaurantCardData
+  | ExperienceCardProps;
 
 export interface AseerCuisineCookingExperiencesSectionData {
   title: string;
   description: string;
   ctaLabel: string;
   ctaHref: string;
-  cards: CuisineRestaurantCardData[];
+  cards: AseerExperiencesSectionCard[];
 }
 
 interface AseerCuisineCookingExperiencesSectionProps {
@@ -26,6 +33,34 @@ interface AseerCuisineCookingExperiencesSectionProps {
   /** When set, only this many cards are shown. */
   featuredCount?: number;
   decorationImageSrc?: string;
+}
+
+function isCuisineRestaurantCard(
+  card: AseerExperiencesSectionCard,
+): card is CuisineRestaurantCardData {
+  return "image" in card && !("imageUrl" in card);
+}
+
+function toCuisineCard(
+  card: AseerExperiencesSectionCard,
+): CuisineRestaurantCardData {
+  if (isCuisineRestaurantCard(card)) {
+    return {
+      ...card,
+      image: card.image?.trim() || FALLBACK_CARD_IMAGE,
+    };
+  }
+
+  return {
+    id: String(card.id),
+    image: card.imageUrl?.trim() || FALLBACK_CARD_IMAGE,
+    title: card.title,
+    location: card.provider || card.category || "",
+    cuisineType: card.category || card.duration || "",
+    priceRange: card.price > 0 ? String(card.price) : "",
+    rating: 4.5,
+    reviewsCount: 0,
+  };
 }
 
 function scrollStepPx(scroller: HTMLElement): number {
@@ -44,8 +79,10 @@ const AseerCuisineCookingExperiencesSection = ({
 }: AseerCuisineCookingExperiencesSectionProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
-  const displayCards =
-    featuredCount == null ? data.cards : data.cards.slice(0, featuredCount);
+  const displayCards = useMemo(() => {
+    const mapped = data.cards.map(toCuisineCard);
+    return featuredCount == null ? mapped : mapped.slice(0, featuredCount);
+  }, [data.cards, featuredCount]);
 
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
