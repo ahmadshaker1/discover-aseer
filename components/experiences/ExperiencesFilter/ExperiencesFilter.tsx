@@ -85,7 +85,7 @@ const ExperiencesFilter = ({
   };
 
   return (
-    <div className="w-full rounded-lg bg-surface p-6 text-foreground shadow-sm">
+    <div className="font-brando w-full rounded-lg bg-surface p-6 text-foreground shadow-sm">
       <div className="mb-8 flex items-center justify-between gap-4">
         <h2 className="text-xl font-bold text-foreground">
           {tCommon("filterExperiences")}

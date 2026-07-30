@@ -5,6 +5,7 @@ import type { Destination } from "@/components/destinations/data";
 import { LeftPointerIcon } from "@/components/shared/icons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 interface DestinationsLandmarksSectionProps {
   destinations: Destination[];
@@ -35,7 +36,7 @@ const DestinationsLandmarksSection = async ({
         >
           <h2
             className="min-w-0 flex-1 whitespace-nowrap text-start text-[48px] font-bold leading-[100%] text-secondary"
-            style={{ fontFamily: ara }}
+            style={{ fontFamily: brando }}
           >
             {sectionTitle}
           </h2>

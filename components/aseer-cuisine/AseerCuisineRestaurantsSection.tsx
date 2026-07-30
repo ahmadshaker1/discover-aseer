@@ -19,6 +19,7 @@ import {
 } from "@/components/shared/icons/CarouselChevrons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export type AseerCuisineRestaurantCard = CuisineRestaurantCardData;
@@ -195,7 +196,7 @@ const AseerCuisineRestaurantsSection = ({
             >
               <h2
                 className={`w-full text-[64px] font-bold leading-[119%] text-foreground text-start`}
-                style={{ fontFamily: ara }}
+                style={{ fontFamily: brando }}
               >
                 {data.title}
               </h2>
@@ -220,7 +221,7 @@ const AseerCuisineRestaurantsSection = ({
         </div>
 
         {data.showFilters ? (
-          <div className="hide-scrollbar mx-auto mb-2 w-full max-w-[1181px] overflow-x-auto overflow-y-hidden pb-1">
+          <div className="font-brando hide-scrollbar mx-auto mb-2 w-full max-w-[1181px] overflow-x-auto overflow-y-hidden pb-1">
             <div
               className={`flex min-w-max items-center gap-3 px-1 justify-end`}
             >

@@ -254,7 +254,7 @@ const RestaurantsFilterSidebar = ({
   };
 
   return (
-    <div className="w-full max-w-md rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-none">
+    <div className="font-brando w-full max-w-md rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-none">
       <FilterHeader onReset={onReset} />
       <LocationFilter
         cityOptions={cityOptions}

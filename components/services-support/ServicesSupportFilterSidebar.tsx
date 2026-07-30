@@ -41,7 +41,7 @@ interface CheckboxRowProps {
   onToggle: (value: string) => void;
 }
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 const CheckboxRow = ({
   option,
@@ -58,7 +58,7 @@ const CheckboxRow = ({
       </div>
       <div
         className="min-w-0 flex-1 text-start text-[clamp(15px,3.6vw,18px)] font-bold leading-[119%] text-foreground"
-        style={{ fontFamily: ara }}
+        style={{ fontFamily: brando }}
       >
         {label}
       </div>
@@ -98,11 +98,10 @@ const ServicesSupportFilterSidebar = ({
     : null;
 
   return (
-    <aside className="w-full max-w-full rounded-2xl bg-surface p-4 text-foreground sm:p-5 lg:max-w-[320px]">
+    <aside className="font-brando w-full max-w-full rounded-2xl bg-surface p-4 text-foreground sm:p-5 lg:max-w-[320px]">
       <div className="mb-6 flex w-full min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-2">
         <h2
           className="min-w-0 flex-1 text-start text-[clamp(18px,4vw,24px)] font-bold leading-6 tracking-[-0.31px] text-foreground"
-          style={{ fontFamily: "Ara Hamah 1964 B" }}
         >
           {t("filterServices")}
         </h2>
@@ -110,7 +109,7 @@ const ServicesSupportFilterSidebar = ({
           type="button"
           onClick={onReset}
           className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-2 text-center text-[clamp(14px,3.5vw,18px)] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:min-w-[156px] sm:px-3"
-          style={{ fontFamily: ara }}
+          style={{ fontFamily: brando }}
         >
           {tCommon("resetFilters")}
         </button>
@@ -183,7 +182,7 @@ const ServicesSupportFilterSidebar = ({
         <div className="mb-4 flex items-center justify-start gap-2">
           <h3
             className="text-start text-[20px] font-bold leading-[119%] text-foreground"
-            style={{ fontFamily: ara }}
+            style={{ fontFamily: brando }}
           >
             {t("chooseServiceType")}
           </h3>

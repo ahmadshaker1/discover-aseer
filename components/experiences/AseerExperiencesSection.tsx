@@ -13,6 +13,7 @@ import {
 } from "@/components/shared/icons/CarouselChevrons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 const FALLBACK_CARD_IMAGE = "/assets/experiences/experiences.png";
 
 /** Home passes ExperienceCardProps; cuisine page passes CuisineRestaurantCardData. */
@@ -172,7 +173,7 @@ const AseerCuisineCookingExperiencesSection = ({
             <div className="flex min-w-0 flex-col gap-2 items-start justify-start text-start">
               <h2
                 className="w-full text-[48px] font-bold leading-[119%] text-foreground sm:text-[64px] text-start"
-                style={{ fontFamily: ara }}
+                style={{ fontFamily: brando }}
               >
                 {data.title}
               </h2>

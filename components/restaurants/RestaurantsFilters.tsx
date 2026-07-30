@@ -82,7 +82,7 @@ const RestaurantsFilters = () => {
   };
 
   return (
-    <div className="flex justify-start w-full">
+    <div className="font-brando flex justify-start w-full">
       <div className="flex flex-wrap gap-2 sm:gap-4">
         <FilterDropdown
           icon={<LocationIcon />}

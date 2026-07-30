@@ -17,7 +17,7 @@ import {
   LocationIcon,
 } from "@/components/landmarks/Icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface DestinationsMainPageContentProps {
@@ -114,7 +114,7 @@ const DestinationsMainPageContent = ({
           </div>
 
           <aside
-            className={`order-1 w-full min-w-0 lg:order-1 lg:sticky lg:top-24 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
+            className={`font-brando order-1 w-full min-w-0 lg:order-1 lg:sticky lg:top-24 lg:min-h-0 lg:w-[320px] lg:shrink-0 lg:border-border lg:pt-6 lg:ps-8 lg:pe-8 lg:border-s`}
           >
             <div className="mx-auto flex w-full max-w-[320px] flex-col gap-6 lg:mx-0 lg:max-w-[256px]">
               <h3 className="whitespace-pre-line text-3xl font-bold text-foreground text-start">
@@ -123,7 +123,7 @@ const DestinationsMainPageContent = ({
               <div className="flex w-full flex-wrap items-center justify-between gap-3">
                 <h3
                   className={`min-w-0 flex-1 text-xl font-bold leading-tight tracking-[-0.31px] text-foreground text-start sm:text-2xl`}
-                  style={{ fontFamily: ara }}
+                  style={{ fontFamily: brando }}
                 >
                   {tCommon("filterDestinationsLabel")}
                 </h3>
@@ -134,7 +134,7 @@ const DestinationsMainPageContent = ({
                     setSelectedInterests([]);
                   }}
                   className="flex h-8 w-auto shrink-0 items-center justify-center rounded-[8px] border border-border bg-surface px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted"
-                  style={{ fontFamily: ara }}
+                  style={{ fontFamily: brando }}
                 >
                   {tCommon("resetFilters")}
                 </button>
@@ -206,7 +206,7 @@ const DestinationsMainPageContent = ({
                     <HeartIcon />
                     <h4
                       className={`text-lg font-bold leading-[119%] tracking-[0] text-foreground text-start sm:text-[20px]`}
-                      style={{ fontFamily: ara }}
+                      style={{ fontFamily: brando }}
                     >
                       {tCommon("interests")}
                     </h4>
@@ -236,14 +236,14 @@ const DestinationsMainPageContent = ({
                             />
                             <span
                               className={`min-w-0 text-sm font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
-                              style={{ fontFamily: "Inter, sans-serif" }}
+                              style={{ fontFamily: brando }}
                             >
                               {option.label}
                             </span>
                           </div>
                           <span
                             className="inline-flex h-7 shrink-0 items-center justify-center rounded-[8px] bg-muted px-2 text-base leading-[100%] text-muted-foreground sm:text-lg"
-                            style={{ fontFamily: ara }}
+                            style={{ fontFamily: brando }}
                           >
                             {count}
                           </span>

@@ -205,6 +205,11 @@ html.dark {
   vertical-align: middle;
 }
 
+/* Carousel/related section titles + filter UI text only */
+.font-brando {
+  font-family: var(--font-brando), sans-serif;
+}
+
 @media print {
   @page {
     size: A4;

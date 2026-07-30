@@ -28,7 +28,7 @@ const InterestsFilter = ({
   icon = <HeartIcon />,
 }: InterestsFilterProps) => {
   return (
-    <Menu as="div" className="relative">
+    <Menu as="div" className="font-brando relative">
       <Menu.Button
         type="button"
         className="flex cursor-pointer flex-row-reverse items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 sm:px-6 sm:py-2 sm:text-sm"

@@ -31,7 +31,7 @@ const LandmarksFilters = () => {
   };
 
   return (
-    <div className={`flex w-full justify-end`}>
+    <div className={`font-brando flex w-full justify-end`}>
       <div className="flex flex-wrap gap-2 sm:gap-4">
         <FilterDropdown
           icon={<ClockIcon />}

@@ -23,6 +23,38 @@ const araHamah1964 = localFont({
   display: "swap",
 });
 
+const brando = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Brando/Brando-Arabic-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Brando/Brando-Arabic-Text.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Brando/Brando-Arabic-SemiBold.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Brando/Brando-Arabic-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Brando/Brando-Arabic-Black.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-brando",
+  display: "swap",
+});
+
 const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
   subsets: ["arabic", "latin"],
@@ -70,7 +102,7 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body
-        className={`${araHamah1964.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
+        className={`${araHamah1964.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
       >
         <ThemeInitScript />
         <Script

@@ -59,7 +59,7 @@ const TourGuidesFilter = ({
   };
 
   return (
-    <div className="w-full rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-xs">
+    <div className="font-brando w-full rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-xs">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
         <h2 className="text-lg font-bold text-foreground sm:text-xl">
           {t("filterGuides")}

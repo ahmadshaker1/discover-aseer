@@ -55,7 +55,7 @@ const AccommodationFilters = ({
     selectedCity === "all" ? t("allCities") : selectedCity;
 
   return (
-    <aside className="w-full shrink-0 rounded-2xl border border-border bg-surface p-4 text-foreground sm:p-6 lg:h-[796px] lg:w-[320px] lg:rounded-none lg:border-y-0 lg:border-s-0 lg:border-e lg:border-border lg:bg-transparent lg:pb-0 lg:ps-8 lg:pe-8 lg:pt-6 lg:shadow-none">
+    <aside className="font-brando w-full shrink-0 rounded-2xl border border-border bg-surface p-4 text-foreground sm:p-6 lg:h-[796px] lg:w-[320px] lg:rounded-none lg:border-y-0 lg:border-s-0 lg:border-e lg:border-border lg:bg-transparent lg:pb-0 lg:ps-8 lg:pe-8 lg:pt-6 lg:shadow-none">
       <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-6">
         <h2 className="text-start text-lg font-bold text-foreground sm:text-xl [unicode-bidi:isolate]">
           {t("filterDestinations")}

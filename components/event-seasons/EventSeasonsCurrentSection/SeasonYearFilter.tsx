@@ -5,8 +5,7 @@ import { Fragment } from "react";
 import { useTranslations } from "next-intl";
 import { CalendarIcon, ChevronDownIcon } from "./icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 interface SeasonYearFilterProps {
   years: readonly number[];
@@ -32,7 +31,7 @@ export default function SeasonYearFilter({
       <Menu.Button
         type="button"
         className="flex h-12 w-full cursor-pointer items-center justify-between gap-6 rounded-xl border border-border bg-surface px-4 text-foreground transition-colors hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        style={{ fontFamily: ara }}
+        style={{ fontFamily: brando }}
       >
         <span className="text-start text-[20px] font-bold leading-[119%]">
           {displayLabel}
@@ -61,7 +60,7 @@ export default function SeasonYearFilter({
                   onClick={() => onSelect(year)}
                   className={`block w-full cursor-pointer px-4 py-2.5 text-end text-[18px] font-medium transition-colors ${active ? "bg-primary/10 text-primary" : "text-foreground"
                     } ${selectedYear === year ? "bg-primary/5 font-bold text-primary" : ""}`}
-                  style={{ fontFamily: ibm }}
+                  style={{ fontFamily: brando }}
                 >
                   {year}
                 </button>
@@ -74,7 +73,7 @@ export default function SeasonYearFilter({
                 type="button"
                 onClick={onClear}
                 className="mt-1 block w-full cursor-pointer border-t border-border px-4 py-2.5 text-end text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                style={{ fontFamily: ibm }}
+                style={{ fontFamily: brando }}
               >
                 {t("yearFilterClear")}
               </button>
