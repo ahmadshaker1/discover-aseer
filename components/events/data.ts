@@ -214,19 +214,36 @@ function buildTimeRange(
   return start || end || (locale === "ar" ? "غير محدد" : "Not specified");
 }
 
+function extractNumericPrice(
+  price: string | number | null | undefined,
+): string {
+  if (typeof price === "number" && Number.isFinite(price)) {
+    return String(price);
+  }
+  const clean = typeof price === "string" ? price.trim() : "";
+  if (!clean) return "";
+
+  const withoutCurrency = clean
+    .replace(/ريال(?:\s*سعودي)?|ر\.?\s*س\.?|SAR|SR|saudi\s*riyals?/gi, " ")
+    .trim();
+
+  // Keep digits and common range/decimal separators; drop other text.
+  return withoutCurrency
+    .replace(/[^\d.,\-–—\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function toPriceLabel(
   isFree: boolean,
   price: string | number | null | undefined,
   locale: LocaleCode,
 ): string {
   if (isFree) return locale === "ar" ? "مجاني" : "Free";
-  if (typeof price === "number" && Number.isFinite(price))
-    return `${price} ريال`;
-  const clean = typeof price === "string" ? price.trim() : "";
-  if (!clean) return locale === "ar" ? "غير محدد" : "Not specified";
-  if (clean.includes("ريال") || clean.includes("SAR")) return clean;
-  if (/^\d+(\.\d+)?$/.test(clean)) return `${clean} ريال`;
-  return clean;
+
+  const numeric = extractNumericPrice(price);
+  if (!numeric) return locale === "ar" ? "مجاني" : "Free";
+  return numeric;
 }
 
 function toMapsUrl(mapUrl: string | null | undefined, title: string): string {
@@ -285,10 +302,8 @@ export function transformApiEventToListingItem(
   const year = resolveEventReferenceYear(apiEvent, referenceYear);
 
   const freeFromFlag = parseIsFree(apiEvent.free_event);
-  const isFree =
-    freeFromFlag != null
-      ? freeFromFlag
-      : apiEvent.price == null || String(apiEvent.price).trim() === "";
+  const numericPrice = extractNumericPrice(apiEvent.price);
+  const isFree = freeFromFlag === true || numericPrice === "";
 
   return {
     id: String(apiEvent.id),
