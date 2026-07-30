@@ -37,21 +37,16 @@ export async function POST(request: Request) {
     // نحتاج للاتصال بـ Directus لتحديث كلمة المرور
     const baseUrl = getDirectusServerUrl();
     if (!baseUrl) {
-      return NextResponse.json(
-        { error: "Directus server is not configured." },
-        { status: 503 },
-      );
+      console.error("Directus server is not configured.");
+      return NextResponse.json({ error: "internal_error" }, { status: 503 });
     }
 
     const adminToken = process.env.DIRECTUS_ADMIN_TOKEN?.trim();
     if (!adminToken) {
-      return NextResponse.json(
-        {
-          error:
-            "لا يمكن إكمال هذه الخطوة حالياً لعدم وجود DIRECTUS_ADMIN_TOKEN في السيرفر لتعديل بيانات المستخدم.",
-        },
-        { status: 503 },
+      console.error(
+        "لا يمكن إكمال هذه الخطوة حالياً لعدم وجود DIRECTUS_ADMIN_TOKEN في السيرفر لتعديل بيانات المستخدم.",
       );
+      return NextResponse.json({ error: "internal_error" }, { status: 503 });
     }
 
     // 1. البحث عن المستخدم لاستخراج الـ ID الخاص به
@@ -66,12 +61,7 @@ export async function POST(request: Request) {
     if (!searchRes.ok) {
       const errorText = await searchRes.text();
       console.error("Directus Search Error:", errorText);
-      return NextResponse.json(
-        {
-          error: `فشل البحث عن المستخدم في قواعد البيانات. تأكد من صلاحية DIRECTUS_ADMIN_TOKEN: ${errorText}`,
-        },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: "internal_error" }, { status: 500 });
     }
 
     const searchData = await searchRes.json();
@@ -99,10 +89,7 @@ export async function POST(request: Request) {
     if (!updateRes.ok) {
       const errorText = await updateRes.text();
       console.error("Directus Update Error:", errorText);
-      return NextResponse.json(
-        { error: "Failed to update password." },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: "internal_error" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });

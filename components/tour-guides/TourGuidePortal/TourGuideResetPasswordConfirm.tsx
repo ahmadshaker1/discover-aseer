@@ -84,15 +84,40 @@ export default function TourGuideResetPasswordConfirm() {
           router.push("/tour-guides/portal");
         }, 2500);
       } else {
-        setError(
-          data.error ||
-            (locale === "ar"
-              ? "فشل تغيير كلمة المرور."
-              : "Failed to change password."),
-        );
+        let errorMsg = "";
+        if (data.error === "Missing token or password.") {
+          errorMsg =
+            locale === "ar"
+              ? "رمز التحقق أو كلمة المرور مفقودة."
+              : "Missing token or password.";
+        } else if (data.error === "Token is invalid or has expired.") {
+          errorMsg =
+            locale === "ar"
+              ? "رابط الاستعادة غير صالح أو منتهي الصلاحية."
+              : "Reset link is invalid or has expired.";
+        } else if (data.error === "Invalid token data.") {
+          errorMsg =
+            locale === "ar"
+              ? "بيانات الرابط غير صالحة."
+              : "Invalid token data.";
+        } else if (data.error === "User not found in database.") {
+          errorMsg =
+            locale === "ar" ? "المستخدم غير موجود." : "User not found.";
+        } else {
+          errorMsg =
+            locale === "ar"
+              ? "حدث خطأ غير متوقع، يرجى المحاولة لاحقاً."
+              : "An unexpected error occurred, please try again later.";
+        }
+        setError(errorMsg);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "حدث خطأ غير متوقع");
+      console.error(err);
+      setError(
+        locale === "ar"
+          ? "حدث خطأ غير متوقع، يرجى المحاولة لاحقاً."
+          : "An unexpected error occurred, please try again later.",
+      );
     } finally {
       setSubmitting(false);
     }
