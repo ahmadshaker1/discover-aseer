@@ -11,6 +11,7 @@ import {
 import type { SeasonDetail, SeasonDetailEvent } from "../types";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface EventDetailContentProps {
@@ -84,7 +85,7 @@ export default async function EventDetailContent({
         <div className="flex w-full flex-col items-center gap-4 text-center">
           <h2
             className="text-[clamp(1.75rem,5vw,48px)] font-bold leading-none text-primary"
-            style={{ fontFamily: ara }}
+            style={{ fontFamily: brando }}
           >
             {t("eventAboutTitle")}
           </h2>
