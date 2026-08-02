@@ -366,7 +366,7 @@
       "address": "Address",
       "startDate": "Start date",
       "endDate": "End date",
-      "locationLink": "Experience location link",
+      "locationLink": "Link to the Event Location via Google Maps",
       "locationLinkHint": "Paste a Google Maps link for the experience location.",
       "operatingHoursFrom": "Operating hours (from)",
       "operatingHoursTo": "Operating hours (to)",
