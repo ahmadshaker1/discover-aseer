@@ -6,6 +6,7 @@ import WorldRegionGastronomyAwardLogo from "@/components/restaurants/WorldRegion
 import { IBM_Plex_Sans_Devanagari } from "next/font/google";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 const RestaurantsCredibilitySection = () => {
   const t = useTranslations("restaurantsPage");
@@ -20,7 +21,8 @@ const RestaurantsCredibilitySection = () => {
 
         <h2
           id="restaurants-credibility-heading"
-          className="w-full max-w-[428px] text-center text-[40px] font-bold leading-[119%] text-foreground"
+          className="w-full max-w-[428px] text-center text-[48px] font-bold leading-[100%] text-secondary"
+          style={{ fontFamily: brando }}
         >
           {t("credibilityLine")}
         </h2>

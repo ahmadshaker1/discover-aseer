@@ -195,7 +195,7 @@ const AseerCuisineRestaurantsSection = ({
               className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] items-start justify-start text-start`}
             >
               <h2
-                className={`w-full text-[64px] font-bold leading-[119%] text-foreground text-start`}
+                className="w-full max-w-[620px] text-start text-[48px] font-bold leading-[100%] text-secondary"
                 style={{ fontFamily: brando }}
               >
                 {data.title}

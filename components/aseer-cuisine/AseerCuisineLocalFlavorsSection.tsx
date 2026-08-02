@@ -3,7 +3,7 @@
 import CuisineCardsCarousel from "./CuisineCardsCarousel";
 import type { CuisineGridCardData } from "./CuisineGridCard";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export interface AseerCuisineFlavorCard extends CuisineGridCardData {}
@@ -29,8 +29,8 @@ const AseerCuisineLocalFlavorsSection = ({
         <div className="px-4 sm:px-8 xl:px-[120px]">
           <div className="mx-auto flex h-[116px] w-full max-w-[704px] flex-col items-center gap-3 text-center">
             <h2
-              className="w-full text-center text-[64px] font-bold leading-[119%] text-foreground"
-              style={{ fontFamily: ara }}
+              className="w-full text-center text-[48px] font-bold leading-[100%] text-secondary"
+              style={{ fontFamily: brando }}
             >
               {data.title}
             </h2>

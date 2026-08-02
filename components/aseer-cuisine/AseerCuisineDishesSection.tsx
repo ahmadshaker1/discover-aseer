@@ -3,7 +3,7 @@
 import { Link } from "@/i18n/navigation";
 import CuisineGridCard, { type CuisineGridCardData } from "./CuisineGridCard";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export interface AseerCuisineDishCard extends CuisineGridCardData {}
@@ -30,7 +30,7 @@ const AseerCuisineDishesSection = ({
           <div className="mx-auto flex w-full max-w-[1316px] flex-col items-center gap-5 text-center">
             <h2
               className="w-full text-center text-[48px] font-bold leading-[100%] text-secondary"
-              style={{ fontFamily: ara }}
+              style={{ fontFamily: brando }}
             >
               {data.title}
             </h2>

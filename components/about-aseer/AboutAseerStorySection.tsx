@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 type StoryLinkHref = ComponentProps<typeof Link>["href"];
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export interface AboutStorySlide {
@@ -73,8 +74,8 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         <div className="mx-auto flex w-full max-w-[704px] flex-col items-center text-center">
           <h2
-            className="text-[44px] font-bold leading-[180%] text-secondary"
-            style={{ fontFamily: ara }}
+            className="w-full text-center text-[48px] font-bold leading-[100%] text-secondary"
+            style={{ fontFamily: brando }}
           >
             {content.sectionTitle}
           </h2>

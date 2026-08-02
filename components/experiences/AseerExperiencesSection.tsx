@@ -172,7 +172,7 @@ const AseerCuisineCookingExperiencesSection = ({
           <div className="flex w-full items-center justify-between gap-4">
             <div className="flex min-w-0 flex-col gap-2 items-start justify-start text-start">
               <h2
-                className="w-full text-[48px] font-bold leading-[119%] text-foreground sm:text-[64px] text-start"
+                className="w-full max-w-[620px] text-start text-[48px] font-bold leading-[100%] text-secondary"
                 style={{ fontFamily: brando }}
               >
                 {data.title}
