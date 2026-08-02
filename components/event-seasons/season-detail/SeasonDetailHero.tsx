@@ -33,27 +33,27 @@ export default async function SeasonDetailHero({
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center gap-8 px-4 py-16 text-center sm:px-8 sm:py-20 lg:px-12">
         <nav
-          className="flex flex-wrap items-center justify-center gap-[9px]"
+          className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
           style={{ fontFamily: ara }}
           aria-label={t("breadcrumb")}
         >
-          <span className="text-[16px] font-bold leading-[119%] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]">
+          <Link
+            href="/"
+            className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+          >
             {tCommon("breadcrumbHome")}
-          </span>
+          </Link>
           <BreadcrumbChevron />
           <Link
             href="/event-seasons"
-            className="text-[16px] font-bold leading-[119%] text-white transition-opacity [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] hover:opacity-85"
+            className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
           >
             {t("breadcrumb")}
           </Link>
           <BreadcrumbChevron />
-          <Link
-            href="/"
-            className="text-[16px] font-bold leading-[119%] text-white transition-opacity [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] hover:opacity-85"
-          >
+          <span className="text-[16px] font-normal leading-6 text-white">
             {season.title}
-          </Link>
+          </span>
         </nav>
 
         <h1
