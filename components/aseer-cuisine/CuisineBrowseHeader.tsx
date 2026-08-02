@@ -3,6 +3,7 @@
 import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 interface CuisineBrowseHeaderProps {
   title: string;
@@ -16,7 +17,7 @@ const CuisineBrowseHeader = ({ title, backHref, backLabel }: CuisineBrowseHeader
       <div className="mx-auto flex w-full max-w-[1316px] items-center justify-between gap-6">
         <h1
           className="text-[clamp(2rem,4vw,48px)] font-bold leading-[119%] text-foreground"
-          style={{ fontFamily: ara }}
+          style={{ fontFamily: brando }}
         >
           {title}
         </h1>

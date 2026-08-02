@@ -3,6 +3,7 @@
 import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 import { AseerPlatform } from "@/lib/discoverAseerLinks";
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
@@ -106,14 +107,14 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
 
           <h1
             className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-            style={{ fontFamily: ara }}
+            style={{ fontFamily: brando }}
           >
             {data.title}
           </h1>
           {data.subtitle && (
             <p
               className="mt-4 w-full text-center text-base leading-[1.33] text-white/90 md:text-[clamp(18px,1.9vw,24px)] font-bold"
-              style={{ fontFamily: ara }}
+              style={{ fontFamily: brando }}
             >
               {data.subtitle}
             </p>

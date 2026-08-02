@@ -2,15 +2,14 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
+const brando = "var(--font-brando), sans-serif";
+
 export default async function ServicesSupportBanner() {
   const t = await getTranslations("servicesSupport");
   const tCommon = await getTranslations("common");
 
   return (
-    <section
-      className="relative h-[600px] w-full overflow-hidden"
-      style={{ fontFamily: "Ara Hamah 1964 R" }}
-    >
+    <section className="relative h-[600px] w-full overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src="/assets/services-support/f125fee16e0267a3d14ee285efd5f272ad21108c.png"
@@ -49,10 +48,16 @@ export default async function ServicesSupportBanner() {
               <span>{t("bannerCrumb")}</span>
             </div>
 
-            <h1 className="mb-3 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
+            <h1
+              className="mb-3 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
+              style={{ fontFamily: brando }}
+            >
               {t("bannerCrumb")}
             </h1>
-            <p className="mx-auto max-w-3xl text-sm sm:text-base md:text-lg">
+            <p
+              className="mx-auto max-w-3xl text-sm sm:text-base md:text-lg"
+              style={{ fontFamily: brando }}
+            >
               {t("bannerDescription")}
             </p>
           </div>

@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
 const araBold = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 function BackChevronIcon() {
   return (
@@ -126,13 +127,13 @@ const ExperienceSubmitHero = () => {
           <h1
             id="experience-submit-hero-title"
             className="w-full text-center text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary"
-            style={{ fontFamily: araBold }}
+            style={{ fontFamily: brando }}
           >
             {t("formTitle")}
           </h1>
           <p
             className="mx-auto max-w-[590px] text-center text-lg font-normal leading-relaxed text-secondary opacity-80 md:text-xl"
-            style={{ fontFamily: araBold }}
+            style={{ fontFamily: brando }}
           >
             {t("formSubtitle")}
           </p>

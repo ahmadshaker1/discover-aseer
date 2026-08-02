@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 export interface BreadcrumbItem {
   label: string;
@@ -101,14 +102,14 @@ const PageBanner = ({
 
           <h1
             className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-            style={{ fontFamily: ara }}
+            style={{ fontFamily: brando }}
           >
             {title}
           </h1>
 
           <p
             className="w-full text-center text-[24px] font-normal leading-6 text-white"
-            style={{ fontFamily: ara }}
+            style={{ fontFamily: brando }}
           >
             {subtitle}
           </p>

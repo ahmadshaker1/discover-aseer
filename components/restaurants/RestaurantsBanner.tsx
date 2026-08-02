@@ -2,6 +2,8 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
+const brando = "var(--font-brando), sans-serif";
+
 function BreadcrumbChevron() {
   return (
     <svg
@@ -67,11 +69,17 @@ export default async function RestaurantsBanner() {
             <span>{t("breadcrumb")}</span>
           </div>
 
-          <h1 className="mb-4 text-4xl font-bold text-white sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1
+            className="mb-4 text-4xl font-bold text-white sm:text-5xl md:text-6xl lg:text-7xl"
+            style={{ fontFamily: brando }}
+          >
             {t("title")}
           </h1>
 
-          <p className="mx-auto max-w-2xl text-lg font-medium leading-relaxed text-white sm:text-xl md:text-2xl">
+          <p
+            className="mx-auto max-w-2xl text-lg font-medium leading-relaxed text-white sm:text-xl md:text-2xl"
+            style={{ fontFamily: brando }}
+          >
             {t("subtitle")}
           </p>
         </div>

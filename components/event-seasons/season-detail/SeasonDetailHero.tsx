@@ -4,6 +4,7 @@ import type { SeasonDetail } from "../types";
 import { BreadcrumbChevron } from "./icons";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 interface SeasonDetailHeroProps {
   season: SeasonDetail;
@@ -57,7 +58,7 @@ export default async function SeasonDetailHero({
 
         <h1
           className="mx-auto max-w-[900px] text-center text-[clamp(2rem,6vw,70px)] font-bold leading-[119%] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]"
-          style={{ fontFamily: ara }}
+          style={{ fontFamily: brando }}
         >
           {season.title}
         </h1>

@@ -14,7 +14,7 @@ import FilmLandscapesSection from "@/components/film/FilmLandscapesSection";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 const FilmPage = async () => {
@@ -51,13 +51,13 @@ const FilmPage = async () => {
               <div className="flex min-h-[165.5px] w-full max-w-full shrink-0 flex-col items-start justify-center gap-[15.5px] py-[41px] text-start">
                 <h3
                   className="w-full text-start text-[50px] font-bold leading-[33.92px] text-white"
-                  style={{ fontFamily: ara }}
+                  style={{ fontFamily: brando }}
                 >
                   {t("bannerTitle")}
                 </h3>
                 <p
                   className="w-full text-start text-[32px] sm:text-[48px] font-bold leading-[1.2] text-white"
-                  style={{ fontFamily: ara }}
+                  style={{ fontFamily: brando }}
                 >
                   {t("bannerSubtitle")}
                 </p>

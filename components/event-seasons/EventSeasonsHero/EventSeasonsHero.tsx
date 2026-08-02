@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 function BreadcrumbChevron() {
   return (
@@ -63,14 +64,14 @@ export default async function EventSeasonsHero() {
           <div className="flex w-full flex-col items-center gap-6 sm:gap-8 md:gap-10">
             <h1
               className="w-full text-[clamp(2rem,7vw,70px)] font-bold leading-[119%] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]"
-              style={{ fontFamily: ara }}
+              style={{ fontFamily: brando }}
             >
               {t("heroTitle")}
             </h1>
 
             <p
               className="w-full text-[clamp(1rem,3.2vw,24px)] font-bold leading-[119%] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.4)]"
-              style={{ fontFamily: ara }}
+              style={{ fontFamily: brando }}
             >
               {t("heroSubtitle")}
             </p>

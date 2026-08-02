@@ -3,6 +3,7 @@
 import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 interface BreadcrumbItem {
   label: string;
@@ -73,7 +74,7 @@ const CuisineSlugHero = ({ breadcrumbs, title, backgroundImage }: CuisineSlugHer
 
             <h1
               className="w-full text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-              style={{ fontFamily: ara }}
+              style={{ fontFamily: brando }}
             >
               {title}
             </h1>
