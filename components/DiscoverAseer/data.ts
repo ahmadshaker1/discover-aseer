@@ -6,7 +6,7 @@ const data = [
     },
     {
         background: "/assets/activities/activities.jpg",
-        title: "واجهات رئيسية",
+        title: "وجهات رئيسية",
         link: "/activities",
     },
     {
