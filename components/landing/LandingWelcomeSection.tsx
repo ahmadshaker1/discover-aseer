@@ -79,7 +79,7 @@ const LandingWelcomeSection = ({
             {resolvedTitle}
           </h2>
           <p
-            className="w-full max-w-[744px] text-center text-[clamp(18px,2vw,24px)] font-bold leading-[119%] text-muted-foreground"
+            className="w-full max-w-[744px] text-center text-[24px] font-bold leading-[119%] text-muted-foreground"
             style={{ fontFamily: ara }}
           >
             {resolvedDescription}

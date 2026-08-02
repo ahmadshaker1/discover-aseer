@@ -179,7 +179,7 @@ const AseerCuisineCookingExperiencesSection = ({
               </h2>
               {data.description ? (
                 <p
-                  className="w-full max-w-[620px] text-[18px] font-normal leading-[140%] text-muted-foreground text-start"
+                  className="w-full max-w-[620px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start"
                   style={{ fontFamily: ara }}
                 >
                   {data.description}
