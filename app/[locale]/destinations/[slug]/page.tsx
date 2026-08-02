@@ -21,7 +21,6 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
   const locale = (await getLocale()) as "ar" | "en";
   const tCommon = await getTranslations("common");
   const tDest = await getTranslations("destinations");
-  const tAttr = await getTranslations("attractionsPage");
   const { slug } = await params;
   const [destination, allDestinations, allAttractions] = await Promise.all([
     getDestinationBySlug(slug, locale),
@@ -74,7 +73,9 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
       {cityAttractions.length > 0 ? (
         <AttractionsLandmarksSection
           landmarks={cityAttractions}
-          title={tAttr("relatedAttractionsTitle")}
+          title={tDest("famousLandmarksTitle", {
+            area: destination.displayCity,
+          })}
           showFilters={false}
           featuredCount={4}
         />
