@@ -773,7 +773,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                       ? period.periodName === "Morning"
                         ? "الصباح"
                         : period.periodName === "Afternoon"
-                          ? "الظهيرة"
+                          ? "بعد الظهر"
                           : period.periodName === "Evening"
                             ? "المساء"
                             : period.periodName
