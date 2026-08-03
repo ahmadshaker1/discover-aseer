@@ -116,18 +116,6 @@ export default function Step2({
           >
             {t("tripStyleTitle")}
           </h1>
-
-          <p
-            className="text-[#535353] dark:text-gray-300"
-            style={{
-              fontSize: "18px",
-              fontStyle: "normal",
-              fontWeight: 400,
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
-          >
-            {t("tripStyleDesc")}
-          </p>
         </div>
 
         {/* Style Selection */}
