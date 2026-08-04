@@ -16,12 +16,6 @@ const internationalAirlines = [
     href: "https://www.flydubai.com/ar-ae/",
   },
   {
-    key: "egypt-air",
-    image: "/assets/Getting-here-and-around/flay/egypt-air.png",
-    altKey: "egyptAir" as const,
-    href: "https://www.egyptair.com/en/pages/HomePage.aspx",
-  },
-  {
     key: "air-arabia",
     image: "/assets/Getting-here-and-around/flay/air-arabia.png",
     altKey: "airArabia" as const,
