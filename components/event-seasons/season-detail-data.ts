@@ -24,9 +24,11 @@ function getDirectusHeaders(): HeadersInit | undefined {
   return token ? { Authorization: `Bearer ${token}` } : undefined;
 }
 
-// Public role cannot read `thumbnail`, `hero_mobile`, `start_time`, or `end_time` — requesting them 403s the whole query.
+// Public role cannot read removed/restricted fields — requesting them 403s the whole query.
+// Gone from schema: `date`, `tags`, `unclickable`, `not_allowed_for_kids`, `thumbnail`, `hero_mobile`, `start_time`, `end_time`.
+// `season` is an M2M via `events_seasons`; bare `season` values are junction row ids, so read `season.seasons_id`.
 const SEASON_EVENT_FIELDS =
-  "id,title,title_en,start_date,end_date,date,image,image_new,map,city,tags,description,description_en,free_event,price,suitable_for_kids,audience_type,event_status,unclickable,season";
+  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,event_status,season.seasons_id";
 
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",
@@ -70,18 +72,28 @@ interface ApiEvent {
   price?: string | number | null;
   event_status?: string | null;
   unclickable?: string | boolean | null;
-  /** Season IDs linked to this event (Directus M2M returns bare IDs). */
-  season?: Array<number | string> | null;
+  /**
+   * M2M via `events_seasons`. With `fields=season` Directus returns junction ids;
+   * with `fields=season.seasons_id` it returns `{ seasons_id: "<uuid>" }` objects.
+   */
+  season?: Array<number | string | { seasons_id?: number | string | null }> | null;
   [key: string]: unknown;
 }
 
-function eventBelongsToSeason(
-  apiEvent: ApiEvent,
-  seasonId: string,
-): boolean {
+function eventSeasonIds(apiEvent: ApiEvent): string[] {
   const seasons = apiEvent.season;
-  if (!Array.isArray(seasons) || seasons.length === 0) return false;
-  return seasons.some((id) => String(id) === String(seasonId));
+  if (!Array.isArray(seasons) || seasons.length === 0) return [];
+  return seasons
+    .map((entry) => {
+      if (entry == null) return "";
+      if (typeof entry === "object") return String(entry.seasons_id ?? "");
+      return String(entry);
+    })
+    .filter(Boolean);
+}
+
+function eventBelongsToSeason(apiEvent: ApiEvent, seasonId: string): boolean {
+  return eventSeasonIds(apiEvent).some((id) => id === String(seasonId));
 }
 
 function normalizeMaybeUrl(value: string | null | undefined): string | null {
@@ -242,7 +254,8 @@ async function fetchSeasonById(id: string): Promise<ApiSeason | null> {
 
 async function fetchEventsForSeason(seasonId: string): Promise<ApiEvent[]> {
   const params = new URLSearchParams({
-    "filter[season][_eq]": seasonId,
+    // Filter on the related season UUID, not the junction row id.
+    "filter[season][seasons_id][_eq]": seasonId,
     fields: SEASON_EVENT_FIELDS,
     limit: "-1",
   });
