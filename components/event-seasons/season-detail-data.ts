@@ -26,7 +26,7 @@ function getDirectusHeaders(): HeadersInit | undefined {
 
 // Public role cannot read `thumbnail`, `hero_mobile`, `start_time`, or `end_time` — requesting them 403s the whole query.
 const SEASON_EVENT_FIELDS =
-  "id,title,title_en,start_date,end_date,date,image,image_new,map,city,tags,description,description_en,free_event,price,not_allowed_for_kids,audience_type,event_status,unclickable";
+  "id,title,title_en,start_date,end_date,date,image,image_new,map,city,tags,description,description_en,free_event,price,suitable_for_kids,audience_type,event_status,unclickable,season";
 
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",
@@ -70,7 +70,18 @@ interface ApiEvent {
   price?: string | number | null;
   event_status?: string | null;
   unclickable?: string | boolean | null;
+  /** Season IDs linked to this event (Directus M2M returns bare IDs). */
+  season?: Array<number | string> | null;
   [key: string]: unknown;
+}
+
+function eventBelongsToSeason(
+  apiEvent: ApiEvent,
+  seasonId: string,
+): boolean {
+  const seasons = apiEvent.season;
+  if (!Array.isArray(seasons) || seasons.length === 0) return false;
+  return seasons.some((id) => String(id) === String(seasonId));
 }
 
 function normalizeMaybeUrl(value: string | null | undefined): string | null {
@@ -229,21 +240,24 @@ async function fetchSeasonById(id: string): Promise<ApiSeason | null> {
   return json.data ?? null;
 }
 
-async function fetchEventIdsForSeason(seasonId: string): Promise<number[]> {
+async function fetchEventsForSeason(seasonId: string): Promise<ApiEvent[]> {
   const params = new URLSearchParams({
-    "filter[seasons_id][_eq]": seasonId,
-    fields: "events_id",
+    "filter[season][_eq]": seasonId,
+    fields: SEASON_EVENT_FIELDS,
     limit: "-1",
   });
-  const response = await fetch(`${API_BASE}/items/events_seasons?${params}`, {
+  const response = await fetch(`${API_BASE}/items/events?${params}`, {
     headers: getDirectusHeaders(),
     next: { revalidate: 3600 },
   });
-  if (!response.ok) return [];
-  const json = (await response.json()) as {
-    data: { events_id: number }[];
-  };
-  return json.data.map((row) => row.events_id).filter(Boolean);
+  if (!response.ok) {
+    console.error(
+      `[event-seasons] Failed to fetch events for season ${seasonId}: ${response.status}`,
+    );
+    return [];
+  }
+  const json = (await response.json()) as { data: ApiEvent[] };
+  return json.data ?? [];
 }
 
 async function fetchEventsByIds(ids: number[]): Promise<ApiEvent[]> {
@@ -306,12 +320,12 @@ export async function fetchSeasonDetailPage(
 
     const season = transformSeason(apiSeason, locale);
     const referenceYear = seasonReferenceYear(apiSeason);
-    const eventIds = await fetchEventIdsForSeason(id);
-    const apiEvents = await fetchEventsByIds(eventIds);
+    const apiEvents = await fetchEventsForSeason(id);
 
     const events = apiEvents
       .filter(
         (e) =>
+          eventBelongsToSeason(e, id) &&
           isVisibleSeasonEvent(e.event_status) &&
           isClickableEvent(e.unclickable),
       )
@@ -357,15 +371,10 @@ export async function fetchSeasonEventDetail(
     const apiSeason = await fetchSeasonById(seasonId);
     if (!apiSeason) return null;
 
-    const seasonEventIds = await fetchEventIdsForSeason(seasonId);
-    const belongsToSeason = seasonEventIds.some(
-      (id) => String(id) === String(eventId),
-    );
-    if (!belongsToSeason) return null;
-
     const apiEvent = await fetchEventById(eventId);
     if (
       !apiEvent ||
+      !eventBelongsToSeason(apiEvent, seasonId) ||
       !isVisibleSeasonEvent(apiEvent.event_status) ||
       !isClickableEvent(apiEvent.unclickable)
     ) {

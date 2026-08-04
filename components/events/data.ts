@@ -28,7 +28,7 @@ interface ApiEvent {
   price?: string | number | null;
   event_status?: string | null;
   unclickable?: string | boolean | null;
-  not_allowed_for_kids?: string | null;
+  suitable_for_kids?: boolean | string | null;
   audience_type?: string | null;
   image_new?: string | null;
   images?: string | unknown[] | null;
@@ -143,12 +143,14 @@ function parseExtraImages(
 }
 
 function parseKidFriendly(
-  notAllowed: string | null | undefined,
+  suitableForKids: boolean | string | null | undefined,
   audienceType: string | null | undefined,
 ): boolean {
-  const flag = (notAllowed || "").trim().toLowerCase();
-  if (["yes", "true", "1"].includes(flag)) return false;
-  if (["no", "false", "0"].includes(flag)) return true;
+  if (typeof suitableForKids === "boolean") return suitableForKids;
+
+  const flag = (suitableForKids || "").toString().trim().toLowerCase();
+  if (["yes", "true", "1"].includes(flag)) return true;
+  if (["no", "false", "0"].includes(flag)) return false;
 
   const audience = (audienceType || "").toLowerCase();
   return (
@@ -313,7 +315,7 @@ export function transformApiEventToListingItem(
     title,
     images: buildImages(apiEvent),
     isKidFriendly: parseKidFriendly(
-      apiEvent.not_allowed_for_kids,
+      apiEvent.suitable_for_kids,
       apiEvent.audience_type,
     ),
     isOver: isEventOver(apiEvent, year),

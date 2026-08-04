@@ -15,7 +15,7 @@ export interface EventListingItem {
   title: string;
   /** Unique image URLs for the card carousel (at least one). */
   images: string[];
-  /** True when the event allows children (`not_allowed_for_kids` is no). */
+  /** True when the event is suitable for children (`suitable_for_kids` / family audience). */
   isKidFriendly: boolean;
   /** True when the event end date is before today. */
   isOver: boolean;
