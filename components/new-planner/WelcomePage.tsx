@@ -111,7 +111,7 @@ export default function WelcomePage({ onStartPlanning }: WelcomePageProps) {
         {/* Image Section */}
         <div className="flex w-full md:w-1/2 justify-center mt-5 md:mt-0 pointer-events-none">
           <Image
-            src={`/assets/planner/Side-image-planner-${locale}.png`}
+            src={`/assets/planner/PlannerHero.jpg`}
             alt="Planner Map"
             width={1000}
             height={1000}

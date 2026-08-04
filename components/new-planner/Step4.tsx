@@ -123,17 +123,6 @@ export default function Step4({
           >
             {t("foodPreferencesTitle")}
           </h1>
-          <p
-            className="text-[#535353] dark:text-gray-300"
-            style={{
-              fontSize: "18px",
-              fontStyle: "normal",
-              fontWeight: 400,
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
-          >
-            {t("foodPreferencesDesc")}
-          </p>
         </div>
 
         {/* Section 1: Meals Count */}

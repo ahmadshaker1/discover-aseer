@@ -72,25 +72,42 @@ ${JSON.stringify(currentPlanData, null, 2)}
 Your task is to generate ONLY the new Day ${newDayNumber} using ONLY the provided catalogs.
 Do NOT repeat items that are already in the current plan!
 
-CATALOGS:
+--- CATALOGS ---
 RESTAURANTS: ${JSON.stringify(restaurantsCatalog)}
 EXPERIENCES: ${JSON.stringify(experiencesCatalog)}
 EVENTS: ${JSON.stringify(eventsCatalog)}
 
-RULES:
+--- RULES ---
 1. Output valid JSON only. No markdown formatting, no extra text.
-2. For Events, return ONLY the itemId.
-3. For Restaurants, return the itemId and the mealType (e.g. 'breakfast', 'lunch', 'dinner', 'coffee', 'tea').
-4. For Experiences, return the itemId, a scheduled 'time', and 'travelToNext'.
-5. Limit the day to reasonable activities based on the trip style inferred from the current plan.
+2. Structure the day into exactly three periods: 'Morning', 'Afternoon', 'Evening'.
+3. Inside each period, provide an 'items' array containing the activities for that period. You determine the order.
+4. For Event items, set 'type' to 'event', and return 'itemId' and a scheduled 'time' as a time range (e.g., '09:00 AM - 11:00 AM').
+5. For Restaurant items, set 'type' to 'restaurant', and return 'itemId' and 'mealType' (e.g. 'breakfast', 'lunch', 'dinner').
+6. For Experience items, set 'type' to 'experience', and return 'itemId' and 'travelToNext'.
+7. Limit the day to reasonable activities based on the trip style inferred from the current plan. You DO NOT need to include all item types in every period. Adjust the volume and types of items per period based on a reasonable pace.
 
-JSON SCHEMA:
+--- JSON SCHEMA ---
 {
   "dayLabel": "Day ${newDayNumber}",
   "date": "Day ${newDayNumber} Date",
-  "events": [ { "itemId": 1 } ],
-  "experiences": [ { "itemId": 2, "time": "10:00 AM", "travelToNext": { "duration": "10 min" } } ],
-  "restaurants": [ { "itemId": 3, "mealType": "breakfast" } ]
+  "periods": [
+    {
+      "periodName": "Morning",
+      "items": [
+        { "type": "event", "itemId": 1, "time": "09:00 AM - 11:00 AM" },
+        { "type": "restaurant", "itemId": 3, "mealType": "breakfast" },
+        { "type": "experience", "itemId": 2, "travelToNext": { "duration": "15 min" } }
+      ]
+    },
+    {
+      "periodName": "Afternoon",
+      "items": []
+    },
+    {
+      "periodName": "Evening",
+      "items": []
+    }
+  ]
 }
 `;
 
@@ -139,28 +156,27 @@ JSON SCHEMA:
     }
 
     // 5. Enrich Data
-    if (Array.isArray(newDayData.events)) {
-      newDayData.events = newDayData.events.map((ev: any) => {
-        const matched = eventsData.data.find(
-          (e: any) => String(e.id) === String(ev.itemId),
-        );
-        return { ...ev, itemData: matched || null };
-      });
-    }
-    if (Array.isArray(newDayData.experiences)) {
-      newDayData.experiences = newDayData.experiences.map((exp: any) => {
-        const matched = experiencesData.data.find(
-          (e: any) => String(e.id) === String(exp.itemId),
-        );
-        return { ...exp, itemData: matched || null };
-      });
-    }
-    if (Array.isArray(newDayData.restaurants)) {
-      newDayData.restaurants = newDayData.restaurants.map((res: any) => {
-        const matched = restaurantsData.data.find(
-          (r: any) => String(r.id) === String(res.itemId),
-        );
-        return { ...res, itemData: matched || null };
+    if (newDayData && Array.isArray(newDayData.periods)) {
+      newDayData.periods.forEach((period: any) => {
+        if (Array.isArray(period.items)) {
+          period.items = period.items.map((item: any) => {
+            let matched = null;
+            if (item.type === "event") {
+              matched = eventsData.data.find(
+                (e: any) => String(e.id) === String(item.itemId),
+              );
+            } else if (item.type === "experience") {
+              matched = experiencesData.data.find(
+                (e: any) => String(e.id) === String(item.itemId),
+              );
+            } else if (item.type === "restaurant") {
+              matched = restaurantsData.data.find(
+                (r: any) => String(r.id) === String(item.itemId),
+              );
+            }
+            return { ...item, itemData: matched || null };
+          });
+        }
       });
     }
 

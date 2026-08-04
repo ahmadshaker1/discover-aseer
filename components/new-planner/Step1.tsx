@@ -126,18 +126,6 @@ export default function Step1({
           >
             {t("howManyDays")}
           </h2>
-
-          <p
-            className="text-[#535353] dark:text-gray-300"
-            style={{
-              fontSize: "18px",
-              fontStyle: "normal",
-              fontWeight: 400,
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
-          >
-            {t("daysDesc")}
-          </p>
         </div>
         {/* Days Selection */}
         <div

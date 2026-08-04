@@ -90,7 +90,9 @@ const ExperienceSubmitHero = () => {
             style={{ fontFamily: araBold }}
             prefetch={false}
           >
-            <span className="text-base font-bold leading-none">{t("back")}</span>
+            <span className="text-base font-bold leading-none">
+              {t("back")}
+            </span>
             <BackChevronIcon />
           </Link>
         </div>
@@ -131,12 +133,6 @@ const ExperienceSubmitHero = () => {
           >
             {t("formTitle")}
           </h1>
-          <p
-            className="mx-auto max-w-[590px] text-center text-lg font-normal leading-relaxed text-secondary opacity-80 md:text-xl"
-            style={{ fontFamily: brando }}
-          >
-            {t("formSubtitle")}
-          </p>
         </div>
       </div>
     </section>

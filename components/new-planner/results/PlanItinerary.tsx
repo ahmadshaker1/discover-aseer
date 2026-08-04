@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
 import EventListingCard from "@/components/events/EventListingCard/EventListingCard";
@@ -361,6 +361,8 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   const [isSharing, setIsSharing] = useState(false);
   const [replacingItemId, setReplacingItemId] = useState<string | null>(null);
   const [isAddingDay, setIsAddingDay] = useState<number | null>(null);
+  const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
   const currentDay = planData?.days?.[selectedDayIndex];
 
   const handleDeleteDay = (index: number) => {
@@ -370,6 +372,113 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
 
     if (selectedDayIndex >= newDays.length) {
       setSelectedDayIndex(Math.max(0, newDays.length - 1));
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!contentRef.current) return;
+    try {
+      setIsExportingPDF(true);
+      // Wait for React to render the full list
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const html2canvas = (await import("html2canvas-pro")).default;
+      const { jsPDF } = await import("jspdf");
+
+      const canvas = await html2canvas(contentRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false, // Suppresses any stray warnings
+        onclone: async (clonedDoc) => {
+          const imgs = Array.from(clonedDoc.querySelectorAll("img"));
+          const promises = imgs.map(async (img) => {
+            img.removeAttribute("loading");
+            img.removeAttribute("decoding");
+
+            let src = img.currentSrc || img.src;
+            if (img.srcset) {
+              // Extract the first or last URL from srcset (often Next.js provides optimized paths here)
+              const sources = img.srcset
+                .split(",")
+                .map((s) => s.trim().split(" ")[0]);
+              if (sources.length > 0) {
+                // Get the largest image from srcset (usually the last one)
+                src = sources[sources.length - 1];
+              }
+            }
+
+            if (!src || src.startsWith("data:")) return;
+
+            try {
+              // Route through our local proxy API to bypass CORS entirely
+              const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(src)}`;
+              const response = await fetch(proxyUrl);
+              if (!response.ok) throw new Error("Network response was not ok");
+              const blob = await response.blob();
+              const base64 = await new Promise<string>((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.readAsDataURL(blob);
+              });
+
+              img.removeAttribute("srcset");
+              img.src = base64;
+            } catch (err) {
+              console.error("Failed to load image for PDF:", src, err);
+            }
+          });
+
+          await Promise.all(promises);
+        },
+        ignoreElements: (node: Element) => {
+          const className = node.className || "";
+          if (
+            typeof className === "string" &&
+            (className.includes("userway") || className.includes("uw-"))
+          ) {
+            return true;
+          }
+          return false;
+        },
+        backgroundColor: document.documentElement.classList.contains("dark")
+          ? "#14091F"
+          : "#ffffff",
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      let heightLeft = pdfHeight;
+      let position = 0;
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(
+        `discover-aseer-plan-${new Date().toISOString().split("T")[0]}.pdf`,
+      );
+    } catch (error) {
+      console.error("Error generating PDF", error);
+      alert(
+        locale === "ar" ? "حدث خطأ أثناء تحميل الملف" : "Error downloading PDF",
+      );
+    } finally {
+      setIsExportingPDF(false);
     }
   };
 
@@ -600,6 +709,28 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
         </h2>
         <div className="flex gap-4">
           <button
+            onClick={handleDownloadPDF}
+            disabled={isExportingPDF}
+            className={`flex items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium transition-colors ${
+              isExportingPDF
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-50 dark:hover:bg-white/10 cursor-pointer"
+            }`}
+          >
+            {isExportingPDF ? (
+              <span className="animate-spin h-5 w-5 border-2 border-black dark:border-white border-t-transparent rounded-full" />
+            ) : (
+              <Image
+                src="/assets/planner/printer-line.svg"
+                alt="Download PDF"
+                width={20}
+                height={20}
+                className="dark:brightness-0 dark:invert"
+              />
+            )}
+            {locale === "ar" ? "تحميل PDF" : "Download PDF"}
+          </button>
+          <button
             onClick={() => window.print()}
             className="flex items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
@@ -744,17 +875,20 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       </div>
 
       {/* All Days Content (visible conditionally for print) */}
-      <div className="relative w-full">
+      <div
+        className={`relative w-full ${isExportingPDF ? "p-8" : ""}`}
+        ref={contentRef}
+      >
         {days.map((dayToRender: any, dIndex: number) => {
           const isSelected = selectedDayIndex === dIndex;
           return (
             <div
               key={dIndex}
               className={`w-full flex-col p-6 bg-[#F7F7F7] dark:bg-[#14091F] print:!relative print:!flex print:!opacity-100 print:!h-auto print:!overflow-visible print:mb-8 print:!pointer-events-auto print:!mt-4 ${
-                isSelected
+                isSelected || isExportingPDF
                   ? "flex relative opacity-100 mt-4 z-10"
                   : "flex absolute top-0 left-0 opacity-0 h-0 overflow-hidden pointer-events-none -z-10"
-              }`}
+              } ${isExportingPDF ? "mb-8 transform scale-90 origin-top" : ""}`}
               style={{
                 borderRadius: "12px",
               }}
@@ -773,7 +907,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                       ? period.periodName === "Morning"
                         ? "الصباح"
                         : period.periodName === "Afternoon"
-                          ? "الظهيرة"
+                          ? "بعد الظهر"
                           : period.periodName === "Evening"
                             ? "المساء"
                             : period.periodName
