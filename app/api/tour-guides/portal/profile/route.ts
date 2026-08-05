@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import {
+  TOUR_GUIDE_EMAIL_FIELD,
+  TOUR_GUIDE_UNDER_REVIEW_STATUS,
+} from "@/lib/directus/config";
 import type { DirectusUser } from "@/lib/directus/types";
 import {
   coerceDirectusId,
@@ -10,6 +14,7 @@ import {
   getDirectusServerUrl,
   parseProfileIdHint,
 } from "@/lib/directus/server";
+import { notifyTourGuideUnderReview } from "@/lib/email/sendTourGuideNotification";
 
 async function requireAuth(request: Request) {
   const baseUrl = getDirectusServerUrl();
@@ -30,7 +35,10 @@ async function requireAuth(request: Request) {
   }
 
   try {
-    const knownEmail = request.headers.get("x-account-email")?.trim().toLowerCase();
+    const knownEmail = request.headers
+      .get("x-account-email")
+      ?.trim()
+      .toLowerCase();
     const user = await directusFetchCurrentUser(
       baseUrl,
       accessToken,
@@ -38,12 +46,41 @@ async function requireAuth(request: Request) {
     );
     return { baseUrl, user, accessToken };
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Unauthorized.";
+    const message = error instanceof Error ? error.message : "Unauthorized.";
     return {
       error: NextResponse.json({ error: message }, { status: 401 }),
     };
   }
+}
+
+function profileStatus(profile: unknown): string | null {
+  if (!profile || typeof profile !== "object") return null;
+  const status = (profile as { status?: unknown }).status;
+  return typeof status === "string" ? status.trim().toLowerCase() : null;
+}
+
+function maybeNotifyUnderReview(options: {
+  previousStatus: string | null;
+  saved: Record<string, unknown>;
+  user: DirectusUser;
+}) {
+  const previous = (options.previousStatus || "").toLowerCase();
+  // Avoid spamming while the guide keeps editing an already-submitted application.
+  if (previous === TOUR_GUIDE_UNDER_REVIEW_STATUS) return;
+
+  const email =
+    (typeof options.saved[TOUR_GUIDE_EMAIL_FIELD] === "string"
+      ? options.saved[TOUR_GUIDE_EMAIL_FIELD]
+      : null) ||
+    (typeof options.saved.email === "string" ? options.saved.email : null) ||
+    options.user.email;
+
+  void notifyTourGuideUnderReview({
+    email,
+    name: typeof options.saved.name === "string" ? options.saved.name : null,
+    name_en:
+      typeof options.saved.name_en === "string" ? options.saved.name_en : null,
+  });
 }
 
 export async function GET(request: Request) {
@@ -102,6 +139,19 @@ export async function POST(request: Request) {
       parseProfileIdHint(request.headers.get("x-profile-id")) ??
       coerceDirectusId(bodyRecord.id);
 
+    let previousStatus: string | null = null;
+    try {
+      const existing = await directusFetchMyGuideProfile(
+        baseUrl,
+        user,
+        accessToken,
+        profileIdHint,
+      );
+      previousStatus = profileStatus(existing);
+    } catch {
+      previousStatus = null;
+    }
+
     const { id: _ignoredId, ...payload } = bodyRecord;
     const data = await directusUpsertGuideProfile(
       baseUrl,
@@ -110,6 +160,13 @@ export async function POST(request: Request) {
       accessToken,
       profileIdHint,
     );
+
+    maybeNotifyUnderReview({
+      previousStatus,
+      saved: data as Record<string, unknown>,
+      user,
+    });
+
     return NextResponse.json({ data });
   } catch (error) {
     const message =
@@ -145,10 +202,26 @@ export async function PATCH(request: Request) {
       ? id
       : parseProfileIdHint(request.headers.get("x-profile-id"));
   if (!profileIdHint) {
-    return NextResponse.json({ error: "Profile id is required." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Profile id is required." },
+      { status: 400 },
+    );
   }
 
   try {
+    let previousStatus: string | null = null;
+    try {
+      const existing = await directusFetchMyGuideProfile(
+        baseUrl,
+        user,
+        accessToken,
+        profileIdHint,
+      );
+      previousStatus = profileStatus(existing);
+    } catch {
+      previousStatus = null;
+    }
+
     const data = await directusUpdateGuideProfile(
       baseUrl,
       profileIdHint,
@@ -156,6 +229,13 @@ export async function PATCH(request: Request) {
       payload,
       accessToken,
     );
+
+    maybeNotifyUnderReview({
+      previousStatus,
+      saved: data as Record<string, unknown>,
+      user,
+    });
+
     return NextResponse.json({ data });
   } catch (error) {
     const message =

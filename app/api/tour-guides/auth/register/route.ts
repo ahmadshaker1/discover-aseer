@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { directusRegister, getDirectusServerUrl } from "@/lib/directus/server";
+import { notifyTourGuideRegistration } from "@/lib/email/sendTourGuideNotification";
 
 function translateMessage(msg: string, isArabic: boolean): string {
   if (!isArabic) return msg;
@@ -89,6 +90,13 @@ export async function POST(request: Request) {
       password,
       first_name,
       last_name,
+    });
+
+    // Fire-and-forget — never block account creation on email delivery.
+    void notifyTourGuideRegistration({
+      email,
+      name: `${first_name} ${last_name}`.trim(),
+      name_en: `${first_name} ${last_name}`.trim(),
     });
 
     if (result.kind === "registered") {

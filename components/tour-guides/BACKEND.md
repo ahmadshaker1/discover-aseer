@@ -10,12 +10,17 @@ DIRECTUS_WRITE_BASE_URL=https://tool-portal.discoveraseer.com
 DIRECTUS_ADMIN_TOKEN=your-admin-static-token
 SENDGRID_API_KEY=your-sendgrid-api-key
 DIRECTUS_WEBHOOK_SECRET=long-random-shared-secret
+CRON_SECRET=long-random-cron-secret
 NEXT_PUBLIC_SITE_URL=https://discoveraseer.com
+# Optional: comma-separated day offsets for “expiring soon” emails (default 30,7)
+TOUR_GUIDE_LICENSE_EXPIRY_REMINDER_DAYS=30,7
 ```
 
 `DIRECTUS_ADMIN_TOKEN` is used **server-side only** so the portal can load linked guide rows when Directus Guide/Public policies cannot filter on `email` yet. Never expose it to the client.
 
 `DIRECTUS_WEBHOOK_SECRET` + `SENDGRID_API_KEY` power status emails when an admin sets a guide to **`published`** (approved) or **`rejected`** (see §9).
+
+`CRON_SECRET` authenticates the optional HTTP trigger for the license-expiry job (see §10). The daily schedule itself runs **inside the Next.js Node process** via `instrumentation.ts` + `node-cron` — no Coolify curl cron required. If unset, HTTP auth falls back to `DIRECTUS_WEBHOOK_SECRET`.
 
 Directus base URL used by the app: `https://tool-portal.discoveraseer.com`
 
@@ -465,3 +470,51 @@ curl -X POST "https://discoveraseer.com/api/tour-guides/webhooks/status" \
   -H "x-webhook-secret: YOUR_SECRET" \
   -d '{"collection":"tourist_guides","key":123,"payload":{"status":"published"}}'
 ```
+
+---
+
+## 10. Tour guide email notifications + Coolify cron
+
+### Notification matrix
+
+| Event | Trigger | Endpoint / code path |
+|-------|---------|----------------------|
+| **1. Registration confirmation** | Guide creates an account | `POST /api/tour-guides/auth/register` → SendGrid |
+| **2. Application submitted — under review** | First submit / resubmit that moves status into `under_review` | `POST|PATCH /api/tour-guides/portal/profile` → SendGrid |
+| **3. License expiring soon** | Daily cron; license `date` is exactly N days away (default **30** and **7**) | `POST /api/tour-guides/cron/license-expiry` |
+| **4. License expired** | Daily cron; day after expiry (`date` was yesterday) | same cron route |
+| Approved / rejected | Directus Flow webhook | §9 `…/webhooks/status` |
+
+License emails use the Directus field **`date`** (license expiry). Exact-day matching means each reminder fires once per window when the cron runs daily.
+
+### In-app scheduler (primary — Coolify compatible)
+
+License cron runs **inside the app** when Coolify starts the Node server (`npm start` / `next start`):
+
+1. `instrumentation.ts` boots on server start  
+2. `lib/cron/scheduler.ts` registers `node-cron`  
+3. Job runs daily at **08:00 UTC** by default  
+
+No Coolify Scheduled Task / external curl is required.
+
+| Env | Purpose |
+|-----|---------|
+| `ENABLE_APP_CRON` | `true` by default; set `false` to disable in-app schedules |
+| `TOUR_GUIDE_LICENSE_CRON` | Cron expression (default `0 8 * * *`) |
+| `TOUR_GUIDE_LICENSE_EXPIRY_REMINDER_DAYS` | Day offsets for “expiring soon” (default `30,7`) |
+| `SENDGRID_API_KEY` | Required to send |
+| `DIRECTUS_ADMIN_TOKEN` | Required to load guides |
+
+**Important for Coolify:** keep a **single replica** for this service (or accept duplicate emails). In-app cron runs once per Node process.
+
+### Optional HTTP trigger (manual / ops)
+
+Same job can still be triggered manually (auth required):
+
+```bash
+curl -fsS -X POST "https://discoveraseer.com/api/tour-guides/cron/license-expiry" \
+  -H "Authorization: Bearer $CRON_SECRET"
+```
+
+Auth accepted: `Authorization: Bearer`, `x-cron-secret`, `x-webhook-secret`, or `?secret=`  
+(`CRON_SECRET`, else `DIRECTUS_WEBHOOK_SECRET`).
