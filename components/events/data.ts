@@ -26,9 +26,10 @@ interface ApiEvent {
   end_time?: string | null;
   free_event?: string | null;
   price?: string | number | null;
+  status?: string | null;
   event_status?: string | null;
   unclickable?: string | boolean | null;
-  suitable_for_kids?: boolean | string | null;
+  suitable_for_kids?: boolean | string | number | null;
   audience_type?: string | null;
   image_new?: string | null;
   images?: string | unknown[] | null;
@@ -143,24 +144,18 @@ function parseExtraImages(
 }
 
 function parseKidFriendly(
-  suitableForKids: boolean | string | null | undefined,
-  audienceType: string | null | undefined,
+  suitableForKids: boolean | string | number | null | undefined,
 ): boolean {
+  // Trust the dashboard field only — do not infer from audience_type
+  // (e.g. "عائلة" is not the same as "suitable for kids").
+  if (suitableForKids == null || suitableForKids === "") return false;
   if (typeof suitableForKids === "boolean") return suitableForKids;
+  if (typeof suitableForKids === "number") return suitableForKids === 1;
 
-  const flag = (suitableForKids || "").toString().trim().toLowerCase();
+  const flag = suitableForKids.toString().trim().toLowerCase();
   if (["yes", "true", "1"].includes(flag)) return true;
   if (["no", "false", "0"].includes(flag)) return false;
-
-  const audience = (audienceType || "").toLowerCase();
-  return (
-    audience.includes("عائل") ||
-    audience.includes("أطفال") ||
-    audience.includes("اطفال") ||
-    audience.includes("family") ||
-    audience.includes("kids") ||
-    audience.includes("children")
-  );
+  return false;
 }
 
 function buildImages(apiEvent: ApiEvent): string[] {
@@ -257,10 +252,29 @@ function toMapsUrl(mapUrl: string | null | undefined, title: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(title)}`;
 }
 
-function isPublishedEvent(eventStatus: string | null | undefined): boolean {
+/** CMS publish state (`status`), not the seasonal `event_status` (Now/Previous). */
+function isPublishedCmsStatus(status: string | null | undefined): boolean {
+  const value = (status || "").trim().toLowerCase();
+  if (!value) return true;
+  return !["archived", "draft", "hidden", "unpublished"].includes(value);
+}
+
+function isVisibleEventStatus(eventStatus: string | null | undefined): boolean {
   const value = (eventStatus || "").trim().toLowerCase();
   if (!value) return true;
   return !["draft", "hidden", "archived"].includes(value);
+}
+
+export function isListedEvent(apiEvent: {
+  status?: string | null;
+  event_status?: string | null;
+  unclickable?: string | boolean | null;
+}): boolean {
+  return (
+    isPublishedCmsStatus(apiEvent.status) &&
+    isVisibleEventStatus(apiEvent.event_status) &&
+    isClickableEvent(apiEvent.unclickable)
+  );
 }
 
 function isClickableEvent(flag: string | boolean | null | undefined): boolean {
@@ -316,10 +330,7 @@ export function transformApiEventToListingItem(
     isFree,
     title,
     images: buildImages(apiEvent),
-    isKidFriendly: parseKidFriendly(
-      apiEvent.suitable_for_kids,
-      apiEvent.audience_type,
-    ),
+    isKidFriendly: parseKidFriendly(apiEvent.suitable_for_kids),
     isOver: isEventOver(apiEvent, year),
     priceLabel: toPriceLabel(isFree, apiEvent.price, locale),
     locationLine:
@@ -371,11 +382,7 @@ export async function fetchEvents(
     const apiData: EventsApiResponse = await response.json();
 
     return apiData.data
-      .filter(
-        (item) =>
-          isPublishedEvent(item.event_status) &&
-          isClickableEvent(item.unclickable),
-      )
+      .filter((item) => isListedEvent(item))
       .map((item) => transformApiEventToListingItem(item, locale));
   } catch (error) {
     console.error("[events] Failed to fetch events:", error);

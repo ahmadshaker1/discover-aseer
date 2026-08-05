@@ -1,4 +1,7 @@
-import { transformApiEventToListingItem } from "@/components/events/data";
+import {
+  isListedEvent,
+  transformApiEventToListingItem,
+} from "@/components/events/data";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 import type {
   SeasonDetail,
@@ -28,7 +31,7 @@ function getDirectusHeaders(): HeadersInit | undefined {
 // Gone from schema: `date`, `tags`, `unclickable`, `not_allowed_for_kids`, `thumbnail`, `hero_mobile`, `start_time`, `end_time`.
 // `season` is an M2M via `events_seasons`; bare `season` values are junction row ids, so read `season.seasons_id`.
 const SEASON_EVENT_FIELDS =
-  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,event_status,type_ar,type_en,season.seasons_id";
+  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,status,event_status,type_ar,type_en,season.seasons_id";
 
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",
@@ -70,6 +73,7 @@ interface ApiEvent {
   description_en?: string | null;
   free_event?: string | null;
   price?: string | number | null;
+  status?: string | null;
   event_status?: string | null;
   unclickable?: string | boolean | null;
   tags?: string | null;
@@ -119,19 +123,6 @@ function pickSeasonImage(apiSeason: ApiSeason): string {
     buildAssetUrl(apiSeason.image) ||
     FALLBACK_IMAGES[0]
   );
-}
-
-/** Season detail shows linked events even when CMS marks them as past/previous. */
-function isVisibleSeasonEvent(eventStatus: string | null | undefined): boolean {
-  const value = (eventStatus || "").trim().toLowerCase();
-  if (!value) return true;
-  return !["draft", "hidden", "archived"].includes(value);
-}
-
-function isClickableEvent(flag: string | boolean | null | undefined): boolean {
-  if (typeof flag === "boolean") return !flag;
-  const value = (flag || "").toString().trim().toLowerCase();
-  return !["true", "1", "yes"].includes(value);
 }
 
 function parseTags(raw: string | null | undefined): string[] {
@@ -378,12 +369,7 @@ export async function fetchSeasonDetailPage(
     const apiEvents = await fetchEventsForSeason(id);
 
     const events = apiEvents
-      .filter(
-        (e) =>
-          eventBelongsToSeason(e, id) &&
-          isVisibleSeasonEvent(e.event_status) &&
-          isClickableEvent(e.unclickable),
-      )
+      .filter((e) => eventBelongsToSeason(e, id) && isListedEvent(e))
       .map((e) => transformEvent(e, locale, referenceYear))
       // Newest first — public CMS can't reliably sort by date; id is creation order.
       .sort((a, b) => Number(b.listing.id) - Number(a.listing.id));
@@ -430,8 +416,7 @@ export async function fetchSeasonEventDetail(
     if (
       !apiEvent ||
       !eventBelongsToSeason(apiEvent, seasonId) ||
-      !isVisibleSeasonEvent(apiEvent.event_status) ||
-      !isClickableEvent(apiEvent.unclickable)
+      !isListedEvent(apiEvent)
     ) {
       return null;
     }
