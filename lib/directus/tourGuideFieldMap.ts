@@ -94,7 +94,10 @@ export interface TourGuidePortalFormValues {
   License_expiry_date: string;
   english_language: "" | "beginner" | "intermediate" | "advanced";
   Arabic_language: "" | "beginner" | "intermediate" | "advanced";
-  Other_languages: { language: string; level: "" | "beginner" | "intermediate" | "advanced" }[];
+  Other_languages: {
+    language: string;
+    level: "" | "beginner" | "intermediate" | "advanced";
+  }[];
   Specialization: string;
   Email: string;
   transportation: "" | "yes" | "no";
@@ -104,6 +107,7 @@ export interface TourGuidePortalFormValues {
   Website: string;
   TikTok: string;
   X_platform: string;
+  Snapchat: string;
   commitment1: boolean;
   commitment2: boolean;
   commitment3: boolean;
@@ -131,6 +135,7 @@ export const EMPTY_PORTAL_FORM: TourGuidePortalFormValues = {
   Website: "",
   TikTok: "",
   X_platform: "",
+  Snapchat: "",
   commitment1: false,
   commitment2: false,
   commitment3: false,
@@ -162,7 +167,10 @@ function parseOtherLanguages(raw: string | null | undefined): {
 }
 
 function formatOtherLanguages(
-  languages: { language: string; level: "" | "beginner" | "intermediate" | "advanced" }[],
+  languages: {
+    language: string;
+    level: "" | "beginner" | "intermediate" | "advanced";
+  }[],
 ): string | null {
   const items = languages
     .map((l) => {
@@ -216,6 +224,7 @@ export function apiProfileToPortalForm(
     Website: api.website ?? "",
     TikTok: api.tiktok ?? "",
     X_platform: api.x_platform ?? "",
+    Snapchat: api.snapchat ?? "",
     commitment1: api.commitment_1 === true,
     commitment2: api.commitment_2 === true,
     commitment3: api.commitment_3 === true,
@@ -270,6 +279,7 @@ export function portalFormToApiPayload(
     website: values.Website.trim() || null,
     tiktok: values.TikTok.trim() || null,
     x_platform: values.X_platform.trim() || null,
+    snapchat: values.Snapchat.trim() || null,
     commitment_1: values.commitment1,
     commitment_2: values.commitment2,
     commitment_3: values.commitment3,

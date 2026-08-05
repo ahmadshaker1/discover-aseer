@@ -712,6 +712,14 @@ const TourGuidePortalProfileForm = ({
             onChange={(e) => setField("TikTok", e.target.value)}
             dir="ltr"
           />
+
+          <FormTextInput
+            id={`${baseId}-snapchat`}
+            label={tForm("snapchat")}
+            value={values.Snapchat}
+            onChange={(e) => setField("Snapchat", e.target.value)}
+            dir="ltr"
+          />
           <FormTextInput
             id={`${baseId}-x-platform`}
             label={tForm("xPlatform")}
