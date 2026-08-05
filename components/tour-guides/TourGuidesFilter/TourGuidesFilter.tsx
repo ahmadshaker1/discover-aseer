@@ -51,6 +51,15 @@ const TourGuidesFilter = ({
     });
   };
 
+  const handleGenderToggle = (id: string) => {
+    onFiltersChange({
+      ...filters,
+      gender: filters.gender.includes(id)
+        ? filters.gender.filter((g) => g !== id)
+        : [...filters.gender, id],
+    });
+  };
+
   return (
     <div className="font-brando w-full rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-xs">
       <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
@@ -65,7 +74,7 @@ const TourGuidesFilter = ({
         </Button>
       </div>
 
-      <div>
+      <div className="mb-6 sm:mb-8">
         <div className="mb-4 flex items-center gap-2">
           <HeartIcon />
           <h3 className="text-base font-bold text-foreground sm:text-lg">
@@ -111,6 +120,54 @@ const TourGuidesFilter = ({
           })}
         </div>
       </div>
+
+      {filterOptions.gender.length > 0 ? (
+        <div>
+          <div className="mb-4 flex items-center gap-2">
+            <h3 className="text-base font-bold text-foreground sm:text-lg">
+              {t("gender")}
+            </h3>
+          </div>
+          <div className="space-y-2">
+            {filterOptions.gender.map((item) => {
+              const isChecked = filters.gender.includes(item.id);
+              return (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between rounded p-2 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      checked={isChecked}
+                      onChange={() => handleGenderToggle(item.id)}
+                      className="group relative inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded border-2 border-border bg-surface transition data-checked:border-primary data-checked:bg-primary data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
+                    >
+                      <svg
+                        className="h-3 w-3 stroke-white opacity-0 group-data-checked:opacity-100"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                      >
+                        <path
+                          d="M3 8L6 11L11 3.5"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Checkbox>
+                    <span className="text-start text-sm text-foreground">
+                      {localizeTourGuideFilterLabel(item.label, locale)}
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {item.count}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };
