@@ -38,10 +38,11 @@ import {
   isPublishedTourGuide,
   publishedTourGuidesSearchParams,
 } from "@/lib/directus/config";
-import { resolveTourGuideFileUrl } from "@/lib/directus/resolveTourGuideFileUrl";
 import {
   buildSpecLabelMapFromApi,
+  canonicalizeSpecializationTokens,
   canonicalEnglishSpecLabel,
+  FIXED_SPECIALIZATION_FILTERS,
   localizeTourGuideFilterLabel,
   normalizeGuideGender,
   parseSpecializationTokens,
@@ -64,8 +65,6 @@ export type {
   TourGuidesFilterOptions,
   TouristGuidesApiResponse,
 } from "./types";
-
-const DEFAULT_IMAGE = "/assets/experiences/experiences.png";
 
 const LANGUAGE_LEVEL_AR: Record<string, string> = {
   advanced: "متقدم",
@@ -221,7 +220,6 @@ export function transformTourGuide(
   locale: LocaleCode = "ar",
   specLabelMap: Map<string, string> = new Map(),
 ): TourGuideWithFilterMeta {
-  const imageUrl = resolveTourGuideFileUrl(api.image) ?? DEFAULT_IMAGE;
   let phone = (api.whatsapp ?? api.phone_number ?? "")
     .toString()
     .replace(/\D/g, "");
@@ -234,7 +232,10 @@ export function transformTourGuide(
     (locale === "en"
       ? "Professional tour guide in the Aseer region"
       : "مرشد سياحي في منطقة عسير");
-  const filterSpecializations = parseSpecializations(api.specializations);
+  // Fixed filter facets only — free-text / "other" values are dropped.
+  const filterSpecializations = canonicalizeSpecializationTokens(
+    api.specializations,
+  );
   const specialties = buildDisplaySpecialties(
     api,
     filterSpecializations,
@@ -243,6 +244,11 @@ export function transformTourGuide(
   );
   const hasTransportation = api.transportation === true;
   const gender = normalizeGuideGender(api.gender);
+  // Temporary: always use gender avatar until old guide photos are cleaned up.
+  const imageUrl =
+    gender === "أنثى"
+      ? "/assets/tourist-guides/female.png"
+      : "/assets/tourist-guides/male.png";
   const cityId = inferGuideCityId(api);
   const locationLabel = cityId
     ? getCityLabelById(cityId, locale)
@@ -296,13 +302,17 @@ function buildFilterOptions(
   locale: LocaleCode,
 ): TourGuidesFilterOptions {
   const specLabelMap = buildSpecLabelMapFromApi(apiItems);
-  const specCounts = new Map<string, number>();
+  const specCounts = new Map<string, number>(
+    FIXED_SPECIALIZATION_FILTERS.map((item) => [item.id, 0]),
+  );
   const genderCounts = new Map<string, number>();
   let withTransport = 0;
   let withoutTransport = 0;
 
   for (const api of apiItems) {
-    const filterSpecializations = parseSpecializations(api.specializations);
+    const filterSpecializations = canonicalizeSpecializationTokens(
+      api.specializations,
+    );
     const gender = normalizeGuideGender(api.gender);
     const hasTransportation = api.transportation === true;
 
@@ -316,17 +326,12 @@ function buildFilterOptions(
     else withoutTransport += 1;
   }
 
-  const specializations = Array.from(specCounts.entries())
-    .map(([id, count]) => ({
-      id,
-      label:
-        locale === "en"
-          ? localizeTourGuideFilterLabel(id, "en", specLabelMap)
-          : id,
-      count,
-    }))
-    .sort((a, b) => b.count - a.count);
-
+  // Always expose the fixed specialization set (never grow from free-text registrations).
+  const specializations = FIXED_SPECIALIZATION_FILTERS.map((item) => ({
+    id: item.id,
+    label: locale === "en" ? item.en : item.id,
+    count: specCounts.get(item.id) ?? 0,
+  }));
   const genderOptions = Array.from(genderCounts.entries())
     .map(([id, count]) => ({
       id,

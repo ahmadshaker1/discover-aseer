@@ -661,11 +661,11 @@
       "errorGeneric": "An unexpected error occurred.",
       "errorSubmit": "Could not submit your application. Please try again later.",
       "specializations": {
-        "land": "Land & outdoor experiences specialist",
-        "marine": "Marine experiences specialist",
-        "aerial": "Aerial experiences specialist",
-        "heritage": "Heritage & cultural experiences specialist",
-        "recreational": "Recreational tourism specialist",
+        "land": "Land & outdoor experiences",
+        "marine": "Marine experiences",
+        "aerial": "Aerial experiences",
+        "heritage": "Heritage & cultural experiences",
+        "recreational": "Recreational tourism",
         "other": "Other"
       }
     }

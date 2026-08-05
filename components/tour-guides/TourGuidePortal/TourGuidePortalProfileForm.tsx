@@ -14,6 +14,7 @@ import type { ApiTouristGuide } from "@/components/tour-guides/types";
 import {
   FormCheckboxField,
   FormFileUpload,
+  FormMultiSelectField,
   FormSectionTitle,
   FormSelectField,
   FormSubmitButton,
@@ -70,7 +71,6 @@ const TourGuidePortalProfileForm = ({
   const [selectedSpecializations, setSelectedSpecializations] = useState<
     SpecializationId[]
   >([]);
-  const [otherSpecialization, setOtherSpecialization] = useState("");
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [licenseFile, setLicenseFile] = useState<File | null>(null);
   const [submitState, setSubmitState] = useState<
@@ -106,7 +106,6 @@ const TourGuidePortalProfileForm = ({
       setValues(next);
       const parsed = parseSpecializationValue(next.Specialization);
       setSelectedSpecializations(parsed.selected);
-      setOtherSpecialization(parsed.other);
       return;
     }
     if (accountEmail) {
@@ -204,27 +203,22 @@ const TourGuidePortalProfileForm = ({
     setField("Other_languages", next);
   };
 
-  const syncSpecialization = (
-    nextSelected: SpecializationId[],
-    nextOther: string,
-  ) => {
+  const specializationOptions = useMemo(
+    () =>
+      SPECIALIZATION_IDS.map((id) => ({
+        value: id,
+        label: tForm(`specializations.${id}`),
+      })),
+    [tForm],
+  );
+
+  const syncSpecialization = (nextSelected: SpecializationId[]) => {
     clearSubmitFeedback();
     setSelectedSpecializations(nextSelected);
-    setOtherSpecialization(nextOther);
     setValues((prev) => ({
       ...prev,
-      Specialization: buildSpecializationValue(nextSelected, nextOther),
+      Specialization: buildSpecializationValue(nextSelected),
     }));
-  };
-
-  const toggleSpecialization = (id: SpecializationId) => {
-    const exists = selectedSpecializations.includes(id);
-    if (exists) {
-      const next = selectedSpecializations.filter((item) => item !== id);
-      syncSpecialization(next, id === "other" ? "" : otherSpecialization);
-      return;
-    }
-    syncSpecialization([...selectedSpecializations, id], otherSpecialization);
   };
 
   const onSubmit = async (event: FormEvent) => {
@@ -615,35 +609,18 @@ const TourGuidePortalProfileForm = ({
               </div>
             ))}
           </div>
-          <div className="md:col-span-2 flex flex-col gap-3 text-start">
-            <p
-              className="text-base font-bold text-foreground"
-              style={{ fontFamily: araBold }}
-            >
-              {tForm("specialization")} <span className="text-red-600">*</span>
-            </p>
-            <div className="grid grid-cols-1 gap-2">
-              {SPECIALIZATION_IDS.map((item) => (
-                <FormCheckboxField
-                  key={item}
-                  checked={selectedSpecializations.includes(item)}
-                  onChange={() => toggleSpecialization(item)}
-                >
-                  {tForm(`specializations.${item}`)}
-                </FormCheckboxField>
-              ))}
-            </div>
-            {selectedSpecializations.includes("other") ? (
-              <FormTextInput
-                id={`${baseId}-other-spec`}
-                label={tForm("otherSpecializationPlaceholder")}
-                value={otherSpecialization}
-                onChange={(e) =>
-                  syncSpecialization(selectedSpecializations, e.target.value)
-                }
-                placeholder={tForm("otherSpecializationPlaceholder")}
-              />
-            ) : null}
+          <div className="md:col-span-2">
+            <FormMultiSelectField
+              id={`${baseId}-specialization`}
+              label={tForm("specialization")}
+              required
+              placeholder={tForm("select")}
+              value={selectedSpecializations}
+              onChange={(next) =>
+                syncSpecialization(next as SpecializationId[])
+              }
+              options={specializationOptions}
+            />
           </div>
           <FormSelectField
             id={`${baseId}-transport`}

@@ -46,13 +46,10 @@ const TourGuideModal = ({
   if (!guide) return null;
 
   const isFemale = guide.gender && /^(أنثى|female|f)$/i.test(guide.gender);
-  const fallbackImage =
-    !guide.profileImage ||
-    guide.profileImage === "/assets/experiences/experiences.png"
-      ? isFemale
-        ? "/assets/tourist-guides/female.png"
-        : "/assets/tourist-guides/male.png"
-      : guide.profileImage;
+  // Temporary: always show gender avatar (ignore uploaded profile photos).
+  const fallbackImage = isFemale
+    ? "/assets/tourist-guides/female.png"
+    : "/assets/tourist-guides/male.png";
 
   const firstName = guide.name.split(" ")[0] || guide.name;
 

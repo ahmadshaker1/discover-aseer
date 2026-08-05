@@ -33,7 +33,7 @@ const LanguageFlag = ({ code }: { code: string }) => {
 
 const TourGuideCard = ({
   name,
-  profileImage,
+  profileImage: _profileImage,
   languages,
   whatsappUrl,
   description,
@@ -44,12 +44,10 @@ const TourGuideCard = ({
   const tCommon = useTranslations("common");
 
   const isFemale = gender && /^(أنثى|female|f)$/i.test(gender);
-  const fallbackImage =
-    !profileImage || profileImage === "/assets/experiences/experiences.png"
-      ? isFemale
-        ? "/assets/tourist-guides/female.png"
-        : "/assets/tourist-guides/male.png"
-      : profileImage;
+  // Temporary: always show gender avatar (ignore uploaded profile photos).
+  const fallbackImage = isFemale
+    ? "/assets/tourist-guides/female.png"
+    : "/assets/tourist-guides/male.png";
   return (
     <div
       className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md h-90"

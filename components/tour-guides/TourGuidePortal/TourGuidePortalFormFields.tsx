@@ -264,6 +264,107 @@ export function FormSelectField({
   );
 }
 
+type FormMultiSelectFieldProps = {
+  id: string;
+  label: string;
+  required?: boolean;
+  disabled?: boolean;
+  placeholder: string;
+  value: string[];
+  onChange: (value: string[]) => void;
+  options: SelectOption[];
+};
+
+export function FormMultiSelectField({
+  id,
+  label,
+  required,
+  disabled,
+  placeholder,
+  value,
+  onChange,
+  options,
+}: FormMultiSelectFieldProps) {
+  const selectedLabels = options
+    .filter((option) => value.includes(option.value))
+    .map((option) => option.label);
+  const buttonLabel =
+    selectedLabels.length > 0 ? selectedLabels.join("، ") : placeholder;
+
+  return (
+    <Field className={FIELD_GROUP} disabled={disabled}>
+      <Label
+        htmlFor={id}
+        className="text-base font-bold text-foreground"
+        style={{ fontFamily: araBold }}
+      >
+        {label}
+        {required ? <RequiredMark /> : null}
+      </Label>
+      <Listbox value={value} onChange={onChange} multiple disabled={disabled}>
+        <div className="relative">
+          <ListboxButton
+            id={id}
+            aria-required={required}
+            disabled={disabled}
+            className={`${FIELD_CONTROL} flex min-h-12 items-center justify-between gap-2 ${
+              disabled
+                ? "cursor-not-allowed bg-muted text-muted-foreground"
+                : "cursor-pointer"
+            }`}
+            style={{ fontFamily: ibm }}
+          >
+            <span
+              className={`min-w-0 text-start ${
+                selectedLabels.length > 0
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
+            >
+              {buttonLabel}
+            </span>
+            <SelectChevron />
+          </ListboxButton>
+          <ListboxOptions
+            anchor="bottom start"
+            transition
+            modal={false}
+            className="z-50 max-h-64 w-(--button-width) overflow-auto rounded-lg border border-border bg-background py-1 shadow-lg [--anchor-gap:4px] transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0 data-[anchor~=end]:origin-top-end"
+          >
+            {options.map((option) => (
+              <ListboxOption
+                key={option.value}
+                value={option.value}
+                className="group flex cursor-pointer items-center gap-3 px-4 py-2.5 text-foreground data-focus:bg-muted data-selected:bg-primary/10"
+                style={{ fontFamily: ibm }}
+              >
+                <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 border-border bg-surface group-data-selected:border-primary group-data-selected:bg-primary">
+                  <svg
+                    className="h-3 w-3 stroke-white opacity-0 group-data-selected:opacity-100"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    aria-hidden
+                  >
+                    <path
+                      d="M3 8L6 11L11 3.5"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span className="min-w-0 flex-1 text-start group-data-selected:font-semibold">
+                  {option.label}
+                </span>
+              </ListboxOption>
+            ))}
+          </ListboxOptions>
+        </div>
+      </Listbox>
+    </Field>
+  );
+}
+
 type FormFileUploadProps = {
   id: string;
   label: string;

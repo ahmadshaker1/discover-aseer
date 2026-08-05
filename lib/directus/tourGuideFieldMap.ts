@@ -5,81 +5,74 @@ export type SpecializationId =
   | "marine"
   | "aerial"
   | "heritage"
-  | "recreational"
-  | "other";
+  | "recreational";
 
+/** Fixed multi-select options for tour guide applications (no free text). */
 export const SPECIALIZATION_IDS: SpecializationId[] = [
+  "heritage",
   "land",
+  "recreational",
   "marine",
   "aerial",
-  "heritage",
-  "recreational",
-  "other",
 ];
 
-/** Values stored in `specializations` (Arabic labels, matching the former public form). */
+/**
+ * Values stored in `specializations` (canonical Arabic labels used by the website filter).
+ * Legacy portal rows may still use the older "متخصص في …" wording — parsing accepts both.
+ */
 export const SPECIALIZATION_AR: Record<SpecializationId, string> = {
+  land: "تجارب وأنشطة برية",
+  marine: "تجارب وأنشطة بحرية",
+  aerial: "تجارب وأنشطة هوائية",
+  heritage: "تجارب وأنشطة تراثية وثقافية",
+  recreational: "سياحة الاستجمام",
+};
+
+/** Older stored labels from the previous registration form. */
+const SPECIALIZATION_AR_LEGACY: Partial<Record<SpecializationId, string>> = {
   land: "متخصص في التجارب والأنشطة البرية",
   marine: "متخصص في التجارب والأنشطة البحرية",
   aerial: "متخصص في التجارب والأنشطة الهوائية",
   heritage: "متخصص في التجارب والأنشطة التراثية والثقافية",
   recreational: "متخصص في سياحة الاستجمام",
-  other: "أخرى",
 };
 
 export function buildSpecializationValue(
   selectedSpecializations: SpecializationId[],
-  otherSpecialization: string,
 ): string {
-  const list = selectedSpecializations
-    .filter((item) => item !== "other")
-    .map((id) => SPECIALIZATION_AR[id]);
-  if (selectedSpecializations.includes("other")) {
-    const trimmedOther = otherSpecialization.trim();
-    if (trimmedOther) {
-      list.push(trimmedOther);
-    } else if (list.length === 0) {
-      list.push(SPECIALIZATION_AR.other);
-    }
-  }
-  return list.join(", ");
+  return selectedSpecializations
+    .filter((id) => SPECIALIZATION_IDS.includes(id))
+    .map((id) => SPECIALIZATION_AR[id])
+    .join(", ");
 }
 
 export function parseSpecializationValue(value: string): {
   selected: SpecializationId[];
-  other: string;
 } {
   const trimmed = value.trim();
-  if (!trimmed) return { selected: [], other: "" };
+  if (!trimmed) return { selected: [] };
 
   const parts = trimmed
     .split(",")
     .map((part) => part.trim())
     .filter(Boolean);
   const selected: SpecializationId[] = [];
-  const otherParts: string[] = [];
 
   for (const part of parts) {
     const known = (
       Object.entries(SPECIALIZATION_AR) as [SpecializationId, string][]
     ).find(([, label]) => label === part);
-    if (known) {
-      if (known[0] === "other") {
-        if (!selected.includes("other")) selected.push("other");
-      } else if (!selected.includes(known[0])) {
-        selected.push(known[0]);
-      }
-    } else {
-      otherParts.push(part);
+    const legacy = (
+      Object.entries(SPECIALIZATION_AR_LEGACY) as [SpecializationId, string][]
+    ).find(([, label]) => label === part);
+    const matchedId = known?.[0] ?? legacy?.[0];
+
+    if (matchedId && !selected.includes(matchedId)) {
+      selected.push(matchedId);
     }
   }
 
-  if (otherParts.length > 0) {
-    if (!selected.includes("other")) selected.push("other");
-    return { selected, other: otherParts.join(", ") };
-  }
-
-  return { selected, other: "" };
+  return { selected };
 }
 
 /** Portal form shape (aligned with the former public registration form field names). */
