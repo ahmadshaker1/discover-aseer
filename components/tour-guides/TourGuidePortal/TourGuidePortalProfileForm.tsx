@@ -349,15 +349,6 @@ const TourGuidePortalProfileForm = ({
         </div>
       )}
 
-      {/* {!profile && (
-        <p
-          className="mb-8 text-start text-muted-foreground"
-          style={{ fontFamily: ibm }}
-        >
-          {t("profile.createHint")}
-        </p>
-      )} */}
-
       {lockIdentityFields && (
         <p
           className="mb-8 text-start text-sm text-muted-foreground"
@@ -656,9 +647,12 @@ const TourGuidePortalProfileForm = ({
             dir="ltr"
           />
           <FormTextInput
+            dir="ltr"
             id={`${baseId}-mobile`}
             label={tForm("mobile")}
+            hint={tForm("mobileHint")}
             required
+            maxLength={13}
             value={values.Mobile_number}
             onChange={(e) => setField("Mobile_number", e.target.value)}
           />
@@ -693,6 +687,14 @@ const TourGuidePortalProfileForm = ({
             label={tForm("tiktok")}
             value={values.TikTok}
             onChange={(e) => setField("TikTok", e.target.value)}
+            dir="ltr"
+          />
+
+          <FormTextInput
+            id={`${baseId}-snapchat`}
+            label={tForm("snapchat")}
+            value={values.Snapchat}
+            onChange={(e) => setField("Snapchat", e.target.value)}
             dir="ltr"
           />
           <FormTextInput

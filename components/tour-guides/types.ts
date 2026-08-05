@@ -19,6 +19,7 @@ export interface ApiTouristGuide {
   instagram: string | null;
   x_platform: string | null;
   tiktok: string | null;
+  snapchat: string | null;
   gender: string | null;
   arabic_language_level: string | null;
   english_language_level: string | null;

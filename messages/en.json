@@ -3,7 +3,7 @@
     "home": "Home",
     "discoverAseer": "Discover Aseer",
     "breadcrumbHome": "Home",
-    "subtitleOneVisit": "One visit is never enough with all the activities and experiences on offer.",
+    "subtitleOneVisit": "One visit is never enough with all the activities and experiences on offer",
     "browseMore": "Browse more",
     "resetFilters": "Reset filters",
     "city": "City",
@@ -262,7 +262,7 @@
     "landmarksSectionIndexTitle": "Featured destinations in Aseer",
     "landmarksSectionCityTitle": "Destinations in {city}",
     "heroTitleAbha": "Abha",
-    "heroSubtitleAbha": "One visit is never enough with all the activities and experiences on offer.",
+    "heroSubtitleAbha": "One visit is never enough with all the activities and experiences on offer",
     "introTitle": "City of fog",
     "introBody": "On the Sarawat peaks in southwest Saudi Arabia, Abha rests like a jewel crowned in mist and beauty, wrapped in cloud summer and winter.",
     "introP1": "On the Sarawat peaks in southwest Saudi Arabia, Abha rests like a jewel crowned in mist and beauty, wrapped in cloud summer and winter. It is the bright gateway to Aseer and rich with diversity in every direction. Its cool, rainy summers have made it a leading sustainable destination, backed by deep cultural, artistic and heritage assets.",
@@ -287,7 +287,7 @@
   "events": {
     "breadcrumb": "Events",
     "title": "Events",
-    "subtitle": "Arts, culture, community and outdoor experiences designed for every interest year-round.",
+    "subtitle": "Arts, culture, community and outdoor experiences designed for every interest year-round",
     "addYourEvent": "Add your event",
     "interestAdventure": "Adventure",
     "interestHeritage": "Heritage & arts",
@@ -299,7 +299,7 @@
   "eventSeasons": {
     "breadcrumb": "Seasons & events",
     "heroTitle": "Seasons & events",
-    "heroSubtitle": "Arts, culture, community, environmental and sports experiences — plus many other activities designed for every interest, all year round.",
+    "heroSubtitle": "Arts, culture, community, environmental and sports experiences — plus many other activities designed for every interest, all year round",
     "addYourEvent": "Add your event",
     "sectionTitle": "Seasons & events",
     "currentSeasonsTitle": "Seasons & events",
@@ -338,7 +338,7 @@
   "experiencesPage": {
     "breadcrumb": "Tourist experiences",
     "title": "Experiences waiting for you in Aseer",
-    "subtitle": "One visit is never enough with all the activities and experiences on offer.",
+    "subtitle": "One visit is never enough with all the activities and experiences on offer",
     "costSection": "Cost"
   },
   "experienceSubmit": {
@@ -462,7 +462,7 @@
   "travelTips": {
     "breadcrumb": "Essentials",
     "title": "Essentials",
-    "subtitle": "One visit is never enough with all the activities and experiences on offer.",
+    "subtitle": "One visit is never enough with all the activities and experiences on offer",
     "faqTitle": "Frequently asked questions",
     "emergencyTitle": "Emergency contacts",
     "emergencyPolice": "Police",
@@ -621,11 +621,13 @@
       "transportation": "Do you have transportation?",
       "email": "Email",
       "mobile": "Mobile number",
+      "mobileHint": "Enter 10 numbers starting with 05 or 13 numbers starting with +966",
       "whatsapp": "WhatsApp number",
       "website": "Website",
       "instagram": "Instagram",
       "xPlatform": "X",
       "tiktok": "TikTok",
+      "snapchat": "Snapchat",
       "commitmentsTitle": "Declarations",
       "commitment1": "I confirm that all the information provided above and the attached documents are accurate and fully reflect my personal details and experience as a tour guide. I understand that any incorrect or incomplete information in this application may disqualify me from being listed on Discover Aseer website.",
       "commitment2": "I consent to the use of the information provided above by the electronic channels of Discover Aseer and the Aseer Region Development Authority for the purpose of developing and marketing Aseer as a tourist destination.",
