@@ -28,7 +28,7 @@ function getDirectusHeaders(): HeadersInit | undefined {
 // Gone from schema: `date`, `tags`, `unclickable`, `not_allowed_for_kids`, `thumbnail`, `hero_mobile`, `start_time`, `end_time`.
 // `season` is an M2M via `events_seasons`; bare `season` values are junction row ids, so read `season.seasons_id`.
 const SEASON_EVENT_FIELDS =
-  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,event_status,season.seasons_id";
+  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,event_status,type_ar,type_en,season.seasons_id";
 
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",
@@ -72,6 +72,10 @@ interface ApiEvent {
   price?: string | number | null;
   event_status?: string | null;
   unclickable?: string | boolean | null;
+  tags?: string | null;
+  /** Multi-select event types from CMS, e.g. `["nature", "entertainment"]`. */
+  type_en?: string[] | string | null;
+  type_ar?: string[] | string | null;
   /**
    * M2M via `events_seasons`. With `fields=season` Directus returns junction ids;
    * with `fields=season.seasons_id` it returns `{ seasons_id: "<uuid>" }` objects.
@@ -147,24 +151,62 @@ function parseTags(raw: string | null | undefined): string[] {
     .filter(Boolean);
 }
 
-function tagToCategoryId(tag: string): SeasonEventCategoryId | null {
-  const t = tag.toLowerCase();
-  if (/طبيع|nature|بيئ/.test(t)) return "nature";
-  if (/رياض|sport/.test(t)) return "sports";
-  if (/ثقاف|تراث|culture|heritage/.test(t)) return "cultural";
-  if (/تقن|tech/.test(t)) return "tech";
-  if (/ترفيه|entertain/.test(t)) return "entertainment";
-  if (/ابداع|إبداع|creative|art/.test(t)) return "creative";
+function normalizeTypeTokens(
+  value: string[] | string | null | undefined,
+): string[] {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
+  }
+  if (typeof value === "string") {
+    const clean = value.trim();
+    if (!clean) return [];
+    try {
+      const parsed = JSON.parse(clean) as unknown;
+      if (Array.isArray(parsed)) return normalizeTypeTokens(parsed as string[]);
+    } catch {
+      // comma-separated fallback
+    }
+    return clean
+      .split(/[،,]/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+function typeToCategoryId(token: string): SeasonEventCategoryId | null {
+  const t = token.toLowerCase().trim();
+  if (!t) return null;
+  if (t === "nature" || /طبيع|بيئ/.test(t)) return "nature";
+  if (t === "sports" || t === "sport" || /رياض/.test(t)) return "sports";
+  if (
+    t === "cultural" ||
+    t === "culture" ||
+    /ثقاف|تراث|heritage/.test(t)
+  ) {
+    return "cultural";
+  }
+  if (t === "tech" || /تقن/.test(t)) return "tech";
+  if (t === "entertainment" || /ترفيه/.test(t)) return "entertainment";
+  if (t === "creative" || /ابداع|إبداع|art/.test(t)) return "creative";
   return null;
 }
 
-function categoriesFromTags(tags: string[]): SeasonEventCategoryId[] {
+/** Map CMS multi-select types (`type_en` / `type_ar`) onto filter category ids. */
+function categoriesFromEventTypes(apiEvent: ApiEvent): SeasonEventCategoryId[] {
   const ids = new Set<SeasonEventCategoryId>();
-  for (const tag of tags) {
-    const id = tagToCategoryId(tag);
+  const tokens = [
+    ...normalizeTypeTokens(apiEvent.type_en),
+    ...normalizeTypeTokens(apiEvent.type_ar),
+    // Legacy fallback if older records still expose tags.
+    ...parseTags(apiEvent.tags),
+  ];
+
+  for (const token of tokens) {
+    const id = typeToCategoryId(token);
     if (id) ids.add(id);
   }
-  if (ids.size === 0) ids.add("entertainment");
+
   return Array.from(ids);
 }
 
@@ -226,7 +268,7 @@ function transformEvent(
 
   return {
     listing: transformApiEventToListingItem(apiEvent, locale, referenceYear),
-    categoryIds: categoriesFromTags(parseTags(apiEvent.tags)),
+    categoryIds: categoriesFromEventTypes(apiEvent),
     startDate: start ? toIsoDateString(start) : null,
     endDate: end ? toIsoDateString(end) : null,
   };
