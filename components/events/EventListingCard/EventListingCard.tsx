@@ -155,7 +155,7 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
                   <span className="text-start text-sm font-bold leading-none">
                     {event.priceLabel}
                   </span>
-                  {!event.isFree ? (
+                  {!event.isFree && event.priceLabel !== "—" ? (
                     <CurrencyIcon className="shrink-0 text-foreground" />
                   ) : null}
                 </div>

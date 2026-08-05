@@ -244,8 +244,11 @@ function toPriceLabel(
   if (isFree) return locale === "ar" ? "مجاني" : "Free";
 
   const numeric = extractNumericPrice(price);
-  if (!numeric) return locale === "ar" ? "مجاني" : "Free";
-  return numeric;
+  if (numeric) return numeric;
+
+  // Keep non-numeric price text (e.g. ticket tiers); show a dash when unknown.
+  const raw = typeof price === "string" ? price.trim() : "";
+  return raw || "—";
 }
 
 function toMapsUrl(mapUrl: string | null | undefined, title: string): string {
@@ -303,9 +306,8 @@ export function transformApiEventToListingItem(
   const city = (apiEvent.city || "").trim();
   const year = resolveEventReferenceYear(apiEvent, referenceYear);
 
-  const freeFromFlag = parseIsFree(apiEvent.free_event);
-  const numericPrice = extractNumericPrice(apiEvent.price);
-  const isFree = freeFromFlag === true || numericPrice === "";
+  // Only treat as free when CMS explicitly marks `free_event`; missing price ≠ free.
+  const isFree = parseIsFree(apiEvent.free_event) === true;
 
   return {
     id: String(apiEvent.id),
