@@ -61,7 +61,7 @@ export default function WelcomePage({ onStartPlanning }: WelcomePageProps) {
           <p
             className="mb-8 text-start text-[#535353] dark:text-gray-300"
             style={{
-              fontSize: "16px",
+              fontSize: "24px",
               fontStyle: "normal",
               fontWeight: 400,
               lineHeight: "normal",
