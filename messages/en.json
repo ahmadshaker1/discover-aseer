@@ -621,6 +621,7 @@
       "transportation": "Do you have transportation?",
       "email": "Email",
       "mobile": "Mobile number",
+      "mobileHint": "Enter 10 numbers starting with 05 or 13 numbers starting with +966",
       "whatsapp": "WhatsApp number",
       "website": "Website",
       "instagram": "Instagram",

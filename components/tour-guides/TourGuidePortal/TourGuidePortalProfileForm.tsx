@@ -355,15 +355,6 @@ const TourGuidePortalProfileForm = ({
         </div>
       )}
 
-      {/* {!profile && (
-        <p
-          className="mb-8 text-start text-muted-foreground"
-          style={{ fontFamily: ibm }}
-        >
-          {t("profile.createHint")}
-        </p>
-      )} */}
-
       {lockIdentityFields && (
         <p
           className="mb-8 text-start text-sm text-muted-foreground"
@@ -679,9 +670,12 @@ const TourGuidePortalProfileForm = ({
             dir="ltr"
           />
           <FormTextInput
+            dir="ltr"
             id={`${baseId}-mobile`}
             label={tForm("mobile")}
+            hint={tForm("mobileHint")}
             required
+            maxLength={13}
             value={values.Mobile_number}
             onChange={(e) => setField("Mobile_number", e.target.value)}
           />
