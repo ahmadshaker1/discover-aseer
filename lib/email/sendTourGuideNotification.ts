@@ -37,16 +37,19 @@ async function sendSafe(
   }
 }
 
-export function notifyTourGuideRegistration(guide: TourGuideNotifyGuide) {
+export function notifyTourGuideRegistration(
+  guide: TourGuideNotifyGuide,
+  verifyUrl: string,
+) {
   return sendSafe(
     guide,
     () =>
       buildTourGuideRegistrationEmail({
         nameAr: guide.name,
         nameEn: guide.name_en,
-        portalUrl: getTourGuidePortalUrl(),
+        verifyUrl,
       }),
-    "registration",
+    "registration_verify",
   );
 }
 

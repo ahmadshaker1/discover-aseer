@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import {
+  findDirectusUserByEmail,
+  isUnverifiedStatus,
+} from "@/lib/directus/tourGuideEmailVerification";
 import { directusLogin, getDirectusServerUrl } from "@/lib/directus/server";
 
 function translateMessage(msg: string, isArabic: boolean): string {
@@ -12,6 +16,8 @@ function translateMessage(msg: string, isArabic: boolean): string {
       "البريد الإلكتروني وكلمة المرور مطلوبان.",
     "Login failed.": "فشل تسجيل الدخول.",
     "Sign-in failed.": "فشل تسجيل الدخول.",
+    "Please verify your email before signing in. Check your inbox for the verification link.":
+      "يرجى تأكيد بريدك الإلكتروني قبل تسجيل الدخول. تحقق من صندوق الوارد لرابط التأكيد.",
   };
 
   if (exactMatches[msg]) {
@@ -67,16 +73,39 @@ export async function POST(request: Request) {
       );
     }
 
-    const session = await directusLogin(baseUrl, email, password);
-    return NextResponse.json({
-      access_token: session.access_token,
-      refresh_token: session.refresh_token,
-      expires: session.expires,
-      user: {
-        ...session.user,
-        email: session.user.email ?? email,
-      },
-    });
+    try {
+      const session = await directusLogin(baseUrl, email, password);
+      return NextResponse.json({
+        access_token: session.access_token,
+        refresh_token: session.refresh_token,
+        expires: session.expires,
+        user: {
+          ...session.user,
+          email: session.user.email ?? email,
+        },
+      });
+    } catch (loginError) {
+      const user = await findDirectusUserByEmail(email).catch(() => null);
+      if (user && isUnverifiedStatus(user.status)) {
+        return NextResponse.json(
+          {
+            error: translateMessage(
+              "Please verify your email before signing in. Check your inbox for the verification link.",
+              isArabic,
+            ),
+            code: "EMAIL_UNVERIFIED",
+          },
+          { status: 403 },
+        );
+      }
+
+      const message =
+        loginError instanceof Error ? loginError.message : "Login failed.";
+      return NextResponse.json(
+        { error: translateMessage(message, isArabic) },
+        { status: 401 },
+      );
+    }
   } catch (error) {
     const message = error instanceof Error ? error.message : "Login failed.";
     return NextResponse.json(

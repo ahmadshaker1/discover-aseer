@@ -302,6 +302,7 @@ export async function directusRegister(
     const registerMessage =
       registerError instanceof Error ? registerError.message : "Registration failed.";
     if (/unique|already|duplicate|exists/i.test(registerMessage)) {
+      // Caller may resend verification for unverified accounts.
       throw new Error(
         "An account with this email already exists. Use the Sign in tab with your password.",
       );
@@ -309,25 +310,12 @@ export async function directusRegister(
     throw registerError;
   }
 
-  try {
-    const session = await directusLogin(
-      baseUrl,
-      normalized.email,
-      normalized.password,
-    );
-    return { kind: "session", ...session };
-  } catch (loginError) {
-    const loginMessage =
-      loginError instanceof Error ? loginError.message : "Sign-in failed.";
-    const isCredentialError = /invalid user credentials/i.test(loginMessage);
-
-    return {
-      kind: "registered",
-      message: isCredentialError
-        ? "Your account was created. If email verification is enabled in Directus, verify your email first, then sign in with the same password."
-        : `Your account was created but automatic sign-in failed (${loginMessage}). Please sign in manually.`,
-    };
-  }
+  // Never auto-login: new accounts must verify email ownership first.
+  return {
+    kind: "registered",
+    message:
+      "Account created. Check your email for a verification link, then sign in.",
+  };
 }
 
 export async function directusRefresh(

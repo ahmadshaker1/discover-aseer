@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { directusRegister, getDirectusServerUrl } from "@/lib/directus/server";
-import { notifyTourGuideRegistration } from "@/lib/email/sendTourGuideNotification";
+import {
+  findDirectusUserByEmail,
+  isUnverifiedStatus,
+  setDirectusUserStatus,
+} from "@/lib/directus/tourGuideEmailVerification";
+import { sendTourGuideVerifyEmail } from "@/lib/directus/sendTourGuideVerifyEmail";
 
 function translateMessage(msg: string, isArabic: boolean): string {
   if (!isArabic) return msg;
@@ -15,24 +20,27 @@ function translateMessage(msg: string, isArabic: boolean): string {
     "An account with this email already exists. Use the Sign in tab with your password.":
       "يوجد حساب مسجل بهذا البريد الإلكتروني. استخدم علامة تبويب تسجيل الدخول مع كلمة المرور الخاصة بك.",
     "Registration failed.": "فشل التسجيل.",
-    "Your account was created. If email verification is enabled in Directus, verify your email first, then sign in with the same password.":
-      "تم إنشاء حسابك. إذا كان التحقق من البريد الإلكتروني ممكّنًا، يرجى التحقق من بريدك أولاً، ثم تسجيل الدخول بنفس كلمة المرور.",
+    "Account created. Check your email for a verification link, then sign in.":
+      "تم إنشاء الحساب. تحقق من بريدك الإلكتروني لرابط التأكيد، ثم سجّل الدخول.",
+    "This email is registered but not verified yet. We sent a new verification link — check your inbox, then sign in.":
+      "هذا البريد مسجّل لكن لم يُؤكَّد بعد. أرسلنا رابط تأكيد جديداً — تحقق من صندوق الوارد ثم سجّل الدخول.",
   };
 
   if (exactMatches[msg]) {
     return exactMatches[msg];
   }
 
-  if (msg.startsWith("Your account was created but automatic sign-in failed")) {
-    return "تم إنشاء حسابك ولكن فشل تسجيل الدخول التلقائي. يرجى تسجيل الدخول يدوياً.";
-  }
-
   return msg;
+}
+
+function localeFromRequest(request: Request, isArabic: boolean): "ar" | "en" {
+  return isArabic ? "ar" : "en";
 }
 
 export async function POST(request: Request) {
   const referer = request.headers.get("referer") || "";
   const isArabic = referer.includes("/ar/") || referer.endsWith("/ar");
+  const locale = localeFromRequest(request, isArabic);
 
   try {
     const baseUrl = getDirectusServerUrl();
@@ -85,27 +93,72 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await directusRegister(baseUrl, {
-      email,
-      password,
-      first_name,
-      last_name,
-    });
+    let result;
+    try {
+      result = await directusRegister(baseUrl, {
+        email,
+        password,
+        first_name,
+        last_name,
+      });
+    } catch (registerError) {
+      const message =
+        registerError instanceof Error
+          ? registerError.message
+          : "Registration failed.";
 
-    // Fire-and-forget — never block account creation on email delivery.
-    void notifyTourGuideRegistration({
-      email,
-      name: `${first_name} ${last_name}`.trim(),
-      name_en: `${first_name} ${last_name}`.trim(),
-    });
+      if (/already exists/i.test(message)) {
+        const existing = await findDirectusUserByEmail(email).catch(() => null);
+        if (existing && isUnverifiedStatus(existing.status)) {
+          await sendTourGuideVerifyEmail({
+            user: existing,
+            request,
+            locale,
+          });
+          return NextResponse.json({
+            registered: true,
+            message: translateMessage(
+              "This email is registered but not verified yet. We sent a new verification link — check your inbox, then sign in.",
+              isArabic,
+            ),
+          });
+        }
+      }
+
+      return NextResponse.json(
+        { error: translateMessage(message, isArabic) },
+        { status: 400 },
+      );
+    }
 
     if (result.kind === "registered") {
+      const user = await findDirectusUserByEmail(email);
+      if (user) {
+        await setDirectusUserStatus(user.id, "unverified");
+        void sendTourGuideVerifyEmail({
+          user: {
+            id: user.id,
+            email,
+            first_name: user.first_name ?? first_name,
+            last_name: user.last_name ?? last_name,
+          },
+          request,
+          locale,
+        });
+      } else {
+        console.error(
+          "[tour-guide-auth] registered but user not found for verification",
+          email,
+        );
+      }
+
       return NextResponse.json({
         registered: true,
         message: translateMessage(result.message, isArabic),
       });
     }
 
+    // Existing verified account with matching password — allow sign-in.
     return NextResponse.json({
       access_token: result.access_token,
       refresh_token: result.refresh_token,

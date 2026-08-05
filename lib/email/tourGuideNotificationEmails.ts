@@ -96,31 +96,31 @@ export function getTourGuidePortalUrl(): string {
 export function buildTourGuideRegistrationEmail(options: {
   nameAr?: string | null;
   nameEn?: string | null;
-  portalUrl?: string;
+  /** Verification link — required so the guide proves email ownership. */
+  verifyUrl: string;
 }): { subject: string; html: string } {
   const { safeNameAr, safeNameEn } = displayNames(options.nameAr, options.nameEn);
-  const portalUrl = options.portalUrl || getTourGuidePortalUrl();
 
   return {
     subject:
-      "تم إنشاء حسابك — اكتشف عسير | Account created — Discover Aseer",
+      "أكّد بريدك الإلكتروني — اكتشف عسير | Verify your email — Discover Aseer",
     html: brandEmailShell({
-      previewText: "تم إنشاء حساب المرشد السياحي بنجاح",
-      headlineAr: "مرحباً بك في بوابة المرشدين",
-      headlineEn: "Welcome to the tour guide portal",
+      previewText: "أكد بريدك الإلكتروني لإكمال تسجيل حساب المرشد السياحي",
+      headlineAr: "أكّد بريدك الإلكتروني",
+      headlineEn: "Verify your email address",
       bodyArHtml: `
         <p style="margin:0 0 12px;">مرحباً ${safeNameAr}،</p>
-        <p style="margin:0 0 12px;">تم <strong>إنشاء حسابك</strong> بنجاح في منصة اكتشف عسير.</p>
-        <p style="margin:0;">الخطوة التالية: سجّل الدخول إلى بوابة المرشدين وأكمل ملفك وأرسل طلب الانضمام للمراجعة.</p>
+        <p style="margin:0 0 12px;">تم إنشاء حسابك في بوابة المرشدين. للمتابعة، يرجى <strong>تأكيد أن هذا البريد ملكك</strong> بالضغط على الزر أدناه.</p>
+        <p style="margin:0;">بعد التأكيد ستتمكن من تسجيل الدخول وإكمال ملفك. رابط التأكيد صالح لمدة 48 ساعة.</p>
       `,
       bodyEnHtml: `
         <p style="margin:0 0 12px;">Hello ${safeNameEn},</p>
-        <p style="margin:0 0 12px;">Your Discover Aseer tour guide <strong>account was created</strong> successfully.</p>
-        <p style="margin:0;">Next step: sign in to the portal, complete your profile, and submit your application for review.</p>
+        <p style="margin:0 0 12px;">Your tour guide portal account was created. To continue, please <strong>confirm you own this email</strong> by clicking the button below.</p>
+        <p style="margin:0;">After verifying, you can sign in and complete your profile. This link expires in 48 hours.</p>
       `,
-      ctaLabelAr: "فتح بوابة المرشدين",
-      ctaLabelEn: "Open portal",
-      ctaHref: portalUrl,
+      ctaLabelAr: "تأكيد البريد",
+      ctaLabelEn: "Verify email",
+      ctaHref: options.verifyUrl,
     }),
   };
 }

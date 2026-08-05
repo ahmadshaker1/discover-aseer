@@ -66,11 +66,38 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showResendVerify, setShowResendVerify] = useState(false);
+  const [resending, setResending] = useState(false);
 
   const switchMode = (next: AuthMode) => {
     setMode(next);
     setError("");
     setSuccessMessage("");
+    setShowResendVerify(false);
+  };
+
+  const resendVerification = async () => {
+    if (!email.trim()) return;
+    setResending(true);
+    setError("");
+    try {
+      const res = await fetch("/api/tour-guides/auth/verify-email/resend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+      });
+      const data = (await res.json()) as { message?: string; error?: string };
+      if (!res.ok) {
+        setError(data.error || t("errorGeneric"));
+        return;
+      }
+      setSuccessMessage(data.message || t("resendVerifySent"));
+      setShowResendVerify(false);
+    } catch {
+      setError(t("errorGeneric"));
+    } finally {
+      setResending(false);
+    }
   };
 
   const onSubmit = async (event: FormEvent) => {
@@ -78,6 +105,7 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
     setSubmitting(true);
     setError("");
     setSuccessMessage("");
+    setShowResendVerify(false);
 
     try {
       if (mode === "login") {
@@ -102,7 +130,15 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
       setMode("login");
       setPassword("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("errorGeneric"));
+      const message = err instanceof Error ? err.message : t("errorGeneric");
+      setError(message);
+      if (
+        /verify your email|تأكيد بريدك|verification link|رابط التأكيد/i.test(
+          message,
+        )
+      ) {
+        setShowResendVerify(true);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -210,13 +246,26 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
         </div>
 
         {error ? (
-          <p
-            className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 text-start"
-            style={{ fontFamily: ibm }}
-            role="alert"
-          >
-            {error}
-          </p>
+          <div className="flex flex-col gap-3">
+            <p
+              className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 text-start"
+              style={{ fontFamily: ibm }}
+              role="alert"
+            >
+              {error}
+            </p>
+            {showResendVerify ? (
+              <button
+                type="button"
+                onClick={() => void resendVerification()}
+                disabled={resending || !email.trim()}
+                className="self-start text-sm font-medium text-primary hover:underline disabled:opacity-50"
+                style={{ fontFamily: araBold }}
+              >
+                {resending ? t("submitting") : t("resendVerify")}
+              </button>
+            ) : null}
+          </div>
         ) : null}
 
         {successMessage ? (

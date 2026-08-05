@@ -698,7 +698,15 @@
       "submitting": "Please wait…",
       "errorGeneric": "Something went wrong. Please try again.",
       "modeSwitcherAria": "Sign in or register",
-      "passwordHint": "At least 8 characters"
+      "passwordHint": "At least 8 characters",
+      "verifyTitle": "Verify your email",
+      "verifyLoading": "Confirming your email address…",
+      "verifySuccess": "Email verified successfully. You can sign in.",
+      "verifyFailed": "Could not verify this link. It may be invalid or expired.",
+      "verifyMissingToken": "Invalid or missing verification link.",
+      "verifyGoToSignIn": "Go to sign in",
+      "resendVerify": "Resend verification email",
+      "resendVerifySent": "If an unverified account exists for this email, a new verification link was sent."
     },
     "profile": {
       "createHint": "Complete the form below to submit your guide profile for review.",

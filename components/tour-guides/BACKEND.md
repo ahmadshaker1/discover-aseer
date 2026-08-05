@@ -479,11 +479,26 @@ curl -X POST "https://discoveraseer.com/api/tour-guides/webhooks/status" \
 
 | Event | Trigger | Endpoint / code path |
 |-------|---------|----------------------|
-| **1. Registration confirmation** | Guide creates an account | `POST /api/tour-guides/auth/register` → SendGrid |
+| **1. Email verification** | Guide creates an account (proves email ownership) | `POST /api/tour-guides/auth/register` → set user `unverified` → SendGrid link → `POST /api/tour-guides/auth/verify-email` → `active` |
 | **2. Application submitted — under review** | First submit / resubmit that moves status into `under_review` | `POST|PATCH /api/tour-guides/portal/profile` → SendGrid |
 | **3. License expiring soon** | Daily cron; license `date` is exactly N days away (default **30** and **7**) | `POST /api/tour-guides/cron/license-expiry` |
 | **4. License expired** | Daily cron; day after expiry (`date` was yesterday) | same cron route |
 | Approved / rejected | Directus Flow webhook | §9 `…/webhooks/status` |
+
+### Email verification (registration)
+
+New accounts are **not** signed in until the guide clicks the link in the verification email:
+
+1. `POST /users/register` (Directus) creates the user  
+2. App sets Directus user `status` to **`unverified`** (requires `DIRECTUS_ADMIN_TOKEN`)  
+3. SendGrid email with JWT link → `/{locale}/tour-guides/verify-email?token=…`  
+4. `POST /api/tour-guides/auth/verify-email` sets status to **`active`**  
+5. Guide signs in on the portal  
+
+Resend: `POST /api/tour-guides/auth/verify-email/resend` with `{ "email" }` (same response whether or not the account exists).  
+Login while unverified returns `403` + clear message + UI “Resend verification email”.
+
+Set `NEXT_PUBLIC_SITE_URL` (or `NEXT_PUBLIC_APP_URL`) so verification links use the production origin. Prefer **disabling Directus’s built-in registration verification email** to avoid duplicate messages; this app owns the verify flow via SendGrid.
 
 License emails use the Directus field **`date`** (license expiry). Exact-day matching means each reminder fires once per window when the cron runs daily.
 
