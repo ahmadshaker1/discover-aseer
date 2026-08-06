@@ -50,3 +50,12 @@ export function getYouTubeEmbedSrc(
   const id = getYouTubeVideoId(url);
   return id ? `https://www.youtube.com/embed/${id}` : null;
 }
+
+/** YouTube poster image for a watch/embed URL, or null. */
+export function getYouTubeThumbnailSrc(
+  url: string | null | undefined,
+): string | null {
+  if (!url) return null;
+  const id = getYouTubeVideoId(url);
+  return id ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : null;
+}

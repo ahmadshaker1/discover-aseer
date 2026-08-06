@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { useCallback, useEffect, useId, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { LandingStoryFromAseer } from "@/components/landing/storiesFromAseerTypes";
 import {
   getYouTubeEmbedSrc,
+  getYouTubeThumbnailSrc,
+  getYouTubeVideoId,
   LANDING_STORY_YOUTUBE_URLS,
 } from "@/components/landing/youtubeStoryEmbed";
 
@@ -36,6 +39,69 @@ function PlayIcon43() {
         strokeLinejoin="round"
       />
     </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M18 6L6 18M6 6l12 12"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+type ActiveVideo = {
+  embedSrc: string;
+  title: string;
+};
+
+function StoryPoster({
+  youtubeUrl,
+  fallbackSrc,
+  alt,
+}: {
+  youtubeUrl?: string | null;
+  fallbackSrc: string;
+  alt: string;
+}) {
+  const maxRes = getYouTubeThumbnailSrc(youtubeUrl);
+  const [src, setSrc] = useState(maxRes ?? fallbackSrc);
+
+  useEffect(() => {
+    setSrc(maxRes ?? fallbackSrc);
+  }, [maxRes, fallbackSrc]);
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className="object-cover"
+      sizes="(max-width: 1024px) 100vw, 584px"
+      priority={false}
+      onError={() => {
+        const id = youtubeUrl ? getYouTubeVideoId(youtubeUrl) : null;
+        const hq = id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null;
+        if (hq && src !== hq) {
+          setSrc(hq);
+          return;
+        }
+        if (src !== fallbackSrc) setSrc(fallbackSrc);
+      }}
+    />
   );
 }
 
@@ -78,6 +144,28 @@ export default function LandingStoriesFromAseerSection({
   const items =
     stories && stories.length > 0 ? stories.slice(0, 2) : fallbackStories;
 
+  const [activeVideo, setActiveVideo] = useState<ActiveVideo | null>(null);
+  const dialogTitleId = useId();
+
+  const closeVideo = useCallback(() => setActiveVideo(null), []);
+
+  useEffect(() => {
+    if (!activeVideo) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeVideo();
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activeVideo, closeVideo]);
+
   return (
     <section className="mx-auto flex w-full max-w-screen-2xl flex-col gap-8 bg-background px-4 py-10 text-foreground md:px-[120px] md:pb-14 md:pt-10">
       <div
@@ -98,60 +186,56 @@ export default function LandingStoriesFromAseerSection({
           const youtubeEmbedSrc = getYouTubeEmbedSrc(story.videoUrl);
           const captionKey = STORY_CAPTION_KEYS[index];
           const caption = captionKey ? tHome(captionKey) : "";
-          const iframeTitle = caption
+          const cardTitle = caption
             ? `${resolvedTitle} — ${caption}`
             : `${resolvedTitle} — ${index + 1}`;
+          const playLabel = caption
+            ? `${resolvedPlayPrefix}: ${caption}`
+            : resolvedPlayPrefix;
+
+          const openVideo = () => {
+            if (!youtubeEmbedSrc) return;
+            setActiveVideo({
+              embedSrc: `${youtubeEmbedSrc}?autoplay=1&rel=0`,
+              title: cardTitle,
+            });
+          };
 
           return (
             <article key={story.id} className="min-w-0">
               <div className="relative h-[422px] w-full max-w-[584px] overflow-hidden rounded-[12px] bg-black md:max-w-none">
-                {youtubeEmbedSrc ? (
-                  <iframe
-                    title={iframeTitle}
-                    src={`${youtubeEmbedSrc}?rel=0`}
-                    className="absolute inset-0 z-0 h-full w-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                  />
-                ) : (
-                  <Image
-                    src={story.posterSrc}
-                    alt={iframeTitle}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 584px"
-                    priority={false}
-                  />
-                )}
+                <StoryPoster
+                  youtubeUrl={story.videoUrl}
+                  fallbackSrc={story.posterSrc}
+                  alt={cardTitle}
+                />
 
-                {!youtubeEmbedSrc ? (
-                  <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-                    {story.videoUrl ? (
-                      <a
-                        href={story.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="pointer-events-auto inline-flex cursor-pointer rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/30"
-                        aria-label={
-                          caption
-                            ? `${resolvedPlayPrefix}: ${caption}`
-                            : resolvedPlayPrefix
-                        }
-                      >
-                        <PlayIcon43 />
-                      </a>
-                    ) : (
-                      <span
-                        className="pointer-events-none inline-flex"
-                        aria-hidden
-                      >
-                        <PlayIcon43 />
-                      </span>
-                    )}
-                  </div>
-                ) : null}
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20">
+                  {youtubeEmbedSrc ? (
+                    <button
+                      type="button"
+                      onClick={openVideo}
+                      className="inline-flex cursor-pointer rounded-full transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/30"
+                      aria-label={playLabel}
+                    >
+                      <PlayIcon43 />
+                    </button>
+                  ) : story.videoUrl ? (
+                    <a
+                      href={story.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex cursor-pointer rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/30"
+                      aria-label={playLabel}
+                    >
+                      <PlayIcon43 />
+                    </a>
+                  ) : (
+                    <span className="pointer-events-none inline-flex" aria-hidden>
+                      <PlayIcon43 />
+                    </span>
+                  )}
+                </div>
               </div>
               {caption ? (
                 <p
@@ -165,6 +249,53 @@ export default function LandingStoriesFromAseerSection({
           );
         })}
       </div>
+
+      {activeVideo ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={dialogTitleId}
+        >
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            aria-label="Close"
+            onClick={closeVideo}
+          />
+
+          <div className="relative z-10 w-full max-w-5xl">
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <h3
+                id={dialogTitleId}
+                className="truncate text-start text-base font-semibold text-white sm:text-lg"
+                style={{ fontFamily: ara }}
+              >
+                {activeVideo.title}
+              </h3>
+              <button
+                type="button"
+                onClick={closeVideo}
+                className="inline-flex shrink-0 rounded-full bg-white/15 p-2 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                aria-label="Close"
+              >
+                <CloseIcon />
+              </button>
+            </div>
+
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl">
+              <iframe
+                title={activeVideo.title}
+                src={activeVideo.embedSrc}
+                className="absolute inset-0 h-full w-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
