@@ -136,7 +136,7 @@ const AttractionsLandmarksSection = ({
             </h2>
             {description ? (
               <p
-                className={`h-[11px] w-[430px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start`}
+                className={`whitespace-nowrap text-[24px] font-bold leading-[119%] text-muted-foreground text-start`}
               >
                 {description}
               </p>
