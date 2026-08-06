@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-
 export interface CommunitySlide {
   id: string;
   image: string;
@@ -32,14 +31,13 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
     <section className="mx-auto w-full max-w-[1440px] px-4 py-16 sm:px-8 md:px-[60px] dark:bg-[#14091F]">
       {/* Header */}
       <div className="mx-auto mb-16 flex w-full max-w-[760px] flex-col items-center text-center">
-        <h2
-          className="text-[44px] font-bold leading-[130%] text-foreground mb-4"
-        >
+        <h2 className="text-[44px] font-bold leading-[130%] text-foreground mb-4">
           {content.sectionTitle}
         </h2>
         <p className="text-[20px] font-medium leading-relaxed text-muted-foreground">
           {content.sectionSubtitle}
         </p>
+        <hr className="mt-8 w-full border-t-3 border-gray-300 dark:border-gray-300" />
       </div>
 
       {/* Sections List */}
@@ -73,14 +71,10 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
                   isImageRight ? "md:order-1" : "md:order-2"
                 }`}
               >
-                <h3
-                  className="text-[28px] sm:text-[36px] font-bold leading-[120%] text-foreground"
-                >
+                <h3 className="text-[28px] sm:text-[36px] font-bold leading-[120%] text-foreground">
                   {slide.title}
                 </h3>
-                <p
-                  className="text-[16px] sm:text-[18px] font-normal leading-10 text-muted-foreground"
-                >
+                <p className="text-[16px] sm:text-[18px] font-normal leading-10 text-muted-foreground">
                   {slide.description}
                 </p>
               </div>

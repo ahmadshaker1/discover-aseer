@@ -18,14 +18,14 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #1d1f1f;
+  --foreground: #000000;
   --surface: #f8f8f8;
   --muted: #f2f2f2;
   --muted-foreground: #6b7280;
   --border: #e4e4e4;
   --primary: #6027d2;
   --primary-foreground: #ffffff;
-  --secondary: #280048;
+  --secondary: #000000;
   --secondary-foreground: #ffffff;
 }
 

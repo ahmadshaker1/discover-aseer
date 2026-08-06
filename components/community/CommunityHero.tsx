@@ -1,6 +1,5 @@
 import { Link } from "@/i18n/navigation";
 
-
 import { AseerPlatform } from "@/lib/discoverAseerLinks";
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 
@@ -48,7 +47,7 @@ interface CommunityHeroProps {
 const CommunityHero = ({ data }: CommunityHeroProps) => {
   return (
     <section
-      className="relative flex h-[400px] w-full flex-col items-center justify-center overflow-hidden md:h-[481px]"
+      className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden"
       style={{
         backgroundImage: `url('${data.backgroundImage}')`,
         backgroundSize: "cover",
@@ -56,20 +55,10 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Backend: changing `data.backgroundImage` updates the hero image without touching styles/markup. */}
       <div className="absolute inset-0 bg-black/30" />
 
-      {/* Right-edge ribbon, matching landing hero positioning/overflow behavior. */}
-      {/* <img
-        src="/hero-pattern/ribbon_column.png"
-        alt=""
-        aria-hidden
-        className="absolute top-0 z-20 hidden h-full w-[15px] object-cover md:block start-0 ltr:scale-x-[-1]"
-      /> */}
-
-      {/* Backend: `data.socialLinks` drives icon links; keep supported platforms in `CommunityHeroSocialLink`. */}
       <div
-        className={`absolute top-1/2 z-20 hidden h-[400px] w-[40px] -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-8`}
+        className={`absolute top-1/2 z-20 hidden h-[400px] w-10 -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-8`}
       >
         {data.socialLinks.map((social) => (
           <a
@@ -87,9 +76,7 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
         <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
-          <div
-            className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-          >
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
             {data.breadcrumbs.map((crumb, index) => (
               <span
                 key={`${crumb.label}-${index}`}
@@ -98,12 +85,12 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
-                    className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                    className="text-[14px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
                   >
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span className="text-[16px] font-normal leading-6 text-white">
+                  <span className="text-[14px] font-normal leading-6 text-white">
                     {crumb.label}
                   </span>
                 )}
@@ -114,15 +101,11 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
             ))}
           </div>
 
-          <h1
-            className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-          >
+          <h1 className="w-full text-center text-[clamp(2rem,5vw,44px)] font-[900] leading-[180%] text-primary-foreground">
             {data.title}
           </h1>
           {data.subtitle && (
-            <p
-              className="w-full text-center text-base leading-[1.33] text-white/90 md:text-[clamp(18px,1.9vw,24px)] font-bold"
-            >
+            <p className="w-full text-center text-base leading-[1.33] text-primary-foreground md:text-[clamp(18px,1.9vw,24px)] font-bold">
               {data.subtitle}
             </p>
           )}

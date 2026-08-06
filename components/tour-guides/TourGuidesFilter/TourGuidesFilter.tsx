@@ -61,12 +61,13 @@ const TourGuidesFilter = ({
   return (
     <div className="font-brando w-full rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-xs">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
-        <h2 className="text-lg font-bold text-foreground sm:text-xl">
+        <p className="text-lg  text-foreground sm:text-xl">
           {t("filterGuides")}
-        </h2>
+        </p>
         <Button
           onClick={onReset}
           className="self-start whitespace-nowrap rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:self-auto"
+          style={{ fontWeight: 400 }}
         >
           {tCommon("resetFilters")}
         </Button>
@@ -77,7 +78,7 @@ const TourGuidesFilter = ({
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center gap-2 mb-4">
             <HeartIcon />
-            <h3 className="text-base font-bold text-foreground sm:text-lg">
+            <h3 className="text-base  text-foreground sm:text-lg">
               {t("specializations")}
             </h3>
           </div>
@@ -126,7 +127,7 @@ const TourGuidesFilter = ({
       {gender.length > 0 && (
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <h3 className="text-base font-bold text-foreground sm:text-lg">
+            <h3 className="text-base  text-foreground sm:text-lg">
               {t("gender")}
             </h3>
           </div>

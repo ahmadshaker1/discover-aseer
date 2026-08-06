@@ -5,7 +5,6 @@ import { Link } from "@/i18n/navigation";
 import WorldRegionGastronomyAwardLogo from "@/components/restaurants/WorldRegionGastronomyAwardLogo";
 import { IBM_Plex_Sans_Devanagari } from "next/font/google";
 
-
 const RestaurantsCredibilitySection = () => {
   const t = useTranslations("restaurantsPage");
 

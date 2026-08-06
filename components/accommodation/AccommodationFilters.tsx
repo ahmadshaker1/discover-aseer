@@ -57,13 +57,14 @@ const AccommodationFilters = ({
   return (
     <aside className="font-brando w-full shrink-0 rounded-2xl border border-border bg-surface p-4 text-foreground sm:p-6 lg:h-[796px] lg:w-[320px] lg:rounded-none lg:border-y-0 lg:border-s-0 lg:border-e lg:border-border lg:bg-transparent lg:pb-0 lg:ps-8 lg:pe-8 lg:pt-6 lg:shadow-none">
       <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-6">
-        <h2 className="text-start text-lg font-bold text-foreground sm:text-xl [unicode-bidi:isolate]">
+        <p className="text-start text-lg  text-foreground sm:text-xl [unicode-bidi:isolate]">
           {t("filterDestinations")}
-        </h2>
+        </p>
         <button
           type="button"
           onClick={onReset}
           className="shrink-0 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted sm:text-sm"
+          style={{ fontWeight: 400 }}
         >
           {t("resetFilters")}
         </button>
@@ -161,7 +162,7 @@ const AccommodationFilters = ({
       <section>
         <div className="mb-3 flex items-center gap-2">
           <HotelRatingIcon />
-          <h3 className="text-start text-base font-bold text-foreground [unicode-bidi:isolate]">
+          <h3 className="text-start text-base  text-foreground [unicode-bidi:isolate]">
             {t("hotelRating")}
           </h3>
         </div>

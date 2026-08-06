@@ -32,12 +32,13 @@ const FilterHeader = ({ onReset }: FilterHeaderProps) => {
   const t = useTranslations("common");
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-3 sm:gap-4 sm:space-x-4">
-      <h2 className="text-lg font-bold text-foreground sm:text-xl">
+      <p className="text-lg  text-foreground sm:text-xl">
         {t("filterRestaurants")}
-      </h2>
+      </p>
       <Button
         onClick={onReset}
         className="cursor-pointer whitespace-nowrap rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:px-4 sm:py-2 sm:text-sm"
+        style={{ fontWeight: 400 }}
       >
         {t("resetFilters")}
       </Button>
@@ -162,7 +163,7 @@ const CuisineTypeFilter = ({
     <div>
       <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <CuisineIcon />
-        <h3 className="text-base font-bold text-foreground sm:text-lg">
+        <h3 className="text-base  text-foreground sm:text-lg">
           {t("chooseCuisineType")}
         </h3>
       </div>

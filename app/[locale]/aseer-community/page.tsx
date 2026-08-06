@@ -61,7 +61,7 @@ const AseerCommunityPage = async () => {
   return (
     <div className="flex w-full flex-col">
       <CommunityHero data={communityPageData.hero} />
-      <section className="bg-surface dark:bg-[#14091F]">
+      <section className="">
         <CommunityMainSlider content={communityPageData.slider} />
       </section>
       <EventsInfo />

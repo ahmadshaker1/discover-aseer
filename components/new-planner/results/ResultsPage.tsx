@@ -95,9 +95,9 @@ export default function ResultsPage({
 
         {/* Title and Restart Button */}
         <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center mb-6 gap-4">
-          <h1 className="text-black dark:text-white text-2xl md:text-[36px] font-bold">
+          <h3 className="text-black dark:text-white text-[24px] md:text-[36px] font-bold">
             {t("yourTripInAseer")} · {t("daysFormat", { count: selectedDays })}
-          </h1>
+          </h3>
           <button
             onClick={onRestart}
             className="flex items-center gap-2 cursor-pointer text-black dark:text-white bg-white dark:bg-[#1C0F2A]"
@@ -132,7 +132,7 @@ export default function ResultsPage({
               alignItems: "flex-start",
               gap: "6px",
               borderRadius: "55px",
-              }}
+            }}
           >
             <Image
               src="/assets/planner/calendar-line.svg"
@@ -156,7 +156,7 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                }}
+              }}
             >
               <Image
                 src="/assets/planner/flight-land-fill.svg"
@@ -185,7 +185,7 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                }}
+              }}
             >
               <Image
                 src={companionOpt.icon}
@@ -210,7 +210,7 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                }}
+              }}
             >
               <Image
                 src={budgetOpt.icon}
