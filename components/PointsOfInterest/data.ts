@@ -16,6 +16,17 @@ import type { LocaleCode } from "@/lib/i18n/localized";
 /** Home carousel destinations (Al Birk → Bisha → Abha → Rijal Almaa). */
 const POI_DESTINATION_IDS = [20, 11, 9, 7] as const;
 
+/**
+ * Local HQ hero stills for the home POI carousel.
+ * Overrides Directus hero URLs when present (CMS assets can be lower quality).
+ */
+const POI_LOCAL_IMAGE_BY_ID: Partial<
+  Record<(typeof POI_DESTINATION_IDS)[number], string>
+> = {
+  20: "/assets/points-of-interest/al-birk-beaches.jpg", // Al Birk — coastal / beaches
+  7: "/assets/points-of-interest/rijal-almaa.jpg", // Rijal Almaa
+};
+
 const poiSortIndex = (id: string | number): number => {
   const n = Number(id);
   const index = POI_DESTINATION_IDS.indexOf(n as (typeof POI_DESTINATION_IDS)[number]);
@@ -83,8 +94,12 @@ const transformDestinationToPointOfInterest = (
 ): PointOfInterest => {
   const title = pickDestinationTitle(row, locale);
   const subtitle = pickDestinationPoiSubtitle(row, locale);
+  const numericId = Number(row.id) as (typeof POI_DESTINATION_IDS)[number];
+  const localImage = POI_LOCAL_IMAGE_BY_ID[numericId];
   const image =
-    resolveDestinationHeroImageUrl(row, directusUrl) || FALLBACK_IMAGE;
+    localImage ||
+    resolveDestinationHeroImageUrl(row, directusUrl) ||
+    FALLBACK_IMAGE;
   const descriptionHtml = pickDestinationHomePageContent(row, locale);
 
   return {

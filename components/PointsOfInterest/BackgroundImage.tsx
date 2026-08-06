@@ -9,7 +9,7 @@ interface BackgroundImageProps {
 
 export const BackgroundImage = ({ point }: BackgroundImageProps) => {
   return (
-    <div className="relative h-[min(65dvh,700px)] min-h-[420px] w-full">
+    <div className="relative h-[min(85dvh,920px)] min-h-[560px] w-full">
       <Image
         src={point.image}
         alt={point.title}
