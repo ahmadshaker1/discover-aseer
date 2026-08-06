@@ -137,6 +137,18 @@ export const TiktokIcon = () => (
   </svg>
 );
 
+/** Jaco logo — white glyph PNG with transparent background. */
+export const JacoIcon = () => (
+  <img
+    src="/assets/footer/jaco.png"
+    alt=""
+    aria-hidden
+    width={20}
+    height={20}
+    className="size-5 object-contain"
+  />
+);
+
 export const BookletSmallArrowIcon = () => (
   <svg
     width="9"

@@ -1,14 +1,18 @@
 /**
  * Discover Aseer — social URLs (main site is linked from the glass navbar).
+ *
+ * Display order (top → bottom / start → end):
+ * Instagram → TikTok → YouTube → X → Snapchat → Jaco → WhatsApp → Facebook
  */
 export type AseerPlatform =
-  | "facebook"
   | "instagram"
+  | "tiktok"
   | "youtube"
   | "x"
   | "snapchat"
-  | "tiktok"
-  | "whatsapp";
+  | "jaco"
+  | "whatsapp"
+  | "facebook";
 
 export type AseerLink = {
   href: string;
@@ -28,16 +32,16 @@ export type PageSharePlatform = (typeof pageSharePlatforms)[number];
 
 export const discoverAseerLinks: AseerLink[] = [
   {
-    href: "https://www.facebook.com/DiscoverAseer/",
-    label: "Facebook",
-    ariaLabel: "Discover Aseer on Facebook",
-    platform: "facebook",
-  },
-  {
     href: "https://www.instagram.com/discoveraseer/",
     label: "Instagram",
     ariaLabel: "Discover Aseer on Instagram",
     platform: "instagram",
+  },
+  {
+    href: "https://www.tiktok.com/@discoveraseer",
+    label: "TikTok",
+    ariaLabel: "Discover Aseer on TikTok",
+    platform: "tiktok",
   },
   {
     href: "https://www.youtube.com/@Discoveraseer",
@@ -58,15 +62,21 @@ export const discoverAseerLinks: AseerLink[] = [
     platform: "snapchat",
   },
   {
-    href: "https://www.tiktok.com/@discoveraseer",
-    label: "TikTok",
-    ariaLabel: "Discover Aseer on TikTok",
-    platform: "tiktok",
+    href: "https://jaco.live/@discoveraseer",
+    label: "Jaco",
+    ariaLabel: "Discover Aseer on Jaco",
+    platform: "jaco",
   },
   {
     href: "https://www.whatsapp.com/channel/0029VaPljpd3gvWWxlEVQL3u",
     label: "WhatsApp",
     ariaLabel: "Discover Aseer on WhatsApp",
     platform: "whatsapp",
+  },
+  {
+    href: "https://www.facebook.com/DiscoverAseer/",
+    label: "Facebook",
+    ariaLabel: "Discover Aseer on Facebook",
+    platform: "facebook",
   },
 ];

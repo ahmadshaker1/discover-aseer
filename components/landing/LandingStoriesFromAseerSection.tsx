@@ -266,7 +266,6 @@ export default function LandingStoriesFromAseerSection({
               <h3
                 id={dialogTitleId}
                 className="truncate text-start text-base font-semibold text-white sm:text-lg"
-                style={{ fontFamily: ara }}
               >
                 {activeVideo.title}
               </h3>

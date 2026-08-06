@@ -58,7 +58,7 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
       <div className="absolute inset-0 bg-black/30" />
 
       <div
-        className={`absolute top-1/2 z-20 hidden h-[400px] w-10 -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-8`}
+        className={`absolute top-1/2 z-20 hidden h-[460px] w-10 -translate-y-1/2 flex-col items-center justify-center gap-[15px] md:flex start-8`}
       >
         {data.socialLinks.map((social) => (
           <a

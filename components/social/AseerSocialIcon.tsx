@@ -2,6 +2,7 @@ import type { AseerPlatform } from "@/lib/discoverAseerLinks";
 import {
   FacebookIcon,
   InstagramIcon,
+  JacoIcon,
   SnapchatIcon,
   TiktokIcon,
   WhatsAppIcon,
@@ -17,20 +18,22 @@ type AseerSocialIconProps = {
 export function AseerSocialIcon({ platform, className }: AseerSocialIconProps) {
   const icon = (() => {
     switch (platform) {
-      case "facebook":
-        return <FacebookIcon />;
       case "instagram":
         return <InstagramIcon />;
+      case "tiktok":
+        return <TiktokIcon />;
       case "youtube":
         return <YouTubeIcon />;
       case "x":
         return <XIcon />;
       case "snapchat":
         return <SnapchatIcon />;
-      case "tiktok":
-        return <TiktokIcon />;
+      case "jaco":
+        return <JacoIcon />;
       case "whatsapp":
         return <WhatsAppIcon />;
+      case "facebook":
+        return <FacebookIcon />;
     }
   })();
 
