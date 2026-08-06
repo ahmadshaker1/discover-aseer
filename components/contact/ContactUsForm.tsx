@@ -7,7 +7,6 @@ import {
   FormTextInput,
   FormYesNoField,
 } from "@/components/experiences/submit/ExperienceFormFields";
-import { ibm } from "@/components/experiences/submit/experienceFormStyles";
 import { useId, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 

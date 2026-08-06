@@ -9,10 +9,6 @@ import {
   FormSubmitButton,
   FormTextInput,
 } from "@/components/tour-guides/TourGuidePortal/TourGuidePortalFormFields";
-import {
-  araBold,
-  ibm,
-} from "@/components/experiences/submit/experienceFormStyles";
 
 export default function TourGuideResetPasswordConfirm() {
   const t = useTranslations("tourGuidePortal.auth");

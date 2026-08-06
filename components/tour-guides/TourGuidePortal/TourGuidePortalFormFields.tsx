@@ -21,12 +21,10 @@ import type {
 } from "react";
 import { useEffect, useState } from "react";
 import {
-  araBold,
   CHECK_ROW,
   FIELD_GROUP,
   FIELD_INPUT,
   FIELD_TEXTAREA,
-  ibm,
   SUBMIT_BUTTON,
 } from "@/components/experiences/submit/experienceFormStyles";
 const FIELD_CONTROL = `${FIELD_INPUT} data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2`;
@@ -286,7 +284,6 @@ export function FormMultiSelectField({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -302,7 +299,6 @@ export function FormMultiSelectField({
                 ? "cursor-not-allowed bg-muted text-muted-foreground"
                 : "cursor-pointer"
             }`}
-            style={{ fontFamily: ibm }}
           >
             <span
               className={`min-w-0 text-start ${
@@ -326,7 +322,6 @@ export function FormMultiSelectField({
                 key={option.value}
                 value={option.value}
                 className="group flex cursor-pointer items-center gap-3 px-4 py-2.5 text-foreground data-focus:bg-muted data-selected:bg-primary/10"
-                style={{ fontFamily: ibm }}
               >
                 <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 border-border bg-surface group-data-selected:border-primary group-data-selected:bg-primary">
                   <svg

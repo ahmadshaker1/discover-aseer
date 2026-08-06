@@ -14,12 +14,10 @@ import {
 import { useTranslations } from "next-intl";
 import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
 import {
-  araBold,
   CHECK_ROW,
   FIELD_GROUP,
   FIELD_INPUT,
   FIELD_TEXTAREA,
-  ibm,
   SUBMIT_BUTTON,
 } from "./experienceFormStyles";
 

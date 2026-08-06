@@ -9,10 +9,6 @@ import {
   FormTextarea,
   FormTextInput,
 } from "@/components/experiences/submit/ExperienceFormFields";
-import {
-  ibm,
-  araBold,
-} from "@/components/experiences/submit/experienceFormStyles";
 import { useId, useMemo, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
