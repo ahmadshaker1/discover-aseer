@@ -13,8 +13,6 @@ import {
 } from "@/components/shared/icons/CarouselChevrons";
 import type { FilmLandscape } from "@/components/film/data";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 const NAV_BTN_CLASS =
   "flex h-11 w-11 rotate-180 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-primary shadow-md transition-[opacity,box-shadow] hover:bg-muted hover:shadow-lg disabled:pointer-events-none disabled:opacity-35";
@@ -120,14 +118,12 @@ const FilmLandscapeSwiper = ({ landscapes }: FilmLandscapeSwiperProps) => {
               <div className="absolute inset-x-0 bottom-0 rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
                 <h3
                   className="text-start text-[24px] font-bold leading-[119%] text-white"
-                  style={{ fontFamily: ara }}
                 >
                   {title}
                 </h3>
                 {description ? (
                   <p
                     className="mt-1 line-clamp-2 text-start text-[13px] font-light leading-[119%] text-white"
-                    style={{ fontFamily: ibm }}
                   >
                     {description}
                   </p>

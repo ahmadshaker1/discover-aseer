@@ -6,8 +6,6 @@ import { Link } from "@/i18n/navigation";
 import type { SeasonListingItem } from "../types";
 import { DetailsArrowIcon } from "./icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface SeasonExpandableCardProps {
   season: SeasonListingItem;
@@ -57,7 +55,6 @@ export default function SeasonExpandableCard({
           {season.isHappeningNow ? (
             <span
               className="inline-flex w-fit items-center justify-center rounded-[30px] bg-[#00000073] px-[18px] py-1.5 text-[16px] font-medium leading-none text-white sm:text-[18px]"
-              style={{ fontFamily: ibm }}
             >
               {tCommon("happeningNow")}
             </span>
@@ -69,7 +66,6 @@ export default function SeasonExpandableCard({
                 ? "text-[clamp(1.5rem,3.5vw,40px)]"
                 : "line-clamp-2 text-[clamp(1.15rem,2.5vw,28px)]"
             }`}
-            style={{ fontFamily: ara }}
           >
             {season.title}
           </h3>
@@ -77,7 +73,6 @@ export default function SeasonExpandableCard({
           <Link
             href={`/event-seasons/${season.id}`}
             className="inline-flex w-fit items-center gap-3 rounded-[86px] border border-[#28004829] bg-primary px-4 py-2.5 text-[18px] font-bold leading-[180%] text-primary-foreground transition-opacity hover:opacity-90 sm:text-[20px]"
-            style={{ fontFamily: ara }}
           >
             <span>{tCommon("viewDetails")}</span>
             <span className="inline-flex ltr:rotate-180">

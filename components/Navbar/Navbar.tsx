@@ -57,8 +57,6 @@ const Navbar = () => {
               : "rgba(28,28,30,0.2)",
             transition: "background .45s ease",
             borderBottom: "1px solid rgba(255,255,255,0.14)",
-            fontFamily:
-              "var(--font-ibm-plex-sans-arabic), var(--font-ara-hamah-1964), system-ui, sans-serif",
           }}
         >
           <div

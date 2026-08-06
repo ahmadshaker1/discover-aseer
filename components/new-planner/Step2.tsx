@@ -136,8 +136,7 @@ export default function Step2({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
+              }}
           >
             {[
               {
@@ -205,8 +204,7 @@ export default function Step2({
                       fontSize: "14px",
                       fontStyle: "normal",
                       fontWeight: 400,
-                      fontFamily: "IBM Plex Sans Arabic",
-                    }}
+                      }}
                   >
                     {t(styleOption.descKey)}
                   </span>
@@ -234,8 +232,7 @@ export default function Step2({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
+              }}
           >
             {[
               {
@@ -305,8 +302,7 @@ export default function Step2({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
+              }}
           >
             {[
               {

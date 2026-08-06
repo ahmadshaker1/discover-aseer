@@ -94,17 +94,10 @@ export default function ResultsPage({
         </div>
 
         {/* Title and Restart Button */}
-        <div className="flex w-full justify-between items-center mb-6">
-          <h1
-            className="text-black dark:text-white"
-            style={{
-              fontSize: "36px",
-              fontStyle: "normal",
-              fontWeight: 700,
-            }}
-          >
+        <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center mb-6 gap-4">
+          <h3 className="text-black dark:text-white text-[24px] md:text-[36px] font-bold">
             {t("yourTripInAseer")} · {t("daysFormat", { count: selectedDays })}
-          </h1>
+          </h3>
           <button
             onClick={onRestart}
             className="flex items-center gap-2 cursor-pointer text-black dark:text-white bg-white dark:bg-[#1C0F2A]"
@@ -139,7 +132,6 @@ export default function ResultsPage({
               alignItems: "flex-start",
               gap: "6px",
               borderRadius: "55px",
-              fontFamily: "IBM Plex Sans Arabic",
             }}
           >
             <Image
@@ -164,7 +156,6 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                fontFamily: "IBM Plex Sans Arabic",
               }}
             >
               <Image
@@ -194,7 +185,6 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                fontFamily: "IBM Plex Sans Arabic",
               }}
             >
               <Image
@@ -220,7 +210,6 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                fontFamily: "IBM Plex Sans Arabic",
               }}
             >
               <Image

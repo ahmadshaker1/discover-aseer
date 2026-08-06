@@ -15,8 +15,6 @@ import {
 } from "./icons";
 
 const PLACEHOLDER = "/assets/experiences/experiences.png";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface EventListingCardProps {
   event: EventListingItem;
@@ -86,7 +84,6 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
             >
               <span
                 className="min-w-0 truncate text-start text-[11px] font-medium leading-none text-white"
-                style={{ fontFamily: ibm }}
               >
                 {t("eventOver")}
               </span>
@@ -95,7 +92,6 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
 
           <div
             className={`pointer-events-none absolute top-1 z-10 flex h-6 min-w-[35px] items-center justify-center rounded-[20px] bg-[#000000A6] px-1.5 text-[14px] font-bold leading-none text-white ${counterCorner}`}
-            style={{ fontFamily: ara }}
           >
             {safeIndex + 1}/{imageCount}
           </div>
@@ -134,7 +130,6 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
                 <KidFriendlyIcon />
                 <span
                   className="text-[10px] font-medium leading-none text-[#FCAED2]"
-                  style={{ fontFamily: ibm }}
                 >
                   {t("kidFriendly")}
                 </span>
@@ -142,7 +137,6 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
             ) : null}
             <h3
               className="w-full text-start text-2xl font-bold leading-none text-white"
-              style={{ fontFamily: ara }}
             >
               {event.title}
             </h3>
@@ -150,7 +144,6 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
               <div className="flex w-full justify-start">
                 <div
                   className="inline-flex max-w-full items-center gap-1.5 rounded-[55px] bg-surface/85 px-2 py-1 text-start text-foreground"
-                  style={{ fontFamily: ara }}
                 >
                   <span className="text-start text-sm font-bold leading-none">
                     {event.priceLabel}
@@ -169,7 +162,6 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="min-w-0 flex-1 text-start text-[14px] font-medium leading-none text-white underline decoration-white underline-offset-2 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]"
-                  style={{ fontFamily: ibm }}
                   onClick={(e) => e.stopPropagation()}
                 >
                   {event.mapsLinkLabel}
@@ -179,7 +171,6 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
                 <CalendarIcon />
                 <span
                   className="min-w-0 flex-1 text-start text-[14px] font-medium leading-none text-white"
-                  style={{ fontFamily: ibm }}
                 >
                   {event.dateRange}
                 </span>
@@ -188,7 +179,6 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
                 <ClockIcon />
                 <span
                   className="min-w-0 flex-1 text-start text-[14px] font-medium leading-none text-white"
-                  style={{ fontFamily: ibm }}
                 >
                   {event.timeRange}
                 </span>

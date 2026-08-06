@@ -42,6 +42,9 @@ const TourGuidesFilter = ({
     count: specializationCounts.get(item.id) ?? 0,
   }));
 
+  const yesOption = filterOptions.transportation.find((opt) => opt.id === "yes");
+  const isTransportSelected = filters.transportation === "yes";
+
   const handleSpecializationToggle = (id: string) => {
     onFiltersChange({
       ...filters,
@@ -60,15 +63,21 @@ const TourGuidesFilter = ({
     });
   };
 
+  const handleTransportationSelect = (id: string) => {
+    onFiltersChange({
+      ...filters,
+      transportation: filters.transportation === id ? null : id,
+    });
+  };
+
   return (
     <div className="font-brando w-full rounded-lg bg-surface p-4 text-foreground shadow-sm lg:max-w-xs">
       <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-        <h2 className="text-lg font-bold text-foreground sm:text-xl">
-          {t("filterGuides")}
-        </h2>
+        <p className="text-lg text-foreground sm:text-xl">{t("filterGuides")}</p>
         <Button
           onClick={onReset}
           className="self-start whitespace-nowrap rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:self-auto"
+          style={{ fontWeight: 400 }}
         >
           {tCommon("resetFilters")}
         </Button>
@@ -77,7 +86,7 @@ const TourGuidesFilter = ({
       <div className="mb-6 sm:mb-8">
         <div className="mb-4 flex items-center gap-2">
           <HeartIcon />
-          <h3 className="text-base font-bold text-foreground sm:text-lg">
+          <h3 className="text-base text-foreground sm:text-lg">
             {t("specializations")}
           </h3>
         </div>
@@ -122,11 +131,9 @@ const TourGuidesFilter = ({
       </div>
 
       {filterOptions.gender.length > 0 ? (
-        <div>
+        <div className="mb-6 sm:mb-8">
           <div className="mb-4 flex items-center gap-2">
-            <h3 className="text-base font-bold text-foreground sm:text-lg">
-              {t("gender")}
-            </h3>
+            <h3 className="text-base text-foreground sm:text-lg">{t("gender")}</h3>
           </div>
           <div className="space-y-2">
             {filterOptions.gender.map((item) => {
@@ -165,6 +172,27 @@ const TourGuidesFilter = ({
                 </div>
               );
             })}
+          </div>
+        </div>
+      ) : null}
+
+      {yesOption ? (
+        <div>
+          <div className="flex flex-col gap-3">
+            <Button
+              onClick={() => handleTransportationSelect("yes")}
+              disabled={yesOption.count === 0}
+              className={`cursor-pointer rounded-lg border-2 px-3 py-2 text-sm font-medium transition-all data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                isTransportSelected
+                  ? "border-primary bg-muted text-foreground"
+                  : "border-border text-foreground hover:border-muted-foreground"
+              }`}
+            >
+              {t("transportAvailable")}
+              <span className="me-1 text-muted-foreground">
+                ({yesOption.count})
+              </span>
+            </Button>
           </div>
         </div>
       ) : null}

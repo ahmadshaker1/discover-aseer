@@ -10,7 +10,6 @@ import {
   setMapLabelLanguage,
 } from "@/lib/mapbox/mapboxLocale";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 const DEFAULT_ZOOM = 12.5;
 
 export interface AttractionPointMapProps {
@@ -104,7 +103,6 @@ function MapboxMapInner({
               target="_blank"
               rel="noreferrer"
               className="pointer-events-auto inline-flex max-w-full items-center justify-center gap-2 whitespace-normal rounded-[55px] border border-solid border-[#FFFFFF54] bg-[#6027D2] px-6 py-3 text-center text-[20px] font-bold leading-[119%] text-white transition-opacity hover:opacity-90 sm:px-10 sm:py-[14px]"
-              style={{ fontFamily: ara }}
             >
               {ctaLabel}
             </a>

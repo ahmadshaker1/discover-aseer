@@ -1,5 +1,3 @@
-export const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
-export const araBold = "var(--font-ara-hamah-1964), sans-serif";
 
 export const FIELD_GROUP = "flex flex-col gap-2 text-start";
 export const FIELD_INPUT =

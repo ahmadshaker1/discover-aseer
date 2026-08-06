@@ -1,8 +1,6 @@
 import type { FilmServiceCard } from "@/components/film/data";
 import { useTranslations } from "next-intl";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface FilmServicesSectionProps {
   cards: FilmServiceCard[];
@@ -186,7 +184,6 @@ const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
         <div className="h-[22px] w-full">
           <h2
             className={`text-start text-[48px] font-bold leading-[38px] text-foreground`}
-            style={{ fontFamily: ara }}
           >
             {t("services")}
           </h2>
@@ -211,13 +208,11 @@ const FilmServicesSection = ({ cards }: FilmServicesSectionProps) => {
                 >
                   <h3
                     className={`text-[32px] font-bold leading-[30px] text-foreground text-start`}
-                    style={{ fontFamily: ara }}
                   >
                     {t(keys.title)}
                   </h3>
                   <p
                     className={`text-[15px] font-light leading-6 text-muted-foreground text-start break-words`}
-                    style={{ fontFamily: ibm }}
                   >
                     {t(keys.description)}
                   </p>

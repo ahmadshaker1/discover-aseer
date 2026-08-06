@@ -1,7 +1,5 @@
 import { Link } from "@/i18n/navigation";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 interface BreadcrumbItem {
   label: string;
@@ -56,7 +54,6 @@ const AttractionsHero = ({
         <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
           <div
             className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-            style={{ fontFamily: ara }}
           >
             {breadcrumbs.map((crumb, index) => (
               <span
@@ -82,14 +79,12 @@ const AttractionsHero = ({
 
           <h1
             className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white"
-            style={{ fontFamily: brando }}
           >
             {title}
           </h1>
 
           <p
             className="w-full text-center text-[22px] font-bold leading-8 text-white sm:text-[24px]"
-            style={{ fontFamily: brando }}
           >
             {subtitle}
           </p>

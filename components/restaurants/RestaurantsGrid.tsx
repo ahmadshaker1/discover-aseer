@@ -15,8 +15,6 @@ interface RestaurantsGridProps {
 
 const PLACEHOLDER_IMAGE = "/assets/experiences/experiences.png";
 
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 function CardPinIcon() {
   return (
     <svg
@@ -109,7 +107,6 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
               <div className="flex flex-col gap-2 px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5">
                 <h3
                   className="line-clamp-2 text-[24px] font-bold leading-[119%] text-foreground [unicode-bidi:plaintext]"
-                  style={{ fontFamily: ara }}
                 >
                   {restaurant.name}
                 </h3>
@@ -118,7 +115,6 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                   <CardPinIcon />
                   <span
                     className="min-w-0 flex-1 truncate text-[10px] font-bold leading-none text-foreground"
-                    style={{ fontFamily: ibm }}
                   >
                     {restaurant.location}
                   </span>
@@ -135,7 +131,6 @@ const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
                     {otherCuisineLabel ? (
                       <span
                         className="line-clamp-2 text-xs font-bold leading-[1.5] text-foreground"
-                        style={{ fontFamily: ibm }}
                       >
                         {otherCuisineLabel}
                       </span>

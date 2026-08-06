@@ -145,8 +145,7 @@ export default function Step3({
               fontSize: "18px",
               fontStyle: "normal",
               fontWeight: 400,
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
+              }}
           >
             {t("exploreDesc")}
           </p>
@@ -156,8 +155,7 @@ export default function Step3({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
+              }}
           >
             {[
               {

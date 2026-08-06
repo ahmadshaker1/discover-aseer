@@ -3,8 +3,6 @@
 import { Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
-const araBold = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 function BackChevronIcon() {
   return (
@@ -87,7 +85,6 @@ const ExperienceSubmitHero = () => {
           <Link
             href="/experiences"
             className={`mb-10 inline-flex h-[42px] min-w-[98px] items-center justify-center gap-[10px] ${backAlignClass} rounded-[43px] bg-background px-[10px] py-[10px] text-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:absolute lg:mb-0 lg:top-[91px]`}
-            style={{ fontFamily: araBold }}
             prefetch={false}
           >
             <span className="text-base font-bold leading-none">
@@ -105,7 +102,6 @@ const ExperienceSubmitHero = () => {
             <Link
               href="/"
               className="text-[24px] font-normal leading-[180%] opacity-50 transition-opacity hover:opacity-70"
-              style={{ fontFamily: araBold }}
             >
               {t("home")}
             </Link>
@@ -113,14 +109,12 @@ const ExperienceSubmitHero = () => {
             <Link
               href="/experiences"
               className="text-[24px] font-bold leading-[180%] text-secondary"
-              style={{ fontFamily: araBold }}
             >
               {t("experiences")}
             </Link>
             <BreadcrumbChevronSmall />
             <span
               className="text-center text-[24px] font-normal leading-[180%] text-secondary"
-              style={{ fontFamily: araBold }}
               aria-current="page"
             >
               {t("currentPage")}
@@ -129,7 +123,6 @@ const ExperienceSubmitHero = () => {
           <h1
             id="experience-submit-hero-title"
             className="w-full text-center text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary"
-            style={{ fontFamily: brando }}
           >
             {t("formTitle")}
           </h1>

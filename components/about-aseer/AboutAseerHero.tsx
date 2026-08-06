@@ -2,8 +2,6 @@
 
 import { Link } from "@/i18n/navigation";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 import { AseerPlatform } from "@/lib/discoverAseerLinks";
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
@@ -79,7 +77,6 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
         <div className="mx-auto flex w-full max-w-[680px] flex-col items-center text-center ">
           <div
             className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 "
-            style={{ fontFamily: ara }}
           >
             {data.breadcrumbs.map((crumb, index) => (
               <span
@@ -89,12 +86,12 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
-                    className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                    className="text-[14px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
                   >
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span className="text-[16px] font-normal leading-6 text-white">
+                  <span className="text-[14px] font-normal leading-6 text-white">
                     {crumb.label}
                   </span>
                 )}
@@ -106,15 +103,14 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
           </div>
 
           <h1
-            className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-            style={{ fontFamily: brando }}
+            className="w-full text-center text-[clamp(2rem,5vw,64px)] font-bold leading-[180%] text-white"
           >
             {data.title}
           </h1>
           {data.subtitle && (
             <p
-              className="mt-4 w-full text-center text-base leading-[1.33] text-white/90 md:text-[clamp(18px,1.9vw,24px)] font-bold"
-              style={{ fontFamily: brando }}
+              className="mt-4 w-full text-center text-base leading-[1.33] text-white/90 md:text-[clamp(18px,1.9vw,24px)]"
+              style={{ fontWeight: 500 }}
             >
               {data.subtitle}
             </p>

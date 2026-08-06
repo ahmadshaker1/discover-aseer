@@ -6,7 +6,6 @@ export interface MapPlaceholderSectionProps {
 }
 
 const PLACEHOLDER_SRC = "/assets/attractions/map-placeholder-abha.png";
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const MapPlaceholderSection = ({
   ctaLabel,
@@ -29,7 +28,6 @@ const MapPlaceholderSection = ({
             rel="noreferrer"
             className="absolute top-1/2 left-1/2 z-10 inline-flex h-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-[10px] overflow-hidden text-ellipsis whitespace-nowrap rounded-[55px] border border-solid border-white/33 bg-primary px-4 py-[10px] text-center text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
             style={{
-              fontFamily: ara,
               width: `min(100% - 2rem, ${ctaWidthPx}px)`,
             }}
           >

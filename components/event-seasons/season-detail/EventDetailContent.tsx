@@ -10,9 +10,6 @@ import {
 } from "@/components/events/EventListingCard/icons";
 import type { SeasonDetail, SeasonDetailEvent } from "../types";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface EventDetailContentProps {
   season: SeasonDetail;
@@ -49,13 +46,11 @@ function DetailRow({
       <div className="min-w-0 flex-1">
         <p
           className="mb-1 text-[14px] font-medium leading-none text-muted-foreground"
-          style={{ fontFamily: ibm }}
         >
           {label}
         </p>
         <div
           className="text-[18px] font-bold leading-snug text-foreground sm:text-[20px]"
-          style={{ fontFamily: ara }}
         >
           {children}
         </div>
@@ -85,21 +80,18 @@ export default async function EventDetailContent({
         <div className="flex w-full flex-col items-center gap-4 text-center">
           <h2
             className="text-[clamp(1.75rem,5vw,48px)] font-bold leading-none text-primary"
-            style={{ fontFamily: brando }}
           >
             {t("eventAboutTitle")}
           </h2>
           {description ? (
             <p
               className="max-w-[720px] text-center text-[clamp(1rem,2.5vw,22px)] font-bold leading-relaxed text-foreground"
-              style={{ fontFamily: ara }}
             >
               {description}
             </p>
           ) : (
             <p
               className="text-[18px] text-muted-foreground"
-              style={{ fontFamily: ibm }}
             >
               {t("eventNoDescription")}
             </p>
@@ -114,7 +106,6 @@ export default async function EventDetailContent({
                   <span
                     key={label}
                     className="inline-flex h-[33px] items-center rounded-[20px] border border-primary/25 bg-primary/10 px-3 text-[16px] font-bold text-primary"
-                    style={{ fontFamily: ara }}
                   >
                     {label}
                   </span>
@@ -161,7 +152,6 @@ export default async function EventDetailContent({
           <Link
             href={`/event-seasons/${season.id}`}
             className="inline-flex h-[48px] items-center justify-center rounded-[20px] border border-primary bg-primary px-8 text-[18px] font-bold text-primary-foreground transition-opacity hover:opacity-90"
-            style={{ fontFamily: ara }}
           >
             {t("backToSeason")}
           </Link>

@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export type PrivacyContentData = {
   sections: {
@@ -51,7 +49,6 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
     <section className="space-y-4">
       <h2
         className="text-[28px] font-bold leading-[180%] text-foreground sm:text-[32px]"
-        style={{ fontFamily: ara }}
       >
         {title}
       </h2>
@@ -70,7 +67,6 @@ function Prose({
   return (
     <div
       className={`text-[18px] font-light leading-7.5 text-muted-foreground text-justify ${className}`}
-      style={{ fontFamily: ibm }}
     >
       {children}
     </div>

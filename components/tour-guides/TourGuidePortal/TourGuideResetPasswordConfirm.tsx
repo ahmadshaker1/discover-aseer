@@ -132,7 +132,6 @@ export default function TourGuideResetPasswordConfirm() {
           </FormSectionTitle>
           <p
             className="-mt-4 mb-8 text-base leading-relaxed text-muted-foreground text-start"
-            style={{ fontFamily: ibm }}
           >
             {locale === "ar"
               ? "الرجاء إدخال كلمة المرور الجديدة وتأكيدها."
@@ -168,7 +167,6 @@ export default function TourGuideResetPasswordConfirm() {
         {error ? (
           <p
             className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 text-start"
-            style={{ fontFamily: ibm }}
             role="alert"
           >
             {error}
@@ -178,7 +176,6 @@ export default function TourGuideResetPasswordConfirm() {
         {successMessage ? (
           <p
             className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 text-start"
-            style={{ fontFamily: ibm }}
             role="status"
           >
             {successMessage}
@@ -197,7 +194,6 @@ export default function TourGuideResetPasswordConfirm() {
           <Link
             href="/tour-guides/portal"
             className="text-sm font-medium text-primary hover:underline transition-all"
-            style={{ fontFamily: araBold }}
           >
             {locale === "ar"
               ? "إلغاء والعودة لتسجيل الدخول"

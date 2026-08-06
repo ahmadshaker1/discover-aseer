@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import type { SeasonListingItem } from "../types";
 import SeasonExpandableCard from "./SeasonExpandableCard";
 
-const brando = "var(--font-brando), sans-serif";
 
 interface EventSeasonsCurrentSectionProps {
   seasons: SeasonListingItem[];
@@ -26,7 +25,6 @@ export default function EventSeasonsCurrentSection({
         <header className="flex w-full flex-col items-start gap-8">
           <h2
             className="w-full text-start text-[clamp(1.75rem,4vw,48px)] font-bold leading-none text-foreground"
-            style={{ fontFamily: brando }}
           >
             {t("currentSeasonsTitle")}
           </h2>

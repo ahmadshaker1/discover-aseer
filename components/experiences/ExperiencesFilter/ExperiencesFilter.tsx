@@ -87,73 +87,23 @@ const ExperiencesFilter = ({
   return (
     <div className="font-brando w-full rounded-lg bg-surface p-6 text-foreground shadow-sm">
       <div className="mb-8 flex items-center justify-between gap-4">
-        <h2 className="text-xl font-bold text-foreground">
+        <p className="text-xl text-foreground">
           {tCommon("filterExperiences")}
-        </h2>
+        </p>
         <Button
           onClick={handleReset}
-          className="cursor-pointer whitespace-nowrap rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
+          className="cursor-pointer whitespace-nowrap rounded-lg border border-border px-4 py-2 text-sm text-foreground transition-colors hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
+          style={{ fontWeight: 400 }}
         >
           {tCommon("resetFilters")}
         </Button>
       </div>
 
-      {/* City filter — disabled for now
-      <div className="mb-4">
-        <Menu as="div" className="relative">
-          <Menu.Button className={cityMenuButtonClass}>
-            <LocationIcon />
-            <span className="flex-1 text-start">
-              {cityOptions.find((city) => city.id === filters.city)?.label || tCommon("city")}
-            </span>
-            <ChevronDownIcon />
-          </Menu.Button>
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-200"
-            enterFrom="opacity-0 scale-95 translate-y-1"
-            enterTo="opacity-100 scale-100 translate-y-0"
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100 scale-100 translate-y-0"
-            leaveTo="opacity-0 scale-95 translate-y-1"
-          >
-            <Menu.Items className={menuItemsClass}>
-              <div className="py-1">
-                {cityOptions.map((city) => (
-                  <Menu.Item key={city.id}>
-                    {({ active }) => (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          onFiltersChange({
-                            ...filters,
-                            city: filters.city === city.id ? null : city.id,
-                          })
-                        }
-                        className={`${active ? "bg-primary/10 text-primary" : ""} ${filters.city === city.id
-                            ? "bg-primary/5 font-semibold text-primary"
-                            : "text-foreground"
-                          } block w-full text-start px-4 py-2 text-sm cursor-pointer transition-colors duration-150`}
-                      >
-                        {city.label} ({city.count})
-                      </button>
-                    )}
-                  </Menu.Item>
-                ))}
-              </div>
-            </Menu.Items>
-          </Transition>
-        </Menu>
-      </div>
-      */}
-
       {interests.length > 0 && (
         <div className="mb-8">
           <div className="mb-4 flex items-center justify-start gap-2">
             <HeartIcon />
-            <h3 className="text-lg font-bold text-foreground">
-              {tCommon("interests")}
-            </h3>
+            <h3 className="text-lg text-foreground">{tCommon("interests")}</h3>
           </div>
           <div className="space-y-4">
             {interests.map((interest) => {
@@ -199,7 +149,7 @@ const ExperiencesFilter = ({
       <div className="mb-8">
         <div className="mb-4 flex items-center justify-start gap-2">
           <WalletIcon />
-          <h3 className="text-lg font-bold text-foreground">
+          <h3 className="text-lg text-foreground">
             {tExperiencesPage("costSection")}
           </h3>
         </div>
@@ -241,7 +191,7 @@ const ExperiencesFilter = ({
         <div>
           <div className="mb-4 flex items-center justify-start gap-2">
             <SuitcaseIcon />
-            <h3 className="text-lg font-bold text-foreground">
+            <h3 className="text-lg  text-foreground">
               {tCommon("travelerTypes")}
             </h3>
           </div>

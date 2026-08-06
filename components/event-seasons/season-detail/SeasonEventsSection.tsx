@@ -19,8 +19,6 @@ import {
 } from "../utils";
 import { CalendarArrowNext, CalendarArrowPrev } from "./icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 const VISIBLE_DAYS = 7;
 
@@ -135,7 +133,6 @@ export default function SeasonEventsSection({
         <div className="flex w-full max-w-[640px] flex-col items-center gap-6 text-center">
           <h2
             className="w-full text-center text-[clamp(2rem,8vw,60px)] font-bold leading-none text-primary"
-            style={{ fontFamily: ara }}
           >
             {periodTitle}
           </h2>
@@ -143,7 +140,6 @@ export default function SeasonEventsSection({
           {season.description ? (
             <p
               className="max-w-[501px] text-center text-[clamp(1rem,3vw,24px)] font-bold leading-none text-foreground"
-              style={{ fontFamily: ara }}
             >
               {season.description}
             </p>
@@ -187,19 +183,16 @@ export default function SeasonEventsSection({
                 >
                   <span
                     className="text-center text-[14px] font-normal leading-none"
-                    style={{ fontFamily: ibm }}
                   >
                     {t("dayLabel")}
                   </span>
                   <span
                     className="text-[35px] font-bold leading-none"
-                    style={{ fontFamily: ara }}
                   >
                     {day.getDate()}
                   </span>
                   <span
                     className="text-center text-[14px] font-normal leading-none"
-                    style={{ fontFamily: ibm }}
                   >
                     {monthLabel}
                   </span>
@@ -239,7 +232,6 @@ export default function SeasonEventsSection({
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-black/10 bg-surface text-foreground hover:border-primary/30 dark:border-border"
                 }`}
-                style={{ fontFamily: ara }}
               >
                 {t(FILTER_LABEL_KEYS[categoryId])}
               </button>

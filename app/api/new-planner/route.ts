@@ -13,13 +13,7 @@ interface PlannerData {
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("==========================================");
-    console.log("🚀 STARTING NEW PLANNER API ROUTE (SIMPLE ENGLISH)");
-    console.log("==========================================");
-
     const body: PlannerData = await request.json();
-    console.log("📦 RECEIVED BODY:", JSON.stringify(body, null, 2));
-
     const apiKey = process.env.ANTHROPIC_API_KEY;
 
     if (!apiKey) {
@@ -31,7 +25,6 @@ export async function POST(request: NextRequest) {
     }
 
     // 1. Fetch from Directus
-    console.log("📥 FETCHING DATA FROM DIRECTUS...");
     const [restaurantsRes, experiencesRes, eventsRes] = await Promise.all([
       fetch(
         "https://tool-portal.discoveraseer.com/items/restaurants?limit=-1",
@@ -77,15 +70,6 @@ export async function POST(request: NextRequest) {
       title: item.title_en || item.title,
       description: item.description_en || item.description,
     }));
-
-    console.log("🍽️ RESTAURANTS CATALOG:");
-    console.log(JSON.stringify(restaurantsCatalog, null, 2));
-
-    console.log("🧗 EXPERIENCES CATALOG:");
-    console.log(JSON.stringify(experiencesCatalog, null, 2));
-
-    console.log("🎉 EVENTS CATALOG:");
-    console.log(JSON.stringify(eventsCatalog, null, 2));
 
     const numberOfDays = body.selectedDays || 1;
     const startDate = body.selectedDate || "Unknown Date";
@@ -169,16 +153,9 @@ export async function POST(request: NextRequest) {
       "    }",
     ].join("\n");
 
-    console.log("📝 GENERATED PROMPT:");
-    console.log("-------------------------------------------------");
-    console.log(prompt);
-    console.log("-------------------------------------------------");
-
     // Call Direct Anthropic API
     let response: Response;
     try {
-      console.log("🌐 SENDING REQUEST DIRECTLY TO ANTHROPIC API...");
-
       response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
@@ -200,7 +177,6 @@ export async function POST(request: NextRequest) {
           ],
         }),
       });
-      console.log("✅ RECEIVED RESPONSE FROM API. Status:", response.status);
     } catch (fetchError) {
       console.error("❌ NETWORK FAILURE", fetchError);
       return NextResponse.json(
@@ -220,8 +196,6 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json();
     const content = data.content?.[0]?.text || "";
-    console.log("📄 EXTRACTED FULL CONTENT:");
-    console.log(content);
 
     if (!content.trim()) {
       return NextResponse.json(
@@ -286,11 +260,6 @@ export async function POST(request: NextRequest) {
         });
       }
     }
-
-    console.log(
-      "📤 FINAL SCHEDULE RESPONSE OBJECT:",
-      JSON.stringify(scheduleData, null, 2),
-    );
 
     return NextResponse.json(scheduleData, { status: 200 });
   } catch (error) {

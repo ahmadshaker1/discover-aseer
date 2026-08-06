@@ -3,7 +3,6 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import FilmmakerForm from "@/components/film/FilmmakerForm";
 
-const brando = "var(--font-brando), sans-serif";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("filmmakerForm");
@@ -30,13 +29,11 @@ export default async function FilmmakerFormPage() {
       <header className="flex flex-col gap-3 text-start">
         <h1
           className="text-[36px] font-bold leading-tight text-foreground sm:text-[44px]"
-          style={{ fontFamily: brando }}
         >
           {t("title")}
         </h1>
         <p
           className="text-[15px] font-light leading-relaxed text-muted-foreground"
-          style={{ fontFamily: brando }}
         >
           {t("description")}
         </p>

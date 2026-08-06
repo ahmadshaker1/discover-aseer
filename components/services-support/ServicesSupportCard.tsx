@@ -83,7 +83,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
 
       <h3
         className="mb-2 line-clamp-1 text-start text-[24px] font-bold leading-[119%] text-foreground"
-        style={{ fontFamily: "var(--font-ara-hamah-1964), sans-serif" }}
+        
       >
         {service.title}
       </h3>
@@ -94,7 +94,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
           target="_blank"
           rel="noopener noreferrer"
           className="flex min-w-0 max-w-full flex-row items-center justify-start gap-2 text-start text-[12px] font-bold leading-[100%] text-primary underline underline-offset-[20.5%]"
-          style={{ fontFamily: "var(--font-ibm-plex-sans-arabic), sans-serif" }}
+          
         >
           <span className="min-w-0 wrap-break-word">{service.city}</span>
           <span className="shrink-0" aria-hidden>
@@ -105,7 +105,7 @@ const ServicesSupportCard = ({ service }: ServicesSupportCardProps) => {
         <a
           href={`tel:${service.supportNumber}`}
           className="flex min-w-0 max-w-full flex-row items-center justify-start gap-2 text-start text-[12px] font-bold leading-[100%] text-muted-foreground"
-          style={{ fontFamily: "var(--font-ibm-plex-sans-arabic), sans-serif" }}
+          
         >
           <span className="min-w-0 truncate" dir="ltr">
             {service.supportNumber}

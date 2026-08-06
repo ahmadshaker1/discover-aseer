@@ -3,8 +3,6 @@
 import { IntroPageShareRow } from "@/components/social/IntroPageShareRow";
 import SafeHtml from "@/components/common/SafeHtml";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsIntroSectionProps {
   title: string;
@@ -25,7 +23,6 @@ const AttractionsIntroSection = ({
         <div className="flex h-full w-full max-w-[704px] flex-col gap-6 text-start">
           <h2
             className="w-full text-start text-[44px] font-bold leading-[180%] text-foreground"
-            style={{ fontFamily: ara }}
           >
             {title}
           </h2>
@@ -35,7 +32,6 @@ const AttractionsIntroSection = ({
           <div className="relative w-full flex-1 overflow-hidden">
             <div
               className="h-full w-full overflow-y-auto hide-scrollbar text-start text-[18px] font-light leading-10 text-muted-foreground"
-              style={{ fontFamily: ibm }}
             >
               {descriptionHtml ? (
                 <SafeHtml html={descriptionHtml} className="space-y-4 pb-8" />

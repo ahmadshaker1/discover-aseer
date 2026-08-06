@@ -152,8 +152,6 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                 backdropFilter: "blur(20px) saturate(1.2)",
                 WebkitBackdropFilter: "blur(20px) saturate(1.2)",
                 color: "#fff",
-                fontFamily:
-                  "var(--font-ibm-plex-sans-arabic), var(--font-ara-hamah-1964), system-ui, sans-serif",
               }}
             >
               <div className="flex h-full min-h-screen flex-col">

@@ -13,8 +13,6 @@ import {
   IconWarning,
 } from "./EmergencyNumbersIcons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 // Backend: GET rows as { id?, title, number }. Order in the array is only display order; icon is chosen from `title` (see emergencyIconForTitle).
 export interface EmergencyContact {
@@ -52,7 +50,6 @@ const TravelTipsEmergencySection = ({ contacts }: TravelTipsEmergencySectionProp
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         <h2
           className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-foreground text-start`}
-          style={{ fontFamily: ara }}
         >
           {t("emergencyTitle")}
         </h2>
@@ -76,13 +73,11 @@ const TravelTipsEmergencySection = ({ contacts }: TravelTipsEmergencySectionProp
               </div>
               <p
                 className="w-full text-start text-[24px] font-bold leading-[119%] text-foreground"
-                style={{ fontFamily: ara }}
               >
                 {item.title}
               </p>
               <p
                 className="w-full text-start text-[32px] font-bold leading-none text-foreground"
-                style={{ fontFamily: ibm }}
               >
                 {item.number}
               </p>

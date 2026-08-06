@@ -11,7 +11,6 @@ import {
   LANDING_STORY_YOUTUBE_URLS,
 } from "@/components/landing/youtubeStoryEmbed";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const STORY_CAPTION_KEYS = ["storyVideo2Title", "storyVideo1Title"] as const;
 
@@ -174,7 +173,6 @@ export default function LandingStoriesFromAseerSection({
         <div className="flex w-fit max-w-full flex-col gap-[10px] border-b border-border pb-[10px] pt-[7px]">
           <h2
             className={`whitespace-nowrap text-start text-[clamp(36px,5vw,64px)] font-bold leading-[119%] text-foreground`}
-            style={{ fontFamily: ara }}
           >
             {resolvedTitle}
           </h2>
@@ -240,7 +238,6 @@ export default function LandingStoriesFromAseerSection({
               {caption ? (
                 <p
                   className="mt-4 text-start text-[clamp(18px,2.2vw,24px)] font-bold leading-[130%] text-foreground"
-                  style={{ fontFamily: ara }}
                 >
                   {caption}
                 </p>

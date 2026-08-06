@@ -4,7 +4,6 @@ import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MinusIcon, PlusIcon } from "./Icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 // Backend: GET FAQ list → map each row to { id, question, answer }. Pass the array as `items`.
 export interface TravelFaqItem {
@@ -31,7 +30,6 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8 text-foreground">
         <h2
           className={`min-h-[47px] w-full text-[44px] font-bold leading-[180%] text-foreground text-start`}
-          style={{ fontFamily: ara }}
         >
           {t("faqTitle")}
         </h2>
@@ -51,7 +49,6 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                     >
                       <span
                         className="min-w-0 flex-1 text-[29px] font-bold leading-none text-foreground"
-                        style={{ fontFamily: ara }}
                       >
                         {item.question}
                       </span>
@@ -64,9 +61,8 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                     </button>
                     <div
                       className={`ms-0 me-auto w-full max-w-[1264px] bg-transparent text-[20px] font-bold leading-none text-muted-foreground ps-3 text-start`}
-                      style={{ fontFamily: ara }}
                     >
-                      <p className={`py-3 ps-3`} style={{ fontFamily: ara }}>
+                      <p className={`py-3 ps-3`}>
                         {item.answer}
                       </p>
                     </div>
@@ -80,7 +76,6 @@ const TravelTipsFaq = ({ items }: TravelTipsFaqProps) => {
                   >
                     <span
                       className="min-w-0 flex-1 text-[29px] font-bold leading-none text-foreground"
-                      style={{ fontFamily: ara }}
                     >
                       {item.question}
                     </span>

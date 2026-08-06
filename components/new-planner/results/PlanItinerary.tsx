@@ -58,15 +58,15 @@ const PlannerRestaurantCardNew = ({
           {locale === "ar" ? "مطعم" : "Restaurant"}
         </span>
       </div>
-      <div className="flex flex-row p-4 items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full">
-        <div className="w-[120px] h-[120px] shrink-0 rounded-[8px] overflow-hidden">
+      <div className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0">
+        <div className="w-full md:w-[120px] h-[200px] md:h-[120px] shrink-0 rounded-[8px] overflow-hidden">
           <img
             src={restaurant.image}
             alt={restaurant.name}
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col flex-1 px-4 gap-2">
+        <div className="flex flex-col flex-1 md:px-4 gap-2 w-full">
           <h3 className="text-xl font-bold text-black dark:text-white">
             {restaurant.name}
           </h3>
@@ -91,17 +91,17 @@ const PlannerRestaurantCardNew = ({
             </div>
           )}
         </div>
-        <div className="flex flex-col items-center gap-4 shrink-0 px-2 justify-start h-full pt-2 ">
+        <div className="flex flex-col items-center gap-4 shrink-0 md:px-2 justify-start h-full pt-2 w-full md:w-auto">
           <button
             onClick={() =>
               window.open(restaurant.mapsUrl, "_blank", "noopener,noreferrer")
             }
-            className="flex h-[36px] px-[16px] py-[10px] justify-center items-center gap-[12px] rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white text-sm font-medium"
+            className="w-full md:w-auto flex h-[36px] px-[16px] py-[10px] justify-center items-center gap-[12px] rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white text-sm font-medium"
           >
             <img
               src={"/assets/planner/direction-line.svg"}
               alt={"direction"}
-              className="w-full h-full object-cover dark:brightness-0 dark:invert"
+              className="w-5 h-5 object-cover dark:brightness-0 dark:invert"
             />
             {locale === "ar" ? "الاتجاهات" : "Directions"}
           </button>
@@ -110,7 +110,7 @@ const PlannerRestaurantCardNew = ({
       <button
         onClick={onReplace}
         disabled={isReplacing}
-        className="flex w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
       >
         <img
           src={"/assets/planner/Rotate.svg"}
@@ -150,15 +150,15 @@ const PlannerEventCardNew = ({
           {locale === "ar" ? "فعالية" : "Event"}
         </span>
       </div>
-      <div className="flex flex-row p-4 items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full">
-        <div className="w-[120px] h-[120px] shrink-0 rounded-[8px] overflow-hidden">
+      <div className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0">
+        <div className="w-full md:w-[120px] h-[200px] md:h-[120px] shrink-0 rounded-[8px] overflow-hidden">
           <img
             src={event.image || event.images?.[0]}
             alt={event.title}
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col flex-1 px-4 gap-2">
+        <div className="flex flex-col flex-1 md:px-4 gap-2 w-full">
           <div className="flex items-center gap-4">
             <h3 className="text-xl font-bold text-black dark:text-white">
               {event.title}
@@ -174,16 +174,6 @@ const PlannerEventCardNew = ({
                 />
               </div>
             )}
-          </div>
-          <div className="flex items-center gap-1">
-            {/* <img
-              src="/assets/planner/map-pin.svg"
-              alt="Location"
-              className="w-4 h-4 dark:brightness-0 dark:invert opacity-70"
-            />
-            <span className="text-sm text-gray-500">
-              {event.location?.title || event.location}
-            </span> */}
           </div>
           {(event.startDate || event.endDate) && (
             <div className="flex items-center gap-1">
@@ -205,7 +195,7 @@ const PlannerEventCardNew = ({
             {aiTime}
           </span>
         </div>
-        <div className="flex flex-col items-center gap-4 shrink-0 px-2 justify-start h-full pt-2">
+        <div className="flex flex-col items-center gap-4 shrink-0 md:px-2 justify-start h-full pt-2 w-full md:w-auto">
           <button
             onClick={() =>
               window.open(
@@ -214,12 +204,12 @@ const PlannerEventCardNew = ({
                 "noopener,noreferrer",
               )
             }
-            className="flex h-[36px] px-[16px] py-[10px] justify-center items-center gap-[12px] rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white text-sm font-medium"
+            className="w-full md:w-auto flex h-[36px] px-[16px] py-[10px] justify-center items-center gap-[12px] rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white text-sm font-medium"
           >
             <img
               src={"/assets/planner/direction-line.svg"}
               alt={"direction"}
-              className="w-full h-full object-cover dark:brightness-0 dark:invert"
+              className="w-5 h-5 object-cover dark:brightness-0 dark:invert"
             />
             {locale === "ar" ? "الاتجاهات" : "Directions"}
           </button>
@@ -228,7 +218,7 @@ const PlannerEventCardNew = ({
       <button
         onClick={onReplace}
         disabled={isReplacing}
-        className="flex w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
       >
         <img
           src={"/assets/planner/Rotate.svg"}
@@ -267,15 +257,15 @@ const PlannerExperienceCardNew = ({
           {locale === "ar" ? "تجربة" : "Experience"}
         </span>
       </div>
-      <div className="flex flex-row p-4 items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full">
-        <div className="w-[140px] h-[160px] shrink-0 rounded-[8px] overflow-hidden">
+      <div className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0">
+        <div className="w-full md:w-[140px] h-[200px] md:h-[160px] shrink-0 rounded-[8px] overflow-hidden">
           <img
             src={experience.imageUrl}
             alt={experience.title}
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col flex-1 px-4 py-2 gap-3 justify-between h-full">
+        <div className="flex flex-col flex-1 md:px-4 py-2 gap-3 justify-between h-full w-full">
           <div>
             {experience.category && (
               <div className="flex w-[80px] h-[25px] justify-center items-center gap-[10px] rounded-[12px] border border-[rgba(0,0,0,0.80)] dark:border-white/80 mb-3">
@@ -333,7 +323,7 @@ const PlannerExperienceCardNew = ({
       <button
         onClick={onReplace}
         disabled={isReplacing}
-        className="flex w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
       >
         <img
           src={"/assets/planner/Rotate.svg"}
@@ -589,7 +579,6 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   };
 
   useEffect(() => {
-    console.log("=== PLAN DATA FROM API ===", planData);
     if (!planData || !planData.days) return;
     const imageUrls: string[] = [];
     planData.days.forEach((day: any) => {
@@ -703,15 +692,15 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       `}</style>
 
       {/* Header Row */}
-      <div className="flex w-full justify-between items-center mb-4 print-hidden">
-        <h2 className="text-[32px] font-bold text-black dark:text-white">
+      <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center mb-4 print-hidden gap-4">
+        <h2 className="text-2xl md:text-[32px] font-bold text-black dark:text-white">
           {t("yourPlan")}
         </h2>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap md:flex-nowrap gap-4 w-full md:w-auto">
           <button
             onClick={handleDownloadPDF}
             disabled={isExportingPDF}
-            className={`flex items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium transition-colors ${
+            className={`flex flex-1 md:flex-none justify-center items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium transition-colors ${
               isExportingPDF
                 ? "opacity-50 cursor-not-allowed"
                 : "hover:bg-gray-50 dark:hover:bg-white/10 cursor-pointer"
@@ -719,20 +708,15 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
           >
             {isExportingPDF ? (
               <span className="animate-spin h-5 w-5 border-2 border-black dark:border-white border-t-transparent rounded-full" />
+            ) : locale === "ar" ? (
+              "تحميل PDF"
             ) : (
-              <Image
-                src="/assets/planner/printer-line.svg"
-                alt="Download PDF"
-                width={20}
-                height={20}
-                className="dark:brightness-0 dark:invert"
-              />
+              "Download PDF"
             )}
-            {locale === "ar" ? "تحميل PDF" : "Download PDF"}
           </button>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-colors cursor-pointer"
+            className="flex flex-1 md:flex-none justify-center items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             <Image
               src="/assets/planner/printer-line.svg"
@@ -746,7 +730,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
           <button
             onClick={handleShare}
             disabled={isSharing}
-            className={`flex items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium transition-colors ${
+            className={`flex flex-1 md:flex-none justify-center items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium transition-colors ${
               isSharing
                 ? "opacity-50 cursor-not-allowed"
                 : "hover:bg-gray-50 dark:hover:bg-white/10 cursor-pointer"
@@ -771,7 +755,6 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       {/* Days Cards Selector */}
       <div
         className="w-full flex flex-wrap gap-4 pb-4 print-hidden"
-        style={{ fontFamily: "IBM Plex Sans Arabic" }}
       >
         {days.map((day: any, index: number) => {
           const isSelected = selectedDayIndex === index;

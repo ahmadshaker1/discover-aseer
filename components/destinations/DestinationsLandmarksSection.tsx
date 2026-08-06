@@ -4,8 +4,6 @@ import DestinationsGridCard from "@/components/destinations/DestinationsGridCard
 import type { Destination } from "@/components/destinations/data";
 import { LeftPointerIcon } from "@/components/shared/icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 interface DestinationsLandmarksSectionProps {
   destinations: Destination[];
@@ -36,7 +34,6 @@ const DestinationsLandmarksSection = async ({
         >
           <h2
             className="min-w-0 flex-1 whitespace-nowrap text-start text-[48px] font-bold leading-[100%] text-secondary"
-            style={{ fontFamily: brando }}
           >
             {sectionTitle}
           </h2>
@@ -44,7 +41,6 @@ const DestinationsLandmarksSection = async ({
           <Link
             href="/destinations"
             className="inline-flex h-6 shrink-0 items-center gap-2 text-secondary hover:opacity-80"
-            style={{ fontFamily: ara }}
           >
             <span className="whitespace-nowrap text-start text-[20px] font-bold leading-[100%] text-secondary">
               {tCommon("browseMore")}

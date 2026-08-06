@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import AseerCuisineVideoPlayer from "./AseerCuisineVideoPlayer";
-const brando = "var(--font-brando), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export interface AseerCuisineChefsVideoSectionData {
   // Backend (Directus): section title text.
@@ -32,14 +30,12 @@ const AseerCuisineChefsVideoSection = ({
           <div className="mx-auto flex w-full max-w-[704px] flex-col items-center gap-3 text-center">
             <h2
               className="w-full text-center text-[48px] font-bold leading-[100%] text-secondary"
-              style={{ fontFamily: brando }}
             >
               {data.title}
             </h2>
             {/*  //! no need for now
             <p
               className="w-full text-center text-[15px] font-light leading-[119%] text-muted-foreground"
-              style={{ fontFamily: ibm }}
             >
               {data.subtitle}
             </p> 

@@ -113,7 +113,6 @@ const TourGuidePortalFlow = () => {
         {loading && (
           <p
             className="mx-auto max-w-[590px] text-center text-muted-foreground"
-            style={{ fontFamily: ibm }}
           >
             {t("loading")}
           </p>
@@ -128,7 +127,6 @@ const TourGuidePortalFlow = () => {
             <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
               <p
                 className="text-base text-secondary text-start"
-                style={{ fontFamily: ibm }}
               >
                 {t("signedInAs", { email: session.user.email ?? "" })}
               </p>
@@ -136,7 +134,6 @@ const TourGuidePortalFlow = () => {
                 type="button"
                 onClick={onLogout}
                 className="inline-flex h-[42px] shrink-0 cursor-pointer items-center justify-center rounded-[43px] border border-border bg-background px-5 text-sm font-bold text-foreground transition-opacity hover:opacity-90 data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2"
-                style={{ fontFamily: araBold }}
               >
                 {t("logout")}
               </Button>
@@ -145,7 +142,6 @@ const TourGuidePortalFlow = () => {
             {loadError && (
               <p
                 className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 text-start"
-                style={{ fontFamily: ibm }}
                 role="alert"
               >
                 {loadError}
@@ -154,7 +150,6 @@ const TourGuidePortalFlow = () => {
 
             <p
               className="mx-auto max-w-[590px] text-center text-[18px] font-normal leading-relaxed text-red-600"
-              style={{ fontFamily: araBold }}
             >
               {tForm("notes")}
             </p>

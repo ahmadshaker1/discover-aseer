@@ -17,8 +17,6 @@ import {
   type FilmShowcaseCategory,
 } from "@/components/film/data";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const inter = "var(--font-inter), Inter, sans-serif";
 
 const showcaseCardClass =
   "relative block h-[420px] w-full overflow-hidden rounded-[20px]";
@@ -77,7 +75,6 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
         <header className="h-[96px] w-full">
           <h2
             className={`text-start text-[64px] font-bold leading-[96px] text-foreground`}
-            style={{ fontFamily: ara }}
           >
             {t("filmedWorks")}
           </h2>
@@ -98,7 +95,6 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                       : "border-transparent text-foreground"
                   }`}
                   style={{
-                    fontFamily: inter,
                     paddingTop: 11.5,
                     paddingBottom: 12.5,
                   }}
@@ -156,7 +152,6 @@ const FilmShowcaseSection = ({ cards }: FilmShowcaseSectionProps) => {
                         <div className="absolute inset-x-0 bottom-0 h-[120px] bg-linear-to-b from-transparent to-black/80" />
                         <h3
                           className={`absolute bottom-6 start-6 text-start text-[20px] font-bold leading-[30px] text-white`}
-                          style={{ fontFamily: ara }}
                         >
                           {card.title}
                         </h3>

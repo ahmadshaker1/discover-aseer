@@ -41,8 +41,6 @@ interface CheckboxRowProps {
   onToggle: (value: string) => void;
 }
 
-const brando = "var(--font-brando), sans-serif";
-
 const CheckboxRow = ({
   option,
   label,
@@ -52,14 +50,11 @@ const CheckboxRow = ({
   return (
     <label className="flex w-full min-w-0 cursor-pointer items-center justify-between gap-2 py-1.5 sm:gap-3">
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-        <span className="inline-flex h-[22px] min-w-[26px] items-center justify-center rounded-[8px] border border-border bg-muted px-2 py-[2px] text-[12px] font-bold leading-none text-foreground">
+        <span className="inline-flex h-[22px] min-w-[26px] items-center justify-center rounded-[8px] border border-border bg-muted px-2 py-[2px] text-[12px] leading-none text-foreground">
           {option.count}
         </span>
       </div>
-      <div
-        className="min-w-0 flex-1 text-start text-[clamp(15px,3.6vw,18px)] font-bold leading-[119%] text-foreground"
-        style={{ fontFamily: brando }}
-      >
+      <div className="min-w-0 flex-1 text-start text-[clamp(15px,3.6vw,18px)] leading-[119%] text-foreground">
         {label}
       </div>
       <div className="relative">
@@ -100,16 +95,14 @@ const ServicesSupportFilterSidebar = ({
   return (
     <aside className="font-brando w-full max-w-full rounded-2xl bg-surface p-4 text-foreground sm:p-5 lg:max-w-[320px]">
       <div className="mb-6 flex w-full min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-2">
-        <h2
-          className="min-w-0 flex-1 text-start text-[clamp(18px,4vw,24px)] font-bold leading-6 tracking-[-0.31px] text-foreground"
-        >
+        <p className="min-w-0 flex-1 text-start text-16 leading-6 tracking-[-0.31px] text-foreground">
           {t("filterServices")}
-        </h2>
+        </p>
         <button
           type="button"
           onClick={onReset}
-          className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-2 text-center text-[clamp(14px,3.5vw,18px)] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:min-w-[156px] sm:px-3"
-          style={{ fontFamily: brando }}
+          className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-2 text-center text-[16px] leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:min-w-[156px] sm:px-3"
+          style={{ fontWeight: 400 }}
         >
           {tCommon("resetFilters")}
         </button>
@@ -180,12 +173,9 @@ const ServicesSupportFilterSidebar = ({
       <div className="my-5 h-px w-full bg-border" />
       <section>
         <div className="mb-4 flex items-center justify-start gap-2">
-          <h3
-            className="text-start text-[20px] font-bold leading-[119%] text-foreground"
-            style={{ fontFamily: brando }}
-          >
+          <p className="text-start text-16 leading-6 tracking-[-0.31px] text-foreground">
             {t("chooseServiceType")}
-          </h3>
+          </p>
 
           <ServiceTypeIcon />
         </div>

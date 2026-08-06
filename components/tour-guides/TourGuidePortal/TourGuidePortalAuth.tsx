@@ -10,10 +10,6 @@ import {
 } from "@/components/tour-guides/TourGuidePortal/TourGuidePortalFormFields";
 import { Button } from "@headlessui/react";
 import {
-  araBold,
-  ibm,
-} from "@/components/experiences/submit/experienceFormStyles";
-import {
   loginTourGuide,
   registerTourGuide,
   type DirectusAuthSession,
@@ -47,7 +43,6 @@ function AuthTab({
           ? "bg-primary text-primary-foreground shadow-sm"
           : "bg-transparent text-secondary hover:bg-primary/5"
       }`}
-      style={{ fontFamily: araBold }}
     >
       {children}
     </Button>
@@ -172,10 +167,7 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
           <FormSectionTitle>
             {mode === "login" ? t("loginTitle") : t("registerTitle")}
           </FormSectionTitle>
-          <p
-            className="-mt-4 mb-8 text-base leading-relaxed text-muted-foreground text-start"
-            style={{ fontFamily: ibm }}
-          >
+          <p className="-mt-4 mb-8 text-base leading-relaxed text-muted-foreground text-start">
             {/* //* we dont need it for now maybe we can use it in the future */}
             {/* {mode === "login" ? t("loginSubtitle") : t("registerSubtitle")} */}
           </p>
@@ -239,7 +231,6 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
           <Link
             href="/tour-guides/forgot-password"
             className="text-sm font-medium text-primary hover:underline"
-            style={{ fontFamily: araBold }}
           >
             {locale === "ar" ? "نسيت كلمة المرور؟" : "Forgot Password?"}
           </Link>
@@ -249,7 +240,6 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
           <div className="flex flex-col gap-3">
             <p
               className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 text-start"
-              style={{ fontFamily: ibm }}
               role="alert"
             >
               {error}
@@ -260,7 +250,6 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
                 onClick={() => void resendVerification()}
                 disabled={resending || !email.trim()}
                 className="self-start text-sm font-medium text-primary hover:underline disabled:opacity-50"
-                style={{ fontFamily: araBold }}
               >
                 {resending ? t("submitting") : t("resendVerify")}
               </button>
@@ -271,7 +260,6 @@ const TourGuidePortalAuth = ({ onAuthenticated }: TourGuidePortalAuthProps) => {
         {successMessage ? (
           <p
             className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 text-start"
-            style={{ fontFamily: ibm }}
             role="status"
           >
             {successMessage}

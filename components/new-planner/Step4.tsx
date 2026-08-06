@@ -142,8 +142,7 @@ export default function Step4({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
+              }}
           >
             {[
               { id: "3", label: t("mealsCount3") },
@@ -195,8 +194,7 @@ export default function Step4({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
+              }}
           >
             {[
               { id: "local", title: t("foodLocal"), desc: t("foodLocalDesc") },
@@ -266,7 +264,6 @@ export default function Step4({
                   </span>
                   <span
                     className="opacity-70 text-sm text-start"
-                    style={{ fontFamily: "IBM Plex Sans Arabic" }}
                   >
                     {option.desc}
                   </span>

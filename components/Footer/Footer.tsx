@@ -9,7 +9,6 @@ import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
 import { BookletSmallArrowIcon } from "./Icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const Footer = () => {
   const t = useTranslations();
@@ -53,14 +52,12 @@ const Footer = () => {
               <div className="flex w-full justify-self-start flex-col items-start text-start">
                 <h3
                   className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
-                  style={{ fontFamily: ara }}
                 >
                   {t("footer.discoverAseerTitle")}
                 </h3>
 
                 <div
                   className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
-                  style={{ fontFamily: ara }}
                 >
                   <Link
                     href="/destinations"
@@ -130,14 +127,12 @@ const Footer = () => {
               <div className="flex w-full justify-self-start flex-col items-start text-start">
                 <h3
                   className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
-                  style={{ fontFamily: ara }}
                 >
                   {t("footer.planYourTripTitle")}
                 </h3>
 
                 <div
                   className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
-                  style={{ fontFamily: ara }}
                 >
                   <Link
                     href="/new-planner"
@@ -187,13 +182,11 @@ const Footer = () => {
               <div className="flex w-full justify-self-start flex-col items-start text-start lg:h-full">
                 <h3
                   className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
-                  style={{ fontFamily: ara }}
                 >
                   {t("footer.bookletsTitle")}
                 </h3>
                 <div
                   className="flex w-full flex-1 flex-col items-start text-[18px] font-bold leading-[197%]"
-                  style={{ fontFamily: ara }}
                 >
                   <Link
                     href="/about-aseer"
@@ -202,7 +195,6 @@ const Footer = () => {
                     <span className="inline-flex items-center gap-1 whitespace-nowrap">
                       <span
                         className="text-start text-[18px] font-bold leading-[197%]"
-                        style={{ fontFamily: ara }}
                       >
                         {t("footer.linkDiscoverBooklet")}
                       </span>
@@ -217,7 +209,6 @@ const Footer = () => {
                     <span className="inline-flex items-center gap-1 whitespace-nowrap">
                       <span
                         className="text-start text-[18px] font-bold leading-[197%]"
-                        style={{ fontFamily: ara }}
                       >
                         {t("footer.linkOutdoorGuide")}
                       </span>
@@ -228,7 +219,6 @@ const Footer = () => {
                     as={Link}
                     href="/tour-guides/portal"
                     className="mt-6 lg:mt-auto flex w-[200px] h-[44px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent px-5 text-center text-[14px] font-bold leading-[119%] text-white transition-colors duration-200 hover:bg-white hover:text-[#280048] data-hover:bg-white data-hover:text-[#280048]"
-                    style={{ fontFamily: ara }}
                   >
                     {t("footer.tourGuideLogin")}
                   </Button>
@@ -238,20 +228,17 @@ const Footer = () => {
               <div className="flex w-full justify-self-start flex-col items-start gap-4 text-start">
                 <h3
                   className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
-                  style={{ fontFamily: ara }}
                 >
                   {t("footer.contactTitle")}
                 </h3>
                 <Link
                   href="/contact-us"
                   className="block w-full text-start text-[18px] font-bold leading-[197%] hover:opacity-80"
-                  style={{ fontFamily: ara }}
                 >
                   {t("footer.contactUs")}
                 </Link>
                 <div
                   className="w-full text-start text-sm text-white/80"
-                  style={{ fontFamily: ara }}
                 >
                   {t("footer.internationalCallCenter")}
                 </div>
@@ -263,7 +250,6 @@ const Footer = () => {
                 </a>
                 <div
                   className="w-full text-start text-xs text-white/70"
-                  style={{ fontFamily: ara }}
                 >
                   {t("footer.followUs")}
                 </div>
@@ -287,7 +273,6 @@ const Footer = () => {
                 <div className="flex w-full flex-col items-start gap-3 text-start">
                   <p
                     className="text-start text-[16px] font-bold leading-[110%] text-white"
-                    style={{ fontFamily: ara }}
                   >
                     {t("common.memberOf")}
                   </p>
@@ -326,7 +311,6 @@ const Footer = () => {
                 <div className="flex w-full flex-col items-start gap-4 text-start sm:w-[138px]">
                   <p
                     className="text-start text-[18px] font-bold leading-[110%]"
-                    style={{ fontFamily: ara }}
                   >
                     {t("footer.newsletterTitle")}
                   </p>
@@ -338,7 +322,6 @@ const Footer = () => {
                   <button
                     type="button"
                     className="flex h-[51px] w-full sm:w-[102px] items-center justify-center rounded-[100px] bg-white px-8 py-[21px] text-[19px] font-bold leading-[119%] text-[#280048]"
-                    style={{ fontFamily: ara }}
                   >
                     {t("footer.subscribe")}
                   </button>
@@ -346,7 +329,7 @@ const Footer = () => {
                     type="email"
                     placeholder={t("common.emailPlaceholder")}
                     className="h-[52px] w-full sm:w-[283px] rounded-[100px] bg-[#7300CD29] px-6 py-[22px] text-[12px] font-medium leading-[119%] text-white placeholder:text-white/45 focus:outline-none"
-                    style={{ fontFamily: "KoningDisplay Trial, sans-serif" }}
+                    
                   />
                 </div>
               </div>
@@ -356,7 +339,6 @@ const Footer = () => {
             <div className="mt-4 border-t border-white/20 pt-4">
               <div
                 className="flex w-full flex-col gap-4 sm:flex-row sm:justify-between items-center text-[13px] font-bold leading-[150%]"
-                style={{ fontFamily: ara }}
               >
                 <Link
                   href="/privacy"
