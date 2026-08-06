@@ -1,10 +1,8 @@
 "use server";
 
+import { brandEmailShell, escapeHtml } from "@/lib/email/brandEmailShell";
+import { isSendGridConfigured, sendBrandEmail } from "@/lib/email/sendgrid";
 import sgMail from "@sendgrid/mail";
-
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-}
 
 export type ExperienceSubmitResponse = {
   success: boolean;
@@ -15,18 +13,26 @@ export async function submitExperienceForm(
   formData: FormData,
 ): Promise<ExperienceSubmitResponse> {
   try {
-    const data: Record<string, any> = {};
-    const attachments: any[] = [];
+    if (!isSendGridConfigured()) {
+      return {
+        success: false,
+        message: "Failed to send email. Please try again later.",
+      };
+    }
+
+    const data: Record<string, string> = {};
+    const attachments: {
+      content: string;
+      filename: string;
+      type: string;
+      disposition: string;
+    }[] = [];
 
     for (const [key, value] of formData.entries()) {
       if (value instanceof File) {
-        // If it's a file, we could potentially convert it to base64 and attach it
-        // but for now we just record its name to avoid SendGrid size limits (30MB max)
-        // If the user wants attachments, we can enable this.
         if (value.size > 0) {
           data[key] = (data[key] ? data[key] + ", " : "") + value.name;
 
-          // Optional: attach files. Be careful with size limits.
           const buffer = Buffer.from(await value.arrayBuffer());
           attachments.push({
             content: buffer.toString("base64"),
@@ -36,44 +42,59 @@ export async function submitExperienceForm(
           });
         }
       } else {
-        data[key] = value;
+        data[key] = String(value);
       }
     }
 
-    const htmlContent = `
-      <h3>New Experience/Event Submission</h3>
-      <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
-        ${Object.entries(data)
-          .map(
-            ([k, v]) =>
-              `<tr>
-                 <td style="font-weight:bold;">${k}</td>
-                 <td>${v}</td>
-               </tr>`,
-          )
-          .join("")}
+    const rowsHtml = Object.entries(data)
+      .map(
+        ([k, v]) =>
+          `<tr>
+             <td style="padding:8px 10px;border:1px solid #E4E4E4;font-weight:700;vertical-align:top;">${escapeHtml(k)}</td>
+             <td style="padding:8px 10px;border:1px solid #E4E4E4;vertical-align:top;">${escapeHtml(v)}</td>
+           </tr>`,
+      )
+      .join("");
+
+    const detailsHtml = `
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;font-size:14px;">
+        ${rowsHtml}
       </table>
     `;
 
-    const textContent = Object.entries(data)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join("\n");
+    const html = brandEmailShell({
+      previewText: "New experience/event submission",
+      headlineAr: "إرسال تجربة / فعالية جديدة",
+      headlineEn: "New experience/event submission",
+      bodyArHtml: detailsHtml,
+      bodyEnHtml: detailsHtml,
+    });
 
-    const msg = {
-      to: ["aseercalendar@asda.gov.sa"],
-      from: "noreply@discoveraseer.com",
-      subject: `New Event/Experience Submission - ${data.titleEn || data.titleAr || "Unknown"}`,
-      text: textContent,
-      html: htmlContent,
-      attachments: attachments.length > 0 ? attachments : undefined,
-    };
+    const subject = `New Event/Experience Submission - ${data.titleEn || data.titleAr || "Unknown"}`;
 
-    await sgMail.send(msg);
+    if (attachments.length > 0) {
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY!.trim());
+      await sgMail.send({
+        to: "aseercalendar@asda.gov.sa",
+        from: "noreply@discoveraseer.com",
+        subject,
+        html,
+        attachments,
+      });
+    } else {
+      await sendBrandEmail({
+        to: "aseercalendar@asda.gov.sa",
+        subject,
+        html,
+      });
+    }
+
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error sending experience submit email:", error);
-    if (error.response) {
-      console.error(error.response.body);
+    const sgErr = error as { response?: { body?: unknown } };
+    if (sgErr.response) {
+      console.error(sgErr.response.body);
     }
     return {
       success: false,
