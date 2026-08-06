@@ -100,7 +100,7 @@ export const PointsOfInterestCarousel = ({
   const selectImage = (index: number) => beginCrossfadeTo(index);
 
   return (
-    <div className="relative mx-auto min-h-screen w-full bg-black">
+    <div className="relative mx-auto h-[min(65dvh,700px)] min-h-[420px] w-full bg-black">
       {/* Clip only the full-bleed images — root must not use overflow-hidden or horizontal
           swipe/scroll on the preview strip breaks on some browsers (nested overflow). */}
       <div className="absolute inset-0 z-0 overflow-hidden">
