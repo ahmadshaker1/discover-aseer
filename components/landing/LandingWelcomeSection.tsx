@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 const ara = "var(--font-ara-hamah-1964), sans-serif";
+const brando = "var(--font-brando), sans-serif";
 
 const OVERLAY_GRADIENT =
   "linear-gradient(179.52deg, rgba(0, 0, 0, 0) 5.53%, #000000 99.58%)";
@@ -73,14 +74,14 @@ const LandingWelcomeSection = ({
       <div className="mx-auto flex w-full max-w-[1180px] flex-col items-center gap-12 md:gap-[48px]">
         <div className="flex w-full flex-col items-center gap-[50px]">
           <h2
-            className="w-full text-center text-[clamp(40px,5vw,64px)] font-bold leading-[119%] text-foreground"
-            style={{ fontFamily: ara }}
+            className="w-full text-center text-[clamp(40px,5vw,48px)] leading-[119%] text-foreground"
+            style={{ fontFamily: brando, fontWeight: 900 }}
           >
             {resolvedTitle}
           </h2>
           <p
-            className="w-full max-w-[744px] text-center text-[24px] font-bold leading-[119%] text-muted-foreground"
-            style={{ fontFamily: ara }}
+            className="w-full max-w-[744px] text-center text-[18px] leading-7 text-[#4B4B4B]"
+            style={{ fontFamily: brando, fontWeight: 400 }}
           >
             {resolvedDescription}
           </p>

@@ -84,12 +84,16 @@ const PageBanner = ({
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
-                    className="text-[16px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                    className="text-[14px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                    style={{ fontFamily: brando, fontWeight: "semi-bold" }}
                   >
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span className="text-[16px] font-normal leading-6 text-white">
+                  <span
+                    className="text-[14px] font-normal leading-6 text-white"
+                    style={{ fontFamily: brando, fontWeight: "semi-bold" }}
+                  >
                     {crumb.label}
                   </span>
                 )}
@@ -101,15 +105,15 @@ const PageBanner = ({
           </nav>
 
           <h1
-            className="w-full text-center text-[clamp(2rem,5vw,44px)] font-bold leading-[180%] text-white"
-            style={{ fontFamily: brando }}
+            className="w-full text-center text-[clamp(2rem,5vw,64px)] font-bold leading-[180%] text-white"
+            style={{ fontFamily: brando, fontWeight: 900 }}
           >
             {title}
           </h1>
 
           <p
-            className="w-full text-center text-[24px] font-normal leading-6 text-white"
-            style={{ fontFamily: brando }}
+            className="w-full text-center text-[24px] leading-6 text-white"
+            style={{ fontFamily: brando, fontWeight: "semi-bold" }}
           >
             {subtitle}
           </p>
@@ -122,7 +126,10 @@ const PageBanner = ({
                 boxShadow: "inset 0px 4px 10px 0px rgba(255, 255, 255, 0.078)",
               }}
             >
-              <span className="whitespace-nowrap text-[20px] leading-[100%]">
+              <span
+                className="whitespace-nowrap text-[18px] leading-[100%]"
+                style={{ fontFamily: brando, fontWeight: "bold" }}
+              >
                 {primaryCta.label || t("pageBanner.browseMore")}
               </span>
             </Link>

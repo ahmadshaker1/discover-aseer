@@ -72,22 +72,22 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
   return (
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]">
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
-        <div className="mx-auto flex w-full max-w-[704px] flex-col items-center text-center">
+        <div className="mx-auto flex w-full max-w-[1000px] flex-col items-center text-center">
           <h2
-            className="w-full text-center text-[48px] font-bold leading-[100%] text-secondary"
-            style={{ fontFamily: brando }}
+            className="w-full text-center text-[48px] font-[900] leading-[100%] text-secondary pb-10 "
+            style={{ fontFamily: brando, color: "black" }}
           >
             {content.sectionTitle}
           </h2>
           <p
-            className="text-[16px] font-medium leading-[140%] text-muted-foreground"
-            style={{ fontFamily: ara }}
+            className="text-[18px] font-medium leading-7 text-muted-foreground"
+            style={{ fontFamily: brando }}
           >
             {content.sectionSubtitle}
           </p>
           <h4
-            className="mt-2 w-full text-center text-[15px] font-medium text-foreground"
-            style={{ fontFamily: ibm }}
+            className="mt-2 w-full text-center text-[16px] font-medium text-foreground"
+            style={{ fontFamily: brando }}
           >
             {content.sectionCaption}
           </h4>
