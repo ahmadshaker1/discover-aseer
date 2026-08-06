@@ -14,8 +14,6 @@ import FilmLandscapesSection from "@/components/film/FilmLandscapesSection";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
-const brando = "var(--font-brando), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 const FilmPage = async () => {
   const t = await getTranslations("film");
@@ -51,13 +49,11 @@ const FilmPage = async () => {
               <div className="flex min-h-[165.5px] w-full max-w-full shrink-0 flex-col items-start justify-center gap-[15.5px] py-[41px] text-start">
                 <h3
                   className="w-full text-start text-[50px] font-bold leading-[33.92px] text-white"
-                  style={{ fontFamily: brando }}
                 >
                   {t("bannerTitle")}
                 </h3>
                 <p
                   className="w-full text-start text-[32px] sm:text-[48px] font-bold leading-[1.2] text-white"
-                  style={{ fontFamily: brando }}
                 >
                   {t("bannerSubtitle")}
                 </p>
@@ -86,7 +82,6 @@ const FilmPage = async () => {
             <div className="mb-[30px]">
               <p
                 className="text-center text-[24px] font-medium leading-[119%] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]"
-                style={{ fontFamily: ibm }}
               >
                 {t("ctaFormPrompt")}
               </p>
@@ -108,7 +103,6 @@ const FilmPage = async () => {
             <div className="mb-4 pb-4">
               <p
                 className="whitespace-nowrap text-center text-[18px] font-bold leading-[119%] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]"
-                style={{ fontFamily: ibm }}
               >
                 {t("orEmailUs")}
               </p>
@@ -118,7 +112,6 @@ const FilmPage = async () => {
               href="mailto:marketing@discoveraseer.com"
               className="cursor-pointer text-center text-[24px] font-bold leading-[27px] text-[#D3A6F6] underline underline-offset-4 transition-colors hover:text-[#e4c2ff]"
               dir="ltr"
-              style={{ fontFamily: ibm }}
             >
               marketing@discoveraseer.com
             </a>

@@ -7,8 +7,6 @@ import {
   type FilmWhyAseerSlide,
 } from "@/components/film/data";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface FilmWhyAseerSectionProps {
   slides: FilmWhyAseerSlide[];
@@ -167,7 +165,6 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
         <div className="w-full">
           <h2
             className={`text-[48px] font-bold leading-[38px] text-foreground text-start`}
-            style={{ fontFamily: ara }}
           >
             {t("whyAseer")}
           </h2>
@@ -181,13 +178,11 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
             <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
               <h3
                 className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4"
-                style={{ fontFamily: ara }}
               >
                 {t("whyAseerNaturalTitle")}
               </h3>
               <p
                 className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start"
-                style={{ fontFamily: ibm }}
               >
                 {t("whyAseerNaturalDesc")}
               </p>
@@ -235,13 +230,11 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
             <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
               <h3
                 className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4"
-                style={{ fontFamily: ara }}
               >
                 {t("whyAseerCulturalTitle")}
               </h3>
               <p
                 className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start"
-                style={{ fontFamily: ibm }}
               >
                 {t("whyAseerCulturalDesc")}
               </p>

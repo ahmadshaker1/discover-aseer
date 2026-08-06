@@ -520,7 +520,6 @@ const ExperienceSubmitForm = () => {
       <div className="mb-10">
         <p
           className="mb-4 text-base font-bold text-foreground text-start"
-          style={{ fontFamily: araBold }}
         >
           {t("form.permitCommitmentTitle")}{" "}
           <span className="text-red-600">*</span>
@@ -542,7 +541,6 @@ const ExperienceSubmitForm = () => {
             className={`mb-3 text-start text-sm ${
               submitState === "success" ? "text-green-700" : "text-red-600"
             }`}
-            style={{ fontFamily: ibm }}
             role="status"
           >
             {submitMessage}

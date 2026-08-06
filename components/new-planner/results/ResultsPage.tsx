@@ -132,8 +132,7 @@ export default function ResultsPage({
               alignItems: "flex-start",
               gap: "6px",
               borderRadius: "55px",
-              fontFamily: "IBM Plex Sans Arabic",
-            }}
+              }}
           >
             <Image
               src="/assets/planner/calendar-line.svg"
@@ -157,8 +156,7 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                fontFamily: "IBM Plex Sans Arabic",
-              }}
+                }}
             >
               <Image
                 src="/assets/planner/flight-land-fill.svg"
@@ -187,8 +185,7 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                fontFamily: "IBM Plex Sans Arabic",
-              }}
+                }}
             >
               <Image
                 src={companionOpt.icon}
@@ -213,8 +210,7 @@ export default function ResultsPage({
                 alignItems: "flex-start",
                 gap: "6px",
                 borderRadius: "55px",
-                fontFamily: "IBM Plex Sans Arabic",
-              }}
+                }}
             >
               <Image
                 src={budgetOpt.icon}

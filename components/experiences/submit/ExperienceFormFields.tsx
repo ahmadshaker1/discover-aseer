@@ -31,7 +31,6 @@ export function FormSectionTitle({ children }: { children: ReactNode }) {
   return (
     <h2
       className="mb-6 text-2xl font-bold text-foreground text-start"
-      style={{ fontFamily: araBold }}
     >
       {children}
     </h2>
@@ -59,7 +58,6 @@ export function FormTextInput({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -67,11 +65,10 @@ export function FormTextInput({
       <Input
         id={id}
         className={FIELD_INPUT}
-        style={{ fontFamily: ibm }}
         {...inputProps}
       />
       {hint ? (
-        <p className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+        <p className="text-xs text-muted-foreground">
           {hint}
         </p>
       ) : null}
@@ -98,7 +95,6 @@ export function FormTextarea({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -106,7 +102,6 @@ export function FormTextarea({
       <Textarea
         id={id}
         className={FIELD_TEXTAREA}
-        style={{ fontFamily: ibm }}
         {...textareaProps}
       />
     </Field>
@@ -139,7 +134,6 @@ export function FormSelectField({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -149,7 +143,6 @@ export function FormSelectField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`${FIELD_INPUT} cursor-pointer`}
-        style={{ fontFamily: ibm }}
       >
         <option value="">{placeholder}</option>
         {options.map((option) => (
@@ -221,7 +214,6 @@ export function FormFileUpload({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -247,19 +239,18 @@ export function FormFileUpload({
         <Button
           type="button"
           className="pointer-events-none text-center text-[14px] font-bold leading-[120%] text-primary"
-          style={{ fontFamily: araBold }}
         >
           {t("chooseFile")}
         </Button>
-        <span className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+        <span className="text-xs text-muted-foreground">
           {hint}
         </span>
         {selectedLabel ? (
-          <span className="mt-2 text-xs text-primary" style={{ fontFamily: ibm }}>
+          <span className="mt-2 text-xs text-primary">
             {selectedLabel}
           </span>
         ) : (
-          <span className="text-xs text-muted-foreground" style={{ fontFamily: ibm }}>
+          <span className="text-xs text-muted-foreground">
             {t("noFileChosen")}
           </span>
         )}
@@ -302,7 +293,6 @@ export function FormCheckboxField({
       </Checkbox>
       <Label
         className="flex-1 cursor-pointer text-sm text-start"
-        style={{ fontFamily: ibm }}
       >
         {children}
       </Label>
@@ -334,7 +324,6 @@ export function FormYesNoField({
     <Field className={FIELD_GROUP}>
       <Label
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -352,7 +341,7 @@ export function FormYesNoField({
           >
             <span className="h-2 w-2 rounded-full bg-primary opacity-0 group-data-checked:opacity-100" />
           </span>
-          <span className="text-base text-foreground" style={{ fontFamily: ibm }}>
+          <span className="text-base text-foreground">
             {yesLabel}
           </span>
         </Radio>
@@ -363,7 +352,7 @@ export function FormYesNoField({
           >
             <span className="h-2 w-2 rounded-full bg-primary opacity-0 group-data-checked:opacity-100" />
           </span>
-          <span className="text-base text-foreground" style={{ fontFamily: ibm }}>
+          <span className="text-base text-foreground">
             {noLabel}
           </span>
         </Radio>
@@ -383,7 +372,6 @@ export function FormSubmitButton({ disabled, children }: FormSubmitButtonProps) 
       type="submit"
       disabled={disabled}
       className={SUBMIT_BUTTON}
-      style={{ fontFamily: araBold }}
     >
       {children}
     </Button>

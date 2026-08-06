@@ -7,7 +7,6 @@ import { useState } from "react";
 import type { Landmark } from "@/components/landmarks/data";
 import SafeHtml from "@/components/common/SafeHtml";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface AttractionsLandmarkCardProps {
   landmark: Landmark;
@@ -94,7 +93,6 @@ const AttractionsLandmarkCard = ({
             <LocationIcon />
             <span
               className="text-[18px] font-bold leading-[100%]"
-              style={{ fontFamily: ara }}
             >
               {landmark.location || tCommon("landmarkDefaultLocation")}
             </span>
@@ -106,7 +104,6 @@ const AttractionsLandmarkCard = ({
         >
           <h3
             className={`text-[24px] font-bold leading-[115%] text-start`}
-            style={{ fontFamily: ara }}
           >
             {landmark.title}
           </h3>

@@ -22,7 +22,6 @@ interface EventsInfoProps {
   backendCards?: EventsInfoBackendCard[];
 }
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const iconFromKey = (iconKey?: string | null): React.ReactNode => {
   switch ((iconKey || "").toLowerCase()) {
@@ -140,7 +139,6 @@ export default async function EventsInfo({
       <div className="relative z-10 mb-10 w-1/2 border-b border-border pb-4 md:mb-12">
         <h2
           className="text-start text-[32px] font-bold text-foreground sm:text-[40px]"
-          style={{ fontFamily: ara }}
         >
           <span className="text-foreground">{t("headingStart")}</span>
           <span className="text-primary">{t("headingTrip")}</span>
@@ -159,7 +157,6 @@ export default async function EventsInfo({
 
             <h3
               className="w-full text-start text-[20px] font-bold leading-[130%] text-foreground"
-              style={{ fontFamily: ara }}
             >
               {card.title}
             </h3>

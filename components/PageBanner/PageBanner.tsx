@@ -5,8 +5,6 @@ import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 export interface BreadcrumbItem {
   label: string;
@@ -77,7 +75,6 @@ const PageBanner = ({
           <nav
             aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"}
             className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-            style={{ fontFamily: ara }}
           >
             {breadcrumbs.map((crumb, index) => (
               <Fragment key={`${crumb.label}-${index}`}>
@@ -85,14 +82,14 @@ const PageBanner = ({
                   <Link
                     href={crumb.href}
                     className="text-[14px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
-                    style={{ fontFamily: brando, fontWeight: "semi-bold" }}
+                    style={{ fontWeight: "semi-bold" }}
                   >
                     {crumb.label}
                   </Link>
                 ) : (
                   <span
                     className="text-[14px] font-normal leading-6 text-white"
-                    style={{ fontFamily: brando, fontWeight: "semi-bold" }}
+                    style={{ fontWeight: "semi-bold" }}
                   >
                     {crumb.label}
                   </span>
@@ -106,14 +103,14 @@ const PageBanner = ({
 
           <h1
             className="w-full text-center text-[clamp(2rem,5vw,64px)] font-bold leading-[180%] text-white"
-            style={{ fontFamily: brando, fontWeight: 900 }}
+            style={{ fontWeight: 900 }}
           >
             {title}
           </h1>
 
           <p
             className="w-full text-center text-[24px] leading-6 text-white"
-            style={{ fontFamily: brando, fontWeight: "semi-bold" }}
+            style={{ fontWeight: "semi-bold" }}
           >
             {subtitle}
           </p>
@@ -128,7 +125,7 @@ const PageBanner = ({
             >
               <span
                 className="whitespace-nowrap text-[18px] leading-[100%]"
-                style={{ fontFamily: brando, fontWeight: "bold" }}
+                style={{ fontWeight: "bold" }}
               >
                 {primaryCta.label || t("pageBanner.browseMore")}
               </span>

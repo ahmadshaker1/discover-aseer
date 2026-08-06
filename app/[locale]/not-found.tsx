@@ -5,9 +5,6 @@ import { Link, useRouter } from "@/i18n/navigation";
 
 import Image from "next/image";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
-
 const NotFoundPage = () => {
   const router = useRouter();
   const t = useTranslations("notFound");
@@ -24,17 +21,11 @@ const NotFoundPage = () => {
           />
         </div>
 
-        <h1
-          className="text-[36px] font-bold leading-[1.2] text-secondary"
-          style={{ fontFamily: ara }}
-        >
+        <h1 className="text-[36px] font-bold leading-[1.2] text-secondary">
           {t("title")}
         </h1>
 
-        <p
-          className="mx-auto mt-4 max-w-[520px] text-[18px] leading-normal text-muted-foreground"
-          style={{ fontFamily: ibm }}
-        >
+        <p className="mx-auto mt-4 max-w-[520px] text-[18px] leading-normal text-muted-foreground">
           {t("description")}
         </p>
 
@@ -43,7 +34,6 @@ const NotFoundPage = () => {
             type="button"
             onClick={() => router.back()}
             className="inline-flex h-[48px] min-w-[190px] items-center justify-center rounded-full border border-secondary bg-surface px-6 text-[16px] font-bold text-secondary transition-colors hover:bg-muted"
-            style={{ fontFamily: ara }}
           >
             {t("goBack")}
           </button>
@@ -51,7 +41,6 @@ const NotFoundPage = () => {
           <Link
             href="/"
             className="inline-flex h-[48px] min-w-[190px] items-center justify-center rounded-full bg-primary px-6 text-[16px] font-bold text-primary-foreground transition-opacity hover:opacity-90"
-            style={{ fontFamily: ara }}
           >
             {t("goHome")}
           </Link>

@@ -12,8 +12,6 @@ import {
   ChevronRightIcon,
 } from "@/components/shared/icons/CarouselChevrons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 const FALLBACK_CARD_IMAGE = "/assets/experiences/experiences.png";
 
 /** Home passes ExperienceCardProps; cuisine page passes CuisineRestaurantCardData. */
@@ -173,14 +171,12 @@ const AseerCuisineCookingExperiencesSection = ({
             <div className="flex min-w-0 flex-col gap-2 items-start justify-start text-start">
               <h2
                 className="w-full max-w-[620px] text-start text-[48px] font-bold leading-[100%] text-secondary"
-                style={{ fontFamily: brando }}
               >
                 {data.title}
               </h2>
               {data.description ? (
                 <p
                   className="w-full max-w-[620px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start"
-                  style={{ fontFamily: ara }}
                 >
                   {data.description}
                 </p>
@@ -190,7 +186,6 @@ const AseerCuisineCookingExperiencesSection = ({
             <Link
               href={data.ctaHref}
               className="flex h-[52px] min-w-[161px] shrink-0 items-center justify-center gap-2 rounded-[55px] border border-primary/40 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90 whitespace-nowrap"
-              style={{ fontFamily: ara }}
             >
               {data.ctaLabel}
             </Link>

@@ -755,7 +755,6 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       {/* Days Cards Selector */}
       <div
         className="w-full flex flex-wrap gap-4 pb-4 print-hidden"
-        style={{ fontFamily: "IBM Plex Sans Arabic" }}
       >
         {days.map((day: any, index: number) => {
           const isSelected = selectedDayIndex === index;

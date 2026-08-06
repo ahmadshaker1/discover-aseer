@@ -18,9 +18,6 @@ import {
   ChevronRightIcon,
 } from "@/components/shared/icons/CarouselChevrons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export type AseerCuisineHeritageRestaurantCard = CuisineRestaurantCardData;
 
@@ -198,14 +195,12 @@ const AseerCuisineHeritageRestaurantsSection = ({
             >
               <h2
                 className="w-full max-w-[620px] text-start text-[48px] font-bold leading-[100%] text-secondary"
-                style={{ fontFamily: brando }}
               >
                 {data.title}
               </h2>
               {data.subtitle ? (
                 <p
                   className={`h-[11px] w-[224px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start`}
-                  style={{ fontFamily: ara }}
                 >
                   {data.subtitle}
                 </p>
@@ -215,7 +210,6 @@ const AseerCuisineHeritageRestaurantsSection = ({
             <Link
               href={data.ctaHref}
               className="flex h-[52px] min-w-[161px] items-center justify-center gap-2 rounded-[55px] border border-primary/40 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90 whitespace-nowrap"
-              style={{ fontFamily: ara }}
             >
               {data.ctaLabel}
             </Link>

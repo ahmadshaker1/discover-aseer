@@ -3,8 +3,6 @@ import { Link } from "@/i18n/navigation";
 import type { SeasonDetail } from "../types";
 import { BreadcrumbChevron } from "./icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 interface EventDetailHeroProps {
   season: SeasonDetail;
@@ -42,7 +40,6 @@ export default async function EventDetailHero({
       <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center gap-6 px-4 py-16 text-center sm:gap-8 sm:px-8 sm:py-20 lg:px-12">
         <nav
           className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-          style={{ fontFamily: ara }}
           aria-label={t("breadcrumb")}
         >
           <Link
@@ -77,7 +74,6 @@ export default async function EventDetailHero({
               <span
                 key={label}
                 className="inline-flex h-[33px] items-center justify-center rounded-[20px] border border-white/40 bg-white/15 px-[18px] text-[16px] font-bold leading-none text-white backdrop-blur-sm"
-                style={{ fontFamily: ara }}
               >
                 {label}
               </span>
@@ -85,7 +81,6 @@ export default async function EventDetailHero({
             {isOver ? (
               <span
                 className="inline-flex h-[33px] items-center justify-center rounded-[20px] bg-black/50 px-[18px] text-[16px] font-bold leading-none text-white"
-                style={{ fontFamily: ara }}
               >
                 {t("eventOver")}
               </span>
@@ -95,7 +90,6 @@ export default async function EventDetailHero({
 
         <h1
           className="mx-auto max-w-[900px] text-center text-[clamp(2rem,6vw,70px)] font-bold leading-[119%] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]"
-          style={{ fontFamily: brando }}
         >
           {title}
         </h1>

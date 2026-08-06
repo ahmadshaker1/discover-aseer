@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: var(--font-ara-hamah-1964), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-brando), sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
@@ -47,7 +47,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   color-scheme: light;
-  font-family: var(--font-ara-hamah-1964), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-brando), sans-serif;
 }
 
 /* Viewport scrollbars: explicit + universal (some engines ignore `*` on the root) */
@@ -196,8 +196,8 @@ html.dark {
 }
 
 .travel-section-title {
-  font-family: "Ara Hamah 1964 B", var(--font-ara-hamah-1964), sans-serif;
-  font-weight: 700;
+  font-family: var(--font-brando), sans-serif;
+  font-weight: 900;
   font-style: normal;
   font-size: 48px;
   line-height: 96px;
@@ -208,6 +208,44 @@ html.dark {
 /* Carousel/related section titles + filter UI text only */
 .font-brando {
   font-family: var(--font-brando), sans-serif;
+}
+
+/* Typography Sizing */
+.text-display {
+  font-weight: 900;
+  font-size: 84px;
+}
+.text-h1,
+h1 {
+  font-weight: 900;
+  font-size: 64px;
+}
+.text-h2,
+h2 {
+  font-weight: 900;
+  font-size: 48px;
+}
+.text-subtitle {
+  font-weight: 600;
+  font-size: 24px;
+}
+.text-body,
+body {
+  font-weight: 400;
+  font-size: 18px;
+}
+.text-filter-tabs {
+  font-weight: 600;
+  font-size: 16px;
+}
+.text-button,
+button {
+  font-weight: 600;
+  font-size: 18px;
+}
+.text-breadcrumb {
+  font-weight: 600;
+  font-size: 14px;
 }
 
 @media print {
@@ -282,7 +320,7 @@ html.dark {
 }
 
 .interactive-map-popup .interactive-map-popup-card {
-  font-family: var(--font-ara-hamah-1964), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-brando), sans-serif;
   background-color: var(--background);
   color: var(--foreground);
   text-align: start;

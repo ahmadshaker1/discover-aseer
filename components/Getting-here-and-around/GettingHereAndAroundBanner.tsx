@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
-const brando = "var(--font-brando), sans-serif";
 
 function BreadcrumbChevron() {
   return (
@@ -58,14 +57,12 @@ export default async function GettingHereAndAroundBanner() {
 
           <h1
             className="mb-3 flex items-center justify-center text-3xl font-bold leading-tight md:text-5xl"
-            style={{ fontFamily: brando }}
           >
             {t("title")}
           </h1>
 
           <p
             className="mb-3 flex items-center justify-center text-md font-bold leading-tight text-gray-300 md:text-1xl"
-            style={{ fontFamily: brando }}
           >
             {t("subtitle")}
           </p>

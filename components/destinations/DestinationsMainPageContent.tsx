@@ -17,8 +17,6 @@ import {
   LocationIcon,
 } from "@/components/landmarks/Icons";
 
-const brando = "var(--font-brando), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface DestinationsMainPageContentProps {
   destinations: Destination[];
@@ -106,7 +104,6 @@ const DestinationsMainPageContent = ({
             {visible.length === 0 ? (
               <p
                 className={`py-8 text-sm text-muted-foreground text-start`}
-                style={{ fontFamily: ibm }}
               >
                 {tCommon("noDestinationsMatchFilters")}
               </p>
@@ -123,7 +120,6 @@ const DestinationsMainPageContent = ({
               <div className="flex w-full flex-wrap items-center justify-between gap-3">
                 <h3
                   className={`min-w-0 flex-1 text-xl font-bold leading-tight tracking-[-0.31px] text-foreground text-start sm:text-2xl`}
-                  style={{ fontFamily: brando }}
                 >
                   {tCommon("filterDestinationsLabel")}
                 </h3>
@@ -134,7 +130,6 @@ const DestinationsMainPageContent = ({
                     setSelectedInterests([]);
                   }}
                   className="flex h-8 w-auto shrink-0 items-center justify-center rounded-[8px] border border-border bg-surface px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted"
-                  style={{ fontFamily: brando }}
                 >
                   {tCommon("resetFilters")}
                 </button>
@@ -206,7 +201,6 @@ const DestinationsMainPageContent = ({
                     <HeartIcon />
                     <h4
                       className={`text-lg font-bold leading-[119%] tracking-[0] text-foreground text-start sm:text-[20px]`}
-                      style={{ fontFamily: brando }}
                     >
                       {tCommon("interests")}
                     </h4>
@@ -236,14 +230,12 @@ const DestinationsMainPageContent = ({
                             />
                             <span
                               className={`min-w-0 text-sm font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
-                              style={{ fontFamily: brando }}
                             >
                               {option.label}
                             </span>
                           </div>
                           <span
                             className="inline-flex h-7 shrink-0 items-center justify-center rounded-[8px] bg-muted px-2 text-base leading-[100%] text-muted-foreground sm:text-lg"
-                            style={{ fontFamily: brando }}
                           >
                             {count}
                           </span>

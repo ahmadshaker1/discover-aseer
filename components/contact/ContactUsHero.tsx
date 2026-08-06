@@ -3,8 +3,6 @@
 import { Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
-const araBold = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 function BackChevronIcon() {
   return (
@@ -68,7 +66,6 @@ const ContactUsHero = () => {
           <Link
             href="/"
             className={`mb-10 inline-flex h-[42px] min-w-[98px] items-center justify-center gap-[10px] ${backAlignClass} rounded-[43px] bg-background px-[10px] py-[10px] text-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:absolute lg:mb-0 lg:top-[91px]`}
-            style={{ fontFamily: araBold }}
             prefetch={false}
           >
             <span className="text-base font-bold leading-none">{t("back")}</span>
@@ -84,14 +81,12 @@ const ContactUsHero = () => {
             <Link
               href="/"
               className="text-[24px] font-normal leading-[180%] opacity-50 transition-opacity hover:opacity-70"
-              style={{ fontFamily: araBold }}
             >
               {t("home")}
             </Link>
             <BreadcrumbChevronLarge />
             <span
               className="text-center text-[24px] font-normal leading-[180%] text-secondary"
-              style={{ fontFamily: araBold }}
               aria-current="page"
             >
               {t("breadcrumb")}
@@ -100,13 +95,11 @@ const ContactUsHero = () => {
           <h1
             id="contact-us-hero-title"
             className="w-full text-center text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary"
-            style={{ fontFamily: brando }}
           >
             {t("title")}
           </h1>
           <p
             className="mx-auto max-w-[590px] text-center text-lg font-normal leading-relaxed text-secondary opacity-80 md:text-xl"
-            style={{ fontFamily: brando }}
           >
             {t("formSubtitle")}
           </p>

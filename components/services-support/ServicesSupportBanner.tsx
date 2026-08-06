@@ -2,7 +2,6 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-const brando = "var(--font-brando), sans-serif";
 
 export default async function ServicesSupportBanner() {
   const t = await getTranslations("servicesSupport");
@@ -50,13 +49,11 @@ export default async function ServicesSupportBanner() {
 
             <h1
               className="mb-3 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl"
-              style={{ fontFamily: brando }}
             >
               {t("bannerCrumb")}
             </h1>
             <p
               className="mx-auto max-w-3xl text-sm sm:text-base md:text-lg"
-              style={{ fontFamily: brando }}
             >
               {t("bannerDescription")}
             </p>

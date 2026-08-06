@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import type { PreviousSeasonItem } from "../types";
 import PreviousSeasonEventsCarousel from "./PreviousSeasonEventsCarousel";
 
-const brando = "var(--font-brando), sans-serif";
 
 interface EventSeasonsPreviousSectionProps {
   seasons: PreviousSeasonItem[];
@@ -20,7 +19,6 @@ export default function EventSeasonsPreviousSection({
       <div className="flex w-full flex-col gap-16 md:gap-[112px]">
         <h2
           className="w-full text-start text-[clamp(1.75rem,4vw,48px)] font-bold leading-none text-foreground"
-          style={{ fontFamily: brando }}
         >
           {t("previousSeasonsTitle")}
         </h2>

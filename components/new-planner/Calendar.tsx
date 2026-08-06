@@ -215,13 +215,7 @@ export default function Calendar({
               >
                 <CalendarChevron direction="prev" />
               </button>
-              <span
-                className="text-lg font-bold text-gray-800 dark:text-white"
-                style={{
-                  fontFamily:
-                    locale === "ar" ? '"29LT Bukra", sans-serif' : "inherit",
-                }}
-              >
+              <span className="text-lg font-bold text-gray-800 dark:text-white">
                 {currentLocale.months[currentMonth]}
               </span>
               <button
@@ -243,15 +237,7 @@ export default function Calendar({
                       border: "1px solid #E5E5E5",
                     }}
                   >
-                    <span
-                      className="block truncate font-medium text-gray-800 dark:text-white"
-                      style={{
-                        fontFamily:
-                          locale === "ar"
-                            ? '"29LT Bukra", sans-serif'
-                            : "inherit",
-                      }}
-                    >
+                    <span className="block truncate font-medium text-gray-800 dark:text-white">
                       {currentYear}
                     </span>
                     <span className="pointer-events-none flex items-center">
@@ -295,12 +281,6 @@ export default function Calendar({
                                   ? "font-bold text-[#7300CD]"
                                   : "font-normal"
                               }`}
-                              style={{
-                                fontFamily:
-                                  locale === "ar"
-                                    ? '"29LT Bukra", sans-serif'
-                                    : "inherit",
-                              }}
                             >
                               {year}
                             </span>
@@ -322,7 +302,6 @@ export default function Calendar({
                 className="text-[#535353] dark:text-gray-300"
                 style={{
                   textAlign: "center",
-                  fontFamily: "IBM Plex Sans Arabic",
                   fontSize: "16px",
                   fontWeight: 400,
                 }}
@@ -350,7 +329,6 @@ export default function Calendar({
                       : "text-[#1D1F1F] dark:text-white hover:bg-gray-50 dark:hover:bg-white/5"
                   }`}
                   style={{
-                    fontFamily: "29LT Bukra",
                     fontSize: "18px",
                     fontWeight: 500,
                   }}

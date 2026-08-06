@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-const brando = "var(--font-brando), sans-serif";
 
 const PlannerBreadcrumb = async () => {
   const t = await getTranslations("planner");
@@ -23,7 +22,6 @@ const PlannerBreadcrumb = async () => {
         <div className="text-center">
           <h1
             className="text-4xl font-bold text-foreground sm:text-5xl lg:text-6xl xl:text-7xl"
-            style={{ fontFamily: brando }}
           >
             {t("title")}
           </h1>

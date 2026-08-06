@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface AttractionsGallerySectionProps {
   title: string;
@@ -25,7 +24,6 @@ const AttractionsGallerySection = ({ title, images }: AttractionsGallerySectionP
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[62px]">
         <h2
           className="mb-6 text-start text-[32px] font-bold leading-[119%] text-foreground"
-          style={{ fontFamily: ara }}
         >
           {title}
         </h2>

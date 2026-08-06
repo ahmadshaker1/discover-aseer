@@ -41,7 +41,6 @@ export function FormSectionTitle({ children }: { children: ReactNode }) {
   return (
     <h2
       className="mb-6 text-2xl font-bold text-foreground text-start"
-      style={{ fontFamily: araBold }}
     >
       {children}
     </h2>
@@ -74,7 +73,6 @@ export function FormTextInput({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -84,7 +82,6 @@ export function FormTextInput({
           id={id}
           type={inputType}
           className={`${FIELD_CONTROL} w-full ${isPassword ? "pr-10" : ""} ${inputProps.readOnly ? "bg-muted text-muted-foreground" : ""}`.trim()}
-          style={{ fontFamily: ibm }}
           {...inputProps}
         />
         {isPassword && (
@@ -116,7 +113,6 @@ export function FormTextInput({
       {hint ? (
         <p
           className="text-xs text-muted-foreground"
-          style={{ fontFamily: ibm }}
         >
           {hint}
         </p>
@@ -144,7 +140,6 @@ export function FormTextarea({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -152,7 +147,6 @@ export function FormTextarea({
       <Textarea
         id={id}
         className={FIELD_TEXTAREA_CONTROL}
-        style={{ fontFamily: ibm }}
         {...textareaProps}
       />
     </Field>
@@ -207,7 +201,6 @@ export function FormSelectField({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -223,7 +216,6 @@ export function FormSelectField({
                 ? "cursor-not-allowed bg-muted text-muted-foreground"
                 : "cursor-pointer"
             }`}
-            style={{ fontFamily: ibm }}
           >
             <span
               className={`min-w-0 truncate text-start ${
@@ -243,7 +235,6 @@ export function FormSelectField({
             <ListboxOption
               value=""
               className="cursor-pointer px-4 py-2.5 text-muted-foreground data-focus:bg-muted data-selected:bg-primary/10"
-              style={{ fontFamily: ibm }}
             >
               {placeholder}
             </ListboxOption>
@@ -252,7 +243,6 @@ export function FormSelectField({
                 key={option.value}
                 value={option.value}
                 className="cursor-pointer px-4 py-2.5 text-foreground data-focus:bg-muted data-selected:bg-primary/10 data-selected:font-semibold"
-                style={{ fontFamily: ibm }}
               >
                 {option.label}
               </ListboxOption>
@@ -319,7 +309,6 @@ export function FormFileUpload({
       <Label
         htmlFor={id}
         className="text-base font-bold text-foreground"
-        style={{ fontFamily: araBold }}
       >
         {label}
         {required ? <RequiredMark /> : null}
@@ -346,20 +335,17 @@ export function FormFileUpload({
         <Button
           type="button"
           className="pointer-events-none text-center text-[14px] font-bold leading-[120%] text-primary"
-          style={{ fontFamily: araBold }}
         >
           {chooseFileLabel}
         </Button>
         <span
           className="text-xs text-muted-foreground"
-          style={{ fontFamily: ibm }}
         >
           {hint}
         </span>
         {file?.name ? (
           <span
             className="mt-2 text-xs text-primary"
-            style={{ fontFamily: ibm }}
           >
             {file.name}
           </span>
@@ -369,7 +355,6 @@ export function FormFileUpload({
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 text-xs text-primary underline"
-            style={{ fontFamily: ibm }}
             onClick={(e) => e.stopPropagation()}
           >
             {existingFileLabel ?? viewFileLabel}
@@ -377,14 +362,12 @@ export function FormFileUpload({
         ) : previewUrl && showImagePreview && !file ? (
           <span
             className="mt-2 text-xs text-primary"
-            style={{ fontFamily: ibm }}
           >
             {existingFileLabel ?? viewFileLabel}
           </span>
         ) : noFileLabel ? (
           <span
             className="text-xs text-muted-foreground"
-            style={{ fontFamily: ibm }}
           >
             {noFileLabel}
           </span>
@@ -428,7 +411,6 @@ export function FormCheckboxField({
       </Checkbox>
       <Label
         className="flex-1 cursor-pointer text-sm text-start"
-        style={{ fontFamily: ibm }}
       >
         {children}
       </Label>
@@ -448,7 +430,6 @@ export function FormSubmitButton({
       type="submit"
       disabled={disabled}
       className={`${SUBMIT_BUTTON} disabled:cursor-not-allowed disabled:opacity-50`}
-      style={{ fontFamily: araBold }}
     >
       {children}
     </Button>

@@ -1,7 +1,5 @@
 import Image from "next/image";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export interface CommunitySlide {
   id: string;
@@ -36,7 +34,6 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
       <div className="mx-auto mb-16 flex w-full max-w-[760px] flex-col items-center text-center">
         <h2
           className="text-[44px] font-bold leading-[130%] text-foreground mb-4"
-          style={{ fontFamily: ara }}
         >
           {content.sectionTitle}
         </h2>
@@ -78,13 +75,11 @@ const CommunityMainSlider = ({ content }: CommunityMainSliderProps) => {
               >
                 <h3
                   className="text-[28px] sm:text-[36px] font-bold leading-[120%] text-foreground"
-                  style={{ fontFamily: ara }}
                 >
                   {slide.title}
                 </h3>
                 <p
                   className="text-[16px] sm:text-[18px] font-normal leading-10 text-muted-foreground"
-                  style={{ fontFamily: ibm }}
                 >
                   {slide.description}
                 </p>

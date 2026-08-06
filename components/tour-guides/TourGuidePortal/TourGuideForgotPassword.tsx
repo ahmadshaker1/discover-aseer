@@ -68,7 +68,6 @@ export default function TourGuideForgotPassword() {
           </FormSectionTitle>
           <p
             className="-mt-4 mb-8 text-base leading-relaxed text-muted-foreground text-start"
-            style={{ fontFamily: ibm }}
           >
             {locale === "ar"
               ? "الرجاء إدخال بريدك الإلكتروني ليتم إرسال رابط إعادة تعيين كلمة المرور."
@@ -93,7 +92,6 @@ export default function TourGuideForgotPassword() {
         {error ? (
           <p
             className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 text-start"
-            style={{ fontFamily: ibm }}
             role="alert"
           >
             {error}
@@ -103,7 +101,6 @@ export default function TourGuideForgotPassword() {
         {successMessage ? (
           <p
             className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 text-start"
-            style={{ fontFamily: ibm }}
             role="status"
           >
             {successMessage}
@@ -122,7 +119,6 @@ export default function TourGuideForgotPassword() {
           <Link
             href="/tour-guides/portal"
             className="text-sm font-medium text-primary hover:underline transition-all"
-            style={{ fontFamily: araBold }}
           >
             {locale === "ar" ? "العودة لتسجيل الدخول" : "Back to login"}
           </Link>

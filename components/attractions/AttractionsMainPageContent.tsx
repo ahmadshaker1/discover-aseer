@@ -22,8 +22,6 @@ import {
   LocationIcon,
 } from "@/components/landmarks/Icons";
 
-const brando = "var(--font-brando), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface AttractionsMainPageContentProps {
   landmarks: Landmark[];
@@ -193,7 +191,6 @@ const AttractionsMainPageContent = ({
         {initialTerrain ? (
           <p
             className="mb-6 text-start text-sm text-muted-foreground"
-            style={{ fontFamily: ibm }}
           >
             {tFilm("landscapes.filteredBy", {
               label: tFilm(`landscapes.${initialTerrain}`),
@@ -216,7 +213,6 @@ const AttractionsMainPageContent = ({
             {visibleLandmarks.length === 0 ? (
               <p
                 className={`py-8 text-sm text-muted-foreground text-start`}
-                style={{ fontFamily: ibm }}
               >
                 {tCommon("noLandmarksMatchFilters")}
               </p>
@@ -229,14 +225,14 @@ const AttractionsMainPageContent = ({
             <div className="mx-auto flex w-full max-w-[320px] flex-col gap-6 lg:mx-0 lg:max-w-[256px]">
               <h3
                 className="whitespace-pre-line text-[24px] text-foreground text-start"
-                style={{ fontFamily: brando, fontWeight: "bold" }}
+                style={{ fontWeight: "bold" }}
               >
                 {tCommon("discoverAttractionsTitle")}
               </h3>
               <div className="flex w-full flex-wrap items-center justify-between gap-3">
                 <h3
                   className={`min-w-0 flex-1 text-[16px] leading-tight tracking-[-0.31px] text-foreground text-start`}
-                  style={{ fontFamily: brando, fontWeight: "semi-bold" }}
+                  style={{ fontWeight: "semi-bold" }}
                 >
                   {tCommon("filterLandmarks")}
                 </h3>
@@ -250,7 +246,7 @@ const AttractionsMainPageContent = ({
                     setSelectedInterests([]);
                   }}
                   className="flex h-8 cursor-pointer items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-3 text-center text-[16px] leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted"
-                  style={{ fontFamily: brando, fontWeight: "400" }}
+                  style={{ fontWeight: "400" }}
                 >
                   {tCommon("resetFilters")}
                 </button>
@@ -321,7 +317,7 @@ const AttractionsMainPageContent = ({
                     <HeartIcon />
                     <h4
                       className={`text-lg leading-[119%] tracking-[0] text-foreground text-start sm:text-[16px]`}
-                      style={{ fontFamily: brando, fontWeight: 400 }}
+                      style={{ fontWeight: 400 }}
                     >
                       {tCommon("attractionType")}
                     </h4>
@@ -356,14 +352,12 @@ const AttractionsMainPageContent = ({
                             />
                             <span
                               className={`min-w-0 text-sm font-normal leading-5 tracking-[-0.15px] text-foreground text-start`}
-                              style={{ fontFamily: brando }}
                             >
                               {option}
                             </span>
                           </div>
                           <span
                             className="inline-flex h-7 shrink-0 items-center justify-center rounded-[8px] bg-muted px-2 text-base leading-[100%] text-muted-foreground sm:text-lg"
-                            style={{ fontFamily: brando }}
                           >
                             {count}
                           </span>

@@ -5,8 +5,6 @@ import SafeHtml from "@/components/common/SafeHtml";
 import { FacebookIcon, LinkedInIcon, MailIcon, WhatsAppIcon, XIcon } from "@/components/shared/icons";
 import { useTranslations } from "next-intl";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 export interface CuisineItemIntroSectionProps {
   subtitle: string;
@@ -36,7 +34,6 @@ const CuisineItemIntroSection = ({
         <div className="flex w-full max-w-[704px] flex-col gap-7 text-start">
           <h2
             className="w-full text-[clamp(2rem,4vw,52px)] font-bold leading-[140%] text-foreground"
-            style={{ fontFamily: ara }}
           >
             {subtitle}
             {subtitlePurple ? (
@@ -47,7 +44,6 @@ const CuisineItemIntroSection = ({
           <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]">
             <span
               className="shrink-0 text-[18px] font-bold leading-[180%] text-foreground"
-              style={{ fontFamily: ara }}
             >
               {t("share")}
             </span>
@@ -77,7 +73,6 @@ const CuisineItemIntroSection = ({
           {heroContent ? (
             <h3
               className="border-s-4 border-secondary ps-4 text-[28px] font-bold leading-[140%] text-secondary"
-              style={{ fontFamily: ara }}
             >
               {heroContent}
             </h3>
@@ -85,7 +80,6 @@ const CuisineItemIntroSection = ({
 
           <div
             className="w-full text-[16px] font-light leading-[150%] text-muted-foreground"
-            style={{ fontFamily: ibm }}
           >
             {contentHtml ? <SafeHtml html={contentHtml} className="space-y-4" /> : null}
             {hasExtra ? (

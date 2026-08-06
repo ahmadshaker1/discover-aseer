@@ -3,7 +3,6 @@
 import type { ReactNode } from "react";
 import { PointOfInterest } from "./data";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface TextOverlayProps {
   point: PointOfInterest;
@@ -23,7 +22,6 @@ export const TextOverlay = ({
         <div className="mt-4 w-full max-w-[720px] self-start text-start sm:mt-6 md:mt-8">
           <h1
             className="w-full pb-3 text-[32px] font-bold text-white sm:pb-4 sm:text-[44px] md:pb-6 md:text-[56px] lg:text-[64px]"
-            style={{ fontFamily: ara }}
           >
             {sectionTitle}
           </h1>
@@ -40,7 +38,6 @@ export const TextOverlay = ({
             {point.title ? (
               <h3
                 className="text-[22px] font-bold leading-[115%] text-white sm:text-[26px] md:text-[30px]"
-                style={{ fontFamily: ara }}
               >
                 {point.title}
               </h3>

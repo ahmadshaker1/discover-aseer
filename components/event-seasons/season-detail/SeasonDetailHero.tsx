@@ -3,8 +3,6 @@ import { Link } from "@/i18n/navigation";
 import type { SeasonDetail } from "../types";
 import { BreadcrumbChevron } from "./icons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 interface SeasonDetailHeroProps {
   season: SeasonDetail;
@@ -34,7 +32,6 @@ export default async function SeasonDetailHero({
       <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center gap-8 px-4 py-16 text-center sm:px-8 sm:py-20 lg:px-12">
         <nav
           className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-          style={{ fontFamily: ara }}
           aria-label={t("breadcrumb")}
         >
           <Link
@@ -58,7 +55,6 @@ export default async function SeasonDetailHero({
 
         <h1
           className="mx-auto max-w-[900px] text-center text-[clamp(2rem,6vw,70px)] font-bold leading-[119%] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]"
-          style={{ fontFamily: brando }}
         >
           {season.title}
         </h1>

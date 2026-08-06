@@ -6,7 +6,6 @@ import TourGuideCard, {
   type TourGuideData,
 } from "@/components/tour-guides/TourGuideCard/TourGuideCard";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface AttractionsGuidesSectionProps {
   guides: TourGuideData[];
@@ -42,7 +41,6 @@ const AttractionsGuidesSection = ({ guides }: AttractionsGuidesSectionProps) => 
         <div className="mx-auto mb-8 flex h-[58px] w-full max-w-[1320px] items-center justify-between">
           <h2
             className={`w-full max-w-[498px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
-            style={{ fontFamily: ara }}
           >
             {tAttr("chooseYourGuide")}
           </h2>
@@ -50,7 +48,6 @@ const AttractionsGuidesSection = ({ guides }: AttractionsGuidesSectionProps) => 
           <Link
             href="/tour-guides"
             className="inline-flex h-6 w-[98px] shrink-0 items-center justify-between gap-2 text-secondary hover:opacity-80"
-            style={{ fontFamily: ara }}
           >
             <span className="rtl:rotate-180">
               <ChevronLeftIcon />

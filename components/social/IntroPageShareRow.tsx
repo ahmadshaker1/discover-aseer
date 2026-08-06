@@ -12,7 +12,6 @@ import {
 import { usePathname } from "@/i18n/navigation";
 import { buildShareUrl } from "@/lib/share/buildShareUrl";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 interface IntroPageShareRowProps {
   title: string;
@@ -39,7 +38,6 @@ export function IntroPageShareRow({ title }: IntroPageShareRowProps) {
     <div className="flex h-8 w-full max-w-[360px] items-center gap-[15px]">
       <span
         className="shrink-0 text-[18px] font-bold leading-[180%] text-foreground"
-        style={{ fontFamily: ara }}
       >
         {t("share")}
       </span>

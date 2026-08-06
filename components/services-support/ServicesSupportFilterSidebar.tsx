@@ -41,7 +41,6 @@ interface CheckboxRowProps {
   onToggle: (value: string) => void;
 }
 
-const brando = "var(--font-brando), sans-serif";
 
 const CheckboxRow = ({
   option,
@@ -58,7 +57,6 @@ const CheckboxRow = ({
       </div>
       <div
         className="min-w-0 flex-1 text-start text-[clamp(15px,3.6vw,18px)] font-bold leading-[119%] text-foreground"
-        style={{ fontFamily: brando }}
       >
         {label}
       </div>
@@ -109,7 +107,6 @@ const ServicesSupportFilterSidebar = ({
           type="button"
           onClick={onReset}
           className="flex h-8 shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-border bg-surface px-2 text-center text-[clamp(14px,3.5vw,18px)] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:bg-muted sm:min-w-[156px] sm:px-3"
-          style={{ fontFamily: brando }}
         >
           {tCommon("resetFilters")}
         </button>
@@ -182,7 +179,6 @@ const ServicesSupportFilterSidebar = ({
         <div className="mb-4 flex items-center justify-start gap-2">
           <h3
             className="text-start text-[20px] font-bold leading-[119%] text-foreground"
-            style={{ fontFamily: brando }}
           >
             {t("chooseServiceType")}
           </h3>

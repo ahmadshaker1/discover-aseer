@@ -9,7 +9,6 @@ interface AseerCuisineSectionProps {
   dishes: AseerCuisineDish[];
 }
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
   const t = useTranslations("aseerCuisine");
@@ -24,13 +23,11 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
             <div className={`flex min-h-[94px] flex-col gap-2 pb-[10px] pt-[7px] items-start justify-start text-start`}>
               <h2
                 className={`w-full text-[64px] font-bold leading-[119%] text-foreground text-start`}
-                style={{ fontFamily: ara }}
               >
                 {t("title")}
               </h2>
               <p
                 className={`h-[7px] w-[610px] text-[16px] font-bold leading-[24px] text-muted-foreground text-start`}
-                style={{ fontFamily: ara }}
               >
                 {tCommon("subtitleOneVisit")}
               </p>
@@ -39,7 +36,6 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
             <Link
               href="/aseer-cuisine"
               className="flex h-[52px] w-[161px] items-center justify-center gap-2 rounded-[55px] border border-primary/40 bg-primary p-[10px] text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
-              style={{ fontFamily: ara }}
             >
               {t("title")}
             </Link>
@@ -72,7 +68,6 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
                 <div className="flex h-[115px] flex-col justify-between gap-2 px-4 py-3 sm:px-5 sm:py-4">
                   <h3
                     className="line-clamp-1 text-[24px] font-bold leading-[119%] text-foreground"
-                    style={{ fontFamily: ara }}
                   >
                     {card.title}
                   </h3>
@@ -82,7 +77,6 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
                       <span className="text-foreground"><ClockIcon /></span>
                       <span
                         className="h-[8px] w-[53px] -translate-y-px text-[18px] font-bold leading-[100%] text-foreground"
-                        style={{ fontFamily: ara }}
                       >
                         {card.timeText}
                       </span>
@@ -92,7 +86,6 @@ const AseerCuisineSection = ({ dishes }: AseerCuisineSectionProps) => {
                       <span className="text-foreground"><UtensilsIcon /></span>
                       <span
                         className="h-[8px] w-[22px] -translate-y-px text-[18px] font-bold leading-[100%] text-foreground"
-                        style={{ fontFamily: ara }}
                       >
                         {card.mainIngredient}
                       </span>

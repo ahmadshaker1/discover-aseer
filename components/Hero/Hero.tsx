@@ -14,8 +14,6 @@ import type { HeroSlide } from "@/components/Hero/types";
 
 export type { HeroSlide } from "@/components/Hero/types";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 const AUTOPLAY_MS = 5000;
 
@@ -88,7 +86,6 @@ const Hero = ({ slides }: HeroProps) => {
                   <h1
                     className="w-full text-white"
                     style={{
-                      fontFamily: brando,
                       fontWeight: "bold",
                       ...(slide.largeTitle
                         ? {
@@ -106,7 +103,7 @@ const Hero = ({ slides }: HeroProps) => {
 
                   <p
                     className="w-full text-base leading-[1.33] text-white md:text-[clamp(18px,1.9vw,24px)]"
-                    style={{ fontFamily: brando, fontWeight: "bold" }}
+                    style={{ fontWeight: "bold" }}
                   >
                     {slide.subtitle}
                   </p>
@@ -118,7 +115,7 @@ const Hero = ({ slides }: HeroProps) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${CTA_CLASS} mt-6 ${isLtr ? "mr-auto" : "ml-auto"}`}
-                    style={{ fontFamily: brando, fontWeight: "bold" }}
+                    style={{ fontWeight: "bold" }}
                   >
                     {slide.cta}
                   </a>
@@ -126,7 +123,7 @@ const Hero = ({ slides }: HeroProps) => {
                   <Link
                     href={slide.href}
                     className={`${CTA_CLASS} mt-6 ${isLtr ? "mr-auto" : "ml-auto"}`}
-                    style={{ fontFamily: brando, fontWeight: "bold" }}
+                    style={{ fontWeight: "bold" }}
                   >
                     {slide.cta}
                   </Link>

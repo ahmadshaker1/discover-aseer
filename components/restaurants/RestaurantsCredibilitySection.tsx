@@ -5,8 +5,6 @@ import { Link } from "@/i18n/navigation";
 import WorldRegionGastronomyAwardLogo from "@/components/restaurants/WorldRegionGastronomyAwardLogo";
 import { IBM_Plex_Sans_Devanagari } from "next/font/google";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 const RestaurantsCredibilitySection = () => {
   const t = useTranslations("restaurantsPage");
@@ -22,7 +20,6 @@ const RestaurantsCredibilitySection = () => {
         <h2
           id="restaurants-credibility-heading"
           className="w-full max-w-[428px] text-center text-[48px] font-bold leading-[100%] text-secondary"
-          style={{ fontFamily: brando }}
         >
           {t("credibilityLine")}
         </h2>
@@ -33,7 +30,6 @@ const RestaurantsCredibilitySection = () => {
         <Link
           href="/igcat"
           className="inline-flex h-[52px] min-w-[161px] items-center justify-center rounded-[55px] border border-primary bg-primary px-[10px] py-[10px] text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          style={{ fontFamily: ara }}
         >
           {t("credibilityCta")}
         </Link>

@@ -349,7 +349,6 @@ const TourGuidePortalProfileForm = ({
       {profile && (
         <div
           className={`mb-8 rounded-xl border px-4 py-3 text-start text-sm ${statusBanner.className}`}
-          style={{ fontFamily: ibm }}
         >
           {statusBanner.message}
         </div>
@@ -358,7 +357,6 @@ const TourGuidePortalProfileForm = ({
       {lockIdentityFields && (
         <p
           className="mb-8 text-start text-sm text-muted-foreground"
-          style={{ fontFamily: ibm }}
         >
           {t("profile.lockedFieldsHint")}
         </p>
@@ -452,19 +450,16 @@ const TourGuidePortalProfileForm = ({
           <div className="md:col-span-2 rounded-xl border border-blue-200 bg-blue-50/50 p-4 mt-2">
             <p
               className="text-md font-normal text-blue-900 leading-relaxed text-start"
-              style={{ fontFamily: ibm }}
             >
               {tForm("photoGuidelinesTitle")}
             </p>
             <p
               className="text-md font-normal text-blue-900 mt-3 text-start"
-              style={{ fontFamily: ibm }}
             >
               {tForm("photoGuidelinesDoNot")}
             </p>
             <ul
               className="mt-1 flex flex-col gap-1 list-disc list-inside text-sm text-blue-900 text-start"
-              style={{ fontFamily: ibm }}
             >
               <li>{tForm("photoGuidelinesList1")}</li>
               <li>{tForm("photoGuidelinesList2")}</li>
@@ -552,14 +547,12 @@ const TourGuidePortalProfileForm = ({
             <div className="flex items-center gap-2">
               <p
                 className="text-base font-bold text-foreground"
-                style={{ fontFamily: araBold }}
               >
                 {tForm("otherLanguages")}
               </p>
               <button
                 type="button"
                 className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-background text-xl font-bold leading-none text-primary transition-colors hover:border-primary/50 hover:bg-primary/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                style={{ fontFamily: araBold }}
                 aria-label={tForm("addLanguageLevel")}
                 onClick={addOtherLanguage}
               >
@@ -597,7 +590,6 @@ const TourGuidePortalProfileForm = ({
                 <button
                   type="button"
                   className="mt-2 inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-red-200 bg-red-50 text-xl font-bold leading-none text-red-600 transition-colors hover:border-red-300 hover:bg-red-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 sm:mt-0"
-                  style={{ fontFamily: araBold }}
                   aria-label={tForm("hideLanguageLevel")}
                   onClick={() => removeOtherLanguage(index)}
                 >
@@ -609,7 +601,6 @@ const TourGuidePortalProfileForm = ({
           <div className="md:col-span-2 flex flex-col gap-3 text-start">
             <p
               className="text-base font-bold text-foreground"
-              style={{ fontFamily: araBold }}
             >
               {tForm("specialization")} <span className="text-red-600">*</span>
             </p>
@@ -774,7 +765,6 @@ const TourGuidePortalProfileForm = ({
           className={`mb-4 text-start text-sm ${
             submitState === "success" ? "text-green-700" : "text-red-600"
           }`}
-          style={{ fontFamily: ibm }}
           role="status"
         >
           {message}

@@ -19,8 +19,6 @@ function landmarkMatchesCity(landmark: Landmark, city: string | null): boolean {
   return landmarkBelongsToCity(landmark, city);
 }
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
 
 interface AttractionsLandmarksSectionProps {
   landmarks: Landmark[];
@@ -133,14 +131,12 @@ const AttractionsLandmarksSection = ({
           <div className={`min-w-0 space-y-2 text-start`}>
             <h2
               className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
-              style={{ fontFamily: brando }}
             >
               {heading}
             </h2>
             {description ? (
               <p
                 className={`h-[11px] w-[430px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start`}
-                style={{ fontFamily: ara }}
               >
                 {description}
               </p>
@@ -149,7 +145,6 @@ const AttractionsLandmarksSection = ({
           <Link
             href="/attractions"
             className="inline-flex h-[52px] min-w-[161px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[55px] border border-primary/30 bg-primary px-8 text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
-            style={{ fontFamily: ara }}
           >
             <span
               className={`whitespace-nowrap text-[20px] font-bold leading-[100%] text-start`}

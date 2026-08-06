@@ -14,9 +14,6 @@ import {
 export type { CuisineRestaurantCardData } from "./cuisineRestaurantCardData";
 export { mapRestaurantToCuisineCard } from "./cuisineRestaurantCardData";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
-
 const FALLBACK_CARD_IMAGE = "/assets/experiences/experiences.png";
 
 function formatPriceBand(card: CuisineRestaurantCardData): string {
@@ -60,7 +57,6 @@ const CuisineRestaurantCard = ({
           <CardRatingStar />
           <span
             className="min-w-0 truncate text-start text-[11px] font-medium leading-none text-white"
-            style={{ fontFamily: ibm }}
           >
             ({card.reviewsCount}) {Number(card.rating).toFixed(1)}/5
           </span>
@@ -68,19 +64,13 @@ const CuisineRestaurantCard = ({
       </div>
 
       <div className="flex h-[115px] flex-col justify-between gap-2 px-4 py-3 sm:px-5 sm:py-4">
-        <h3
-          className="line-clamp-1 text-[24px] font-bold leading-[119%] text-foreground"
-          style={{ fontFamily: ara }}
-        >
+        <h3 className="line-clamp-1 text-[24px] font-bold leading-[119%] text-foreground">
           {card.title}
         </h3>
 
         <div className="flex w-full items-center justify-start gap-1.5">
           <CardPinIcon />
-          <span
-            className="min-w-0 flex-1 truncate text-[10px] font-bold leading-none text-foreground"
-            style={{ fontFamily: ibm }}
-          >
+          <span className="min-w-0 flex-1 truncate text-[10px] font-bold leading-none text-foreground">
             {card.location}
           </span>
         </div>
@@ -88,19 +78,13 @@ const CuisineRestaurantCard = ({
         <div className="flex w-full flex-wrap items-center justify-start gap-3">
           <div className="flex items-center justify-start gap-1">
             <CardUtensilIcon />
-            <span
-              className="text-xs font-bold leading-none text-foreground"
-              style={{ fontFamily: ibm }}
-            >
+            <span className="text-xs font-bold leading-none text-foreground">
               {card.cuisineType}
             </span>
           </div>
           <CardPersonIcon />
           <div className="flex items-center justify-start gap-1">
-            <span
-              className="text-xs font-bold leading-none text-foreground"
-              style={{ fontFamily: ibm }}
-            >
+            <span className="text-xs font-bold leading-none text-foreground">
               {formatPriceBand(card)}
             </span>
             <CardCurrencyIcon />

@@ -3,7 +3,6 @@ import PageBanner from "@/components/PageBanner/PageBanner";
 import PrivacyStaticContent from "@/components/privacy/PrivacyStaticContent";
 import type { PrivacyContentData } from "@/components/privacy/PrivacyStaticContent";
 
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 type PrivacyPageLayoutProps = {
   breadcrumbHome: string;
@@ -43,14 +42,13 @@ export default function PrivacyPageLayout({
           {subtitle && lastUpdated ? (
             <p
               className="mb-10 text-sm text-muted-foreground"
-              style={{ fontFamily: ibm }}
             >
               {lastUpdated}
             </p>
           ) : null}
 
           {cmsHtml ? (
-            <div style={{ fontFamily: ibm }}>
+            <div>
               <SafeHtml
                 html={cmsHtml}
                 className="space-y-4 text-[18px] font-light leading-7.5 text-muted-foreground text-justify"

@@ -8,7 +8,6 @@ interface TourGuidesPaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
 
 const navButtonClass =
   "flex h-8 min-w-[50px] cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[8px] px-3 text-center text-[18px] font-bold leading-5 tracking-[-0.15px] text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-muted-foreground disabled:hover:text-muted-foreground";
@@ -37,7 +36,6 @@ const TourGuidesPagination = ({
         disabled={currentPage === 1}
         aria-label={t("previous")}
         className={navButtonClass}
-        style={{ fontFamily: ara }}
       >
         <span className="inline-flex rtl:rotate-180" aria-hidden>
           <svg
@@ -81,7 +79,6 @@ const TourGuidesPagination = ({
         disabled={currentPage === totalPages}
         aria-label={t("next")}
         className={navButtonClass}
-        style={{ fontFamily: ara }}
       >
         <span>{t("next")}</span>
         <span className="inline-flex rtl:rotate-180" aria-hidden>

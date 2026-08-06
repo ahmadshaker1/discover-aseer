@@ -7,10 +7,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 type StoryLinkHref = ComponentProps<typeof Link>["href"];
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
-
 export interface AboutStorySlide {
   id: string;
   image: string;
@@ -73,22 +69,13 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]">
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         <div className="mx-auto flex w-full max-w-[1000px] flex-col items-center text-center">
-          <h2
-            className="w-full text-center text-[48px] font-[900] leading-[100%] text-secondary pb-10 "
-            style={{ fontFamily: brando, color: "black" }}
-          >
+          <h2 className="w-full text-center text-[48px] font-[900] leading-[100%] text-foreground pb-10 ">
             {content.sectionTitle}
           </h2>
-          <p
-            className="text-[18px] font-medium leading-7 text-muted-foreground"
-            style={{ fontFamily: brando }}
-          >
+          <p className="text-[18px] font-medium leading-7 text-muted-foreground">
             {content.sectionSubtitle}
           </p>
-          <h4
-            className="mt-2 w-full text-center text-[16px] font-medium text-foreground"
-            style={{ fontFamily: brando }}
-          >
+          <h4 className="mt-2 w-full text-center text-[16px] font-medium text-foreground">
             {content.sectionCaption}
           </h4>
         </div>
@@ -106,10 +93,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                     sizes="(max-width: 1024px) 50vw, 310px"
                   />
                   <div className="absolute inset-x-0 bottom-0 flex h-[91px] items-end justify-center rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
-                    <p
-                      className="line-clamp-2 w-full text-center text-[16px] font-bold leading-[120%] text-white"
-                      style={{ fontFamily: ara }}
-                    >
+                    <p className="line-clamp-2 w-full text-center text-[16px] font-bold leading-[120%] text-white">
                       {card.title}
                     </p>
                   </div>
@@ -189,7 +173,6 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
                           ? "bg-primary text-white"
                           : "border border-white/85 bg-black/30 text-white hover:bg-white/10"
                       }`}
-                      style={{ fontFamily: ara }}
                     >
                       {slide.title}
                       {isActive ? (
@@ -205,16 +188,10 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
             </div>
 
             <div className="max-w-[720px] text-start">
-              <h3
-                className="mb-3 text-[32px] font-bold leading-[130%] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] sm:text-[40px] lg:text-[48px]"
-                style={{ fontFamily: ara }}
-              >
+              <h3 className="mb-3 text-[32px] font-bold leading-[130%] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] sm:text-[40px] lg:text-[48px]">
                 {activeSlide?.title}
               </h3>
-              <p
-                className="text-[15px] font-light leading-8 text-white/95 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] sm:text-[18px] sm:leading-9 lg:text-[20px] lg:leading-10"
-                style={{ fontFamily: ibm }}
-              >
+              <p className="text-[15px] font-light leading-8 text-white/95 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] sm:text-[18px] sm:leading-9 lg:text-[20px] lg:leading-10">
                 {activeSlide?.description}
               </p>
             </div>

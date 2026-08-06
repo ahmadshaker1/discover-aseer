@@ -167,7 +167,6 @@ export default function ContactUsForm() {
             className={`mb-3 text-start text-sm ${
               submitState === "success" ? "text-green-700" : "text-red-600"
             }`}
-            style={{ fontFamily: ibm }}
             role="status"
           >
             {submitMessage}

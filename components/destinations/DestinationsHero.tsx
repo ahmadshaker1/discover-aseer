@@ -4,9 +4,6 @@ import { Link } from "@/i18n/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const brando = "var(--font-brando), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface BreadcrumbItem {
   label: string;
@@ -150,7 +147,6 @@ const DestinationsHero = ({
           <div className="flex w-full flex-col items-center gap-[31px] text-center">
             <div
               className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-              style={{ fontFamily: ara }}
             >
               {breadcrumbs.map((crumb, index) => (
                 <span
@@ -178,7 +174,6 @@ const DestinationsHero = ({
 
             <h1
               className="w-full text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white"
-              style={{ fontFamily: brando }}
             >
               {title}
             </h1>
@@ -186,7 +181,6 @@ const DestinationsHero = ({
             {subtitle.trim() ? (
               <p
                 className="w-full text-[22px] font-bold leading-8 text-white sm:text-[24px]"
-                style={{ fontFamily: brando }}
               >
                 {subtitle}
               </p>
@@ -207,14 +201,12 @@ const DestinationsHero = ({
             <div className="flex flex-col items-center gap-0.5 text-center">
               <span
                 className="whitespace-nowrap text-[35px] font-bold leading-[100%] tracking-normal text-white"
-                style={{ fontFamily: ara }}
               >
                 {tempDisplay}
                 <span className="align-super text-[0.55em]">°</span>
               </span>
               <span
                 className="text-center text-[14px] font-normal leading-[100%] tracking-normal text-white"
-                style={{ fontFamily: ibm }}
               >
                 {weather.condition}
               </span>

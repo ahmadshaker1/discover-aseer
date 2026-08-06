@@ -10,8 +10,6 @@ import {
   ChevronRightIcon,
 } from "@/components/shared/icons/CarouselChevrons";
 
-const ara = "var(--font-ara-hamah-1964), sans-serif";
-const ibm = "var(--font-ibm-plex-sans-arabic), sans-serif";
 
 interface FilmLandscapesSectionProps {
   landscapes: FilmLandscape[];
@@ -107,13 +105,11 @@ const FilmLandscapesSection = ({
             <div className="flex h-auto w-full max-w-[350px] flex-col gap-8 text-start lg:h-[265px]">
               <h2
                 className="text-[44px] font-bold leading-[38px] text-foreground"
-                style={{ fontFamily: ara }}
               >
                 {introTitle}
               </h2>
               <p
                 className="text-[15px] font-light leading-[119%] text-muted-foreground"
-                style={{ fontFamily: ibm }}
               >
                 {introBody}
               </p>
@@ -145,7 +141,6 @@ const FilmLandscapesSection = ({
                   <div className="absolute inset-x-0 bottom-0 h-[91px] rounded-b-[10px] bg-linear-to-b from-transparent to-black p-5">
                     <h3
                       className="text-start text-[24px] font-bold leading-[119%] text-white"
-                      style={{ fontFamily: ara }}
                     >
                       {label}
                     </h3>
