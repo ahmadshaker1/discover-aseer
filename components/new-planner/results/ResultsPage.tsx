@@ -94,15 +94,8 @@ export default function ResultsPage({
         </div>
 
         {/* Title and Restart Button */}
-        <div className="flex w-full justify-between items-center mb-6">
-          <h1
-            className="text-black dark:text-white"
-            style={{
-              fontSize: "36px",
-              fontStyle: "normal",
-              fontWeight: 700,
-            }}
-          >
+        <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center mb-6 gap-4">
+          <h1 className="text-black dark:text-white text-2xl md:text-[36px] font-bold">
             {t("yourTripInAseer")} · {t("daysFormat", { count: selectedDays })}
           </h1>
           <button

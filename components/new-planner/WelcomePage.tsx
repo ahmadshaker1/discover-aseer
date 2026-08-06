@@ -74,7 +74,7 @@ export default function WelcomePage({ onStartPlanning }: WelcomePageProps) {
           {/* Button */}
           <button
             onClick={onStartPlanning}
-            className="hover:opacity-90 transition-opacity"
+            className="hover:opacity-90 transition-opacity cursor-pointer"
             style={{
               display: "flex",
               height: "44px",
