@@ -111,6 +111,7 @@ export const PointsOfInterestCarousel = ({
           className="object-cover object-center"
           sizes="100vw"
           priority={activeIndex === 0 && incomingIndex === null}
+          unoptimized={activePoint.image.startsWith("/assets/")}
         />
         <div
           className="pointer-events-none absolute inset-0 bg-black/50"
@@ -132,6 +133,7 @@ export const PointsOfInterestCarousel = ({
             className="object-cover object-center"
             sizes="100vw"
             onLoad={onIncomingLoadingComplete}
+            unoptimized={incomingPoint.image.startsWith("/assets/")}
           />
           <div
             className="pointer-events-none absolute inset-0 bg-black/50"

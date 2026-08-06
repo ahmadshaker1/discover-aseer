@@ -89,6 +89,7 @@ export const PreviewImages = ({
                     fill
                     sizes="(max-width: 640px) 100px, (max-width: 1024px) 112px, 120px"
                     className="pointer-events-none rounded-xl object-cover object-center"
+                    unoptimized={point.image.startsWith("/assets/")}
                   />
                 </button>
               </SwiperSlide>

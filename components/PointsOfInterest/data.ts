@@ -24,7 +24,9 @@ const POI_LOCAL_IMAGE_BY_ID: Partial<
   Record<(typeof POI_DESTINATION_IDS)[number], string>
 > = {
   20: "/assets/points-of-interest/al-birk-beaches.jpg", // Al Birk — coastal / beaches
-  7: "/assets/points-of-interest/rijal-almaa.jpg", // Rijal Almaa
+  11: "/assets/points-of-interest/bisha-desert.jpg", // Bisha — desert
+  9: "/assets/points-of-interest/abha.jpg", // Abha — mountains
+  7: "/assets/points-of-interest/rijal-almaa.jpeg", // Rijal Almaa
 };
 
 const poiSortIndex = (id: string | number): number => {
@@ -44,7 +46,7 @@ export interface PointOfInterest {
   description: string;
 }
 
-const FALLBACK_IMAGE = "/assets/points-of-interest/Rectangle 2154.jpg";
+const FALLBACK_IMAGE = "/assets/points-of-interest/Rectangle 2162.jpg";
 const DESCRIPTION_MAX_LENGTH = 180;
 
 const truncatePlainText = (
