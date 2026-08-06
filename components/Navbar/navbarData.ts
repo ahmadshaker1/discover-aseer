@@ -40,7 +40,7 @@ export const discoverAseerLinks: NavbarDropdownLink[] = [
   {
     href: "/experiences",
     labelKey: "navLinks.experiences",
-    image: "/assets/experiences/experiences.png",
+    image: "/assets/navbar/experiences.png",
     subKey: "navMega.discover.experiences",
   },
   {
@@ -58,7 +58,7 @@ export const discoverAseerLinks: NavbarDropdownLink[] = [
   {
     href: "/aseer-cuisine",
     labelKey: "navLinks.cuisine",
-    image: "/assets/landing/hero-slide-cuisine.png",
+    image: "/assets/navbar/cuisine.png",
     subKey: "navMega.discover.cuisine",
   },
   {
@@ -91,13 +91,13 @@ export const planTripLinks: NavbarDropdownLink[] = [
   {
     href: "/new-planner",
     labelKey: "navPlanTripLinks.aiPlanner",
-    image: "/assets/landing/discover-aseer-hero.jpg",
+    image: "/assets/navbar/planner.png",
     subKey: "navMega.plan.aiPlanner",
   },
   {
     href: "/accommodation",
     labelKey: "navPlanTripLinks.accommodation",
-    image: "/assets/accommodation/accomodation-banner.webp",
+    image: "/assets/navbar/accommodation.png",
     subKey: "navMega.plan.accommodation",
   },
   {
