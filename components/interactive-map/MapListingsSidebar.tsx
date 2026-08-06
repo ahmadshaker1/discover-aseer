@@ -83,9 +83,9 @@ export function MapListingsSidebar({
     >
       <div className="border-b border-border p-4 sm:p-5">
         <div className="mb-4 flex items-start justify-between gap-3">
-          <h1 className="text-[clamp(28px,6vw,42px)] font-bold leading-none text-start">
+          <h2 className="text-[clamp(28px,6vw,42px)] font-bold leading-none text-start">
             {ui.discover}
-          </h1>
+          </h2>
           {showCloseButton && onClose ? (
             <Button
               type="button"
@@ -119,13 +119,14 @@ export function MapListingsSidebar({
       </div>
 
       <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3 sm:px-5 sm:py-4">
-        <h2 className="text-[clamp(22px,5vw,30px)] font-bold leading-tight">
+        <p className="text-[clamp(22px,5vw,30px)] leading-tight">
           {ui.locations}
-        </h2>
+        </p>
         <Button
           type="button"
           onClick={onClearFilters}
           className="inline-flex shrink-0 items-center rounded-full border border-border px-3 py-1.5 text-[14px] font-semibold text-foreground transition hover:bg-muted data-focus:outline-none data-focus:ring-2 data-focus:ring-primary data-focus:ring-offset-2 sm:px-4 sm:text-[15px]"
+          style={{ fontWeight: 400 }}
         >
           {ui.clearFilters}
         </Button>
