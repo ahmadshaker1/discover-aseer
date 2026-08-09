@@ -2,7 +2,6 @@
 
 import { Link } from "@/i18n/navigation";
 
-
 import { AseerPlatform } from "@/lib/discoverAseerLinks";
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 
@@ -45,7 +44,7 @@ interface AboutAseerHeroProps {
 const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
   return (
     <section
-      className="relative flex min-h-[50vh]  max-w-full flex-col items-center justify-center overflow-hidden md:min-h-[80vh]"
+      className="relative flex max-w-full flex-col items-center justify-center overflow-hidden md:min-h-[100vh]"
       style={{
         backgroundImage: `url('${data.backgroundImage}')`,
         backgroundSize: "cover",
@@ -74,10 +73,8 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
-        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center text-center ">
-          <div
-            className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 "
-          >
+        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
             {data.breadcrumbs.map((crumb, index) => (
               <span
                 key={`${crumb.label}-${index}`}
@@ -86,12 +83,12 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
-                    className="text-[14px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                    className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
                   >
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span className="text-[14px] font-normal leading-6 text-white">
+                  <span className="text-[14px] font-semibold leading-6 text-white">
                     {crumb.label}
                   </span>
                 )}
@@ -102,16 +99,11 @@ const AboutAseerHero = ({ data }: AboutAseerHeroProps) => {
             ))}
           </div>
 
-          <h1
-            className="w-full text-center text-[clamp(2rem,5vw,64px)] font-bold leading-[180%] text-white"
-          >
+          <h1 className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white">
             {data.title}
           </h1>
           {data.subtitle && (
-            <p
-              className="mt-4 w-full text-center text-base leading-[1.33] text-white/90 md:text-[clamp(18px,1.9vw,24px)]"
-              style={{ fontWeight: 500 }}
-            >
+            <p className="w-full text-center text-[24px] font-semibold leading-8 text-white">
               {data.subtitle}
             </p>
           )}

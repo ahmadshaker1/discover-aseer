@@ -14,7 +14,6 @@ import type { HeroSlide } from "@/components/Hero/types";
 
 export type { HeroSlide } from "@/components/Hero/types";
 
-
 const AUTOPLAY_MS = 5000;
 
 type HeroProps = {
@@ -33,10 +32,10 @@ const Hero = ({ slides }: HeroProps) => {
   const isLtr = locale === "en";
 
   return (
-    <section className="relative w-full bg-[#070707]">
+    <section className="relative w-full h-[100vh] bg-[#070707]">
       <Swiper
         modules={[Autoplay]}
-        className="hero-main-swiper h-[756px] w-full"
+        className="hero-main-swiper w-full h-full"
         dir={isLtr ? "ltr" : "rtl"}
         loop={slides.length > 1}
         speed={600}
@@ -86,7 +85,7 @@ const Hero = ({ slides }: HeroProps) => {
                   <h1
                     className="w-full text-white"
                     style={{
-                      fontWeight: "bold",
+                      fontWeight: 900,
                       ...(slide.largeTitle
                         ? {
                             fontSize: "clamp(44px, 5vw, 88px)",
@@ -103,7 +102,7 @@ const Hero = ({ slides }: HeroProps) => {
 
                   <p
                     className="w-full text-base leading-[1.33] text-white md:text-[clamp(18px,1.9vw,24px)]"
-                    style={{ fontWeight: "bold" }}
+                    style={{ fontWeight: 700 }}
                   >
                     {slide.subtitle}
                   </p>

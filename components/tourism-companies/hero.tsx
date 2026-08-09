@@ -2,7 +2,6 @@ import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
-
 function BreadcrumbChevron() {
   return (
     <svg
@@ -27,7 +26,7 @@ export default async function TourismCompaniesHero() {
   const tCommon = await getTranslations("common");
 
   return (
-    <section className="relative flex h-[70vh] w-full items-center justify-center overflow-hidden bg-black text-white">
+    <section className="relative flex h-[100vh] w-full items-center justify-center overflow-hidden bg-black text-white">
       <div className="absolute inset-0 z-0">
         <Image
           src="/assets/tourism-companies/MAN_0983.JPG"
@@ -40,22 +39,29 @@ export default async function TourismCompaniesHero() {
         <div className="absolute inset-0 bg-black/40" aria-hidden />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 text-center sm:px-10 md:px-16">
-        <div className="mb-4 flex flex-wrap items-center justify-center gap-2 text-sm font-medium sm:text-base">
-          <Link href="/" className="transition-opacity hover:opacity-80">
-            {t("navigation.home")}
-          </Link>
-          <span aria-hidden>
-            <BreadcrumbChevron />
-          </span>
-          <span className="text-white/75">{t("navigation.companies")}</span>
-        </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+            <span className="inline-flex items-center gap-1.5 sm:gap-2">
+              <Link
+                href="/"
+                className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
+              >
+                {t("navigation.home")}
+              </Link>
+              <BreadcrumbChevron />
+            </span>
+            <span className="inline-flex items-center gap-1.5 sm:gap-2">
+              <span className="text-[14px] font-semibold leading-6 text-white">
+                {t("navigation.companies")}
+              </span>
+            </span>
+          </div>
 
-        <h1
-          className="text-4xl font-bold leading-tight sm:text-5xl md:text-6xl"
-        >
-          {t("title")}
-        </h1>
+          <h1 className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white">
+            {t("title")}
+          </h1>
+        </div>
       </div>
     </section>
   );

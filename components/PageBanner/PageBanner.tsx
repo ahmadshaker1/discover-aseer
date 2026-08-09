@@ -5,7 +5,6 @@ import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 
-
 export interface BreadcrumbItem {
   label: string;
   href?: string;
@@ -58,7 +57,7 @@ const PageBanner = ({
 
   return (
     <div
-      className="relative flex min-h-[75vh] w-full flex-col items-center justify-center overflow-hidden md:min-h-[80vh]"
+      className="relative flex h-[100vh] w-full flex-col items-center justify-center overflow-hidden"
       style={{
         backgroundImage: `url('${backgroundImage}')`,
         backgroundSize: "cover",
@@ -71,47 +70,40 @@ const PageBanner = ({
         aria-hidden
       />
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
-        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
           <nav
             aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"}
             className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
           >
             {breadcrumbs.map((crumb, index) => (
-              <Fragment key={`${crumb.label}-${index}`}>
+              <span
+                key={`${crumb.label}-${index}`}
+                className="inline-flex items-center gap-1.5 sm:gap-2"
+              >
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
-                    className="text-[14px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
-                    style={{ fontWeight: "semi-bold" }}
+                    className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
                   >
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span
-                    className="text-[14px] font-normal leading-6 text-white"
-                    style={{ fontWeight: "semi-bold" }}
-                  >
+                  <span className="text-[14px] font-semibold leading-6 text-white">
                     {crumb.label}
                   </span>
                 )}
                 {index < breadcrumbs.length - 1 ? (
                   <BreadcrumbChevron isRtl={isRtl} />
                 ) : null}
-              </Fragment>
+              </span>
             ))}
           </nav>
 
-          <h1
-            className="w-full text-center text-[clamp(2rem,5vw,64px)] font-bold leading-[180%] text-white"
-            style={{ fontWeight: 900 }}
-          >
+          <h1 className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white">
             {title}
           </h1>
 
-          <p
-            className="w-full text-center text-[24px] leading-6 text-white"
-            style={{ fontWeight: "semi-bold" }}
-          >
+          <p className="w-full text-center text-[24px] font-semibold leading-8 text-white">
             {subtitle}
           </p>
 

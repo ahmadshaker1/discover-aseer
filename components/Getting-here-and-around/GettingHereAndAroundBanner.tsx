@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
-
 function BreadcrumbChevron() {
   return (
     <svg
@@ -43,29 +42,34 @@ export default async function GettingHereAndAroundBanner() {
         }}
       />
 
-      <div className="absolute inset-0 z-10 flex items-end md:items-center">
-        <div className="mx-auto w-full max-w-[1440px] px-6 pb-10 text-white md:px-10 md:pb-0 text-start">
-          <div className="mb-4 flex items-center gap-2 text-sm md:text-base justify-center">
-            <a href="/" className="hover:underline">
-              {t("home")}
-            </a>
-            <span aria-hidden>
-              <BreadcrumbChevron />
-            </span>
-            <p>{t("crumbGettingHere")}</p>
+      <div className="absolute inset-0 z-10 flex items-center justify-center">
+        <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
+          <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+              <span className="inline-flex items-center gap-1.5 sm:gap-2">
+                <a
+                  href="/"
+                  className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
+                >
+                  {t("home")}
+                </a>
+                <BreadcrumbChevron />
+              </span>
+              <span className="inline-flex items-center gap-1.5 sm:gap-2">
+                <span className="text-[14px] font-semibold leading-6 text-white">
+                  {t("crumbGettingHere")}
+                </span>
+              </span>
+            </div>
+
+            <h1 className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white">
+              {t("title")}
+            </h1>
+
+            <p className="w-full text-center text-[24px] font-semibold leading-8 text-white">
+              {t("subtitle")}
+            </p>
           </div>
-
-          <h1
-            className="mb-3 flex items-center justify-center text-3xl font-bold leading-tight md:text-5xl"
-          >
-            {t("title")}
-          </h1>
-
-          <p
-            className="mb-3 flex items-center justify-center text-md font-bold leading-tight text-gray-300 md:text-1xl"
-          >
-            {t("subtitle")}
-          </p>
         </div>
       </div>
     </section>

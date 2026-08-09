@@ -2,7 +2,6 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-
 function BreadcrumbChevron() {
   return (
     <svg
@@ -30,7 +29,7 @@ export default async function RestaurantsBanner() {
   const tCommon = await getTranslations("common");
 
   return (
-    <section className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]">
+    <section className="relative h-[100vh] w-full overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src="/assets/restaurant/restaurant-banner.png"
@@ -57,28 +56,33 @@ export default async function RestaurantsBanner() {
       />
 
       <div className="relative z-10 flex min-h-[calc(100dvh-5rem)] w-full flex-col items-center justify-center md:min-h-[calc(100dvh-6rem)]">
-        <div className="mx-auto w-full max-w-[1440px] px-6 py-16 text-center sm:px-10 md:px-16 lg:px-24">
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-2 text-base font-medium text-white">
-            <Link href="/" className="transition-opacity hover:opacity-80">
-              {tCommon("breadcrumbHome")}
-            </Link>
-            <span aria-hidden className="opacity-80">
-              <BreadcrumbChevron />
-            </span>
-            <span>{t("breadcrumb")}</span>
+        <div className="mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
+          <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+              <span className="inline-flex items-center gap-1.5 sm:gap-2">
+                <Link
+                  href="/"
+                  className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
+                >
+                  {tCommon("breadcrumbHome")}
+                </Link>
+                <BreadcrumbChevron />
+              </span>
+              <span className="inline-flex items-center gap-1.5 sm:gap-2">
+                <span className="text-[14px] font-semibold leading-6 text-white">
+                  {t("breadcrumb")}
+                </span>
+              </span>
+            </div>
+
+            <h1 className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white">
+              {t("title")}
+            </h1>
+
+            <p className="w-full text-center text-[24px] font-semibold leading-8 text-white">
+              {t("subtitle")}
+            </p>
           </div>
-
-          <h1
-            className="mb-4 text-4xl font-bold text-white sm:text-5xl md:text-6xl lg:text-7xl"
-          >
-            {t("title")}
-          </h1>
-
-          <p
-            className="mx-auto max-w-2xl text-lg font-medium leading-relaxed text-white sm:text-xl md:text-2xl"
-          >
-            {t("subtitle")}
-          </p>
         </div>
       </div>
     </section>

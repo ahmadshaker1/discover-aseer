@@ -2,7 +2,6 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-
 const TOUR_GUIDE_PORTAL_URL =
   process.env.NEXT_PUBLIC_TOUR_GUIDE_REGISTER_URL?.trim() || "";
 
@@ -67,7 +66,7 @@ const TourGuidesBanner = async () => {
   const { href: portalHref, external: portalExternal } = resolvePortalHref();
 
   return (
-    <section className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden md:min-h-[calc(100dvh-6rem)]">
+    <section className="relative min-h-[100vh] w-full overflow-hidden md:min-h-[100vh]">
       {/* Background image — full hero */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -82,37 +81,44 @@ const TourGuidesBanner = async () => {
 
       {/* Copy on top of the scene */}
       <div className="relative z-10 flex min-h-[calc(100dvh-5rem)] w-full flex-col items-center justify-center md:min-h-[calc(100dvh-6rem)]">
-        <div className="mx-auto w-full max-w-[1440px] px-6 py-16 text-center sm:px-10 md:px-16 lg:px-24">
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-2 text-base font-medium text-white">
-            <Link href="/" className="hover:opacity-80 transition-opacity">
-              {tCommon("breadcrumbHome")}
+        <div className="mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
+          <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+              <span className="inline-flex items-center gap-1.5 sm:gap-2">
+                <Link
+                  href="/"
+                  className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
+                >
+                  {tCommon("breadcrumbHome")}
+                </Link>
+                <BreadcrumbChevron />
+              </span>
+              <span className="inline-flex items-center gap-1.5 sm:gap-2">
+                <span className="text-[14px] font-semibold leading-6 text-white">
+                  {tGuides("title")}
+                </span>
+              </span>
+            </div>
+
+            <h1 className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white">
+              {tGuides("title")}
+            </h1>
+
+            <p className="w-full text-center text-[24px] font-semibold leading-8 text-white">
+              {tGuides("subtitle")}
+            </p>
+
+            <Link
+              href={portalHref}
+              {...(portalExternal
+                ? { target: "_blank" as const, rel: "noopener noreferrer" }
+                : {})}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-medium text-primary-foreground shadow-lg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              {tGuides("registerAsGuide")}
+              <BreadcrumbChevron />
             </Link>
-            <BreadcrumbChevron />
-            <span>{tGuides("title")}</span>
           </div>
-
-          <h1
-            className="mb-4 text-4xl font-bold text-white sm:text-5xl md:text-6xl lg:text-7xl"
-          >
-            {tGuides("title")}
-          </h1>
-
-          <p
-            className="mx-auto mb-10 max-w-2xl text-lg font-medium leading-relaxed text-white sm:text-xl md:text-2xl"
-          >
-            {tGuides("subtitle")}
-          </p>
-
-          <Link
-            href={portalHref}
-            {...(portalExternal
-              ? { target: "_blank" as const, rel: "noopener noreferrer" }
-              : {})}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-medium text-primary-foreground shadow-lg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
-            {tGuides("registerAsGuide")}
-            <BreadcrumbChevron />
-          </Link>
         </div>
       </div>
     </section>

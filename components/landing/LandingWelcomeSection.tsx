@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
-
 const OVERLAY_GRADIENT =
   "linear-gradient(179.52deg, rgba(0, 0, 0, 0) 5.53%, #000000 99.58%)";
 

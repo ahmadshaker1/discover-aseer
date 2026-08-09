@@ -4,7 +4,6 @@ import { Link } from "@/i18n/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
-
 interface BreadcrumbItem {
   label: string;
   href?: string;
@@ -142,12 +141,10 @@ const DestinationsHero = ({
     >
       <div className="absolute inset-0 bg-black/30" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center px-4 lg:px-12">
-        <div className="flex w-full max-w-[610px] flex-col items-center gap-8">
-          <div className="flex w-full flex-col items-center gap-[31px] text-center">
-            <div
-              className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
-            >
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8">
+          <div className="mx-auto flex w-full flex-col items-center gap-8 text-center sm:gap-10">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
               {breadcrumbs.map((crumb, index) => (
                 <span
                   key={`${crumb.label}-${index}`}
@@ -156,12 +153,12 @@ const DestinationsHero = ({
                   {crumb.href ? (
                     <Link
                       href={crumb.href}
-                      className="text-[18px] font-bold leading-6 text-white/70 transition-opacity hover:opacity-85 sm:text-[20px]"
+                      className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
                     >
                       {crumb.label}
                     </Link>
                   ) : (
-                    <span className="text-[18px] font-bold leading-6 text-white sm:text-[20px]">
+                    <span className="text-[14px] font-semibold leading-6 text-white">
                       {crumb.label}
                     </span>
                   )}
@@ -172,16 +169,12 @@ const DestinationsHero = ({
               ))}
             </div>
 
-            <h1
-              className="w-full text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white"
-            >
+            <h1 className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white">
               {title}
             </h1>
 
             {subtitle.trim() ? (
-              <p
-                className="w-full text-[22px] font-bold leading-8 text-white sm:text-[24px]"
-              >
+              <p className="w-full text-center text-[24px] font-semibold leading-8 text-white">
                 {subtitle}
               </p>
             ) : null}
@@ -199,15 +192,11 @@ const DestinationsHero = ({
               <WeatherIcon />
             )}
             <div className="flex flex-col items-center gap-0.5 text-center">
-              <span
-                className="whitespace-nowrap text-[35px] font-bold leading-[100%] tracking-normal text-white"
-              >
+              <span className="whitespace-nowrap text-[35px] font-bold leading-[100%] tracking-normal text-white">
                 {tempDisplay}
                 <span className="align-super text-[0.55em]">°</span>
               </span>
-              <span
-                className="text-center text-[14px] font-normal leading-[100%] tracking-normal text-white"
-              >
+              <span className="text-center text-[14px] font-normal leading-[100%] tracking-normal text-white">
                 {weather.condition}
               </span>
             </div>

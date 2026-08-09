@@ -75,7 +75,7 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
-        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-5 text-center sm:gap-6">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
           <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
             {data.breadcrumbs.map((crumb, index) => (
               <span
@@ -85,12 +85,12 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
                 {crumb.href ? (
                   <Link
                     href={crumb.href}
-                    className="text-[14px] font-normal leading-6 text-white/70 transition-opacity hover:opacity-85"
+                    className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
                   >
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span className="text-[14px] font-normal leading-6 text-white">
+                  <span className="text-[14px] font-semibold leading-6 text-white">
                     {crumb.label}
                   </span>
                 )}
@@ -101,11 +101,11 @@ const CommunityHero = ({ data }: CommunityHeroProps) => {
             ))}
           </div>
 
-          <h1 className="w-full text-center text-[clamp(2rem,5vw,44px)] font-[900] leading-[180%] text-primary-foreground">
+          <h1 className="w-full text-center text-[clamp(2.5rem,6vw,56px)] font-bold leading-[130%] text-white">
             {data.title}
           </h1>
           {data.subtitle && (
-            <p className="w-full text-center text-base leading-[1.33] text-primary-foreground md:text-[clamp(18px,1.9vw,24px)] font-bold">
+            <p className="w-full text-center text-[24px] font-semibold leading-8 text-white">
               {data.subtitle}
             </p>
           )}
