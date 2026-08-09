@@ -168,16 +168,12 @@ const AseerCuisineCookingExperiencesSection = ({
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-2 sm:px-8 md:px-[60px]">
         <div className="flex w-full flex-col gap-8">
           <div className="flex w-full items-center justify-between gap-4">
-            <div className="flex min-w-0 flex-col gap-2 items-start justify-start text-start">
-              <h2
-                className="w-full max-w-[620px] text-start text-[48px] font-bold leading-[100%] text-secondary"
-              >
+            <div className="flex min-w-0 flex-col gap-2 items-start justify-start text-start space-y-8">
+              <h2 className="w-full max-w-[620px] text-start text-[48px] font-bold leading-[100%] text-secondary">
                 {data.title}
               </h2>
               {data.description ? (
-                <p
-                  className="w-full max-w-[620px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start"
-                >
+                <p className="w-full max-w-[620px] text-[24px] font-bold leading-[119%] text-muted-foreground text-start">
                   {data.description}
                 </p>
               ) : null}

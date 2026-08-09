@@ -11,7 +11,6 @@ import {
   LANDING_STORY_YOUTUBE_URLS,
 } from "@/components/landing/youtubeStoryEmbed";
 
-
 const STORY_CAPTION_KEYS = ["storyVideo2Title", "storyVideo1Title"] as const;
 
 function PlayIcon43() {
@@ -229,16 +228,17 @@ export default function LandingStoriesFromAseerSection({
                       <PlayIcon43 />
                     </a>
                   ) : (
-                    <span className="pointer-events-none inline-flex" aria-hidden>
+                    <span
+                      className="pointer-events-none inline-flex"
+                      aria-hidden
+                    >
                       <PlayIcon43 />
                     </span>
                   )}
                 </div>
               </div>
               {caption ? (
-                <p
-                  className="mt-4 text-start text-[clamp(18px,2.2vw,24px)] font-bold leading-[130%] text-foreground"
-                >
+                <p className="mt-4 text-start text-[clamp(18px,2.2vw,24px)] font-bold leading-[130%] text-foreground">
                   {caption}
                 </p>
               ) : null}

@@ -19,7 +19,6 @@ function landmarkMatchesCity(landmark: Landmark, city: string | null): boolean {
   return landmarkBelongsToCity(landmark, city);
 }
 
-
 interface AttractionsLandmarksSectionProps {
   landmarks: Landmark[];
   title?: string;
@@ -128,7 +127,7 @@ const AttractionsLandmarksSection = ({
       ) : null}
       <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-4 sm:px-8 md:px-[60px]">
         <div className="mx-auto mb-8 flex w-full max-w-[1320px] items-center justify-between gap-4">
-          <div className={`min-w-0 space-y-2 text-start`}>
+          <div className={`min-w-0 space-y-8 text-start`}>
             <h2
               className={`w-full max-w-[620px] text-[48px] font-bold leading-[100%] text-secondary text-start`}
             >
