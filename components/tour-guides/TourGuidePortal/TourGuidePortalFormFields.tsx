@@ -37,11 +37,9 @@ function RequiredMark() {
 
 export function FormSectionTitle({ children }: { children: ReactNode }) {
   return (
-    <h2
-      className="mb-6 text-2xl font-bold text-foreground text-start"
-    >
+    <h3 className="mb-6 text-2xl font-bold text-foreground text-start">
       {children}
-    </h2>
+    </h3>
   );
 }
 
@@ -68,10 +66,7 @@ export function FormTextInput({
 
   return (
     <Field className={`${FIELD_GROUP} ${className}`.trim()}>
-      <Label
-        htmlFor={id}
-        className="text-base font-bold text-foreground"
-      >
+      <Label htmlFor={id} className="text-base font-bold text-foreground">
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
@@ -108,13 +103,7 @@ export function FormTextInput({
           </button>
         )}
       </div>
-      {hint ? (
-        <p
-          className="text-xs text-muted-foreground"
-        >
-          {hint}
-        </p>
-      ) : null}
+      {hint ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
     </Field>
   );
 }
@@ -135,18 +124,11 @@ export function FormTextarea({
 }: FormTextareaProps) {
   return (
     <Field className={`flex flex-col gap-2 text-start ${className}`}>
-      <Label
-        htmlFor={id}
-        className="text-base font-bold text-foreground"
-      >
+      <Label htmlFor={id} className="text-base font-bold text-foreground">
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
-      <Textarea
-        id={id}
-        className={FIELD_TEXTAREA_CONTROL}
-        {...textareaProps}
-      />
+      <Textarea id={id} className={FIELD_TEXTAREA_CONTROL} {...textareaProps} />
     </Field>
   );
 }
@@ -196,10 +178,7 @@ export function FormSelectField({
 
   return (
     <Field className={FIELD_GROUP} disabled={disabled}>
-      <Label
-        htmlFor={id}
-        className="text-base font-bold text-foreground"
-      >
+      <Label htmlFor={id} className="text-base font-bold text-foreground">
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
@@ -281,10 +260,7 @@ export function FormMultiSelectField({
 
   return (
     <Field className={FIELD_GROUP} disabled={disabled}>
-      <Label
-        htmlFor={id}
-        className="text-base font-bold text-foreground"
-      >
+      <Label htmlFor={id} className="text-base font-bold text-foreground">
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
@@ -402,10 +378,7 @@ export function FormFileUpload({
 
   return (
     <Field className={FIELD_GROUP}>
-      <Label
-        htmlFor={id}
-        className="text-base font-bold text-foreground"
-      >
+      <Label htmlFor={id} className="text-base font-bold text-foreground">
         {label}
         {required ? <RequiredMark /> : null}
       </Label>
@@ -434,17 +407,9 @@ export function FormFileUpload({
         >
           {chooseFileLabel}
         </Button>
-        <span
-          className="text-xs text-muted-foreground"
-        >
-          {hint}
-        </span>
+        <span className="text-xs text-muted-foreground">{hint}</span>
         {file?.name ? (
-          <span
-            className="mt-2 text-xs text-primary"
-          >
-            {file.name}
-          </span>
+          <span className="mt-2 text-xs text-primary">{file.name}</span>
         ) : previewUrl && !showImagePreview ? (
           <a
             href={previewUrl}
@@ -456,17 +421,11 @@ export function FormFileUpload({
             {existingFileLabel ?? viewFileLabel}
           </a>
         ) : previewUrl && showImagePreview && !file ? (
-          <span
-            className="mt-2 text-xs text-primary"
-          >
+          <span className="mt-2 text-xs text-primary">
             {existingFileLabel ?? viewFileLabel}
           </span>
         ) : noFileLabel ? (
-          <span
-            className="text-xs text-muted-foreground"
-          >
-            {noFileLabel}
-          </span>
+          <span className="text-xs text-muted-foreground">{noFileLabel}</span>
         ) : null}
       </Label>
     </Field>
@@ -505,9 +464,7 @@ export function FormCheckboxField({
           />
         </svg>
       </Checkbox>
-      <Label
-        className="flex-1 cursor-pointer text-sm text-start"
-      >
+      <Label className="flex-1 cursor-pointer text-sm text-start">
         {children}
       </Label>
     </Field>

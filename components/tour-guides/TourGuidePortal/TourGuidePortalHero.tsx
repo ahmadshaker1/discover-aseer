@@ -3,7 +3,6 @@
 import { Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
-
 function BackChevronIcon() {
   return (
     <svg
@@ -95,9 +94,9 @@ const TourGuidePortalHero = () => {
           </Link>
         </div>
 
-        <div className="mx-auto mt-16 flex w-full max-w-[590px] flex-col items-stretch gap-6 text-center sm:mt-20 lg:mt-24">
+        <div className="mx-auto mt-16 flex w-full max-w-[1000px] flex-col items-stretch gap-6 text-center sm:mt-20 lg:mt-24">
           <nav
-            className="mx-auto flex w-full max-w-[543px] flex-wrap items-center justify-center gap-1.5 text-secondary"
+            className="mx-auto flex w-full max-w-[700px] flex-wrap items-center justify-center gap-1.5 text-secondary"
             aria-label={t("breadcrumbLabel")}
           >
             <Link
@@ -123,13 +122,11 @@ const TourGuidePortalHero = () => {
           </nav>
           <h1
             id="tour-guide-portal-hero-title"
-            className="w-full text-center text-[clamp(2rem,6vw,55px)] font-bold leading-[1.1] text-secondary"
+            className="w-full text-center text-[clamp(2rem,6vw,48px)] font-bold leading-[1.3] text-secondary"
           >
             {tForm("formTitle")}
           </h1>
-          <p
-            className="mx-auto max-w-[590px] text-center text-lg font-normal leading-relaxed text-secondary opacity-80 md:text-xl"
-          >
+          <p className="mx-auto max-w-[800px] text-center text-lg font-normal leading-relaxed text-secondary opacity-80 md:text-xl">
             {tForm("formSubtitle")}
           </p>
         </div>
