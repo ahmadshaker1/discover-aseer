@@ -17,12 +17,6 @@ import { routing, type AppLocale } from "@/i18n/routing";
 
 import "./globals.css";
 
-const araHamah1964 = localFont({
-  src: "../../public/fonts/Ara Hamah 1964 B Bold.ttf",
-  variable: "--font-ara-hamah-1964",
-  display: "swap",
-});
-
 const koning = localFont({
   src: [
     {
@@ -126,7 +120,7 @@ export default async function LocaleLayout({
     <html
       lang={appLocale}
       dir={appLocale === "ar" ? "rtl" : "ltr"}
-      className={`${araHamah1964.variable} ${koning.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable}`}
+      className={`${koning.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable}`}
       suppressHydrationWarning
     >
       <body className="antialiased">
