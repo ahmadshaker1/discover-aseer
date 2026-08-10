@@ -55,7 +55,7 @@ export default async function RestaurantsBanner() {
         aria-hidden
       />
 
-      <div className="relative z-10 flex min-h-[calc(100dvh-5rem)] w-full flex-col items-center justify-center md:min-h-[calc(100dvh-6rem)]">
+      <div className="relative z-10 flex h-[100vh] w-full flex-col items-center justify-center">
         <div className="mx-auto w-full max-w-[1440px] px-6 py-10 sm:px-10 md:px-12">
           <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
             <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">

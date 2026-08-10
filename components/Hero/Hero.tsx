@@ -60,7 +60,7 @@ const Hero = ({ slides }: HeroProps) => {
               aria-hidden
             />
 
-            <div className="relative z-10 mx-auto h-full w-full max-w-[1440px] px-6 md:px-[130px]">
+            <div className="relative z-10 mx-auto h-full w-full max-w-[1440px] px-6 md:px-[20px]">
               <div
                 className={
                   isLtr
@@ -80,10 +80,10 @@ const Hero = ({ slides }: HeroProps) => {
                 ) : null}
 
                 <div
-                  className={`flex w-full max-w-[527px] flex-col gap-3 md:gap-4 ${isLtr ? "mr-auto text-left" : "ml-auto text-right"}`}
+                  className={`flex w-full max-w-[800px] flex-col ${isLtr ? "mr-auto text-left" : "ml-auto text-right"}`}
                 >
                   <h1
-                    className="w-full text-white"
+                    className="w-full text-white mb-[76px]"
                     style={{
                       fontWeight: 900,
                       ...(slide.largeTitle
@@ -101,13 +101,13 @@ const Hero = ({ slides }: HeroProps) => {
                   </h1>
 
                   <p
-                    className="w-full text-base leading-[1.33] text-white md:text-[clamp(18px,1.9vw,24px)]"
+                    className="w-full text-base leading-[1.33] text-white md:text-[clamp(18px,1.9vw,24px)] 
+                    mb-[25px]"
                     style={{ fontWeight: 700 }}
                   >
                     {slide.subtitle}
                   </p>
                 </div>
-
                 {isExternalHref(slide.href) ? (
                   <a
                     href={slide.href}

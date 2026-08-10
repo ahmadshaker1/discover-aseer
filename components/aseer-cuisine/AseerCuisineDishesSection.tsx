@@ -25,7 +25,7 @@ const AseerCuisineDishesSection = ({
       <div className="flex w-full flex-col gap-[59px]">
         <div className="px-4 sm:px-8 md:px-[62px]">
           <div className="mx-auto flex w-full max-w-[1316px] flex-col items-center gap-5 text-center">
-            <h2 className="w-full text-center text-[48px] font-bold leading-[100%] text-secondary pb-5">
+            <h2 className="w-full text-center text-[48px] font-bold leading-[100%] pb-5">
               {data.title}
             </h2>
             <p className="w-full max-w-[910px] text-center text-[18px] font-light leading-6 text-muted-foreground">

@@ -169,7 +169,7 @@ const AseerCuisineCookingExperiencesSection = ({
         <div className="flex w-full flex-col gap-8">
           <div className="flex w-full items-center justify-between gap-4">
             <div className="flex min-w-0 flex-col gap-2 items-start justify-start text-start space-y-8">
-              <h2 className="w-full max-w-[620px] text-start text-[48px] font-bold leading-[100%] text-secondary">
+              <h2 className="w-full max-w-[620px] text-start text-[48px] font-bold leading-[100%]">
                 {data.title}
               </h2>
               {data.description ? (
