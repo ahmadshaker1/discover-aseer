@@ -23,6 +23,33 @@ const araHamah1964 = localFont({
   display: "swap",
 });
 
+const koning = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Koning Font/KoningDisplay-Regular_TRIAL.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Koning Font/KoningDisplay-SemiBold_TRIAL.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Koning Font/KoningDisplay-Bold_TRIAL.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Koning Font/KoningDisplay-Black_TRIAL.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-koning",
+  display: "swap",
+});
+
 const brando = localFont({
   src: [
     {
@@ -99,10 +126,11 @@ export default async function LocaleLayout({
     <html
       lang={appLocale}
       dir={appLocale === "ar" ? "rtl" : "ltr"}
+      className={`${araHamah1964.variable} ${koning.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable}`}
       suppressHydrationWarning
     >
       <body
-        className={`${araHamah1964.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} antialiased`}
+        className="antialiased"
       >
         <ThemeInitScript />
         <Script

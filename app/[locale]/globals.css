@@ -1,9 +1,17 @@
 @import "tailwindcss";
 
+html[dir="rtl"] {
+  --font-primary: var(--font-brando), sans-serif;
+}
+
+html[dir="ltr"] {
+  --font-primary: var(--font-koning), var(--font-brando), sans-serif;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: var(--font-brando), sans-serif;
+  --font-sans: var(--font-primary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
@@ -47,7 +55,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   color-scheme: light;
-  font-family: var(--font-brando), sans-serif;
+  font-family: var(--font-primary);
 }
 
 /* Viewport scrollbars: explicit + universal (some engines ignore `*` on the root) */
@@ -196,7 +204,7 @@ html.dark {
 }
 
 .travel-section-title {
-  font-family: var(--font-brando), sans-serif;
+  font-family: var(--font-primary);
   font-weight: 900;
   font-style: normal;
   font-size: 48px;
@@ -207,7 +215,7 @@ html.dark {
 
 /* Carousel/related section titles + filter UI text only */
 .font-brando {
-  font-family: var(--font-brando), sans-serif;
+  font-family: var(--font-primary);
 }
 
 /* Typography Sizing */
@@ -320,7 +328,7 @@ button {
 }
 
 .interactive-map-popup .interactive-map-popup-card {
-  font-family: var(--font-brando), sans-serif;
+  font-family: var(--font-primary);
   background-color: var(--background);
   color: var(--foreground);
   text-align: start;
