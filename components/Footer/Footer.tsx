@@ -9,10 +9,8 @@ import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
 import { BookletSmallArrowIcon } from "./Icons";
 
-
 const Footer = () => {
   const t = useTranslations();
-
   return (
     <footer className="w-full bg-[linear-gradient(359.31deg,#280048_43.01%,#3B016B_99.52%)] text-white">
       <div className="mx-auto w-full max-w-[1440px] px-4 py-5 sm:px-8 md:px-16 lg:h-[647px] lg:px-[130px]">
@@ -50,15 +48,11 @@ const Footer = () => {
             <div className="grid h-full grid-cols-1 gap-8 text-start sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
               {/* اكتشف عسير */}
               <div className="flex w-full justify-self-start flex-col items-start text-start">
-                <h3
-                  className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
-                >
+                <h3 className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80">
                   {t("footer.discoverAseerTitle")}
                 </h3>
 
-                <div
-                  className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
-                >
+                <div className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]">
                   <Link
                     href="/destinations"
                     className="block w-full text-start hover:opacity-80"
@@ -125,15 +119,11 @@ const Footer = () => {
               </div>
               {/* خطط لرحلتك */}
               <div className="flex w-full justify-self-start flex-col items-start text-start">
-                <h3
-                  className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
-                >
+                <h3 className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80">
                   {t("footer.planYourTripTitle")}
                 </h3>
 
-                <div
-                  className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]"
-                >
+                <div className="flex w-full flex-col items-start text-[18px] font-bold leading-[197%]">
                   <Link
                     href="/new-planner"
                     className="block w-full text-start hover:opacity-80"
@@ -180,22 +170,16 @@ const Footer = () => {
               </div>
               {/* كتيبات */}
               <div className="flex w-full justify-self-start flex-col items-start text-start lg:h-full">
-                <h3
-                  className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
-                >
+                <h3 className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80">
                   {t("footer.bookletsTitle")}
                 </h3>
-                <div
-                  className="flex w-full flex-1 flex-col items-start text-[18px] font-bold leading-[197%]"
-                >
+                <div className="flex w-full flex-1 flex-col items-start text-[18px] font-bold leading-[197%]">
                   <Link
                     href="/about-aseer"
                     className="block w-full text-start hover:opacity-80"
                   >
                     <span className="inline-flex items-center gap-1 whitespace-nowrap">
-                      <span
-                        className="text-start text-[18px] font-bold leading-[197%]"
-                      >
+                      <span className="text-start text-[18px] font-bold leading-[197%]">
                         {t("footer.linkDiscoverBooklet")}
                       </span>
                       <BookletSmallArrowIcon />
@@ -207,9 +191,7 @@ const Footer = () => {
                     className="block w-full text-start hover:opacity-80"
                   >
                     <span className="inline-flex items-center gap-1 whitespace-nowrap">
-                      <span
-                        className="text-start text-[18px] font-bold leading-[197%]"
-                      >
+                      <span className="text-start text-[18px] font-bold leading-[197%]">
                         {t("footer.linkOutdoorGuide")}
                       </span>
                       <BookletSmallArrowIcon />
@@ -226,9 +208,7 @@ const Footer = () => {
               </div>
               {/* التواصل */}
               <div className="flex w-full justify-self-start flex-col items-start gap-4 text-start">
-                <h3
-                  className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80"
-                >
+                <h3 className="w-full text-start text-[14px] font-bold leading-[110%] text-white/80">
                   {t("footer.contactTitle")}
                 </h3>
                 <Link
@@ -237,20 +217,16 @@ const Footer = () => {
                 >
                   {t("footer.contactUs")}
                 </Link>
-                <div
-                  className="w-full text-start text-sm text-white/80"
-                >
+                <div className="w-full text-start text-sm text-white/80">
                   {t("footer.internationalCallCenter")}
                 </div>
                 <a
                   href="tel:+9669200000890"
-                  className="block w-full text-start text-lg hover:opacity-80"
+                  className="block w-full text-start text-lg hover:opacity-80 font-numbers"
                 >
                   <span dir="ltr">+966 9200000890</span>
                 </a>
-                <div
-                  className="w-full text-start text-xs text-white/70"
-                >
+                <div className="w-full text-start text-xs text-white/70">
                   {t("footer.followUs")}
                 </div>
                 <div className="flex w-full flex-row items-center justify-start gap-3">
@@ -271,9 +247,7 @@ const Footer = () => {
                 </div>
                 {/* Middle block */}
                 <div className="flex w-full flex-col items-start gap-3 text-start">
-                  <p
-                    className="text-start text-[16px] font-bold leading-[110%] text-white"
-                  >
+                  <p className="text-start text-[16px] font-bold leading-[110%] text-white">
                     {t("common.memberOf")}
                   </p>
                   <div className="flex w-full flex-row items-center justify-between gap-2">
@@ -337,9 +311,7 @@ const Footer = () => {
 
             {/* Copyright row below single divider */}
             <div className="mt-4 border-t border-white/20 pt-4">
-              <div
-                className="flex w-full flex-col gap-4 sm:flex-row sm:justify-between items-center text-[13px] font-bold leading-[150%]"
-              >
+              <div className="flex w-full flex-col gap-4 sm:flex-row sm:justify-between items-center text-[13px] font-bold leading-[150%]">
                 <Link
                   href="/privacy"
                   className="whitespace-nowrap  text-[16px] hover:opacity-80"

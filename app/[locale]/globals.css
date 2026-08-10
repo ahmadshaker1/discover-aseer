@@ -8,6 +8,10 @@ html[dir="ltr"] {
   --font-primary: var(--font-koning), var(--font-brando), sans-serif;
 }
 
+.font-numbers {
+  font-family: var(--font-koning) !important;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
