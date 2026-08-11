@@ -84,8 +84,10 @@ export const discoverAseerLinks: NavbarDropdownLink[] = [
 ];
 
 /**
- * Preview order: Planner → Accommodation → Restaurants → Agencies →
- * Tour guides → Getting here → Support services
+ * Preview order: Planner → Getting here → Restaurants → Agencies →
+ * Tour guides → Support services
+ *
+ * Getting here reuses the former Accommodation featured image.
  */
 export const planTripLinks: NavbarDropdownLink[] = [
   {
@@ -95,10 +97,10 @@ export const planTripLinks: NavbarDropdownLink[] = [
     subKey: "navMega.plan.aiPlanner",
   },
   {
-    href: "/accommodation",
-    labelKey: "navPlanTripLinks.accommodation",
+    href: "/getting-here-and-around",
+    labelKey: "navPlanTripLinks.gettingAround",
     image: "/assets/navbar/accommodation.png",
-    subKey: "navMega.plan.accommodation",
+    subKey: "navMega.plan.gettingAround",
   },
   {
     href: "/restaurants",
@@ -119,12 +121,6 @@ export const planTripLinks: NavbarDropdownLink[] = [
     subKey: "navMega.plan.tourGuides",
   },
   {
-    href: "/getting-here-and-around",
-    labelKey: "navPlanTripLinks.gettingAround",
-    image: "/assets/Getting-here-and-around/hero.JPG",
-    subKey: "navMega.plan.gettingAround",
-  },
-  {
     href: "/services-support",
     labelKey: "navPlanTripLinks.sopportingServices",
     image:
@@ -143,7 +139,7 @@ export const megaMenus: Record<string, NavbarMegaMenu> = {
   "nav.planTrip": {
     labelKey: "nav.planTrip",
     links: planTripLinks,
-    /** Planner + Accommodation — matches Immersive Preview indices [0, 1]. */
+    /** Planner + Getting here — matches Immersive Preview indices [0, 1]. */
     featuredIndices: [0, 1],
   },
 };
