@@ -1,4 +1,5 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import { ASEER_FILM_YOUTUBE_URL } from "@/components/landing/youtubeStoryEmbed";
 import type { HeroSlide } from "./types";
 
 const BANNERS_PATH = "/items/banners" as const;
@@ -26,12 +27,13 @@ interface ApiBannersResponse {
 
 const SLIDE_ASSETS: Pick<
   HeroSlide,
-  "id" | "image" | "logo" | "href" | "largeTitle"
+  "id" | "image" | "logo" | "href" | "largeTitle" | "filmUrl"
 >[] = [
   {
     id: "aseer",
     image: "/assets/landing/hero-slide-aseer.png",
-    href: "/interactive-map",
+    href: "/film",
+    filmUrl: ASEER_FILM_YOUTUBE_URL,
     largeTitle: true,
   },
   {
@@ -123,14 +125,30 @@ function mergeBannerWithFallback(
   const title = pickLocalizedField(record, "title", locale) || fallback.title;
   const subtitle =
     pickLocalizedField(record, "subtitle", locale) || fallback.subtitle;
-  const cta =
-    pickLocalizedField(record, "button_text", locale) || fallback.cta;
-  const href = (banner.button_link || "").trim() || fallback.href;
   const image = resolveBannerImage(banner.image, directusUrl, fallback.image);
   const cmsLogo = (banner.logo || "").trim();
   const logo = cmsLogo
     ? resolveBannerImage(cmsLogo, directusUrl, "")
     : undefined;
+
+  // Film CTA slides keep translated label + modal URL even if CMS still points at the map.
+  if (fallback.filmUrl) {
+    return {
+      id: banner.id != null ? String(banner.id) : fallback.id,
+      image,
+      logo,
+      largeTitle: fallback.largeTitle,
+      title,
+      subtitle,
+      cta: fallback.cta,
+      href: fallback.href,
+      filmUrl: fallback.filmUrl,
+    };
+  }
+
+  const cta =
+    pickLocalizedField(record, "button_text", locale) || fallback.cta;
+  const href = (banner.button_link || "").trim() || fallback.href;
 
   return {
     id: banner.id != null ? String(banner.id) : fallback.id,

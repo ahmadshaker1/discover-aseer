@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useCallback, useEffect, useId, useState } from "react";
 import { useLocale } from "next-intl";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -10,6 +11,7 @@ import HeroSocialLinks, {
   heroSocialLinkClassDesktop,
   heroSocialLinkClassMobile,
 } from "@/components/Hero/HeroSocialLinks";
+import { getYouTubeEmbedSrc } from "@/components/landing/youtubeStoryEmbed";
 import type { HeroSlide } from "@/components/Hero/types";
 
 export type { HeroSlide } from "@/components/Hero/types";
@@ -27,9 +29,60 @@ function isExternalHref(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
 
+function CloseIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M18 6L6 18M6 6l12 12"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 const Hero = ({ slides }: HeroProps) => {
   const locale = useLocale();
   const isLtr = locale === "en";
+  const [filmEmbedSrc, setFilmEmbedSrc] = useState<string | null>(null);
+  const [filmTitle, setFilmTitle] = useState("");
+  const dialogTitleId = useId();
+
+  const closeFilm = useCallback(() => setFilmEmbedSrc(null), []);
+
+  useEffect(() => {
+    if (!filmEmbedSrc) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeFilm();
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [filmEmbedSrc, closeFilm]);
+
+  const openFilm = (slide: HeroSlide) => {
+    if (!slide.filmUrl) return;
+    const embed = getYouTubeEmbedSrc(slide.filmUrl);
+    if (!embed) return;
+    setFilmTitle(slide.cta);
+    setFilmEmbedSrc(`${embed}?autoplay=1&rel=0`);
+  };
 
   return (
     <section className="relative w-full h-[100vh] bg-[#070707]">
@@ -108,7 +161,16 @@ const Hero = ({ slides }: HeroProps) => {
                     {slide.subtitle}
                   </p>
                 </div>
-                {isExternalHref(slide.href) ? (
+                {slide.filmUrl ? (
+                  <button
+                    type="button"
+                    onClick={() => openFilm(slide)}
+                    className={`${CTA_CLASS} mt-6 ${isLtr ? "mr-auto" : "ml-auto"}`}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    {slide.cta}
+                  </button>
+                ) : isExternalHref(slide.href) ? (
                   <a
                     href={slide.href}
                     target="_blank"
@@ -165,6 +227,52 @@ const Hero = ({ slides }: HeroProps) => {
           />
         </div>
       </div>
+
+      {filmEmbedSrc ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={dialogTitleId}
+        >
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            aria-label="Close"
+            onClick={closeFilm}
+          />
+
+          <div className="relative z-10 w-full max-w-5xl">
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <h3
+                id={dialogTitleId}
+                className="truncate text-start text-base font-semibold text-white sm:text-lg"
+              >
+                {filmTitle}
+              </h3>
+              <button
+                type="button"
+                onClick={closeFilm}
+                className="inline-flex shrink-0 rounded-full bg-white/15 p-2 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                aria-label="Close"
+              >
+                <CloseIcon />
+              </button>
+            </div>
+
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl">
+              <iframe
+                title={filmTitle}
+                src={filmEmbedSrc}
+                className="absolute inset-0 h-full w-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 };

@@ -1,3 +1,7 @@
+/** Official Aseer film — homepage hero “Watch the film” modal. */
+export const ASEER_FILM_YOUTUBE_URL =
+  "https://www.youtube.com/watch?v=W044k3XpY8I";
+
 /**
  * Default YouTube links for the two “Stories from Aseer” cards on the home page.
  * Paste `watch`, `youtu.be`, `embed`, or `shorts` URLs — leave `null` to show the poster only.
