@@ -17,31 +17,46 @@ import { routing, type AppLocale } from "@/i18n/routing";
 
 import "./globals.css";
 
+// OS/2 usWeightClass on these trial files: SemiLight=400, Regular=500,
+// SemiBold=600, Bold=700, ExtraBold=800, Black=950 (used as 900).
+// Use `web/` copies — originals fail Chrome’s OpenType sanitizer (trial CFF
+// subroutines + DRM glyph), so next/font falls back to metric-adjusted Arial.
 const koning = localFont({
   src: [
     {
-      path: "../../public/fonts/Koning/KoningDisplay-Regular_TRIAL.otf",
+      path: "../../public/fonts/Koning/web/KoningDisplay-SemiLight.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Koning/KoningDisplay-SemiBold_TRIAL.otf",
+      path: "../../public/fonts/Koning/web/KoningDisplay-Regular.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Koning/web/KoningDisplay-SemiBold.otf",
       weight: "600",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Koning/KoningDisplay-Bold_TRIAL.otf",
+      path: "../../public/fonts/Koning/web/KoningDisplay-Bold.otf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Koning/KoningDisplay-Black_TRIAL.otf",
+      path: "../../public/fonts/Koning/web/KoningDisplay-ExtraBold.otf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Koning/web/KoningDisplay-Black.otf",
       weight: "900",
       style: "normal",
     },
   ],
   variable: "--font-koning",
   display: "swap",
+  adjustFontFallback: false,
 });
 
 const brando = localFont({
@@ -120,10 +135,12 @@ export default async function LocaleLayout({
     <html
       lang={appLocale}
       dir={appLocale === "ar" ? "rtl" : "ltr"}
-      className={`${koning.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable}`}
+      className={`${koning.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} ${
+        appLocale === "ar" ? brando.className : koning.className
+      }`}
       suppressHydrationWarning
     >
-      <body className="antialiased">
+      <body className="antialiased font-sans">
         <ThemeInitScript />
         <Script
           id="userway-widget"

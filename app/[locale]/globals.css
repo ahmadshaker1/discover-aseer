@@ -5,7 +5,8 @@ html[dir="rtl"] {
 }
 
 html[dir="ltr"] {
-  --font-primary: var(--font-koning), var(--font-brando), sans-serif;
+  /* Keep Brando out of the English stack — it has Latin glyphs and can win over Koning. */
+  --font-primary: var(--font-koning), ui-sans-serif, system-ui, sans-serif;
 }
 
 .font-numbers {
@@ -14,7 +15,8 @@ html[dir="ltr"] {
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
+/* `inline` so Tailwind utilities resolve next/font vars in the right scope */
+@theme inline {
   --font-sans: var(--font-primary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
