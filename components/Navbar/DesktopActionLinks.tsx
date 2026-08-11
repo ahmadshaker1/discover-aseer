@@ -6,7 +6,7 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { toggleTheme } from "@/lib/theme/client";
+import ThemeToggleButton from "@/components/Navbar/ThemeToggleButton";
 
 const LOCALE_OPTIONS = [
   { code: "ar", labelKey: "nav.localeArabic" as const },
@@ -41,20 +41,6 @@ const BookletSvg = () => (
   >
     <path d="M12 6.5C10.5 5 8 4.3 5 4.5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1c3-.2 5.5.5 7 2 1.5-1.5 4-2.2 7-2a1 1 0 0 0 1-1v-12a1 1 0 0 0-1-1c-3-.2-5.5.5-7 2z" />
     <path d="M12 6.5v13.5" />
-  </svg>
-);
-
-const MoonSvg = () => (
-  <svg
-    width="19"
-    height="19"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    aria-hidden
-  >
-    <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.6 6.6 0 0 0 21 12.8z" />
   </svg>
 );
 
@@ -210,15 +196,7 @@ const DesktopActionLinks = () => {
         <BookletSvg />
       </button>
 
-      <button
-        type="button"
-        className="nav-action-btn"
-        title={t("nav.themeSwitchLabel")}
-        aria-label={t("nav.themeSwitchLabel")}
-        onClick={() => toggleTheme()}
-      >
-        <MoonSvg />
-      </button>
+      <ThemeToggleButton />
     </div>
   );
 };

@@ -10,7 +10,7 @@ const MobileMenuButton = ({ onClick }: MobileMenuButtonProps) => {
   return (
     <button
       type="button"
-      className="rounded-lg p-2 transition-colors hover:bg-white/10 lg:hidden"
+      className="cursor-pointer rounded-lg p-2 transition-colors hover:bg-white/10 lg:hidden"
       onClick={onClick}
       aria-label="Open menu"
     >
