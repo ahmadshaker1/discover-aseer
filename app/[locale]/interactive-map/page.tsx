@@ -21,9 +21,12 @@ const InteractiveMapPage = async ({
       : undefined;
 
   return (
-    <div className="relative z-40 h-dvh w-full overflow-hidden bg-background pt-16 text-foreground md:pt-24">
-      <div className="h-full w-full">
-        <InteractiveMap initialFocus={initialFocus} />
+    <div className="flex h-dvh w-full flex-col bg-[#1C0F2A]">
+      <div className="h-[76px] w-full shrink-0 lg:h-[108px]"></div>
+      <div className="relative z-40 w-full flex-1 overflow-hidden bg-background text-foreground">
+        <div className="h-full w-full">
+          <InteractiveMap initialFocus={initialFocus} />
+        </div>
       </div>
     </div>
   );
