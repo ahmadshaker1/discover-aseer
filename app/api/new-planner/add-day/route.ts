@@ -89,6 +89,7 @@ EVENTS: ${JSON.stringify(eventsCatalog)}
 5. For Restaurant items, set 'type' to 'restaurant', and return 'itemId' and 'mealType' (e.g. 'breakfast', 'lunch', 'dinner').
 6. For Experience items, set 'type' to 'experience', and return 'itemId' and 'travelToNext'.
 7. Limit the day to reasonable activities based on the trip style inferred from the current plan. If the inferred style is 'light' (around 2 items per day), include EXACTLY 2 items/stops in the new day. If 'balanced', include EXACTLY 3 items/stops. If 'intensive', include EXACTLY 4 items/stops. Do NOT exceed these limits.
+8. Maintain the budget style inferred from the current plan. Budget ranges per person: Economy (Restaurants < 50, Experiences < 200, Events < 25 or free), Medium (Restaurants 50-120, Experiences 200-400, Events 25-75 or free), Premium (Restaurants > 120, Experiences > 400, Events > 75 or free). You can use free experiences or events if they suit the plan. You may also use items from the catalog even if they do not have a price specified.
 
 --- JSON SCHEMA ---
 {

@@ -87,6 +87,18 @@ export async function POST(request: NextRequest) {
       `Dates: Starting ${startDate} for ${numberOfDays} days`,
       body.tripStyle ? `Trip Style: ${body.tripStyle}` : null,
       body.budget ? `Budget: ${body.budget}` : null,
+      body.budget === "economy"
+        ? "Budget Rule (per person): Restaurants < 50, Experiences < 200, Events < 25 or free."
+        : null,
+      body.budget === "medium"
+        ? "Budget Rule (per person): Restaurants 50-120, Experiences 200-400, Events 25-75 or free."
+        : null,
+      body.budget === "premium"
+        ? "Budget Rule (per person): Restaurants > 120, Experiences > 400, Events > 75 or free."
+        : null,
+      body.budget
+        ? "Note: You can always use free experiences or events if they suit the plan. You may also use items from the catalog even if they do not have a price specified."
+        : null,
       body.companion ? `Companion: ${body.companion}` : null,
       body.interests?.length ? `Interests: ${body.interests.join(", ")}` : null,
       body.mealsCount ? `Meals per day: ${body.mealsCount}` : null,
