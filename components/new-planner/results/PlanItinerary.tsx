@@ -585,8 +585,10 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       day.periods?.forEach((period: any) => {
         period.items?.forEach((item: any) => {
           if (item.itemData?.image) imageUrls.push(item.itemData.image);
-          if (item.itemData?.images) {
+          if (item.itemData?.images && Array.isArray(item.itemData.images)) {
             item.itemData.images.forEach((img: string) => imageUrls.push(img));
+          } else if (typeof item.itemData?.images === "string") {
+            imageUrls.push(item.itemData.images);
           }
         });
       });
@@ -753,9 +755,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       </div>
 
       {/* Days Cards Selector */}
-      <div
-        className="w-full flex flex-wrap gap-4 pb-4 print-hidden"
-      >
+      <div className="w-full flex flex-wrap gap-4 pb-4 print-hidden">
         {days.map((day: any, index: number) => {
           const isSelected = selectedDayIndex === index;
           return (

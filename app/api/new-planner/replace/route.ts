@@ -48,11 +48,15 @@ export async function POST(request: NextRequest) {
         description: item.description_eng || item.description,
       }));
     } else if (itemType === "event") {
-      mappedCatalog = (catalogData.data || []).map((item: any) => ({
-        id: item.id,
-        title: item.title_en || item.title,
-        description: item.description_en || item.description,
-      }));
+      const todayStr = new Date().toISOString().split("T")[0];
+      mappedCatalog = (catalogData.data || [])
+        .filter((item: any) => !item.end_date || item.end_date >= todayStr)
+        .map((item: any) => ({
+          id: item.id,
+          title: item.title_en || item.title,
+          description: item.description_en || item.description,
+          end_date: item.end_date,
+        }));
     }
 
     // 3. Filter out the item to replace
