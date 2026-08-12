@@ -257,7 +257,16 @@ const PlannerExperienceCardNew = ({
           {locale === "ar" ? "تجربة" : "Experience"}
         </span>
       </div>
-      <div className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0">
+      <div
+        onClick={() =>
+          window.open(
+            `/${locale}/experiences/${experience.id}`,
+            "_blank",
+            "noopener,noreferrer",
+          )
+        }
+        className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0 cursor-pointer hover:border-[#6027D2] transition-colors"
+      >
         <div className="w-full md:w-[140px] h-[200px] md:h-[160px] shrink-0 rounded-[8px] overflow-hidden">
           <img
             src={experience.imageUrl}
