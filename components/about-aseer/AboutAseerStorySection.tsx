@@ -69,7 +69,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
     <section className="mx-auto w-full max-w-[1440px] px-4 py-12 sm:px-8 md:px-[60px]">
       <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-8">
         <div className="mx-auto flex w-full max-w-[1000px] flex-col items-center text-center gap-10">
-          <h2 className="w-full text-center text-[48px] font-[900] leading-[100%] text-foreground">
+          <h2 className="w-full text-center text-[48px] font-black leading-[100%] text-foreground">
             {content.sectionTitle}
           </h2>
           <p className="text-[18px] font-medium leading-7 text-muted-foreground">
@@ -80,7 +80,7 @@ const AboutAseerStorySection = ({ content }: AboutAseerStorySectionProps) => {
           </h4>
         </div>
 
-        <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[35px] px-4 md:px-[64px]">
+        <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[35px] px-4 md:px-16">
           <div className="grid w-full grid-cols-1 gap-[35px] sm:grid-cols-2 lg:grid-cols-4">
             {content.highlightCards.slice(0, 4).map((card) => {
               const inner = (
