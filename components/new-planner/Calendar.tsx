@@ -89,6 +89,9 @@ export default function Calendar({
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const calendarRef = useRef<HTMLDivElement>(null);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -102,8 +105,14 @@ export default function Calendar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const isPrevMonthDisabled =
+    currentYear < today.getFullYear() ||
+    (currentYear === today.getFullYear() && currentMonth <= today.getMonth());
+
   const handlePrevMonth = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (isPrevMonthDisabled) return;
+
     if (currentMonth === 0) {
       setCurrentMonth(11);
       setCurrentYear(currentYear - 1);
@@ -211,7 +220,12 @@ export default function Calendar({
             <div className="flex items-center gap-4">
               <button
                 onClick={handlePrevMonth}
-                className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-full transition-colors text-black dark:text-white"
+                disabled={isPrevMonthDisabled}
+                className={`p-2 rounded-full transition-colors ${
+                  isPrevMonthDisabled
+                    ? "text-gray-300 dark:text-[#3B2C4A] cursor-not-allowed"
+                    : "cursor-pointer hover:bg-gray-100 dark:hover:bg-white/5 text-black dark:text-white"
+                }`}
               >
                 <CalendarChevron direction="prev" />
               </button>
@@ -228,7 +242,18 @@ export default function Calendar({
 
             {/* Year Select */}
             <div className="w-[100px]">
-              <Listbox value={currentYear} onChange={setCurrentYear}>
+              <Listbox
+                value={currentYear}
+                onChange={(year) => {
+                  setCurrentYear(year);
+                  if (
+                    year === today.getFullYear() &&
+                    currentMonth < today.getMonth()
+                  ) {
+                    setCurrentMonth(today.getMonth());
+                  }
+                }}
+              >
                 <div className="relative">
                   <Listbox.Button
                     className="relative flex items-center justify-between gap-2 w-full cursor-pointer py-1.5 px-3 text-sm bg-white dark:bg-[#1C0F2A] hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
@@ -313,6 +338,8 @@ export default function Calendar({
               <div key={`blank-${b}`} />
             ))}
             {monthDays.map((d) => {
+              const dateOfThisDay = new Date(currentYear, currentMonth, d);
+              const isPastDay = dateOfThisDay < today;
               const isSelected =
                 selectedDate?.getDate() === d &&
                 selectedDate?.getMonth() === currentMonth &&
@@ -321,12 +348,16 @@ export default function Calendar({
                 <div
                   key={d}
                   onClick={() => {
-                    onSelectDate(new Date(currentYear, currentMonth, d));
+                    if (!isPastDay) {
+                      onSelectDate(dateOfThisDay);
+                    }
                   }}
-                  className={`flex justify-center items-center h-8 w-8 mx-auto cursor-pointer transition-colors rounded-[4px] ${
-                    isSelected
-                      ? "bg-[#00BBB4] text-white"
-                      : "text-[#1D1F1F] dark:text-white hover:bg-gray-50 dark:hover:bg-white/5"
+                  className={`flex justify-center items-center h-8 w-8 mx-auto transition-colors rounded-[4px] ${
+                    isPastDay
+                      ? "text-gray-300 dark:text-[#3B2C4A] cursor-not-allowed"
+                      : isSelected
+                        ? "bg-[#00BBB4] text-white cursor-pointer"
+                        : "text-[#1D1F1F] dark:text-white hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer"
                   }`}
                   style={{
                     fontSize: "18px",
