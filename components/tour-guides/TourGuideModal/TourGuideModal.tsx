@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -14,6 +15,7 @@ import {
 import { ArabicFlagIcon, EnglishFlagIcon } from "../TourGuideCard/Icons";
 import { SaudiRiyalIcon } from "@/components/restaurants/Icons";
 import { TourGuideData } from "../TourGuideCard/TourGuideCard";
+import { tourGuidePlaceholderAvatar } from "@/components/tour-guides/tourGuideAvatar";
 
 const LanguageFlag = ({ code }: { code: string }) => {
   if (code === "ar") return <ArabicFlagIcon />;
@@ -43,13 +45,14 @@ const TourGuideModal = ({
   availability,
 }: TourGuideModalProps) => {
   const t = useTranslations("tourGuides");
-  if (!guide) return null;
+  const placeholder = tourGuidePlaceholderAvatar(guide?.gender);
+  const [src, setSrc] = useState(guide?.profileImage || placeholder);
 
-  const isFemale = guide.gender && /^(أنثى|female|f)$/i.test(guide.gender);
-  // Temporary: always show gender avatar (ignore uploaded profile photos).
-  const fallbackImage = isFemale
-    ? "/assets/tourist-guides/female.png"
-    : "/assets/tourist-guides/male.png";
+  useEffect(() => {
+    setSrc(guide?.profileImage || placeholder);
+  }, [guide?.profileImage, placeholder]);
+
+  if (!guide) return null;
 
   const firstName = guide.name.split(" ")[0] || guide.name;
 
@@ -69,11 +72,14 @@ const TourGuideModal = ({
                 <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
                   <div className="relative h-full w-full overflow-hidden rounded-full bg-surface">
                     <Image
-                      src={fallbackImage}
+                      src={src}
                       alt={guide.name}
                       fill
                       className="object-cover"
                       sizes="96px"
+                      onError={() => {
+                        if (src !== placeholder) setSrc(placeholder);
+                      }}
                     />
                   </div>
                 </div>

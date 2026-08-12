@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArabicFlagIcon, EnglishFlagIcon, WhatsAppIcon } from "./Icons";
 import { Button } from "@headlessui/react";
 import { useTranslations } from "next-intl";
+import { tourGuidePlaceholderAvatar } from "@/components/tour-guides/tourGuideAvatar";
 
 export interface TourGuideData {
   id: string | number;
@@ -33,7 +35,7 @@ const LanguageFlag = ({ code }: { code: string }) => {
 
 const TourGuideCard = ({
   name,
-  profileImage: _profileImage,
+  profileImage,
   languages,
   whatsappUrl,
   description,
@@ -42,12 +44,13 @@ const TourGuideCard = ({
 }: TourGuideCardProps) => {
   const t = useTranslations("tourGuides");
   const tCommon = useTranslations("common");
+  const placeholder = tourGuidePlaceholderAvatar(gender);
+  const [src, setSrc] = useState(profileImage || placeholder);
 
-  const isFemale = gender && /^(أنثى|female|f)$/i.test(gender);
-  // Temporary: always show gender avatar (ignore uploaded profile photos).
-  const fallbackImage = isFemale
-    ? "/assets/tourist-guides/female.png"
-    : "/assets/tourist-guides/male.png";
+  useEffect(() => {
+    setSrc(profileImage || placeholder);
+  }, [profileImage, placeholder]);
+
   return (
     <div
       className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md h-90"
@@ -59,11 +62,14 @@ const TourGuideCard = ({
           <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
             <div className="relative w-full h-full rounded-full overflow-hidden">
               <Image
-                src={fallbackImage}
+                src={src}
                 alt={name}
                 fill
                 className="object-cover"
                 sizes="96px"
+                onError={() => {
+                  if (src !== placeholder) setSrc(placeholder);
+                }}
               />
             </div>
           </div>

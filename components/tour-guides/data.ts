@@ -35,9 +35,11 @@ import {
 } from "@/components/landmarks/filterOptions";
 import type { LocaleCode } from "@/lib/i18n/localized";
 import {
+  getDirectusPublicUrl,
   isPublishedTourGuide,
   publishedTourGuidesSearchParams,
 } from "@/lib/directus/config";
+import { resolveTourGuideFileUrl } from "@/lib/directus/resolveTourGuideFileUrl";
 import {
   buildSpecLabelMapFromApi,
   canonicalizeSpecializationTokens,
@@ -47,6 +49,7 @@ import {
   normalizeGuideGender,
   parseSpecializationTokens,
 } from "./tourGuideFilterLabels";
+import { tourGuidePlaceholderAvatar } from "./tourGuideAvatar";
 import { DUMMY_TOURIST_GUIDES } from "./dummyTourGuides";
 import type { TourGuideData } from "./TourGuideCard/TourGuideCard";
 import type {
@@ -244,11 +247,9 @@ export function transformTourGuide(
   );
   const hasTransportation = api.transportation === true;
   const gender = normalizeGuideGender(api.gender);
-  // Temporary: always use gender avatar until old guide photos are cleaned up.
   const imageUrl =
-    gender === "أنثى"
-      ? "/assets/tourist-guides/female.png"
-      : "/assets/tourist-guides/male.png";
+    resolveTourGuideFileUrl(api.image, getDirectusPublicUrl()) ??
+    tourGuidePlaceholderAvatar(gender);
   const cityId = inferGuideCityId(api);
   const locationLabel = cityId
     ? getCityLabelById(cityId, locale)
