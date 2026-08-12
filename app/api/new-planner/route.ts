@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       "5. For Event items, set 'type' to 'event', and return 'itemId' and a scheduled 'time' as a time range (e.g., '09:00 AM - 11:00 AM').",
       "6. For Restaurant items, set 'type' to 'restaurant', and return 'itemId' and 'mealType' (e.g. 'breakfast', 'lunch', 'dinner').",
       "7. For Experience items, set 'type' to 'experience', and return 'itemId' and 'travelToNext'.",
-      "8. Limit each day to reasonable activities based on the trip style. You DO NOT need to include all item types in every period. Adjust the volume and types of items per period based on the user's requested pace and preferences.",
+      "8. Limit each day to reasonable activities based on the trip style. For 'light' trip style, include EXACTLY 2 items/stops per day across all periods combined. For 'balanced', include EXACTLY 3 items/stops per day. For 'intensive', include EXACTLY 4 items/stops per day. Do NOT exceed these limits.",
       "",
       "--- JSON SCHEMA ---",
       `{

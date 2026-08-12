@@ -88,7 +88,7 @@ EVENTS: ${JSON.stringify(eventsCatalog)}
 4. For Event items, set 'type' to 'event', and return 'itemId' and a scheduled 'time' as a time range (e.g., '09:00 AM - 11:00 AM').
 5. For Restaurant items, set 'type' to 'restaurant', and return 'itemId' and 'mealType' (e.g. 'breakfast', 'lunch', 'dinner').
 6. For Experience items, set 'type' to 'experience', and return 'itemId' and 'travelToNext'.
-7. Limit the day to reasonable activities based on the trip style inferred from the current plan. You DO NOT need to include all item types in every period. Adjust the volume and types of items per period based on a reasonable pace.
+7. Limit the day to reasonable activities based on the trip style inferred from the current plan. If the inferred style is 'light' (around 2 items per day), include EXACTLY 2 items/stops in the new day. If 'balanced', include EXACTLY 3 items/stops. If 'intensive', include EXACTLY 4 items/stops. Do NOT exceed these limits.
 
 --- JSON SCHEMA ---
 {
