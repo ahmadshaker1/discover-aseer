@@ -7,7 +7,7 @@
  */
 import { GlobeIcon, CrescentMoonIcon, BookletIcon } from "./Icons";
 
-export type NavbarBadge = "pdf" | "new";
+export type NavbarBadge = "pdf" | "new" | "beta";
 
 export type NavbarDropdownLink = {
   href: string;
@@ -95,6 +95,7 @@ export const planTripLinks: NavbarDropdownLink[] = [
     labelKey: "navPlanTripLinks.aiPlanner",
     image: "/assets/navbar/planner.png",
     subKey: "navMega.plan.aiPlanner",
+    badge: "beta",
   },
   {
     href: "/getting-here-and-around",

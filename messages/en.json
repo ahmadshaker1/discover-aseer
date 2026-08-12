@@ -139,7 +139,8 @@
     "localeComingSoon": "Soon",
     "explore": "Explore",
     "badgePdf": "PDF",
-    "badgeNew": "NEW"
+    "badgeNew": "NEW",
+    "badgeBeta": "Beta"
   },
   "navLinks": {
     "aboutAseer": "About Aseer",

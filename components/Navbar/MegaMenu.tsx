@@ -43,6 +43,23 @@ function MegaLinkBadge({ badge }: { badge?: NavbarDropdownLink["badge"] }) {
     );
   }
 
+  if (badge === "beta") {
+    return (
+      <span
+        style={{
+          fontSize: 9,
+          fontWeight: 700,
+          color: "#fff",
+          background: "#7300CD",
+          borderRadius: 5,
+          padding: "2px 7px",
+        }}
+      >
+        {t("badgeBeta")}
+      </span>
+    );
+  }
+
   return (
     <span
       style={{
@@ -195,7 +212,14 @@ function FeaturedCard({
 }) {
   const t = useTranslations();
   const title = t(item.labelKey);
-  const kicker = item.badge === "pdf" ? t("nav.badgePdf") : t("nav.explore");
+  const kicker =
+    item.badge === "pdf"
+      ? t("nav.badgePdf")
+      : item.badge === "beta"
+        ? t("nav.badgeBeta")
+        : item.badge === "new"
+          ? t("nav.badgeNew")
+          : t("nav.explore");
 
   const content = (
     <>

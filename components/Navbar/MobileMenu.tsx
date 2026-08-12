@@ -251,6 +251,20 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                               {t("nav.badgeNew")}
                                             </span>
                                           ) : null}
+                                          {item.badge === "beta" ? (
+                                            <span
+                                              style={{
+                                                fontSize: 9,
+                                                fontWeight: 700,
+                                                color: "#fff",
+                                                background: "#7300CD",
+                                                borderRadius: 5,
+                                                padding: "2px 7px",
+                                              }}
+                                            >
+                                              {t("nav.badgeBeta")}
+                                            </span>
+                                          ) : null}
                                         </span>
                                       );
 

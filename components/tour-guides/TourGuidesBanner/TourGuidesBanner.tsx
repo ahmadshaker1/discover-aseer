@@ -2,45 +2,6 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-const TOUR_GUIDE_PORTAL_URL =
-  process.env.NEXT_PUBLIC_TOUR_GUIDE_REGISTER_URL?.trim() || "";
-
-const INTERNAL_PORTAL_PATH = "/tour-guides/portal";
-
-function resolvePortalHref(): { href: string; external: boolean } {
-  const raw = TOUR_GUIDE_PORTAL_URL;
-  if (!raw) return { href: INTERNAL_PORTAL_PATH, external: false };
-  if (raw.startsWith("http://") || raw.startsWith("https://"))
-    return { href: raw, external: true };
-  return { href: raw.startsWith("/") ? raw : `/${raw}`, external: false };
-}
-
-function CtaArrow() {
-  return (
-    <span
-      className="inline-flex h-5 w-5 shrink-0 items-center justify-center"
-      aria-hidden
-    >
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="rtl:rotate-180"
-      >
-        <path
-          d="M15 18l-6-6 6-6"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </span>
-  );
-}
-
 function BreadcrumbChevron() {
   return (
     <svg
@@ -63,7 +24,6 @@ function BreadcrumbChevron() {
 const TourGuidesBanner = async () => {
   const tGuides = await getTranslations("tourGuides");
   const tCommon = await getTranslations("common");
-  const { href: portalHref, external: portalExternal } = resolvePortalHref();
 
   return (
     <section className="relative min-h-[100vh] w-full overflow-hidden md:min-h-[100vh]">
@@ -107,17 +67,6 @@ const TourGuidesBanner = async () => {
             <p className="w-full text-center text-[24px] font-semibold leading-8 text-white">
               {tGuides("subtitle")}
             </p>
-
-            <Link
-              href={portalHref}
-              {...(portalExternal
-                ? { target: "_blank" as const, rel: "noopener noreferrer" }
-                : {})}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-medium text-primary-foreground shadow-lg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              {tGuides("registerAsGuide")}
-              <BreadcrumbChevron />
-            </Link>
           </div>
         </div>
       </div>

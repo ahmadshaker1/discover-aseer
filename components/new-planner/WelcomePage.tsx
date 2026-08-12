@@ -54,7 +54,15 @@ export default function WelcomePage({ onStartPlanning }: WelcomePageProps) {
               lineHeight: "1.1",
             }}
           >
-            {t("heroTitle")}
+            <span className="inline-flex flex-wrap items-center gap-3">
+              <span>{t("heroTitle")}</span>
+              <span
+                className="inline-flex items-center rounded-md bg-[#7300CD] px-3 py-1 text-sm font-bold uppercase tracking-wide text-white"
+                style={{ fontSize: 14, letterSpacing: "0.04em" }}
+              >
+                {t("betaBadge")}
+              </span>
+            </span>
           </h1>
 
           {/* Subtitle */}

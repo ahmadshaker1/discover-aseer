@@ -2,9 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Button } from "@headlessui/react";
 import { Link } from "@/i18n/navigation";
-
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
 import { BookletSmallArrowIcon } from "./Icons";
@@ -197,13 +195,6 @@ const Footer = () => {
                       <BookletSmallArrowIcon />
                     </span>
                   </Link>
-                  <Button
-                    as={Link}
-                    href="/tour-guides/portal"
-                    className="mt-6 lg:mt-auto flex w-[200px] h-[44px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent px-5 text-center text-[14px] font-bold leading-[119%] text-white transition-colors duration-200 hover:bg-white hover:text-[#280048] data-hover:bg-white data-hover:text-[#280048]"
-                  >
-                    {t("footer.tourGuideLogin")}
-                  </Button>
                 </div>
               </div>
               {/* التواصل */}
