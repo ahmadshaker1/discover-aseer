@@ -68,7 +68,7 @@ const u = (id: string) =>
  * - image: main card image URL
  * - rating: numeric rating (shown as 4.8/5)
  * - reviewsCount: numeric reviews count (shown in rating pill)
- * - stars: hotel class (3/4/5) used by right filter
+ * - stars: hotel class (1–5) used by the rating filter
  * - bookingUrl: legacy / external booking reference if needed
  * - exceptional: featured strip + badge
  * - mapsUrl: explicit maps link, else derived in UI

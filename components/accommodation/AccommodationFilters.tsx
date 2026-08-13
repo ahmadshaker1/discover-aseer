@@ -167,7 +167,7 @@ const AccommodationFilters = ({
           </h3>
         </div>
         <div className="flex flex-col gap-2">
-          {[5, 4, 3].map((stars) => (
+          {[5, 4, 3, 2, 1].map((stars) => (
             <label
               key={stars}
               className="flex cursor-pointer items-center gap-3 rounded-lg py-2 pe-1 transition-colors hover:bg-muted"
