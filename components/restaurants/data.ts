@@ -286,7 +286,7 @@ export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Resta
   try {
     // TODO(backend): Confirm path, filters, and auth with API owner.
     const response = await fetch(`${LOCATIONS_API_BASE}${RESTAURANTS_LOCATIONS_ITEMS_PATH}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
 
     if (!response.ok) {

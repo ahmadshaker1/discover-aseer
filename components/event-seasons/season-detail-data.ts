@@ -272,7 +272,7 @@ async function fetchSeasonById(id: string): Promise<ApiSeason | null> {
   });
   const response = await fetch(`${API_BASE}/items/seasons/${id}?${params}`, {
     headers: getDirectusHeaders(),
-    next: { revalidate: 3600 },
+    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
   });
   if (response.status === 404) return null;
   if (!response.ok) {
@@ -294,7 +294,7 @@ async function fetchEventsForSeason(seasonId: string): Promise<ApiEvent[]> {
   });
   const response = await fetch(`${API_BASE}/items/events?${params}`, {
     headers: getDirectusHeaders(),
-    next: { revalidate: 3600 },
+    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
   });
   if (!response.ok) {
     console.error(
@@ -315,7 +315,7 @@ async function fetchEventsByIds(ids: number[]): Promise<ApiEvent[]> {
   });
   const response = await fetch(`${API_BASE}/items/events?${params}`, {
     headers: getDirectusHeaders(),
-    next: { revalidate: 3600 },
+    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
   });
   if (!response.ok) {
     console.error(
@@ -396,7 +396,7 @@ async function fetchEventById(eventId: string): Promise<ApiEvent | null> {
   });
   const response = await fetch(`${API_BASE}/items/events?${params}`, {
     headers: getDirectusHeaders(),
-    next: { revalidate: 3600 },
+    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
   });
   if (!response.ok) return null;
   const json = (await response.json()) as { data: ApiEvent[] };

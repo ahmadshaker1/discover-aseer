@@ -88,7 +88,7 @@ export async function fetchSupportServices(
     const response = await fetch(
       `${SUPPORT_SERVICES_API_BASE}${SUPPORT_SERVICES_ITEMS_PATH}`,
       {
-        next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 3600 },
+        next: { revalidate: 0 }, // TODO: restore 3600 collection cache
       },
     );
 

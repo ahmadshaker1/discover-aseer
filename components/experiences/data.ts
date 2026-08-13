@@ -578,7 +578,7 @@ export async function fetchExperienceById(
     listUrl.searchParams.set("limit", "1");
 
     const res = await fetch(listUrl.toString(), {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
     if (res.ok) {
       const json: ExperiencesApiResponse = await res.json();
@@ -618,7 +618,7 @@ export async function fetchExperiences(
 
   try {
     const response = await fetch(buildExperiencesListUrl(directusUrl), {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
 
     if (!response.ok) {

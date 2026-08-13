@@ -21,7 +21,7 @@ export async function getTourismProviders(): Promise<TourismProvider[]> {
     const res = await fetch(
       "https://tool-portal.discoveraseer.com/items/tourism_providers",
       {
-        next: { revalidate: 3600 },
+        next: { revalidate: 0 }, // TODO: restore 3600 collection cache
       }
     );
 

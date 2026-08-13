@@ -461,7 +461,7 @@ export const fetchDestinations = async (
     const response = await fetch(
       `${directusUrl.replace(/\/$/, "")}/items/destination`,
       {
-        next: { revalidate: 3600 },
+        next: { revalidate: 0 }, // TODO: restore 3600 collection cache
       },
     );
     if (!response.ok) return [];

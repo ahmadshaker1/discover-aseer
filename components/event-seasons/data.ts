@@ -186,7 +186,7 @@ function sortPreviousSeasons(a: ApiSeason, b: ApiSeason): number {
 
 async function fetchApiSeasons(): Promise<ApiSeason[]> {
   const response = await fetch(`${API_BASE}${SEASONS_ITEMS_PATH}`, {
-    next: { revalidate: 3600 },
+    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
   });
 
   if (!response.ok) {

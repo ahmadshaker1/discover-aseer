@@ -105,7 +105,7 @@ export const fetchFilmLandscapes = async (): Promise<FilmLandscape[]> => {
 
   try {
     const response = await fetch(`${directusUrl}/items/film_landscapes`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
     if (!response.ok) return [];
 
@@ -292,7 +292,7 @@ export const fetchFilmWhyAseerSlides = async (): Promise<
 
   try {
     const response = await fetch(`${directusUrl}/items/film_why_aseer`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
     if (!response.ok) return [];
 
@@ -393,7 +393,7 @@ export const fetchFilmServiceCards = async (): Promise<FilmServiceCard[]> => {
 
   try {
     const response = await fetch(`${directusUrl}/items/film_services`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
     if (!response.ok) return [];
 
@@ -588,7 +588,7 @@ async function fetchPublishedFilmsFromDirectus(locale: string): Promise<{
   try {
     const response = await fetch(
       `${directusUrl}${FILMS_ITEMS_PATH}?sort=-date_created`,
-      { next: { revalidate: 3600 } },
+      { next: { revalidate: 0 } }, // TODO: restore 3600 collection cache
     );
     if (!response.ok) return null;
 

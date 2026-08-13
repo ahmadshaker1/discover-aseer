@@ -26,7 +26,7 @@ function getLocalizedTitle(file: IdentityFile, locale: string) {
 
 async function fetchIdentityFiles(): Promise<IdentityFile[]> {
   const response = await fetch(IDENTITY_FILES_URL, {
-    next: { revalidate: 3600 },
+    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
   });
 
   if (!response.ok) {

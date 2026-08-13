@@ -370,7 +370,7 @@ export async function fetchEvents(
 ): Promise<EventListingItem[]> {
   try {
     const response = await fetch(`${EVENTS_API_BASE}${EVENTS_ITEMS_PATH}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
 
     if (!response.ok) {

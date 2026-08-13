@@ -28,7 +28,7 @@ export async function fetchPrivacyPolicyHtml(
 
   try {
     const response = await fetch(`${directusUrl}${PRIVACY_POLICY_PATH}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
     if (!response.ok) return null;
 

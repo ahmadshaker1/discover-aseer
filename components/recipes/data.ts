@@ -71,7 +71,7 @@ export const fetchRecipes = async (): Promise<Recipe[]> => {
 
   try {
     const response = await fetch(`${directusUrl.replace(/\/$/, "")}/items/cuisine`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
 
     if (!response.ok) {

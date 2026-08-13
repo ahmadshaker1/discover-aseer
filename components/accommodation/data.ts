@@ -407,7 +407,7 @@ export const fetchAccommodations = async (
 
   try {
     const response = await fetch(`${directusUrl}${ACCOMMODATION_ITEMS_PATH}`, {
-      next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 3600 },
+      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
 
     if (!response.ok) {
