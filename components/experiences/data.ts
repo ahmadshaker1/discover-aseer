@@ -556,8 +556,8 @@ export interface FetchExperiencesResult {
  */
 
 /**
- * Load one experience by id (Directus single-item endpoint) with fallbacks to the
- * list endpoint and dummy data so `/experiences/[id]` stays in sync with home cards.
+ * Load one experience by id (Directus single-item endpoint), falling back to the
+ * published list so `/experiences/[id]` stays in sync with home cards.
  */
 export async function fetchExperienceById(
   id: string,

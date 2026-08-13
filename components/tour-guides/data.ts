@@ -1,31 +1,6 @@
 /**
- * TOUR GUIDES — WHERE TO PLUG THINGS IN
- *
- * ┌─────────────────────────────────────┬──────────────────────────────────────────────────────────┐
- * │ You put…                            │ It goes…                                                 │
- * ├─────────────────────────────────────┼──────────────────────────────────────────────────────────┤
- * │ CMS base URL (no trailing /)        │ .env.local → NEXT_PUBLIC_DIRECTUS_APP_URL                │
- * │ Force fake 6 guides (ignore API)    │ .env.local → NEXT_PUBLIC_TOUR_GUIDES_USE_DUMMY=true      │
- * │ Fake guide rows for UI only         │ dummyTourGuides.ts → DUMMY_TOURIST_GUIDES                │
- * │ API field names / response shape    │ types.ts → interface ApiTouristGuide                     │
- * │ API row → card + filters            │ this file → transformTourGuide()                         │
- * │ Full URL path for the list request  │ fetchTourGuides() below → fetch(`${directusUrl}/items/…`) │
- * │ JSON type for HTTP body             │ this file → TouristGuidesApiResponse (must be { data: [] })│
- * │ Secret token (never NEXT_PUBLIC_)   │ Prefer app/api/... route + fetch from server; or add     │
- * │                                     │ headers inside fetchTourGuides (not safe for secrets).   │
- * │ Remote guide photo domains          │ next.config.ts → images.remotePatterns                   │
- * │ Page that loads the data            │ app/tour-guides/page.tsx → fetchTourGuides()             │
- * │ “Register as guide” button URL      │ TourGuidesBanner.tsx → /tour-guides/portal (or NEXT_PUBLIC_TOUR_GUIDE_REGISTER_URL)│
- * └─────────────────────────────────────┴──────────────────────────────────────────────────────────┘
- *
- * Decision order (what runs):
- *   NEXT_PUBLIC_TOUR_GUIDES_USE_DUMMY === "true"     → dummyTourGuides.ts only
- *   NEXT_PUBLIC_DIRECTUS_APP_URL missing            → dummyTourGuides.ts + console warning
- *   else                                            → GET {URL}/items/tourist_guides (change path in fetch)
- *
- * If the real API is not Directus or not { data: [...] }:
- *   1. Change the fetch URL string in fetchTourGuides.
- *   2. Parse JSON into an array, then map each item through transformTourGuide — or adjust ApiTouristGuide + transformTourGuide to match your JSON.
+ * Tour guides listing from Directus `items/tourist_guides`.
+ * Env: `NEXT_PUBLIC_DIRECTUS_APP_URL`.
  */
 
 import {
@@ -48,7 +23,6 @@ import {
   parseSpecializationTokens,
 } from "./tourGuideFilterLabels";
 import { tourGuidePlaceholderAvatar } from "./tourGuideAvatar";
-import { DUMMY_TOURIST_GUIDES } from "./dummyTourGuides";
 import type { TourGuideData } from "./TourGuideCard/TourGuideCard";
 import type {
   ApiTouristGuide,
@@ -283,18 +257,6 @@ export function transformTourGuide(
   };
 }
 
-/** City-scoped dummy rows when live guides do not match the requested city. */
-export function tourGuidesCardDataForCityFromDummy(
-  cityId: string,
-  locale: LocaleCode = "ar",
-): TourGuideData[] {
-  const specLabelMap = buildSpecLabelMapFromApi(DUMMY_TOURIST_GUIDES);
-  const meta = DUMMY_TOURIST_GUIDES.map((api) =>
-    transformTourGuide(api, locale, specLabelMap),
-  );
-  return filterTourGuidesByCityId(meta, cityId).map(toTourGuideCardData);
-}
-
 function buildFilterOptions(
   apiItems: ApiTouristGuide[],
   locale: LocaleCode,
@@ -361,22 +323,20 @@ function resultFromApiRows(
   return { guides, filterOptions };
 }
 
+const EMPTY_TOUR_GUIDES_RESULT: FetchTourGuidesResult = {
+  guides: [],
+  filterOptions: { specializations: [], gender: [], transportation: [] },
+};
+
 export async function fetchTourGuides(
   locale: LocaleCode = "ar",
 ): Promise<FetchTourGuidesResult> {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(
-    /\/$/,
-    "",
-  );
-  const forceDummy = process.env.NEXT_PUBLIC_TOUR_GUIDES_USE_DUMMY === "true";
+  const directusUrl =
+    process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
+    "https://tool-portal.discoveraseer.com";
 
-  if (forceDummy || !directusUrl) {
-    if (!directusUrl && !forceDummy) {
-      console.warn(
-        "[tour-guides] NEXT_PUBLIC_DIRECTUS_APP_URL is not set — using dummy data. See components/tour-guides/data.ts",
-      );
-    }
-    return resultFromApiRows(DUMMY_TOURIST_GUIDES, locale);
+  if (!directusUrl) {
+    return EMPTY_TOUR_GUIDES_RESULT;
   }
 
   try {
@@ -403,10 +363,7 @@ export async function fetchTourGuides(
 
     const apiData: TouristGuidesApiResponse = await response.json();
     if (!Array.isArray(apiData.data)) {
-      return {
-        guides: [],
-        filterOptions: { specializations: [], gender: [], transportation: [] },
-      };
+      return EMPTY_TOUR_GUIDES_RESULT;
     }
 
     // Defense in depth: never surface drafts on the public listing page.
@@ -414,10 +371,6 @@ export async function fetchTourGuides(
     return resultFromApiRows(publishedRows, locale);
   } catch (error) {
     console.error("Error fetching tour guides:", error);
-    // TODO(backend): Optionally fall back to DUMMY_TOURIST_GUIDES in development.
-    return {
-      guides: [],
-      filterOptions: { specializations: [], gender: [], transportation: [] },
-    };
+    return EMPTY_TOUR_GUIDES_RESULT;
   }
 }

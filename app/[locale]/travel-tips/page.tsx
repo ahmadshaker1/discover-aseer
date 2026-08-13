@@ -5,8 +5,6 @@ import TravelTipsFaq, {
   type TravelFaqItem,
 } from "@/components/travel-tips/TravelTipsFaq";
 
-const FAQ_ITEM_IDS = ["1", "2", "3"] as const;
-
 type ApiFaqQuestion = {
   question_ar?: string | null;
   answer_ar?: string | null;
@@ -25,10 +23,7 @@ type ApiFaqResponse = {
 
 const FAQ_API_BASE_URL = "https://tool-portal.discoveraseer.com";
 
-async function fetchFaqItems(
-  locale: string,
-  fallbackItems: TravelFaqItem[]
-): Promise<TravelFaqItem[]> {
+async function fetchFaqItems(locale: string): Promise<TravelFaqItem[]> {
   const baseUrl =
     process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.trim() || FAQ_API_BASE_URL;
 
@@ -38,7 +33,7 @@ async function fetchFaqItems(
     });
 
     if (!response.ok) {
-      return fallbackItems;
+      return [];
     }
 
     const payload = (await response.json()) as ApiFaqResponse;
@@ -75,11 +70,9 @@ async function fetchFaqItems(
         .filter((item): item is TravelFaqItem => item !== null);
     });
 
-    return mapped.length > 0
-      ? mapped
-      : fallbackItems;
+    return mapped;
   } catch {
-    return fallbackItems;
+    return [];
   }
 }
 
@@ -88,13 +81,7 @@ const TravelTipsPage = async () => {
   const t = await getTranslations("travelTips");
   const tCommon = await getTranslations("common");
 
-  const defaultFaqItems: TravelFaqItem[] = FAQ_ITEM_IDS.map((id) => ({
-    id,
-    question: t(`faq.items.${id}.question`),
-    answer: t(`faq.items.${id}.answer`),
-  }));
-
-  const faqItems = await fetchFaqItems(locale, defaultFaqItems);
+  const faqItems = await fetchFaqItems(locale);
 
   const emergency = [
     { id: "e1", title: t("emergencyPolice"), number: "911" },

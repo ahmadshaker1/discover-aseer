@@ -2,10 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import {
-  FALLBACK_FILM_WHY_ASEER_SLIDES,
-  type FilmWhyAseerSlide,
-} from "@/components/film/data";
+import type { FilmWhyAseerSlide } from "@/components/film/data";
 
 
 interface FilmWhyAseerSectionProps {
@@ -59,19 +56,9 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
   const tCommon = useTranslations("common");
 
   const lanes = useMemo(() => {
-    const source = slides.length > 0 ? slides : FALLBACK_FILM_WHY_ASEER_SLIDES;
-    const left = source.filter((s) => s.lane === "left");
-    const right = source.filter((s) => s.lane === "right");
-    return {
-      left:
-        left.length > 0
-          ? left
-          : FALLBACK_FILM_WHY_ASEER_SLIDES.filter((s) => s.lane === "left"),
-      right:
-        right.length > 0
-          ? right
-          : FALLBACK_FILM_WHY_ASEER_SLIDES.filter((s) => s.lane === "right"),
-    };
+    const left = slides.filter((s) => s.lane === "left");
+    const right = slides.filter((s) => s.lane === "right");
+    return { left, right };
   }, [slides]);
 
   const [naturalIndex, setNaturalIndex] = useState(0);

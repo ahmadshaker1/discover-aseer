@@ -54,164 +54,6 @@ const FALLBACK_IMAGE = "/assets/experiences/experiences.png";
 const DEFAULT_LOCATION = "منطقة عسير";
 const ACCOMMODATION_ITEMS_PATH = "/items/accomodation" as const;
 
-const u = (id: string) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=900&h=600&q=80`;
-
-/**
- * Temporary fallback list for `/accommodation`.
- *
- * Required data points for each card/filter item:
- * - id: unique stable value for React key and tracking
- * - name: accommodation title
- * - city: city badge + city filter matching key
- * - location: short location line under title
- * - description: short body copy on card
- * - image: main card image URL
- * - rating: numeric rating (shown as 4.8/5)
- * - reviewsCount: numeric reviews count (shown in rating pill)
- * - stars: hotel class (1–5) used by the rating filter
- * - bookingUrl: legacy / external booking reference if needed
- * - exceptional: featured strip + badge (CMS `featured` boolean)
- * - mapsUrl: explicit maps link, else derived in UI
- */
-const maps = (q: string) =>
-  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
-
-export const DUMMY_ACCOMMODATIONS: Accommodation[] = [
-  {
-    id: "a1",
-    name: "قصر أبها",
-    city: "أبها",
-    location: "طريق الملك فهد، أبها",
-    description:
-      "من أرقى أماكن الإقامة الفاخرة في أبها مع خدمات فندقية وسياحية مميزة.",
-    hero_image: u("1590490360182-c33d57733427"),
-    rating: 4.8,
-    reviewsCount: 233,
-    stars: 5,
-    bookingUrl: "https://www.booking.com",
-    exceptional: true,
-    mapsUrl: maps("قصر أبها أبها طريق الملك فهد"),
-  },
-  {
-    id: "a2",
-    name: "بيات",
-    city: "أبها",
-    location: "حي السد، أبها",
-    description:
-      "إقامة عصرية بإطلالة رائعة وغرف مريحة وخيارات مناسبة للعائلات والأفراد.",
-    hero_image: u("1566665797739-1674de7a421a"),
-    rating: 4.8,
-    reviewsCount: 233,
-    stars: 4,
-    bookingUrl: "https://www.booking.com",
-    exceptional: false,
-    mapsUrl: maps("بيات أبها حي السد"),
-  },
-  {
-    id: "a3",
-    name: "قصر أبها سكاي",
-    city: "أبها",
-    location: "طريق الأمير سلطان، أبها",
-    description:
-      "تجربة إقامة فاخرة في قلب المدينة مع سهولة الوصول لأبرز الوجهات السياحية.",
-    hero_image: u("1590490359689-bf3f6f7ea1f5"),
-    rating: 4.7,
-    reviewsCount: 188,
-    stars: 5,
-    bookingUrl: "https://www.booking.com",
-    exceptional: true,
-    mapsUrl: maps("قصر أبها سكاي أبها"),
-  },
-  {
-    id: "a4",
-    name: "منتجع السودة",
-    city: "السودة",
-    location: "مرتفعات السودة",
-    description:
-      "إقامة جبلية هادئة وسط الطبيعة والضباب مع أجواء استثنائية لمحبي الهدوء.",
-    hero_image: u("1505693416388-ac5ce068fe85"),
-    rating: 4.6,
-    reviewsCount: 120,
-    stars: 4,
-    bookingUrl: "https://www.booking.com",
-    exceptional: false,
-    mapsUrl: maps("منتجع السودة"),
-  },
-  {
-    id: "a5",
-    name: "فندق خميس بارك",
-    city: "خميس مشيط",
-    location: "مركز خميس مشيط",
-    description:
-      "فندق مريح بخدمات متكاملة وموقع قريب من الأسواق والمطاعم في المدينة.",
-    hero_image: u("1631049307264-da0ec9d70304"),
-    rating: 4.5,
-    reviewsCount: 97,
-    stars: 3,
-    bookingUrl: "https://www.booking.com",
-    exceptional: false,
-    mapsUrl: maps("فندق خميس بارك خميس مشيط"),
-  },
-  {
-    id: "a6",
-    name: "أجنحة عسير",
-    city: "أبها",
-    location: "حي المنسك، أبها",
-    description:
-      "أجنحة فندقية حديثة مناسبة للإقامات القصيرة والطويلة مع خدمات يومية.",
-    hero_image: u("1522708323590-d24dbb6b0267"),
-    rating: 4.4,
-    reviewsCount: 76,
-    stars: 3,
-    bookingUrl: "https://www.booking.com",
-    exceptional: false,
-    mapsUrl: maps("أجنحة عسير أبها"),
-  },
-  {
-    id: "a7",
-    name: "فندق لولوة أبها",
-    city: "أبها",
-    location: "حي الموظفين، أبها",
-    description: "فندق بخدمات راقية وموقع مميز قرب المطار وطريق الملك فهد.",
-    hero_image: u("1618773928121-ec2e2058ed99"),
-    rating: 4.9,
-    reviewsCount: 312,
-    stars: 5,
-    bookingUrl: "https://www.booking.com",
-    exceptional: true,
-    mapsUrl: maps("فندق لولوة أبها"),
-  },
-  {
-    id: "a8",
-    name: "نُزل الضباب",
-    city: "السودة",
-    location: "قرية رجال ألمع",
-    description: "إقامة تراثية فاخرة مع إطلالة جبلية وضباب الصباح.",
-    hero_image: u("1582719478250-c89cae4dc85b"),
-    rating: 4.85,
-    reviewsCount: 156,
-    stars: 4,
-    bookingUrl: "https://www.booking.com",
-    exceptional: true,
-    mapsUrl: maps("نزل الضباب السودة"),
-  },
-  {
-    id: "a9",
-    name: "فيلا الجبل الذهبي",
-    city: "خميس مشيط",
-    location: "طريق الملك عبدالله",
-    description: "فيلا فندقية بمسبح داخلي وخدمة خاصة للعائلات الكبيرة.",
-    hero_image: u("1571896349842-33c89424de2d"),
-    rating: 4.75,
-    reviewsCount: 201,
-    stars: 5,
-    bookingUrl: "https://www.booking.com",
-    exceptional: true,
-    mapsUrl: maps("فيلا الجبل الذهبي خميس مشيط"),
-  },
-];
-
 const toNumber = (
   value: number | string | null | undefined,
   fallback: number,
@@ -226,10 +68,6 @@ const toNumber = (
 
 const isHttpUrl = (value: string) =>
   value.startsWith("http://") || value.startsWith("https://");
-
-function shouldUseAccommodationDummy(): boolean {
-  return process.env.NEXT_PUBLIC_ACCOMMODATION_USE_DUMMY === "true";
-}
 
 function toFeaturedFlag(value: unknown): boolean {
   if (value === true || value === 1 || value === "1" || value === "true") {
@@ -381,10 +219,6 @@ export function splitAccommodationLists(
 export const fetchAccommodations = async (
   locale: LocaleCode = "ar",
 ): Promise<Accommodation[]> => {
-  if (shouldUseAccommodationDummy()) {
-    return DUMMY_ACCOMMODATIONS;
-  }
-
   const directusUrl = (
     process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
     "https://tool-portal.discoveraseer.com"
@@ -402,12 +236,7 @@ export const fetchAccommodations = async (
     const apiData: ApiResponse = await response.json();
     const rows = Array.isArray(apiData.data) ? apiData.data : [];
 
-    // Fallback when collection is empty.
-    if (rows.length === 0) {
-      return DUMMY_ACCOMMODATIONS;
-    }
-
-    const transformed = rows
+    return rows
       .filter(
         (accommodation) =>
           !accommodation.status || accommodation.status === "published",
@@ -415,10 +244,8 @@ export const fetchAccommodations = async (
       .map((accommodation) =>
         transformAccommodation(accommodation, directusUrl, locale),
       );
-    return transformed.length > 0 ? transformed : DUMMY_ACCOMMODATIONS;
   } catch (error) {
     console.error("Error fetching accommodations:", error);
-    // Network/API fallback.
-    return DUMMY_ACCOMMODATIONS;
+    return [];
   }
 };

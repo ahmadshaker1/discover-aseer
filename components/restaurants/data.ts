@@ -1,51 +1,10 @@
 /**
- * RESTAURANTS — WHERE TO PLUG THINGS IN
- *
- * ┌─────────────────────────────────────┬──────────────────────────────────────────────────────────┐
- * │ You put…                            │ It goes…                                                 │
- * ├─────────────────────────────────────┼──────────────────────────────────────────────────────────┤
- * │ Force dummy / skip API in prod      │ .env.local → NEXT_PUBLIC_RESTAURANTS_USE_DUMMY=true      │
- * │ Force live API in dev               │ .env.local → NEXT_PUBLIC_RESTAURANTS_USE_DUMMY=false     │
- * │ Real API base URL (optional)        │ .env.local → NEXT_PUBLIC_RESTAURANTS_API_BASE            │
- * │                                     │   (no trailing /). If unset, default tool-portal URL below.│
- * │ Dummy rows to edit / remove         │ dummyRestaurants.ts → DUMMY_RESTAURANTS                  │
- * │ API JSON field names                │ ApiLocation + LocationsApiResponse in this file          │
- * │ API row → Restaurant card           │ transformLocationToRestaurant()                          │
- * │ List endpoint path                  │ RESTAURANTS_LOCATIONS_ITEMS_PATH → `/items/restaurants`  │
- * │ Restaurant image fields             │ image_new → image → PLACEHOLDER (+ Drive via image-proxy)│
- * │ Remote image hosts for dummy        │ next.config.ts → images.remotePatterns (e.g. Unsplash)   │
- * │ Page that loads data                │ app/restaurants/page.tsx → fetchRestaurants()            │
- * │ IGCAT “visit site” URL              │ NEXT_PUBLIC_IGCAT_WEBSITE_URL → RestaurantsCredibility…  │
- * └─────────────────────────────────────┴──────────────────────────────────────────────────────────┘
- *
- * HTTP contract (live)
- * --------------------
- *   Method: GET
- *   URL:    `{NEXT_PUBLIC_RESTAURANTS_API_BASE || default}/items/restaurants`
- *   Body:   n/a
- *   JSON:   `{ "data": ApiLocation[] }` (Directus-style). Supports old and new shapes
- *           (`name_ar/name_en` or `title_ar/title_en`, `image_new`, `image`).
- *   Filter: client keeps rows that are published (when status exists), match restaurant category,
- *           and include at least one display name field.
- *
- * Switch from dummy to real data
- * ------------------------------
- *   1. Development: add `NEXT_PUBLIC_RESTAURANTS_USE_DUMMY=false` to hit the real API.
- *   2. Production: dummy is used only if `NEXT_PUBLIC_RESTAURANTS_USE_DUMMY=true` (otherwise live API).
- *   3. Optional cleanup: delete `dummyRestaurants.ts` and simplify `shouldUseRestaurantDummy()` below.
- *
- * Decision order
- * --------------
- *   - Production: dummy only when NEXT_PUBLIC_RESTAURANTS_USE_DUMMY === "true".
- *   - Dummy data only when NEXT_PUBLIC_RESTAURANTS_USE_DUMMY === "true".
- *   - Dev + live fetch fails: falls back to dummy unless USE_DUMMY is explicitly "false".
- *   - Prod + live fetch fails: returns [] (empty grid); set USE_DUMMY=true temporarily if needed.
+ * Restaurants listing from Directus `items/restaurants`.
+ * Env: `NEXT_PUBLIC_RESTAURANTS_API_BASE` (optional) or `NEXT_PUBLIC_DIRECTUS_APP_URL`.
  */
 
 import { inferCityIdFromLocation } from "@/components/landmarks/filterOptions";
-import { DUMMY_RESTAURANTS } from "./dummyRestaurants";
 import {
-  localizeRestaurant,
   translateRestaurantCity,
   translateRestaurantLabel,
 } from "./restaurantLocale";
@@ -274,17 +233,8 @@ export const transformLocationToRestaurant = (
   return restaurant;
 };
 
-function shouldUseRestaurantDummy(): boolean {
-  return process.env.NEXT_PUBLIC_RESTAURANTS_USE_DUMMY === "true";
-}
-
 export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Restaurant[]> {
-  if (shouldUseRestaurantDummy()) {
-    return DUMMY_RESTAURANTS.map((item) => localizeRestaurant(item, locale));
-  }
-
   try {
-    // TODO(backend): Confirm path, filters, and auth with API owner.
     const response = await fetch(`${LOCATIONS_API_BASE}${RESTAURANTS_LOCATIONS_ITEMS_PATH}`, {
       next: { revalidate: 0 }, // TODO: restore 3600 collection cache
     });
@@ -306,15 +256,6 @@ export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Resta
       .map((item) => transformLocationToRestaurant(item, locale));
   } catch (error) {
     console.error("Error fetching restaurants:", error);
-    if (
-      process.env.NODE_ENV === "development" &&
-      process.env.NEXT_PUBLIC_RESTAURANTS_USE_DUMMY !== "false"
-    ) {
-      console.warn(
-        "[restaurants] Fetch failed — showing dummy list. Use NEXT_PUBLIC_RESTAURANTS_USE_DUMMY=false when the API is ready."
-      );
-      return DUMMY_RESTAURANTS.map((item) => localizeRestaurant(item, locale));
-    }
     return [];
   }
 }

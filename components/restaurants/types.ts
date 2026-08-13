@@ -1,6 +1,6 @@
 /**
  * UI model for restaurant cards (`RestaurantsGrid`, `RestaurantsCards`) and filters.
- * Populated from `transformLocationToRestaurant()` in `data.ts` or from `dummyRestaurants.ts`.
+ * Populated from `transformLocationToRestaurant()` in `data.ts`.
  *
  * API alignment (Directus `locations` collection — add fields as needed):
  * | Restaurant (UI)   | Suggested API field(s)              | Notes                          |

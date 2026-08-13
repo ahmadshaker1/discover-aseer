@@ -6,8 +6,8 @@ import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import { getLocale, getTranslations } from "next-intl/server";
 import {
   fetchFilmsForFilmPage,
-  fetchFilmServiceCardsWithFallback,
-  fetchFilmWhyAseerSlidesWithFallback,
+  fetchFilmServiceCards,
+  fetchFilmWhyAseerSlides,
 } from "@/components/film/data";
 import FilmHero from "@/components/film/FilmHero";
 import FilmLandscapesSection from "@/components/film/FilmLandscapesSection";
@@ -21,8 +21,8 @@ const FilmPage = async () => {
   const [{ landscapes, showcaseCards }, whyAseerSlides, serviceCards] =
     await Promise.all([
       fetchFilmsForFilmPage(locale),
-      fetchFilmWhyAseerSlidesWithFallback(),
-      fetchFilmServiceCardsWithFallback(),
+      fetchFilmWhyAseerSlides(),
+      fetchFilmServiceCards(),
     ]);
 
   return (
