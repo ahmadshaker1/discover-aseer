@@ -84,8 +84,8 @@ export const discoverAseerLinks: NavbarDropdownLink[] = [
 ];
 
 /**
- * Preview order: Planner → Getting here → Restaurants → Agencies →
- * Tour guides → Support services
+ * Preview order: Planner → Getting here → Accommodation → Restaurants →
+ * Agencies → Tour guides → Support services
  *
  * Getting here reuses the former Accommodation featured image.
  */
@@ -102,6 +102,12 @@ export const planTripLinks: NavbarDropdownLink[] = [
     labelKey: "navPlanTripLinks.gettingAround",
     image: "/assets/navbar/accommodation.png",
     subKey: "navMega.plan.gettingAround",
+  },
+  {
+    href: "/accommodation",
+    labelKey: "navPlanTripLinks.accommodation",
+    image: "/assets/landing/accommodation-card.png",
+    subKey: "navMega.plan.accommodation",
   },
   {
     href: "/restaurants",
