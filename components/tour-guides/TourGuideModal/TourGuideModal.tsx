@@ -61,15 +61,16 @@ const TourGuideModal = ({
             {/* Profile Section */}
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-4 sm:mb-6">
               {/* Profile Picture */}
-              <div className="relative w-24 h-24 shrink-0">
-                <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
+              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full">
+                <div className="absolute inset-0 overflow-hidden rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
                   <div className="relative h-full w-full overflow-hidden rounded-full bg-surface">
                     <Image
                       src={avatarSrc}
                       alt={guide.name}
                       fill
-                      className="object-cover"
+                      className="rounded-full object-cover"
                       sizes="96px"
+                      style={{ borderRadius: "50%" }}
                     />
                   </div>
                 </div>

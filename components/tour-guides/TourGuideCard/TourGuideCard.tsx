@@ -51,15 +51,16 @@ const TourGuideCard = ({
     >
       <div className="p-4 sm:p-6 flex flex-col items-center h-full">
         {/* Profile Picture */}
-        <div className="relative w-24 h-24 mb-4">
-          <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
-            <div className="relative w-full h-full rounded-full overflow-hidden">
+        <div className="relative mb-4 h-24 w-24 shrink-0 overflow-hidden rounded-full">
+          <div className="absolute inset-0 overflow-hidden rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
+            <div className="relative h-full w-full overflow-hidden rounded-full bg-surface">
               <Image
                 src={avatarSrc}
                 alt={name}
                 fill
-                className="object-cover"
+                className="rounded-full object-cover"
                 sizes="96px"
+                style={{ borderRadius: "50%" }}
               />
             </div>
           </div>
