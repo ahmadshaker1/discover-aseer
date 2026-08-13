@@ -1,6 +1,7 @@
 "use client";
 
 import type { KeyboardEvent } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -211,6 +212,7 @@ function FeaturedCard({
   onNavigate: () => void;
 }) {
   const t = useTranslations();
+  const [hovered, setHovered] = useState(false);
   const title = t(item.labelKey);
   const kicker =
     item.badge === "pdf"
@@ -221,6 +223,13 @@ function FeaturedCard({
           ? t("nav.badgeNew")
           : t("nav.explore");
 
+  const hoverHandlers = {
+    onMouseEnter: () => setHovered(true),
+    onMouseLeave: () => setHovered(false),
+    onFocus: () => setHovered(true),
+    onBlur: () => setHovered(false),
+  };
+
   const content = (
     <>
       <Image
@@ -230,6 +239,10 @@ function FeaturedCard({
         sizes="27vw"
         className="object-cover"
         aria-hidden
+        style={{
+          transform: hovered ? "scale(1.04)" : "scale(1)",
+          transition: "transform 0.45s ease",
+        }}
       />
       <div
         style={{
@@ -241,10 +254,24 @@ function FeaturedCard({
         }}
       />
       <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: "none",
+          boxShadow: hovered
+            ? "inset 0 0 90px 28px rgba(24, 12, 40, 0.45)"
+            : "inset 0 0 0 0 rgba(24, 12, 40, 0)",
+          transition: "box-shadow 0.35s ease",
+        }}
+      />
+      <div
         style={{
           position: "absolute",
           insetInline: 0,
           bottom: 0,
+          zIndex: 3,
           padding: "28px 26px",
           textAlign: "start",
         }}
@@ -290,6 +317,7 @@ function FeaturedCard({
     position: "relative" as const,
     overflow: "hidden" as const,
     display: "block" as const,
+    cursor: "pointer" as const,
     borderInlineStart: "1px solid rgba(255,255,255,.08)",
   };
 
@@ -302,6 +330,7 @@ function FeaturedCard({
         tabIndex={isOpen ? 0 : -1}
         onClick={onNavigate}
         style={style}
+        {...hoverHandlers}
       >
         {content}
       </a>
@@ -314,6 +343,7 @@ function FeaturedCard({
       tabIndex={isOpen ? 0 : -1}
       onClick={onNavigate}
       style={style}
+      {...hoverHandlers}
     >
       {content}
     </Link>
