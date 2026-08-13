@@ -40,6 +40,7 @@ export interface ApiAccommodation {
   booking_link?: string | null;
   maps_url?: string | null;
   google_maps_url?: string | null;
+  featured?: boolean | null;
   exceptional?: boolean | null;
   is_exceptional?: boolean | null;
   [key: string]: unknown;
@@ -70,7 +71,7 @@ const u = (id: string) =>
  * - reviewsCount: numeric reviews count (shown in rating pill)
  * - stars: hotel class (1–5) used by the rating filter
  * - bookingUrl: legacy / external booking reference if needed
- * - exceptional: featured strip + badge
+ * - exceptional: featured strip + badge (CMS `featured` boolean)
  * - mapsUrl: explicit maps link, else derived in UI
  */
 const maps = (q: string) =>
@@ -227,10 +228,14 @@ const isHttpUrl = (value: string) =>
   value.startsWith("http://") || value.startsWith("https://");
 
 function shouldUseAccommodationDummy(): boolean {
-  const flag = process.env.NEXT_PUBLIC_ACCOMMODATION_USE_DUMMY;
-  if (flag === "true") return true;
-  if (flag === "false") return false;
-  return process.env.NODE_ENV === "development";
+  return process.env.NEXT_PUBLIC_ACCOMMODATION_USE_DUMMY === "true";
+}
+
+function toFeaturedFlag(value: unknown): boolean {
+  if (value === true || value === 1 || value === "1" || value === "true") {
+    return true;
+  }
+  return false;
 }
 
 const buildAssetUrl = (directusUrl: string, assetId?: string | null) => {
@@ -320,8 +325,10 @@ export const transformAccommodation = (
   ).trim();
   const mapsUrl = mapsUrlRaw && isHttpUrl(mapsUrlRaw) ? mapsUrlRaw : undefined;
 
-  const exceptional = Boolean(
-    apiAccommodation.exceptional ?? apiAccommodation.is_exceptional,
+  const exceptional = toFeaturedFlag(
+    apiAccommodation.featured ??
+      apiAccommodation.exceptional ??
+      apiAccommodation.is_exceptional,
   );
 
   return {
@@ -357,31 +364,17 @@ export function accommodationMapsHref(a: Accommodation): string {
 }
 
 /**
- * Splits filtered hotels into carousel vs grid.
- * When CMS never sets `exceptional`, the first five matches populate the carousel
- * so the strip is still visible; those same items are omitted from the grid to avoid duplicates.
+ * Splits filtered hotels into carousel vs grid using CMS `featured` only.
+ * Non-featured hotels stay in the grid; an empty featured list hides the strip.
  */
 export function splitAccommodationLists(
   filtered: Accommodation[],
   onlyExceptional: boolean,
 ): { carousel: Accommodation[]; grid: Accommodation[] } {
-  const flagged = filtered.filter((a) => a.exceptional);
-  if (flagged.length > 0) {
-    const carousel = flagged;
-    const grid = onlyExceptional ? [] : filtered.filter((a) => !a.exceptional);
-    return { carousel, grid };
-  }
-
-  if (onlyExceptional) {
-    return {
-      carousel: filtered.slice(0, Math.min(5, filtered.length)),
-      grid: [],
-    };
-  }
-
-  const carousel = filtered.slice(0, Math.min(5, filtered.length));
-  const carouselIds = new Set(carousel.map((a) => a.id));
-  const grid = filtered.filter((a) => !carouselIds.has(a.id));
+  const carousel = filtered.filter((a) => a.exceptional);
+  const grid = onlyExceptional
+    ? []
+    : filtered.filter((a) => !a.exceptional);
   return { carousel, grid };
 }
 
@@ -392,18 +385,10 @@ export const fetchAccommodations = async (
     return DUMMY_ACCOMMODATIONS;
   }
 
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(
-    /\/$/,
-    "",
+  const directusUrl = (
+    process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
+    "https://tool-portal.discoveraseer.com"
   );
-
-  if (!directusUrl) {
-    console.warn(
-      "[accommodation] NEXT_PUBLIC_DIRECTUS_APP_URL is not set — using dummy data.",
-    );
-    // Fallback keeps page usable before backend/env wiring is complete.
-    return DUMMY_ACCOMMODATIONS;
-  }
 
   try {
     const response = await fetch(`${directusUrl}${ACCOMMODATION_ITEMS_PATH}`, {

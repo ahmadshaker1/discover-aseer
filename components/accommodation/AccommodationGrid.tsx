@@ -52,10 +52,10 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
     return baseFiltered;
   }, [baseFiltered, onlyExceptional, hasExceptionalFlags]);
 
-  const exceptionalFilterCount = useMemo(() => {
-    const { carousel } = splitAccommodationLists(baseFiltered, false);
-    return carousel.length;
-  }, [baseFiltered]);
+  const exceptionalFilterCount = useMemo(
+    () => baseFiltered.filter((a) => a.exceptional).length,
+    [baseFiltered],
+  );
 
   const { carousel, grid } = useMemo(
     () => splitAccommodationLists(filtered, onlyExceptional),
