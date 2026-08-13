@@ -94,6 +94,7 @@ Here is the catalog of available alternative ${itemType}s:
 ${JSON.stringify(mappedCatalog)}
 
 Please pick exactly ONE alternative ${itemType} from the catalog that fits well with the rest of the day.
+Maintain the budget style inferred from the current plan. Budget ranges per person: Economy (Restaurants < 50, Experiences < 200, Events < 25 or free), Medium (Restaurants 50-120, Experiences 200-400, Events 25-75 or free), Premium (Restaurants > 120, Experiences > 400, Events > 75 or free). You can use free experiences or events if they suit the plan. You may also use items from the catalog even if they do not have a price specified.
 Return ONLY valid JSON. No markdown formatting, no extra text.
 
 JSON Schema:

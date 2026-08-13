@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -45,15 +44,9 @@ const TourGuideModal = ({
   availability,
 }: TourGuideModalProps) => {
   const t = useTranslations("tourGuides");
-  const placeholder = tourGuidePlaceholderAvatar(guide?.gender);
-  const [src, setSrc] = useState(guide?.profileImage || placeholder);
-
-  useEffect(() => {
-    setSrc(guide?.profileImage || placeholder);
-  }, [guide?.profileImage, placeholder]);
-
   if (!guide) return null;
 
+  const avatarSrc = tourGuidePlaceholderAvatar(guide.gender);
   const firstName = guide.name.split(" ")[0] || guide.name;
 
   return (
@@ -72,14 +65,11 @@ const TourGuideModal = ({
                 <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
                   <div className="relative h-full w-full overflow-hidden rounded-full bg-surface">
                     <Image
-                      src={src}
+                      src={avatarSrc}
                       alt={guide.name}
                       fill
                       className="object-cover"
                       sizes="96px"
-                      onError={() => {
-                        if (src !== placeholder) setSrc(placeholder);
-                      }}
                     />
                   </div>
                 </div>

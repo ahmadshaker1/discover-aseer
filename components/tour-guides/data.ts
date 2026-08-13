@@ -35,11 +35,9 @@ import {
 } from "@/components/landmarks/filterOptions";
 import type { LocaleCode } from "@/lib/i18n/localized";
 import {
-  getDirectusPublicUrl,
   isPublishedTourGuide,
   publishedTourGuidesSearchParams,
 } from "@/lib/directus/config";
-import { resolveTourGuideFileUrl } from "@/lib/directus/resolveTourGuideFileUrl";
 import {
   buildSpecLabelMapFromApi,
   canonicalizeSpecializationTokens,
@@ -247,9 +245,8 @@ export function transformTourGuide(
   );
   const hasTransportation = api.transportation === true;
   const gender = normalizeGuideGender(api.gender);
-  const imageUrl =
-    resolveTourGuideFileUrl(api.image, getDirectusPublicUrl()) ??
-    tourGuidePlaceholderAvatar(gender);
+  // Always use gender placeholders — do not show uploaded CMS profile photos.
+  const imageUrl = tourGuidePlaceholderAvatar(gender);
   const cityId = inferGuideCityId(api);
   const locationLabel = cityId
     ? getCityLabelById(cityId, locale)

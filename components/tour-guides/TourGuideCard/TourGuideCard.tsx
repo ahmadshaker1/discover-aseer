@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArabicFlagIcon, EnglishFlagIcon, WhatsAppIcon } from "./Icons";
 import { Button } from "@headlessui/react";
@@ -35,7 +34,6 @@ const LanguageFlag = ({ code }: { code: string }) => {
 
 const TourGuideCard = ({
   name,
-  profileImage,
   languages,
   whatsappUrl,
   description,
@@ -44,12 +42,7 @@ const TourGuideCard = ({
 }: TourGuideCardProps) => {
   const t = useTranslations("tourGuides");
   const tCommon = useTranslations("common");
-  const placeholder = tourGuidePlaceholderAvatar(gender);
-  const [src, setSrc] = useState(profileImage || placeholder);
-
-  useEffect(() => {
-    setSrc(profileImage || placeholder);
-  }, [profileImage, placeholder]);
+  const avatarSrc = tourGuidePlaceholderAvatar(gender);
 
   return (
     <div
@@ -62,14 +55,11 @@ const TourGuideCard = ({
           <div className="absolute inset-0 rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
             <div className="relative w-full h-full rounded-full overflow-hidden">
               <Image
-                src={src}
+                src={avatarSrc}
                 alt={name}
                 fill
                 className="object-cover"
                 sizes="96px"
-                onError={() => {
-                  if (src !== placeholder) setSrc(placeholder);
-                }}
               />
             </div>
           </div>
