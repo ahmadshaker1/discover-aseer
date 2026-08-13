@@ -46,12 +46,12 @@ const TourGuideCard = ({
 
   return (
     <div
-      className="cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md h-90"
+      className="min-h-[420px] cursor-pointer overflow-hidden rounded-lg bg-surface text-foreground shadow-sm transition-shadow hover:shadow-md"
       onClick={onCardClick}
     >
-      <div className="p-4 sm:p-6 flex flex-col items-center h-full">
+      <div className="flex h-full flex-col items-center p-6 sm:p-8">
         {/* Profile Picture */}
-        <div className="relative mb-4 h-24 w-24 shrink-0 overflow-hidden rounded-full">
+        <div className="relative mb-5 h-28 w-28 shrink-0 overflow-hidden rounded-full">
           <div className="absolute inset-0 overflow-hidden rounded-full bg-linear-to-br from-purple-400 to-purple-600 p-[2px]">
             <div className="relative h-full w-full overflow-hidden rounded-full bg-surface">
               <Image
@@ -59,7 +59,7 @@ const TourGuideCard = ({
                 alt={name}
                 fill
                 className="rounded-full object-cover"
-                sizes="96px"
+                sizes="112px"
                 style={{ borderRadius: "50%" }}
               />
             </div>
@@ -67,14 +67,14 @@ const TourGuideCard = ({
         </div>
 
         {/* Name */}
-        <h3 className="mb-3 text-xl font-bold text-foreground">{name}</h3>
+        <h3 className="mb-2 text-base font-bold text-foreground">{name}</h3>
 
         {/* Languages */}
-        <div className="flex items-center gap-3 mb-4 flex-wrap justify-center">
+        <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
           {languages.map((lang) => (
             <div key={lang.code} className="flex items-center gap-1.5">
               <LanguageFlag code={lang.code} />
-              <span className="text-sm text-foreground">{lang.name}</span>
+              <span className="text-xs text-foreground">{lang.name}</span>
             </div>
           ))}
         </div>
@@ -83,18 +83,18 @@ const TourGuideCard = ({
         <a
           href={whatsappUrl}
           onClick={(e) => e.stopPropagation()}
-          className="mb-4 flex w-full max-w-[240px] items-center justify-center gap-2 rounded-full border-2 border-border bg-surface px-4 py-2 text-center transition-colors hover:bg-muted"
+          className="mb-4 flex w-full max-w-[260px] items-center justify-center gap-2 rounded-full border-2 border-border bg-surface px-4 py-2.5 text-center transition-colors hover:bg-muted"
         >
           <span className="shrink-0 text-green-600 dark:text-white">
             <WhatsAppIcon />
           </span>
-          <span className="text-sm font-bold leading-tight whitespace-normal">
+          <span className="text-xs font-bold leading-tight whitespace-normal">
             {t("contactWhatsApp")}
           </span>
         </a>
 
         {/* Description */}
-        <p className="mb-4 line-clamp-3 text-center text-sm leading-relaxed text-muted-foreground">
+        <p className="mb-4 line-clamp-3 text-center text-xs leading-relaxed text-muted-foreground">
           {description}
         </p>
 
@@ -104,7 +104,7 @@ const TourGuideCard = ({
             e.stopPropagation();
             onCardClick();
           }}
-          className="cursor-pointer text-sm font-medium text-foreground hover:underline mt-auto"
+          className="mt-auto cursor-pointer text-xs font-medium text-foreground hover:underline"
         >
           {tCommon("more")}
         </Button>
