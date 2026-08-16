@@ -70,12 +70,6 @@ const Footer = () => {
                     {t("footer.linkExperiences")}
                   </Link>
                   <Link
-                    href="/experiences/submit"
-                    className="block w-full text-start hover:opacity-80"
-                  >
-                    {t("footer.linkSubmitExperience")}
-                  </Link>
-                  <Link
                     href="/aseer-cuisine"
                     className="block w-full text-start hover:opacity-80"
                   >
