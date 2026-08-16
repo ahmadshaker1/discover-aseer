@@ -46,6 +46,7 @@ export interface SeasonDetailEvent {
   categoryIds: SeasonEventCategoryId[];
   startDate: string | null;
   endDate: string | null;
+  highlighted: boolean;
 }
 
 export interface SeasonDetailPageData {
