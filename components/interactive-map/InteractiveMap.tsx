@@ -62,12 +62,6 @@ interface MapPlace {
   season?: string;
 }
 
-interface Season {
-  id: string;
-  title: string;
-  title_ar: string;
-}
-
 interface MapLoadStats {
   totalFetched: number;
   published: number;
@@ -161,8 +155,6 @@ const InteractiveMap = ({
     [],
   );
   const [selectedCity, setSelectedCity] = useState<string>(ui.all);
-  const [seasons, setSeasons] = useState<Season[]>([]);
-  const [selectedSeason, setSelectedSeason] = useState<string>(ui.all);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [places, setPlaces] = useState<MapPlace[]>(EMPTY_PLACES);
@@ -193,19 +185,10 @@ const InteractiveMap = ({
         (placeCategoryKey != null &&
           activeCategories.includes(placeCategoryKey));
       const cityMatch = selectedCity === ui.all || place.city === selectedCity;
-      const seasonMatch =
-        selectedSeason === ui.all || place.season === selectedSeason;
       const searchMatch = placeMatchesMapSearch(place, searchTerm);
-      return categoryMatch && cityMatch && seasonMatch && searchMatch;
+      return categoryMatch && cityMatch && searchMatch;
     });
-  }, [
-    activeCategories,
-    places,
-    searchTerm,
-    selectedCity,
-    selectedSeason,
-    ui.all,
-  ]);
+  }, [activeCategories, places, searchTerm, selectedCity, ui.all]);
 
   const sidebarPlaceOrder = useMemo(() => {
     const shuffled = shuffleIds(places.map((place) => place.id));
@@ -293,28 +276,6 @@ const InteractiveMap = ({
       cancelled = true;
     };
   }, [locale]);
-
-  useEffect(() => {
-    let cancelled = false;
-    const loadSeasons = async () => {
-      try {
-        const response = await fetch("/api/interactive-map/seasons", {
-          cache: "no-store",
-        });
-        if (!response.ok || cancelled) return;
-        const json = await response.json();
-        if (json.data && Array.isArray(json.data) && !cancelled) {
-          setSeasons(json.data);
-        }
-      } catch (error) {
-        console.error("[interactive-map] Failed to load seasons", error);
-      }
-    };
-    loadSeasons();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const clearMapPopup = useCallback(() => {
     popupRef.current?.remove();
@@ -663,7 +624,6 @@ const InteractiveMap = ({
   const handleClearFilters = useCallback(() => {
     setSearchTerm("");
     setSelectedCity(ui.all);
-    setSelectedSeason(ui.all);
     setActiveCategories([]);
     setSelectedPlaceId(null);
     clearMapPopup();
@@ -688,9 +648,6 @@ const InteractiveMap = ({
     selectedCity,
     onSelectedCityChange: setSelectedCity,
     cities,
-    seasons,
-    selectedSeason,
-    onSelectedSeasonChange: setSelectedSeason,
     filteredPlaces: sidebarPlaces,
     isLoading: isPlacesLoading,
     radioSelectedPlaceId,
