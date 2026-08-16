@@ -1,0 +1,58 @@
+# Coolify: set Build Pack to Dockerfile, port 3000.
+# Mark only NEXT_PUBLIC_* vars as available at build time.
+FROM node:20-alpine AS deps
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm \
+  npm ci --no-audit --no-fund
+
+FROM node:20-alpine AS builder
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+ARG NEXT_PUBLIC_DIRECTUS_APP_URL
+ARG NEXT_PUBLIC_EVENTS_API_BASE
+ARG NEXT_PUBLIC_RESTAURANTS_API_BASE
+ARG NEXT_PUBLIC_MAPBOX_API_KEY
+ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_TIKTOK_PIXEL_ID
+ARG NEXT_PUBLIC_META_PIXEL_ID
+ARG NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_TOOL_PORTAL_DIRECTUS_URL
+ARG NEXT_PUBLIC_SERVICES_API_BASE
+
+ENV NEXT_PUBLIC_DIRECTUS_APP_URL=$NEXT_PUBLIC_DIRECTUS_APP_URL
+ENV NEXT_PUBLIC_EVENTS_API_BASE=$NEXT_PUBLIC_EVENTS_API_BASE
+ENV NEXT_PUBLIC_RESTAURANTS_API_BASE=$NEXT_PUBLIC_RESTAURANTS_API_BASE
+ENV NEXT_PUBLIC_MAPBOX_API_KEY=$NEXT_PUBLIC_MAPBOX_API_KEY
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_TIKTOK_PIXEL_ID=$NEXT_PUBLIC_TIKTOK_PIXEL_ID
+ENV NEXT_PUBLIC_META_PIXEL_ID=$NEXT_PUBLIC_META_PIXEL_ID
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+ENV NEXT_PUBLIC_TOOL_PORTAL_DIRECTUS_URL=$NEXT_PUBLIC_TOOL_PORTAL_DIRECTUS_URL
+ENV NEXT_PUBLIC_SERVICES_API_BASE=$NEXT_PUBLIC_SERVICES_API_BASE
+
+RUN npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+EXPOSE 3000
+CMD ["node", "server.js"]
