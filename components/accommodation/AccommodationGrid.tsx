@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import AccommodationExceptionalCarousel from "./AccommodationExceptionalCarousel";
 import AccommodationFilters from "./AccommodationFilters";
 import AccommodationHotelsGrid from "./AccommodationHotelsGrid";
-import type { Accommodation } from "./data";
+import type { Accommodation, AccommodationType } from "./data";
 import { splitAccommodationLists } from "./data";
 
 interface AccommodationGridProps {
@@ -17,11 +17,20 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
   const t = useTranslations("common");
   const locale = useLocale();
   const [selectedCity, setSelectedCity] = useState<string>("all");
+  const [selectedTypes, setSelectedTypes] = useState<AccommodationType[]>([]);
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
   const [onlyExceptional, setOnlyExceptional] = useState(false);
 
   const cityOptions = useMemo(() => {
     return Array.from(new Set(accommodations.map((a) => a.city)));
+  }, [accommodations]);
+
+  const typeCount = useMemo(() => {
+    const map = new Map<AccommodationType, number>();
+    accommodations.forEach((a) => {
+      map.set(a.type, (map.get(a.type) ?? 0) + 1);
+    });
+    return map;
   }, [accommodations]);
 
   const starsCount = useMemo(() => {
@@ -40,11 +49,13 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
   const baseFiltered = useMemo(() => {
     return accommodations.filter((a) => {
       if (selectedCity !== "all" && a.city !== selectedCity) return false;
+      if (selectedTypes.length > 0 && !selectedTypes.includes(a.type))
+        return false;
       if (selectedStars.length > 0 && !selectedStars.includes(a.stars))
         return false;
       return true;
     });
-  }, [accommodations, selectedCity, selectedStars]);
+  }, [accommodations, selectedCity, selectedStars, selectedTypes]);
 
   const filtered = useMemo(() => {
     if (!onlyExceptional) return baseFiltered;
@@ -62,6 +73,12 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
     [filtered, onlyExceptional],
   );
 
+  const toggleType = (type: AccommodationType) => {
+    setSelectedTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
+    );
+  };
+
   const toggleStars = (stars: number) => {
     setSelectedStars((prev) =>
       prev.includes(stars) ? prev.filter((s) => s !== stars) : [...prev, stars],
@@ -70,6 +87,7 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
 
   const resetFilters = () => {
     setSelectedCity("all");
+    setSelectedTypes([]);
     setSelectedStars([]);
     setOnlyExceptional(false);
   };
@@ -92,6 +110,9 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
           cityOptions={cityOptions}
           selectedCity={selectedCity}
           onCityChange={setSelectedCity}
+          selectedTypes={selectedTypes}
+          onToggleType={toggleType}
+          typeCount={typeCount}
           selectedStars={selectedStars}
           onToggleStars={toggleStars}
           starsCount={starsCount}

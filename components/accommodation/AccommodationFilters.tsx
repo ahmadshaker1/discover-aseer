@@ -2,6 +2,8 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import type { AccommodationType } from "./data";
+import { ACCOMMODATION_TYPES } from "./data";
 import {
   CheckboxCheckIcon,
   ChevronDownSmallIcon,
@@ -17,6 +19,9 @@ export interface AccommodationFiltersProps {
   cityOptions: string[];
   selectedCity: string;
   onCityChange: (city: string) => void;
+  selectedTypes: AccommodationType[];
+  onToggleType: (type: AccommodationType) => void;
+  typeCount: Map<AccommodationType, number>;
   selectedStars: number[];
   onToggleStars: (stars: number) => void;
   starsCount: Map<number, number>;
@@ -30,6 +35,9 @@ const AccommodationFilters = ({
   cityOptions,
   selectedCity,
   onCityChange,
+  selectedTypes,
+  onToggleType,
+  typeCount,
   selectedStars,
   onToggleStars,
   starsCount,
@@ -55,7 +63,7 @@ const AccommodationFilters = ({
     selectedCity === "all" ? t("allCities") : selectedCity;
 
   return (
-    <aside className="font-brando w-full shrink-0 rounded-2xl border border-border bg-surface p-4 text-foreground sm:p-6 lg:h-[796px] lg:w-[320px] lg:rounded-none lg:border-y-0 lg:border-s-0 lg:border-e lg:border-border lg:bg-transparent lg:pb-0 lg:ps-8 lg:pe-8 lg:pt-6 lg:shadow-none">
+    <aside className="font-brando w-full shrink-0 rounded-2xl border border-border bg-surface p-4 text-foreground sm:p-6 lg:min-h-[796px] lg:w-[320px] lg:rounded-none lg:border-y-0 lg:border-s-0 lg:border-e lg:border-border lg:bg-transparent lg:pb-0 lg:ps-8 lg:pe-8 lg:pt-6 lg:shadow-none">
       <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-6">
         <p className="text-start text-lg  text-foreground sm:text-xl [unicode-bidi:isolate]">
           {t("filterDestinations")}
@@ -157,6 +165,38 @@ const AccommodationFilters = ({
             {exceptionalFilterCount}
           </span>
         </label>
+      </section>
+
+      <section className="mb-6 border-b border-border pb-6">
+        <div className="mb-3 flex items-center gap-2">
+          <HotelRatingIcon />
+          <h3 className="text-start text-base text-foreground [unicode-bidi:isolate]">
+            {t("accommodationType")}
+          </h3>
+        </div>
+        <div className="flex flex-col gap-2">
+          {ACCOMMODATION_TYPES.map((type) => (
+            <label
+              key={type}
+              className="flex cursor-pointer items-center gap-3 rounded-lg py-2 pe-1 transition-colors hover:bg-muted"
+            >
+              <input
+                type="checkbox"
+                checked={selectedTypes.includes(type)}
+                onChange={() => onToggleType(type)}
+                className="h-4 w-4 shrink-0 rounded border-border text-primary focus:ring-primary"
+              />
+              <span className="min-w-0 flex-1 text-start text-sm font-normal text-foreground">
+                {type === "hotel"
+                  ? t("accommodationTypeHotel")
+                  : t("accommodationTypeHotelApartment")}
+              </span>
+              <span className="shrink-0 rounded-[8px] bg-muted px-2 py-0.5 text-xs text-foreground">
+                {typeCount.get(type) ?? 0}
+              </span>
+            </label>
+          ))}
+        </div>
       </section>
 
       <section>

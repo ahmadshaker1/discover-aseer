@@ -1,5 +1,12 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 
+export type AccommodationType = "hotel" | "hotel_apartment";
+
+export const ACCOMMODATION_TYPES: AccommodationType[] = [
+  "hotel",
+  "hotel_apartment",
+];
+
 export interface Accommodation {
   id: string;
   name: string;
@@ -10,6 +17,7 @@ export interface Accommodation {
   rating: number;
   reviewsCount: number;
   stars: number;
+  type: AccommodationType;
   bookingUrl: string;
   /** Featured / exceptional property — shown in horizontal strip + badge */
   exceptional?: boolean;
@@ -40,6 +48,8 @@ export interface ApiAccommodation {
   booking_link?: string | null;
   maps_url?: string | null;
   google_maps_url?: string | null;
+  type?: string | null;
+  type_ar?: string | null;
   featured?: boolean | null;
   exceptional?: boolean | null;
   is_exceptional?: boolean | null;
@@ -68,6 +78,22 @@ const toNumber = (
 
 const isHttpUrl = (value: string) =>
   value.startsWith("http://") || value.startsWith("https://");
+
+export function normalizeAccommodationType(value: unknown): AccommodationType {
+  const raw = String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
+  if (
+    raw === "hotel_apartment" ||
+    raw === "apartment" ||
+    raw.includes("apartment") ||
+    raw.includes("شقق")
+  ) {
+    return "hotel_apartment";
+  }
+  return "hotel";
+}
 
 function toFeaturedFlag(value: unknown): boolean {
   if (value === true || value === 1 || value === "1" || value === "true") {
@@ -188,6 +214,9 @@ export const transformAccommodation = (
     stars: toNumber(apiAccommodation.stars, hotelRating),
     bookingUrl: String(
       apiAccommodation.booking_link || "https://www.booking.com",
+    ),
+    type: normalizeAccommodationType(
+      apiAccommodation.type ?? apiAccommodation.type_ar,
     ),
     exceptional,
     mapsUrl,
