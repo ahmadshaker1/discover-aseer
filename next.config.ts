@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
+  // Standalone is for Docker/Coolify. On Vercel it breaks Next 16.3
+  // (ENOENT .next/next-server.js.nft.json in onBuildComplete).
+  output: process.env.VERCEL ? undefined : "standalone",
   images: {
     localPatterns: [
       {

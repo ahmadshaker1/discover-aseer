@@ -31,7 +31,7 @@ function getDirectusHeaders(): HeadersInit | undefined {
 // Gone from schema: `date`, `tags`, `unclickable`, `not_allowed_for_kids`, `thumbnail`, `hero_mobile`, `start_time`, `end_time`.
 // `season` is an M2M via `events_seasons`; bare `season` values are junction row ids, so read `season.seasons_id`.
 const SEASON_EVENT_FIELDS =
-  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,status,event_status,type_ar,type_en,season.seasons_id";
+  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,status,event_status,type_ar,type_en,highlighted,season.seasons_id";
 
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",
@@ -80,12 +80,17 @@ interface ApiEvent {
   /** Multi-select event types from CMS, e.g. `["nature", "entertainment"]`. */
   type_en?: string[] | string | null;
   type_ar?: string[] | string | null;
+  highlighted?: boolean | string | number | null;
   /**
    * M2M via `events_seasons`. With `fields=season` Directus returns junction ids;
    * with `fields=season.seasons_id` it returns `{ seasons_id: "<uuid>" }` objects.
    */
   season?: Array<number | string | { seasons_id?: number | string | null }> | null;
   [key: string]: unknown;
+}
+
+function isHighlightedEvent(value: ApiEvent["highlighted"]): boolean {
+  return value === true || value === 1 || value === "1" || value === "true";
 }
 
 function eventSeasonIds(apiEvent: ApiEvent): string[] {
@@ -262,6 +267,7 @@ function transformEvent(
     categoryIds: categoriesFromEventTypes(apiEvent),
     startDate: start ? toIsoDateString(start) : null,
     endDate: end ? toIsoDateString(end) : null,
+    highlighted: isHighlightedEvent(apiEvent.highlighted),
   };
 }
 
@@ -371,8 +377,13 @@ export async function fetchSeasonDetailPage(
     const events = apiEvents
       .filter((e) => eventBelongsToSeason(e, id) && isListedEvent(e))
       .map((e) => transformEvent(e, locale, referenceYear))
-      // Newest first — public CMS can't reliably sort by date; id is creation order.
-      .sort((a, b) => Number(b.listing.id) - Number(a.listing.id));
+      .sort((a, b) => {
+        if (a.highlighted !== b.highlighted) {
+          return a.highlighted ? -1 : 1;
+        }
+        // Newest first — public CMS can't reliably sort by date; id is creation order.
+        return Number(b.listing.id) - Number(a.listing.id);
+      });
 
     return { season, events };
   } catch (error) {

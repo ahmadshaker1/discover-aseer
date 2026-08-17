@@ -12,7 +12,6 @@ import {
   calendarWindowForDay,
   eachDayInRange,
   eventOccursOnDay,
-  formatDateRangeLabel,
   formatMonth,
   parseDateOnly,
   toIsoDateString,
@@ -84,14 +83,7 @@ export default function SeasonEventsSection({
     [seasonDays, windowStart],
   );
 
-  const periodTitle = useMemo(() => {
-    if (visibleDays.length === 0) return season.dateRangeLabel;
-    return formatDateRangeLabel(
-      visibleDays[0],
-      visibleDays[visibleDays.length - 1],
-      localeCode,
-    );
-  }, [visibleDays, season.dateRangeLabel, localeCode]);
+  const periodTitle = season.dateRangeLabel;
 
   const canScrollPrev = windowStart > 0;
   const canScrollNext = windowStart + VISIBLE_DAYS < seasonDays.length;
