@@ -133,7 +133,7 @@ export default function Step1({
           style={{
             alignItems: "flex-start",
             alignContent: "flex-start",
-            }}
+          }}
         >
           {[1, 2, 3, 4, 5, 6, 7].map((day) => {
             const isSelected = plannerData.selectedDays === day;

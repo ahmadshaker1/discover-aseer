@@ -43,8 +43,6 @@ export default function NewPlanner() {
   const handleSubmit = async () => {
     try {
       setIsSubmitting(true);
-      console.log("Sending data to /api/new-planner:", plannerData);
-
       const res = await fetch("/api/new-planner", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,9 +50,6 @@ export default function NewPlanner() {
       });
 
       const data = await res.json();
-      console.log("✅ AI Plan Generated Successfully:");
-      console.log(data);
-
       // Navigate to results page
       setGeneratedPlan(data);
       setCurrentStep(5);
