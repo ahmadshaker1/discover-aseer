@@ -14,7 +14,6 @@ import FilmLandscapesSection from "@/components/film/FilmLandscapesSection";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
-
 const FilmPage = async () => {
   const t = await getTranslations("film");
   const locale = await getLocale();
@@ -47,14 +46,10 @@ const FilmPage = async () => {
           <div className="absolute inset-0 z-10 flex items-center px-4 sm:px-8 md:px-[62px]">
             <div className="mx-auto flex h-full w-full max-w-[1442px] items-center justify-start">
               <div className="flex min-h-[165.5px] w-full max-w-full shrink-0 flex-col items-start justify-center gap-[15.5px] py-[41px] text-start">
-                <h3
-                  className="w-full text-start text-[50px] font-bold leading-[33.92px] text-white"
-                >
+                <h3 className="w-full text-start text-[50px] font-bold leading-[33.92px] text-white">
                   {t("bannerTitle")}
                 </h3>
-                <p
-                  className="w-full text-start text-[32px] sm:text-[48px] font-bold leading-[1.2] text-white"
-                >
+                <p className="w-full text-start text-[32px] sm:text-[48px] font-bold leading-[1.2] text-white">
                   {t("bannerSubtitle")}
                 </p>
               </div>
@@ -80,9 +75,7 @@ const FilmPage = async () => {
         <div className="relative z-10 mx-auto flex min-h-[850px] w-full max-w-[1440px] flex-col items-center justify-center px-4 py-[242px] sm:px-8 md:px-[68px]">
           <div className="flex w-full max-w-[1241px] flex-col items-center text-center">
             <div className="mb-[30px]">
-              <p
-                className="text-center text-[24px] font-medium leading-[119%] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]"
-              >
+              <p className="text-center text-[24px] font-medium leading-[119%] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]">
                 {t("ctaFormPrompt")}
               </p>
             </div>
@@ -101,9 +94,7 @@ const FilmPage = async () => {
             <div className="h-[61px] w-full max-w-[1241px] py-[30px]" />
 
             <div className="mb-4 pb-4">
-              <p
-                className="whitespace-nowrap text-center text-[18px] font-bold leading-[119%] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]"
-              >
+              <p className="whitespace-nowrap text-center text-[18px] font-bold leading-[119%] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]">
                 {t("orEmailUs")}
               </p>
             </div>

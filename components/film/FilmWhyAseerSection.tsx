@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { FilmWhyAseerSlide } from "@/components/film/data";
 
-
 interface FilmWhyAseerSectionProps {
   slides: FilmWhyAseerSlide[];
 }
@@ -163,14 +162,10 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
           <div className="flex flex-col-reverse items-center gap-8 lg:flex-row rtl:lg:flex-row-reverse lg:gap-16 lg:items-stretch w-full">
             {/* Left Column: Text */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
-              <h3
-                className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4"
-              >
+              <h3 className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4">
                 {t("whyAseerNaturalTitle")}
               </h3>
-              <p
-                className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start"
-              >
+              <p className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start">
                 {t("whyAseerNaturalDesc")}
               </p>
             </div>
@@ -215,14 +210,10 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
 
             {/* Right Column: Text */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
-              <h3
-                className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4"
-              >
+              <h3 className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4">
                 {t("whyAseerCulturalTitle")}
               </h3>
-              <p
-                className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start"
-              >
+              <p className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start">
                 {t("whyAseerCulturalDesc")}
               </p>
             </div>

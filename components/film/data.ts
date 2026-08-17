@@ -144,62 +144,29 @@ export interface FilmWhyAseerSlide {
 
 const FILM_PLACEHOLDER_IMAGE = "/assets/film/film-hero.png";
 
-interface ApiFilmWhyAseerSlide {
-  id: string;
-  title?: string | null;
-  description?: string | null;
-  cover_image?: string | null;
-  lane?: FilmSlideLane | null;
-  text_theme?: FilmSlideTextTheme | null;
-  status?: string | null;
-}
-
-interface ApiFilmWhyAseerSlidesResponse {
-  data: ApiFilmWhyAseerSlide[];
-}
-
-const transformFilmWhyAseerSlide = (
-  row: ApiFilmWhyAseerSlide,
-  directusUrl: string,
-): FilmWhyAseerSlide => {
-  const image = row.cover_image
-    ? `${directusUrl}/assets/${row.cover_image}`
-    : FILM_PLACEHOLDER_IMAGE;
-
-  return {
-    id: row.id,
-    lane: row.lane === "left" || row.lane === "right" ? row.lane : "left",
-    title: row.title?.trim() || "",
-    description: row.description?.trim() || "",
-    image,
-    textTheme:
-      row.text_theme === "light" || row.text_theme === "dark"
-        ? row.text_theme
-        : "light",
-  };
-};
+export const FALLBACK_FILM_WHY_ASEER_SLIDES: FilmWhyAseerSlide[] = [
+  ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({
+    id: `nature-${i}`,
+    lane: "right" as const,
+    title: "",
+    description: "",
+    image: `/assets/film/nature/Natural ${i}.webp`,
+    textTheme: "light" as const,
+  })),
+  ...[1, 2, 3, 4, 5, 6, 7, 8].map((i) => ({
+    id: `culture-${i}`,
+    lane: "left" as const,
+    title: "",
+    description: "",
+    image: `/assets/film/cultural/Cultural ${i}.webp`,
+    textTheme: "light" as const,
+  })),
+];
 
 export const fetchFilmWhyAseerSlides = async (): Promise<
   FilmWhyAseerSlide[]
 > => {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
-  if (!directusUrl) return [];
-
-  try {
-    const response = await fetch(`${directusUrl}/items/film_why_aseer`, {
-      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-    });
-    if (!response.ok) return [];
-
-    const apiData: ApiFilmWhyAseerSlidesResponse = await response.json();
-    if (!Array.isArray(apiData?.data)) return [];
-
-    return apiData.data
-      .filter((row) => !row.status || row.status === "published")
-      .map((row) => transformFilmWhyAseerSlide(row, directusUrl));
-  } catch {
-    return [];
-  }
+  return FALLBACK_FILM_WHY_ASEER_SLIDES;
 };
 
 export type FilmServiceIconKey = "crew" | "locations" | "permits";
@@ -231,9 +198,7 @@ const normalizeFilmServiceIconKey = (
   return null;
 };
 
-const transformFilmServiceCard = (
-  row: ApiFilmServiceCard,
-): FilmServiceCard => {
+const transformFilmServiceCard = (row: ApiFilmServiceCard): FilmServiceCard => {
   return {
     id: row.id,
     title: row.title?.trim() || "",

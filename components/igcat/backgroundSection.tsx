@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 
 export default async function IGCatBackgroundSection() {
   const t = await getTranslations("igcat.background");
@@ -18,15 +19,19 @@ export default async function IGCatBackgroundSection() {
               </p>
 
               <div className="mt-2 flex flex-col items-center self-end sm:self-start">
-                <img
+                <Image
+                  width={150}
+                  height={150}
                   src="/assets/igcat/moc.svg fill.png"
                   alt={t("mocAlt")}
-                  className="h-24 object-contain bg-white p-2 rounded-lg dark:hidden"
+                  className="object-contain bg-white p-2 rounded-lg dark:hidden"
                 />
-                <img
+                <Image
+                  width={150}
+                  height={150}
                   src="/assets/igcat/dark-theme/culinary-dark.svg"
                   alt={t("mocAlt")}
-                  className="h-24 object-contain hidden dark:block"
+                  className="object-contain hidden dark:block"
                 />
                 <p className="mb-2 mt-2 text-[16px] font-bold text-foreground">
                   {t("mocCaption")}
