@@ -178,54 +178,14 @@ export interface FilmServiceCard {
   iconKey: FilmServiceIconKey;
 }
 
-interface ApiFilmServiceCard {
-  id: string;
-  title?: string | null;
-  description?: string | null;
-  icon_key?: string | null;
-  status?: string | null;
-}
-
-interface ApiFilmServiceCardsResponse {
-  data: ApiFilmServiceCard[];
-}
-
-const normalizeFilmServiceIconKey = (
-  value: string | null | undefined,
-): FilmServiceIconKey | null => {
-  if (value === "crew" || value === "locations" || value === "permits")
-    return value;
-  return null;
-};
-
-const transformFilmServiceCard = (row: ApiFilmServiceCard): FilmServiceCard => {
-  return {
-    id: row.id,
-    title: row.title?.trim() || "",
-    description: row.description?.trim() || "",
-    iconKey: normalizeFilmServiceIconKey(row.icon_key) ?? "crew",
-  };
-};
+export const FALLBACK_FILM_SERVICES: FilmServiceCard[] = [
+  { id: "crew", title: "", description: "", iconKey: "crew" },
+  { id: "locations", title: "", description: "", iconKey: "locations" },
+  { id: "permits", title: "", description: "", iconKey: "permits" },
+];
 
 export const fetchFilmServiceCards = async (): Promise<FilmServiceCard[]> => {
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
-  if (!directusUrl) return [];
-
-  try {
-    const response = await fetch(`${directusUrl}/items/film_services`, {
-      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-    });
-    if (!response.ok) return [];
-
-    const apiData: ApiFilmServiceCardsResponse = await response.json();
-    if (!Array.isArray(apiData?.data)) return [];
-
-    return apiData.data
-      .filter((row) => !row.status || row.status === "published")
-      .map((row) => transformFilmServiceCard(row));
-  } catch {
-    return [];
-  }
+  return FALLBACK_FILM_SERVICES;
 };
 
 export type FilmShowcaseCategory =
