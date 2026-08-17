@@ -9,15 +9,11 @@ export default async function IGCatBackgroundSection() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
             <div className="flex flex-col items-start text-start">
-              {/* <span className=" inline-block rounded-full border border-primary bg-primary/10 px-5 py-1 text-[14px] font-bold text-primary">
-                {t("badge")}
-              </span> */}
-
-              <h2 className="mb-6 text-[38px] font-bold text-foreground md:text-[42px] leading-8">
+              <h2 className="mb-6 font-bold text-foreground leading-15">
                 {t("section1Title")}
               </h2>
 
-              <p className="mb-8 text-justify text-[18px] ">
+              <p className="mb-8 text-justify text-[18px] leading-7 ">
                 {t("section1Body")}
               </p>
 
@@ -61,11 +57,11 @@ export default async function IGCatBackgroundSection() {
             </div>
 
             <div className="order-1 flex flex-col items-start text-start lg:order-2">
-              <h2 className="mb-6 text-[28px] font-bold text-foreground md:text-[36px]">
+              <h2 className="mb-6 font-bold text-foreground leading-15">
                 {t("section2Title")}
               </h2>
 
-              <p className="mb-8 text-justify text-[18px]">
+              <p className="mb-8 text-justify text-[18px] leading-7">
                 {t("section2Body")}
               </p>
 
