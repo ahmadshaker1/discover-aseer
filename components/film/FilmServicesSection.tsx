@@ -1,7 +1,6 @@
 import type { FilmServiceCard } from "@/components/film/data";
 import { useTranslations } from "next-intl";
 
-
 interface FilmServicesSectionProps {
   cards: FilmServiceCard[];
 }

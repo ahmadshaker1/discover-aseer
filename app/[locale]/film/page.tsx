@@ -13,20 +13,26 @@ import FilmHero from "@/components/film/FilmHero";
 import FilmLandscapesSection from "@/components/film/FilmLandscapesSection";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { fetchGlobalAssets } from "@/lib/directus/globalAssets";
 
 const FilmPage = async () => {
   const t = await getTranslations("film");
   const locale = await getLocale();
-  const [{ landscapes, showcaseCards }, whyAseerSlides, serviceCards] =
-    await Promise.all([
-      fetchFilmsForFilmPage(locale),
-      fetchFilmWhyAseerSlides(),
-      fetchFilmServiceCards(),
-    ]);
+  const [
+    { landscapes, showcaseCards },
+    whyAseerSlides,
+    serviceCards,
+    globalAssets,
+  ] = await Promise.all([
+    fetchFilmsForFilmPage(locale),
+    fetchFilmWhyAseerSlides(),
+    fetchFilmServiceCards(),
+    fetchGlobalAssets(),
+  ]);
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <FilmHero />
+      <FilmHero videoUrl={globalAssets?.film_hero_video} />
 
       <FilmLandscapesSection
         landscapes={landscapes}

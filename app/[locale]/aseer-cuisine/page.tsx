@@ -12,6 +12,7 @@ import {
 import { fetchRestaurants } from "@/components/restaurants/data";
 import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsCredibilitySection";
 import { getLocale, getTranslations } from "next-intl/server";
+import { fetchGlobalAssets } from "@/lib/directus/globalAssets";
 
 export const revalidate = 300;
 
@@ -23,16 +24,19 @@ const AseerCuisinePage = async () => {
   const tCommon = await getTranslations("common");
   const locale = (await getLocale()) as "ar" | "en";
 
-  const [dishCards, flavorCards, restaurants, experiencesResult] =
+  const [dishCards, flavorCards, restaurants, experiencesResult, globalAssets] =
     await Promise.all([
       fetchFeaturedCuisineCards({ locale, cuisineType: "dish", count: 100 }),
       fetchFeaturedCuisineCards({ locale, cuisineType: "flavour", count: 100 }),
       fetchRestaurants(locale),
       // Same idea as restaurants: page shows cooking experiences; CTA opens all.
       fetchExperiences({ type: COOKING_EXPERIENCE_TYPE, locale }),
+      fetchGlobalAssets(),
     ]);
   const posterImage =
     dishCards[0]?.image || flavorCards[0]?.image || FALLBACK_POSTER;
+
+  const cuisineVideoUrl = globalAssets?.cuisine_hero_video || CUISINE_VIDEO;
 
   const cuisineRestaurants = restaurants
     .filter((restaurant) => restaurant.cuisineTypes?.includes("aseeri_cuisine"))
@@ -72,7 +76,7 @@ const AseerCuisinePage = async () => {
     <div className="flex w-full flex-col bg-background text-foreground">
       <AseerCuisineHero
         data={{
-          videoUrl: CUISINE_VIDEO,
+          videoUrl: cuisineVideoUrl,
           posterImage,
         }}
       />
@@ -103,7 +107,7 @@ const AseerCuisinePage = async () => {
         data={{
           title: t("chefsVideoSection.title"),
           subtitle: t("chefsVideoSection.subtitle"),
-          videoUrl: CUISINE_VIDEO,
+          videoUrl: cuisineVideoUrl,
           posterImage,
         }}
       />
