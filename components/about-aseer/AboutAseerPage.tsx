@@ -10,6 +10,7 @@ import {
   ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS,
   LANDSCAPE_HIGHLIGHT_IMAGES,
 } from "@/components/destinations/filterOptions";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 const HIGHLIGHT_TITLE_KEYS = [
   "story.highlights.h1",
@@ -22,28 +23,10 @@ const AboutAseerPage = async () => {
   const t = await getTranslations("aboutAseer");
   const tCommon = await getTranslations("common");
 
-  let assets: any[] = [];
-  try {
-    const res = await fetch(
-      "https://tool-portal.discoveraseer.com/items/site_assets?filter[page][_eq]=aboutAseer",
-      { cache: "no-store" },
-    );
-    if (res.ok) {
-      const data = await res.json();
-      assets = data.data || [];
-    }
-  } catch (error) {
-    console.error("Failed to fetch aboutAseer assets", error);
-  }
+  const assets = await fetchSiteAssets("aboutAseer");
 
   const getAssetImage = (key: string, fallback: string) => {
-    const asset = assets.find(
-      (a: any) =>
-        a.key && a.key.toLowerCase().trim() === key.toLowerCase().trim(),
-    );
-    return asset
-      ? `https://tool-portal.discoveraseer.com/assets/${asset.file}`
-      : fallback;
+    return getAssetUrl(assets, key, fallback);
   };
 
   const HIGHLIGHT_KEYS = [
