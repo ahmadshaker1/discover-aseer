@@ -6,6 +6,26 @@ export default async function ExperiencesBanner() {
   const t = await getTranslations("experiencesPage");
   const tCommon = await getTranslations("common");
 
+  let bannerUrl = "/assets/experiences/experiences.png";
+  try {
+    const res = await fetch(
+      "https://tool-portal.discoveraseer.com/items/site_assets?filter[page][_eq]=experiences",
+      { cache: "no-store" },
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const assets = data.data || [];
+      const bannerAsset = assets.find(
+        (a: any) => a.key && a.key.toLowerCase().trim() === "banner",
+      );
+      if (bannerAsset) {
+        bannerUrl = `https://tool-portal.discoveraseer.com/assets/${bannerAsset.file}`;
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch experiences banner", error);
+  }
+
   return (
     <PageBanner
       breadcrumbs={[
@@ -14,7 +34,7 @@ export default async function ExperiencesBanner() {
       ]}
       title={t("title")}
       subtitle={t("subtitle")}
-      backgroundImage="/assets/experiences/experiences.png"
+      backgroundImage={bannerUrl}
     />
   );
 }
