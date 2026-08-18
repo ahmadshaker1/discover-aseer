@@ -22,6 +22,12 @@ const internationalAirlines = [
     href: "https://www.airarabia.com/ar",
   },
   {
+    key: "jazeera",
+    image: "/assets/Getting-here-and-around/flay/jazeera.png",
+    altKey: "jazeeraAirways" as const,
+    href: "https://www.jazeeraairways.com/",
+  },
+  {
     key: "salam-air",
     image: "/assets/Getting-here-and-around/flay/salam-air.png",
     altKey: "salamAir" as const,
@@ -38,12 +44,6 @@ const internationalAirlines = [
     image: "/assets/Getting-here-and-around/flay/nile-air.png",
     altKey: "nileAir" as const,
     href: "https://www.nileair.com/ar",
-  },
-  {
-    key: "jazeera",
-    image: "/assets/Getting-here-and-around/flay/jazeera.png",
-    altKey: "jazeeraAirways" as const,
-    href: "https://www.jazeeraairways.com/",
   },
 ];
 
