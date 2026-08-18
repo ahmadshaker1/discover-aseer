@@ -39,6 +39,12 @@ const internationalAirlines = [
     altKey: "nileAir" as const,
     href: "https://www.nileair.com/ar",
   },
+  {
+    key: "jazeera",
+    image: "/assets/Getting-here-and-around/flay/jazeera.png",
+    altKey: "jazeeraAirways" as const,
+    href: "https://www.jazeeraairways.com/",
+  },
 ];
 
 export default function TravelSection() {
