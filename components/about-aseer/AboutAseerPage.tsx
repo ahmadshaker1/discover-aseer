@@ -22,10 +22,44 @@ const AboutAseerPage = async () => {
   const t = await getTranslations("aboutAseer");
   const tCommon = await getTranslations("common");
 
+  let assets: any[] = [];
+  try {
+    const res = await fetch(
+      "https://tool-portal.discoveraseer.com/items/site_assets?filter[page][_eq]=aboutAseer",
+      { cache: "no-store" },
+    );
+    if (res.ok) {
+      const data = await res.json();
+      assets = data.data || [];
+    }
+  } catch (error) {
+    console.error("Failed to fetch aboutAseer assets", error);
+  }
+
+  const getAssetImage = (key: string, fallback: string) => {
+    const asset = assets.find(
+      (a: any) =>
+        a.key && a.key.toLowerCase().trim() === key.toLowerCase().trim(),
+    );
+    return asset
+      ? `https://tool-portal.discoveraseer.com/assets/${asset.file}`
+      : fallback;
+  };
+
+  const HIGHLIGHT_KEYS = [
+    "Mountain peaks",
+    "Tihama plains",
+    "coastal beaches",
+    "desert nature",
+  ];
+
   const highlightCards = HIGHLIGHT_TITLE_KEYS.map((titleKey, index) => ({
     id: `h-${index + 1}`,
     title: t(titleKey),
-    image: LANDSCAPE_HIGHLIGHT_IMAGES[index],
+    image: getAssetImage(
+      HIGHLIGHT_KEYS[index],
+      LANDSCAPE_HIGHLIGHT_IMAGES[index],
+    ),
     href: {
       pathname: "/destinations",
       query: { filter: ABOUT_ASEER_HIGHLIGHT_DESTINATION_FILTERS[index] },
@@ -43,7 +77,10 @@ const AboutAseerPage = async () => {
       ],
       title: t("title"),
       subtitle: t("heroSubtitle"),
-      backgroundImage: "/assets/aboutAseer/about_banner.webp",
+      backgroundImage: getAssetImage(
+        "Banner",
+        "/assets/aboutAseer/about_banner.webp",
+      ),
       socialLinks: discoverAseerLinks
         .filter((link) =>
           ["x", "youtube", "instagram", "facebook"].includes(link.platform),
@@ -61,31 +98,46 @@ const AboutAseerPage = async () => {
       slides: [
         {
           id: "culture-1",
-          image: "/assets/aboutAseer/culture.jpg",
+          image: getAssetImage(
+            "Culture and Arts",
+            "/assets/aboutAseer/culture.jpg",
+          ),
           title: t("story.slides.culture1.title"),
           description: t("story.slides.culture1.description"),
         },
         {
           id: "nature-2",
-          image: "/assets/aboutAseer/nature.jpg",
+          image: getAssetImage(
+            "Breathtaking Nature",
+            "/assets/aboutAseer/nature.jpg",
+          ),
           title: t("story.slides.nature2.title"),
           description: t("story.slides.nature2.description"),
         },
         {
           id: "heritage-3",
-          image: "/assets/aboutAseer/heritage.jpg",
+          image: getAssetImage(
+            "A Legacy of Pride",
+            "/assets/aboutAseer/heritage.jpg",
+          ),
           title: t("story.slides.heritage3.title"),
           description: t("story.slides.heritage3.description"),
         },
         {
           id: "architectural-4",
-          image: "/assets/aboutAseer/architectural.jpg",
+          image: getAssetImage(
+            "Architectural Heritage",
+            "/assets/aboutAseer/architectural.jpg",
+          ),
           title: t("story.slides.architectural4.title"),
           description: t("story.slides.architectural4.description"),
         },
         {
           id: "culinaryArts-5",
-          image: "/assets/aboutAseer/culinary.jpg",
+          image: getAssetImage(
+            "Culinary Arts",
+            "/assets/aboutAseer/culinary.jpg",
+          ),
           title: t("story.slides.culinaryArts5.title"),
           description: t("story.slides.culinaryArts5.description"),
         },
