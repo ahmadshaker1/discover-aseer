@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 function BreadcrumbChevron() {
   return (
@@ -22,11 +23,17 @@ function BreadcrumbChevron() {
 
 export default async function GettingHereAndAroundBanner() {
   const t = await getTranslations("gettingHere.banner");
+  const assets = await fetchSiteAssets("getting-here-and-around");
+  const bannerUrl = getAssetUrl(
+    assets,
+    "Banner",
+    "/assets/Getting-here-and-around/hero.JPG",
+  );
 
   return (
     <section className="relative w-full min-h-[420px] h-[100vh] overflow-hidden">
       <Image
-        src="/assets/Getting-here-and-around/hero.JPG"
+        src={bannerUrl}
         alt="Getting Here and Around"
         sizes="100vw"
         fill

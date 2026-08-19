@@ -1,48 +1,56 @@
 import { MapPinOutlineIcon } from "./Icons";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import LogoCarousel from "./LogoCarousel";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 const internationalAirlines = [
   {
     key: "qatar",
+    assetKey: "International flights Qatar",
     image: "/assets/Getting-here-and-around/flay/qatar.png",
     altKey: "qatarAirways" as const,
     href: "https://www.qatarairways.com/en/homepage.html",
   },
   {
     key: "flydubai",
+    assetKey: "International flights dubai",
     image: "/assets/Getting-here-and-around/flay/flydubai.png",
     altKey: "flyDubai" as const,
     href: "https://www.flydubai.com/ar-ae/",
   },
   {
     key: "air-arabia",
+    assetKey: "International flights arabia",
     image: "/assets/Getting-here-and-around/flay/air-arabia.png",
     altKey: "airArabia" as const,
     href: "https://www.airarabia.com/ar",
   },
   {
     key: "salam-air",
+    assetKey: "International flights salam",
     image: "/assets/Getting-here-and-around/flay/salam-air.png",
     altKey: "salamAir" as const,
     href: "https://www.salamair.com/ar/",
   },
   {
     key: "air-cairo",
+    assetKey: "International flights cairo",
     image: "/assets/Getting-here-and-around/flay/air-cairo.png",
     altKey: "airCairo" as const,
     href: "https://aircairo.com/",
   },
   {
     key: "nile-air",
+    assetKey: "International flights nile",
     image: "/assets/Getting-here-and-around/flay/nile-air.png",
     altKey: "nileAir" as const,
     href: "https://www.nileair.com/ar",
   },
 ];
 
-export default function TravelSection() {
-  const t = useTranslations("gettingHere.air");
+export default async function TravelSection() {
+  const t = await getTranslations("gettingHere.air");
+  const assets = await fetchSiteAssets("getting-here-and-around");
 
   return (
     <section className={`py-12 text-foreground text-start`}>
@@ -102,7 +110,11 @@ export default function TravelSection() {
           <div className="flex h-[360px] w-full flex-col rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
             <div className="relative w-full h-[200px] bg-slate-100">
               <img
-                src="/assets/Getting-here-and-around/flay/Saudia.png"
+                src={getAssetUrl(
+                  assets,
+                  "Domestic flights Saudia",
+                  "/assets/Getting-here-and-around/flay/Saudia.png",
+                )}
                 alt="Saudia"
                 className="w-full h-full object-cover"
               />
@@ -131,7 +143,11 @@ export default function TravelSection() {
           <div className="flex h-[360px] w-full flex-col rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
             <div className="relative w-full h-[200px] bg-slate-100">
               <img
-                src="/assets/Getting-here-and-around/flay/flyadeal.png"
+                src={getAssetUrl(
+                  assets,
+                  "Domestic flights Flyadeal",
+                  "/assets/Getting-here-and-around/flay/flyadeal.png",
+                )}
                 alt="flyadeal"
                 className="w-full h-full object-cover"
               />
@@ -160,7 +176,11 @@ export default function TravelSection() {
           <div className="flex h-[360px] w-full flex-col rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
             <div className="relative w-full h-[200px] bg-slate-100">
               <img
-                src="/assets/Getting-here-and-around/flay/flynas.png"
+                src={getAssetUrl(
+                  assets,
+                  "Domestic flights Flynas",
+                  "/assets/Getting-here-and-around/flay/flynas.png",
+                )}
                 alt="flynas"
                 className="w-full h-full object-cover"
               />
@@ -201,7 +221,7 @@ export default function TravelSection() {
                 <div className="relative flex h-[200px] w-full flex-col justify-end overflow-hidden rounded-2xl border border-border bg-[#FFFFFF] p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:bg-surface">
                   <div className="absolute inset-0 flex items-center justify-center p-2 pb-14">
                     <img
-                      src={airline.image}
+                      src={getAssetUrl(assets, airline.assetKey, airline.image)}
                       alt={t(airline.altKey)}
                       className="h-full w-full scale-[1] object-contain"
                     />
