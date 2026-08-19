@@ -13,23 +13,73 @@ import FilmHero from "@/components/film/FilmHero";
 import FilmLandscapesSection from "@/components/film/FilmLandscapesSection";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { fetchGlobalAssets } from "@/lib/directus/globalAssets";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 const FilmPage = async () => {
   const t = await getTranslations("film");
   const locale = await getLocale();
-  const [{ landscapes, showcaseCards }, whyAseerSlides, serviceCards] =
-    await Promise.all([
-      fetchFilmsForFilmPage(locale),
-      fetchFilmWhyAseerSlides(),
-      fetchFilmServiceCards(),
-    ]);
+  const [
+    { landscapes, showcaseCards },
+    whyAseerSlides,
+    serviceCards,
+    globalAssets,
+    assets,
+  ] = await Promise.all([
+    fetchFilmsForFilmPage(locale),
+    fetchFilmWhyAseerSlides(),
+    fetchFilmServiceCards(),
+    fetchGlobalAssets(),
+    fetchSiteAssets("film"),
+  ]);
+
+  const LANDSCAPE_IMAGE_KEYS = [
+    "Mountain peaks",
+    "Tihama plains",
+    "coastal beaches",
+    "desert nature",
+  ];
+
+  const updatedLandscapes = landscapes.map((landscape, index) => ({
+    ...landscape,
+    image: getAssetUrl(assets, LANDSCAPE_IMAGE_KEYS[index], landscape.image),
+  }));
+
+  const naturalAssets = assets.filter(
+    (a) => a.key && a.key.toLowerCase().trim() === "natural",
+  );
+  const culturalAssets = assets.filter(
+    (a) => a.key && a.key.toLowerCase().trim() === "cultural",
+  );
+
+  const dynamicWhyAseerSlides = [
+    ...naturalAssets.map((asset, index) => ({
+      id: `nature-${asset.id || index}`,
+      lane: "right" as const,
+      title: "",
+      description: "",
+      image: `https://tool-portal.discoveraseer.com/assets/${asset.file}`,
+      textTheme: "light" as const,
+    })),
+    ...culturalAssets.map((asset, index) => ({
+      id: `culture-${asset.id || index}`,
+      lane: "left" as const,
+      title: "",
+      description: "",
+      image: `https://tool-portal.discoveraseer.com/assets/${asset.file}`,
+      textTheme: "light" as const,
+    })),
+  ];
+
+  const finalWhyAseerSlides =
+    dynamicWhyAseerSlides.length > 0 ? dynamicWhyAseerSlides : whyAseerSlides;
 
   return (
     <div className="flex w-full flex-col bg-background text-foreground">
-      <FilmHero />
+      <FilmHero videoUrl={globalAssets?.film_hero_video} />
 
       <FilmLandscapesSection
-        landscapes={landscapes}
+        landscapes={updatedLandscapes}
         introTitle={t("introTitle")}
         introBody={t("introBody")}
       />
@@ -58,7 +108,7 @@ const FilmPage = async () => {
         </div>
       </section>
 
-      <FilmWhyAseerSection slides={whyAseerSlides} />
+      <FilmWhyAseerSection slides={finalWhyAseerSlides} />
       <FilmServicesSection cards={serviceCards} />
       <FilmShowcaseSection cards={showcaseCards} />
 

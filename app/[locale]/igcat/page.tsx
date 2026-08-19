@@ -10,6 +10,7 @@ import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import AseerCuisineHeritageRestaurantsSection from "@/components/aseer-cuisine/AseerCuisineHeritageRestaurantsSection";
 import { fetchRestaurants } from "@/components/restaurants/data";
 import { getLocale, getTranslations } from "next-intl/server";
+import { fetchSiteAssets } from "@/lib/siteAssets";
 
 export const revalidate = 300;
 
@@ -17,6 +18,7 @@ export default async function IGCatPage() {
   const locale = (await getLocale()) as "ar" | "en";
   const t = await getTranslations("aseerCuisine");
   const tCommon = await getTranslations("common");
+  const assets = await fetchSiteAssets("igcat");
 
   const restaurants = await fetchRestaurants(locale);
   const heritageRestaurants = restaurants
@@ -40,12 +42,11 @@ export default async function IGCatPage() {
     <main className="flex w-full flex-col bg-background text-foreground">
       <IGCatBannerSection />
       <IGCatBackgroundSection />
-      <IGCatEventCards />
+      <IGCatEventCards assets={assets} />
       <QuotesSection />
       <InitiativesSection />
       <WinnersSection />
       <FoodFilmSection />
-      {/* <FoodAndDiningSection /> */}
       <AseerCuisineHeritageRestaurantsSection
         data={{
           title: tCommon("restaurants"),

@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 function BreadcrumbChevron() {
   return (
@@ -24,12 +25,18 @@ function BreadcrumbChevron() {
 export default async function TourismCompaniesHero() {
   const t = await getTranslations("tourismCompanies");
   const tCommon = await getTranslations("common");
+  const assets = await fetchSiteAssets("tourism-companies");
+  const bannerUrl = getAssetUrl(
+    assets,
+    "Banner",
+    "/assets/tourism-companies/MAN_0983.JPG",
+  );
 
   return (
     <section className="relative flex h-[100vh] w-full items-center justify-center overflow-hidden bg-black text-white">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/assets/tourism-companies/MAN_0983.JPG"
+          src={bannerUrl}
           alt=""
           fill
           className="object-cover"

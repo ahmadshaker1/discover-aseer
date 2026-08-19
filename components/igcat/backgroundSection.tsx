@@ -1,8 +1,20 @@
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 export default async function IGCatBackgroundSection() {
   const t = await getTranslations("igcat.background");
+  const assets = await fetchSiteAssets("igcat");
+  const image1Url = getAssetUrl(
+    assets,
+    "First Section Image 1",
+    "/assets/igcat/image1.jpg",
+  );
+  const image2Url = getAssetUrl(
+    assets,
+    "First Section Image 2",
+    "/assets/igcat/foodimage.png",
+  );
 
   return (
     <>
@@ -41,7 +53,7 @@ export default async function IGCatBackgroundSection() {
 
             <div className="w-full overflow-hidden rounded-3xl shadow-lg">
               <img
-                src="/assets/igcat/image1.jpg"
+                src={image1Url}
                 alt={t("section1ImageAlt")}
                 className="h-full w-full object-cover"
               />
@@ -55,7 +67,7 @@ export default async function IGCatBackgroundSection() {
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div className="order-2 w-full overflow-hidden rounded-3xl shadow-lg lg:order-1">
               <img
-                src="/assets/igcat/foodimage.png"
+                src={image2Url}
                 alt={t("section2ImageAlt")}
                 className="h-full w-full object-cover"
               />
@@ -87,13 +99,6 @@ export default async function IGCatBackgroundSection() {
                   className="h-16 object-contain hidden dark:block"
                 />
               </div>
-
-              {/* <button
-                type="button"
-                className="rounded-full bg-primary px-12 py-3 text-[16px] font-bold text-primary-foreground shadow-md transition-opacity hover:opacity-90"
-              >
-                {t("brochure")}
-              </button> */}
             </div>
           </div>
         </div>

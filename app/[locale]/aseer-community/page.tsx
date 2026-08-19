@@ -7,6 +7,7 @@ import CommunityMainSlider, {
 import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import { getTranslations } from "next-intl/server";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 const SLIDE_IMAGES = [
   "/assets/community/id1.webp",
@@ -16,10 +17,18 @@ const SLIDE_IMAGES = [
 
 const SLIDE_KEYS = ["slide1", "slide2", "slide3"] as const;
 
+const SLIDE_IMAGE_KEYS = [
+  "The Aseer cultural tapestry",
+  "Community bonds",
+  "A vibrant life",
+] as const;
+
 const AseerCommunityPage = async () => {
   const t = await getTranslations("aseerCommunity");
   const tCommon = await getTranslations("common");
   const tServices = await getTranslations("servicesSupport");
+
+  const assets = await fetchSiteAssets("aseer-community");
 
   const communityPageData: {
     hero: CommunityHeroData;
@@ -32,9 +41,11 @@ const AseerCommunityPage = async () => {
       ],
       title: t("title"),
       subtitle: t("subtitle"),
-      backgroundImage: "/assets/community/hero.webp",
-      //!i dont thik we have this in the project
-      // ribbonPatternImage: "/hero-pattern/ribbon.jpg",
+      backgroundImage: getAssetUrl(
+        assets,
+        "Banner",
+        "/assets/community/hero.webp",
+      ),
       socialLinks: discoverAseerLinks
         .filter((link) =>
           ["x", "youtube", "instagram", "facebook"].includes(link.platform),
@@ -51,7 +62,11 @@ const AseerCommunityPage = async () => {
       nextLabel: tCommon("next"),
       slides: SLIDE_KEYS.map((key, index) => ({
         id: `community-${index + 1}`,
-        image: SLIDE_IMAGES[index],
+        image: getAssetUrl(
+          assets,
+          SLIDE_IMAGE_KEYS[index],
+          SLIDE_IMAGES[index],
+        ),
         title: t(`slider.slides.${key}.title`),
         description: t(`slider.slides.${key}.description`),
       })),

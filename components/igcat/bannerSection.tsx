@@ -1,14 +1,16 @@
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 export default async function IGCatBannerSection() {
   const t = await getTranslations("igcat.banner");
+  const assets = await fetchSiteAssets("igcat");
+  const bannerUrl = getAssetUrl(assets, "Banner", "/assets/igcat/banner.png");
 
   return (
     <div className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden ">
       <img
-        src="/assets/igcat/banner.png"
+        src={bannerUrl}
         alt={t("imageAlt")}
         className="absolute inset-0 h-full w-full object-cover"
       />
@@ -16,17 +18,13 @@ export default async function IGCatBannerSection() {
       <div className="absolute inset-0 bg-black/50" />
 
       <div className="relative z-10 flex flex-col items-center px-4 text-center">
-        <h1
-          className="text-[40px] font-bold leading-[1.2] text-white md:text-[56px]"
-        >
+        <h1 className="text-[40px] font-bold leading-[1.2] text-white md:text-[56px]">
           {t("titleLine1")}
           <br />
           {t("titleLine2")}
           <br />
         </h1>
-        <p
-          className="text-[20px] font-light text-white md:text-[28px] mb-6"
-        >
+        <p className="text-[20px] font-light text-white md:text-[28px] mb-6">
           {t("titleLine3")}
         </p>
         <div>

@@ -1,9 +1,12 @@
-import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import AseerMap from "./AseerMap";
 import LogoCarousel from "./LogoCarousel";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
-export default function TravelLandSection() {
-  const t = useTranslations("gettingHere.land");
+export default async function TravelLandSection() {
+  const t = await getTranslations("gettingHere.land");
+  const assets = await fetchSiteAssets("getting-here-and-around");
 
   const carRentals = [
     {
@@ -49,8 +52,7 @@ export default function TravelLandSection() {
     {
       nameKey: "alRehilyEastTitle" as const,
       link: "https://alrehilyest.com/ar/index.html",
-      image:
-        "/assets/Getting-here-and-around/car-rental/alrehily2(blue).png",
+      image: "/assets/Getting-here-and-around/car-rental/alrehily2(blue).png",
     },
   ];
 
@@ -59,8 +61,7 @@ export default function TravelLandSection() {
       <div
         className="mt-12 h-[300px] w-full"
         style={{
-          backgroundImage:
-            "linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0%, rgba(102, 102, 102, 0.25) 100%), url('/assets/Getting-here-and-around/landSectionImage.jpeg')",
+          backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0%, rgba(102, 102, 102, 0.25) 100%), url('${getAssetUrl(assets, "Driving in Banner Section", "/assets/Getting-here-and-around/landSectionImage.jpeg")}')`,
           backgroundSize: "cover",
           backgroundPosition: "70% 65%",
           backgroundRepeat: "no-repeat",
@@ -93,8 +94,7 @@ export default function TravelLandSection() {
           <div
             className="relative flex flex-col justify-between w-full h-[350px] sm:h-[360px] md:h-[450px] rounded-3xl md:rounded-4xl border border-border p-6 md:p-8 shadow-lg text-white overflow-hidden bg-cover bg-center"
             style={{
-              backgroundImage:
-                "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/assets/Getting-here-and-around/SAPTCO.png')",
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${getAssetUrl(assets, "Public Transport Buses", "/assets/Getting-here-and-around/SAPTCO.png")}')`,
             }}
           >
             <div>
@@ -139,10 +139,16 @@ export default function TravelLandSection() {
           {/* العمود الأيمن: تاكسي المطار */}
           <div className="group relative flex min-h-[300px] flex-col justify-end overflow-hidden rounded-4xl shadow-md">
             {/* الصورة الخلفية */}
-            <img
-              src="/assets/Getting-here-and-around/Taxis.png"
+            <Image
+              src={getAssetUrl(
+                assets,
+                "Taxis",
+                "/assets/Getting-here-and-around/Taxis.png",
+              )}
               alt={t("airportTaxiAlt")}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             {/* تدرج لوني عشان النص يكون واضح */}
             <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
@@ -196,7 +202,7 @@ export default function TravelLandSection() {
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-156/150 flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/Uber.png')",
@@ -218,7 +224,7 @@ export default function TravelLandSection() {
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-156/150 flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/careem.jpg')",
@@ -240,7 +246,7 @@ export default function TravelLandSection() {
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-156/150 flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/bolt.png')",
@@ -262,7 +268,7 @@ export default function TravelLandSection() {
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-156/150 flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/jeeny.png')",
@@ -284,7 +290,7 @@ export default function TravelLandSection() {
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-156/150 flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/rehla.jpg')",
@@ -306,7 +312,7 @@ export default function TravelLandSection() {
                 style={{ gap: "16px" }}
               >
                 <div
-                  className="w-full aspect-[156/150] flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                  className="w-full aspect-156/150 flex items-center justify-center rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                   style={{
                     backgroundImage:
                       "url('/assets/Getting-here-and-around/appDrive/CTC.png')",
@@ -358,7 +364,7 @@ export default function TravelLandSection() {
                     style={{ gap: "16px" }}
                   >
                     <div
-                      className="aspect-[156/150] w-full rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
+                      className="aspect-156/150 w-full rounded-2xl bg-cover bg-center shadow-sm group-hover:shadow-md"
                       style={{
                         backgroundImage: `url('${rental.image}')`,
                       }}

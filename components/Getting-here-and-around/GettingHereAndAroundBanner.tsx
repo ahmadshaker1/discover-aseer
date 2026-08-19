@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 function BreadcrumbChevron() {
   return (
@@ -22,11 +24,17 @@ function BreadcrumbChevron() {
 
 export default async function GettingHereAndAroundBanner() {
   const t = await getTranslations("gettingHere.banner");
+  const assets = await fetchSiteAssets("getting-here-and-around");
+  const bannerUrl = getAssetUrl(
+    assets,
+    "Banner",
+    "/assets/Getting-here-and-around/hero.JPG",
+  );
 
   return (
-    <section className="relative w-full min-h-[420px] h-[100vh] overflow-hidden">
+    <section className="relative w-full min-h-[420px] h-screen overflow-hidden">
       <Image
-        src="/assets/Getting-here-and-around/hero.JPG"
+        src={bannerUrl}
         alt="Getting Here and Around"
         sizes="100vw"
         fill
@@ -47,12 +55,12 @@ export default async function GettingHereAndAroundBanner() {
           <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
             <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
               <span className="inline-flex items-center gap-1.5 sm:gap-2">
-                <a
+                <Link
                   href="/"
                   className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
                 >
                   {t("home")}
-                </a>
+                </Link>
                 <BreadcrumbChevron />
               </span>
               <span className="inline-flex items-center gap-1.5 sm:gap-2">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { FilmWhyAseerSlide } from "@/components/film/data";
 
@@ -86,11 +87,13 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
         {images.map((imgSrc, imgIdx) => {
           const isActive = imgIdx === index % images.length;
           return (
-            <img
+            <Image
               key={`${imgSrc}-${imgIdx}`}
               src={imgSrc}
               alt={`${sectionName} - image ${imgIdx + 1}`}
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className={`object-cover transition-opacity duration-700 ease-in-out ${
                 isActive ? "opacity-100 z-1" : "opacity-0 z-0"
               }`}
             />
@@ -162,7 +165,7 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
           <div className="flex flex-col-reverse items-center gap-8 lg:flex-row rtl:lg:flex-row-reverse lg:gap-16 lg:items-stretch w-full">
             {/* Left Column: Text */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
-              <h3 className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4">
+              <h3 className="text-[32px] sm:text-[38px] font-bold leading-12 text-foreground text-start mb-4">
                 {t("whyAseerNaturalTitle")}
               </h3>
               <p className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start">
@@ -210,7 +213,7 @@ const FilmWhyAseerSection = ({ slides }: FilmWhyAseerSectionProps) => {
 
             {/* Right Column: Text */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center text-start">
-              <h3 className="text-[32px] sm:text-[38px] font-bold leading-[48px] text-foreground text-start mb-4">
+              <h3 className="text-[32px] sm:text-[38px] font-bold leading-12 text-foreground text-start mb-4">
                 {t("whyAseerCulturalTitle")}
               </h3>
               <p className="text-[18px] sm:text-[20px] font-light leading-10 text-muted-foreground text-start">

@@ -1,9 +1,11 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { MapPinOutlineIcon } from "./Icons";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
-export default function DiscoverMoreSection() {
-  const t = useTranslations("gettingHere.land");
+export default async function DiscoverMoreSection() {
+  const t = await getTranslations("gettingHere.land");
+  const assets = await fetchSiteAssets("getting-here-and-around");
 
   return (
     <div className="container mx-auto px-6 mb-12">
@@ -25,8 +27,7 @@ export default function DiscoverMoreSection() {
         <div
           className="bg-[#F8F8F8] dark:bg-surface border-[rgba(204,204,204,0.37)] dark:border-border overflow-hidden"
           style={{
-            backgroundImage:
-              "url('/assets/Getting-here-and-around/Discover.JPEG')",
+            backgroundImage: `url('${getAssetUrl(assets, "Experiences", "/assets/Getting-here-and-around/Discover.JPEG")}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             display: "flex",
@@ -90,7 +91,7 @@ export default function DiscoverMoreSection() {
         <div
           className="bg-[#F8F8F8] dark:bg-surface border-[rgba(204,204,204,0.37)] dark:border-border overflow-hidden"
           style={{
-            backgroundImage: "url('/assets/Getting-here-and-around/map.JPEG')",
+            backgroundImage: `url('${getAssetUrl(assets, "Interactive map", "/assets/Getting-here-and-around/map.JPEG")}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             display: "flex",
