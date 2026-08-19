@@ -1,9 +1,11 @@
 import { getTranslations } from "next-intl/server";
 import { initiativesMedia } from "./data";
 import Image from "next/image";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 export default async function InitiativesSection() {
   const t = await getTranslations("igcat.initiatives");
+  const assets = await fetchSiteAssets("igcat");
 
   return (
     <section className="bg-background py-16 md:py-24">
@@ -28,7 +30,11 @@ export default async function InitiativesSection() {
               className="group relative h-[350px] w-full overflow-hidden rounded-2xl shadow-md md:h-[450px]"
             >
               <img
-                src={t(`items.${item.id}.image`)}
+                src={getAssetUrl(
+                  assets,
+                  item.assetKey,
+                  t(`items.${item.id}.image`),
+                )}
                 alt={t(`items.${item.id}.title`)}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />

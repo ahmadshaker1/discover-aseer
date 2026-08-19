@@ -3,13 +3,16 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Dialog } from "@headlessui/react";
+import { getAssetUrl } from "@/lib/siteAssets";
 
 const IGCAT_EVENTS_DATA = [
   {
     id: "1",
     type: "single",
     image: "/assets/igcat/event/1.jpeg",
+    assetKey: "Featured events 22",
     innerImage: "/assets/igcat/event/1.1.jpg",
+    innerAssetKey: "Featured events 22 Inner",
   },
   {
     id: "2",
@@ -18,27 +21,37 @@ const IGCAT_EVENTS_DATA = [
       {
         id: "card1",
         image: "/assets/igcat/event/2.png",
+        assetKey: "Featured events 23 (1)",
         innerImage: "/assets/igcat/event/2.2.jpg",
+        innerAssetKey: "Featured events 23 (1) inner",
       },
       {
         id: "card2",
         image: "/assets/igcat/event/3.png",
+        assetKey: "Featured events 23 (2)",
         innerImage: "/assets/igcat/event/4.jpg",
+        innerAssetKey: "Featured events 23 (2) inner",
       },
       {
         id: "card3",
         image: "/assets/igcat/event/5.png",
+        assetKey: "Featured events 23 (3)",
         innerImage: "/assets/igcat/event/6.jpg",
+        innerAssetKey: "Featured events 23 (3) inner",
       },
       {
         id: "card4",
         image: "/assets/igcat/event/7.png",
+        assetKey: "Featured events 23 (4)",
         innerImage: "/assets/igcat/event/8.jpg",
+        innerAssetKey: "Featured events 23 (4) inner",
       },
       {
         id: "card5",
         image: "/assets/igcat/event/9.png",
+        assetKey: "Featured events 23 (5)",
         innerImage: "/assets/igcat/event/10.jpg",
+        innerAssetKey: "Featured events 23 (5) inner",
       },
     ],
   },
@@ -49,12 +62,16 @@ const IGCAT_EVENTS_DATA = [
       {
         id: "card1",
         image: "/assets/igcat/event/3.1.png",
+        assetKey: "Featured events 24 (1)",
         innerImage: "/assets/igcat/event/3.1.1.jpg",
+        innerAssetKey: "Featured events 24 (1) inner",
       },
       {
         id: "card2",
         image: "/assets/igcat/event/3.2.png",
+        assetKey: "Featured events 24 (2)",
         innerImage: "/assets/igcat/event/3.2.1.jpg",
+        innerAssetKey: "Featured events 24 (2) inner",
       },
     ],
   },
@@ -65,17 +82,23 @@ const IGCAT_EVENTS_DATA = [
       {
         id: "card1",
         image: "/assets/igcat/event/4.1.png",
+        assetKey: "Featured events 25-1",
         innerImage: "/assets/igcat/event/4.1.1.jpg",
+        innerAssetKey: "Featured events 25-1 inner",
       },
       {
         id: "card2",
         image: "/assets/igcat/event/4.2.png",
+        assetKey: "Featured events 25-2",
         innerImage: "/assets/igcat/event/4.2.1.jpg",
+        innerAssetKey: "Featured events 25-2 inner",
       },
       {
         id: "card3",
         image: "/assets/igcat/event/4.3.png",
+        assetKey: "Featured events 25-3",
         innerImage: "/assets/igcat/event/4.3.1.jpg",
+        innerAssetKey: "Featured events 25-3 inner",
       },
     ],
   },
@@ -83,11 +106,17 @@ const IGCAT_EVENTS_DATA = [
     id: "5",
     type: "single",
     image: "/assets/igcat/event/5.1.png",
+    assetKey: "Featured events 3",
     innerImage: "/assets/igcat/event/5.1.1.jpg",
+    innerAssetKey: "Featured events 3 inner",
   },
 ];
 
-export default function IGCatEventCards() {
+interface Props {
+  assets?: Record<string, string>;
+}
+
+export default function IGCatEventCards({ assets = {} }: Props) {
   const t = useTranslations("igcat.events");
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -160,14 +189,26 @@ export default function IGCatEventCards() {
             onClick={() =>
               handleCardClick(
                 activeTab.id,
-                activeTab.image as string,
-                (activeTab as any).innerImage,
+                getAssetUrl(
+                  assets,
+                  activeTab.assetKey as string,
+                  activeTab.image as string,
+                ),
+                getAssetUrl(
+                  assets,
+                  (activeTab as any).innerAssetKey,
+                  (activeTab as any).innerImage,
+                ),
                 true,
               )
             }
           >
             <img
-              src={activeTab.image}
+              src={getAssetUrl(
+                assets,
+                activeTab.assetKey as string,
+                activeTab.image as string,
+              )}
               alt={t(`items.${activeTab.id}.title`)}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
@@ -185,11 +226,19 @@ export default function IGCatEventCards() {
                 key={card.id}
                 className="group relative h-[300px] sm:h-[350px] w-full overflow-hidden rounded-2xl shadow-md cursor-pointer"
                 onClick={() =>
-                  handleCardClick(card.id, card.image, (card as any).innerImage)
+                  handleCardClick(
+                    card.id,
+                    getAssetUrl(assets, card.assetKey, card.image),
+                    getAssetUrl(
+                      assets,
+                      (card as any).innerAssetKey,
+                      (card as any).innerImage,
+                    ),
+                  )
                 }
               >
                 <img
-                  src={card.image}
+                  src={getAssetUrl(assets, card.assetKey, card.image)}
                   alt={t(`items.${activeTab.id}.${card.id}.title`)}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />

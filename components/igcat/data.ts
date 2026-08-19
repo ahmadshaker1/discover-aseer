@@ -34,7 +34,19 @@ export const foodFilmMedia = [
 export const INITIATIVE_IDS = ["1", "2", "3"] as const;
 
 export const initiativesMedia = [
-  { id: "1", image: "/assets/igcat/asf-atm.jpg" },
-  { id: "2", image: "/assets/igcat/asf-atm.jpg" },
-  { id: "3", image: "/assets/igcat/ralydakar.jpg" },
+  {
+    id: "1",
+    assetKey: "Dakar Rally",
+    image: "/assets/igcat/ralydakar.jpg",
+  },
+  {
+    id: "2",
+    assetKey: "Saudi Tourism Forum (STF)",
+    image: "/assets/igcat/asf-atm.jpg",
+  },
+  {
+    id: "3",
+    assetKey: "Arabian Travel Market (ATM)",
+    image: "/assets/igcat/asf-atm.jpg",
+  },
 ] as const;
