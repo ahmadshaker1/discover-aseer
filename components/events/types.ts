@@ -34,4 +34,6 @@ export interface EventListingItem {
   endDate?: string | null;
   /** Expanded header subtitle / venue (e.g. under title). */
   venueLabel?: string;
+  /** External ticket / booking URL from CMS `ticket_link`. */
+  bookingUrl?: string | null;
 }

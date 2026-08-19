@@ -10,6 +10,7 @@ import {
   CardImageNavPrev,
   ClockIcon,
   CurrencyIcon,
+  ExternalLinkIcon,
   KidFriendlyIcon,
   MapPinIcon,
 } from "./icons";
@@ -183,6 +184,20 @@ const EventListingCard = ({ event, detailHref }: EventListingCardProps) => {
                   {event.timeRange}
                 </span>
               </div>
+              {event.bookingUrl ? (
+                <div className="pointer-events-auto relative z-20 flex w-full items-center gap-2 text-[#EAEAEA]">
+                  <ExternalLinkIcon />
+                  <a
+                    href={event.bookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-w-0 flex-1 text-start text-[14px] font-medium leading-none text-white underline decoration-white underline-offset-2 [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {isArabic ? "رابط الحجز" : "Booking link"}
+                  </a>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

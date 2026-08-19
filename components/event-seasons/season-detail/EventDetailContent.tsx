@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import {
   CalendarIcon,
   ClockIcon,
   CurrencyIcon,
+  ExternalLinkIcon,
   KidFriendlyIcon,
   MapPinIcon,
 } from "@/components/events/EventListingCard/icons";
@@ -66,6 +67,9 @@ export default async function EventDetailContent({
   categoryLabels,
 }: EventDetailContentProps) {
   const t = await getTranslations("eventSeasons");
+  const locale = await getLocale();
+  const isArabic = locale === "ar";
+
   const listing = event.listing;
   const hasPrice =
     (listing.priceLabel || "").trim() !== "" &&
@@ -140,6 +144,22 @@ export default async function EventDetailContent({
               {listing.mapsLinkLabel || listing.locationLine}
             </a>
           </DetailRow>
+
+          {listing.bookingUrl ? (
+            <DetailRow
+              icon={<ExternalLinkIcon />}
+              label={isArabic ? "الحجز" : "Booking"}
+            >
+              <a
+                href={listing.bookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-primary/40 underline-offset-4 transition-opacity hover:opacity-80"
+              >
+                {isArabic ? "رابط الحجز" : "Booking link"}
+              </a>
+            </DetailRow>
+          ) : null}
 
           {listing.isKidFriendly ? (
             <DetailRow icon={<KidFriendlyIcon />} label={t("eventAudience")}>

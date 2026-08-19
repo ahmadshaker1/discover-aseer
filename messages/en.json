@@ -335,9 +335,12 @@
     "eventTime": "Time",
     "eventPrice": "Price",
     "eventLocation": "Location",
+    "eventBooking": "Booking",
+    "eventBookingLink": "Booking link",
     "eventAudience": "Audience",
     "backToSeason": "Back to season",
-    "openEventDetails": "View event details"
+    "openEventDetails": "View event details",
+    "bookNow": "Book now"
   },
   "experiencesPage": {
     "breadcrumb": "Tourist experiences",

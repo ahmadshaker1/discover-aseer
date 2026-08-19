@@ -31,7 +31,7 @@ function getDirectusHeaders(): HeadersInit | undefined {
 // Gone from schema: `date`, `tags`, `unclickable`, `not_allowed_for_kids`, `thumbnail`, `hero_mobile`, `start_time`, `end_time`.
 // `season` is an M2M via `events_seasons`; bare `season` values are junction row ids, so read `season.seasons_id`.
 const SEASON_EVENT_FIELDS =
-  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,status,event_status,type_ar,type_en,highlighted,season.seasons_id";
+  "id,title,title_en,start_date,end_date,image,image_new,map,city,description,description_en,free_event,price,suitable_for_kids,audience_type,status,event_status,type_ar,type_en,highlighted,ticket_link,season.seasons_id";
 
 const FALLBACK_IMAGES = [
   "/assets/event-seasons/fallback-teal.png",

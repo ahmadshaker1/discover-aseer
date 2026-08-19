@@ -335,9 +335,12 @@
     "eventTime": "الوقت",
     "eventPrice": "السعر",
     "eventLocation": "الموقع",
+    "eventBooking": "الحجز",
+    "eventBookingLink": "رابط الحجز",
     "eventAudience": "الجمهور",
     "backToSeason": "العودة إلى الموسم",
-    "openEventDetails": "عرض تفاصيل الفعالية"
+    "openEventDetails": "عرض تفاصيل الفعالية",
+    "bookNow": "احجز الآن"
   },
   "experiencesPage": {
     "breadcrumb": "التجارب السياحية",

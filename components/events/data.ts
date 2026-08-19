@@ -33,6 +33,7 @@ interface ApiEvent {
   audience_type?: string | null;
   image_new?: string | null;
   images?: string | unknown[] | null;
+  ticket_link?: string | null;
 }
 
 interface EventsApiResponse {
@@ -252,6 +253,12 @@ function toMapsUrl(mapUrl: string | null | undefined, title: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(title)}`;
 }
 
+function toBookingUrl(value: string | null | undefined): string | null {
+  const clean = (value || "").trim();
+  if (!clean) return null;
+  return normalizeMaybeUrl(clean) || `https://${clean}`;
+}
+
 /** CMS publish state (`status`), not the seasonal `event_status` (Now/Previous). */
 function isPublishedCmsStatus(status: string | null | undefined): boolean {
   const value = (status || "").trim().toLowerCase();
@@ -362,6 +369,7 @@ export function transformApiEventToListingItem(
     startDate: apiEvent.start_date,
     endDate: apiEvent.end_date,
     venueLabel: title,
+    bookingUrl: toBookingUrl(apiEvent.ticket_link),
   };
 }
 
