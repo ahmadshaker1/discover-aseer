@@ -33,11 +33,13 @@ export async function fetchSiteAssets(pageName: string): Promise<SiteAsset[]> {
  */
 export function getAssetUrl(
   assets: SiteAsset[],
-  key: string,
+  key: string | undefined,
   fallbackUrl: string,
 ): string {
+  if (!key) return fallbackUrl;
+  const needle = key.toLowerCase().trim();
   const asset = assets.find(
-    (a) => a.key && a.key.toLowerCase().trim() === key.toLowerCase().trim(),
+    (a) => a.key && a.key.toLowerCase().trim() === needle,
   );
   return asset
     ? `https://tool-portal.discoveraseer.com/assets/${asset.file}`

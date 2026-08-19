@@ -28,6 +28,7 @@ const internationalAirlines = [
   },
   {
     key: "jazeera",
+    assetKey: "International flights jazeera",
     image: "/assets/Getting-here-and-around/flay/jazeera.png",
     altKey: "jazeeraAirways" as const,
     href: "https://www.jazeeraairways.com/",
