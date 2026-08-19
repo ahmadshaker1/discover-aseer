@@ -1,12 +1,10 @@
 import InteractiveMap from "@/components/interactive-map/InteractiveMap";
 
-interface InteractiveMapPageProps {
+interface MapPageProps {
   searchParams: Promise<{ lat?: string; lon?: string; title?: string }>;
 }
 
-const InteractiveMapPage = async ({
-  searchParams,
-}: InteractiveMapPageProps) => {
+const MapPage = async ({ searchParams }: MapPageProps) => {
   const params = await searchParams;
   const lat = params.lat ? Number(params.lat) : undefined;
   const lon = params.lon ? Number(params.lon) : undefined;
@@ -32,4 +30,4 @@ const InteractiveMapPage = async ({
   );
 };
 
-export default InteractiveMapPage;
+export default MapPage;

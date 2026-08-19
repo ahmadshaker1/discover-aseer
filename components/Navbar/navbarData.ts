@@ -165,7 +165,7 @@ export const navigationLinks = [
   { href: "#", labelKey: "nav.planTrip", isDropdown: true },
   { href: "/event-seasons", labelKey: "nav.events", isDropdown: false },
   {
-    href: "/interactive-map",
+    href: "/map",
     labelKey: "interactiveMap.title",
     isDropdown: false,
     isMap: true,

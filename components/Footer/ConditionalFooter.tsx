@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Footer from "./Footer";
 
-const FOOTER_HIDDEN_PATHS = ["/interactive-map"];
+const FOOTER_HIDDEN_PATHS = ["/map", "/interactive-map"];
 
 export default function ConditionalFooter() {
   const pathname = usePathname() ?? "";

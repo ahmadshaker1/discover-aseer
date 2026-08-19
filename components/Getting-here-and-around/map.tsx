@@ -27,7 +27,7 @@ export default function MapSection() {
 
               <div className="mt-8">
                 <Link
-                  href="/interactive-map"
+                  href="/map"
                   className="inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:bg-white/95 hover:scale-[1.02] active:scale-[0.98] shadow-[0_4px_14px_rgba(255,255,255,0.2)] md:text-base"
                 >
                   <MapPinOutlineIcon />
@@ -37,7 +37,7 @@ export default function MapSection() {
             </div>
 
             <Link
-              href="/interactive-map"
+              href="/map"
               className="relative mx-auto aspect-[4/3] w-full max-w-[560px] cursor-pointer group block"
             >
               <Image

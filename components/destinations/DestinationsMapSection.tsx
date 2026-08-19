@@ -23,7 +23,7 @@ const DestinationsMapSection = ({
   const mapLon = typeof lon === "number" ? lon : DEFAULT_ABHA_MAP_CENTER.lon;
 
   const mapHref = {
-    pathname: "/interactive-map" as const,
+    pathname: "/map" as const,
     query: {
       lat: String(mapLat),
       lon: String(mapLon),

@@ -42,6 +42,15 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "30mb",
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/:locale/interactive-map",
+        destination: "/:locale/map",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");

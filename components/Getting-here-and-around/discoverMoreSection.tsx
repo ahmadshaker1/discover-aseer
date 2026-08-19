@@ -132,7 +132,7 @@ export default async function DiscoverMoreSection() {
             </p>
           </div>
           <Link
-            href="/interactive-map"
+            href="/map"
             className="inline-flex w-fit items-center gap-3 rounded-full border border-border-violet-400/30 bg-primary/25 px-3 py-1.5 text-[16px] font-bold leading-none text-violet-200 transition-colors hover:bg-primary/35"
             style={{
               display: "flex",
