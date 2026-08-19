@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 function BreadcrumbChevron() {
@@ -31,7 +32,7 @@ export default async function GettingHereAndAroundBanner() {
   );
 
   return (
-    <section className="relative w-full min-h-[420px] h-[100vh] overflow-hidden">
+    <section className="relative w-full min-h-[420px] h-screen overflow-hidden">
       <Image
         src={bannerUrl}
         alt="Getting Here and Around"
@@ -54,12 +55,12 @@ export default async function GettingHereAndAroundBanner() {
           <div className="mx-auto flex w-full max-w-[680px] flex-col items-center gap-8 text-center sm:gap-10">
             <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
               <span className="inline-flex items-center gap-1.5 sm:gap-2">
-                <a
+                <Link
                   href="/"
                   className="text-[14px] font-semibold leading-6 text-white/70 transition-opacity hover:opacity-85"
                 >
                   {t("home")}
-                </a>
+                </Link>
                 <BreadcrumbChevron />
               </span>
               <span className="inline-flex items-center gap-1.5 sm:gap-2">

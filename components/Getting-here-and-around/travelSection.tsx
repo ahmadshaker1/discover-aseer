@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { MapPinOutlineIcon } from "./Icons";
 import { getTranslations } from "next-intl/server";
 import LogoCarousel from "./LogoCarousel";
@@ -69,7 +70,7 @@ export default async function TravelSection() {
               href="https://www.google.com/maps/place/Abha+International+Airport/@18.2343646,42.6553277,937m/data=!3m2!1e3!4b1!4m6!3m5!1s0x15fca9c54b96b363:0xfe8a0c2ac4f96600!8m2!3d18.2343646!4d42.6579026!16s%2Fm%2F02882r5?entry=ttu&g_ep=EgoyMDI2MDQxMy4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-[40px] w-fit items-center gap-3 rounded-[86px] border border-primary dark:border-violet-400 px-5 py-[10px] text-primary dark:text-violet-300"
+              className="flex h-10 w-fit items-center gap-3 rounded-[86px] border border-primary dark:border-violet-400 px-5 py-2.5 text-primary dark:text-violet-300"
             >
               <span aria-hidden="true" className="inline-flex">
                 <MapPinOutlineIcon />
@@ -89,7 +90,7 @@ export default async function TravelSection() {
               href="https://www.google.com/maps/place/Bisha+Domestic+Airport/@19.8797569,43.6564457,23565m/data=!3m1!1e3!4m6!3m5!1s0x15f02937bd44e1c5:0x4c127fec01eb95f!8m2!3d19.9942184!4d42.6185414!16s%2Fm%2F02882_2?entry=ttu&g_ep=EgoyMDI2MDQxMy4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-[40px] w-fit items-center gap-3 rounded-[86px] border border-primary dark:border-violet-400 px-5 py-[10px] text-primary dark:text-violet-300"
+              className="flex h-10 w-fit items-center gap-3 rounded-[86px] border border-primary dark:border-violet-400 px-5 py-2.5 text-primary dark:text-violet-300"
             >
               <span aria-hidden="true" className="inline-flex">
                 <MapPinOutlineIcon />
@@ -101,7 +102,7 @@ export default async function TravelSection() {
       </div>
       <div className="container mx-auto px-6">
         <p
-          className={`text-start align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}
+          className={`text-start align-middle text-[24px] font-bold uppercase leading-5 tracking-[0px] text-muted-foreground`}
         >
           {t("domesticFlights")}
         </p>
@@ -109,14 +110,16 @@ export default async function TravelSection() {
           {/* Card 1: Saudia */}
           <div className="flex h-[360px] w-full flex-col rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
             <div className="relative w-full h-[200px] bg-slate-100">
-              <img
+              <Image
                 src={getAssetUrl(
                   assets,
                   "Domestic flights Saudia",
                   "/assets/Getting-here-and-around/flay/Saudia.png",
                 )}
                 alt="Saudia"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                className="object-cover"
               />
             </div>
             <div className="flex flex-1 flex-col p-6 text-start justify-between">
@@ -142,14 +145,16 @@ export default async function TravelSection() {
           {/* Card 2: flyadeal */}
           <div className="flex h-[360px] w-full flex-col rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
             <div className="relative w-full h-[200px] bg-slate-100">
-              <img
+              <Image
                 src={getAssetUrl(
                   assets,
                   "Domestic flights Flyadeal",
                   "/assets/Getting-here-and-around/flay/flyadeal.png",
                 )}
                 alt="flyadeal"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                className="object-cover"
               />
             </div>
             <div className="flex flex-1 flex-col p-6 text-start justify-between">
@@ -175,14 +180,16 @@ export default async function TravelSection() {
           {/* Card 3: flynas */}
           <div className="flex h-[360px] w-full flex-col rounded-2xl border border-border bg-surface shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
             <div className="relative w-full h-[200px] bg-slate-100">
-              <img
+              <Image
                 src={getAssetUrl(
                   assets,
                   "Domestic flights Flynas",
                   "/assets/Getting-here-and-around/flay/flynas.png",
                 )}
                 alt="flynas"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                className="object-cover"
               />
             </div>
             <div className="flex flex-1 flex-col p-6 text-start justify-between">
@@ -208,7 +215,7 @@ export default async function TravelSection() {
       </div>
       <div className="container mx-auto mt-12 px-6">
         <p
-          className={`text-start align-middle text-[24px] font-bold uppercase leading-[20px] tracking-[0px] text-muted-foreground`}
+          className={`text-start align-middle text-[24px] font-bold uppercase leading-5 tracking-[0px] text-muted-foreground`}
         >
           {t("internationalFlights")}
         </p>
@@ -220,11 +227,19 @@ export default async function TravelSection() {
               content: (
                 <div className="relative flex h-[200px] w-full flex-col justify-end overflow-hidden rounded-2xl border border-border bg-[#FFFFFF] p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:bg-surface">
                   <div className="absolute inset-0 flex items-center justify-center p-2 pb-14">
-                    <img
-                      src={getAssetUrl(assets, airline.assetKey, airline.image)}
-                      alt={t(airline.altKey)}
-                      className="h-full w-full scale-[1] object-contain"
-                    />
+                    <div className="relative h-full w-full">
+                      <Image
+                        src={getAssetUrl(
+                          assets,
+                          airline.assetKey,
+                          airline.image,
+                        )}
+                        alt={t(airline.altKey)}
+                        fill
+                        sizes="220px"
+                        className="scale-[1] object-contain"
+                      />
+                    </div>
                   </div>
                   <div className="relative z-10 flex w-full justify-center">
                     <a
