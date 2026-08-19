@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 function BreadcrumbChevron() {
   return (
@@ -24,12 +25,18 @@ function BreadcrumbChevron() {
 export default async function ServicesSupportBanner() {
   const t = await getTranslations("servicesSupport");
   const tCommon = await getTranslations("common");
+  const assets = await fetchSiteAssets("services-support");
+  const bannerUrl = getAssetUrl(
+    assets,
+    "Banner",
+    "/assets/services-support/f125fee16e0267a3d14ee285efd5f272ad21108c.png",
+  );
 
   return (
     <section className="relative h-[100vh] w-full overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/assets/services-support/f125fee16e0267a3d14ee285efd5f272ad21108c.png"
+          src={bannerUrl}
           alt=""
           fill
           className="object-cover object-top"
