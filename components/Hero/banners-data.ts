@@ -1,5 +1,6 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 import { ASEER_FILM_YOUTUBE_URL } from "@/components/landing/youtubeStoryEmbed";
+import { directusCollectionFetch } from "@/lib/directus/collectionCache";
 import type { HeroSlide } from "./types";
 
 const BANNERS_PATH = "/items/banners" as const;
@@ -104,9 +105,7 @@ async function fetchBannersFromCms(directusUrl: string): Promise<ApiBanner[]> {
     );
     url.searchParams.set("limit", "10");
 
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 },
-    });
+    const response = await fetch(url.toString(), directusCollectionFetch);
     if (!response.ok) return [];
 
     const json: ApiBannersResponse = await response.json();

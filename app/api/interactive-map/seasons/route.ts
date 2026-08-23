@@ -6,7 +6,8 @@ import {
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
 
-export const revalidate = DIRECTUS_COLLECTION_REVALIDATE;
+// Literal required by Next.js segment config (must match DIRECTUS_COLLECTION_REVALIDATE).
+export const revalidate = 86400;
 
 export async function GET() {
   const baseUrl = (

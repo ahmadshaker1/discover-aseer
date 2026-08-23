@@ -1,13 +1,14 @@
 import React from "react";
 import PlanItinerary from "@/components/new-planner/results/PlanItinerary";
 import { getTranslations } from "next-intl/server";
+import { directusCollectionFetch } from "@/lib/directus/collectionCache";
 
 // Fetch data from Directus
 async function getSavedPlan(id: string) {
   try {
     const response = await fetch(
       `https://tool-portal.discoveraseer.com/items/saved_plans/${id}?fields=id,plan_data`,
-      { next: { revalidate: 3600 } },
+      directusCollectionFetch,
     );
     if (!response.ok) return null;
     const json = await response.json();

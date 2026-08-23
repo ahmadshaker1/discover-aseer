@@ -1,3 +1,5 @@
+import { directusCollectionFetch } from "@/lib/directus/collectionCache";
+
 export interface GlobalAsset {
   name: string;
   video: string;
@@ -20,9 +22,7 @@ export async function fetchGlobalAssets(): Promise<Record<string, string>> {
   try {
     const response = await fetch(
       `${directusUrl}/items/global_assets?filter[status][_eq]=published&fields=name,video&limit=50`,
-      {
-        next: { revalidate: 3600 },
-      },
+      directusCollectionFetch,
     );
 
     if (!response.ok) {

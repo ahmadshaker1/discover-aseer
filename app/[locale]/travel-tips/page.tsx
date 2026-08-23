@@ -4,6 +4,7 @@ import TravelTipsEmergencySection from "@/components/travel-tips/TravelTipsEmerg
 import TravelTipsFaq, {
   type TravelFaqItem,
 } from "@/components/travel-tips/TravelTipsFaq";
+import { directusCollectionFetch } from "@/lib/directus/collectionCache";
 
 type ApiFaqQuestion = {
   question_ar?: string | null;
@@ -30,7 +31,7 @@ async function fetchFaqItems(locale: string): Promise<TravelFaqItem[]> {
   try {
     const response = await fetch(
       `${baseUrl.replace(/\/$/, "")}/items/faq?fields=id,questions&limit=20`,
-      { next: { revalidate: 3600 } },
+      directusCollectionFetch,
     );
 
     if (!response.ok) {
