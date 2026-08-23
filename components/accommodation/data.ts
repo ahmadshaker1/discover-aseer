@@ -9,32 +9,21 @@ import {
 
 const ACCOMMODATION_FIELDS = [
   "id",
-  "status",
   "name_ar",
   "name_en",
-  "name",
   "city",
   "city_en",
-  "area",
   "location",
   "content",
-  "description",
-  "short_description",
-  "cover_image",
-  "image",
+  "content_ar",
   "hero_image",
   "hotel_rating",
-  "average_rating",
-  "reviews_count",
-  "stars",
   "booking_link",
-  "maps_url",
-  "google_maps_url",
   "type",
   "type_ar",
   "featured",
-  "exceptional",
-  "is_exceptional",
+  "latitude",
+  "longitude",
 ] as const;
 
 export type AccommodationType = "hotel" | "hotel_apartment";
@@ -305,7 +294,6 @@ export const fetchAccommodations = async (
         page,
         pageSize: page ? CATALOG_PAGE_SIZE : undefined,
         meta: Boolean(page),
-        published: true,
       }),
       directusCollectionFetch,
     );

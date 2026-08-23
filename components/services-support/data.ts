@@ -22,7 +22,6 @@ import {
 
 const SUPPORT_SERVICE_FIELDS = [
   "id",
-  "status",
   "title_ar",
   "title_en",
   "city",
@@ -30,6 +29,8 @@ const SUPPORT_SERVICE_FIELDS = [
   "type",
   "location",
   "support_services_number",
+  "latitude",
+  "longitude",
 ] as const;
 
 const SUPPORT_SERVICES_API_BASE =
@@ -118,7 +119,6 @@ export async function fetchSupportServices(
         page,
         pageSize: page ? CATALOG_PAGE_SIZE : undefined,
         meta: Boolean(page),
-        published: true,
       }),
       directusCollectionFetch,
     );

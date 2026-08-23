@@ -385,17 +385,45 @@ export async function fetchTourGuides(
     }
 
     const page = options?.page;
-    const response = await fetch(
+    const listOpts = {
+      limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
+      page,
+      pageSize: page ? CATALOG_PAGE_SIZE : undefined,
+      meta: Boolean(page),
+    } as const;
+
+    let response = await fetch(
       directusItemsUrl(directusUrl, "tourist_guides", {
+        ...listOpts,
         fields: TOUR_GUIDE_LIST_FIELDS,
-        limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
-        page,
-        pageSize: page ? CATALOG_PAGE_SIZE : undefined,
-        meta: Boolean(page),
         published: true,
       }),
       { ...directusCollectionFetch, headers },
     );
+
+    // Public/admin policies reject unknown or unreadable fields with 403.
+    if (!response.ok) {
+      response = await fetch(
+        directusItemsUrl(directusUrl, "tourist_guides", {
+          ...listOpts,
+          fields: [
+            "id",
+            "status",
+            "name",
+            "name_en",
+            "phone_number",
+            "whatsapp",
+            "content",
+            "content_en",
+            "gender",
+            "specializations",
+            "transportation",
+          ],
+          published: true,
+        }),
+        { ...directusCollectionFetch, headers },
+      );
+    }
 
     if (!response.ok) {
       throw new Error(
