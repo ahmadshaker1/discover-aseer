@@ -12,12 +12,35 @@ import {
   type FilmLandscapeFilterId,
 } from "./landscapeFilters";
 import { withDirectusCoverTransform } from "@/lib/directusAssetUrl";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+
+const FILM_LANDSCAPE_FIELDS = [
+  "id",
+  "status",
+  "title",
+  "title_en",
+  "filter_key",
+  "cover_image",
+] as const;
+
+const FILM_FIELDS = [
+  "id",
+  "status",
+  "title_ar",
+  "title_en",
+  "url",
+  "cover_image",
+  "type",
+  "date_created",
+] as const;
 
 const DIRECTUS_API_BASE =
   process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
   "https://tool-portal.discoveraseer.com";
-
-const FILMS_ITEMS_PATH = "/items/films" as const;
 
 export interface FilmLandscape {
   id: string;
@@ -104,9 +127,14 @@ export const fetchFilmLandscapes = async (): Promise<FilmLandscape[]> => {
   if (!directusUrl) return [];
 
   try {
-    const response = await fetch(`${directusUrl}/items/film_landscapes`, {
-      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-    });
+    const response = await fetch(
+      directusItemsUrl(directusUrl, "film_landscapes", {
+        fields: FILM_LANDSCAPE_FIELDS,
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        published: true,
+      }),
+      directusCollectionFetch,
+    );
     if (!response.ok) return [];
 
     const apiData: ApiFilmLandscapeResponse = await response.json();
@@ -311,8 +339,13 @@ async function fetchPublishedFilmsFromDirectus(locale: string): Promise<{
 
   try {
     const response = await fetch(
-      `${directusUrl}${FILMS_ITEMS_PATH}?sort=-date_created`,
-      { next: { revalidate: 0 } }, // TODO: restore 3600 collection cache
+      directusItemsUrl(directusUrl, "films", {
+        fields: FILM_FIELDS,
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        published: true,
+        extra: { sort: "-date_created" },
+      }),
+      directusCollectionFetch,
     );
     if (!response.ok) return null;
 

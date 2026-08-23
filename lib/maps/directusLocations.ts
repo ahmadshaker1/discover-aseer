@@ -15,6 +15,53 @@ import {
   type LocationMapPlace,
 } from "@/lib/maps/locationMapPlace";
 import type { LocaleCode } from "@/lib/i18n/localized";
+import { directusCollectionFetch } from "@/lib/directus/collectionCache";
+
+const LOCATION_FIELDS = [
+  "id",
+  "status",
+  "latitude",
+  "longitude",
+  "hide_from_interactive_map",
+  "hide_from_map",
+  "name_ar",
+  "name_en",
+  "city_ar",
+  "city_en",
+  "description_ar",
+  "description_en",
+  "category_ar",
+  "category_en",
+  "type_ar",
+  "type_en",
+  "booking_info_ar",
+  "booking_info_en",
+  "google_maps_url",
+  "picture_url",
+  "picture_url_new",
+  "season",
+].join(",");
+
+const EVENT_MAP_FIELDS = [
+  "id",
+  "title",
+  "title_en",
+  "description",
+  "description_en",
+  "latitude",
+  "longitude",
+  "map",
+  "city",
+  "hide_from_interactive_map",
+  "hide_from_map",
+  "image",
+  "thumbnail",
+  "hero_mobile",
+  "image_new",
+  "type",
+  "categories",
+  "event_status",
+].join(",");
 
 const LOCATIONS_COLLECTION = "locations";
 const EVENTS_COLLECTION = "events";
@@ -75,10 +122,11 @@ const fetchAllLocationRows = async (
     url.searchParams.set("limit", String(limit));
     url.searchParams.set("offset", String(offset));
     url.searchParams.set("meta", "filter_count");
+    url.searchParams.set("fields", LOCATION_FIELDS);
 
     const response = await fetch(url.toString(), {
       headers,
-      cache: "no-store",
+      ...directusCollectionFetch,
     });
 
     if (!response.ok) break;
@@ -118,10 +166,11 @@ const fetchAllEventRows = async (
     url.searchParams.set("offset", String(offset));
     url.searchParams.set("meta", "filter_count");
     url.searchParams.set("filter[event_status][_eq]", "Now");
+    url.searchParams.set("fields", EVENT_MAP_FIELDS);
 
     const response = await fetch(url.toString(), {
       headers,
-      cache: "no-store",
+      ...directusCollectionFetch,
     });
 
     if (!response.ok) {
@@ -210,15 +259,16 @@ const fetchHiddenRestaurantMatches = async (
 
   try {
     const url = new URL(`${baseUrl}/items/restaurants`);
-    url.searchParams.set("limit", "-1");
+    url.searchParams.set("limit", "100");
     url.searchParams.set(
       "fields",
       "title_en,title_ar,hide_from_interactive_map",
     );
+    url.searchParams.set("filter[hide_from_interactive_map][_eq]", "true");
 
     const response = await fetch(url.toString(), {
       headers,
-      cache: "no-store",
+      ...directusCollectionFetch,
     });
     if (!response.ok) return { names };
 

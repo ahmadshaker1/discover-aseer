@@ -1,10 +1,19 @@
 import MediaKitHero from "@/components/media-kit/hero";
 import MediaCategoriesClient from "@/components/media-kit/card";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+import { getDirectusPublicUrl } from "@/lib/directus/config";
 
 async function getCategories() {
   const res = await fetch(
-    "https://tool-portal.discoveraseer.com/items/media_categories",
-    { cache: "no-store" },
+    directusItemsUrl(getDirectusPublicUrl(), "media_categories", {
+      fields: ["id", "name", "status"],
+      limit: DIRECTUS_COLLECTION_LIMIT,
+    }),
+    directusCollectionFetch,
   );
 
   if (!res.ok) return [];
@@ -15,8 +24,11 @@ async function getCategories() {
 
 async function getMediaItems() {
   const res = await fetch(
-    "https://tool-portal.discoveraseer.com/items/media_items",
-    { cache: "no-store" },
+    directusItemsUrl(getDirectusPublicUrl(), "media_items", {
+      fields: ["id", "type", "category", "file_id", "title", "status"],
+      limit: DIRECTUS_COLLECTION_LIMIT,
+    }),
+    directusCollectionFetch,
   );
 
   if (!res.ok) return [];

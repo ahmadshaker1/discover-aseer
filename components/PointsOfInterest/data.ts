@@ -6,7 +6,12 @@ import {
   pickDestinationPoiSubtitle,
   pickDestinationTitle,
   resolveDestinationHeroImageUrl,
+  DESTINATION_FIELDS,
 } from "@/components/destinations/data";
+import {
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
 import {
   getDestinationFilterLabel,
   resolveDestinationFilterId,
@@ -129,9 +134,15 @@ export const fetchPointsOfInterest = async (
   }
 
   try {
-    const response = await fetch(`${directusUrl}/items/destination`, {
-      cache: "no-store",
-    });
+    const response = await fetch(
+      directusItemsUrl(directusUrl, "destination", {
+        fields: DESTINATION_FIELDS,
+        limit: POI_DESTINATION_IDS.length,
+        published: true,
+        extra: { "filter[id][_in]": POI_DESTINATION_IDS.join(",") },
+      }),
+      directusCollectionFetch,
+    );
 
     if (!response.ok) {
       throw new Error(

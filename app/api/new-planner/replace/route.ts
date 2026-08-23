@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { fetchPlannerCatalogByType } from "@/lib/planner/directusCatalog";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,51 +14,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 1. Fetch the specific catalog based on itemType
-    let catalogUrl = "";
-    if (itemType === "restaurant")
-      catalogUrl =
-        "https://tool-portal.discoveraseer.com/items/restaurants?limit=-1";
-    else if (itemType === "experience")
-      catalogUrl =
-        "https://tool-portal.discoveraseer.com/items/experiences?limit=-1";
-    else if (itemType === "event")
-      catalogUrl =
-        "https://tool-portal.discoveraseer.com/items/events?limit=-1";
-    else
+    if (
+      itemType !== "restaurant" &&
+      itemType !== "experience" &&
+      itemType !== "event"
+    ) {
       return NextResponse.json({ error: "Invalid itemType" }, { status: 400 });
-
-    const res = await fetch(catalogUrl).catch(() => null);
-    const catalogData = res ? await res.json() : { data: [] };
-
-    // 2. Map catalog to essential fields to save tokens
-    let mappedCatalog: any[] = [];
-    if (itemType === "restaurant") {
-      mappedCatalog = (catalogData.data || []).map((item: any) => ({
-        id: item.id,
-        title: item.title_en || item.title_ar,
-        cuisine: item.cuisine_type,
-        description: item.content || item.content_ar,
-      }));
-    } else if (itemType === "experience") {
-      mappedCatalog = (catalogData.data || []).map((item: any) => ({
-        id: item.id,
-        title: item.title_eng || item.title,
-        type: item.type_en || item.type,
-        duration: item.duration_En || item.duration,
-        description: item.description_eng || item.description,
-      }));
-    } else if (itemType === "event") {
-      const todayStr = new Date().toISOString().split("T")[0];
-      mappedCatalog = (catalogData.data || [])
-        .filter((item: any) => !item.end_date || item.end_date >= todayStr)
-        .map((item: any) => ({
-          id: item.id,
-          title: item.title_en || item.title,
-          description: item.description_en || item.description,
-          end_date: item.end_date,
-        }));
     }
+
+    let mappedCatalog = await fetchPlannerCatalogByType(itemType);
 
     // 3. Filter out the item to replace
     mappedCatalog = mappedCatalog.filter(

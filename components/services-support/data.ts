@@ -12,12 +12,28 @@ import {
   translateSupportLabel,
 } from "./supportServiceLocale";
 import { normalizeMapsUrl, normalizeText } from "./utils";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+
+const SUPPORT_SERVICE_FIELDS = [
+  "id",
+  "status",
+  "title_ar",
+  "title_en",
+  "city",
+  "city_en",
+  "type",
+  "location",
+  "support_services_number",
+] as const;
 
 const SUPPORT_SERVICES_API_BASE =
   process.env.NEXT_PUBLIC_SERVICES_API_BASE?.replace(/\/$/, "") ||
   "https://tool-portal.discoveraseer.com";
 
-const SUPPORT_SERVICES_ITEMS_PATH = "/items/support_service" as const;
 
 function isPublished(item: ApiSupportService): boolean {
   if (!item.status) return true;
@@ -86,10 +102,12 @@ export async function fetchSupportServices(
 ): Promise<SupportService[]> {
   try {
     const response = await fetch(
-      `${SUPPORT_SERVICES_API_BASE}${SUPPORT_SERVICES_ITEMS_PATH}`,
-      {
-        next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-      },
+      directusItemsUrl(SUPPORT_SERVICES_API_BASE, "support_service", {
+        fields: SUPPORT_SERVICE_FIELDS,
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        published: true,
+      }),
+      directusCollectionFetch,
     );
 
     if (!response.ok) {

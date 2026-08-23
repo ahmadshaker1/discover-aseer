@@ -98,9 +98,14 @@ async function fetchBannersFromCms(directusUrl: string): Promise<ApiBanner[]> {
   try {
     const url = new URL(`${directusUrl}${BANNERS_PATH}`);
     url.searchParams.set("filter[status][_eq]", "published");
+    url.searchParams.set(
+      "fields",
+      "id,status,image,logo,title,title_ar,subtitle,subtitle_ar,button_text,button_text_ar,button_link",
+    );
+    url.searchParams.set("limit", "10");
 
     const response = await fetch(url.toString(), {
-      next: { revalidate: 300 },
+      next: { revalidate: 3600 },
     });
     if (!response.ok) return [];
 

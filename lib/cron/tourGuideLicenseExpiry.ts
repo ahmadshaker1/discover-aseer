@@ -81,7 +81,7 @@ async function fetchGuidesWithLicenseDate(): Promise<GuideLicenseRow[]> {
   );
   url.searchParams.set("filter[date][_nnull]", "true");
   url.searchParams.set(`filter[${TOUR_GUIDE_EMAIL_FIELD}][_nnull]`, "true");
-  url.searchParams.set("limit", "-1");
+  url.searchParams.set("limit", "200");
 
   const response = await fetch(url.toString(), {
     headers: {

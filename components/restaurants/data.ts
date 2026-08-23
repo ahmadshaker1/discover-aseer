@@ -10,6 +10,42 @@ import {
 } from "./restaurantLocale";
 import type { Restaurant } from "./types";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+
+const RESTAURANT_FIELDS = [
+  "id",
+  "status",
+  "name_ar",
+  "name_en",
+  "title_ar",
+  "title_en",
+  "city",
+  "city_ar",
+  "city_en",
+  "image_new",
+  "image",
+  "google_maps_url",
+  "location_map",
+  "price_range",
+  "price_band",
+  "cuisine_type",
+  "nationality_ar",
+  "nationality_en",
+  "category_ar",
+  "category_en",
+  "type",
+  "type_ar",
+  "type_en",
+  "categories",
+  "tags",
+  "distance_km",
+  "rating",
+  "reviews_count",
+] as const;
 
 export type { Restaurant } from "./types";
 
@@ -235,9 +271,14 @@ export const transformLocationToRestaurant = (
 
 export async function fetchRestaurants(locale: LocaleCode = "ar"): Promise<Restaurant[]> {
   try {
-    const response = await fetch(`${LOCATIONS_API_BASE}${RESTAURANTS_LOCATIONS_ITEMS_PATH}`, {
-      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-    });
+    const response = await fetch(
+      directusItemsUrl(LOCATIONS_API_BASE, "restaurants", {
+        fields: RESTAURANT_FIELDS,
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        published: true,
+      }),
+      directusCollectionFetch,
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch restaurants: ${response.status} ${response.statusText}`);

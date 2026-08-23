@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  DIRECTUS_COLLECTION_REVALIDATE,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
 
-export const dynamic = "force-dynamic";
+export const revalidate = DIRECTUS_COLLECTION_REVALIDATE;
 
 export async function GET() {
   const baseUrl = (
@@ -11,17 +17,27 @@ export async function GET() {
 
   const readToken = process.env.DIRECTUS_READ_TOKEN?.trim();
 
-  const headers: HeadersInit = {
-    "Cache-Control": "no-store",
-  };
+  const headers: HeadersInit = {};
   if (readToken) {
     headers["Authorization"] = `Bearer ${readToken}`;
   }
 
   try {
     const response = await fetch(
-      `${baseUrl}/items/seasons?filter[status][_eq]=published`,
-      { headers, cache: "no-store" },
+      directusItemsUrl(baseUrl, "seasons", {
+        fields: [
+          "id",
+          "status",
+          "title",
+          "title_ar",
+          "title_en",
+          "start_date",
+          "end_date",
+        ],
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        published: true,
+      }),
+      { headers, ...directusCollectionFetch },
     );
 
     if (!response.ok) {

@@ -4,6 +4,29 @@
  */
 
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import { DIRECTUS_COLLECTION_REVALIDATE } from "@/lib/directus/collectionCache";
+
+const CUISINE_FIELDS = [
+  "id",
+  "status",
+  "title",
+  "title_ar",
+  "title_en",
+  "thumbnail",
+  "hero_image_url",
+  "subtitle_ar",
+  "subtitle_en",
+  "subtitle_purple_ar",
+  "subtitle_purple_en",
+  "hero_content_ar",
+  "hero_content_en",
+  "content_ar",
+  "content_en",
+  "extra_content_ar",
+  "extra_content_en",
+  "cuisine_type",
+  "highlighted",
+].join(",");
 
 export type CuisineType = "dish" | "flavour";
 
@@ -182,6 +205,7 @@ export async function fetchCuisineItems(
   } else if (options.highlighted === false) {
     params.set("filter[highlighted][_neq]", "true");
   }
+  params.set("fields", CUISINE_FIELDS);
   if (typeof options.limit === "number" && options.limit > 0) {
     params.set("limit", String(options.limit));
   } else if (options.highlighted === undefined) {
@@ -190,7 +214,7 @@ export async function fetchCuisineItems(
 
   try {
     const response = await fetch(`${directusUrl}/items/cuisine?${params.toString()}`, {
-      next: { revalidate: 300 },
+      next: { revalidate: DIRECTUS_COLLECTION_REVALIDATE },
     });
     if (!response.ok) return [];
 

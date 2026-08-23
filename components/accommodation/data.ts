@@ -1,4 +1,39 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+
+const ACCOMMODATION_FIELDS = [
+  "id",
+  "status",
+  "name_ar",
+  "name_en",
+  "name",
+  "city",
+  "city_en",
+  "area",
+  "location",
+  "content",
+  "description",
+  "short_description",
+  "cover_image",
+  "image",
+  "hero_image",
+  "hotel_rating",
+  "average_rating",
+  "reviews_count",
+  "stars",
+  "booking_link",
+  "maps_url",
+  "google_maps_url",
+  "type",
+  "type_ar",
+  "featured",
+  "exceptional",
+  "is_exceptional",
+] as const;
 
 export type AccommodationType = "hotel" | "hotel_apartment";
 
@@ -62,7 +97,6 @@ export interface ApiResponse {
 
 const FALLBACK_IMAGE = "/assets/experiences/experiences.png";
 const DEFAULT_LOCATION = "منطقة عسير";
-const ACCOMMODATION_ITEMS_PATH = "/items/accomodation" as const;
 
 const toNumber = (
   value: number | string | null | undefined,
@@ -254,9 +288,14 @@ export const fetchAccommodations = async (
   );
 
   try {
-    const response = await fetch(`${directusUrl}${ACCOMMODATION_ITEMS_PATH}`, {
-      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-    });
+    const response = await fetch(
+      directusItemsUrl(directusUrl, "accomodation", {
+        fields: ACCOMMODATION_FIELDS,
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        published: true,
+      }),
+      directusCollectionFetch,
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch accommodations: ${response.statusText}`);

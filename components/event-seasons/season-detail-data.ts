@@ -3,6 +3,10 @@ import {
   transformApiEventToListingItem,
 } from "@/components/events/data";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+} from "@/lib/directus/collectionCache";
 import type {
   SeasonDetail,
   SeasonDetailEvent,
@@ -278,7 +282,7 @@ async function fetchSeasonById(id: string): Promise<ApiSeason | null> {
   });
   const response = await fetch(`${API_BASE}/items/seasons/${id}?${params}`, {
     headers: getDirectusHeaders(),
-    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
+    ...directusCollectionFetch,
   });
   if (response.status === 404) return null;
   if (!response.ok) {
@@ -296,11 +300,11 @@ async function fetchEventsForSeason(seasonId: string): Promise<ApiEvent[]> {
     // Filter on the related season UUID, not the junction row id.
     "filter[season][seasons_id][_eq]": seasonId,
     fields: SEASON_EVENT_FIELDS,
-    limit: "-1",
+    limit: String(DIRECTUS_COLLECTION_LIMIT),
   });
   const response = await fetch(`${API_BASE}/items/events?${params}`, {
     headers: getDirectusHeaders(),
-    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
+    ...directusCollectionFetch,
   });
   if (!response.ok) {
     console.error(
@@ -317,11 +321,11 @@ async function fetchEventsByIds(ids: number[]): Promise<ApiEvent[]> {
   const params = new URLSearchParams({
     "filter[id][_in]": ids.join(","),
     fields: SEASON_EVENT_FIELDS,
-    limit: "-1",
+    limit: String(Math.min(ids.length, DIRECTUS_COLLECTION_LIMIT)),
   });
   const response = await fetch(`${API_BASE}/items/events?${params}`, {
     headers: getDirectusHeaders(),
-    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
+    ...directusCollectionFetch,
   });
   if (!response.ok) {
     console.error(
@@ -407,7 +411,7 @@ async function fetchEventById(eventId: string): Promise<ApiEvent | null> {
   });
   const response = await fetch(`${API_BASE}/items/events?${params}`, {
     headers: getDirectusHeaders(),
-    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
+    ...directusCollectionFetch,
   });
   if (!response.ok) return null;
   const json = (await response.json()) as { data: ApiEvent[] };

@@ -1,6 +1,39 @@
 import type { LocaleCode } from "@/lib/i18n/localized";
 import { isMostlyArabicText } from "@/lib/i18n/localized";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+} from "@/lib/directus/collectionCache";
 import type { ExperienceCardProps } from "./ExperienceCard/ExperienceCard";
+
+const EXPERIENCE_FIELDS = [
+  "id",
+  "status",
+  "title",
+  "title_eng",
+  "description",
+  "description_eng",
+  "image",
+  "image_new",
+  "link",
+  "highlighted",
+  "duration",
+  "duration_En",
+  "destination",
+  "price_1",
+  "minimum_number_of_people",
+  "details",
+  "type",
+  "type_en",
+  "tags",
+  "date",
+  "tour_agency",
+  "tour_agency_en",
+  "price",
+  "booking_link",
+  "target_audience",
+  "tour_audience_en",
+].join(",");
 
 /** Directus API item shape for the experiences collection */
 export interface ApiExperience {
@@ -116,11 +149,16 @@ function isPublishedExperience(api: ApiExperience): boolean {
   return api.status === "published";
 }
 
-function buildExperiencesListUrl(directusUrl: string): string {
+function buildExperiencesListUrl(
+  directusUrl: string,
+  limit = DIRECTUS_COLLECTION_LIMIT,
+): string {
   const url = new URL(`${directusUrl.replace(/\/$/, "")}/items/experiences`);
   url.searchParams.set("filter[status][_eq]", "published");
   // Public role cannot sort by date/date_created; id desc ≈ newest first.
   url.searchParams.set("sort", "-id");
+  url.searchParams.set("fields", EXPERIENCE_FIELDS);
+  url.searchParams.set("limit", String(limit));
   return url.toString();
 }
 
@@ -575,11 +613,10 @@ export async function fetchExperienceById(
     const listUrl = new URL(`${directusUrl}/items/experiences`);
     listUrl.searchParams.set("filter[id][_eq]", trimmed);
     listUrl.searchParams.set("filter[status][_eq]", "published");
+    listUrl.searchParams.set("fields", EXPERIENCE_FIELDS);
     listUrl.searchParams.set("limit", "1");
 
-    const res = await fetch(listUrl.toString(), {
-      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-    });
+    const res = await fetch(listUrl.toString(), directusCollectionFetch);
     if (res.ok) {
       const json: ExperiencesApiResponse = await res.json();
       const item = json.data[0];
@@ -604,6 +641,8 @@ export interface FetchExperiencesOptions {
   /** When set, only items whose `type` field matches (comma-separated values supported). */
   type?: string;
   locale?: LocaleCode;
+  /** Cap rows from Directus. Defaults to the shared collection limit. */
+  limit?: number;
 }
 
 export async function fetchExperiences(
@@ -617,9 +656,10 @@ export async function fetchExperiences(
   }
 
   try {
-    const response = await fetch(buildExperiencesListUrl(directusUrl), {
-      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-    });
+    const response = await fetch(
+      buildExperiencesListUrl(directusUrl, options?.limit),
+      directusCollectionFetch,
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch experiences: ${response.statusText}`);

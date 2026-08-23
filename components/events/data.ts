@@ -4,6 +4,39 @@ import {
 } from "@/components/event-seasons/utils";
 import type { EventInterestId, EventListingItem } from "./types";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+
+const EVENT_LIST_FIELDS = [
+  "id",
+  "title",
+  "title_en",
+  "image",
+  "thumbnail",
+  "hero_mobile",
+  "map",
+  "city",
+  "city_en",
+  "tags",
+  "start_date",
+  "end_date",
+  "date",
+  "start_time",
+  "end_time",
+  "free_event",
+  "price",
+  "status",
+  "event_status",
+  "unclickable",
+  "suitable_for_kids",
+  "audience_type",
+  "image_new",
+  "images",
+  "ticket_link",
+] as const;
 
 export type { EventListingItem } from "./types";
 
@@ -41,7 +74,6 @@ interface EventsApiResponse {
 }
 
 const PLACEHOLDER_IMAGE = "/assets/experiences/experiences.png";
-const EVENTS_ITEMS_PATH = "/items/events" as const;
 const EVENTS_API_BASE =
   process.env.NEXT_PUBLIC_EVENTS_API_BASE?.replace(/\/$/, "") ||
   "https://tool-portal.discoveraseer.com";
@@ -377,9 +409,13 @@ export async function fetchEvents(
   locale: LocaleCode = "ar",
 ): Promise<EventListingItem[]> {
   try {
-    const response = await fetch(`${EVENTS_API_BASE}${EVENTS_ITEMS_PATH}`, {
-      next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-    });
+    const response = await fetch(
+      directusItemsUrl(EVENTS_API_BASE, "events", {
+        fields: EVENT_LIST_FIELDS,
+        limit: DIRECTUS_COLLECTION_LIMIT,
+      }),
+      directusCollectionFetch,
+    );
 
     if (!response.ok) {
       throw new Error(

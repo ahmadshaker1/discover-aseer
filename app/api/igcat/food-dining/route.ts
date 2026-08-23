@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+} from "@/lib/directus/collectionCache";
 
 const DIRECTUS_BASE_URL = "https://tool-portal.discoveraseer.com/items";
 const DIRECTUS_ASSETS_BASE_URL =
@@ -117,9 +121,14 @@ function normalizeRestaurant(record: RawRecord) {
 }
 
 async function fetchCollection(collection: string) {
-  const response = await fetch(`${DIRECTUS_BASE_URL}/${collection}?limit=-1`, {
-    cache: "no-store",
-  });
+  const fields =
+    collection === "cuisine"
+      ? "id,status,name,title,title_ar,label,arabic_name,hero_image_url,image,image_url,thumbnail,cover,photo,picture"
+      : "id,status,name,title,title_ar,label,arabic_name,hero_image_url,image,image_url,thumbnail,cover,photo,picture,reviews_count,rating,score,stars,location_text,location,address,price_range,price,price_band,category,cuisine,type,tag";
+  const response = await fetch(
+    `${DIRECTUS_BASE_URL}/${collection}?limit=${DIRECTUS_COLLECTION_LIMIT}&fields=${fields}&filter[status][_eq]=published`,
+    directusCollectionFetch,
+  );
 
   if (!response.ok) {
     throw new Error(`Failed to fetch ${collection}: ${response.status}`);

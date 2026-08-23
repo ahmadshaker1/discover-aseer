@@ -1,3 +1,10 @@
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+import { getDirectusPublicUrl } from "@/lib/directus/config";
+
 export interface SiteAsset {
   id: number;
   key: string;
@@ -14,8 +21,12 @@ export interface SiteAsset {
 export async function fetchSiteAssets(pageName: string): Promise<SiteAsset[]> {
   try {
     const res = await fetch(
-      `https://tool-portal.discoveraseer.com/items/site_assets?filter[page][_eq]=${pageName}`,
-      { cache: "no-store" },
+      directusItemsUrl(getDirectusPublicUrl(), "site_assets", {
+        fields: ["id", "key", "page", "file"],
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        extra: { "filter[page][_eq]": pageName },
+      }),
+      directusCollectionFetch,
     );
     if (!res.ok) {
       return [];

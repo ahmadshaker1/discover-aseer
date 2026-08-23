@@ -1,4 +1,9 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
 import { getDateFormatLocale } from "./utils";
 import type {
   EventSeasonsPageData,
@@ -6,7 +11,18 @@ import type {
   SeasonListingItem,
 } from "./types";
 
-const SEASONS_ITEMS_PATH = "/items/seasons" as const;
+const SEASON_LIST_FIELDS = [
+  "id",
+  "status",
+  "title",
+  "title_ar",
+  "title_en",
+  "image",
+  "banner_image",
+  "start_date",
+  "end_date",
+] as const;
+
 const API_BASE =
   process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
   process.env.NEXT_PUBLIC_EVENTS_API_BASE?.replace(/\/$/, "") ||
@@ -185,9 +201,14 @@ function sortPreviousSeasons(a: ApiSeason, b: ApiSeason): number {
 }
 
 async function fetchApiSeasons(): Promise<ApiSeason[]> {
-  const response = await fetch(`${API_BASE}${SEASONS_ITEMS_PATH}`, {
-    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-  });
+  const response = await fetch(
+    directusItemsUrl(API_BASE, "seasons", {
+      fields: SEASON_LIST_FIELDS,
+      limit: DIRECTUS_COLLECTION_LIMIT,
+      published: true,
+    }),
+    directusCollectionFetch,
+  );
 
   if (!response.ok) {
     throw new Error(`Failed to fetch seasons: ${response.status} ${response.statusText}`);

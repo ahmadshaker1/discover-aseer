@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { fetchMapLocations } from "@/lib/maps/directusLocations";
 import type { LocaleCode } from "@/lib/i18n/localized";
+import { DIRECTUS_COLLECTION_REVALIDATE } from "@/lib/directus/collectionCache";
 
-/** CMS-driven list; avoid stale empty responses after permission/schema changes. */
-export const dynamic = "force-dynamic";
+export const revalidate = DIRECTUS_COLLECTION_REVALIDATE;
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
       {
         status: 200,
         headers: {
-          "Cache-Control": "no-store, must-revalidate",
+          "Cache-Control": `public, s-maxage=${DIRECTUS_COLLECTION_REVALIDATE}, stale-while-revalidate=60`,
         },
       },
     );

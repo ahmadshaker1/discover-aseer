@@ -5,10 +5,8 @@ import ScheduleDisplay from "@/components/planner/ScheduleDisplay";
 async function getSavedPlan(id: string) {
   try {
     const response = await fetch(
-      `https://tool-portal.discoveraseer.com/items/saved_plans/${id}`,
-      {
-        cache: "no-store",
-      },
+      `https://tool-portal.discoveraseer.com/items/saved_plans/${id}?fields=id,plan_data`,
+      { next: { revalidate: 3600 } },
     );
     if (!response.ok) return null;
     const json = await response.json();

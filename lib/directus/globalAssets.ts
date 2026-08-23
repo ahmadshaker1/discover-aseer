@@ -19,9 +19,9 @@ export async function fetchGlobalAssets(): Promise<Record<string, string>> {
 
   try {
     const response = await fetch(
-      `${directusUrl}/items/global_assets?filter[status][_eq]=published`,
+      `${directusUrl}/items/global_assets?filter[status][_eq]=published&fields=name,video&limit=50`,
       {
-        next: { revalidate: 300 }, // cache for 5 minutes
+        next: { revalidate: 3600 },
       },
     );
 

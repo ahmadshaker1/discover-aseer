@@ -1,4 +1,10 @@
 import { getLocale } from "next-intl/server";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+import { getDirectusPublicUrl } from "@/lib/directus/config";
 
 type IdentityFile = {
   id: string;
@@ -13,9 +19,6 @@ type IdentityFilesResponse = {
   data?: IdentityFile[];
 };
 
-const IDENTITY_FILES_URL =
-  "https://tool-portal.discoveraseer.com/items/aseer_identites";
-
 function getLocalizedTitle(file: IdentityFile, locale: string) {
   if (locale === "ar") {
     return file.title_ar || file.title_en || "";
@@ -25,9 +28,14 @@ function getLocalizedTitle(file: IdentityFile, locale: string) {
 }
 
 async function fetchIdentityFiles(): Promise<IdentityFile[]> {
-  const response = await fetch(IDENTITY_FILES_URL, {
-    next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-  });
+  const response = await fetch(
+    directusItemsUrl(getDirectusPublicUrl(), "aseer_identites", {
+      fields: ["id", "title_en", "title_ar", "cover_url", "zip_file_url", "status"],
+      limit: DIRECTUS_COLLECTION_LIMIT,
+      published: true,
+    }),
+    directusCollectionFetch,
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch identity files");

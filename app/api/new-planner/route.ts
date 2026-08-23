@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { fetchPlannerCatalogs } from "@/lib/planner/directusCatalog";
 
 interface PlannerData {
   selectedDays: number | null;
@@ -24,56 +25,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 1. Fetch from Directus
-    const [restaurantsRes, experiencesRes, eventsRes] = await Promise.all([
-      fetch(
-        "https://tool-portal.discoveraseer.com/items/restaurants?limit=-1",
-      ).catch(() => null),
-      fetch(
-        "https://tool-portal.discoveraseer.com/items/experiences?limit=-1",
-      ).catch(() => null),
-      fetch(
-        "https://tool-portal.discoveraseer.com/items/events?limit=-1",
-      ).catch(() => null),
-    ]);
-
-    const restaurantsData = restaurantsRes
-      ? await restaurantsRes.json()
-      : { data: [] };
-    const experiencesData = experiencesRes
-      ? await experiencesRes.json()
-      : { data: [] };
-    const eventsData = eventsRes ? await eventsRes.json() : { data: [] };
-
-    // 2. Map data (Extract essential fields only to save tokens)
-    const restaurantsCatalog = (restaurantsData.data || []).map(
-      (item: any) => ({
-        id: item.id,
-        title: item.title_en || item.title_ar,
-        cuisine: item.cuisine_type,
-        description: item.content || item.content_ar,
-      }),
-    );
-
-    const experiencesCatalog = (experiencesData.data || []).map(
-      (item: any) => ({
-        id: item.id,
-        title: item.title_eng || item.title,
-        type: item.type_en || item.type,
-        duration: item.duration_En || item.duration,
-        description: item.description_eng || item.description,
-      }),
-    );
-
-    const todayStr = new Date().toISOString().split("T")[0];
-    const eventsCatalog = (eventsData.data || [])
-      .filter((item: any) => !item.end_date || item.end_date >= todayStr)
-      .map((item: any) => ({
-        id: item.id,
-        title: item.title_en || item.title,
-        description: item.description_en || item.description,
-        end_date: item.end_date,
-      }));
+    const { restaurantsCatalog, experiencesCatalog, eventsCatalog } =
+      await fetchPlannerCatalogs();
 
     const numberOfDays = body.selectedDays || 1;
     const startDate = body.selectedDate || "Unknown Date";

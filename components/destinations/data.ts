@@ -13,6 +13,65 @@ import {
   pickLocalizedField,
   type LocaleCode,
 } from "@/lib/i18n/localized";
+import {
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
+
+export const DESTINATION_FIELDS = [
+  "id",
+  "status",
+  "title",
+  "title_en",
+  "title_ar",
+  "title_section_2",
+  "title_section_2_en",
+  "title_section_2_ar",
+  "name",
+  "name_en",
+  "name_ar",
+  "slug_en",
+  "slug",
+  "location",
+  "address",
+  "description",
+  "description_en",
+  "description_ar",
+  "content",
+  "content_en",
+  "content_ar",
+  "content_of_home_page",
+  "content_of_home_page_en",
+  "content_of_home_page_ar",
+  "sub_title",
+  "sub_title_orange",
+  "sub_title_orange_en",
+  "sub_title_orange_ar",
+  "subtitle",
+  "sub_title_en",
+  "sub_title_ar",
+  "subtitle_en",
+  "subtitle_ar",
+  "cover_image",
+  "hero_image",
+  "hero_image_1",
+  "hero_image_new",
+  "destination_image",
+  "lat",
+  "lon",
+  "latitude",
+  "longitude",
+  "city",
+  "city_en",
+  "city_ar",
+  "temp_ar",
+  "temp_en",
+  "tda",
+  "destination_filter",
+  "tags",
+  "interest_tags",
+] as const;
 
 export const DEFAULT_ABHA_MAP_CENTER = {
   lat: 18.087563,
@@ -459,10 +518,12 @@ export const fetchDestinations = async (
   }
   try {
     const response = await fetch(
-      `${directusUrl.replace(/\/$/, "")}/items/destination`,
-      {
-        next: { revalidate: 0 }, // TODO: restore 3600 collection cache
-      },
+      directusItemsUrl(directusUrl, "destination", {
+        fields: DESTINATION_FIELDS,
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        published: true,
+      }),
+      directusCollectionFetch,
     );
     if (!response.ok) return [];
     const apiData: ApiDestinationResponse = await response.json();

@@ -9,10 +9,12 @@ import {
   inferCityIdFromLocation,
 } from "@/components/landmarks/filterOptions";
 import type { LocaleCode } from "@/lib/i18n/localized";
+import { isPublishedTourGuide } from "@/lib/directus/config";
 import {
-  isPublishedTourGuide,
-  publishedTourGuidesSearchParams,
-} from "@/lib/directus/config";
+  DIRECTUS_COLLECTION_LIMIT,
+  directusCollectionFetch,
+  directusItemsUrl,
+} from "@/lib/directus/collectionCache";
 import {
   buildSpecLabelMapFromApi,
   canonicalizeSpecializationTokens,
@@ -31,6 +33,35 @@ import type {
   TourGuidesFilterOptions,
   TouristGuidesApiResponse,
 } from "./types";
+
+const TOUR_GUIDE_LIST_FIELDS = [
+  "id",
+  "status",
+  "name",
+  "name_en",
+  "image",
+  "phone_number",
+  "whatsapp",
+  "email",
+  "content",
+  "content_en",
+  "description",
+  "description_en",
+  "other_languages",
+  "website",
+  "instagram",
+  "x_platform",
+  "tiktok",
+  "snapchat",
+  "gender",
+  "arabic_language_level",
+  "english_language_level",
+  "specializations",
+  "specializations_en",
+  "city",
+  "city_id",
+  "transportation",
+] as const;
 
 export type {
   ApiTouristGuide,
@@ -348,11 +379,12 @@ export async function fetchTourGuides(
     }
 
     const response = await fetch(
-      `${directusUrl}/items/tourist_guides?limit=-1`,
-      {
-        cache: "no-store",
-        headers,
-      },
+      directusItemsUrl(directusUrl, "tourist_guides", {
+        fields: TOUR_GUIDE_LIST_FIELDS,
+        limit: DIRECTUS_COLLECTION_LIMIT,
+        published: true,
+      }),
+      { ...directusCollectionFetch, headers },
     );
 
     if (!response.ok) {

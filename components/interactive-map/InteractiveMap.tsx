@@ -237,10 +237,8 @@ const InteractiveMap = ({
             locale,
             /** Many CMS rows only have a Maps URL; server resolves lat/lng for pins. */
             resolve: "true",
-            resolveLimit: "300",
-          }).toString()}`,
-          { cache: "no-store" },
-        );
+            resolveLimit: "40",
+          }).toString()}`);
         if (!response.ok || cancelled) return;
 
         const json: { data?: MapPlace[]; stats?: MapLoadStats } =

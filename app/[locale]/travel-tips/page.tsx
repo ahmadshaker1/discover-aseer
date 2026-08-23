@@ -28,9 +28,10 @@ async function fetchFaqItems(locale: string): Promise<TravelFaqItem[]> {
     process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.trim() || FAQ_API_BASE_URL;
 
   try {
-    const response = await fetch(`${baseUrl}/items/faq`, {
-      next: { revalidate: 300 },
-    });
+    const response = await fetch(
+      `${baseUrl.replace(/\/$/, "")}/items/faq?fields=id,questions&limit=20`,
+      { next: { revalidate: 3600 } },
+    );
 
     if (!response.ok) {
       return [];
