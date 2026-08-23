@@ -7,7 +7,8 @@ import type { LocaleCode } from "@/lib/i18n/localized";
 
 export default async function EventSeasonsPage() {
   const locale = (await getLocale()) as LocaleCode;
-  const { currentSeasons, previousSeasons } = await fetchEventSeasonsPageData(locale);
+  const { currentSeasons, previousSeasons } =
+    await fetchEventSeasonsPageData(locale);
 
   return (
     <div className="flex w-full flex-col gap-4 pb-12">

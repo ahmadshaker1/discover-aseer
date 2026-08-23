@@ -16,7 +16,6 @@ const SEASON_LIST_FIELDS = [
   "status",
   "title",
   "title_ar",
-  "title_en",
   "image",
   "banner_image",
   "start_date",
@@ -111,7 +110,10 @@ function pickSeasonImage(apiSeason: ApiSeason, fallbackIndex: number): string {
   );
 }
 
-function formatDate(dateInput: string | null | undefined, locale: LocaleCode): string | null {
+function formatDate(
+  dateInput: string | null | undefined,
+  locale: LocaleCode,
+): string | null {
   const parsed = parseDateOnly(dateInput);
   if (!parsed) return null;
   return new Intl.DateTimeFormat(getDateFormatLocale(locale), {
@@ -211,7 +213,9 @@ async function fetchApiSeasons(): Promise<ApiSeason[]> {
   );
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch seasons: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `Failed to fetch seasons: ${response.status} ${response.statusText}`,
+    );
   }
 
   const apiData: SeasonsApiResponse = await response.json();
