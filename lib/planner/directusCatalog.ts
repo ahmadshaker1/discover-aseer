@@ -189,7 +189,10 @@ export async function fetchPlannerCatalogByType(
         fields: RESTAURANT_FIELDS,
       }),
     );
-    return mapRestaurantCatalog(asRows(payload));
+    return {
+      catalog: mapRestaurantCatalog(asRows(payload)),
+      data: asRows(payload),
+    };
   }
 
   if (itemType === "experience") {
@@ -199,7 +202,10 @@ export async function fetchPlannerCatalogByType(
         fields: EXPERIENCE_FIELDS,
       }),
     );
-    return mapExperienceCatalog(asRows(payload));
+    return {
+      catalog: mapExperienceCatalog(asRows(payload)),
+      data: asRows(payload),
+    };
   }
 
   const payload = await fetchCatalogJson(
@@ -208,5 +214,8 @@ export async function fetchPlannerCatalogByType(
       fields: EVENT_FIELDS,
     }),
   );
-  return mapEventCatalog(asRows(payload));
+  return {
+    catalog: mapEventCatalog(asRows(payload)),
+    data: asRows(payload),
+  };
 }

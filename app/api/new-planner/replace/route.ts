@@ -22,7 +22,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid itemType" }, { status: 400 });
     }
 
-    let mappedCatalog = await fetchPlannerCatalogByType(itemType);
+    const { catalog: mappedCatalogBase, data: catalogData } =
+      await fetchPlannerCatalogByType(itemType);
+
+    let mappedCatalog = mappedCatalogBase;
 
     // 3. Filter out the item to replace
     mappedCatalog = mappedCatalog.filter(
@@ -116,7 +119,7 @@ ${itemType === "experience" ? ', "travelToNext": { "duration": "15 min" }' : ""}
     }
 
     // 6. Map back the original itemData from the catalog
-    const matchedItemData = catalogData.data.find(
+    const matchedItemData = catalogData.find(
       (e: any) => String(e.id) === String(replacementData.newItemId),
     );
 

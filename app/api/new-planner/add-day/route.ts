@@ -17,8 +17,14 @@ export async function POST(request: NextRequest) {
     const currentDaysCount = currentPlanData.days.length;
     const newDayNumber = currentDaysCount + 1;
 
-    const { restaurantsCatalog, experiencesCatalog, eventsCatalog } =
-      await fetchPlannerCatalogs();
+    const {
+      restaurantsCatalog,
+      experiencesCatalog,
+      eventsCatalog,
+      restaurantsData,
+      experiencesData,
+      eventsData,
+    } = await fetchPlannerCatalogs();
 
     // 3. Build Prompt
     const prompt = `
@@ -122,15 +128,15 @@ EVENTS: ${JSON.stringify(eventsCatalog)}
           period.items = period.items.map((item: any) => {
             let matched = null;
             if (item.type === "event") {
-              matched = eventsData.data.find(
+              matched = eventsData.find(
                 (e: any) => String(e.id) === String(item.itemId),
               );
             } else if (item.type === "experience") {
-              matched = experiencesData.data.find(
+              matched = experiencesData.find(
                 (e: any) => String(e.id) === String(item.itemId),
               );
             } else if (item.type === "restaurant") {
-              matched = restaurantsData.data.find(
+              matched = restaurantsData.find(
                 (r: any) => String(r.id) === String(item.itemId),
               );
             }
