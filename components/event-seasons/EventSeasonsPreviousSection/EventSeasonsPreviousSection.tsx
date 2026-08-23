@@ -16,7 +16,7 @@ export default function EventSeasonsPreviousSection({
 
   return (
     <section className="mx-auto w-full max-w-[1500px] px-4 py-10 sm:px-6 md:px-8 lg:px-12">
-      <div className="flex w-full flex-col gap-16 md:gap-[112px]">
+      <div className="flex w-full flex-col gap-16 md:gap-28">
         <h2
           className="w-full text-start text-[clamp(1.75rem,4vw,48px)] font-bold leading-none text-foreground"
         >

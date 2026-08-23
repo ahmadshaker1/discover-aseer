@@ -50,8 +50,8 @@ const PlannerRestaurantCardNew = ({
           {locale === "ar" ? "مطعم" : "Restaurant"}
         </span>
       </div>
-      <div className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0">
-        <div className="w-full md:w-[120px] h-[200px] md:h-[120px] shrink-0 rounded-[8px] overflow-hidden">
+      <div className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-xl bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0">
+        <div className="w-full md:w-[120px] h-[200px] md:h-[120px] shrink-0 rounded-lg overflow-hidden">
           <img
             src={restaurant.image}
             alt={restaurant.name}
@@ -88,7 +88,7 @@ const PlannerRestaurantCardNew = ({
             onClick={() =>
               window.open(restaurant.mapsUrl, "_blank", "noopener,noreferrer")
             }
-            className="w-full md:w-auto flex h-[36px] px-[16px] py-[10px] justify-center items-center gap-[12px] rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white text-sm font-medium"
+            className="w-full md:w-auto flex h-9 px-4 py-2.5 justify-center items-center gap-3 rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white"
           >
             <img
               src={"/assets/planner/direction-line.svg"}
@@ -142,8 +142,8 @@ const PlannerEventCardNew = ({
           {locale === "ar" ? "فعالية" : "Event"}
         </span>
       </div>
-      <div className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0">
-        <div className="w-full md:w-[120px] h-[200px] md:h-[120px] shrink-0 rounded-[8px] overflow-hidden">
+      <div className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-xl bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0">
+        <div className="w-full md:w-[120px] h-[200px] md:h-[120px] shrink-0 rounded-lg overflow-hidden">
           <img
             src={event.image || event.images?.[0]}
             alt={event.title}
@@ -196,7 +196,7 @@ const PlannerEventCardNew = ({
                 "noopener,noreferrer",
               )
             }
-            className="w-full md:w-auto flex h-[36px] px-[16px] py-[10px] justify-center items-center gap-[12px] rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white text-sm font-medium"
+            className="w-full md:w-auto flex h-9 px-4 py-2.5 justify-center items-center gap-3 rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white"
           >
             <img
               src={"/assets/planner/direction-line.svg"}
@@ -257,9 +257,9 @@ const PlannerExperienceCardNew = ({
             "noopener,noreferrer",
           )
         }
-        className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-[12px] bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0 cursor-pointer hover:border-[#6027D2] transition-colors"
+        className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-xl bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0 cursor-pointer hover:border-[#6027D2] transition-colors"
       >
-        <div className="w-full md:w-[140px] h-[200px] md:h-[160px] shrink-0 rounded-[8px] overflow-hidden">
+        <div className="w-full md:w-[140px] h-[200px] md:h-40 shrink-0 rounded-lg overflow-hidden">
           <img
             src={experience.imageUrl}
             alt={experience.title}
@@ -269,7 +269,7 @@ const PlannerExperienceCardNew = ({
         <div className="flex flex-col flex-1 md:px-4 py-2 gap-3 justify-between h-full w-full">
           <div>
             {experience.category && (
-              <div className="flex w-[80px] h-[25px] justify-center items-center gap-[10px] rounded-[12px] border border-[rgba(0,0,0,0.80)] dark:border-white/80 mb-3">
+              <div className="flex w-20 h-[25px] justify-center items-center gap-2.5 rounded-xl border border-[rgba(0,0,0,0.80)] dark:border-white/80 mb-3">
                 <span className="text-xs font-semibold whitespace-nowrap">
                   {experience.category}
                 </span>
@@ -354,7 +354,6 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   const [isAddingDay, setIsAddingDay] = useState<number | null>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const currentDay = planData?.days?.[selectedDayIndex];
 
   useEffect(() => {
     if (planData) {
@@ -874,7 +873,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
           return (
             <div
               key={dIndex}
-              className={`w-full flex-col p-6 bg-[#F7F7F7] dark:bg-[#14091F] print:!relative print:!flex print:!opacity-100 print:!h-auto print:!overflow-visible print:mb-8 print:!pointer-events-auto print:!mt-4 ${
+              className={`w-full flex-col p-6 bg-[#F7F7F7] dark:bg-[#14091F] print:relative! print:flex! print:opacity-100! print:h-auto! print:overflow-visible! print:mb-8 print:pointer-events-auto! print:mt-4! ${
                 isSelected || isExportingPDF
                   ? "flex relative opacity-100 mt-4 z-10"
                   : "flex absolute top-0 left-0 opacity-0 h-0 overflow-hidden pointer-events-none -z-10"
@@ -889,7 +888,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
 
               <div className="flex flex-col w-full relative">
                 {/* Vertical Timeline Line */}
-                <div className="absolute top-10 bottom-10 rtl:right-[15px] ltr:left-[15px] w-[2px] bg-gray-200 dark:bg-white/10 z-0" />
+                <div className="absolute top-10 bottom-10 rtl:right-[15px] ltr:left-[15px] w-0.5 bg-gray-200 dark:bg-white/10 z-0" />
 
                 {dayToRender.periods?.map((period: any, pIdx: number) => {
                   const localizedPeriod =
@@ -922,9 +921,9 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                                 className="relative flex w-full group items-center"
                               >
                                 {/* Dot */}
-                                <div className="absolute top-1/2 -translate-y-1/2 rtl:right-[11px] ltr:left-[11px] w-[10px] h-[10px] rounded-full bg-black dark:bg-white border-[2px] border-white dark:border-[#14091F] z-10" />
+                                <div className="absolute top-1/2 -translate-y-1/2 rtl:right-[11px] ltr:left-[11px] w-2.5 h-2.5 rounded-full bg-black dark:bg-white border-2 border-white dark:border-[#14091F] z-10" />
 
-                                <div className="w-full rtl:pr-[40px] ltr:pl-[40px]">
+                                <div className="w-full rtl:pr-10 ltr:pl-10">
                                   {item.type === "event" && (
                                     <PlannerEventCardNew
                                       event={transformApiEventToListingItem(
@@ -993,7 +992,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                           })}
                         </div>
                       ) : (
-                        <p className="text-gray-500 text-start text-sm rtl:pr-[40px] ltr:pl-[40px]">
+                        <p className="text-gray-500 text-start text-sm rtl:pr-10 ltr:pl-10">
                           {locale === "ar"
                             ? "لا توجد نشاطات في هذه الفترة"
                             : "No activities for this period"}

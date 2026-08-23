@@ -203,7 +203,7 @@ export default function Calendar({
       {/* Calendar Popup */}
       {isCalendarOpen && (
         <div
-          className="absolute top-[100%] mt-2 right-0 md:left-0 z-[999] w-[340px] select-none bg-white dark:bg-[#1C0F2A] border border-black/10 dark:border-white/20"
+          className="absolute top-full mt-2 right-0 md:left-0 z-999 w-[340px] select-none bg-white dark:bg-[#1C0F2A] border border-black/10 dark:border-white/20"
           style={{
             display: "inline-flex",
             padding: "20px 16px",
@@ -352,7 +352,7 @@ export default function Calendar({
                       onSelectDate(dateOfThisDay);
                     }
                   }}
-                  className={`flex justify-center items-center h-8 w-8 mx-auto transition-colors rounded-[4px] ${
+                  className={`flex justify-center items-center h-8 w-8 mx-auto transition-colors rounded-sm ${
                     isPastDay
                       ? "text-gray-300 dark:text-[#3B2C4A] cursor-not-allowed"
                       : isSelected

@@ -20,7 +20,7 @@ export default function EventSeasonsCurrentSection({
     seasons.length === 0 ? 0 : Math.min(activeIndex, seasons.length - 1);
 
   return (
-    <section className="mx-auto w-full max-w-[1439px] rounded-[24px] bg-surface px-4 py-8 sm:px-8 md:px-[60px] md:py-8">
+    <section className="mx-auto w-full max-w-[1439px] rounded-3xl bg-surface px-4 py-8 sm:px-8 md:px-[60px] md:py-8">
       <div className="mx-auto flex w-full max-w-[1319px] flex-col gap-8 md:gap-[43px]">
         <header className="flex w-full flex-col items-start gap-8">
           <h2
