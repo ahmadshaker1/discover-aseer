@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import RestaurantsFilterSidebar from "@/components/restaurants/RestaurantsFilterSidebar";
 import RestaurantsGrid from "@/components/restaurants/RestaurantsGrid";
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import type { Restaurant } from "@/components/restaurants/types";
 import {
   applyRestaurantFilters,
@@ -17,10 +18,14 @@ const INITIAL_FILTERS: RestaurantFilterState = {
 
 interface RestaurantsListingProps {
   restaurants: Restaurant[];
+  currentPage: number;
+  totalPages: number;
 }
 
 export default function RestaurantsListing({
   restaurants,
+  currentPage,
+  totalPages,
 }: RestaurantsListingProps) {
   const [filters, setFilters] =
     useState<RestaurantFilterState>(INITIAL_FILTERS);
@@ -47,6 +52,7 @@ export default function RestaurantsListing({
       </aside>
       <div className=" w-full ">
         <RestaurantsGrid restaurants={filtered} />
+        <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
       </div>
     </div>
   );

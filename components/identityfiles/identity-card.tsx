@@ -1,6 +1,9 @@
 import { getLocale } from "next-intl/server";
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import {
+  CATALOG_PAGE_SIZE,
   DIRECTUS_COLLECTION_LIMIT,
+  catalogTotalPages,
   directusCollectionFetch,
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
@@ -27,11 +30,18 @@ function getLocalizedTitle(file: IdentityFile, locale: string) {
   return file.title_en || file.title_ar || "";
 }
 
-async function fetchIdentityFiles(): Promise<IdentityFile[]> {
+async function fetchIdentityFiles(page?: number): Promise<{
+  items: IdentityFile[];
+  total: number;
+  totalPages: number;
+}> {
   const response = await fetch(
     directusItemsUrl(getDirectusPublicUrl(), "aseer_identites", {
       fields: ["id", "title_en", "title_ar", "cover_url", "zip_file_url", "status"],
-      limit: DIRECTUS_COLLECTION_LIMIT,
+      limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
+      page,
+      pageSize: page ? CATALOG_PAGE_SIZE : undefined,
+      meta: Boolean(page),
       published: true,
     }),
     directusCollectionFetch,
@@ -42,20 +52,33 @@ async function fetchIdentityFiles(): Promise<IdentityFile[]> {
   }
 
   const payload = (await response.json()) as
-    | IdentityFilesResponse
+    | (IdentityFilesResponse & { meta?: { filter_count?: number } })
     | IdentityFile[];
   const items = Array.isArray(payload)
     ? payload
     : Array.isArray(payload?.data)
-      ? payload.data
-      : [];
+    ? payload.data
+    : [];
+  const published = items.filter((file) => file.status === "published");
+  const total =
+    !Array.isArray(payload) && typeof payload.meta?.filter_count === "number"
+      ? payload.meta.filter_count
+      : published.length;
 
-  return items.filter((file) => file.status === "published");
+  return {
+    items: published,
+    total,
+    totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+  };
 }
 
-export default async function AseerIdentityFiles() {
+export default async function AseerIdentityFiles({
+  page = 1,
+}: {
+  page?: number;
+}) {
   const locale = await getLocale();
-  const files = await fetchIdentityFiles();
+  const { items: files, totalPages } = await fetchIdentityFiles(page);
 
   return (
     <section className="w-full bg-white py-16">
@@ -113,6 +136,7 @@ export default async function AseerIdentityFiles() {
             );
           })}
         </div>
+        <CatalogPagination currentPage={page} totalPages={totalPages} />
       </div>
     </section>
   );

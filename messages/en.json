@@ -59,6 +59,7 @@
     "exceptionalHotels": "Popular hotels",
     "previous": "Previous",
     "next": "Next",
+    "paginationAria": "Pagination",
     "location": "Location",
     "allCities": "Choose your destination",
     "noAccommodation": "No accommodation available right now",

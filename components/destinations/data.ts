@@ -14,7 +14,9 @@ import {
   type LocaleCode,
 } from "@/lib/i18n/localized";
 import {
+  CATALOG_PAGE_SIZE,
   DIRECTUS_COLLECTION_LIMIT,
+  catalogTotalPages,
   directusCollectionFetch,
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
@@ -479,30 +481,52 @@ function uniquifyDestinationSlugs(destinations: Destination[]): Destination[] {
 
 export const fetchDestinations = async (
   locale: LocaleCode = "ar",
-): Promise<Destination[]> => {
+  options?: { page?: number },
+): Promise<{
+  items: Destination[];
+  total: number;
+  page: number;
+  totalPages: number;
+}> => {
+  const empty = { items: [] as Destination[], total: 0, page: 1, totalPages: 1 };
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL;
   if (!directusUrl) {
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
-    return [];
+    return empty;
   }
+  const page = options?.page;
   try {
     const response = await fetch(
       directusItemsUrl(directusUrl, "destination", {
         fields: DESTINATION_FIELDS,
-        limit: DIRECTUS_COLLECTION_LIMIT,
+        limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
+        page,
+        pageSize: page ? CATALOG_PAGE_SIZE : undefined,
+        meta: Boolean(page),
       }),
       directusCollectionFetch,
     );
-    if (!response.ok) return [];
-    const apiData: ApiDestinationResponse = await response.json();
+    if (!response.ok) return empty;
+    const apiData: ApiDestinationResponse & { meta?: { filter_count?: number } } =
+      await response.json();
     const rows = Array.isArray(apiData.data) ? apiData.data : [];
-    return uniquifyDestinationSlugs(
+    const items = uniquifyDestinationSlugs(
       rows
         .filter((d) => !d.status || d.status === "published")
         .map((d) => transformDestination(d, directusUrl, locale)),
     );
+    const total =
+      typeof apiData.meta?.filter_count === "number"
+        ? apiData.meta.filter_count
+        : items.length;
+    return {
+      items,
+      total,
+      page: page ?? 1,
+      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+    };
   } catch {
-    return [];
+    return empty;
   }
 };
 
@@ -511,7 +535,7 @@ export const getDestinationBySlug = async (
   locale: LocaleCode = "ar",
 ): Promise<Destination | null> => {
   const normalized = normalizeDestinationSlugParam(slugOrId);
-  const rows = await fetchDestinations(locale);
+  const { items: rows } = await fetchDestinations(locale);
 
   if (normalized) {
     const bySlug = rows.find((d) => d.slug === normalized);

@@ -3,17 +3,16 @@
 import { useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import ServicesSupportFilterSidebar from "./ServicesSupportFilterSidebar";
 import ServicesSupportGrid from "./ServicesSupportGrid";
-import ServicesSupportPagination from "./ServicesSupportPagination";
 import type { SupportService } from "./types";
 
 interface ServicesSupportCatalogProps {
   services: SupportService[];
+  currentPage: number;
+  totalPages: number;
 }
-
-/** 3 columns × 4 rows on large screens */
-const ITEMS_PER_PAGE = 12;
 
 interface FilterOption {
   value: string;
@@ -33,12 +32,15 @@ function buildOptions(values: string[], locale: "ar" | "en"): FilterOption[] {
     .sort((a, b) => a.value.localeCompare(b.value, locale));
 }
 
-const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
+const ServicesSupportCatalog = ({
+  services,
+  currentPage,
+  totalPages,
+}: ServicesSupportCatalogProps) => {
   const t = useTranslations("servicesSupport");
   const locale = useLocale() as "ar" | "en";
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const cityOptions = useMemo(
     () =>
@@ -69,16 +71,6 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
     });
   }, [services, selectedCity, selectedTypes]);
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredServices.length / ITEMS_PER_PAGE),
-  );
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const paginatedServices = filteredServices.slice(
-    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
-    safeCurrentPage * ITEMS_PER_PAGE,
-  );
-
   const toggleInList = (
     setter: Dispatch<SetStateAction<string[]>>,
     value: string,
@@ -88,13 +80,11 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
         ? prev.filter((item) => item !== value)
         : [...prev, value],
     );
-    setCurrentPage(1);
   };
 
   const resetFilters = () => {
     setSelectedCity(null);
     setSelectedTypes([]);
-    setCurrentPage(1);
   };
 
   return (
@@ -106,12 +96,11 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
               {t("noServicesData")}
             </div>
           ) : (
-            <ServicesSupportGrid services={paginatedServices} />
+            <ServicesSupportGrid services={filteredServices} />
           )}
-          <ServicesSupportPagination
-            currentPage={safeCurrentPage}
+          <CatalogPagination
+            currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
           />
         </div>
 
@@ -123,7 +112,6 @@ const ServicesSupportCatalog = ({ services }: ServicesSupportCatalogProps) => {
             selectedTypes={selectedTypes}
             onCityChange={(value) => {
               setSelectedCity(value);
-              setCurrentPage(1);
             }}
             onToggleType={(value) => toggleInList(setSelectedTypes, value)}
             onReset={resetFilters}

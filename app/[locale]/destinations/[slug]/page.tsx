@@ -22,11 +22,14 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
   const tCommon = await getTranslations("common");
   const tDest = await getTranslations("destinations");
   const { slug } = await params;
-  const [destination, allDestinations, allAttractions] = await Promise.all([
-    getDestinationBySlug(slug, locale),
-    fetchDestinations(locale),
-    fetchAttractions(locale as any),
-  ]);
+  const [destination, allDestinationsResult, allAttractionsResult] =
+    await Promise.all([
+      getDestinationBySlug(slug, locale),
+      fetchDestinations(locale),
+      fetchAttractions(locale as any),
+    ]);
+  const allDestinations = allDestinationsResult.items;
+  const allAttractions = allAttractionsResult.items;
 
   if (!destination) notFound();
 
@@ -93,7 +96,7 @@ const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
 };
 
 export async function generateStaticParams() {
-  const rows = await fetchDestinations("ar");
+  const { items: rows } = await fetchDestinations("ar");
   return rows.map((d) => ({ slug: d.slug }));
 }
 

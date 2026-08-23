@@ -24,7 +24,7 @@ const AseerCuisinePage = async () => {
   const tCommon = await getTranslations("common");
   const locale = (await getLocale()) as "ar" | "en";
 
-  const [dishCards, flavorCards, restaurants, experiencesResult, globalAssets] =
+  const [dishCards, flavorCards, restaurantsResult, experiencesResult, globalAssets] =
     await Promise.all([
       fetchFeaturedCuisineCards({ locale, cuisineType: "dish", count: 100 }),
       fetchFeaturedCuisineCards({ locale, cuisineType: "flavour", count: 100 }),
@@ -33,6 +33,7 @@ const AseerCuisinePage = async () => {
       fetchExperiences({ type: COOKING_EXPERIENCE_TYPE, locale }),
       fetchGlobalAssets(),
     ]);
+  const restaurants = restaurantsResult.items;
   const posterImage =
     dishCards[0]?.image || flavorCards[0]?.image || FALLBACK_POSTER;
 

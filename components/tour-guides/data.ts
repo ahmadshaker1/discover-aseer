@@ -11,7 +11,9 @@ import {
 import type { LocaleCode } from "@/lib/i18n/localized";
 import { isPublishedTourGuide } from "@/lib/directus/config";
 import {
+  CATALOG_PAGE_SIZE,
   DIRECTUS_COLLECTION_LIMIT,
+  catalogTotalPages,
   directusCollectionFetch,
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
@@ -351,16 +353,20 @@ function resultFromApiRows(
     transformTourGuide(api, locale, specLabelMap),
   );
   const filterOptions = buildFilterOptions(rows, locale);
-  return { guides, filterOptions };
+  return { guides, filterOptions, total: guides.length, page: 1, totalPages: 1 };
 }
 
 const EMPTY_TOUR_GUIDES_RESULT: FetchTourGuidesResult = {
   guides: [],
   filterOptions: { specializations: [], gender: [], transportation: [] },
+  total: 0,
+  page: 1,
+  totalPages: 1,
 };
 
 export async function fetchTourGuides(
   locale: LocaleCode = "ar",
+  options?: { page?: number },
 ): Promise<FetchTourGuidesResult> {
   const directusUrl =
     process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
@@ -378,10 +384,14 @@ export async function fetchTourGuides(
       headers["Authorization"] = `Bearer ${adminToken}`;
     }
 
+    const page = options?.page;
     const response = await fetch(
       directusItemsUrl(directusUrl, "tourist_guides", {
         fields: TOUR_GUIDE_LIST_FIELDS,
-        limit: DIRECTUS_COLLECTION_LIMIT,
+        limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
+        page,
+        pageSize: page ? CATALOG_PAGE_SIZE : undefined,
+        meta: Boolean(page),
         published: true,
       }),
       { ...directusCollectionFetch, headers },
@@ -393,14 +403,26 @@ export async function fetchTourGuides(
       );
     }
 
-    const apiData: TouristGuidesApiResponse = await response.json();
+    const apiData: TouristGuidesApiResponse & {
+      meta?: { filter_count?: number };
+    } = await response.json();
     if (!Array.isArray(apiData.data)) {
       return EMPTY_TOUR_GUIDES_RESULT;
     }
 
     // Defense in depth: never surface drafts on the public listing page.
     const publishedRows = apiData.data.filter(isPublishedTourGuide);
-    return resultFromApiRows(publishedRows, locale);
+    const result = resultFromApiRows(publishedRows, locale);
+    const total =
+      typeof apiData.meta?.filter_count === "number"
+        ? apiData.meta.filter_count
+        : result.guides.length;
+    return {
+      ...result,
+      total,
+      page: page ?? 1,
+      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+    };
   } catch (error) {
     console.error("Error fetching tour guides:", error);
     return EMPTY_TOUR_GUIDES_RESULT;

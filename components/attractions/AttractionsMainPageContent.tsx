@@ -9,6 +9,7 @@ import {
   TERRAIN_TO_INTERESTS,
   type FilmLandscapeFilterId,
 } from "@/components/film/landscapeFilters";
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import type { Landmark } from "@/components/landmarks/data";
 import {
   getCityLabelById,
@@ -27,6 +28,8 @@ interface AttractionsMainPageContentProps {
   landmarks: Landmark[];
   /** From `/attractions?terrain=mountains` (film page landscape cards). */
   initialTerrain?: FilmLandscapeFilterId | null;
+  currentPage?: number;
+  totalPages?: number;
 }
 
 interface FilterState {
@@ -54,6 +57,8 @@ const includesInterests = (
 const AttractionsMainPageContent = ({
   landmarks,
   initialTerrain = null,
+  currentPage = 1,
+  totalPages = 1,
 }: AttractionsMainPageContentProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
@@ -217,6 +222,7 @@ const AttractionsMainPageContent = ({
                 {tCommon("noLandmarksMatchFilters")}
               </p>
             ) : null}
+            <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
           </div>
 
           <aside

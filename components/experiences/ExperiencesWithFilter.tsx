@@ -6,6 +6,7 @@ import ExperienceCard from "@/components/experiences/ExperienceCard/ExperienceCa
 import ExperiencesFilter, {
   type FilterState,
 } from "@/components/experiences/ExperiencesFilter/ExperiencesFilter";
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import type {
   ExperienceWithFilterMeta,
   FilterOptions,
@@ -21,6 +22,8 @@ const INITIAL_FILTERS: FilterState = {
 interface ExperiencesWithFilterProps {
   experiences: ExperienceWithFilterMeta[];
   filterOptions: FilterOptions;
+  currentPage: number;
+  totalPages: number;
 }
 
 function applyFilters(
@@ -50,6 +53,8 @@ function applyFilters(
 export default function ExperiencesWithFilter({
   experiences,
   filterOptions,
+  currentPage,
+  totalPages,
 }: ExperiencesWithFilterProps) {
   const tCommon = useTranslations("common");
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
@@ -83,6 +88,7 @@ export default function ExperiencesWithFilter({
             {tCommon("noExperiencesFilter")}
           </p>
         )}
+        <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getTranslations, getLocale } from "next-intl/server";
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import { getTourismProviders } from "./data";
 
 function formatPhoneLink(phone: string) {
@@ -15,10 +16,14 @@ function formatWebsiteLink(website: string) {
   return website;
 }
 
-export default async function TourismCompaniesCardSection() {
+export default async function TourismCompaniesCardSection({
+  page = 1,
+}: {
+  page?: number;
+}) {
   const t = await getTranslations("tourismCompanies");
   const locale = await getLocale();
-  const providers = await getTourismProviders();
+  const { items: providers, totalPages } = await getTourismProviders({ page });
 
   const companies = providers.map((provider) => ({
     name: locale === "ar" ? provider.title_ar : provider.title_en,
@@ -141,6 +146,7 @@ export default async function TourismCompaniesCardSection() {
             );
           })}
         </div>
+        <CatalogPagination currentPage={page} totalPages={totalPages} />
       </div>
     </section>
   );

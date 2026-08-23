@@ -20,7 +20,7 @@ export default async function IGCatPage() {
   const tCommon = await getTranslations("common");
   const assets = await fetchSiteAssets("igcat");
 
-  const restaurants = await fetchRestaurants(locale);
+  const { items: restaurants } = await fetchRestaurants(locale);
   const heritageRestaurants = restaurants
     .filter((restaurant) => restaurant.cuisineTypes?.includes("aseeri_cuisine"))
     .slice(0, 6)

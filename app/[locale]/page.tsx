@@ -14,10 +14,11 @@ import type { AppLocale } from "@/i18n/routing";
 export default async function LocalizedHomePage() {
   const locale = (await getLocale()) as AppLocale;
   const tHome = await getTranslations("home");
-  const [landmarks, experiencesResult] = await Promise.all([
+  const [landmarksResult, experiencesResult] = await Promise.all([
     fetchLandmarks(locale, { limit: 8 }),
     fetchExperiences({ locale, limit: 6 }),
   ]);
+  const landmarks = landmarksResult.items;
 
   const homeExperiences = experiencesResult.experiences.slice(0, 6);
 

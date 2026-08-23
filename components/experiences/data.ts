@@ -1,7 +1,9 @@
 import type { LocaleCode } from "@/lib/i18n/localized";
 import { isMostlyArabicText } from "@/lib/i18n/localized";
 import {
+  CATALOG_PAGE_SIZE,
   DIRECTUS_COLLECTION_LIMIT,
+  catalogTotalPages,
   directusCollectionFetch,
 } from "@/lib/directus/collectionCache";
 import type { ExperienceCardProps } from "./ExperienceCard/ExperienceCard";
@@ -146,14 +148,21 @@ function isPublishedExperience(api: ApiExperience): boolean {
 
 function buildExperiencesListUrl(
   directusUrl: string,
-  limit = DIRECTUS_COLLECTION_LIMIT,
+  options?: { limit?: number; page?: number },
 ): string {
   const url = new URL(`${directusUrl.replace(/\/$/, "")}/items/experiences`);
   url.searchParams.set("filter[status][_eq]", "published");
   // Public role cannot sort by date/date_created; id desc ≈ newest first.
   url.searchParams.set("sort", "-id");
   url.searchParams.set("fields", EXPERIENCE_FIELDS);
-  url.searchParams.set("limit", String(limit));
+  url.searchParams.set(
+    "limit",
+    String(options?.limit ?? DIRECTUS_COLLECTION_LIMIT),
+  );
+  if (options?.page) {
+    url.searchParams.set("page", String(options.page));
+    url.searchParams.set("meta", "filter_count");
+  }
   return url.toString();
 }
 
@@ -165,6 +174,9 @@ const EMPTY_FETCH_RESULT: FetchExperiencesResult = {
     costOptions: [],
     travelerTypes: [],
   },
+  total: 0,
+  page: 1,
+  totalPages: 1,
 };
 
 type ExperienceFieldValue = string | string[] | null | undefined;
@@ -567,6 +579,9 @@ function buildFilterOptions(
 export interface FetchExperiencesResult {
   experiences: ExperienceWithFilterMeta[];
   filterOptions: FilterOptions;
+  total: number;
+  page: number;
+  totalPages: number;
 }
 
 /**
@@ -638,6 +653,8 @@ export interface FetchExperiencesOptions {
   locale?: LocaleCode;
   /** Cap rows from Directus. Defaults to the shared collection limit. */
   limit?: number;
+  /** 1-based catalog page. When set, fetches only that page (20 rows). */
+  page?: number;
 }
 
 export async function fetchExperiences(
@@ -650,9 +667,15 @@ export async function fetchExperiences(
     return EMPTY_FETCH_RESULT;
   }
 
+  const page = options?.page;
+  const pageSize = page ? CATALOG_PAGE_SIZE : undefined;
+
   try {
     const response = await fetch(
-      buildExperiencesListUrl(directusUrl, options?.limit),
+      buildExperiencesListUrl(directusUrl, {
+        limit: pageSize ?? options?.limit,
+        page,
+      }),
       directusCollectionFetch,
     );
 
@@ -660,10 +683,12 @@ export async function fetchExperiences(
       throw new Error(`Failed to fetch experiences: ${response.statusText}`);
     }
 
-    const apiData: ExperiencesApiResponse = await response.json();
+    const apiData: ExperiencesApiResponse & {
+      meta?: { filter_count?: number };
+    } = await response.json();
     const locale = options?.locale ?? "ar";
     const typeFilter = options?.type?.trim();
-    const publishedRows = apiData.data.filter(isPublishedExperience);
+    const publishedRows = (apiData.data ?? []).filter(isPublishedExperience);
     const rows = typeFilter
       ? publishedRows.filter((row) => matchesExperienceType(row, typeFilter))
       : publishedRows;
@@ -673,7 +698,18 @@ export async function fetchExperiences(
       .map((row) => transformExperience(row, locale, baseUrl))
       .sort((a, b) => Number(b.id) - Number(a.id));
     const filterOptions = buildFilterOptions(publishedRows, locale);
-    return { experiences, filterOptions };
+    const total =
+      typeof apiData.meta?.filter_count === "number"
+        ? apiData.meta.filter_count
+        : experiences.length;
+    const currentPage = page ?? 1;
+    return {
+      experiences,
+      filterOptions,
+      total,
+      page: currentPage,
+      totalPages: catalogTotalPages(total, pageSize ?? (total || 1)),
+    };
   } catch (error) {
     console.error("Error fetching experiences:", error);
     return EMPTY_FETCH_RESULT;

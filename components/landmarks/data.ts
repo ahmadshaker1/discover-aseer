@@ -1,6 +1,8 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 import {
+  CATALOG_PAGE_SIZE,
   DIRECTUS_COLLECTION_LIMIT,
+  catalogTotalPages,
   directusCollectionFetch,
 } from "@/lib/directus/collectionCache";
 
@@ -404,8 +406,9 @@ export const transformLandmark = (
 
 export const fetchLandmarks = async (
   locale: LocaleCode = "ar",
-  options?: { limit?: number },
-): Promise<Landmark[]> => {
+  options?: { limit?: number; page?: number },
+): Promise<{ items: Landmark[]; total: number; page: number; totalPages: number }> => {
+  const empty = { items: [] as Landmark[], total: 0, page: 1, totalPages: 1 };
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(
     /\/$/,
     "",
@@ -413,16 +416,23 @@ export const fetchLandmarks = async (
 
   if (!directusUrl) {
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
-    return [];
+    return empty;
   }
 
-  const limit = options?.limit ?? DIRECTUS_COLLECTION_LIMIT;
+  const page = options?.page;
+  const limit = page
+    ? CATALOG_PAGE_SIZE
+    : (options?.limit ?? DIRECTUS_COLLECTION_LIMIT);
 
   try {
     const listUrl = new URL(`${directusUrl}/items/attractions`);
     listUrl.searchParams.set("sort", "-id");
     listUrl.searchParams.set("fields", ATTRACTION_FIELDS);
     listUrl.searchParams.set("limit", String(limit));
+    if (page) {
+      listUrl.searchParams.set("page", String(page));
+      listUrl.searchParams.set("meta", "filter_count");
+    }
 
     const response = await fetch(listUrl.toString(), directusCollectionFetch);
 
@@ -432,13 +442,24 @@ export const fetchLandmarks = async (
       );
     }
 
-    const apiData: ApiResponse = await response.json();
-    return apiData.data
+    const apiData: ApiResponse & { meta?: { filter_count?: number } } =
+      await response.json();
+    const items = (apiData.data ?? [])
       .filter((landmark) => !landmark.status || landmark.status === "published")
       .map((landmark) => transformLandmark(landmark, directusUrl, locale));
+    const total =
+      typeof apiData.meta?.filter_count === "number"
+        ? apiData.meta.filter_count
+        : items.length;
+    return {
+      items,
+      total,
+      page: page ?? 1,
+      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+    };
   } catch (error) {
     console.error("Error fetching landmarks:", error);
-    return [];
+    return empty;
   }
 };
 
@@ -447,7 +468,7 @@ export const getLandmarkBySlug = async (
   locale: LocaleCode = "ar",
 ): Promise<Landmark | null> => {
   const normalized = normalizeLandmarkSlugParam(slug);
-  const rows = await fetchLandmarks(locale);
+  const { items: rows } = await fetchLandmarks(locale);
 
   if (normalized) {
     const bySlug = rows.find((row) => row.slug === normalized);

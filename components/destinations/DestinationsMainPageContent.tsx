@@ -3,6 +3,7 @@
 import { useMemo, useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useLocale, useTranslations } from "next-intl";
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import DestinationsGridCard from "@/components/destinations/DestinationsGridCard";
 import type { Destination } from "@/components/destinations/data";
 import {
@@ -23,6 +24,8 @@ interface DestinationsMainPageContentProps {
   filterLayout?: "default" | "browse";
   /** From `/destinations?filter=` (e.g. About Aseer landscape cards). */
   initialDestinationFilter?: DestinationFilterId | null;
+  currentPage?: number;
+  totalPages?: number;
 }
 
 interface FilterState {
@@ -46,6 +49,8 @@ const DestinationsMainPageContent = ({
   destinations,
   filterLayout = "default",
   initialDestinationFilter = null,
+  currentPage = 1,
+  totalPages = 1,
 }: DestinationsMainPageContentProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
@@ -105,6 +110,7 @@ const DestinationsMainPageContent = ({
                 {tCommon("noDestinationsMatchFilters")}
               </p>
             ) : null}
+            <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
           </div>
 
           <aside

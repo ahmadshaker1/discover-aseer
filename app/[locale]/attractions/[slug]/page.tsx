@@ -26,10 +26,11 @@ export default async function AttractionSlugPage({
   const tAttr = await getTranslations("attractionsPage");
   const { slug } = await params;
 
-  const [attraction, allAttractions] = await Promise.all([
+  const [attraction, allAttractionsResult] = await Promise.all([
     getAttractionBySlug(slug, locale),
     fetchAttractions(locale),
   ]);
+  const allAttractions = allAttractionsResult.items;
 
   if (!attraction) {
     notFound();
@@ -92,6 +93,6 @@ export default async function AttractionSlugPage({
 }
 
 export async function generateStaticParams() {
-  const rows = await fetchAttractions("ar");
+  const { items: rows } = await fetchAttractions("ar");
   return rows.map((row) => ({ slug: row.slug }));
 }

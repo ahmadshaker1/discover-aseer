@@ -72,4 +72,7 @@ export interface TourGuideWithFilterMeta extends TourGuideData {
 export interface FetchTourGuidesResult {
   guides: TourGuideWithFilterMeta[];
   filterOptions: TourGuidesFilterOptions;
+  total: number;
+  page: number;
+  totalPages: number;
 }

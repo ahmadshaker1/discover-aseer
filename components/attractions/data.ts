@@ -16,6 +16,6 @@ export {
 import { fetchLandmarks } from "@/components/landmarks/data";
 
 export async function fetchAttractionSlugs(): Promise<string[]> {
-  const rows = await fetchLandmarks("ar");
+  const { items: rows } = await fetchLandmarks("ar");
   return rows.map((row) => row.slug).filter(Boolean);
 }

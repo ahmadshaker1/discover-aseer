@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import AccommodationExceptionalCarousel from "./AccommodationExceptionalCarousel";
 import AccommodationFilters from "./AccommodationFilters";
 import AccommodationHotelsGrid from "./AccommodationHotelsGrid";
@@ -11,9 +12,15 @@ import { splitAccommodationLists } from "./data";
 
 interface AccommodationGridProps {
   accommodations: Accommodation[];
+  currentPage: number;
+  totalPages: number;
 }
 
-const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
+const AccommodationGrid = ({
+  accommodations,
+  currentPage,
+  totalPages,
+}: AccommodationGridProps) => {
   const t = useTranslations("common");
   const locale = useLocale();
   const [selectedCity, setSelectedCity] = useState<string>("all");
@@ -137,6 +144,7 @@ const AccommodationGrid = ({ accommodations }: AccommodationGridProps) => {
               {t("noAccommodationFilter")}
             </p>
           ) : null}
+          <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
         </div>
       </div>
     </div>

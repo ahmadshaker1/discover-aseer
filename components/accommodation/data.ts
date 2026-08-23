@@ -1,6 +1,8 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 import {
+  CATALOG_PAGE_SIZE,
   DIRECTUS_COLLECTION_LIMIT,
+  catalogTotalPages,
   directusCollectionFetch,
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
@@ -281,17 +283,28 @@ export function splitAccommodationLists(
 
 export const fetchAccommodations = async (
   locale: LocaleCode = "ar",
-): Promise<Accommodation[]> => {
+  options?: { page?: number },
+): Promise<{
+  items: Accommodation[];
+  total: number;
+  page: number;
+  totalPages: number;
+}> => {
+  const empty = { items: [] as Accommodation[], total: 0, page: 1, totalPages: 1 };
   const directusUrl = (
     process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
     "https://tool-portal.discoveraseer.com"
   );
+  const page = options?.page;
 
   try {
     const response = await fetch(
       directusItemsUrl(directusUrl, "accomodation", {
         fields: ACCOMMODATION_FIELDS,
-        limit: DIRECTUS_COLLECTION_LIMIT,
+        limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
+        page,
+        pageSize: page ? CATALOG_PAGE_SIZE : undefined,
+        meta: Boolean(page),
         published: true,
       }),
       directusCollectionFetch,
@@ -301,10 +314,10 @@ export const fetchAccommodations = async (
       throw new Error(`Failed to fetch accommodations: ${response.statusText}`);
     }
 
-    const apiData: ApiResponse = await response.json();
+    const apiData: ApiResponse & { meta?: { filter_count?: number } } =
+      await response.json();
     const rows = Array.isArray(apiData.data) ? apiData.data : [];
-
-    return rows
+    const items = rows
       .filter(
         (accommodation) =>
           !accommodation.status || accommodation.status === "published",
@@ -312,8 +325,18 @@ export const fetchAccommodations = async (
       .map((accommodation) =>
         transformAccommodation(accommodation, directusUrl, locale),
       );
+    const total =
+      typeof apiData.meta?.filter_count === "number"
+        ? apiData.meta.filter_count
+        : items.length;
+    return {
+      items,
+      total,
+      page: page ?? 1,
+      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+    };
   } catch (error) {
     console.error("Error fetching accommodations:", error);
-    return [];
+    return empty;
   }
 };

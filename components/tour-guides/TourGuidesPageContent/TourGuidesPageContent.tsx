@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
+import CatalogPagination from "@/components/catalog/CatalogPagination";
 import TourGuidesFilter, {
   type TourGuidesFilterState,
 } from "../TourGuidesFilter/TourGuidesFilter";
 import TourGuidesGrid from "../TourGuidesGrid/TourGuidesGrid";
 import TourGuideModal from "../TourGuideModal/TourGuideModal";
-import TourGuidesPagination from "../TourGuidesPagination/TourGuidesPagination";
 import type {
   TourGuideWithFilterMeta,
   TourGuidesFilterOptions,
@@ -45,13 +45,15 @@ function applyFilters(
 interface TourGuidesPageContentProps {
   guides: TourGuideWithFilterMeta[];
   filterOptions: TourGuidesFilterOptions;
+  currentPage: number;
+  totalPages: number;
 }
-
-const ITEMS_PER_PAGE = 50;
 
 const TourGuidesPageContent = ({
   guides,
   filterOptions,
+  currentPage,
+  totalPages,
 }: TourGuidesPageContentProps) => {
   const t = useTranslations("tourGuides");
   const [filters, setFilters] =
@@ -60,21 +62,10 @@ const TourGuidesPageContent = ({
     null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const filteredGuides = useMemo(
     () => applyFilters(guides, filters),
     [guides, filters],
-  );
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [filters]);
-
-  const totalPages = Math.ceil(filteredGuides.length / ITEMS_PER_PAGE);
-  const currentGuides = filteredGuides.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE,
   );
 
   const handleGuideClick = (guide: TourGuideData) => {
@@ -105,16 +96,13 @@ const TourGuidesPageContent = ({
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
           <div className="order-2 w-full flex-1 lg:order-2">
             <TourGuidesGrid
-              guides={currentGuides}
+              guides={filteredGuides}
               onGuideClick={handleGuideClick}
             />
-            {filteredGuides.length > 0 && totalPages > 1 && (
-              <TourGuidesPagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            )}
+            <CatalogPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+            />
             {filteredGuides.length === 0 && (
               <p className="text-center text-muted-foreground py-12">
                 {t("noGuidesFilter")}

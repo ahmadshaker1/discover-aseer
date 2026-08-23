@@ -3,21 +3,25 @@ import PageBanner from "@/components/PageBanner/PageBanner";
 import DestinationsMainPageContent from "@/components/destinations/DestinationsMainPageContent";
 import { fetchDestinations } from "@/components/destinations/data";
 import { parseDestinationsFilterParam } from "@/components/destinations/filterOptions";
+import { parseCatalogPage } from "@/lib/directus/collectionCache";
 import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
 
 const TOUR_GUIDE_PORTAL_HREF = "/tour-guides/portal";
 
 interface DestinationsPageProps {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; page?: string }>;
 }
 
 const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
   const locale = (await getLocale()) as "ar" | "en";
   const t = await getTranslations("attractionsPage");
   const tCommon = await getTranslations("common");
-  const { filter: filterParam } = await searchParams;
+  const { filter: filterParam, page: pageParam } = await searchParams;
+  const page = parseCatalogPage(pageParam);
   const initialDestinationFilter = parseDestinationsFilterParam(filterParam);
-  const destinations = await fetchDestinations(locale);
+  const { items: destinations, totalPages } = await fetchDestinations(locale, {
+    page,
+  });
 
   const assets = await fetchSiteAssets("destinations");
   const bannerUrl = getAssetUrl(
@@ -47,6 +51,8 @@ const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
         destinations={destinations}
         filterLayout="browse"
         initialDestinationFilter={initialDestinationFilter}
+        currentPage={page}
+        totalPages={totalPages}
       />
     </div>
   );
