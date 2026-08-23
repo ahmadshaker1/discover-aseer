@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 import Calendar from "./Calendar";
 import { PlannerData } from "./types";
 
@@ -47,9 +48,9 @@ export default function Step1({
       <div className="container mx-auto px-6 max-w-[800px] flex flex-col items-start">
         {/* Breadcrumb */}
         <div className="mb-10 flex w-full items-center gap-2 text-sm md:text-base text-gray-500 justify-start  dark:text-white">
-          <a href="/" className="hover:underline">
+          <Link href="/" className="hover:underline">
             {t("homePage")}
-          </a>
+          </Link>
           <span aria-hidden>
             <BreadcrumbChevron />
           </span>

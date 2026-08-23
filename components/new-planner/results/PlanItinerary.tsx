@@ -1,20 +1,13 @@
 "use client";
+/* eslint-disable @next/next/no-img-element, @typescript-eslint/no-explicit-any */
 
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
-import EventListingCard from "@/components/events/EventListingCard/EventListingCard";
 import { transformApiEventToListingItem } from "@/components/events/data";
-import type { EventListingItem } from "@/components/events/data";
-import ExperienceCard from "@/components/experiences/ExperienceCard/ExperienceCard";
 import { transformExperience } from "@/components/experiences/data";
-import AseeriCuisineBadge from "@/components/restaurants/AseeriCuisineBadge";
-import {
-  formatCuisineTypes,
-  hasAseeriCuisine,
-} from "@/components/restaurants/restaurantLocale";
+import { formatCuisineTypes } from "@/components/restaurants/restaurantLocale";
 import { transformLocationToRestaurant } from "@/components/restaurants/data";
-import type { Restaurant } from "@/components/restaurants/data";
 
 interface PlanItineraryProps {
   data: any;
@@ -39,7 +32,6 @@ const TimelinePeriodHeader = ({ periodName }: { periodName: string }) => {
 
 const PlannerRestaurantCardNew = ({
   restaurant,
-  mealType,
   onReplace,
   isReplacing,
   locale,

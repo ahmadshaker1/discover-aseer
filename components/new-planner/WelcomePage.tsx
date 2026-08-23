@@ -1,4 +1,5 @@
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
 import Image from "next/image";
 
 function BreadcrumbChevron() {
@@ -26,7 +27,6 @@ interface WelcomePageProps {
 
 export default function WelcomePage({ onStartPlanning }: WelcomePageProps) {
   const t = useTranslations("Planner");
-  const locale = useLocale();
 
   return (
     <div className="min-h-screen w-full flex items-center bg-[linear-gradient(180deg,rgba(21,21,131,0.25)_0%,rgba(255,255,255,0.25)_100%)] dark:bg-none dark:bg-[#14091F] relative overflow-hidden">
@@ -35,9 +35,9 @@ export default function WelcomePage({ onStartPlanning }: WelcomePageProps) {
         <div className="flex w-full md:w-1/2 max-w-[650px] flex-col items-start pt-20 md:pt-0">
           {/* Breadcrumb */}
           <div className="mb-6 flex w-full items-center gap-2 text-sm md:text-base text-gray-500 dark:text-gray-400 justify-start">
-            <a href="/" className="hover:underline">
+            <Link href="/" className="hover:underline">
               {t("homePage")}
-            </a>
+            </Link>
             <span aria-hidden>
               <BreadcrumbChevron />
             </span>
