@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
       "6. For Restaurant items, set 'type' to 'restaurant', and return 'itemId' and 'mealType' (e.g. 'breakfast', 'lunch', 'dinner').",
       "7. For Experience items, set 'type' to 'experience', and return 'itemId' and 'travelToNext'.",
       "8. Limit each day to reasonable activities based on the trip style. For 'light' trip style, include EXACTLY 2 items/stops per day across all periods combined. For 'balanced', include EXACTLY 3 items/stops per day. For 'intensive', include EXACTLY 4 items/stops per day. Do NOT exceed these limits.",
-      "9. IMPORTANT: Your itinerary MUST include a mix of restaurants, experiences, and events. Ensure that you pick at least one restaurant and one experience per day.",
+      "9. IMPORTANT: Your itinerary MUST include a mix of restaurants, experiences, and events. Ensure that you pick at least one restaurant, one experience, and one event per day whenever possible.",
       "",
       "--- JSON SCHEMA ---",
       `{

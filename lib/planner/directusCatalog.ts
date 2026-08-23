@@ -121,21 +121,22 @@ export async function fetchPlannerCatalogs() {
     await Promise.all([
       fetchCatalogJson(
         directusItemsUrl(base, "restaurants", {
-          limit: DIRECTUS_COLLECTION_LIMIT,
+          limit: 150,
           fields: RESTAURANT_FIELDS,
         }),
       ),
       fetchCatalogJson(
         directusItemsUrl(base, "experiences", {
-          ...listOpts,
+          limit: 150,
+          published: true,
           fields: EXPERIENCE_FIELDS,
         }),
       ),
       fetchCatalogJson(
         directusItemsUrl(base, "events", {
-          limit: DIRECTUS_COLLECTION_LIMIT,
+          limit: 150,
           fields: EVENT_FIELDS,
-        }),
+        }) + "&filter[event_status][_eq]=Now",
       ),
     ]);
 
@@ -158,7 +159,7 @@ export async function fetchPlannerCatalogByType(
   if (itemType === "restaurant") {
     const payload = await fetchCatalogJson(
       directusItemsUrl(base, "restaurants", {
-        limit: DIRECTUS_COLLECTION_LIMIT,
+        limit: 150,
         fields: RESTAURANT_FIELDS,
       }),
     );
@@ -171,7 +172,8 @@ export async function fetchPlannerCatalogByType(
   if (itemType === "experience") {
     const payload = await fetchCatalogJson(
       directusItemsUrl(base, "experiences", {
-        ...listOpts,
+        limit: 150,
+        published: true,
         fields: EXPERIENCE_FIELDS,
       }),
     );
@@ -183,9 +185,9 @@ export async function fetchPlannerCatalogByType(
 
   const payload = await fetchCatalogJson(
     directusItemsUrl(base, "events", {
-      limit: DIRECTUS_COLLECTION_LIMIT,
+      limit: 150,
       fields: EVENT_FIELDS,
-    }),
+    }) + "&filter[event_status][_eq]=Now",
   );
   return {
     catalog: mapEventCatalog(asRows(payload)),
