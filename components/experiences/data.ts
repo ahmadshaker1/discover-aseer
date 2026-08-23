@@ -19,20 +19,15 @@ const EXPERIENCE_FIELDS = [
   "highlighted",
   "duration",
   "duration_En",
-  "destination",
-  "price_1",
   "minimum_number_of_people",
   "details",
   "type",
   "type_en",
-  "tags",
-  "date",
   "tour_agency",
   "tour_agency_en",
   "price",
   "booking_link",
   "target_audience",
-  "tour_audience_en",
 ].join(",");
 
 /** Directus API item shape for the experiences collection */

@@ -6,34 +6,19 @@ import {
 
 const ATTRACTION_FIELDS = [
   "id",
-  "date_created",
-  "status",
-  "title",
-  "title_ar",
-  "name",
   "name_en",
   "name_ar",
-  "location",
   "address",
-  "description",
   "content",
   "content_ar",
   "content_home_page_card_content",
   "content_home_page_card_content_ar",
-  "cover_image",
   "hero_image",
   "hero_image_new",
-  "destination_image",
   "city",
   "city_ar",
-  "traveller_types",
-  "tags",
   "type",
   "type_en",
-  "price_range_from",
-  "price_range_to",
-  "interest_tags",
-  "slug",
   "sub_title",
   "sub_title_ar",
   "latitude",
@@ -435,27 +420,16 @@ export const fetchLandmarks = async (
 
   try {
     const listUrl = new URL(`${directusUrl}/items/attractions`);
-    listUrl.searchParams.set("sort", "-date_created,-id");
+    listUrl.searchParams.set("sort", "-id");
     listUrl.searchParams.set("fields", ATTRACTION_FIELDS);
     listUrl.searchParams.set("limit", String(limit));
-    listUrl.searchParams.set("filter[status][_eq]", "published");
 
-    let response = await fetch(listUrl.toString(), directusCollectionFetch);
+    const response = await fetch(listUrl.toString(), directusCollectionFetch);
 
     if (!response.ok) {
-      const fallbackUrl = new URL(`${directusUrl}/items/attractions`);
-      fallbackUrl.searchParams.set("fields", ATTRACTION_FIELDS);
-      fallbackUrl.searchParams.set("limit", String(limit));
-      const fallback = await fetch(
-        fallbackUrl.toString(),
-        directusCollectionFetch,
+      throw new Error(
+        `Failed to fetch landmarks: ${response.statusText}`,
       );
-      if (!fallback.ok) {
-        throw new Error(
-          `Failed to fetch landmarks: ${fallback.statusText || response.statusText}`,
-        );
-      }
-      response = fallback;
     }
 
     const apiData: ApiResponse = await response.json();

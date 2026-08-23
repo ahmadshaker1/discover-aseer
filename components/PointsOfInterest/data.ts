@@ -138,7 +138,6 @@ export const fetchPointsOfInterest = async (
       directusItemsUrl(directusUrl, "destination", {
         fields: DESTINATION_FIELDS,
         limit: POI_DESTINATION_IDS.length,
-        published: true,
         extra: { "filter[id][_in]": POI_DESTINATION_IDS.join(",") },
       }),
       directusCollectionFetch,
