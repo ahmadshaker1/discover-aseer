@@ -20,6 +20,8 @@ export type DirectusEventRow = Record<string, unknown> & {
   hero_mobile?: string | null;
   image_new?: string | null;
   type?: string | null;
+  type_ar?: string | null;
+  type_en?: string | null;
   categories?: string | null;
   event_status?: string | null;
 };
@@ -213,7 +215,11 @@ export const buildEventMapPlace = (
   const cityRaw = asText(row.city);
   const city = cityRaw || (locale === "en" ? "Aseer" : "عسير");
   const mapsUrl = asText(row.map) || undefined;
-  const tag = asText(row.type) || undefined;
+  const tag =
+    asText(row.type) ||
+    asText(row.type_en) ||
+    asText(row.type_ar) ||
+    undefined;
 
   const categoryAr = "الفعاليات";
   const categoryEn = "Events";

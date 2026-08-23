@@ -31,7 +31,6 @@ export async function GET() {
           "status",
           "title",
           "title_ar",
-          "title_en",
           "start_date",
           "end_date",
         ],
