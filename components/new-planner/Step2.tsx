@@ -38,9 +38,7 @@ export default function Step2({
 }: Step2Props) {
   const t = useTranslations("Planner");
 
-  useEffect(() => {
-    console.log("Data from Step 1:", plannerData);
-  }, [plannerData]);
+  useEffect(() => {}, [plannerData]);
 
   return (
     <div className="min-h-screen w-full flex justify-center pt-32 pb-12 md:pt-40 md:pb-20 bg-[linear-gradient(180deg,#E5D6F2,rgba(255,255,255,0.25)_50%)] dark:bg-none dark:bg-[#14091F] relative z-20">
@@ -137,7 +135,7 @@ export default function Step2({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              }}
+            }}
           >
             {[
               {
@@ -205,7 +203,7 @@ export default function Step2({
                       fontSize: "14px",
                       fontStyle: "normal",
                       fontWeight: 400,
-                      }}
+                    }}
                   >
                     {t(styleOption.descKey)}
                   </span>
@@ -233,7 +231,7 @@ export default function Step2({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              }}
+            }}
           >
             {[
               {
@@ -303,7 +301,7 @@ export default function Step2({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              }}
+            }}
           >
             {[
               {
@@ -405,7 +403,6 @@ export default function Step2({
 
           <button
             onClick={() => {
-              console.log("Collected Planner Data after Step 2:", plannerData);
               onNext();
             }}
             className={`cursor-pointer border border-[rgba(40,0,72,0.16)] dark:border-white/20 bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD]`}

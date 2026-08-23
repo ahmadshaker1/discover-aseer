@@ -7,33 +7,13 @@ import {
 
 const RESTAURANT_FIELDS = [
   "id",
-  "status",
-  "name_ar",
-  "name_en",
   "title_ar",
   "title_en",
   "city",
-  "city_ar",
-  "city_en",
   "image_new",
   "image",
-  "google_maps_url",
   "location_map",
-  "price_range",
-  "price_band",
   "cuisine_type",
-  "nationality_ar",
-  "nationality_en",
-  "category_ar",
-  "category_en",
-  "type",
-  "type_ar",
-  "type_en",
-  "categories",
-  "tags",
-  "distance_km",
-  "rating",
-  "reviews_count",
   "content",
   "content_ar",
 ] as const;
@@ -67,22 +47,15 @@ const EVENT_FIELDS = [
   "title",
   "title_en",
   "image",
-  "thumbnail",
-  "hero_mobile",
   "map",
   "city",
   "city_en",
-  "tags",
   "start_date",
   "end_date",
-  "date",
-  "start_time",
-  "end_time",
   "free_event",
   "price",
   "status",
   "event_status",
-  "unclickable",
   "suitable_for_kids",
   "audience_type",
   "image_new",
@@ -148,7 +121,7 @@ export async function fetchPlannerCatalogs() {
     await Promise.all([
       fetchCatalogJson(
         directusItemsUrl(base, "restaurants", {
-          ...listOpts,
+          limit: DIRECTUS_COLLECTION_LIMIT,
           fields: RESTAURANT_FIELDS,
         }),
       ),
@@ -160,7 +133,7 @@ export async function fetchPlannerCatalogs() {
       ),
       fetchCatalogJson(
         directusItemsUrl(base, "events", {
-          ...listOpts,
+          limit: DIRECTUS_COLLECTION_LIMIT,
           fields: EVENT_FIELDS,
         }),
       ),
@@ -185,7 +158,7 @@ export async function fetchPlannerCatalogByType(
   if (itemType === "restaurant") {
     const payload = await fetchCatalogJson(
       directusItemsUrl(base, "restaurants", {
-        ...listOpts,
+        limit: DIRECTUS_COLLECTION_LIMIT,
         fields: RESTAURANT_FIELDS,
       }),
     );
@@ -210,7 +183,7 @@ export async function fetchPlannerCatalogByType(
 
   const payload = await fetchCatalogJson(
     directusItemsUrl(base, "events", {
-      ...listOpts,
+      limit: DIRECTUS_COLLECTION_LIMIT,
       fields: EVENT_FIELDS,
     }),
   );

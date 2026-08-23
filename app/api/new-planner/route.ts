@@ -173,11 +173,6 @@ export async function POST(request: NextRequest) {
     const data = await response.json();
     const content = data.content?.[0]?.text || "";
 
-    console.log(
-      "Anthropic API Raw Response Content (first 500 chars):",
-      content.substring(0, 500),
-    );
-
     if (!content.trim()) {
       return NextResponse.json(
         { error: "Anthropic API returned empty content" },
@@ -242,12 +237,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.log("Successfully generated and enriched schedule data.");
-    return NextResponse.json(scheduleData, { status: 200 });
+    return NextResponse.json(scheduleData);
   } catch (error) {
-    console.error("❌ UNEXPECTED FAILURE", error);
     return NextResponse.json(
-      { error: "An unexpected error occurred" },
+      { error: `An unexpected error occurred ${error}` },
       { status: 500 },
     );
   }

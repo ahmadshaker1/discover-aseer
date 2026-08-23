@@ -270,7 +270,6 @@ export default function Step3({
 
           <button
             onClick={() => {
-              console.log("Collected Planner Data after Step 3:", plannerData);
               onNext();
             }}
             className={`cursor-pointer border border-[rgba(40,0,72,0.16)] dark:border-white/20 bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD]`}
