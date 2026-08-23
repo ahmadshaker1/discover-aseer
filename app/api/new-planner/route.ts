@@ -25,8 +25,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { restaurantsCatalog, experiencesCatalog, eventsCatalog } =
-      await fetchPlannerCatalogs();
+    const {
+      restaurantsCatalog,
+      experiencesCatalog,
+      eventsCatalog,
+      restaurantsData,
+      experiencesData,
+      eventsData,
+    } = await fetchPlannerCatalogs();
 
     const numberOfDays = body.selectedDays || 1;
     const startDate = body.selectedDate || "Unknown Date";
@@ -74,6 +80,7 @@ export async function POST(request: NextRequest) {
       "6. For Restaurant items, set 'type' to 'restaurant', and return 'itemId' and 'mealType' (e.g. 'breakfast', 'lunch', 'dinner').",
       "7. For Experience items, set 'type' to 'experience', and return 'itemId' and 'travelToNext'.",
       "8. Limit each day to reasonable activities based on the trip style. For 'light' trip style, include EXACTLY 2 items/stops per day across all periods combined. For 'balanced', include EXACTLY 3 items/stops per day. For 'intensive', include EXACTLY 4 items/stops per day. Do NOT exceed these limits.",
+      "9. IMPORTANT: Your itinerary MUST include a mix of restaurants, experiences, and events. Ensure that you pick at least one restaurant and one experience per day.",
       "",
       "--- JSON SCHEMA ---",
       `{
@@ -166,6 +173,11 @@ export async function POST(request: NextRequest) {
     const data = await response.json();
     const content = data.content?.[0]?.text || "";
 
+    console.log(
+      "Anthropic API Raw Response Content (first 500 chars):",
+      content.substring(0, 500),
+    );
+
     if (!content.trim()) {
       return NextResponse.json(
         { error: "Anthropic API returned empty content" },
@@ -209,15 +221,15 @@ export async function POST(request: NextRequest) {
                 period.items = period.items.map((item: any) => {
                   let matched = null;
                   if (item.type === "event") {
-                    matched = eventsData.data.find(
+                    matched = eventsData.find(
                       (e: any) => String(e.id) === String(item.itemId),
                     );
                   } else if (item.type === "experience") {
-                    matched = experiencesData.data.find(
+                    matched = experiencesData.find(
                       (e: any) => String(e.id) === String(item.itemId),
                     );
                   } else if (item.type === "restaurant") {
-                    matched = restaurantsData.data.find(
+                    matched = restaurantsData.find(
                       (r: any) => String(r.id) === String(item.itemId),
                     );
                   }
@@ -230,6 +242,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    console.log("Successfully generated and enriched schedule data.");
     return NextResponse.json(scheduleData, { status: 200 });
   } catch (error) {
     console.error("❌ UNEXPECTED FAILURE", error);
