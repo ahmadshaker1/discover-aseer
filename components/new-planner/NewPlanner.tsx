@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WelcomePage from "./WelcomePage";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -30,6 +30,40 @@ export default function NewPlanner() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generatedPlan, setGeneratedPlan] = useState<any>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    const savedStep = sessionStorage.getItem("planner_currentStep");
+    const savedData = sessionStorage.getItem("planner_plannerData");
+    const savedPlan = sessionStorage.getItem("planner_generatedPlan");
+
+    if (savedStep) setCurrentStep(Number(savedStep));
+    if (savedData) setPlannerData(JSON.parse(savedData));
+    if (savedPlan) setGeneratedPlan(JSON.parse(savedPlan));
+
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
+    // Only persist if we are on the final results page
+    if (currentStep === 5 && generatedPlan) {
+      sessionStorage.setItem("planner_currentStep", currentStep.toString());
+      sessionStorage.setItem(
+        "planner_plannerData",
+        JSON.stringify(plannerData),
+      );
+      sessionStorage.setItem(
+        "planner_generatedPlan",
+        JSON.stringify(generatedPlan),
+      );
+    } else {
+      sessionStorage.removeItem("planner_currentStep");
+      sessionStorage.removeItem("planner_plannerData");
+      sessionStorage.removeItem("planner_generatedPlan");
+    }
+  }, [currentStep, plannerData, generatedPlan, isMounted]);
 
   const updatePlannerData = (updates: Partial<PlannerData>) => {
     setPlannerData((prev) => ({ ...prev, ...updates }));
@@ -59,6 +93,8 @@ export default function NewPlanner() {
       setIsSubmitting(false);
     }
   };
+
+  if (!isMounted) return null;
 
   return (
     <>
@@ -109,6 +145,9 @@ export default function NewPlanner() {
           data={generatedPlan}
           plannerData={plannerData}
           onRestart={() => {
+            sessionStorage.removeItem("planner_currentStep");
+            sessionStorage.removeItem("planner_plannerData");
+            sessionStorage.removeItem("planner_generatedPlan");
             window.location.reload();
           }}
         />

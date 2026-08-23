@@ -166,11 +166,14 @@ export default function ResultsPage({
                 className="dark:invert"
               />
               <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                {plannerData.selectedDate.toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
+                {new Date(plannerData.selectedDate).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  },
+                )}
               </span>
             </div>
           )}

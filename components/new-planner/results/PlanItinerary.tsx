@@ -364,6 +364,12 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const currentDay = planData?.days?.[selectedDayIndex];
 
+  useEffect(() => {
+    if (planData) {
+      sessionStorage.setItem("planner_generatedPlan", JSON.stringify(planData));
+    }
+  }, [planData]);
+
   const handleDeleteDay = (index: number) => {
     const newDays = [...planData.days];
     newDays.splice(index, 1);
