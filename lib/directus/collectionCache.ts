@@ -1,5 +1,5 @@
-/** Shared ISR window for public Directus collection reads (24 hours). */
-export const DIRECTUS_COLLECTION_REVALIDATE = 86400;
+/** Shared ISR window for public Directus collection reads (1 hour). */
+export const DIRECTUS_COLLECTION_REVALIDATE = 3600;
 
 /** Hard cap so listing queries never ask Directus for the whole table. */
 export const DIRECTUS_COLLECTION_LIMIT = 100;

@@ -7,7 +7,7 @@ import {
 } from "@/lib/directus/collectionCache";
 
 // Literal required by Next.js segment config (must match DIRECTUS_COLLECTION_REVALIDATE).
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 export async function GET() {
   const baseUrl = (

@@ -4,7 +4,7 @@ import type { LocaleCode } from "@/lib/i18n/localized";
 import { DIRECTUS_COLLECTION_REVALIDATE } from "@/lib/directus/collectionCache";
 
 // Literal required by Next.js segment config (must match DIRECTUS_COLLECTION_REVALIDATE).
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
