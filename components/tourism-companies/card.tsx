@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getTranslations, getLocale } from "next-intl/server";
 import CatalogPagination from "@/components/catalog/CatalogPagination";
-import { getTourismProviders } from "./data";
+import { getTourismProviders, resolveTourismProviderLogoUrl } from "./data";
 
 function formatPhoneLink(phone: string) {
   const digits = phone.replace(/\D+/g, "");
@@ -30,7 +30,7 @@ export default async function TourismCompaniesCardSection({
     phone: provider.phone || "",
     email: provider.email || "",
     website: provider.website || "",
-    logo: provider.logo_url,
+    logo: resolveTourismProviderLogoUrl(provider),
   }));
 
   return (
@@ -132,15 +132,17 @@ export default async function TourismCompaniesCardSection({
                 </div>
 
                 <div className="flex h-[240px] sm:h-[280px] lg:h-auto lg:w-1/2 items-center justify-center bg-white dark:bg-[#14091F] p-6 sm:p-8 shrink-0">
-                  <div className="relative h-[150px] w-[280px] sm:h-[180px] sm:w-[360px]">
-                    <Image
-                      src={company.logo}
-                      alt={company.name}
-                      fill
-                      className="object-contain transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 640px) 280px, 360px"
-                    />
-                  </div>
+                  {company.logo ? (
+                    <div className="relative h-[150px] w-[280px] sm:h-[180px] sm:w-[360px]">
+                      <Image
+                        src={company.logo}
+                        alt={company.name}
+                        fill
+                        className="object-contain transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) 280px, 360px"
+                      />
+                    </div>
+                  ) : null}
                 </div>
               </article>
             );
