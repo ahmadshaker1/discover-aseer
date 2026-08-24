@@ -146,7 +146,7 @@ export default function Step3({
               fontSize: "18px",
               fontStyle: "normal",
               fontWeight: 400,
-              }}
+            }}
           >
             {t("exploreDesc")}
           </p>
@@ -156,7 +156,7 @@ export default function Step3({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              }}
+            }}
           >
             {[
               {
@@ -272,7 +272,14 @@ export default function Step3({
             onClick={() => {
               onNext();
             }}
-            className={`cursor-pointer border border-[rgba(40,0,72,0.16)] dark:border-white/20 bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD]`}
+            disabled={
+              !plannerData.interests || plannerData.interests.length === 0
+            }
+            className={`cursor-pointer border border-[rgba(40,0,72,0.16)] dark:border-white/20 ${
+              plannerData.interests && plannerData.interests.length > 0
+                ? "bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD]"
+                : "bg-[#D8D3E0] text-[#888] dark:bg-white/5 dark:text-gray-400"
+            }`}
             style={{
               display: "flex",
               height: "46px",
@@ -284,6 +291,10 @@ export default function Step3({
               borderRadius: "86px",
               fontSize: "20px",
               fontWeight: 600,
+              cursor:
+                plannerData.interests && plannerData.interests.length > 0
+                  ? "pointer"
+                  : "not-allowed",
               transition: "all 0.2s ease-in-out",
             }}
           >

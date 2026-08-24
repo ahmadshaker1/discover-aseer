@@ -143,7 +143,7 @@ export default function Step4({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              }}
+            }}
           >
             {[
               { id: "3", label: t("mealsCount3") },
@@ -195,7 +195,7 @@ export default function Step4({
             style={{
               alignItems: "flex-start",
               alignContent: "flex-start",
-              }}
+            }}
           >
             {[
               { id: "local", title: t("foodLocal"), desc: t("foodLocalDesc") },
@@ -232,12 +232,15 @@ export default function Step4({
             ].map((option) => {
               const currentPrefs = plannerData.foodPreferences || [];
               const isSelected = currentPrefs.includes(option.id);
+              const isDisabled =
+                !plannerData.mealsCount || plannerData.mealsCount === "0";
 
               return (
                 <button
                   key={option.id}
                   onClick={() => toggleFoodPreference(option.id)}
-                  className={`cursor-pointer transition-colors ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"}`}
+                  disabled={isDisabled}
+                  className={`cursor-pointer transition-colors ${isSelected ? "bg-[#CEEEEE] text-black" : "bg-white dark:bg-[#1C0F2A] text-black dark:text-white"} ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                   style={{
                     display: "flex",
                     minHeight: "120px",
@@ -263,9 +266,7 @@ export default function Step4({
                   >
                     {option.title}
                   </span>
-                  <span
-                    className="opacity-70 text-sm text-start"
-                  >
+                  <span className="opacity-70 text-sm text-start">
                     {option.desc}
                   </span>
                 </button>
@@ -313,8 +314,21 @@ export default function Step4({
 
           <button
             onClick={onSubmit}
-            disabled={isSubmitting}
-            className={`cursor-pointer border border-[rgba(40,0,72,0.16)] dark:border-white/20 bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD] ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
+            disabled={
+              !plannerData.mealsCount ||
+              (plannerData.mealsCount !== "0" &&
+                (!plannerData.foodPreferences ||
+                  plannerData.foodPreferences.length === 0)) ||
+              isSubmitting
+            }
+            className={`cursor-pointer border border-[rgba(40,0,72,0.16)] dark:border-white/20 ${
+              plannerData.mealsCount &&
+              (plannerData.mealsCount === "0" ||
+                (plannerData.foodPreferences &&
+                  plannerData.foodPreferences.length > 0))
+                ? "bg-[#F3E4FF] text-[#7300CD] dark:bg-[#F3E4FF] dark:text-[#7300CD]"
+                : "bg-[#D8D3E0] text-[#888] dark:bg-white/5 dark:text-gray-400"
+            } ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
             style={{
               display: "flex",
               height: "46px",
@@ -326,6 +340,14 @@ export default function Step4({
               borderRadius: "86px",
               fontSize: "20px",
               fontWeight: 600,
+              cursor:
+                !plannerData.mealsCount ||
+                (plannerData.mealsCount !== "0" &&
+                  (!plannerData.foodPreferences ||
+                    plannerData.foodPreferences.length === 0)) ||
+                isSubmitting
+                  ? "not-allowed"
+                  : "pointer",
               transition: "all 0.2s ease-in-out",
               whiteSpace: "nowrap",
             }}
