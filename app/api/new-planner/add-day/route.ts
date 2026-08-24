@@ -17,6 +17,9 @@ export async function POST(request: NextRequest) {
     const currentDaysCount = currentPlanData.days.length;
     const newDayNumber = currentDaysCount + 1;
 
+    const skipRestaurants =
+      String(currentPlanData?.planDetails?.mealsCount) === "0";
+
     const {
       restaurantsCatalog,
       experiencesCatalog,
@@ -24,7 +27,7 @@ export async function POST(request: NextRequest) {
       restaurantsData,
       experiencesData,
       eventsData,
-    } = await fetchPlannerCatalogs();
+    } = await fetchPlannerCatalogs({ skipRestaurants });
 
     // 3. Build Prompt
     const prompt = `

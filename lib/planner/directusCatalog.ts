@@ -113,18 +113,22 @@ export function mapEventCatalog(rows: CatalogRow[]) {
     }));
 }
 
-export async function fetchPlannerCatalogs() {
+export async function fetchPlannerCatalogs(options?: {
+  skipRestaurants?: boolean;
+}) {
   const base = getDirectusPublicUrl();
   const listOpts = { limit: DIRECTUS_COLLECTION_LIMIT, published: true };
 
   const [restaurantsPayload, experiencesPayload, eventsPayload] =
     await Promise.all([
-      fetchCatalogJson(
-        directusItemsUrl(base, "restaurants", {
-          limit: 150,
-          fields: RESTAURANT_FIELDS,
-        }),
-      ),
+      options?.skipRestaurants
+        ? Promise.resolve({ data: [] })
+        : fetchCatalogJson(
+            directusItemsUrl(base, "restaurants", {
+              limit: 150,
+              fields: RESTAURANT_FIELDS,
+            }),
+          ),
       fetchCatalogJson(
         directusItemsUrl(base, "experiences", {
           limit: 150,
