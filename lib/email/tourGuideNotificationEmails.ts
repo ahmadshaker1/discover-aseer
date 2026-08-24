@@ -14,6 +14,43 @@ function displayNames(nameAr?: string | null, nameEn?: string | null) {
   };
 }
 
+const EN_MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+function parseIsoDateParts(value: string): { y: number; m: number; d: number } | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+  if (!match) return null;
+  const y = Number(match[1]);
+  const m = Number(match[2]);
+  const d = Number(match[3]);
+  if (!y || m < 1 || m > 12 || d < 1 || d > 31) return null;
+  return { y, m, d };
+}
+
+function formatLicenseDateAr(value: string): string {
+  const parts = parseIsoDateParts(value);
+  if (!parts) return value;
+  return `${String(parts.d).padStart(2, "0")}-${String(parts.m).padStart(2, "0")}-${parts.y}`;
+}
+
+function formatLicenseDateEn(value: string): string {
+  const parts = parseIsoDateParts(value);
+  if (!parts) return value;
+  return `${parts.d} ${EN_MONTHS[parts.m - 1]} ${parts.y}`;
+}
+
 export function getTourGuidePortalUrl(): string {
   const raw =
     process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
@@ -32,23 +69,23 @@ export function buildTourGuideRegistrationEmail(options: {
 
   return {
     subject:
-      "أكّد بريدك الإلكتروني — اكتشف عسير | Verify your email — Discover Aseer",
+      "تأكيد البريد الإلكتروني — اكتشف عسير | Verify Your Email Address — Discover Aseer",
     html: brandEmailShell({
-      previewText: "أكد بريدك الإلكتروني لإكمال تسجيل حساب المرشد السياحي",
-      headlineAr: "أكّد بريدك الإلكتروني",
-      headlineEn: "Verify your email address",
+      previewText: "يرجى تأكيد بريدك الإلكتروني لإكمال حساب بوابة المرشدين",
+      headlineAr: "تأكيد البريد الإلكتروني",
+      headlineEn: "Verify Your Email Address",
       bodyArHtml: `
-        <p style="margin:0 0 12px;">مرحباً ${safeNameAr}،</p>
-        <p style="margin:0 0 12px;">تم إنشاء حسابك في بوابة المرشدين. للمتابعة، يرجى <strong>تأكيد أن هذا البريد ملكك</strong> بالضغط على الزر أدناه.</p>
-        <p style="margin:0;">بعد التأكيد ستتمكن من تسجيل الدخول وإكمال ملفك. رابط التأكيد صالح لمدة 48 ساعة.</p>
+        <p style="margin:0 0 12px;">مرحبًا ${safeNameAr}،</p>
+        <p style="margin:0 0 12px;">تم إنشاء حسابك في بوابة المرشدين. يرجى تأكيد بريدك الإلكتروني بالضغط على الزر أدناه، ثم تسجيل الدخول واستكمال ملفك.</p>
+        <p style="margin:0;">يرجى إتمام التأكيد خلال 48 ساعة</p>
       `,
       bodyEnHtml: `
         <p style="margin:0 0 12px;">Hello ${safeNameEn},</p>
-        <p style="margin:0 0 12px;">Your tour guide portal account was created. To continue, please <strong>confirm you own this email</strong> by clicking the button below.</p>
-        <p style="margin:0;">After verifying, you can sign in and complete your profile. This link expires in 48 hours.</p>
+        <p style="margin:0 0 12px;">Your Tour Guide Portal account has been created. Please verify your email address by clicking the button below, then sign in to complete your profile.</p>
+        <p style="margin:0;">Please complete the verification within 48 hours.</p>
       `,
-      ctaLabelAr: "تأكيد البريد",
-      ctaLabelEn: "Verify email",
+      ctaLabelAr: "تأكيد البريد الإلكتروني",
+      ctaLabelEn: "Verify email address",
       ctaHref: options.verifyUrl,
     }),
   };
@@ -64,23 +101,23 @@ export function buildTourGuideUnderReviewEmail(options: {
 
   return {
     subject:
-      "تم استلام طلبك وهو قيد المراجعة — اكتشف عسير | Application under review — Discover Aseer",
+      "طلبك قيد المراجعة — اكتشف عسير | Your Application Is Under Review — Discover Aseer",
     html: brandEmailShell({
-      previewText: "طلب انضمامك كمرشد سياحي قيد المراجعة",
+      previewText: "تم استلام طلبك، ويعمل فريقنا على مراجعته",
       headlineAr: "طلبك قيد المراجعة",
-      headlineEn: "Your application is under review",
+      headlineEn: "Your Application Is Under Review",
       bodyArHtml: `
-        <p style="margin:0 0 12px;">مرحباً ${safeNameAr}،</p>
-        <p style="margin:0 0 12px;">تم استلام طلب انضمامك كمرشد سياحي، وهو الآن <strong>قيد المراجعة</strong> من فريق اكتشف عسير.</p>
-        <p style="margin:0;">سنراسلك عبر البريد عند اتخاذ القرار. يمكنك متابعة حالة الطلب من بوابة المرشدين.</p>
+        <p style="margin:0 0 12px;">مرحبًا ${safeNameAr}،</p>
+        <p style="margin:0 0 12px;">نشكر لك اهتمامك بالانضمام مرشداً سياحياً إلى منصة اكتشف عسير. تم استلام طلبك، ويعمل فريقنا على مراجعته.</p>
+        <p style="margin:0;">سنُشعرك بالنتيجة عبر البريد الإلكتروني، ويمكنك متابعة حالة طلبك من خلال بوابة المرشدين.</p>
       `,
       bodyEnHtml: `
         <p style="margin:0 0 12px;">Hello ${safeNameEn},</p>
-        <p style="margin:0 0 12px;">We’ve received your tour guide application and it is now <strong>under review</strong> by the Discover Aseer team.</p>
-        <p style="margin:0;">We’ll email you when a decision is made. You can check your application status anytime in the portal.</p>
+        <p style="margin:0 0 12px;">Thank you for your interest in joining the Discover Aseer platform as a tour guide. We have received your application, and our team is currently reviewing it.</p>
+        <p style="margin:0;">We’ll notify you of the outcome by email. You can also track the status of your application through the Tour Guide Portal.</p>
       `,
       ctaLabelAr: "فتح بوابة المرشدين",
-      ctaLabelEn: "Open portal",
+      ctaLabelEn: "Open Tour Guide Portal",
       ctaHref: portalUrl,
     }),
   };
@@ -96,36 +133,41 @@ export function buildTourGuideLicenseEmail(options: {
 }): { subject: string; html: string } {
   const { safeNameAr, safeNameEn } = displayNames(options.nameAr, options.nameEn);
   const portalUrl = options.portalUrl || getTourGuidePortalUrl();
-  const safeDate = escapeHtml(options.expiryDate);
+  const safeDateAr = escapeHtml(formatLicenseDateAr(options.expiryDate));
+  const safeDateEn = escapeHtml(formatLicenseDateEn(options.expiryDate));
   const days = options.daysUntilExpiry;
 
   if (options.kind === "expiring") {
     const daysAr =
-      typeof days === "number" ? `خلال <strong>${days}</strong> يوماً` : "قريباً";
+      typeof days === "number"
+        ? days === 1
+          ? "أي بعد يوم واحد"
+          : `أي بعد ${days} أيام`
+        : "قريباً";
     const daysEn =
       typeof days === "number"
-        ? `in <strong>${days}</strong> day${days === 1 ? "" : "s"}`
+        ? `in ${days} day${days === 1 ? "" : "s"}`
         : "soon";
 
     return {
       subject:
-        "تذكير: رخصتك قاربت على الانتهاء — اكتشف عسير | License expiring soon — Discover Aseer",
+        "رخصتك قاربت على الانتهاء — اكتشف عسير | Your License Is Expiring Soon — Discover Aseer",
       html: brandEmailShell({
-        previewText: "رخصة الإرشاد السياحي قاربت على الانتهاء",
+        previewText: "رخصة الإرشاد السياحي الخاصة بك قاربت على الانتهاء",
         headlineAr: "رخصتك قاربت على الانتهاء",
-        headlineEn: "Your license is expiring soon",
+        headlineEn: "Your License Is Expiring Soon",
         bodyArHtml: `
-          <p style="margin:0 0 12px;">مرحباً ${safeNameAr}،</p>
-          <p style="margin:0 0 12px;">تذكير بأن تاريخ انتهاء رخصة الإرشاد السياحي المسجّل لدينا هو <strong>${safeDate}</strong> (${daysAr}).</p>
-          <p style="margin:0;">يرجى تجديد الرخصة وتحديث بياناتها من بوابة المرشدين لتجنب إيقاف ظهور ملفك.</p>
+          <p style="margin:0 0 12px;">مرحبًا ${safeNameAr}،</p>
+          <p style="margin:0 0 12px;">نود تذكيرك بأن رخصة الإرشاد السياحي الخاصة بك ستنتهي بتاريخ <strong>${safeDateAr}</strong>، ${daysAr}.</p>
+          <p style="margin:0;">يرجى تجديد الرخصة وتحديث بياناتها عبر بوابة المرشدين؛ لضمان استمرار ظهور ملفك في منصة اكتشف عسير.</p>
         `,
         bodyEnHtml: `
           <p style="margin:0 0 12px;">Hello ${safeNameEn},</p>
-          <p style="margin:0 0 12px;">This is a reminder that your tour guide license on file expires on <strong>${safeDate}</strong> (${daysEn}).</p>
-          <p style="margin:0;">Please renew your license and update your portal details to avoid your profile being taken down.</p>
+          <p style="margin:0 0 12px;">This is a reminder that your tour guide license will expire on <strong>${safeDateEn}</strong>, ${daysEn}.</p>
+          <p style="margin:0;">Please renew your license and update its details through the Tour Guide Portal to ensure your profile remains visible on the Discover Aseer platform.</p>
         `,
-        ctaLabelAr: "تحديث الرخصة",
-        ctaLabelEn: "Update license",
+        ctaLabelAr: "فتح بوابة المرشدين",
+        ctaLabelEn: "Open Tour Guide Portal",
         ctaHref: portalUrl,
       }),
     };
@@ -140,12 +182,12 @@ export function buildTourGuideLicenseEmail(options: {
       headlineEn: "Your license has expired",
       bodyArHtml: `
         <p style="margin:0 0 12px;">مرحباً ${safeNameAr}،</p>
-        <p style="margin:0 0 12px;">نود إبلاغك بأن رخصة الإرشاد السياحي المسجّلة لدينا انتهت بتاريخ <strong>${safeDate}</strong>.</p>
+        <p style="margin:0 0 12px;">نود إبلاغك بأن رخصة الإرشاد السياحي المسجّلة لدينا انتهت بتاريخ <strong>${safeDateAr}</strong>.</p>
         <p style="margin:0;">يرجى تجديد الرخصة وتحديث ملفك في بوابة المرشدين في أقرب وقت.</p>
       `,
       bodyEnHtml: `
         <p style="margin:0 0 12px;">Hello ${safeNameEn},</p>
-        <p style="margin:0 0 12px;">Your tour guide license on file expired on <strong>${safeDate}</strong>.</p>
+        <p style="margin:0 0 12px;">Your tour guide license on file expired on <strong>${safeDateEn}</strong>.</p>
         <p style="margin:0;">Please renew your license and update your portal profile as soon as possible.</p>
       `,
       ctaLabelAr: "تحديث الرخصة",
