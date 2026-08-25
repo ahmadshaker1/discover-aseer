@@ -123,37 +123,14 @@ export default function Step4({
             }}
           >
             {[
-              { id: "local", title: t("foodLocal"), desc: t("foodLocalDesc") },
-              {
-                id: "italian",
-                title: t("foodItalian"),
-                desc: t("foodItalianDesc"),
-              },
-              {
-                id: "indian",
-                title: t("foodIndian"),
-                desc: t("foodIndianDesc"),
-              },
-              {
-                id: "american",
-                title: t("foodAmerican"),
-                desc: t("foodAmericanDesc"),
-              },
-              {
-                id: "mexican",
-                title: t("foodMexican"),
-                desc: t("foodMexicanDesc"),
-              },
-              {
-                id: "middle_eastern",
-                title: t("foodMiddleEastern"),
-                desc: t("foodMiddleEasternDesc"),
-              },
-              {
-                id: "far_eastern",
-                title: t("foodFarEastern"),
-                desc: t("foodFarEasternDesc"),
-              },
+              { id: "khaleeji cuisine", title: t("foodKhaleeji") },
+              { id: "Lebanese cuisine", title: t("foodLebanese") },
+              { id: "Italian cuisine", title: t("foodItalian") },
+              { id: "Indian cuisine", title: t("foodIndian") },
+              { id: "International cuisines", title: t("foodInternational") },
+              { id: "American cuisine", title: t("foodAmerican") },
+              { id: "Cafes", title: t("foodCafes") },
+              { id: "Local cuisine", title: t("foodLocal") },
             ].map((option) => {
               const currentPrefs = plannerData.foodPreferences || [];
               const isSelected = currentPrefs.includes(option.id);
@@ -190,9 +167,6 @@ export default function Step4({
                     }}
                   >
                     {option.title}
-                  </span>
-                  <span className="opacity-70 text-sm text-start">
-                    {option.desc}
                   </span>
                 </button>
               );

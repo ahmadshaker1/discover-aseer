@@ -245,11 +245,6 @@ export default function Step2({
                 icon: "/assets/planner/Step2/user-3-line.svg",
               },
               {
-                id: "friends",
-                titleKey: "companionFriends",
-                icon: "/assets/planner/Step2/emotion-happy-line.svg",
-              },
-              {
                 id: "group",
                 titleKey: "companionGroup",
                 icon: "/assets/planner/Step2/bus-2-line.svg",

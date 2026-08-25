@@ -85,32 +85,22 @@ export default function Step3({
           >
             {[
               {
-                id: "nature",
+                id: "Nature",
                 titleKey: "interestNature",
                 icon: "/assets/planner/Step3/S3.1.svg",
               },
               {
-                id: "heritage",
+                id: "Heritage and arts",
                 titleKey: "interestHeritage",
                 icon: "/assets/planner/Step3/S3.2.svg",
               },
               {
-                id: "family",
-                titleKey: "interestFamily",
-                icon: "/assets/planner/Step3/S3.3.svg",
-              },
-              {
-                id: "culture",
-                titleKey: "interestCulture",
-                icon: "/assets/planner/Step3/S3.4.svg",
-              },
-              {
-                id: "food",
+                id: "Culinary arts",
                 titleKey: "interestFood",
                 icon: "/assets/planner/Step3/S3.5.svg",
               },
               {
-                id: "adventure",
+                id: "Adventures",
                 titleKey: "interestAdventure",
                 icon: "/assets/planner/Step3/S3.6.svg",
               },
