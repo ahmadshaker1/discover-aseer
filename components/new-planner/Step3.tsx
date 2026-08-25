@@ -90,12 +90,12 @@ export default function Step3({
                 icon: "/assets/planner/Step3/S3.1.svg",
               },
               {
-                id: "Heritage and arts",
+                id: "Heritage and Arts",
                 titleKey: "interestHeritage",
                 icon: "/assets/planner/Step3/S3.2.svg",
               },
               {
-                id: "Culinary arts",
+                id: "Culinary Arts",
                 titleKey: "interestFood",
                 icon: "/assets/planner/Step3/S3.5.svg",
               },

@@ -116,6 +116,8 @@ export function mapEventCatalog(rows: CatalogRow[]) {
 export async function fetchPlannerCatalogs(options?: {
   skipRestaurants?: boolean;
   foodPreferences?: string[];
+  companion?: string | null;
+  interests?: string[];
 }) {
   const base = getDirectusPublicUrl();
   const listOpts = { limit: DIRECTUS_COLLECTION_LIMIT, published: true };
@@ -156,12 +158,50 @@ export async function fetchPlannerCatalogs(options?: {
         })
       : rawRestaurantsData;
 
+  const rawExperiencesData = asRows(experiencesPayload);
+  const companionMapping: Record<string, string> = {
+    solo: "فردي",
+    group: "مجموعات",
+    couple: "زوجين",
+    family: "عائلة",
+  };
+
+  const experiencesData = rawExperiencesData.filter((exp) => {
+    if (options?.companion && companionMapping[options.companion]) {
+      const targetAudience = exp.target_audience;
+      const expectedAudience = companionMapping[options.companion];
+      if (Array.isArray(targetAudience)) {
+        if (
+          !targetAudience.some((a: any) => String(a).includes(expectedAudience))
+        )
+          return false;
+      } else if (typeof targetAudience === "string") {
+        if (!targetAudience.includes(expectedAudience)) return false;
+      } else {
+        return false;
+      }
+    }
+
+    if (options?.interests && options.interests.length > 0) {
+      const expTypeEn = exp.type_en;
+      if (Array.isArray(expTypeEn)) {
+        if (!expTypeEn.some((t: any) => options.interests!.includes(t)))
+          return false;
+      } else if (typeof expTypeEn === "string") {
+        if (!options.interests.includes(expTypeEn)) return false;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  });
+
   return {
     restaurantsCatalog: mapRestaurantCatalog(restaurantsData),
-    experiencesCatalog: mapExperienceCatalog(asRows(experiencesPayload)),
+    experiencesCatalog: mapExperienceCatalog(experiencesData),
     eventsCatalog: mapEventCatalog(asRows(eventsPayload)),
     restaurantsData: restaurantsData,
-    experiencesData: asRows(experiencesPayload),
+    experiencesData: experiencesData,
     eventsData: asRows(eventsPayload),
   };
 }

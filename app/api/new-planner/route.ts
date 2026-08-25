@@ -37,6 +37,8 @@ export async function POST(request: NextRequest) {
     } = await fetchPlannerCatalogs({
       skipRestaurants,
       foodPreferences: body.foodPreferences,
+      companion: body.companion,
+      interests: body.interests,
     });
 
     const numberOfDays = body.selectedDays || 1;
@@ -245,6 +247,8 @@ export async function POST(request: NextRequest) {
       if (typeof plan.planDetails === "object") {
         plan.planDetails.mealsCount = body.mealsCount;
         plan.planDetails.foodPreferences = body.foodPreferences;
+        plan.planDetails.companion = body.companion;
+        plan.planDetails.interests = body.interests;
       }
     }
 
