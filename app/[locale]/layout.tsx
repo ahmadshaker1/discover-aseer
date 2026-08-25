@@ -12,6 +12,7 @@ import ConditionalFooter from "@/components/Footer/ConditionalFooter";
 import ThemeInitScript from "@/components/theme/ThemeInitScript";
 import TikTokPixel from "@/components/analytics/TikTokPixel";
 import MetaPixel from "@/components/analytics/MetaPixel";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 
 import { routing, type AppLocale } from "@/i18n/routing";
 
@@ -163,6 +164,7 @@ export default async function LocaleLayout({
           <a href="https://userway.org">website accessibility</a>
         </noscript>
         <Suspense fallback={null}>
+          <GoogleAnalytics />
           <TikTokPixel />
           <MetaPixel />
         </Suspense>
