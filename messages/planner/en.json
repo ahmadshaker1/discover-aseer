@@ -86,5 +86,8 @@
   "restaurants": "Restaurants",
   "noEventsForDay": "No events for this day",
   "noExperiencesForDay": "No experiences for this day",
-  "noRestaurantsForDay": "No restaurants for this day"
+  "noRestaurantsForDay": "No restaurants for this day",
+  "noAlternativeRestaurant": "You've found a gem! This is currently the only restaurant available that perfectly matches your taste.",
+  "noAlternativeExperience": "This unique experience is the only one currently available that matches your interests!",
+  "noAlternativeEvent": "This special event is the only one currently available that matches your interests!"
 }

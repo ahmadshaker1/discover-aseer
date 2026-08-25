@@ -353,6 +353,10 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   const [replacingItemId, setReplacingItemId] = useState<string | null>(null);
   const [isAddingDay, setIsAddingDay] = useState<number | null>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const [noAlternativeModal, setNoAlternativeModal] = useState<{
+    isOpen: boolean;
+    type: string;
+  }>({ isOpen: false, type: "" });
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -503,7 +507,11 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       if (!res.ok) {
         const errorData = await res.json().catch(() => null);
         console.error("Backend error response:", errorData);
-        throw new Error(errorData?.error || "Failed to replace item");
+
+        if (errorData?.error === "NO_ALTERNATIVES") {
+          setNoAlternativeModal({ isOpen: true, type: itemType });
+          return;
+        }
       }
 
       const data = await res.json();
@@ -1006,6 +1014,36 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
           );
         })}
       </div>
+
+      {/* No Alternative Modal */}
+      {noAlternativeModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm transition-all">
+          <div className="bg-white dark:bg-[#1C0F2A] rounded-2xl p-6 max-w-sm w-full shadow-2xl flex flex-col items-center text-center gap-4 border border-[rgba(204,204,204,0.37)] dark:border-white/10">
+            <h3 className="text-xl font-bold text-black dark:text-white">
+              {locale === "ar" ? "نعتذر" : "Sorry"}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300 font-medium">
+              {noAlternativeModal.type === "restaurant"
+                ? locale === "ar"
+                  ? "عفواً، لا توجد مطاعم أخرى من هذا النوع!"
+                  : "Sorry, no other restaurant from this type!"
+                : noAlternativeModal.type === "experience"
+                  ? locale === "ar"
+                    ? "عفواً، لا توجد تجارب أخرى من هذا النوع!"
+                    : "Sorry, no other experience from this type!"
+                  : locale === "ar"
+                    ? "عفواً، لا توجد فعاليات أخرى من هذا النوع!"
+                    : "Sorry, no other event from this type!"}
+            </p>
+            <button
+              onClick={() => setNoAlternativeModal({ isOpen: false, type: "" })}
+              className="mt-4 w-full h-10 rounded-full bg-[#6027D2] text-white font-medium hover:bg-[#4b1d9c] transition-colors"
+            >
+              {locale === "ar" ? "إغلاق" : "Close"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
