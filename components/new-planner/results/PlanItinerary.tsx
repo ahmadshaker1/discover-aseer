@@ -102,7 +102,7 @@ const PlannerRestaurantCardNew = ({
       <button
         onClick={onReplace}
         disabled={isReplacing}
-        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium print-hidden"
       >
         <img
           src={"/assets/planner/Rotate.svg"}
@@ -210,7 +210,7 @@ const PlannerEventCardNew = ({
       <button
         onClick={onReplace}
         disabled={isReplacing}
-        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium print-hidden"
       >
         <img
           src={"/assets/planner/Rotate.svg"}
@@ -324,7 +324,7 @@ const PlannerExperienceCardNew = ({
       <button
         onClick={onReplace}
         disabled={isReplacing}
-        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium"
+        className="flex w-full md:w-[170px] h-[46px] px-4 py-2.5 justify-center hover:cursor-pointer items-center gap-2.5 rounded-[86px] border border-[#E5E5E5] bg-[#F7F7F7] text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-[#1C0F2A] dark:text-white text-sm font-medium print-hidden"
       >
         <img
           src={"/assets/planner/Rotate.svg"}
@@ -434,7 +434,9 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
           const className = node.className || "";
           if (
             typeof className === "string" &&
-            (className.includes("userway") || className.includes("uw-"))
+            (className.includes("userway") ||
+              className.includes("uw-") ||
+              className.includes("print-hidden"))
           ) {
             return true;
           }
