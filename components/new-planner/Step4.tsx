@@ -123,14 +123,14 @@ export default function Step4({
             }}
           >
             {[
-              { id: "khaleeji cuisine", title: t("foodKhaleeji") },
-              { id: "Lebanese cuisine", title: t("foodLebanese") },
-              { id: "Italian cuisine", title: t("foodItalian") },
-              { id: "Indian cuisine", title: t("foodIndian") },
-              { id: "International cuisines", title: t("foodInternational") },
-              { id: "American cuisine", title: t("foodAmerican") },
-              { id: "Cafes", title: t("foodCafes") },
-              { id: "Local cuisine", title: t("foodLocal") },
+              { id: "khaleeji", title: t("foodKhaleeji") },
+              { id: "lebanese", title: t("foodLebanese") },
+              { id: "italian", title: t("foodItalian") },
+              { id: "indian", title: t("foodIndian") },
+              { id: "international_cuisine", title: t("foodInternational") },
+              { id: "american", title: t("foodAmerican") },
+              { id: "cafe", title: t("foodCafes") },
+              { id: "aseeri_cuisine", title: t("foodLocal") },
             ].map((option) => {
               const currentPrefs = plannerData.foodPreferences || [];
               const isSelected = currentPrefs.includes(option.id);

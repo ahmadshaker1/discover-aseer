@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
 
     const skipRestaurants =
       String(currentPlanData?.planDetails?.mealsCount) === "0";
+    const foodPreferences = currentPlanData?.planDetails?.foodPreferences;
 
     const {
       restaurantsCatalog,
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
       restaurantsData,
       experiencesData,
       eventsData,
-    } = await fetchPlannerCatalogs({ skipRestaurants });
+    } = await fetchPlannerCatalogs({ skipRestaurants, foodPreferences });
 
     // 3. Build Prompt
     const prompt = `

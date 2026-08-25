@@ -115,6 +115,7 @@ export function mapEventCatalog(rows: CatalogRow[]) {
 
 export async function fetchPlannerCatalogs(options?: {
   skipRestaurants?: boolean;
+  foodPreferences?: string[];
 }) {
   const base = getDirectusPublicUrl();
   const listOpts = { limit: DIRECTUS_COLLECTION_LIMIT, published: true };
@@ -144,11 +145,22 @@ export async function fetchPlannerCatalogs(options?: {
       ),
     ]);
 
+  const rawRestaurantsData = asRows(restaurantsPayload);
+  const restaurantsData =
+    options?.foodPreferences && options.foodPreferences.length > 0
+      ? rawRestaurantsData.filter((r) => {
+          if (!Array.isArray(r.cuisine_type)) return false;
+          return r.cuisine_type.some((type: any) =>
+            options.foodPreferences!.includes(type),
+          );
+        })
+      : rawRestaurantsData;
+
   return {
-    restaurantsCatalog: mapRestaurantCatalog(asRows(restaurantsPayload)),
+    restaurantsCatalog: mapRestaurantCatalog(restaurantsData),
     experiencesCatalog: mapExperienceCatalog(asRows(experiencesPayload)),
     eventsCatalog: mapEventCatalog(asRows(eventsPayload)),
-    restaurantsData: asRows(restaurantsPayload),
+    restaurantsData: restaurantsData,
     experiencesData: asRows(experiencesPayload),
     eventsData: asRows(eventsPayload),
   };

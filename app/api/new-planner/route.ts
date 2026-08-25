@@ -34,7 +34,10 @@ export async function POST(request: NextRequest) {
       restaurantsData,
       experiencesData,
       eventsData,
-    } = await fetchPlannerCatalogs({ skipRestaurants });
+    } = await fetchPlannerCatalogs({
+      skipRestaurants,
+      foodPreferences: body.foodPreferences,
+    });
 
     const numberOfDays = body.selectedDays || 1;
     const startDate = body.selectedDate || "Unknown Date";
@@ -241,6 +244,7 @@ export async function POST(request: NextRequest) {
       // Store mealsCount in planDetails so add-day can use it
       if (typeof plan.planDetails === "object") {
         plan.planDetails.mealsCount = body.mealsCount;
+        plan.planDetails.foodPreferences = body.foodPreferences;
       }
     }
 
