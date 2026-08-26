@@ -25,6 +25,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const skipRestaurants = String(body.mealsCount) === "0";
+
     const {
       restaurantsCatalog,
       experiencesCatalog,
@@ -32,7 +34,12 @@ export async function POST(request: NextRequest) {
       restaurantsData,
       experiencesData,
       eventsData,
-    } = await fetchPlannerCatalogs();
+    } = await fetchPlannerCatalogs({
+      skipRestaurants,
+      foodPreferences: body.foodPreferences,
+      companion: body.companion,
+      interests: body.interests,
+    });
 
     const numberOfDays = body.selectedDays || 1;
     const startDate = body.selectedDate || "Unknown Date";
@@ -234,6 +241,14 @@ export async function POST(request: NextRequest) {
             });
           }
         });
+      }
+
+      // Store mealsCount in planDetails so add-day can use it
+      if (typeof plan.planDetails === "object") {
+        plan.planDetails.mealsCount = body.mealsCount;
+        plan.planDetails.foodPreferences = body.foodPreferences;
+        plan.planDetails.companion = body.companion;
+        plan.planDetails.interests = body.interests;
       }
     }
 

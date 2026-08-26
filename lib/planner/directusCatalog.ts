@@ -113,18 +113,25 @@ export function mapEventCatalog(rows: CatalogRow[]) {
     }));
 }
 
-export async function fetchPlannerCatalogs() {
+export async function fetchPlannerCatalogs(options?: {
+  skipRestaurants?: boolean;
+  foodPreferences?: string[];
+  companion?: string | null;
+  interests?: string[];
+}) {
   const base = getDirectusPublicUrl();
   const listOpts = { limit: DIRECTUS_COLLECTION_LIMIT, published: true };
 
   const [restaurantsPayload, experiencesPayload, eventsPayload] =
     await Promise.all([
-      fetchCatalogJson(
-        directusItemsUrl(base, "restaurants", {
-          limit: 150,
-          fields: RESTAURANT_FIELDS,
-        }),
-      ),
+      options?.skipRestaurants
+        ? Promise.resolve({ data: [] })
+        : fetchCatalogJson(
+            directusItemsUrl(base, "restaurants", {
+              limit: 150,
+              fields: RESTAURANT_FIELDS,
+            }),
+          ),
       fetchCatalogJson(
         directusItemsUrl(base, "experiences", {
           limit: 150,
@@ -140,12 +147,61 @@ export async function fetchPlannerCatalogs() {
       ),
     ]);
 
+  const rawRestaurantsData = asRows(restaurantsPayload);
+  const restaurantsData =
+    options?.foodPreferences && options.foodPreferences.length > 0
+      ? rawRestaurantsData.filter((r) => {
+          if (!Array.isArray(r.cuisine_type)) return false;
+          return r.cuisine_type.some((type: any) =>
+            options.foodPreferences!.includes(type),
+          );
+        })
+      : rawRestaurantsData;
+
+  const rawExperiencesData = asRows(experiencesPayload);
+  const companionMapping: Record<string, string> = {
+    solo: "فردي",
+    group: "مجموعات",
+    couple: "زوجين",
+    family: "عائلة",
+  };
+
+  const experiencesData = rawExperiencesData.filter((exp) => {
+    if (options?.companion && companionMapping[options.companion]) {
+      const targetAudience = exp.target_audience;
+      const expectedAudience = companionMapping[options.companion];
+      if (Array.isArray(targetAudience)) {
+        if (
+          !targetAudience.some((a: any) => String(a).includes(expectedAudience))
+        )
+          return false;
+      } else if (typeof targetAudience === "string") {
+        if (!targetAudience.includes(expectedAudience)) return false;
+      } else {
+        return false;
+      }
+    }
+
+    if (options?.interests && options.interests.length > 0) {
+      const expTypeEn = exp.type_en;
+      if (Array.isArray(expTypeEn)) {
+        if (!expTypeEn.some((t: any) => options.interests!.includes(t)))
+          return false;
+      } else if (typeof expTypeEn === "string") {
+        if (!options.interests.includes(expTypeEn)) return false;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  });
+
   return {
-    restaurantsCatalog: mapRestaurantCatalog(asRows(restaurantsPayload)),
-    experiencesCatalog: mapExperienceCatalog(asRows(experiencesPayload)),
+    restaurantsCatalog: mapRestaurantCatalog(restaurantsData),
+    experiencesCatalog: mapExperienceCatalog(experiencesData),
     eventsCatalog: mapEventCatalog(asRows(eventsPayload)),
-    restaurantsData: asRows(restaurantsPayload),
-    experiencesData: asRows(experiencesPayload),
+    restaurantsData: restaurantsData,
+    experiencesData: experiencesData,
     eventsData: asRows(eventsPayload),
   };
 }

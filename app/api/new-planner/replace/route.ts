@@ -27,6 +27,18 @@ export async function POST(request: NextRequest) {
 
     let mappedCatalog = mappedCatalogBase;
 
+    if (itemType === "restaurant") {
+      const foodPreferences = currentPlanData?.planDetails?.foodPreferences;
+      if (foodPreferences && foodPreferences.length > 0) {
+        mappedCatalog = mappedCatalog.filter((item: any) => {
+          if (!Array.isArray(item.cuisine)) return false;
+          return item.cuisine.some((type: any) =>
+            foodPreferences.includes(type),
+          );
+        });
+      }
+    }
+
     // 3. Filter out the item to replace
     mappedCatalog = mappedCatalog.filter(
       (item: any) => String(item.id) !== String(itemIdToReplace),
@@ -49,6 +61,10 @@ export async function POST(request: NextRequest) {
     mappedCatalog = mappedCatalog.filter(
       (item: any) => !existingIds.includes(String(item.id)),
     );
+
+    if (mappedCatalog.length === 0) {
+      return NextResponse.json({ error: "NO_ALTERNATIVES" }, { status: 400 });
+    }
 
     // 4. Build Prompt
     const prompt = `
