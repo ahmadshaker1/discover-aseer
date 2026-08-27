@@ -11,10 +11,8 @@ import {
 import type { Restaurant } from "./types";
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 import {
-  CATALOG_PAGE_SIZE,
-  DIRECTUS_COLLECTION_LIMIT,
   catalogTotalPages,
-  directusCollectionFetch,
+  fetchDirectusCollectionAll,
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
 
@@ -258,7 +256,6 @@ export const transformLocationToRestaurant = (
 
 export async function fetchRestaurants(
   locale: LocaleCode = "ar",
-  options?: { page?: number },
 ): Promise<{
   items: Restaurant[];
   total: number;
@@ -266,26 +263,17 @@ export async function fetchRestaurants(
   totalPages: number;
 }> {
   const empty = { items: [] as Restaurant[], total: 0, page: 1, totalPages: 1 };
-  const page = options?.page;
   try {
-    const response = await fetch(
-      directusItemsUrl(LOCATIONS_API_BASE, "restaurants", {
-        fields: RESTAURANT_FIELDS,
-        limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
-        page,
-        pageSize: page ? CATALOG_PAGE_SIZE : undefined,
-        meta: Boolean(page),
-      }),
-      directusCollectionFetch,
+    const { rows } = await fetchDirectusCollectionAll<ApiLocation>(
+      (page, pageSize, meta) =>
+        directusItemsUrl(LOCATIONS_API_BASE, "restaurants", {
+          fields: RESTAURANT_FIELDS,
+          page,
+          pageSize,
+          meta,
+        }),
     );
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch restaurants: ${response.status} ${response.statusText}`);
-    }
-
-    const apiData: LocationsApiResponse & { meta?: { filter_count?: number } } =
-      await response.json();
-    const items = (apiData.data ?? [])
+    const items = rows
       .filter(
         (item) =>
           isPublished(item) &&
@@ -295,15 +283,11 @@ export async function fetchRestaurants(
             item.title_en != null)
       )
       .map((item) => transformLocationToRestaurant(item, locale));
-    const total =
-      typeof apiData.meta?.filter_count === "number"
-        ? apiData.meta.filter_count
-        : items.length;
     return {
       items,
-      total,
-      page: page ?? 1,
-      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+      total: items.length,
+      page: 1,
+      totalPages: catalogTotalPages(items.length, items.length || 1),
     };
   } catch (error) {
     console.error("Error fetching restaurants:", error);

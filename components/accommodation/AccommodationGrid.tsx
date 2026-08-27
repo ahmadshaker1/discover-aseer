@@ -4,8 +4,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import CatalogPagination from "@/components/catalog/CatalogPagination";
-import { CATALOG_PAGE_SIZE, catalogTotalPages } from "@/lib/directus/collectionCache";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { paginateCatalogItems } from "@/lib/directus/collectionCache";
+import { useResetCatalogPage } from "@/components/catalog/useResetCatalogPage";
 import AccommodationExceptionalCarousel from "./AccommodationExceptionalCarousel";
 import AccommodationFilters from "./AccommodationFilters";
 import AccommodationHotelsGrid from "./AccommodationHotelsGrid";
@@ -23,17 +23,11 @@ const AccommodationGrid = ({
 }: AccommodationGridProps) => {
   const t = useTranslations("common");
   const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
+  const goToFirstPage = useResetCatalogPage(currentPage);
   const [selectedCity, setSelectedCity] = useState<string>("all");
   const [selectedTypes, setSelectedTypes] = useState<AccommodationType[]>([]);
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
   const [onlyExceptional, setOnlyExceptional] = useState(false);
-
-  const goToFirstPage = () => {
-    if (currentPage <= 1) return;
-    router.replace(pathname, { scroll: false });
-  };
 
   const cityOptions = useMemo(() => {
     return Array.from(new Set(accommodations.map((a) => a.city)));
@@ -87,12 +81,11 @@ const AccommodationGrid = ({
     [filtered, onlyExceptional],
   );
 
-  const totalPages = catalogTotalPages(grid.length, CATALOG_PAGE_SIZE);
-  const page = Math.min(Math.max(currentPage, 1), totalPages);
-  const pagedGrid = useMemo(() => {
-    const start = (page - 1) * CATALOG_PAGE_SIZE;
-    return grid.slice(start, start + CATALOG_PAGE_SIZE);
-  }, [grid, page]);
+  const {
+    page,
+    totalPages,
+    items: pagedGrid,
+  } = paginateCatalogItems(grid, currentPage);
 
   const toggleType = (type: AccommodationType) => {
     goToFirstPage();

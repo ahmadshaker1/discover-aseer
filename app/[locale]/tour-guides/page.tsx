@@ -13,9 +13,7 @@ const TourGuidesPage = async ({ searchParams }: TourGuidesPageProps) => {
   const locale = (await getLocale()) as "ar" | "en";
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
-  const { guides, filterOptions, totalPages } = await fetchTourGuides(locale, {
-    page,
-  });
+  const { guides, filterOptions } = await fetchTourGuides(locale);
 
   return (
     <div className="flex flex-col w-full">
@@ -24,7 +22,6 @@ const TourGuidesPage = async ({ searchParams }: TourGuidesPageProps) => {
         guides={guides}
         filterOptions={filterOptions}
         currentPage={page}
-        totalPages={totalPages}
       />
     </div>
   );

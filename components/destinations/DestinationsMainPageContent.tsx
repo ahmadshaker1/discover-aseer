@@ -4,6 +4,8 @@ import { useMemo, useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useLocale, useTranslations } from "next-intl";
 import CatalogPagination from "@/components/catalog/CatalogPagination";
+import { paginateCatalogItems } from "@/lib/directus/collectionCache";
+import { useResetCatalogPage } from "@/components/catalog/useResetCatalogPage";
 import DestinationsGridCard from "@/components/destinations/DestinationsGridCard";
 import type { Destination } from "@/components/destinations/data";
 import {
@@ -25,7 +27,6 @@ interface DestinationsMainPageContentProps {
   /** From `/destinations?filter=` (e.g. About Aseer landscape cards). */
   initialDestinationFilter?: DestinationFilterId | null;
   currentPage?: number;
-  totalPages?: number;
 }
 
 interface FilterState {
@@ -50,11 +51,11 @@ const DestinationsMainPageContent = ({
   filterLayout = "default",
   initialDestinationFilter = null,
   currentPage = 1,
-  totalPages = 1,
 }: DestinationsMainPageContentProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
   const isBrowse = filterLayout === "browse";
+  const goToFirstPage = useResetCatalogPage(currentPage);
   const [filters, setFilters] = useState<FilterState>(() => ({
     destinationFilter: initialDestinationFilter ?? null,
   }));
@@ -90,13 +91,19 @@ const DestinationsMainPageContent = ({
     );
   }, [filters.destinationFilter, destinations, selectedInterests, isBrowse]);
 
+  const {
+    page,
+    totalPages,
+    items: pagedDestinations,
+  } = paginateCatalogItems(visible, currentPage);
+
   return (
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           <div className="order-2 w-full flex-1 lg:order-2 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 justify-items-center gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
-              {visible.map((d) => (
+              {pagedDestinations.map((d) => (
                 <DestinationsGridCard
                   key={d.id}
                   destination={d}
@@ -110,7 +117,7 @@ const DestinationsMainPageContent = ({
                 {tCommon("noDestinationsMatchFilters")}
               </p>
             ) : null}
-            <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
+            <CatalogPagination currentPage={page} totalPages={totalPages} />
           </div>
 
           <aside
@@ -129,6 +136,7 @@ const DestinationsMainPageContent = ({
                 <button
                   type="button"
                   onClick={() => {
+                    goToFirstPage();
                     setFilters(INITIAL_FILTERS);
                     setSelectedInterests([]);
                   }}
@@ -169,15 +177,16 @@ const DestinationsMainPageContent = ({
                           <Menu.Item key={option.id}>
                             {({ active }) => (
                               <button
-                                onClick={() =>
+                                onClick={() => {
+                                  goToFirstPage();
                                   setFilters((prev) => ({
                                     ...prev,
                                     destinationFilter:
                                       filters.destinationFilter === option.id
                                         ? null
                                         : option.id,
-                                  }))
-                                }
+                                  }));
+                                }}
                                 className={`${
                                   active ? "bg-primary/10 text-primary" : ""
                                 } ${
@@ -223,13 +232,14 @@ const DestinationsMainPageContent = ({
                             <input
                               type="checkbox"
                               checked={checked}
-                              onChange={() =>
+                              onChange={() => {
+                                goToFirstPage();
                                 setSelectedInterests((prev) =>
                                   prev.includes(option.id)
                                     ? prev.filter((id) => id !== option.id)
                                     : [...prev, option.id],
-                                )
-                              }
+                                );
+                              }}
                               className="h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                             />
                             <span

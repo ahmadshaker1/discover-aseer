@@ -11,11 +11,10 @@ import {
 import type { LocaleCode } from "@/lib/i18n/localized";
 import { isPublishedTourGuide } from "@/lib/directus/config";
 import {
-  CATALOG_PAGE_SIZE,
-  DIRECTUS_COLLECTION_LIMIT,
   catalogTotalPages,
   directusCollectionFetch,
   directusItemsUrl,
+  fetchDirectusCollectionAll,
 } from "@/lib/directus/collectionCache";
 import {
   buildSpecLabelMapFromApi,
@@ -366,7 +365,6 @@ const EMPTY_TOUR_GUIDES_RESULT: FetchTourGuidesResult = {
 
 export async function fetchTourGuides(
   locale: LocaleCode = "ar",
-  options?: { page?: number },
 ): Promise<FetchTourGuidesResult> {
   const directusUrl =
     process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
@@ -377,79 +375,64 @@ export async function fetchTourGuides(
   }
 
   try {
-    // TODO(backend): Confirm collection slug and query params (?fields=*, etc.) with the API owner.
     const adminToken = process.env.DIRECTUS_ADMIN_TOKEN;
     const headers: HeadersInit = {};
     if (adminToken) {
       headers["Authorization"] = `Bearer ${adminToken}`;
     }
 
-    const page = options?.page;
-    const listOpts = {
-      limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
-      page,
-      pageSize: page ? CATALOG_PAGE_SIZE : undefined,
-      meta: Boolean(page),
-    } as const;
+    const fallbackFields = [
+      "id",
+      "status",
+      "name",
+      "name_en",
+      "phone_number",
+      "whatsapp",
+      "content",
+      "content_en",
+      "gender",
+      "specializations",
+      "transportation",
+    ] as const;
 
-    let response = await fetch(
+    const listUrl = (
+      fields: readonly string[],
+      page: number,
+      pageSize: number,
+      meta: boolean,
+    ) =>
       directusItemsUrl(directusUrl, "tourist_guides", {
-        ...listOpts,
-        fields: TOUR_GUIDE_LIST_FIELDS,
+        fields,
+        page,
+        pageSize,
+        meta,
         published: true,
-      }),
-      { ...directusCollectionFetch, headers },
+      });
+
+    let fields: readonly string[] = TOUR_GUIDE_LIST_FIELDS;
+    const probe = await fetch(listUrl(fields, 1, 1, false), {
+      ...directusCollectionFetch,
+      headers,
+    });
+    if (!probe.ok) {
+      fields = fallbackFields;
+    }
+
+    const { rows } = await fetchDirectusCollectionAll<ApiTouristGuide>(
+      (page, pageSize, meta) => listUrl(fields, page, pageSize, meta),
+      { headers },
     );
 
-    // Public/admin policies reject unknown or unreadable fields with 403.
-    if (!response.ok) {
-      response = await fetch(
-        directusItemsUrl(directusUrl, "tourist_guides", {
-          ...listOpts,
-          fields: [
-            "id",
-            "status",
-            "name",
-            "name_en",
-            "phone_number",
-            "whatsapp",
-            "content",
-            "content_en",
-            "gender",
-            "specializations",
-            "transportation",
-          ],
-          published: true,
-        }),
-        { ...directusCollectionFetch, headers },
-      );
-    }
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch tour guides: ${response.status} ${response.statusText}`,
-      );
-    }
-
-    const apiData: TouristGuidesApiResponse & {
-      meta?: { filter_count?: number };
-    } = await response.json();
-    if (!Array.isArray(apiData.data)) {
-      return EMPTY_TOUR_GUIDES_RESULT;
-    }
-
-    // Defense in depth: never surface drafts on the public listing page.
-    const publishedRows = apiData.data.filter(isPublishedTourGuide);
+    const publishedRows = rows.filter(isPublishedTourGuide);
     const result = resultFromApiRows(publishedRows, locale);
-    const total =
-      typeof apiData.meta?.filter_count === "number"
-        ? apiData.meta.filter_count
-        : result.guides.length;
     return {
       ...result,
-      total,
-      page: page ?? 1,
-      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+      total: result.guides.length,
+      page: 1,
+      totalPages: catalogTotalPages(
+        result.guides.length,
+        result.guides.length || 1,
+      ),
     };
   } catch (error) {
     console.error("Error fetching tour guides:", error);

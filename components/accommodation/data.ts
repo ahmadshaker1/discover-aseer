@@ -1,8 +1,7 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 import {
-  DIRECTUS_COLLECTION_LIMIT,
-  directusCollectionFetch,
   directusItemsUrl,
+  fetchDirectusCollectionAll,
 } from "@/lib/directus/collectionCache";
 
 const ACCOMMODATION_FIELDS = [
@@ -281,38 +280,15 @@ export const fetchAccommodations = async (
   );
 
   try {
-    const pageSize = DIRECTUS_COLLECTION_LIMIT;
-    const allRows: ApiAccommodation[] = [];
-    let page = 1;
-    let reportedTotal: number | null = null;
-
-    while (page <= 50) {
-      const response = await fetch(
+    const { rows: allRows } = await fetchDirectusCollectionAll<ApiAccommodation>(
+      (page, pageSize, meta) =>
         directusItemsUrl(directusUrl, "accomodation", {
           fields: ACCOMMODATION_FIELDS,
           page,
           pageSize,
-          meta: page === 1,
+          meta,
         }),
-        directusCollectionFetch,
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch accommodations: ${response.statusText}`);
-      }
-
-      const apiData: ApiResponse & { meta?: { filter_count?: number } } =
-        await response.json();
-      const rows = Array.isArray(apiData.data) ? apiData.data : [];
-      allRows.push(...rows);
-
-      if (page === 1 && typeof apiData.meta?.filter_count === "number") {
-        reportedTotal = apiData.meta.filter_count;
-      }
-      if (rows.length < pageSize) break;
-      if (reportedTotal != null && allRows.length >= reportedTotal) break;
-      page += 1;
-    }
+    );
 
     const items = allRows
       .filter(

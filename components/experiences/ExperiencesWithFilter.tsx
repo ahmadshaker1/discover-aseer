@@ -7,6 +7,8 @@ import ExperiencesFilter, {
   type FilterState,
 } from "@/components/experiences/ExperiencesFilter/ExperiencesFilter";
 import CatalogPagination from "@/components/catalog/CatalogPagination";
+import { paginateCatalogItems } from "@/lib/directus/collectionCache";
+import { useResetCatalogPage } from "@/components/catalog/useResetCatalogPage";
 import type {
   ExperienceWithFilterMeta,
   FilterOptions,
@@ -23,7 +25,6 @@ interface ExperiencesWithFilterProps {
   experiences: ExperienceWithFilterMeta[];
   filterOptions: FilterOptions;
   currentPage: number;
-  totalPages: number;
 }
 
 function applyFilters(
@@ -54,17 +55,30 @@ export default function ExperiencesWithFilter({
   experiences,
   filterOptions,
   currentPage,
-  totalPages,
 }: ExperiencesWithFilterProps) {
   const tCommon = useTranslations("common");
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
+  const goToFirstPage = useResetCatalogPage(currentPage);
 
   const filteredExperiences = useMemo(
     () => applyFilters(experiences, filters),
     [experiences, filters],
   );
+  const {
+    page,
+    totalPages,
+    items: pagedExperiences,
+  } = paginateCatalogItems(filteredExperiences, currentPage);
 
-  const handleReset = () => setFilters(INITIAL_FILTERS);
+  const handleFiltersChange = (next: FilterState) => {
+    goToFirstPage();
+    setFilters(next);
+  };
+
+  const handleReset = () => {
+    goToFirstPage();
+    setFilters(INITIAL_FILTERS);
+  };
 
   return (
     <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start">
@@ -72,14 +86,14 @@ export default function ExperiencesWithFilter({
         <ExperiencesFilter
           filterOptions={filterOptions}
           filters={filters}
-          onFiltersChange={setFilters}
+          onFiltersChange={handleFiltersChange}
           onReset={handleReset}
         />
       </aside>
 
       <div className="w-full min-w-0 flex-1">
         <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {filteredExperiences.map((experience) => (
+          {pagedExperiences.map((experience) => (
             <ExperienceCard key={experience.id} {...experience} />
           ))}
         </div>
@@ -88,7 +102,7 @@ export default function ExperiencesWithFilter({
             {tCommon("noExperiencesFilter")}
           </p>
         )}
-        <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
+        <CatalogPagination currentPage={page} totalPages={totalPages} />
       </div>
     </div>
   );

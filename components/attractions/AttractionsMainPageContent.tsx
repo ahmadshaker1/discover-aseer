@@ -10,6 +10,8 @@ import {
   type FilmLandscapeFilterId,
 } from "@/components/film/landscapeFilters";
 import CatalogPagination from "@/components/catalog/CatalogPagination";
+import { paginateCatalogItems } from "@/lib/directus/collectionCache";
+import { useResetCatalogPage } from "@/components/catalog/useResetCatalogPage";
 import type { Landmark } from "@/components/landmarks/data";
 import {
   getCityLabelById,
@@ -29,7 +31,6 @@ interface AttractionsMainPageContentProps {
   /** From `/attractions?terrain=mountains` (film page landscape cards). */
   initialTerrain?: FilmLandscapeFilterId | null;
   currentPage?: number;
-  totalPages?: number;
 }
 
 interface FilterState {
@@ -58,11 +59,11 @@ const AttractionsMainPageContent = ({
   landmarks,
   initialTerrain = null,
   currentPage = 1,
-  totalPages = 1,
 }: AttractionsMainPageContentProps) => {
   const locale = useLocale();
   const tCommon = useTranslations("common");
   const tFilm = useTranslations("film");
+  const goToFirstPage = useResetCatalogPage(currentPage);
 
   const cityOptions = useMemo(() => {
     const unique = new Map<string, string>();
@@ -190,6 +191,12 @@ const AttractionsMainPageContent = ({
     });
   }, [typeScopedLandmarks, selectedInterests, initialTerrain]);
 
+  const {
+    page,
+    totalPages,
+    items: pagedLandmarks,
+  } = paginateCatalogItems(visibleLandmarks, currentPage);
+
   return (
     <section className="w-full bg-background py-12 text-foreground">
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[60px]">
@@ -205,7 +212,7 @@ const AttractionsMainPageContent = ({
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           <div className="order-2 w-full flex-1 lg:order-2 lg:max-w-[1033px]">
             <div className="mx-auto grid w-full max-w-[1033px] grid-cols-1 justify-items-center gap-[23px] md:grid-cols-2 xl:min-h-[862px] xl:grid-cols-3">
-              {visibleLandmarks.map((landmark) => (
+              {pagedLandmarks.map((landmark) => (
                 <AttractionsLandmarkCard
                   key={landmark.id}
                   landmark={landmark}
@@ -222,7 +229,7 @@ const AttractionsMainPageContent = ({
                 {tCommon("noLandmarksMatchFilters")}
               </p>
             ) : null}
-            <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
+            <CatalogPagination currentPage={page} totalPages={totalPages} />
           </div>
 
           <aside
@@ -245,6 +252,7 @@ const AttractionsMainPageContent = ({
                 <button
                   type="button"
                   onClick={() => {
+                    goToFirstPage();
                     setFilters({
                       city: null,
                       attractionType: [],
@@ -287,15 +295,16 @@ const AttractionsMainPageContent = ({
                           <Menu.Item key={option.id}>
                             {({ active }) => (
                               <button
-                                onClick={() =>
+                                onClick={() => {
+                                  goToFirstPage();
                                   setFilters((prev) => ({
                                     ...prev,
                                     city:
                                       filters.city === option.id
                                         ? null
                                         : option.id,
-                                  }))
-                                }
+                                  }));
+                                }}
                                 className={`${
                                   active ? "bg-primary/10 text-primary" : ""
                                 } ${
@@ -342,7 +351,8 @@ const AttractionsMainPageContent = ({
                             <input
                               type="checkbox"
                               checked={checked}
-                              onChange={() =>
+                              onChange={() => {
+                                goToFirstPage();
                                 setFilters((prev) => ({
                                   ...prev,
                                   attractionType: prev.attractionType.includes(
@@ -352,8 +362,8 @@ const AttractionsMainPageContent = ({
                                         (t) => t !== option,
                                       )
                                     : [...prev.attractionType, option],
-                                }))
-                              }
+                                }));
+                              }}
                               className="h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-[4px] border border-border bg-muted shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] transition-colors checked:border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                             />
                             <span

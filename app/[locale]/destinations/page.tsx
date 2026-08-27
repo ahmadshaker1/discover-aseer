@@ -19,9 +19,7 @@ const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
   const { filter: filterParam, page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
   const initialDestinationFilter = parseDestinationsFilterParam(filterParam);
-  const { items: destinations, totalPages } = await fetchDestinations(locale, {
-    page,
-  });
+  const { items: destinations } = await fetchDestinations(locale);
 
   const assets = await fetchSiteAssets("destinations");
   const bannerUrl = getAssetUrl(
@@ -52,7 +50,6 @@ const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
         filterLayout="browse"
         initialDestinationFilter={initialDestinationFilter}
         currentPage={page}
-        totalPages={totalPages}
       />
     </div>
   );

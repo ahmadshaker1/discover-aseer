@@ -13,9 +13,8 @@ const ExperiencesPage = async ({ searchParams }: ExperiencesPageProps) => {
   const locale = (await getLocale()) as AppLocale;
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
-  const { experiences, filterOptions, totalPages } = await fetchExperiences({
+  const { experiences, filterOptions } = await fetchExperiences({
     locale,
-    page,
   });
 
   return (
@@ -26,7 +25,6 @@ const ExperiencesPage = async ({ searchParams }: ExperiencesPageProps) => {
           experiences={experiences}
           filterOptions={filterOptions}
           currentPage={page}
-          totalPages={totalPages}
         />
       </div>
     </div>
