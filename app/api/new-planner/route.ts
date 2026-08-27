@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
       foodPreferences: body.foodPreferences,
       companion: body.companion,
       interests: body.interests,
+      budget: body.budget,
     });
 
     const numberOfDays = body.selectedDays || 1;
@@ -249,6 +250,7 @@ export async function POST(request: NextRequest) {
         plan.planDetails.foodPreferences = body.foodPreferences;
         plan.planDetails.companion = body.companion;
         plan.planDetails.interests = body.interests;
+        plan.planDetails.budget = body.budget;
       }
     }
 

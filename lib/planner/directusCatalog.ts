@@ -118,6 +118,7 @@ export async function fetchPlannerCatalogs(options?: {
   foodPreferences?: string[];
   companion?: string | null;
   interests?: string[];
+  budget?: string | null;
 }) {
   const base = getDirectusPublicUrl();
   const listOpts = { limit: DIRECTUS_COLLECTION_LIMIT, published: true };
@@ -193,6 +194,26 @@ export async function fetchPlannerCatalogs(options?: {
         return false;
       }
     }
+
+    if (options?.budget) {
+      const price = Number(exp.price);
+      if (
+        !isNaN(price) &&
+        exp.price !== null &&
+        exp.price !== undefined &&
+        exp.price !== ""
+      ) {
+        // Budget ranges for experiences:
+        // - economy: price < 200
+        // - medium: price between 200 and 400
+        // - premium: price > 400
+        if (options.budget === "economy" && price >= 200) return false;
+        if (options.budget === "medium" && (price < 200 || price > 400))
+          return false;
+        if (options.budget === "premium" && price <= 400) return false;
+      }
+    }
+
     return true;
   });
 
