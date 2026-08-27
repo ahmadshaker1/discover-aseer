@@ -505,16 +505,9 @@ function sameCity(a: Landmark, b: Landmark): boolean {
   return normalizeText(a.area) === normalizeText(b.area);
 }
 
-function sameTagsOrType(a: Landmark, b: Landmark): boolean {
-  const aTags = a.interestTags ?? [];
-  const bTags = b.interestTags ?? [];
-  if (aTags.length > 0 && bTags.some((tag) => aTags.includes(tag))) return true;
-
-  if (a.categoryLabel && b.categoryLabel) {
-    return normalizeText(a.categoryLabel) === normalizeText(b.categoryLabel);
-  }
-
-  return false;
+function sameAttractionType(a: Landmark, b: Landmark): boolean {
+  if (!a.attractionType || !b.attractionType) return false;
+  return normalizeText(a.attractionType) === normalizeText(b.attractionType);
 }
 
 export const getRelatedLandmarks = (
@@ -524,7 +517,7 @@ export const getRelatedLandmarks = (
 ): Landmark[] => {
   return all
     .filter((row) => row.id !== current.id)
-    .filter((row) => sameCity(current, row) && sameTagsOrType(current, row))
+    .filter((row) => sameCity(current, row) && !sameAttractionType(current, row))
     .slice(0, limit);
 };
 

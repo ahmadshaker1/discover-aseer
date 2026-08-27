@@ -36,17 +36,7 @@ export default async function AttractionSlugPage({
     notFound();
   }
 
-  const related = allAttractions
-    .filter((item) => {
-      if (item.id === attraction.id) return false;
-      const sameCity =
-        item.cityId && attraction.cityId && item.cityId === attraction.cityId;
-      const sameType =
-        attraction.attractionType &&
-        item.attractionType === attraction.attractionType;
-      return sameCity && sameType;
-    })
-    .slice(0, 4);
+  const related = getRelatedAttractions(attraction, allAttractions, 4);
   const mapTarget = resolveAttractionMapTarget(attraction);
 
   return (
