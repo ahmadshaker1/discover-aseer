@@ -14,10 +14,7 @@ const AccommodationPage = async ({ searchParams }: AccommodationPageProps) => {
   const locale = (await getLocale()) as AppLocale;
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
-  const { items: accommodations, totalPages } = await fetchAccommodations(
-    locale,
-    { page },
-  );
+  const { items: accommodations } = await fetchAccommodations(locale);
 
   return (
     <div className="flex flex-col w-full">
@@ -26,7 +23,6 @@ const AccommodationPage = async ({ searchParams }: AccommodationPageProps) => {
         <AccommodationGrid
           accommodations={accommodations}
           currentPage={page}
-          totalPages={totalPages}
         />
       </div>
     </div>

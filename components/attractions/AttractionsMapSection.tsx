@@ -24,7 +24,6 @@ const AttractionsMapSection = ({
     return (
       <MapPlaceholderSection
         ctaLabel={tDest("mapViewOnMap", { area: areaLabel })}
-        ctaWidthPx={266}
         mapHref={mapTarget.href}
         imageAlt={t("mapPalacesAlt")}
       />
@@ -56,10 +55,7 @@ const AttractionsMapSection = ({
           <DestinationPreviewMap lat={mapLat} lon={mapLon} title={areaLabel} />
           <Link
             href={mapHref}
-            className="absolute top-1/2 left-1/2 z-10 inline-flex h-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-[10px] overflow-hidden text-ellipsis whitespace-nowrap rounded-[55px] border border-solid border-white/33 bg-primary px-4 py-[10px] text-center text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
-            style={{
-              width: "min(100% - 2rem, 266px)",
-            }}
+            className="absolute top-1/2 left-1/2 z-10 inline-flex min-h-[52px] w-max max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[55px] border border-solid border-white/33 bg-primary px-6 py-[10px] text-center text-[20px] font-bold leading-[119%] text-primary-foreground transition-opacity hover:opacity-90"
           >
             {tDest("mapViewOnMap", { area: areaLabel })}
           </Link>

@@ -17,9 +17,7 @@ const AttractionsPage = async ({ searchParams }: AttractionsPageProps) => {
   const { terrain: terrainParam, page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
   const initialTerrain = parseAttractionsTerrainParam(terrainParam);
-  const { items: landmarks, totalPages } = await fetchLandmarks(locale, {
-    page,
-  });
+  const { items: landmarks } = await fetchLandmarks(locale);
 
   const assets = await fetchSiteAssets("attractions");
   const bannerUrl = getAssetUrl(
@@ -44,7 +42,6 @@ const AttractionsPage = async ({ searchParams }: AttractionsPageProps) => {
         landmarks={landmarks}
         initialTerrain={initialTerrain}
         currentPage={page}
-        totalPages={totalPages}
       />
     </div>
   );

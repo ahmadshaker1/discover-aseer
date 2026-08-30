@@ -14,9 +14,7 @@ const ServicesSupportPage = async ({
   const locale = (await getLocale()) as "ar" | "en";
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
-  const { items: services, totalPages } = await fetchSupportServices(locale, {
-    page,
-  });
+  const { items: services } = await fetchSupportServices(locale);
 
   return (
     <div className="flex w-full flex-col">
@@ -24,7 +22,6 @@ const ServicesSupportPage = async ({
       <ServicesSupportCatalog
         services={services}
         currentPage={page}
-        totalPages={totalPages}
       />
     </div>
   );

@@ -3,6 +3,8 @@
 import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import CatalogPagination from "@/components/catalog/CatalogPagination";
+import { paginateCatalogItems } from "@/lib/directus/collectionCache";
+import { useResetCatalogPage } from "@/components/catalog/useResetCatalogPage";
 import TourGuidesFilter, {
   type TourGuidesFilterState,
 } from "../TourGuidesFilter/TourGuidesFilter";
@@ -46,18 +48,17 @@ interface TourGuidesPageContentProps {
   guides: TourGuideWithFilterMeta[];
   filterOptions: TourGuidesFilterOptions;
   currentPage: number;
-  totalPages: number;
 }
 
 const TourGuidesPageContent = ({
   guides,
   filterOptions,
   currentPage,
-  totalPages,
 }: TourGuidesPageContentProps) => {
   const t = useTranslations("tourGuides");
   const [filters, setFilters] =
     useState<TourGuidesFilterState>(INITIAL_FILTERS);
+  const goToFirstPage = useResetCatalogPage(currentPage);
   const [selectedGuide, setSelectedGuide] = useState<TourGuideData | null>(
     null,
   );
@@ -67,6 +68,21 @@ const TourGuidesPageContent = ({
     () => applyFilters(guides, filters),
     [guides, filters],
   );
+  const {
+    page,
+    totalPages,
+    items: pagedGuides,
+  } = paginateCatalogItems(filteredGuides, currentPage);
+
+  const handleFiltersChange = (next: TourGuidesFilterState) => {
+    goToFirstPage();
+    setFilters(next);
+  };
+
+  const handleReset = () => {
+    goToFirstPage();
+    setFilters(INITIAL_FILTERS);
+  };
 
   const handleGuideClick = (guide: TourGuideData) => {
     setSelectedGuide(guide);
@@ -96,11 +112,11 @@ const TourGuidesPageContent = ({
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
           <div className="order-2 w-full flex-1 lg:order-2">
             <TourGuidesGrid
-              guides={filteredGuides}
+              guides={pagedGuides}
               onGuideClick={handleGuideClick}
             />
             <CatalogPagination
-              currentPage={currentPage}
+              currentPage={page}
               totalPages={totalPages}
             />
             {filteredGuides.length === 0 && (
@@ -114,8 +130,8 @@ const TourGuidesPageContent = ({
             <TourGuidesFilter
               filterOptions={filterOptions}
               filters={filters}
-              onFiltersChange={setFilters}
-              onReset={() => setFilters(INITIAL_FILTERS)}
+              onFiltersChange={handleFiltersChange}
+              onReset={handleReset}
             />
           </aside>
         </div>

@@ -14,10 +14,8 @@ import {
   type LocaleCode,
 } from "@/lib/i18n/localized";
 import {
-  CATALOG_PAGE_SIZE,
-  DIRECTUS_COLLECTION_LIMIT,
   catalogTotalPages,
-  directusCollectionFetch,
+  fetchDirectusCollectionAll,
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
 
@@ -481,7 +479,6 @@ function uniquifyDestinationSlugs(destinations: Destination[]): Destination[] {
 
 export const fetchDestinations = async (
   locale: LocaleCode = "ar",
-  options?: { page?: number },
 ): Promise<{
   items: Destination[];
   total: number;
@@ -494,36 +491,26 @@ export const fetchDestinations = async (
     console.error("NEXT_PUBLIC_DIRECTUS_APP_URL is not set");
     return empty;
   }
-  const page = options?.page;
   try {
-    const response = await fetch(
-      directusItemsUrl(directusUrl, "destination", {
-        fields: DESTINATION_FIELDS,
-        limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
-        page,
-        pageSize: page ? CATALOG_PAGE_SIZE : undefined,
-        meta: Boolean(page),
-      }),
-      directusCollectionFetch,
+    const { rows } = await fetchDirectusCollectionAll<ApiDestination>(
+      (page, pageSize, meta) =>
+        directusItemsUrl(directusUrl, "destination", {
+          fields: DESTINATION_FIELDS,
+          page,
+          pageSize,
+          meta,
+        }),
     );
-    if (!response.ok) return empty;
-    const apiData: ApiDestinationResponse & { meta?: { filter_count?: number } } =
-      await response.json();
-    const rows = Array.isArray(apiData.data) ? apiData.data : [];
     const items = uniquifyDestinationSlugs(
       rows
         .filter((d) => !d.status || d.status === "published")
         .map((d) => transformDestination(d, directusUrl, locale)),
     );
-    const total =
-      typeof apiData.meta?.filter_count === "number"
-        ? apiData.meta.filter_count
-        : items.length;
     return {
       items,
-      total,
-      page: page ?? 1,
-      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+      total: items.length,
+      page: 1,
+      totalPages: catalogTotalPages(items.length, items.length || 1),
     };
   } catch {
     return empty;

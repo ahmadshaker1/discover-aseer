@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import CatalogPagination from "@/components/catalog/CatalogPagination";
+import { paginateCatalogItems } from "@/lib/directus/collectionCache";
+import { useResetCatalogPage } from "@/components/catalog/useResetCatalogPage";
 import ServicesSupportFilterSidebar from "./ServicesSupportFilterSidebar";
 import ServicesSupportGrid from "./ServicesSupportGrid";
 import type { SupportService } from "./types";
@@ -11,7 +13,6 @@ import type { SupportService } from "./types";
 interface ServicesSupportCatalogProps {
   services: SupportService[];
   currentPage: number;
-  totalPages: number;
 }
 
 interface FilterOption {
@@ -35,12 +36,12 @@ function buildOptions(values: string[], locale: "ar" | "en"): FilterOption[] {
 const ServicesSupportCatalog = ({
   services,
   currentPage,
-  totalPages,
 }: ServicesSupportCatalogProps) => {
   const t = useTranslations("servicesSupport");
   const locale = useLocale() as "ar" | "en";
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const goToFirstPage = useResetCatalogPage(currentPage);
 
   const cityOptions = useMemo(
     () =>
@@ -71,6 +72,12 @@ const ServicesSupportCatalog = ({
     });
   }, [services, selectedCity, selectedTypes]);
 
+  const {
+    page,
+    totalPages,
+    items: pagedServices,
+  } = paginateCatalogItems(filteredServices, currentPage);
+
   const toggleInList = (
     setter: Dispatch<SetStateAction<string[]>>,
     value: string,
@@ -83,6 +90,7 @@ const ServicesSupportCatalog = ({
   };
 
   const resetFilters = () => {
+    goToFirstPage();
     setSelectedCity(null);
     setSelectedTypes([]);
   };
@@ -96,10 +104,10 @@ const ServicesSupportCatalog = ({
               {t("noServicesData")}
             </div>
           ) : (
-            <ServicesSupportGrid services={filteredServices} />
+            <ServicesSupportGrid services={pagedServices} />
           )}
           <CatalogPagination
-            currentPage={currentPage}
+            currentPage={page}
             totalPages={totalPages}
           />
         </div>
@@ -111,9 +119,13 @@ const ServicesSupportCatalog = ({
             selectedCity={selectedCity}
             selectedTypes={selectedTypes}
             onCityChange={(value) => {
+              goToFirstPage();
               setSelectedCity(value);
             }}
-            onToggleType={(value) => toggleInList(setSelectedTypes, value)}
+            onToggleType={(value) => {
+              goToFirstPage();
+              toggleInList(setSelectedTypes, value);
+            }}
             onReset={resetFilters}
           />
         </div>

@@ -4,6 +4,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import CatalogPagination from "@/components/catalog/CatalogPagination";
+import { paginateCatalogItems } from "@/lib/directus/collectionCache";
+import { useResetCatalogPage } from "@/components/catalog/useResetCatalogPage";
 import AccommodationExceptionalCarousel from "./AccommodationExceptionalCarousel";
 import AccommodationFilters from "./AccommodationFilters";
 import AccommodationHotelsGrid from "./AccommodationHotelsGrid";
@@ -13,16 +15,15 @@ import { splitAccommodationLists } from "./data";
 interface AccommodationGridProps {
   accommodations: Accommodation[];
   currentPage: number;
-  totalPages: number;
 }
 
 const AccommodationGrid = ({
   accommodations,
   currentPage,
-  totalPages,
 }: AccommodationGridProps) => {
   const t = useTranslations("common");
   const locale = useLocale();
+  const goToFirstPage = useResetCatalogPage(currentPage);
   const [selectedCity, setSelectedCity] = useState<string>("all");
   const [selectedTypes, setSelectedTypes] = useState<AccommodationType[]>([]);
   const [selectedStars, setSelectedStars] = useState<number[]>([]);
@@ -80,19 +81,38 @@ const AccommodationGrid = ({
     [filtered, onlyExceptional],
   );
 
+  const {
+    page,
+    totalPages,
+    items: pagedGrid,
+  } = paginateCatalogItems(grid, currentPage);
+
   const toggleType = (type: AccommodationType) => {
+    goToFirstPage();
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
     );
   };
 
   const toggleStars = (stars: number) => {
+    goToFirstPage();
     setSelectedStars((prev) =>
       prev.includes(stars) ? prev.filter((s) => s !== stars) : [...prev, stars],
     );
   };
 
+  const handleCityChange = (city: string) => {
+    goToFirstPage();
+    setSelectedCity(city);
+  };
+
+  const handleOnlyExceptionalChange = (value: boolean) => {
+    goToFirstPage();
+    setOnlyExceptional(value);
+  };
+
   const resetFilters = () => {
+    goToFirstPage();
     setSelectedCity("all");
     setSelectedTypes([]);
     setSelectedStars([]);
@@ -116,7 +136,7 @@ const AccommodationGrid = ({
         <AccommodationFilters
           cityOptions={cityOptions}
           selectedCity={selectedCity}
-          onCityChange={setSelectedCity}
+          onCityChange={handleCityChange}
           selectedTypes={selectedTypes}
           onToggleType={toggleType}
           typeCount={typeCount}
@@ -124,7 +144,7 @@ const AccommodationGrid = ({
           onToggleStars={toggleStars}
           starsCount={starsCount}
           onlyExceptional={onlyExceptional}
-          onOnlyExceptionalChange={setOnlyExceptional}
+          onOnlyExceptionalChange={handleOnlyExceptionalChange}
           exceptionalFilterCount={exceptionalFilterCount}
           onReset={resetFilters}
         />
@@ -135,7 +155,7 @@ const AccommodationGrid = ({
         >
           <AccommodationExceptionalCarousel items={carousel} />
           <AccommodationHotelsGrid
-            items={grid}
+            items={pagedGrid}
             showTopDivider={carousel.length > 0}
           />
 
@@ -144,7 +164,7 @@ const AccommodationGrid = ({
               {t("noAccommodationFilter")}
             </p>
           ) : null}
-          <CatalogPagination currentPage={currentPage} totalPages={totalPages} />
+          <CatalogPagination currentPage={page} totalPages={totalPages} />
         </div>
       </div>
     </div>

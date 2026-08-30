@@ -73,3 +73,53 @@ export function directusItemsUrl(
   }
   return url.toString();
 }
+
+export function paginateCatalogItems<T>(
+  items: T[],
+  currentPage: number,
+  pageSize = CATALOG_PAGE_SIZE,
+): { page: number; totalPages: number; items: T[] } {
+  const totalPages = catalogTotalPages(items.length, pageSize);
+  const page = Math.min(Math.max(currentPage, 1), totalPages);
+  const start = (page - 1) * pageSize;
+  return {
+    page,
+    totalPages,
+    items: items.slice(start, start + pageSize),
+  };
+}
+
+/** Walk Directus list pages until every row is loaded (100 per request). */
+export async function fetchDirectusCollectionAll<T>(
+  getUrl: (page: number, pageSize: number, meta: boolean) => string,
+  init?: RequestInit,
+  options?: { pageSize?: number; maxPages?: number },
+): Promise<{ rows: T[]; reportedTotal: number | null }> {
+  const pageSize = options?.pageSize ?? DIRECTUS_COLLECTION_LIMIT;
+  const maxPages = options?.maxPages ?? 50;
+  const allRows: T[] = [];
+  let reportedTotal: number | null = null;
+
+  for (let page = 1; page <= maxPages; page++) {
+    const response = await fetch(getUrl(page, pageSize, page === 1), {
+      ...directusCollectionFetch,
+      ...init,
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch collection: ${response.statusText}`);
+    }
+    const json = (await response.json()) as {
+      data?: T[];
+      meta?: { filter_count?: number };
+    };
+    const rows = Array.isArray(json.data) ? json.data : [];
+    allRows.push(...rows);
+    if (page === 1 && typeof json.meta?.filter_count === "number") {
+      reportedTotal = json.meta.filter_count;
+    }
+    if (rows.length < pageSize) break;
+    if (reportedTotal != null && allRows.length >= reportedTotal) break;
+  }
+
+  return { rows: allRows, reportedTotal };
+}

@@ -1,10 +1,10 @@
 import type { LocaleCode } from "@/lib/i18n/localized";
 import { isMostlyArabicText } from "@/lib/i18n/localized";
 import {
-  CATALOG_PAGE_SIZE,
   DIRECTUS_COLLECTION_LIMIT,
   catalogTotalPages,
   directusCollectionFetch,
+  fetchDirectusCollectionAll,
 } from "@/lib/directus/collectionCache";
 import type { ExperienceCardProps } from "./ExperienceCard/ExperienceCard";
 
@@ -148,7 +148,7 @@ function isPublishedExperience(api: ApiExperience): boolean {
 
 function buildExperiencesListUrl(
   directusUrl: string,
-  options?: { limit?: number; page?: number },
+  options?: { limit?: number; page?: number; meta?: boolean },
 ): string {
   const url = new URL(`${directusUrl.replace(/\/$/, "")}/items/experiences`);
   url.searchParams.set("filter[status][_eq]", "published");
@@ -161,6 +161,8 @@ function buildExperiencesListUrl(
   );
   if (options?.page) {
     url.searchParams.set("page", String(options.page));
+  }
+  if (options?.meta) {
     url.searchParams.set("meta", "filter_count");
   }
   return url.toString();
@@ -653,8 +655,6 @@ export interface FetchExperiencesOptions {
   locale?: LocaleCode;
   /** Cap rows from Directus. Defaults to the shared collection limit. */
   limit?: number;
-  /** 1-based catalog page. When set, fetches only that page (20 rows). */
-  page?: number;
 }
 
 export async function fetchExperiences(
@@ -667,48 +667,52 @@ export async function fetchExperiences(
     return EMPTY_FETCH_RESULT;
   }
 
-  const page = options?.page;
-  const pageSize = page ? CATALOG_PAGE_SIZE : undefined;
-
   try {
-    const response = await fetch(
-      buildExperiencesListUrl(directusUrl, {
-        limit: pageSize ?? options?.limit,
-        page,
-      }),
-      directusCollectionFetch,
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch experiences: ${response.statusText}`);
-    }
-
-    const apiData: ExperiencesApiResponse & {
-      meta?: { filter_count?: number };
-    } = await response.json();
     const locale = options?.locale ?? "ar";
     const typeFilter = options?.type?.trim();
-    const publishedRows = (apiData.data ?? []).filter(isPublishedExperience);
-    const rows = typeFilter
+    const fetchAll = !options?.limit;
+    const rows = fetchAll
+      ? (
+          await fetchDirectusCollectionAll<ApiExperience>((page, pageSize, meta) =>
+            buildExperiencesListUrl(directusUrl, {
+              limit: pageSize,
+              page,
+              meta,
+            }),
+          )
+        ).rows
+      : await (async () => {
+          const response = await fetch(
+            buildExperiencesListUrl(directusUrl, {
+              limit: options?.limit,
+            }),
+            directusCollectionFetch,
+          );
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch experiences: ${response.statusText}`,
+            );
+          }
+          const apiData: ExperiencesApiResponse = await response.json();
+          return apiData.data ?? [];
+        })();
+
+    const publishedRows = rows.filter(isPublishedExperience);
+    const filteredRows = typeFilter
       ? publishedRows.filter((row) => matchesExperienceType(row, typeFilter))
       : publishedRows;
     const baseUrl = directusUrl.replace(/\/$/, "");
 
-    const experiences = rows
+    const experiences = filteredRows
       .map((row) => transformExperience(row, locale, baseUrl))
       .sort((a, b) => Number(b.id) - Number(a.id));
     const filterOptions = buildFilterOptions(publishedRows, locale);
-    const total =
-      typeof apiData.meta?.filter_count === "number"
-        ? apiData.meta.filter_count
-        : experiences.length;
-    const currentPage = page ?? 1;
     return {
       experiences,
       filterOptions,
-      total,
-      page: currentPage,
-      totalPages: catalogTotalPages(total, pageSize ?? (total || 1)),
+      total: experiences.length,
+      page: 1,
+      totalPages: catalogTotalPages(experiences.length, experiences.length || 1),
     };
   } catch (error) {
     console.error("Error fetching experiences:", error);

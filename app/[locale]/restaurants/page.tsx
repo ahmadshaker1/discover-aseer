@@ -17,9 +17,7 @@ const RestaurantsPage = async ({ searchParams }: RestaurantsPageProps) => {
   const locale = (await getLocale()) as "ar" | "en";
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
-  const { items: restaurants, totalPages } = await fetchRestaurants(locale, {
-    page,
-  });
+  const { items: restaurants } = await fetchRestaurants(locale);
 
   return (
     <div className="flex w-full flex-col">
@@ -28,7 +26,6 @@ const RestaurantsPage = async ({ searchParams }: RestaurantsPageProps) => {
         <RestaurantsListing
           restaurants={restaurants}
           currentPage={page}
-          totalPages={totalPages}
         />
       </div>
 

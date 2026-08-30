@@ -4,6 +4,7 @@ import {
   DIRECTUS_COLLECTION_LIMIT,
   catalogTotalPages,
   directusCollectionFetch,
+  fetchDirectusCollectionAll,
 } from "@/lib/directus/collectionCache";
 
 const ATTRACTION_FIELDS = [
@@ -420,42 +421,50 @@ export const fetchLandmarks = async (
   }
 
   const page = options?.page;
+  const fetchAll = !page && !options?.limit;
   const limit = page
     ? CATALOG_PAGE_SIZE
     : (options?.limit ?? DIRECTUS_COLLECTION_LIMIT);
 
   try {
-    const listUrl = new URL(`${directusUrl}/items/attractions`);
-    listUrl.searchParams.set("sort", "-id");
-    listUrl.searchParams.set("fields", ATTRACTION_FIELDS);
-    listUrl.searchParams.set("limit", String(limit));
-    if (page) {
-      listUrl.searchParams.set("page", String(page));
-      listUrl.searchParams.set("meta", "filter_count");
-    }
+    const buildUrl = (pageNumber: number, pageSize: number, meta: boolean) => {
+      const listUrl = new URL(`${directusUrl}/items/attractions`);
+      listUrl.searchParams.set("sort", "-id");
+      listUrl.searchParams.set("fields", ATTRACTION_FIELDS);
+      listUrl.searchParams.set("limit", String(pageSize));
+      listUrl.searchParams.set("page", String(pageNumber));
+      if (meta) listUrl.searchParams.set("meta", "filter_count");
+      return listUrl.toString();
+    };
 
-    const response = await fetch(listUrl.toString(), directusCollectionFetch);
+    const rows = fetchAll
+      ? (await fetchDirectusCollectionAll<ApiLandmark>(buildUrl)).rows
+      : await (async () => {
+          const response = await fetch(
+            buildUrl(page ?? 1, limit, Boolean(page)),
+            directusCollectionFetch,
+          );
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch landmarks: ${response.statusText}`,
+            );
+          }
+          const apiData: ApiResponse & { meta?: { filter_count?: number } } =
+            await response.json();
+          return apiData.data ?? [];
+        })();
 
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch landmarks: ${response.statusText}`,
-      );
-    }
-
-    const apiData: ApiResponse & { meta?: { filter_count?: number } } =
-      await response.json();
-    const items = (apiData.data ?? [])
+    const items = rows
       .filter((landmark) => !landmark.status || landmark.status === "published")
       .map((landmark) => transformLandmark(landmark, directusUrl, locale));
-    const total =
-      typeof apiData.meta?.filter_count === "number"
-        ? apiData.meta.filter_count
-        : items.length;
     return {
       items,
-      total,
+      total: items.length,
       page: page ?? 1,
-      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+      totalPages: catalogTotalPages(
+        items.length,
+        page ? CATALOG_PAGE_SIZE : items.length || 1,
+      ),
     };
   } catch (error) {
     console.error("Error fetching landmarks:", error);
@@ -505,16 +514,9 @@ function sameCity(a: Landmark, b: Landmark): boolean {
   return normalizeText(a.area) === normalizeText(b.area);
 }
 
-function sameTagsOrType(a: Landmark, b: Landmark): boolean {
-  const aTags = a.interestTags ?? [];
-  const bTags = b.interestTags ?? [];
-  if (aTags.length > 0 && bTags.some((tag) => aTags.includes(tag))) return true;
-
-  if (a.categoryLabel && b.categoryLabel) {
-    return normalizeText(a.categoryLabel) === normalizeText(b.categoryLabel);
-  }
-
-  return false;
+function sameAttractionType(a: Landmark, b: Landmark): boolean {
+  if (!a.attractionType || !b.attractionType) return false;
+  return normalizeText(a.attractionType) === normalizeText(b.attractionType);
 }
 
 export const getRelatedLandmarks = (
@@ -524,7 +526,7 @@ export const getRelatedLandmarks = (
 ): Landmark[] => {
   return all
     .filter((row) => row.id !== current.id)
-    .filter((row) => sameCity(current, row) && sameTagsOrType(current, row))
+    .filter((row) => sameCity(current, row) && !sameAttractionType(current, row))
     .slice(0, limit);
 };
 

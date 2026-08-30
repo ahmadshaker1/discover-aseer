@@ -2,7 +2,6 @@ import type { LocaleCode } from "@/lib/i18n/localized";
 import type {
   ApiSupportService,
   SupportService,
-  SupportServicesApiResponse,
 } from "./types";
 import { pickLocalizedField } from "@/lib/i18n/localized";
 import {
@@ -13,10 +12,8 @@ import {
 } from "./supportServiceLocale";
 import { normalizeMapsUrl, normalizeText } from "./utils";
 import {
-  CATALOG_PAGE_SIZE,
-  DIRECTUS_COLLECTION_LIMIT,
   catalogTotalPages,
-  directusCollectionFetch,
+  fetchDirectusCollectionAll,
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
 
@@ -102,7 +99,6 @@ function transformApiSupportService(
 
 export async function fetchSupportServices(
   locale: LocaleCode = "ar",
-  options?: { page?: number },
 ): Promise<{
   items: SupportService[];
   total: number;
@@ -110,41 +106,24 @@ export async function fetchSupportServices(
   totalPages: number;
 }> {
   const empty = { items: [] as SupportService[], total: 0, page: 1, totalPages: 1 };
-  const page = options?.page;
   try {
-    const response = await fetch(
-      directusItemsUrl(SUPPORT_SERVICES_API_BASE, "support_service", {
-        fields: SUPPORT_SERVICE_FIELDS,
-        limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
-        page,
-        pageSize: page ? CATALOG_PAGE_SIZE : undefined,
-        meta: Boolean(page),
-      }),
-      directusCollectionFetch,
+    const { rows } = await fetchDirectusCollectionAll<ApiSupportService>(
+      (page, pageSize, meta) =>
+        directusItemsUrl(SUPPORT_SERVICES_API_BASE, "support_service", {
+          fields: SUPPORT_SERVICE_FIELDS,
+          page,
+          pageSize,
+          meta,
+        }),
     );
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch support services: ${response.status} ${response.statusText}`,
-      );
-    }
-
-    const apiData: SupportServicesApiResponse & {
-      meta?: { filter_count?: number };
-    } = await response.json();
-    const rows = Array.isArray(apiData?.data) ? apiData.data : [];
     const items = rows
       .filter(isPublished)
       .map((item) => transformApiSupportService(item, locale));
-    const total =
-      typeof apiData.meta?.filter_count === "number"
-        ? apiData.meta.filter_count
-        : items.length;
     return {
       items,
-      total,
-      page: page ?? 1,
-      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
+      total: items.length,
+      page: 1,
+      totalPages: catalogTotalPages(items.length, items.length || 1),
     };
   } catch (error) {
     console.error("Error fetching support services:", error);

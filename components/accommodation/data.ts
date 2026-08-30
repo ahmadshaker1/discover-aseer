@@ -1,10 +1,7 @@
 import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
 import {
-  CATALOG_PAGE_SIZE,
-  DIRECTUS_COLLECTION_LIMIT,
-  catalogTotalPages,
-  directusCollectionFetch,
   directusItemsUrl,
+  fetchDirectusCollectionAll,
 } from "@/lib/directus/collectionCache";
 
 const ACCOMMODATION_FIELDS = [
@@ -272,40 +269,28 @@ export function splitAccommodationLists(
 
 export const fetchAccommodations = async (
   locale: LocaleCode = "ar",
-  options?: { page?: number },
 ): Promise<{
   items: Accommodation[];
   total: number;
-  page: number;
-  totalPages: number;
 }> => {
-  const empty = { items: [] as Accommodation[], total: 0, page: 1, totalPages: 1 };
+  const empty = { items: [] as Accommodation[], total: 0 };
   const directusUrl = (
     process.env.NEXT_PUBLIC_DIRECTUS_APP_URL?.replace(/\/$/, "") ||
     "https://tool-portal.discoveraseer.com"
   );
-  const page = options?.page;
 
   try {
-    const response = await fetch(
-      directusItemsUrl(directusUrl, "accomodation", {
-        fields: ACCOMMODATION_FIELDS,
-        limit: page ? CATALOG_PAGE_SIZE : DIRECTUS_COLLECTION_LIMIT,
-        page,
-        pageSize: page ? CATALOG_PAGE_SIZE : undefined,
-        meta: Boolean(page),
-      }),
-      directusCollectionFetch,
+    const { rows: allRows } = await fetchDirectusCollectionAll<ApiAccommodation>(
+      (page, pageSize, meta) =>
+        directusItemsUrl(directusUrl, "accomodation", {
+          fields: ACCOMMODATION_FIELDS,
+          page,
+          pageSize,
+          meta,
+        }),
     );
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch accommodations: ${response.statusText}`);
-    }
-
-    const apiData: ApiResponse & { meta?: { filter_count?: number } } =
-      await response.json();
-    const rows = Array.isArray(apiData.data) ? apiData.data : [];
-    const items = rows
+    const items = allRows
       .filter(
         (accommodation) =>
           !accommodation.status || accommodation.status === "published",
@@ -313,16 +298,8 @@ export const fetchAccommodations = async (
       .map((accommodation) =>
         transformAccommodation(accommodation, directusUrl, locale),
       );
-    const total =
-      typeof apiData.meta?.filter_count === "number"
-        ? apiData.meta.filter_count
-        : items.length;
-    return {
-      items,
-      total,
-      page: page ?? 1,
-      totalPages: catalogTotalPages(total, page ? CATALOG_PAGE_SIZE : total || 1),
-    };
+
+    return { items, total: items.length };
   } catch (error) {
     console.error("Error fetching accommodations:", error);
     return empty;
