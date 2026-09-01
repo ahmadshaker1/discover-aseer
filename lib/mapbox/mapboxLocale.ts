@@ -15,14 +15,14 @@ export function mapLocaleToMapboxLanguage(locale: string): "ar" | "en" {
 
 /**
  * Registers the Mapbox RTL text plugin once (Arabic / Hebrew shaping).
+ * Always load it: English maps in Aseer still show Arabic-only place names,
+ * and without this plugin those labels render as disconnected letters.
  * Synchronous and non-blocking — does not wait on network; Mapbox loads the worker when needed.
  */
 export function ensureMapboxRtlTextPluginRegistered(
   mapboxgl: typeof import("mapbox-gl").default,
-  locale: string,
 ): void {
   if (typeof window === "undefined") return;
-  if (mapLocaleToMapboxLanguage(locale) !== "ar") return;
   if (rtlTextPluginRegistrationAttempted) return;
   rtlTextPluginRegistrationAttempted = true;
 
@@ -45,9 +45,9 @@ export function ensureMapboxRtlTextPluginRegistered(
 /** @deprecated Use `ensureMapboxRtlTextPluginRegistered` — kept for call sites that still `await`. */
 export async function prepareMapboxForLocale(
   mapboxgl: typeof import("mapbox-gl").default,
-  locale: string,
+  _locale?: string,
 ): Promise<void> {
-  ensureMapboxRtlTextPluginRegistered(mapboxgl, locale);
+  ensureMapboxRtlTextPluginRegistered(mapboxgl);
 }
 
 /**

@@ -3,7 +3,12 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useLocale } from "next-intl";
 import { brandPrimary } from "@/lib/theme/palette";
+import {
+  ensureMapboxRtlTextPluginRegistered,
+  setMapLabelLanguage,
+} from "@/lib/mapbox/mapboxLocale";
 
 interface DestinationPreviewMapProps {
   lat: number;
@@ -18,6 +23,7 @@ const DestinationPreviewMap = ({
   title,
   className = "",
 }: DestinationPreviewMapProps) => {
+  const locale = useLocale();
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markerRef = useRef<mapboxgl.Marker | null>(null);
@@ -34,6 +40,7 @@ const DestinationPreviewMap = ({
     }
 
     mapboxgl.accessToken = token;
+    ensureMapboxRtlTextPluginRegistered(mapboxgl);
 
     const map = new mapboxgl.Map({
       container: mapContainer.current,
@@ -51,6 +58,10 @@ const DestinationPreviewMap = ({
     map.keyboard.disable();
     map.doubleClickZoom.disable();
     map.touchZoomRotate.disable();
+
+    map.on("load", () => {
+      setMapLabelLanguage(map, locale);
+    });
 
     markerRef.current = new mapboxgl.Marker({ color: brandPrimary })
       .setLngLat([lon, lat])
@@ -76,7 +87,7 @@ const DestinationPreviewMap = ({
       map.remove();
       mapRef.current = null;
     };
-  }, [lat, lon, title]);
+  }, [lat, lon, title, locale]);
 
   return <div ref={mapContainer} className={`h-full w-full ${className}`} />;
 };
