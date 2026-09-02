@@ -3,8 +3,9 @@
 import type { KeyboardEvent } from "react";
 import { useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { localizeBookletHref } from "@/lib/booklet";
 import type { NavbarDropdownLink, NavbarMegaMenu } from "./navbarData";
 
 interface MegaMenuTriggerProps {
@@ -150,6 +151,7 @@ function MegaMenuLinkRow({
   onNavigate: () => void;
 }) {
   const t = useTranslations();
+  const locale = useLocale();
   const style = {
     display: "block" as const,
     padding: "12px 2px",
@@ -176,7 +178,7 @@ function MegaMenuLinkRow({
   if (item.external) {
     return (
       <a
-        href={item.href}
+        href={localizeBookletHref(item.href, locale)}
         target="_blank"
         rel="noopener noreferrer"
         className="megalink"
@@ -212,6 +214,7 @@ function FeaturedCard({
   onNavigate: () => void;
 }) {
   const t = useTranslations();
+  const locale = useLocale();
   const [hovered, setHovered] = useState(false);
   const title = t(item.labelKey);
   const kicker =
@@ -324,7 +327,7 @@ function FeaturedCard({
   if (item.external) {
     return (
       <a
-        href={item.href}
+        href={localizeBookletHref(item.href, locale)}
         target="_blank"
         rel="noopener noreferrer"
         tabIndex={isOpen ? 0 : -1}

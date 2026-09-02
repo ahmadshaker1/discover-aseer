@@ -7,6 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import ThemeToggleButton from "@/components/Navbar/ThemeToggleButton";
+import { bookletHref } from "@/lib/booklet";
 
 const LOCALE_OPTIONS = [
   { code: "ar", labelKey: "nav.localeArabic" as const },
@@ -72,7 +73,7 @@ const DesktopActionLinks = () => {
         : t("nav.localeChinese");
 
   const handleBookletOpen = () => {
-    window.open("/booklet", "_blank", "noopener,noreferrer");
+    window.open(bookletHref("discover", locale), "_blank", "noopener,noreferrer");
   };
 
   const handleLocaleSwitch = (nextLocale: string) => {
