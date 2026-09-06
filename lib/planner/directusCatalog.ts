@@ -85,6 +85,7 @@ export function mapRestaurantCatalog(rows: CatalogRow[]) {
     title: item.title_en || item.title_ar || item.name_en || item.name_ar,
     cuisine: item.cuisine_type,
     description: item.content || item.content_ar,
+    price: item.price,
   }));
 }
 
@@ -95,6 +96,7 @@ export function mapExperienceCatalog(rows: CatalogRow[]) {
     type: item.type_en || item.type,
     duration: item.duration_En || item.duration,
     description: item.description_eng || item.description,
+    price: item.price ?? item.price_1,
   }));
 }
 
@@ -110,6 +112,7 @@ export function mapEventCatalog(rows: CatalogRow[]) {
       title: item.title_en || item.title,
       description: item.description_en || item.description,
       end_date: item.end_date,
+      price: item.price,
     }));
 }
 
@@ -196,13 +199,11 @@ export async function fetchPlannerCatalogs(options?: {
     }
 
     if (options?.budget) {
-      const price = Number(exp.price);
-      if (
-        !isNaN(price) &&
-        exp.price !== null &&
-        exp.price !== undefined &&
-        exp.price !== ""
-      ) {
+      let priceStr = String(exp.price ?? exp.price_1 ?? "");
+      const match = priceStr.match(/\d+(?:\.\d+)?/);
+      const price = match ? Number(match[0]) : NaN;
+
+      if (!isNaN(price)) {
         // Budget ranges for experiences:
         // - economy: price < 200
         // - medium: price between 200 and 400
@@ -229,45 +230,36 @@ export async function fetchPlannerCatalogs(options?: {
 
 export async function fetchPlannerCatalogByType(
   itemType: "restaurant" | "experience" | "event",
+  options?: {
+    foodPreferences?: string[];
+    companion?: string | null;
+    interests?: string[];
+    budget?: string | null;
+  },
 ) {
-  const base = getDirectusPublicUrl();
-  const listOpts = { limit: DIRECTUS_COLLECTION_LIMIT, published: true };
+  const skipRestaurants = itemType !== "restaurant";
+
+  const catalogs = await fetchPlannerCatalogs({
+    ...options,
+    skipRestaurants,
+  });
 
   if (itemType === "restaurant") {
-    const payload = await fetchCatalogJson(
-      directusItemsUrl(base, "restaurants", {
-        limit: 150,
-        fields: RESTAURANT_FIELDS,
-      }),
-    );
     return {
-      catalog: mapRestaurantCatalog(asRows(payload)),
-      data: asRows(payload),
+      catalog: catalogs.restaurantsCatalog,
+      data: catalogs.restaurantsData,
     };
   }
 
   if (itemType === "experience") {
-    const payload = await fetchCatalogJson(
-      directusItemsUrl(base, "experiences", {
-        limit: 150,
-        published: true,
-        fields: EXPERIENCE_FIELDS,
-      }),
-    );
     return {
-      catalog: mapExperienceCatalog(asRows(payload)),
-      data: asRows(payload),
+      catalog: catalogs.experiencesCatalog,
+      data: catalogs.experiencesData,
     };
   }
 
-  const payload = await fetchCatalogJson(
-    directusItemsUrl(base, "events", {
-      limit: 150,
-      fields: EVENT_FIELDS,
-    }) + "&filter[event_status][_eq]=Now",
-  );
   return {
-    catalog: mapEventCatalog(asRows(payload)),
-    data: asRows(payload),
+    catalog: catalogs.eventsCatalog,
+    data: catalogs.eventsData,
   };
 }
