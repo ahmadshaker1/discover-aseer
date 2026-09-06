@@ -1,10 +1,18 @@
 import { NextResponse } from "next/server";
-import { getBookletAssetUrl } from "@/lib/booklet";
+import {
+  bookletKindFromSearchParams,
+  bookletLocaleFromRequest,
+  getBookletAssetUrl,
+} from "@/lib/booklet";
 
 /** @deprecated Prefer `/booklet` — kept for existing navbar / shared links. */
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const assetUrl = await getBookletAssetUrl();
+    const { searchParams } = new URL(request.url);
+    const assetUrl = await getBookletAssetUrl({
+      locale: bookletLocaleFromRequest(request),
+      kind: bookletKindFromSearchParams(searchParams),
+    });
 
     if (!assetUrl) {
       return new NextResponse("Booklet not found in response", { status: 404 });

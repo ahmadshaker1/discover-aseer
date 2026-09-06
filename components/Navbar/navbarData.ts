@@ -74,7 +74,7 @@ export const discoverAseerLinks: NavbarDropdownLink[] = [
     subKey: "navMega.discover.film",
   },
   {
-    href: "/booklet",
+    href: "/booklet?type=outdoor",
     labelKey: "navLinks.outdoorGuide",
     image: "/assets/landing/welcome-experiences-hiking.jpg",
     subKey: "navMega.discover.outdoorGuide",

@@ -369,7 +369,7 @@ const InteractiveMap = ({
 
     let cancelled = false;
 
-    ensureMapboxRtlTextPluginRegistered(mapboxgl, locale);
+    ensureMapboxRtlTextPluginRegistered(mapboxgl);
     if (!mapContainer.current) return;
 
     mapboxgl.accessToken = token;
@@ -527,7 +527,7 @@ const InteractiveMap = ({
 
   useEffect(() => {
     if (!mapRef.current || !mapLoadedRef.current) return;
-    ensureMapboxRtlTextPluginRegistered(mapboxgl, locale);
+    ensureMapboxRtlTextPluginRegistered(mapboxgl);
     setMapLabelLanguage(mapRef.current, locale);
   }, [locale]);
 

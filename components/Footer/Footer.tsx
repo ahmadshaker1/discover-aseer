@@ -1,14 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
+import { bookletHref } from "@/lib/booklet";
 import { BookletSmallArrowIcon } from "./Icons";
 
 const Footer = () => {
   const t = useTranslations();
+  const locale = useLocale();
   return (
     <footer className="w-full bg-[linear-gradient(359.31deg,#280048_43.01%,#3B016B_99.52%)] text-white">
       <div className="mx-auto w-full max-w-[1440px] px-4 py-5 sm:px-8 md:px-16 lg:h-[647px] lg:px-[130px]">
@@ -166,8 +168,10 @@ const Footer = () => {
                   {t("footer.bookletsTitle")}
                 </h3>
                 <div className="flex w-full flex-1 flex-col items-start text-[18px] font-bold leading-[197%]">
-                  <Link
-                    href="/about-aseer"
+                  <a
+                    href={bookletHref("discover", locale)}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="block w-full text-start hover:opacity-80"
                   >
                     <span className="inline-flex items-center gap-1 whitespace-nowrap">
@@ -176,10 +180,12 @@ const Footer = () => {
                       </span>
                       <BookletSmallArrowIcon />
                     </span>
-                  </Link>
+                  </a>
 
-                  <Link
-                    href="/activities"
+                  <a
+                    href={bookletHref("outdoor", locale)}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="block w-full text-start hover:opacity-80"
                   >
                     <span className="inline-flex items-center gap-1 whitespace-nowrap">
@@ -188,7 +194,7 @@ const Footer = () => {
                       </span>
                       <BookletSmallArrowIcon />
                     </span>
-                  </Link>
+                  </a>
                 </div>
               </div>
               {/* التواصل */}

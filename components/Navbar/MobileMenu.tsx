@@ -8,6 +8,7 @@ import Image from "next/image";
 import { HamburgerIcon } from "./Icons";
 import { getNavbarDropdownLinks, navigationLinks } from "./navbarData";
 import ThemeToggleButton from "@/components/Navbar/ThemeToggleButton";
+import { bookletHref, localizeBookletHref } from "@/lib/booklet";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -279,7 +280,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                         return (
                                           <a
                                             key={`${item.href}-${item.labelKey}`}
-                                            href={item.href}
+                                            href={localizeBookletHref(item.href, locale)}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             onClick={onClose}
@@ -430,7 +431,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                       title={t("nav.downloadGuide")}
                       aria-label={t("nav.downloadGuide")}
                       onClick={() => {
-                        window.open("/booklet", "_blank", "noopener,noreferrer");
+                        window.open(
+                          bookletHref("discover", locale),
+                          "_blank",
+                          "noopener,noreferrer",
+                        );
                         onClose();
                       }}
                     >
