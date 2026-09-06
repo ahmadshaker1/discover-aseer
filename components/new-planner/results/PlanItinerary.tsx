@@ -268,13 +268,53 @@ const PlannerExperienceCardNew = ({
         </div>
         <div className="flex flex-col flex-1 md:px-4 py-2 gap-3 justify-between h-full w-full">
           <div>
-            {experience.category && (
-              <div className="flex w-20 h-[25px] justify-center items-center gap-2.5 rounded-xl border border-[rgba(0,0,0,0.80)] dark:border-white/80 mb-3">
-                <span className="text-xs font-semibold whitespace-nowrap">
-                  {experience.category}
-                </span>
-              </div>
-            )}
+            {(() => {
+              const rawCategory =
+                locale === "en" && experience.type_en
+                  ? experience.type_en
+                  : experience.type || experience.category;
+              let categories: string[] = [];
+              if (Array.isArray(rawCategory)) {
+                categories = rawCategory;
+              } else if (
+                typeof rawCategory === "string" &&
+                rawCategory.trim() !== ""
+              ) {
+                if (rawCategory.trim().startsWith("[")) {
+                  try {
+                    const parsed = JSON.parse(rawCategory);
+                    if (Array.isArray(parsed)) categories = parsed;
+                  } catch {}
+                }
+                if (categories.length === 0) {
+                  categories = rawCategory
+                    .split(",")
+                    .map((c: string) => c.trim())
+                    .filter(Boolean);
+                }
+              }
+              if (
+                categories.length === 0 &&
+                typeof experience.category === "string"
+              ) {
+                categories = [experience.category];
+              }
+
+              return categories.length > 0 ? (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {categories.map((cat, idx) => (
+                    <div
+                      key={idx}
+                      className="flex px-3 h-[25px] justify-center items-center gap-2.5 rounded-xl border border-[rgba(0,0,0,0.80)] dark:border-white/80"
+                    >
+                      <span className="text-xs font-semibold whitespace-nowrap">
+                        {cat}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : null;
+            })()}
             <h3 className="text-xl font-bold text-black dark:text-white mb-2">
               {experience.title}
             </h3>
