@@ -93,7 +93,7 @@ export function mapExperienceCatalog(rows: CatalogRow[]) {
   return rows.map((item) => ({
     id: item.id,
     title: item.title_eng || item.title,
-    type: item.type_en || item.type,
+    type: item.type_en,
     duration: item.duration_En || item.duration,
     description: item.description_eng || item.description,
     price: item.price ?? item.price_1,

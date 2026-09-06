@@ -300,6 +300,19 @@ const PlannerExperienceCardNew = ({
                 categories = [experience.category];
               }
 
+              const translateCategory = (cat: string) => {
+                if (locale === "ar") {
+                  const translations: Record<string, string> = {
+                    "Heritage and Arts": "التراث والفنون",
+                    Nature: "الطبيعة",
+                    Adventures: "المغامرات",
+                    "Culinary Arts": "فنون الطهي",
+                  };
+                  return translations[cat] || cat;
+                }
+                return cat;
+              };
+
               return categories.length > 0 ? (
                 <div className="flex flex-wrap gap-2 mb-3">
                   {categories.map((cat, idx) => (
@@ -308,7 +321,7 @@ const PlannerExperienceCardNew = ({
                       className="flex px-3 h-[25px] justify-center items-center gap-2.5 rounded-xl border border-[rgba(0,0,0,0.80)] dark:border-white/80"
                     >
                       <span className="text-xs font-semibold whitespace-nowrap">
-                        {cat}
+                        {translateCategory(cat)}
                       </span>
                     </div>
                   ))}
