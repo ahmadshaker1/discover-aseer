@@ -35,9 +35,10 @@ const PlannerRestaurantCardNew = ({
   onReplace,
   isReplacing,
   locale,
+  isExportingPDF,
 }: any) => {
   return (
-    <div className="flex flex-col gap-2 w-full mb-6">
+    <div className="flex flex-col gap-2 w-full mb-6 print:mb-0!">
       <div className="flex items-center gap-2">
         <Image
           src="/assets/planner/restaurant-2-line.svg"
@@ -58,8 +59,16 @@ const PlannerRestaurantCardNew = ({
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col flex-1 md:px-4 gap-2 w-full">
-          <h3 className="text-xl font-bold text-black dark:text-white">
+        <div
+          className={`flex flex-col flex-1 min-w-0 md:px-4 gap-2 ${
+            isExportingPDF ? "w-auto" : "w-full"
+          }`}
+        >
+          <h3
+            className={`${
+              isExportingPDF ? "text-lg" : "text-xl"
+            } font-bold text-black dark:text-white break-words`}
+          >
             {restaurant.name}
           </h3>
           <div className="flex items-center gap-1">
@@ -68,7 +77,13 @@ const PlannerRestaurantCardNew = ({
               alt="Location"
               className="w-4 h-4 dark:brightness-0 dark:invert opacity-70"
             />
-            <span className="text-sm text-gray-500">{restaurant.location}</span>
+            <span
+              className={`${
+                isExportingPDF ? "text-xs" : "text-sm"
+              } min-w-0 text-gray-500 break-words`}
+            >
+              {restaurant.location}
+            </span>
           </div>
           {restaurant.cuisineTypes && restaurant.cuisineTypes.length > 0 && (
             <div className="flex items-center gap-1">
@@ -77,18 +92,26 @@ const PlannerRestaurantCardNew = ({
                 alt="Cuisine"
                 className="w-4 h-4 dark:brightness-0 dark:invert opacity-70"
               />
-              <span className="text-sm text-black dark:text-gray-400">
+              <span
+                className={`${
+                  isExportingPDF ? "text-xs" : "text-sm"
+                } min-w-0 text-black dark:text-gray-400 break-words`}
+              >
                 {formatCuisineTypes(restaurant.cuisineTypes, locale)}
               </span>
             </div>
           )}
         </div>
-        <div className="flex flex-col items-center gap-4 shrink-0 md:px-2 justify-start h-full pt-2 w-full md:w-auto">
+        <div
+          className={`flex flex-col items-center gap-4 shrink-0 md:px-2 justify-start h-full pt-2 w-full md:w-auto ${
+            isExportingPDF ? "hidden" : ""
+          }`}
+        >
           <button
             onClick={() =>
               window.open(restaurant.mapsUrl, "_blank", "noopener,noreferrer")
             }
-            className="w-full md:w-auto flex h-9 px-4 py-2.5 justify-center items-center gap-3 rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white"
+            className="w-full md:w-auto flex h-9 px-4 py-2.5 justify-center items-center gap-3 rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white print-hidden"
           >
             <img
               src={"/assets/planner/direction-line.svg"}
@@ -127,9 +150,10 @@ const PlannerEventCardNew = ({
   onReplace,
   isReplacing,
   locale,
+  isExportingPDF,
 }: any) => {
   return (
-    <div className="flex flex-col gap-2 w-full mb-6">
+    <div className="flex flex-col gap-2 w-full mb-6 print:mb-0!">
       <div className="flex items-center gap-2">
         <Image
           src="/assets/planner/open-arm-fill.svg"
@@ -150,13 +174,25 @@ const PlannerEventCardNew = ({
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col flex-1 md:px-4 gap-2 w-full">
-          <div className="flex items-center gap-4">
-            <h3 className="text-xl font-bold text-black dark:text-white">
+        <div
+          className={`flex flex-col flex-1 min-w-0 md:px-4 gap-2 ${
+            isExportingPDF ? "w-auto" : "w-full"
+          }`}
+        >
+          <div
+            className={`flex items-center gap-4 ${
+              isExportingPDF ? "flex-wrap" : ""
+            }`}
+          >
+            <h3
+              className={`${
+                isExportingPDF ? "text-lg" : "text-xl"
+              } min-w-0 font-bold text-black dark:text-white break-words`}
+            >
               {event.title}
             </h3>
             {event.price != null && String(event.price).trim() !== "" && (
-              <div className="flex items-center gap-1 text-[#00BBB4] font-bold">
+              <div className="flex shrink-0 items-center gap-1 text-[#00BBB4] font-bold">
                 <span>{event.price}</span>
                 <Image
                   src="/assets/planner/Saudi_Riyal_Symbol-2%201.svg"
@@ -174,7 +210,11 @@ const PlannerEventCardNew = ({
                 alt="Calendar"
                 className="w-4 h-4 dark:brightness-0 dark:invert opacity-70"
               />
-              <span className="text-sm text-gray-500">
+              <span
+                className={`${
+                  isExportingPDF ? "text-xs" : "text-sm"
+                } min-w-0 text-gray-500 break-words`}
+              >
                 {event.startDate &&
                 event.endDate &&
                 event.startDate !== event.endDate
@@ -187,7 +227,11 @@ const PlannerEventCardNew = ({
             {aiTime}
           </span>
         </div>
-        <div className="flex flex-col items-center gap-4 shrink-0 md:px-2 justify-start h-full pt-2 w-full md:w-auto">
+        <div
+          className={`flex flex-col items-center gap-4 shrink-0 md:px-2 justify-start h-full pt-2 w-full md:w-auto ${
+            isExportingPDF ? "hidden" : ""
+          }`}
+        >
           <button
             onClick={() =>
               window.open(
@@ -196,7 +240,7 @@ const PlannerEventCardNew = ({
                 "noopener,noreferrer",
               )
             }
-            className="w-full md:w-auto flex h-9 px-4 py-2.5 justify-center items-center gap-3 rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white"
+            className="w-full md:w-auto flex h-9 px-4 py-2.5 justify-center items-center gap-3 rounded-[86px] border border-[rgba(40,0,72,0.16)] text-[#7300CD] font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer dark:bg-white/5 dark:text-white print-hidden"
           >
             <img
               src={"/assets/planner/direction-line.svg"}
@@ -234,9 +278,10 @@ const PlannerExperienceCardNew = ({
   onReplace,
   isReplacing,
   locale,
+  isExportingPDF,
 }: any) => {
   return (
-    <div className="flex flex-col gap-2 w-full mb-6">
+    <div className="flex flex-col gap-2 w-full mb-6 print:mb-0!">
       <div className="flex items-center gap-2">
         <Image
           src="/assets/planner/open-arm-fill.svg"
@@ -266,7 +311,11 @@ const PlannerExperienceCardNew = ({
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col flex-1 md:px-4 py-2 gap-3 justify-between h-full w-full">
+        <div
+          className={`flex flex-col flex-1 min-w-0 md:px-4 py-2 gap-3 justify-between h-full ${
+            isExportingPDF ? "w-auto" : "w-full"
+          }`}
+        >
           <div>
             {(() => {
               const rawCategory =
@@ -328,10 +377,18 @@ const PlannerExperienceCardNew = ({
                 </div>
               ) : null;
             })()}
-            <h3 className="text-xl font-bold text-black dark:text-white mb-2">
+            <h3
+              className={`${
+                isExportingPDF ? "text-lg" : "text-xl"
+              } font-bold text-black dark:text-white mb-2 break-words`}
+            >
               {experience.title}
             </h3>
-            <p className="text-sm text-gray-500 line-clamp-2">
+            <p
+              className={`${
+                isExportingPDF ? "text-xs" : "text-sm"
+              } text-gray-500 line-clamp-2 break-words`}
+            >
               {experience.description}
             </p>
           </div>
@@ -406,6 +463,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
   const [replacingItemId, setReplacingItemId] = useState<string | null>(null);
   const [isAddingDay, setIsAddingDay] = useState<number | null>(null);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const [isPreparingPrint, setIsPreparingPrint] = useState(false);
   const [noAlternativeModal, setNoAlternativeModal] = useState<{
     isOpen: boolean;
     type: string;
@@ -534,6 +592,19 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       );
     } finally {
       setIsExportingPDF(false);
+    }
+  };
+
+  const handlePrint = async () => {
+    if (!contentRef.current) return;
+
+    setIsPreparingPrint(true);
+    try {
+      // Match the export layout before opening the browser print dialog.
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      window.print();
+    } finally {
+      setIsPreparingPrint(false);
     }
   };
 
@@ -726,12 +797,10 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
       <style>{`
         @media print {
           @page {
-            margin: 0.5cm;
+            margin: 0 0.5cm 0.5cm;
             size: auto;
           }
           body {
-            background-color: white !important;
-            color: black !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
@@ -740,24 +809,6 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
           }
           .shrink-0 {
             break-inside: avoid;
-          }
-          .overflow-x-auto { 
-            overflow: visible !important;
-            flex-wrap: wrap !important;
-          }
-          /* Force Light Theme Colors for print */
-          .dark\\:bg-\\[\\#1C0F2A\\], .dark\\:bg-\\[\\#14091F\\] {
-            background-color: #F7F7F7 !important;
-          }
-          .dark\\:text-white {
-            color: black !important;
-          }
-          .dark\\:border-white\\/10, .dark\\:border-white\\/20 {
-            border-color: #e5e7eb !important;
-          }
-          img {
-            max-width: 100% !important;
-            object-fit: cover !important;
           }
         }
       `}</style>
@@ -786,8 +837,13 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
             )}
           </button>
           <button
-            onClick={() => window.print()}
-            className="flex flex-1 md:flex-none justify-center items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-white/10 transition-colors cursor-pointer"
+            onClick={handlePrint}
+            disabled={isPreparingPrint}
+            className={`flex flex-1 md:flex-none justify-center items-center gap-2 border border-[rgba(0,0,0,0.1)] dark:border-white/20 rounded-full px-6 py-2 text-black dark:text-white font-medium transition-colors ${
+              isPreparingPrint
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-50 dark:hover:bg-white/10 cursor-pointer"
+            }`}
           >
             <Image
               src="/assets/planner/printer-line.svg"
@@ -928,19 +984,26 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
 
       {/* All Days Content (visible conditionally for print) */}
       <div
-        className={`relative w-full ${isExportingPDF ? "p-8" : ""}`}
+        className={`relative w-full ${
+          isExportingPDF || isPreparingPrint ? "p-8" : ""
+        } print:px-2! print:pt-0! print:pb-2!`}
         ref={contentRef}
       >
         {days.map((dayToRender: any, dIndex: number) => {
           const isSelected = selectedDayIndex === dIndex;
+          let printableItemIndex = 0;
           return (
             <div
               key={dIndex}
-              className={`w-full flex-col p-6 bg-[#F7F7F7] dark:bg-[#14091F] print:relative! print:flex! print:opacity-100! print:h-auto! print:overflow-visible! print:mb-8 print:pointer-events-auto! print:mt-4! ${
-                isSelected || isExportingPDF
+              className={`w-full flex-col p-6 bg-[#F7F7F7] dark:bg-[#14091F] print:relative! print:flex! print:opacity-100! print:h-auto! print:overflow-visible! print:mb-8 print:pointer-events-auto! print:mt-0! ${
+                isSelected || isExportingPDF || isPreparingPrint
                   ? "flex relative opacity-100 mt-4 z-10"
                   : "flex absolute top-0 left-0 opacity-0 h-0 overflow-hidden pointer-events-none -z-10"
-              } ${isExportingPDF ? "mb-8 transform scale-90 origin-top" : ""}`}
+              } ${
+                isExportingPDF || isPreparingPrint
+                  ? "mb-8"
+                  : ""
+              }`}
               style={{
                 borderRadius: "12px",
               }}
@@ -973,20 +1036,34 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                       <TimelinePeriodHeader periodName={localizedPeriod} />
 
                       {period.items && period.items.length > 0 ? (
-                        <div className="flex flex-col gap-6 w-full">
+                        <div className="flex flex-col gap-6 print:gap-0! w-full">
                           {period.items.map((item: any, iIdx: number) => {
                             const apiData = item.itemData;
                             if (!apiData) return null;
+                            const shouldEndPrintPage =
+                              printableItemIndex > 0 &&
+                              printableItemIndex % 2 === 1;
+                            printableItemIndex += 1;
 
                             return (
                               <div
                                 key={iIdx}
-                                className="relative flex w-full group items-center"
+                                className={`relative flex w-full group items-center ${
+                                  shouldEndPrintPage
+                                    ? "print:break-after-page"
+                                    : ""
+                                }`}
                               >
                                 {/* Dot */}
                                 <div className="absolute top-1/2 -translate-y-1/2 rtl:right-[11px] ltr:left-[11px] w-2.5 h-2.5 rounded-full bg-black dark:bg-white border-2 border-white dark:border-[#14091F] z-10" />
 
-                                <div className="w-full rtl:pr-10 ltr:pl-10">
+                                <div
+                                  className={`w-full rtl:pr-10 ltr:pl-10 print:-mb-14 ${
+                                    isPreparingPrint
+                                      ? "transform scale-[0.8] rtl:origin-top-right ltr:origin-top-left"
+                                      : ""
+                                  }`}
+                                >
                                   {item.type === "event" && (
                                     <PlannerEventCardNew
                                       event={transformApiEventToListingItem(
@@ -1006,6 +1083,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                                         `${dIndex}-event-${item.itemId}`
                                       }
                                       locale={locale}
+                                      isExportingPDF={isExportingPDF}
                                     />
                                   )}
                                   {item.type === "experience" && (
@@ -1026,6 +1104,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                                         `${dIndex}-experience-${item.itemId}`
                                       }
                                       locale={locale}
+                                      isExportingPDF={isExportingPDF}
                                     />
                                   )}
                                   {item.type === "restaurant" && (
@@ -1047,6 +1126,7 @@ export default function PlanItinerary({ data }: PlanItineraryProps) {
                                         `${dIndex}-restaurant-${item.itemId}`
                                       }
                                       locale={locale}
+                                      isExportingPDF={isExportingPDF}
                                     />
                                   )}
                                 </div>
