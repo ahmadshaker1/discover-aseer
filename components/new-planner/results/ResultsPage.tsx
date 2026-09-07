@@ -82,10 +82,10 @@ export default function ResultsPage({
     : null;
 
   return (
-    <div className="min-h-screen w-full flex justify-center pt-32 pb-12 md:pt-40 md:pb-20 bg-white dark:bg-none dark:bg-[#14091F] relative z-20">
-      <div className="container mx-auto px-6 max-w-[800px] flex flex-col items-start ">
+    <div className="min-h-screen w-full flex justify-center pt-32 pb-12 md:pt-40 md:pb-20 print:pt-0! print:pb-2! bg-white dark:bg-none dark:bg-[#14091F] relative z-20">
+      <div className="container mx-auto px-6 print:px-0! max-w-[800px] flex flex-col items-start ">
         {/* Breadcrumb */}
-        <div className="mb-10 flex w-full items-center gap-2 text-sm md:text-base text-gray-500 justify-start dark:text-white">
+        <div className="mb-10 flex w-full items-center gap-2 text-sm md:text-base text-gray-500 justify-start dark:text-white print-hidden">
           <Link href="/" className="hover:underline">
             {t("homePage")}
           </Link>
@@ -96,7 +96,7 @@ export default function ResultsPage({
         </div>
 
         {/* Title and Restart Button */}
-        <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center mb-6 gap-4">
+        <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center mb-6 gap-4 print-hidden">
           <h3 className="text-black dark:text-white text-[24px] md:text-[36px] font-bold">
             {t("yourTripInAseer")} · {t("daysFormat", { count: selectedDays })}
           </h3>
@@ -124,7 +124,7 @@ export default function ResultsPage({
         </div>
 
         {/* Badges Row */}
-        <div className="flex flex-wrap gap-2 w-full mb-8">
+        <div className="flex flex-wrap gap-2 w-full mb-8 print-hidden">
           {/* Days Badge */}
           <div
             className="text-black dark:text-white bg-[#F4F4F4] dark:bg-white/10"
@@ -232,7 +232,7 @@ export default function ResultsPage({
         </div>
 
         {/* Divider */}
-        <hr className="w-full border-t border-[rgba(0,0,0,0.1)] dark:border-white/10 my-8" />
+        <hr className="w-full border-t border-[rgba(0,0,0,0.1)] dark:border-white/10 my-8 print-hidden" />
 
         {/* AI Plan Data */}
         <PlanItinerary data={data} />

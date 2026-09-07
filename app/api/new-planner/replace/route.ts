@@ -22,22 +22,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid itemType" }, { status: 400 });
     }
 
+    const options = {
+      foodPreferences: currentPlanData?.planDetails?.foodPreferences,
+      companion: currentPlanData?.planDetails?.companion,
+      interests: currentPlanData?.planDetails?.interests,
+      budget: currentPlanData?.planDetails?.budget,
+    };
+
     const { catalog: mappedCatalogBase, data: catalogData } =
-      await fetchPlannerCatalogByType(itemType);
+      await fetchPlannerCatalogByType(itemType, options);
 
     let mappedCatalog = mappedCatalogBase;
-
-    if (itemType === "restaurant") {
-      const foodPreferences = currentPlanData?.planDetails?.foodPreferences;
-      if (foodPreferences && foodPreferences.length > 0) {
-        mappedCatalog = mappedCatalog.filter((item: any) => {
-          if (!Array.isArray(item.cuisine)) return false;
-          return item.cuisine.some((type: any) =>
-            foodPreferences.includes(type),
-          );
-        });
-      }
-    }
 
     // 3. Filter out the item to replace
     mappedCatalog = mappedCatalog.filter(

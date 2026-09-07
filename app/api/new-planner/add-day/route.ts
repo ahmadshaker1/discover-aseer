@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
     const foodPreferences = currentPlanData?.planDetails?.foodPreferences;
     const companion = currentPlanData?.planDetails?.companion;
     const interests = currentPlanData?.planDetails?.interests;
+    const budget = currentPlanData?.planDetails?.budget;
 
     const {
       restaurantsCatalog,
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
       foodPreferences,
       companion,
       interests,
+      budget,
     });
 
     // 3. Build Prompt
