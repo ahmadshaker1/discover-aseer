@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getTranslations, getLocale } from "next-intl/server";
 import CatalogPagination from "@/components/catalog/CatalogPagination";
 import { getTourismProviders, resolveTourismProviderLogoUrl } from "./data";
+import { parseLocaleCode, pickLocalizedField } from "@/lib/i18n/localized";
 
 function formatPhoneLink(phone: string) {
   const digits = phone.replace(/\D+/g, "");
@@ -26,7 +27,13 @@ export default async function TourismCompaniesCardSection({
   const { items: providers, totalPages } = await getTourismProviders({ page });
 
   const companies = providers.map((provider) => ({
-    name: locale === "ar" ? provider.title_ar : provider.title_en,
+    name:
+      pickLocalizedField(
+        provider as unknown as Record<string, unknown>,
+        "title",
+        parseLocaleCode(locale),
+      ) ||
+      (locale === "ar" ? provider.title_ar : provider.title_en),
     phone: provider.phone || "",
     email: provider.email || "",
     website: provider.website || "",

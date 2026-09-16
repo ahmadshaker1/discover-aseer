@@ -2,9 +2,12 @@ export interface ApiSupportService {
   id: number | string;
   title_ar?: string | null;
   title_en?: string | null;
+  title_cn?: string | null;
   city?: string | null;
   city_en?: string | null;
+  city_cn?: string | null;
   type?: string | null;
+  type_cn?: string | null;
   location?: string | null;
   support_services_number?: number | string | null;
   status?: string | null;

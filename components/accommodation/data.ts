@@ -8,16 +8,20 @@ const ACCOMMODATION_FIELDS = [
   "id",
   "name_ar",
   "name_en",
+  "name_cn",
   "city",
   "city_en",
+  "city_cn",
   "location",
   "content",
   "content_ar",
+  "content_cn",
   "hero_image",
   "hotel_rating",
   "booking_link",
   "type",
   "type_ar",
+  "type_cn",
   "featured",
   "latitude",
   "longitude",
@@ -53,12 +57,15 @@ export interface ApiAccommodation {
   status?: string | null;
   name_ar?: string | null;
   name_en?: string | null;
+  name_cn?: string | null;
   name?: string | null;
   city?: string | null;
   city_en?: string | null;
+  city_cn?: string | null;
   area?: string | null;
   location?: string | null;
   content?: string | null;
+  content_cn?: string | null;
   description?: string | null;
   short_description?: string | null;
   cover_image?: string | null;

@@ -14,12 +14,14 @@ const EVENT_LIST_FIELDS = [
   "id",
   "title",
   "title_en",
+  "title_cn",
   "image",
   "thumbnail",
   "hero_mobile",
   "map",
   "city",
   "city_en",
+  "city_cn",
   "tags",
   "start_date",
   "end_date",
@@ -36,6 +38,11 @@ const EVENT_LIST_FIELDS = [
   "image_new",
   "images",
   "ticket_link",
+  "description",
+  "description_en",
+  "description_cn",
+  "type_en",
+  "type_cn",
 ] as const;
 
 export type { EventListingItem } from "./types";
@@ -45,12 +52,14 @@ interface ApiEvent {
   id: number | string;
   title?: string | null;
   title_en?: string | null;
+  title_cn?: string | null;
   image?: string | null;
   thumbnail?: string | null;
   hero_mobile?: string | null;
   map?: string | null;
   city?: string | null;
   city_en?: string | null;
+  city_cn?: string | null;
   tags?: string | null;
   start_date?: string | null;
   end_date?: string | null;
@@ -356,7 +365,9 @@ export function transformApiEventToListingItem(
   const title =
     pickLocalizedField(apiEvent, "title", locale) ||
     (locale === "ar" ? "فعالية بدون عنوان" : "Untitled event");
-  const city = (apiEvent.city || "").trim();
+  const city =
+    pickLocalizedField(apiEvent, "city", locale) ||
+    (apiEvent.city || "").trim();
   const year = resolveEventReferenceYear(apiEvent, referenceYear);
 
   // Only treat as free when CMS explicitly marks `free_event`; missing price ≠ free.
@@ -377,18 +388,20 @@ export function transformApiEventToListingItem(
         ? city
           ? `${city}، عسير`
           : "عسير"
-        : apiEvent.city_en
-          ? `${apiEvent.city_en}, Aseer`
-          : "Aseer",
+        : city
+          ? locale === "zh"
+            ? `${city}，阿西尔`
+            : `${city}, Aseer`
+          : locale === "zh"
+            ? "阿西尔"
+            : "Aseer",
     mapsUrl: toMapsUrl(apiEvent.map, title),
     mapsLinkLabel:
       locale === "ar"
         ? city
           ? `${city}، عسير`
           : title
-        : apiEvent.city_en
-          ? `${apiEvent.city_en}, Aseer`
-          : title,
+        : city || title,
     dateRange: buildDateRange(
       apiEvent.start_date,
       apiEvent.end_date,

@@ -19,6 +19,7 @@ export interface TourismProvider {
   date_updated: string;
   title_en: string;
   title_ar: string;
+  title_cn?: string | null;
   content_en: string | null;
   content_ar: string | null;
   logo?: DirectusFileValue;
@@ -34,6 +35,7 @@ const TOURISM_PROVIDER_FIELDS = [
   "sort",
   "title_en",
   "title_ar",
+  "title_cn",
   "content_en",
   "content_ar",
   "logo",

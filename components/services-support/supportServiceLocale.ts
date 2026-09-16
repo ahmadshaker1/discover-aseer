@@ -3,7 +3,7 @@ import {
   inferCityIdFromLocation,
 } from "@/components/landmarks/filterOptions";
 import type { LocaleCode } from "@/lib/i18n/localized";
-import { prefersLatinContent } from "@/lib/i18n/localized";
+import { pickLocalizedField, prefersLatinContent } from "@/lib/i18n/localized";
 import type { ApiSupportService } from "./types";
 
 export const SUPPORT_CATEGORY_FILTER_KEYS = [
@@ -48,6 +48,13 @@ export function pickLocalizedTitle(
   item: ApiSupportService,
   locale: LocaleCode,
 ): string {
+  const localized = pickLocalizedField(
+    item as Record<string, unknown>,
+    "title",
+    locale,
+  );
+  if (localized) return localized;
+
   const titleAr = (item.title_ar || "").trim();
   const titleEn = (item.title_en || "").trim();
 

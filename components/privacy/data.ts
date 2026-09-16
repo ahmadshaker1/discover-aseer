@@ -32,7 +32,7 @@ export async function fetchPrivacyPolicyHtml(
   try {
     const response = await fetch(
       directusItemsUrl(directusUrl, "privacy_policy", {
-        fields: ["privacy_policy", "privacy_policy_ar", "status"],
+        fields: ["privacy_policy", "privacy_policy_ar", "privacy_policy_cn", "status"],
         limit: 1,
       }),
       directusCollectionFetch,

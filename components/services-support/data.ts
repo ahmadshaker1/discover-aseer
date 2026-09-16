@@ -21,9 +21,12 @@ const SUPPORT_SERVICE_FIELDS = [
   "id",
   "title_ar",
   "title_en",
+  "title_cn",
   "city",
   "city_en",
+  "city_cn",
   "type",
+  "type_cn",
   "location",
   "support_services_number",
   "latitude",
@@ -96,21 +99,24 @@ function transformApiSupportService(
   item: ApiSupportService,
   locale: LocaleCode,
 ): SupportService {
-  const rawCity = String(
-    pickLocalizedField(item, "city", locale) || item.city || "غير محدد",
-  );
-  let filterCity = normalizeCity(rawCity, locale);
+  const rawCity = String(item.city || item.city_en || "غير محدد");
+  let filterCity = normalizeCity(rawCity, "ar");
   let filterType = normalizeText(item.type, "الخدمات المساندة");
 
   if (filterType === "الخدمات مستشفيات") filterType = "مستشفيات";
   const title = pickLocalizedTitle(item, locale);
+  const typeLabel =
+    pickLocalizedField(item, "type", locale) ||
+    translateSupportLabel(filterType, locale);
 
   return {
     id: String(item.id),
     title,
-    category: translateSupportLabel(filterType, locale),
-    city: translateSupportCity(filterCity, locale),
-    type: translateSupportLabel(filterType, locale),
+    category: typeLabel,
+    city:
+      pickLocalizedField(item, "city", locale) ||
+      translateSupportCity(filterCity, locale),
+    type: typeLabel,
     supportNumber: normalizeSupportNumber(item.support_services_number, locale),
     mapsUrl: normalizeMapsUrl(item.location, title),
     filterCity,

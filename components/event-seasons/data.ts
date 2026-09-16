@@ -16,6 +16,7 @@ const SEASON_LIST_FIELDS = [
   "status",
   "title",
   "title_ar",
+  "title_cn",
   "image",
   "banner_image",
   "start_date",

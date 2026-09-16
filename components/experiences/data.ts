@@ -1,5 +1,5 @@
 import type { LocaleCode } from "@/lib/i18n/localized";
-import { isMostlyArabicText, prefersLatinContent } from "@/lib/i18n/localized";
+import { isMostlyArabicText, pickLocalizedField, prefersLatinContent } from "@/lib/i18n/localized";
 import {
   DIRECTUS_COLLECTION_LIMIT,
   catalogTotalPages,
@@ -13,20 +13,25 @@ const EXPERIENCE_FIELDS = [
   "status",
   "title",
   "title_eng",
+  "title_cn",
   "description",
   "description_eng",
+  "description_cn",
   "image",
   "image_new",
   "link",
   "highlighted",
   "duration",
   "duration_En",
+  "duration_cn",
   "minimum_number_of_people",
   "details",
   "type",
   "type_en",
+  "type_cn",
   "tour_agency",
   "tour_agency_en",
+  "tour_agency_cn",
   "price",
   "booking_link",
   "target_audience",
@@ -36,7 +41,9 @@ const EXPERIENCE_FIELDS = [
 export interface ApiExperience {
   id: number;
   title_eng: string | null;
+  title_cn?: string | null;
   description_eng: string | null;
+  description_cn?: string | null;
   title: string | null;
   description: string | null;
   image: string | null;
@@ -51,17 +58,20 @@ export interface ApiExperience {
   details: string | null;
   type: string | string[] | null;
   type_en?: string | string[] | null;
+  type_cn?: string | string[] | null;
   tags: string | string[] | null;
   date: string | null;
   tour_agency: string | null;
   /** English tour operator label (CMS). */
   tour_agency_en?: string | null;
+  tour_agency_cn?: string | null;
   price: number | string | null;
   booking_link: string | null;
   target_audience: string | null;
   tour_audience_en?: string | null;
   status?: string | null;
   duration_En?: string | null;
+  duration_cn?: string | null;
   [key: string]: unknown;
 }
 
@@ -224,6 +234,10 @@ function getExperienceTypeTokens(
   api: ApiExperience,
   locale: LocaleCode = "ar",
 ): string[] {
+  if (locale === "zh") {
+    const cnTokens = parseExperienceFieldTokens(api.type_cn);
+    if (cnTokens.length > 0) return cnTokens;
+  }
   if (prefersLatinContent(locale)) {
     const enTokens = [
       ...parseExperienceFieldTokens(api.type_en),
@@ -281,33 +295,17 @@ function pickExperienceField(
   field: "title" | "description",
   locale: LocaleCode,
 ): string {
-  const primary =
-    field === "title"
-      ? prefersLatinContent(locale)
-        ? api.title_eng
-        : api.title
-      : prefersLatinContent(locale)
-        ? api.description_eng
-        : api.description;
-  const fallback =
-    field === "title"
-      ? prefersLatinContent(locale)
-        ? api.title
-        : api.title_eng
-      : prefersLatinContent(locale)
-        ? api.description
-        : api.description_eng;
-
-  const primaryText = (primary || "").trim();
-  if (primaryText) return primaryText;
-
-  const fallbackText = (fallback || "").trim();
-  if (!fallbackText) return "";
-
-  // Don't surface Arabic CMS copy on English pages when the EN field is empty.
-  if (prefersLatinContent(locale) && isMostlyArabicText(fallbackText)) return "";
-
-  return fallbackText;
+  const record = {
+    ...api,
+    title_en: api.title_eng,
+    description_en: api.description_eng,
+  } as Record<string, unknown>;
+  const localized = pickLocalizedField(record, field, locale) || "";
+  if (localized) {
+    if (prefersLatinContent(locale) && isMostlyArabicText(localized)) return "";
+    return localized;
+  }
+  return "";
 }
 
 function formatExperienceDescription(raw: string): string {
@@ -455,6 +453,12 @@ function formatTourAgencyEn(raw: string): string {
 }
 
 function pickTourAgency(api: ApiExperience, locale: LocaleCode): string {
+  const record = {
+    ...api,
+    tour_agency_en: api.tour_agency_en,
+  } as Record<string, unknown>;
+  const localized = pickLocalizedField(record, "tour_agency", locale) || "";
+  if (locale === "zh" && localized) return localized;
   if (prefersLatinContent(locale)) {
     const en = (api.tour_agency_en || "").trim();
     if (en) return formatTourAgencyEn(en);
@@ -485,9 +489,11 @@ export function transformExperience(
   const groupSize = parseGroupSize(api.minimum_number_of_people);
   const provider = pickTourAgency(api, locale) || "—";
   const durationRaw =
-    prefersLatinContent(locale)
-      ? (api.duration_En || "").trim() || (api.duration || "").trim()
-      : (api.duration || "").trim();
+    pickLocalizedField(
+      { duration: api.duration, duration_en: api.duration_En, duration_cn: api.duration_cn },
+      "duration",
+      locale,
+    ) || "";
   const duration =
     !durationRaw
       ? "—"

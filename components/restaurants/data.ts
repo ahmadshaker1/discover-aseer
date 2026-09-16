@@ -20,13 +20,17 @@ const RESTAURANT_FIELDS = [
   "id",
   "title_ar",
   "title_en",
+  "title_cn",
   "city",
+  "city_cn",
   "image_new",
   "image",
   "location_map",
   "cuisine_type",
+  "cuisine_type_cn",
   "content",
   "content_ar",
+  "content_cn",
   "latitude",
   "longitude",
   "slug",
@@ -69,7 +73,11 @@ export interface ApiLocation {
   categories?: string | null;
   title_en?: string | null;
   title_ar?: string | null;
+  title_cn?: string | null;
   content_ar?: string | null;
+  content_cn?: string | null;
+  city_cn?: string | null;
+  cuisine_type_cn?: string | null;
   /** Optional — maps to Restaurant.rating (0–5). */
   rating?: number | string | null;
   /** Optional — maps to Restaurant.reviewsCount. */

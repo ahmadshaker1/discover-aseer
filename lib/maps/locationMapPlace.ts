@@ -41,14 +41,19 @@ export type DirectusLocationRow = Record<string, unknown> & {
   hide_from_map?: string | boolean | null;
   name_ar?: string | null;
   name_en?: string | null;
+  name_cn?: string | null;
   city_ar?: string | null;
   city_en?: string | null;
+  city_cn?: string | null;
   description_ar?: string | null;
   description_en?: string | null;
+  description_cn?: string | null;
   category_ar?: string | null;
   category_en?: string | null;
+  category_cn?: string | null;
   type_ar?: string | null;
   type_en?: string | null;
+  type_cn?: string | null;
   booking_info_ar?: string | null;
   booking_info_en?: string | null;
   google_maps_url?: string | null;
@@ -279,7 +284,8 @@ export const buildLocationMapPlace = (
   const categoryAr = asText(row.category_ar);
   const categoryEn = asText(row.category_en);
   const category =
-    prefersLatinContent(locale) ? categoryEn || categoryAr : categoryAr || categoryEn;
+    pickLocalizedField(record, "category", locale) ||
+    (prefersLatinContent(locale) ? categoryEn || categoryAr : categoryAr || categoryEn);
 
   const city =
     pickLocalizedField(record, "city", locale) ||

@@ -17,6 +17,7 @@ import {
   directusCollectionFetch,
   directusItemsUrl,
 } from "@/lib/directus/collectionCache";
+import { parseLocaleCode, pickLocalizedField } from "@/lib/i18n/localized";
 
 const FILM_LANDSCAPE_FIELDS = [
   "id",
@@ -32,9 +33,11 @@ const FILM_FIELDS = [
   "status",
   "title_ar",
   "title_en",
+  "title_cn",
   "url",
   "cover_image",
   "type",
+  "type_cn",
   "date_created",
 ] as const;
 
@@ -249,9 +252,11 @@ interface ApiFilm {
   status?: string | null;
   title_ar?: string | null;
   title_en?: string | null;
+  title_cn?: string | null;
   url?: string | null;
   cover_image?: string | null;
   type?: string | null;
+  type_cn?: string | null;
 }
 
 interface FilmsListResponse {
@@ -276,10 +281,10 @@ export function mapFilmTypeToCategory(
 }
 
 function pickFilmTitle(row: ApiFilm, locale: string): string {
-  const isEn = locale !== "ar";
-  const primary = (isEn ? row.title_en : row.title_ar)?.trim();
-  const secondary = (isEn ? row.title_ar : row.title_en)?.trim();
-  return primary || secondary || "";
+  return (
+    pickLocalizedField(row as Record<string, unknown>, "title", parseLocaleCode(locale)) ||
+    ""
+  );
 }
 
 function transformFilmRowToLandscape(
@@ -325,7 +330,10 @@ function transformFilmRowToShowcase(
   return {
     id: row.id,
     title,
-    category: mapFilmTypeToCategory(row.type),
+    category:
+      parseLocaleCode(locale) === "zh" && row.type_cn?.trim()
+        ? row.type_cn.trim()
+        : mapFilmTypeToCategory(row.type),
     image,
     watchUrl: row.url?.trim() || undefined,
   };
