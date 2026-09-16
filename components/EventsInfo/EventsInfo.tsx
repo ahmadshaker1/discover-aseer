@@ -43,9 +43,9 @@ const linkFallbackByIconKey = (
   locale?: string,
 ): string | undefined => {
   const visa =
-    locale === "en"
-      ? "https://www.visitsaudi.com/en/plan-your-trip/visa-regulations"
-      : "https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations";
+    locale === "ar"
+      ? "https://www.visitsaudi.com/ar/plan-your-trip/visa-regulations"
+      : "https://www.visitsaudi.com/en/plan-your-trip/visa-regulations";
   switch ((iconKey || "").toLowerCase()) {
     case "visa":
       return visa;
@@ -69,7 +69,7 @@ function mapBackendCards(
     const ar = row.title_ar?.trim();
     const en = row.title_en?.trim();
     const title =
-      locale === "en" ? en || ar || fallbackTitle : ar || en || fallbackTitle;
+      locale !== "ar" ? en || ar || fallbackTitle : ar || en || fallbackTitle;
     return {
       id: row.id ?? index + 1,
       icon: iconFromKey(row.icon_key),

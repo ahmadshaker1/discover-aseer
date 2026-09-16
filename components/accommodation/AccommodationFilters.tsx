@@ -149,15 +149,15 @@ const AccommodationFilters = ({
           </div>
           <img
             src={
-              locale === "en"
+              locale !== "ar"
                 ? EN_EXCEPTIONAL_FILTER_BADGE
                 : EXCEPTIONAL_FILTER_BADGE
             }
             alt={t("exceptional")}
-            width={locale === "en" ? 85 : 55}
-            height={locale === "en" ? 34 : 22}
+            width={locale !== "ar" ? 85 : 55}
+            height={locale !== "ar" ? 34 : 22}
             className={`shrink-0 object-contain [unicode-bidi:isolate] ${
-              locale === "en" ? "h-[34px] w-[85px]" : "h-[22px] w-[55px]"
+              locale !== "ar" ? "h-[34px] w-[85px]" : "h-[22px] w-[55px]"
             }`}
           />
           <span className="min-w-0 flex-1" aria-hidden="true" />

@@ -4,6 +4,7 @@ import CuisineItemIntroSection from "@/components/aseer-cuisine/CuisineItemIntro
 import CuisineSlugHero from "@/components/aseer-cuisine/CuisineSlugHero";
 import { fetchCuisineItems, getCuisineBySlug } from "@/components/aseer-cuisine/data";
 import EventsInfo from "@/components/EventsInfo/EventsInfo";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 export const revalidate = 300;
 
@@ -12,7 +13,7 @@ interface CuisineSlugPageProps {
 }
 
 const CuisineSlugPage = async ({ params }: CuisineSlugPageProps) => {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const t = await getTranslations();
   const tCuisine = await getTranslations("aseerCuisine");
   const { slug } = await params;

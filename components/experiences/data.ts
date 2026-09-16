@@ -1,5 +1,5 @@
 import type { LocaleCode } from "@/lib/i18n/localized";
-import { isMostlyArabicText } from "@/lib/i18n/localized";
+import { isMostlyArabicText, prefersLatinContent } from "@/lib/i18n/localized";
 import {
   DIRECTUS_COLLECTION_LIMIT,
   catalogTotalPages,
@@ -224,7 +224,7 @@ function getExperienceTypeTokens(
   api: ApiExperience,
   locale: LocaleCode = "ar",
 ): string[] {
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     const enTokens = [
       ...parseExperienceFieldTokens(api.type_en),
       ...parseExperienceFieldTokens(api.tags),
@@ -283,18 +283,18 @@ function pickExperienceField(
 ): string {
   const primary =
     field === "title"
-      ? locale === "en"
+      ? prefersLatinContent(locale)
         ? api.title_eng
         : api.title
-      : locale === "en"
+      : prefersLatinContent(locale)
         ? api.description_eng
         : api.description;
   const fallback =
     field === "title"
-      ? locale === "en"
+      ? prefersLatinContent(locale)
         ? api.title
         : api.title_eng
-      : locale === "en"
+      : prefersLatinContent(locale)
         ? api.description
         : api.description_eng;
 
@@ -305,7 +305,7 @@ function pickExperienceField(
   if (!fallbackText) return "";
 
   // Don't surface Arabic CMS copy on English pages when the EN field is empty.
-  if (locale === "en" && isMostlyArabicText(fallbackText)) return "";
+  if (prefersLatinContent(locale) && isMostlyArabicText(fallbackText)) return "";
 
   return fallbackText;
 }
@@ -394,6 +394,14 @@ const TRAVELER_TYPES_EN = [
   { id: "groups", label: "Group Trip" },
 ] as const;
 
+const TRAVELER_TYPES_ZH = [
+  { id: "female", label: "女性独自旅行" },
+  { id: "individual", label: "独自旅行" },
+  { id: "couple", label: "情侣" },
+  { id: "family", label: "家庭与儿童" },
+  { id: "groups", label: "团体旅行" },
+] as const;
+
 function parseFilterInterests(
   api: ApiExperience,
   locale: LocaleCode = "ar",
@@ -411,7 +419,7 @@ function parseFilterTravelers(
   locale: LocaleCode = "ar",
 ): string[] {
   const raw =
-    locale === "en"
+    prefersLatinContent(locale)
       ? (api.tour_audience_en || api.target_audience || "").trim()
       : (api.target_audience || "").trim();
   if (!raw) return [];
@@ -447,7 +455,7 @@ function formatTourAgencyEn(raw: string): string {
 }
 
 function pickTourAgency(api: ApiExperience, locale: LocaleCode): string {
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     const en = (api.tour_agency_en || "").trim();
     if (en) return formatTourAgencyEn(en);
     const ar = (api.tour_agency || "").trim();
@@ -467,23 +475,23 @@ export function transformExperience(
   );
   const title =
     pickExperienceField(api, "title", locale) ||
-    (locale === "en" ? "Experience" : "تجربة");
+    (prefersLatinContent(locale) ? "Experience" : "تجربة");
   const category =
     getExperienceTypeTokens(api, locale)[0] ||
-    (locale === "en" ? "Experiences" : "التجارب");
+    (prefersLatinContent(locale) ? "Experiences" : "التجارب");
   const imageUrl = resolveExperienceImageUrl(api, directusUrl);
   const bookUrl = (api.booking_link || api.link || "").trim() || "#";
   const price = parsePrice(api.price ?? api.price_1);
   const groupSize = parseGroupSize(api.minimum_number_of_people);
   const provider = pickTourAgency(api, locale) || "—";
   const durationRaw =
-    locale === "en"
+    prefersLatinContent(locale)
       ? (api.duration_En || "").trim() || (api.duration || "").trim()
       : (api.duration || "").trim();
   const duration =
     !durationRaw
       ? "—"
-      : locale === "en" && isMostlyArabicText(durationRaw)
+      : prefersLatinContent(locale) && isMostlyArabicText(durationRaw)
         ? "—"
         : durationRaw;
   const filterCity = normalizeCityLabel(api.destination || "") || null;
@@ -555,18 +563,27 @@ function buildFilterOptions(
     .sort((a, b) => b.count - a.count);
 
   const costOptions: FilterOptionWithCount[] =
-    locale === "en"
+    locale === "zh"
       ? [
-          { id: "paid", label: "Paid", count: paidCount },
-          { id: "free", label: "Free", count: freeCount },
+          { id: "paid", label: "收费", count: paidCount },
+          { id: "free", label: "免费", count: freeCount },
         ]
-      : [
-          { id: "paid", label: "مدفوعة", count: paidCount },
-          { id: "free", label: "مجانية", count: freeCount },
-        ];
+      : prefersLatinContent(locale)
+        ? [
+            { id: "paid", label: "Paid", count: paidCount },
+            { id: "free", label: "Free", count: freeCount },
+          ]
+        : [
+            { id: "paid", label: "مدفوعة", count: paidCount },
+            { id: "free", label: "مجانية", count: freeCount },
+          ];
 
   const travelerTypesSource =
-    locale === "en" ? TRAVELER_TYPES_EN : TRAVELER_TYPES_AR;
+    locale === "zh"
+      ? TRAVELER_TYPES_ZH
+      : prefersLatinContent(locale)
+        ? TRAVELER_TYPES_EN
+        : TRAVELER_TYPES_AR;
   const travelerTypes: FilterOptionWithCount[] = travelerTypesSource.map(
     ({ id, label }) => ({
       id,

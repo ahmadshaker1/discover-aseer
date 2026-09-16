@@ -1,5 +1,10 @@
 import type { MapCategoryKey } from "@/components/interactive-map/mapCategories";
-import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  pickBilingualLabel,
+  pickLocalizedField,
+  prefersLatinContent,
+  type LocaleCode,
+} from "@/lib/i18n/localized";
 
 /** Directus `events` collection rows (interactive map). */
 export type DirectusEventRow = Record<string, unknown> & {
@@ -203,17 +208,17 @@ export const buildEventMapPlace = (
   const record = row as Record<string, unknown>;
   const title =
     pickLocalizedField(record, "title", locale) ||
-    (locale === "en" ? "Event" : "فعالية");
+    (pickBilingualLabel({ ar: "فعالية", en: "Event", zh: "活动" }, locale));
   const description =
     pickLocalizedField(record, "description", locale) ||
-    (locale === "en" ? "Event" : "فعالية");
+    pickBilingualLabel({ ar: "فعالية", en: "Event", zh: "活动" }, locale);
 
   const lat = asNumberOrNull(row.latitude);
   const lng = asNumberOrNull(row.longitude);
   const hasCoordinates = lat != null && lng != null;
 
   const cityRaw = asText(row.city);
-  const city = cityRaw || (locale === "en" ? "Aseer" : "عسير");
+  const city = cityRaw || pickBilingualLabel({ ar: "عسير", en: "Aseer", zh: "阿西尔" }, locale);
   const mapsUrl = asText(row.map) || undefined;
   const tag =
     asText(row.type) ||
@@ -223,7 +228,10 @@ export const buildEventMapPlace = (
 
   const categoryAr = "الفعاليات";
   const categoryEn = "Events";
-  const category = locale === "en" ? categoryEn : categoryAr;
+  const category = pickBilingualLabel(
+    { ar: categoryAr, en: categoryEn, zh: "活动" },
+    locale,
+  );
 
   return {
     id: `events:${sourceId}`,
@@ -259,20 +267,23 @@ export const buildLocationMapPlace = (
   const record = row as Record<string, unknown>;
   const title =
     pickLocalizedField(record, "name", locale) ||
-    (locale === "en" ? `Place` : `موقع`);
+    pickBilingualLabel({ ar: "موقع", en: "Place", zh: "地点" }, locale);
   const description =
     pickLocalizedField(record, "description", locale) ||
     pickLocalizedField(record, "booking_info", locale) ||
-    (locale === "en" ? "Tourism location" : "موقع سياحي");
+    pickBilingualLabel(
+      { ar: "موقع سياحي", en: "Tourism location", zh: "旅游地点" },
+      locale,
+    );
 
   const categoryAr = asText(row.category_ar);
   const categoryEn = asText(row.category_en);
   const category =
-    locale === "en" ? categoryEn || categoryAr : categoryAr || categoryEn;
+    prefersLatinContent(locale) ? categoryEn || categoryAr : categoryAr || categoryEn;
 
   const city =
     pickLocalizedField(record, "city", locale) ||
-    (locale === "en" ? "Aseer" : "عسير");
+    (pickBilingualLabel({ ar: "عسير", en: "Aseer", zh: "阿西尔" }, locale));
 
   const tag = pickLocalizedField(record, "type", locale) || undefined;
 

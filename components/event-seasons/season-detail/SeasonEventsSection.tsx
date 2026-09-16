@@ -53,7 +53,7 @@ export default function SeasonEventsSection({
   const locale = useLocale();
   const t = useTranslations("eventSeasons");
   const tCommon = useTranslations("common");
-  const localeCode = locale === "ar" ? "ar" : "en";
+  const localeCode = locale === "ar" ? "ar" : locale === "zh" ? "zh" : "en";
   const seasonDays = useMemo(() => {
     const start = parseDateOnly(season.startDate);
     const end = parseDateOnly(season.endDate);

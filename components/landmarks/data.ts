@@ -1,4 +1,8 @@
-import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import {
+  pickLocalizedField,
+  prefersLatinContent,
+  type LocaleCode,
+} from "@/lib/i18n/localized";
 import {
   CATALOG_PAGE_SIZE,
   DIRECTUS_COLLECTION_LIMIT,
@@ -228,7 +232,7 @@ function pickContentHtml(apiLandmark: ApiLandmark, locale: LocaleCode): string {
   const contentEn = (apiLandmark.content || "").trim();
   const contentAr = (apiLandmark.content_ar || "").trim();
 
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     return contentEn || contentAr;
   }
 
@@ -237,7 +241,7 @@ function pickContentHtml(apiLandmark: ApiLandmark, locale: LocaleCode): string {
 
 function pickTitle(apiLandmark: ApiLandmark, locale: LocaleCode): string {
   const record = toLocalizedRecord(apiLandmark);
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     return (
       apiLandmark.name_en?.trim() ||
       apiLandmark.name_ar?.trim() ||
@@ -364,7 +368,7 @@ export const transformLandmark = (
 
   let rawAttractionType = (apiLandmark.type || "").trim();
   if (
-    locale === "en" &&
+    prefersLatinContent(locale) &&
     apiLandmark.type_en &&
     apiLandmark.type_en.trim() !== ""
   ) {

@@ -51,11 +51,11 @@ async function fetchFaqItems(locale: string): Promise<TravelFaqItem[]> {
       return questions
         .map((item, questionIndex) => {
           const question =
-            locale === "en"
+            locale !== "ar"
               ? item.question_en?.trim() || item.question_ar?.trim() || ""
               : item.question_ar?.trim() || item.question_en?.trim() || "";
           const answer =
-            locale === "en"
+            locale !== "ar"
               ? item.answer_en?.trim() || item.answer_ar?.trim() || ""
               : item.answer_ar?.trim() || item.answer_en?.trim() || "";
 

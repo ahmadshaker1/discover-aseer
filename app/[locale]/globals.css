@@ -9,6 +9,12 @@ html[dir="ltr"] {
   --font-primary: var(--font-koning), ui-sans-serif, system-ui, sans-serif;
 }
 
+html[lang="zh"],
+html[lang="zh-CN"] {
+  --font-primary: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+    "Microsoft YaHei", var(--font-koning), ui-sans-serif, system-ui, sans-serif;
+}
+
 .font-numbers {
   font-family: var(--font-koning) !important;
 }

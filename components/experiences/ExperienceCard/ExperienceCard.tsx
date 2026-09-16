@@ -40,7 +40,7 @@ const ExperienceCard = ({
   const locale = useLocale();
 
   const getDisplayCategory = () => {
-    const rawCategory = locale === "en" && type_en ? type_en : type;
+    const rawCategory = locale !== "ar" && type_en ? type_en : type;
     if (Array.isArray(rawCategory)) {
       return rawCategory.join(", ");
     }

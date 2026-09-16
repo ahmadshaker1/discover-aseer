@@ -2,6 +2,7 @@
 
 import { useCallback } from "react";
 import { useLocale } from "next-intl";
+import type { LocaleCode } from "@/lib/i18n/localized";
 import { Restaurant } from "./data";
 import AseeriCuisineBadge from "./AseeriCuisineBadge";
 import {
@@ -62,7 +63,7 @@ function CardUtensilIcon() {
 }
 
 const RestaurantsGrid = ({ restaurants }: RestaurantsGridProps) => {
-  const locale = useLocale() as "ar" | "en";
+  const locale = useLocale() as LocaleCode;
 
   const handleRestaurantClick = useCallback((mapsUrl: string) => {
     window.open(mapsUrl, "_blank", "noopener,noreferrer");

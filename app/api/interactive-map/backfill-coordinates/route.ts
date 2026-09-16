@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { backfillLocationCoordinates } from "@/lib/maps/directusLocations";
-import type { LocaleCode } from "@/lib/i18n/localized";
+import { parseLocaleCode, type LocaleCode } from "@/lib/i18n/localized";
 
 export const maxDuration = 300;
 
@@ -41,14 +41,14 @@ export async function POST(request: Request) {
     if (typeof body.limit === "number" && Number.isFinite(body.limit)) {
       limit = body.limit;
     }
-    if (body.locale === "en" || body.locale === "ar") {
-      locale = body.locale;
+    if (body.locale) {
+      locale = parseLocaleCode(body.locale);
     }
   } catch {
     const url = new URL(request.url);
     const queryLimit = Number(url.searchParams.get("limit") ?? "50");
     if (Number.isFinite(queryLimit)) limit = queryLimit;
-    if (url.searchParams.get("locale") === "en") locale = "en";
+    locale = parseLocaleCode(url.searchParams.get("locale"));
   }
 
   try {

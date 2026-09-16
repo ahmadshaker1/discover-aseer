@@ -339,14 +339,14 @@ async function fetchEventsByIds(ids: number[]): Promise<ApiEvent[]> {
 
 const CATEGORY_LABELS: Record<
   Exclude<SeasonEventCategoryId, "all">,
-  { ar: string; en: string }
+  { ar: string; en: string; zh: string }
 > = {
-  nature: { ar: "طبيعة", en: "Nature" },
-  sports: { ar: "رياضة", en: "Sports" },
-  cultural: { ar: "ثقافي", en: "Cultural" },
-  tech: { ar: "تقنية", en: "Tech" },
-  entertainment: { ar: "ترفيه", en: "Entertainment" },
-  creative: { ar: "إبداعي", en: "Creative" },
+  nature: { ar: "طبيعة", en: "Nature", zh: "自然" },
+  sports: { ar: "رياضة", en: "Sports", zh: "体育" },
+  cultural: { ar: "ثقافي", en: "Cultural", zh: "文化" },
+  tech: { ar: "تقنية", en: "Tech", zh: "科技" },
+  entertainment: { ar: "ترفيه", en: "Entertainment", zh: "娱乐" },
+  creative: { ar: "إبداعي", en: "Creative", zh: "创意" },
 };
 
 function categoryLabelsForEvent(
@@ -355,7 +355,7 @@ function categoryLabelsForEvent(
 ): string[] {
   return categoryIds
     .filter((id): id is Exclude<SeasonEventCategoryId, "all"> => id !== "all")
-    .map((id) => CATEGORY_LABELS[id][locale === "en" ? "en" : "ar"]);
+    .map((id) => CATEGORY_LABELS[id][locale === "zh" ? "zh" : locale === "en" ? "en" : "ar"]);
 }
 
 function pickEventDescription(apiEvent: ApiEvent, locale: LocaleCode): string {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { LocaleCode } from "@/lib/i18n/localized";
 import type { Dispatch, SetStateAction } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import CatalogPagination from "@/components/catalog/CatalogPagination";
@@ -20,7 +21,7 @@ interface FilterOption {
   count: number;
 }
 
-function buildOptions(values: string[], locale: "ar" | "en"): FilterOption[] {
+function buildOptions(values: string[], locale: LocaleCode): FilterOption[] {
   const counts = values.reduce<Map<string, number>>((map, value) => {
     const key = value.trim();
     if (!key) return map;
@@ -38,7 +39,7 @@ const ServicesSupportCatalog = ({
   currentPage,
 }: ServicesSupportCatalogProps) => {
   const t = useTranslations("servicesSupport");
-  const locale = useLocale() as "ar" | "en";
+  const locale = useLocale() as LocaleCode;
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const goToFirstPage = useResetCatalogPage(currentPage);

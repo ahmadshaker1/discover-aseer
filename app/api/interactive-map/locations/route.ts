@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { fetchMapLocations } from "@/lib/maps/directusLocations";
-import type { LocaleCode } from "@/lib/i18n/localized";
+import { parseLocaleCode } from "@/lib/i18n/localized";
 import { DIRECTUS_COLLECTION_REVALIDATE } from "@/lib/directus/collectionCache";
 
 // Literal required by Next.js segment config (must match DIRECTUS_COLLECTION_REVALIDATE).
@@ -8,7 +8,7 @@ export const revalidate = 3600;
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const locale: LocaleCode = url.searchParams.get("locale") === "en" ? "en" : "ar";
+  const locale = parseLocaleCode(url.searchParams.get("locale"));
   const resolve = url.searchParams.get("resolve") === "true";
   const resolveLimit = Number(url.searchParams.get("resolveLimit") ?? "40");
   const geocode = url.searchParams.get("geocode") === "true";

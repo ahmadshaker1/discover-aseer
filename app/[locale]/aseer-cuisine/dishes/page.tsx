@@ -3,12 +3,13 @@ import AseerCuisineHero from "@/components/aseer-cuisine/AseerCuisineHero";
 import CuisineBrowseHeader from "@/components/aseer-cuisine/CuisineBrowseHeader";
 import CuisineGridCard from "@/components/aseer-cuisine/CuisineGridCard";
 import { fetchCuisineItems, toCuisineCard } from "@/components/aseer-cuisine/data";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 const CUISINE_VIDEO = "/videos/cooking.mp4";
 const FALLBACK_POSTER = "/assets/activities/aseer-cuisine.jpg";
 
 const AseerCuisineDishesBrowsePage = async () => {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const t = await getTranslations("aseerCuisine");
 
   const items = await fetchCuisineItems({

@@ -5,6 +5,7 @@ import { fetchDestinations } from "@/components/destinations/data";
 import { parseDestinationsFilterParam } from "@/components/destinations/filterOptions";
 import { parseCatalogPage } from "@/lib/directus/collectionCache";
 import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 const TOUR_GUIDE_PORTAL_HREF = "/tour-guides/portal";
 
@@ -13,7 +14,7 @@ interface DestinationsPageProps {
 }
 
 const DestinationsPage = async ({ searchParams }: DestinationsPageProps) => {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const t = await getTranslations("attractionsPage");
   const tCommon = await getTranslations("common");
   const { filter: filterParam, page: pageParam } = await searchParams;

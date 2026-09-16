@@ -2,6 +2,7 @@ import TourGuidesBanner from "@/components/tour-guides/TourGuidesBanner/TourGuid
 import TourGuidesPageContent from "@/components/tour-guides/TourGuidesPageContent/TourGuidesPageContent";
 import { fetchTourGuides } from "@/components/tour-guides/data";
 import { parseCatalogPage } from "@/lib/directus/collectionCache";
+import type { LocaleCode } from "@/lib/i18n/localized";
 import { getLocale } from "next-intl/server";
 
 /** Data: `components/tour-guides/data.ts`. Env: `.env.example`. */
@@ -10,7 +11,7 @@ interface TourGuidesPageProps {
 }
 
 const TourGuidesPage = async ({ searchParams }: TourGuidesPageProps) => {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
   const { guides, filterOptions } = await fetchTourGuides(locale);

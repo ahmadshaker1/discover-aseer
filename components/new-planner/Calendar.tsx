@@ -69,6 +69,23 @@ const locales = {
       "December",
     ],
   },
+  zh: {
+    days: ["日", "一", "二", "三", "四", "五", "六"],
+    months: [
+      "一月",
+      "二月",
+      "三月",
+      "四月",
+      "五月",
+      "六月",
+      "七月",
+      "八月",
+      "九月",
+      "十月",
+      "十一月",
+      "十二月",
+    ],
+  },
 };
 
 interface CalendarProps {
@@ -81,8 +98,9 @@ export default function Calendar({
   onSelectDate,
 }: CalendarProps) {
   const t = useTranslations("Planner");
-  const locale = useLocale() as "ar" | "en";
-  const currentLocale = locales[locale] || locales.en; // Fallback to en if unexpected locale
+  const locale = useLocale();
+  const currentLocale =
+    locales[locale as keyof typeof locales] || locales.en;
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -171,7 +189,7 @@ export default function Calendar({
         >
           {selectedDate
             ? selectedDate.toLocaleDateString(
-                locale === "ar" ? "ar-SA" : "en-US",
+                locale === "ar" ? "ar-SA" : locale === "zh" ? "zh-CN" : "en-US",
                 {
                   weekday: "long",
                   year: "numeric",

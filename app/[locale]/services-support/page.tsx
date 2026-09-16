@@ -2,6 +2,7 @@ import ServicesSupportBanner from "@/components/services-support/ServicesSupport
 import ServicesSupportCatalog from "@/components/services-support/ServicesSupportCatalog";
 import { fetchSupportServices } from "@/components/services-support/data";
 import { parseCatalogPage } from "@/lib/directus/collectionCache";
+import type { LocaleCode } from "@/lib/i18n/localized";
 import { getLocale } from "next-intl/server";
 
 interface ServicesSupportPageProps {
@@ -11,7 +12,7 @@ interface ServicesSupportPageProps {
 const ServicesSupportPage = async ({
   searchParams,
 }: ServicesSupportPageProps) => {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
   const { items: services } = await fetchSupportServices(locale);

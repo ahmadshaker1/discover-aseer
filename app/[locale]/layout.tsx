@@ -131,14 +131,14 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   // UserWay: 3 = bottom right, 5 = bottom left
   const userwayPosition = appLocale === "ar" ? "3" : "5";
+  const localeFontClass =
+    appLocale === "ar" ? brando.className : koning.className;
 
   return (
     <html
-      lang={appLocale}
+      lang={appLocale === "zh" ? "zh-CN" : appLocale}
       dir={appLocale === "ar" ? "rtl" : "ltr"}
-      className={`${koning.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} ${
-        appLocale === "ar" ? brando.className : koning.className
-      }`}
+      className={`${koning.variable} ${brando.variable} ${ibmPlexSansArabic.variable} ${readexPro.variable} ${localeFontClass}`}
       suppressHydrationWarning
     >
       <body className="antialiased font-sans">

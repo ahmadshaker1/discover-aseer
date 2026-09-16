@@ -7,6 +7,7 @@ import {
   translateSupportCity,
   translateSupportLabel,
 } from "./supportServiceLocale";
+import type { LocaleCode } from "@/lib/i18n/localized";
 import {
   CheckboxCheckIcon,
   LocationIcon,
@@ -81,7 +82,7 @@ const ServicesSupportFilterSidebar = ({
 }: ServicesSupportFilterSidebarProps) => {
   const t = useTranslations("servicesSupport");
   const tCommon = useTranslations("common");
-  const locale = useLocale() as "ar" | "en";
+  const locale = useLocale() as LocaleCode;
   const serviceTypeOptions: TypeRowOption[] = SUPPORT_CATEGORY_FILTER_KEYS.map(
     (filterKey) => ({
       value: filterKey,

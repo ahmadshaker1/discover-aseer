@@ -52,7 +52,7 @@ function CloseIcon() {
 
 const Hero = ({ slides }: HeroProps) => {
   const locale = useLocale();
-  const isLtr = locale === "en";
+  const isLtr = locale !== "ar";
   const [filmEmbedSrc, setFilmEmbedSrc] = useState<string | null>(null);
   const [filmTitle, setFilmTitle] = useState("");
   const dialogTitleId = useId();

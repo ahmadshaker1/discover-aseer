@@ -1,4 +1,5 @@
 import type { LabeledFilterOption } from "@/components/landmarks/filterOptions";
+import { pickBilingualLabel } from "@/lib/i18n/localized";
 
 /** CMS `destination_filter` values — four categories only. */
 export const DESTINATION_FILTER_DEFS = [
@@ -6,21 +7,25 @@ export const DESTINATION_FILTER_DEFS = [
     id: "mountain-peaks",
     ar: "القمم الجبلية",
     en: "Mountain peaks",
+    zh: "山峰",
   },
   {
     id: "tihama-plains",
     ar: "السهول التهامية",
     en: "Tihama plains",
+    zh: "蒂哈玛平原",
   },
   {
     id: "coastal-beaches",
     ar: "الشواطئ الساحلية",
     en: "Coastal beaches",
+    zh: "海滨沙滩",
   },
   {
     id: "desert-nature",
     ar: "الطبيعة الصحراوية",
     en: "Desert nature",
+    zh: "沙漠风光",
     aliases: ["الطبيعة ألصحروية"],
   },
 ] as const;
@@ -53,15 +58,13 @@ export const LANDSCAPE_HIGHLIGHT_IMAGES = [
   "/assets/aboutAseer/desert.JPEG",
 ] as const;
 
-function pickLocale(locale: string): "ar" | "en" {
-  return locale === "en" ? "en" : "ar";
-}
-
 export function getDestinationFilterOptions(
   locale: string,
 ): LabeledFilterOption[] {
-  const lang = pickLocale(locale);
-  return DESTINATION_FILTER_DEFS.map((d) => ({ id: d.id, label: d[lang] }));
+  return DESTINATION_FILTER_DEFS.map((d) => ({
+    id: d.id,
+    label: pickBilingualLabel(d, locale),
+  }));
 }
 
 export function getDestinationFilterLabel(
@@ -70,7 +73,7 @@ export function getDestinationFilterLabel(
 ): string {
   const row = DESTINATION_FILTER_DEFS.find((d) => d.id === filterId);
   if (!row) return filterId;
-  return pickLocale(locale) === "en" ? row.en : row.ar;
+  return pickBilingualLabel(row, locale);
 }
 
 /** Map CMS Arabic `destination_filter` (and known typos) to a stable filter id. */

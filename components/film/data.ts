@@ -276,7 +276,7 @@ export function mapFilmTypeToCategory(
 }
 
 function pickFilmTitle(row: ApiFilm, locale: string): string {
-  const isEn = locale === "en";
+  const isEn = locale !== "ar";
   const primary = (isEn ? row.title_en : row.title_ar)?.trim();
   const secondary = (isEn ? row.title_ar : row.title_en)?.trim();
   return primary || secondary || "";

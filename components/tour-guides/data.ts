@@ -9,6 +9,7 @@ import {
   inferCityIdFromLocation,
 } from "@/components/landmarks/filterOptions";
 import type { LocaleCode } from "@/lib/i18n/localized";
+import { pickBilingualLabel, prefersLatinContent } from "@/lib/i18n/localized";
 import { isPublishedTourGuide } from "@/lib/directus/config";
 import {
   catalogTotalPages,
@@ -79,11 +80,17 @@ const LANGUAGE_LEVEL_AR: Record<string, string> = {
   beginner: "مبتدئ",
 };
 
-const LANGUAGE_LEVEL_EN: Record<string, string> = {
-  advanced: "Advanced",
-  intermediate: "Intermediate",
-  beginner: "Beginner",
+const LANGUAGE_LEVEL_ZH: Record<string, string> = {
+  advanced: "高级",
+  intermediate: "中级",
+  beginner: "初级",
 };
+
+function languageLevelMap(locale: LocaleCode): Record<string, string> {
+  if (locale === "zh") return LANGUAGE_LEVEL_ZH;
+  if (locale === "en") return LANGUAGE_LEVEL_EN;
+  return LANGUAGE_LEVEL_AR;
+}
 
 function parseSpecializations(raw: string | null): string[] {
   return parseSpecializationTokens(raw);
@@ -133,13 +140,18 @@ function buildLanguages(
   const list: Array<{ code: string; name: string; flag: string }> = [];
   const ar = api.arabic_language_level;
   const en = api.english_language_level;
-  const levelMap = locale === "en" ? LANGUAGE_LEVEL_EN : LANGUAGE_LEVEL_AR;
+  const levelMap = languageLevelMap(locale);
 
   if (ar) {
     const level = levelMap[ar] ?? ar;
     list.push({
       code: "ar",
-      name: locale === "en" ? `Arabic (${level})` : `العربية (${level})`,
+      name:
+        locale === "zh"
+          ? `阿拉伯语（${level}）`
+          : prefersLatinContent(locale)
+            ? `Arabic (${level})`
+            : `العربية (${level})`,
       flag: "🇸🇦",
     });
   }
@@ -147,14 +159,20 @@ function buildLanguages(
     const level = levelMap[en] ?? en;
     list.push({
       code: "en",
-      name: `English (${level})`,
+      name:
+        locale === "zh" ? `英语（${level}）` : `English (${level})`,
       flag: "🇬🇧",
     });
   }
   if (list.length === 0) {
     list.push({
       code: "ar",
-      name: locale === "en" ? "Arabic" : "العربية",
+      name:
+        locale === "zh"
+          ? "阿拉伯语"
+          : prefersLatinContent(locale)
+            ? "Arabic"
+            : "العربية",
       flag: "🇸🇦",
     });
   }
@@ -166,7 +184,7 @@ function pickGuideDescription(
   locale: LocaleCode,
   specLabelMap: Map<string, string>,
 ): string {
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     const text = (
       api.description_en ||
       api.content_en ||
@@ -207,10 +225,10 @@ function buildDisplaySpecialties(
   locale: LocaleCode,
   specLabelMap: Map<string, string>,
 ): string[] | undefined {
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     if (filterSpecializations.length > 0) {
       return filterSpecializations.map((s) =>
-        localizeTourGuideFilterLabel(s, "en", specLabelMap),
+        localizeTourGuideFilterLabel(s, locale, specLabelMap),
       );
     }
     const enSpecs = parseSpecializations(api.specializations_en);
@@ -236,9 +254,14 @@ export function transformTourGuide(
   const whatsappUrl = phone ? `https://wa.me/${phone}` : "#";
   const description =
     pickGuideDescription(api, locale, specLabelMap) ||
-    (locale === "en"
-      ? "Professional tour guide in the Aseer region"
-      : "مرشد سياحي في منطقة عسير");
+    pickBilingualLabel(
+      {
+        ar: "مرشد سياحي في منطقة عسير",
+        en: "Professional tour guide in the Aseer region",
+        zh: "阿西尔地区专业导游",
+      },
+      locale,
+    );
   // Fixed filter facets only — free-text / "other" values are dropped.
   const filterSpecializations = canonicalizeSpecializationTokens(
     api.specializations,
@@ -256,14 +279,18 @@ export function transformTourGuide(
   const cityId = inferGuideCityId(api);
   const locationLabel = cityId
     ? getCityLabelById(cityId, locale)
-    : locale === "en"
-      ? "Aseer region"
-      : "منطقة عسير";
+    : pickBilingualLabel(
+        { ar: "منطقة عسير", en: "Aseer region", zh: "阿西尔地区" },
+        locale,
+      );
   const name =
-    (locale === "en"
+    (prefersLatinContent(locale)
       ? (api.name_en || api.name || "").trim()
       : (api.name || api.name_en || "").trim()) ||
-    (locale === "en" ? "Tour guide" : "مرشد سياحي");
+    pickBilingualLabel(
+      { ar: "مرشد سياحي", en: "Tour guide", zh: "导游" },
+      locale,
+    );
 
   return {
     id: api.id,
@@ -275,13 +302,18 @@ export function transformTourGuide(
     description,
     specialties,
     transportation: hasTransportation
-      ? locale === "en"
-        ? "Available"
-        : "متوفر"
-      : locale === "en"
-        ? "Not available"
-        : "غير متوفر",
-    availability: locale === "en" ? "Flexible" : "مرن",
+      ? pickBilingualLabel(
+          { ar: "متوفر", en: "Available", zh: "提供" },
+          locale,
+        )
+      : pickBilingualLabel(
+          { ar: "غير متوفر", en: "Not available", zh: "不提供" },
+          locale,
+        ),
+    availability: pickBilingualLabel(
+      { ar: "مرن", en: "Flexible", zh: "灵活安排" },
+      locale,
+    ),
     filterSpecializations,
     gender,
     hasTransportation,
@@ -321,15 +353,15 @@ function buildFilterOptions(
   // Always expose the fixed specialization set (never grow from free-text registrations).
   const specializations = FIXED_SPECIALIZATION_FILTERS.map((item) => ({
     id: item.id,
-    label: locale === "en" ? item.en : item.id,
+    label: locale === "zh" ? item.zh : prefersLatinContent(locale) ? item.en : item.id,
     count: specCounts.get(item.id) ?? 0,
   }));
   const genderOptions = Array.from(genderCounts.entries())
     .map(([id, count]) => ({
       id,
       label:
-        locale === "en"
-          ? localizeTourGuideFilterLabel(id, "en", specLabelMap)
+        prefersLatinContent(locale)
+          ? localizeTourGuideFilterLabel(id, locale, specLabelMap)
           : id,
       count,
     }))

@@ -11,6 +11,7 @@ import {
 import {
   isMostlyArabicText,
   pickLocalizedField,
+  prefersLatinContent,
   type LocaleCode,
 } from "@/lib/i18n/localized";
 import {
@@ -228,7 +229,7 @@ const pickTitleSection2 = (row: ApiDestination, locale: LocaleCode): string => {
   const record = toLocalizedRecord(row);
   const localized =
     pickLocalizedField(record, "title_section_2", locale) ||
-    (locale === "en" ? row.title_section_2_en : row.title_section_2_ar);
+    (prefersLatinContent(locale) ? row.title_section_2_en : row.title_section_2_ar);
   return (localized || row.title_section_2 || "").trim();
 };
 
@@ -240,7 +241,7 @@ const pickDisplayCity = (
   locale: LocaleCode,
   title: string,
 ): string => {
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     return (
       readApiText(row, "city_en") || title || readApiText(row, "title_en") || ""
     );
@@ -255,7 +256,7 @@ const pickDisplayCity = (
 
 /** Hero tagline — EN uses `*_en` fields; AR uses `sub_title` + `sub_title_orange`. */
 const pickSubtitle = (row: ApiDestination, locale: LocaleCode): string => {
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     const line1 =
       readApiText(row, "sub_title_en") || readApiText(row, "subtitle_en");
     const line2 = readApiText(row, "sub_title_orange_en");
@@ -299,11 +300,11 @@ export const pickDestinationHomePageContent = (
   const localized = pickLocalizedField(record, "content_of_home_page", locale);
 
   if (localized) {
-    if (locale === "en" && isMostlyArabicText(localized)) return "";
+    if (prefersLatinContent(locale) && isMostlyArabicText(localized)) return "";
     return localized;
   }
 
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     const fallback = readApiText(row, "content_of_home_page");
     return fallback && !isMostlyArabicText(fallback) ? fallback : "";
   }
@@ -346,7 +347,7 @@ export const resolveDestinationHeroImageUrl = (
   );
 
 const pickDescription = (row: ApiDestination, locale: LocaleCode): string => {
-  if (locale === "en") {
+  if (prefersLatinContent(locale)) {
     const candidates: (keyof ApiDestination)[] = [
       "content_en",
       "content",
@@ -401,7 +402,7 @@ export const transformDestination = (
     "";
   // CMS `city` is Arabic-only; for EN cards use the English title as the location line.
   const location =
-    locale === "en"
+    prefersLatinContent(locale)
       ? title ||
         row.location?.trim() ||
         row.address?.trim() ||

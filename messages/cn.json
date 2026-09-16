@@ -1,0 +1,1410 @@
+{
+  "common": {
+    "home": "首页",
+    "discoverAseer": "探索阿西尔",
+    "breadcrumbHome": "首页",
+    "subtitleOneVisit": "活动与体验如此丰富，一次到访远远不够",
+    "browseMore": "浏览更多",
+    "resetFilters": "重置筛选",
+    "city": "城市",
+    "attractionType": "景点类型",
+    "destinationFilter": "目的地类型",
+    "interests": "兴趣",
+    "travelers": "旅行者",
+    "price": "价格",
+    "share": "分享",
+    "shareOnWhatsApp": "在 WhatsApp 上分享{title}",
+    "shareOnFacebook": "在 Facebook 上分享{title}",
+    "shareOnX": "在 X 上分享{title}",
+    "destinations": "主要目的地",
+    "experiences": "体验",
+    "events": "活动",
+    "accommodation": "住宿",
+    "restaurants": "餐厅",
+    "attractions": "景点",
+    "filterExperiences": "筛选体验",
+    "filterEvents": "筛选活动",
+    "filterRestaurants": "筛选餐厅",
+    "filterDestinations": "筛选",
+    "date": "日期",
+    "cost": "费用",
+    "free": "免费",
+    "paid": "收费",
+    "more": "更多",
+    "bookNow": "立即预订",
+    "group": "团体",
+    "currencySar": "SAR",
+    "metadataTitle": "探索阿西尔",
+    "metadataDescription": "探索阿西尔地区——遗产、自然与热情好客。",
+    "memberOf": "成员单位",
+    "newsletterDescription": "订阅我们的电子报，获取优惠与特别折扣。",
+    "emailPlaceholder": "Example @email.com",
+    "phone": "电话",
+    "email": "电子邮件",
+    "noPointsOfInterest": "暂无兴趣点",
+    "weatherRain": "降雨",
+    "happeningNow": "正在进行",
+    "viewDetails": "查看详情",
+    "ambientSoundPlay": "播放环境音",
+    "ambientSoundPause": "暂停环境音",
+    "downloadEventsPdf": "下载活动 PDF",
+    "datePlaceholder": "选择抵达与离开日期",
+    "starRating": "{stars} 星",
+    "hotelRating": "酒店星级",
+    "accommodationType": "住宿类型",
+    "accommodationTypeHotel": "酒店",
+    "accommodationTypeHotelApartment": "酒店式公寓",
+    "exceptional": "卓越",
+    "hotels": "酒店",
+    "exceptionalHotels": "热门酒店",
+    "previous": "上一页",
+    "next": "下一页",
+    "paginationAria": "分页",
+    "location": "位置",
+    "allCities": "选择您的目的地",
+    "noAccommodation": "目前暂无住宿信息",
+    "resultsCount": "结果：{count}",
+    "noAccommodationFilter": "没有符合筛选条件的住宿。",
+    "noExperiencesFilter": "没有符合筛选条件的体验。",
+    "travelerTypes": "旅行者类型",
+    "visitorSite": "访问网站",
+    "kmShort": "km",
+    "chooseCuisineType": "选择菜系类型",
+    "restaurantType": "餐厅类型",
+    "cuisineType": "菜系类型",
+    "priceRange": "价格区间",
+    "dietaryOptions": "饮食选项",
+    "featured": "精选",
+    "popular": "热门",
+    "luxury": "奢华",
+    "cuisineAseeri": "阿西尔美食",
+    "cuisineKhaleeji": "海湾菜",
+    "cuisineLebanese": "黎巴嫩菜",
+    "cuisineItalian": "意大利菜",
+    "cuisineIndian": "印度菜",
+    "cuisineInternational": "国际美食",
+    "cuisineAmerican": "美式料理",
+    "cuisineCafe": "咖啡馆",
+    "cuisineAsian": "亚洲菜",
+    "cuisineSaudi": "沙特菜",
+    "cuisineMiddleEastern": "中东菜",
+    "fallbackCardTitle": "卡片标题",
+    "travelSeasonsEvents": "季节与活动",
+    "planDesignTrip": "规划您的行程",
+    "travelGettingAround": "出行交通",
+    "activitiesGuide": "户外活动指南",
+    "worldRegionTitle": "主要目的地",
+    "communityTitle": "阿西尔社区",
+    "cuisineNavTitle": "阿西尔美食",
+    "experiencesNavTitle": "旅游体验",
+    "attractionsNavTitle": "景点",
+    "eventsSeasonsNavTitle": "活动与季节",
+    "stayInAseerCard": "入住阿西尔",
+    "mainDestinationsCard": "主要目的地",
+    "eventsSeasonsCard": "活动与季节",
+    "experiencesCard": "旅游体验",
+    "attractionsCard": "景点",
+    "tourGuidesNav": "导游",
+    "guideDiscoverAseer": "探索阿西尔",
+    "exploreAttractionsDefault": "探索热门景点",
+    "exploreAttractionsInCity": "在{city}",
+    "filterLandmarks": "筛选地标",
+    "noLandmarksMatchFilters": "没有符合筛选条件的地标。",
+    "filterDestinationsLabel": "筛选目的地",
+    "discoverDestinationsTitle": "发现阿西尔\n等待您的目的地",
+    "discoverAttractionsTitle": "发现阿西尔的瑰宝",
+    "noDestinationsMatchFilters": "没有符合筛选条件的目的地。",
+    "landmarkCategoryDefault": "自然公园",
+    "landmarkDefaultLocation": "苏达公园，艾卜哈",
+    "goToLandmark": "前往{title}",
+    "shareLandmark": "分享{title}",
+    "restaurant": "餐厅",
+    "notSpecified": "未指定",
+    "visitDuration": "游览时长",
+    "prices": "价格",
+    "time": "时间",
+    "ticket": "门票",
+    "noEventsFilter": "没有符合筛选条件的活动。"
+  },
+  "nav": {
+    "planTrip": "规划您的行程",
+    "events": "季节与活动",
+    "closeMenu": "关闭菜单",
+    "downloadGuide": "下载指南",
+    "languageSwitchLabel": "切换语言",
+    "themeSwitchLabel": "切换浅色与深色模式",
+    "browseDestinations": "浏览目的地",
+    "indoorAttractions": "室内景点",
+    "film": "影视",
+    "igcat": "IGCAT",
+    "localeArabic": "العربية",
+    "localeEnglish": "English",
+    "localeChinese": "中文",
+    "localeComingSoon": "即将推出",
+    "explore": "探索",
+    "badgePdf": "PDF",
+    "badgeNew": "NEW",
+    "badgeBeta": "Beta"
+  },
+  "navLinks": {
+    "aboutAseer": "关于阿西尔",
+    "destinations": "热门目的地",
+    "attractions": "景点",
+    "experiences": "体验",
+    "cuisine": "阿西尔美食",
+    "community": "阿西尔社区",
+    "film": "阿西尔影视",
+    "outdoorGuide": "户外活动指南"
+  },
+  "navPlanTripLinks": {
+    "aiPlanner": "智能行程规划",
+    "accommodation": "住宿",
+    "restaurants": "餐厅与咖啡馆",
+    "tourGuides": "导游",
+    "tourismCompanies": "旅游公司",
+    "sopportingServices": "配套服务",
+    "gettingAround": "抵达与出行"
+  },
+  "navMega": {
+    "discover": {
+      "aboutAseer": "这片土地与人民的故事",
+      "experiences": "冒险与难忘时刻",
+      "attractions": "值得一看的地方",
+      "destinations": "山地、平原、海岸与沙漠",
+      "cuisine": "IGCAT 2024 世界美食之都——并跻身 2026 十大美食目的地",
+      "community": "鲜活的艺术、手工艺与热情好客",
+      "film": "银幕上的阿西尔",
+      "outdoorGuide": "步道与户外探险"
+    },
+    "plan": {
+      "aiPlanner": "用人工智能规划您的行程",
+      "accommodation": "坐拥美景的酒店与民宿",
+      "restaurants": "地方风味与世界美食",
+      "tourismCompanies": "持证旅行社与旅游运营商",
+      "tourGuides": "为您引路的专业向导",
+      "gettingAround": "如何抵达与出行",
+      "sopportingServices": "让旅程更轻松的服务"
+    }
+  },
+  "footer": {
+    "discoverAseerTitle": "探索阿西尔",
+    "planYourTripTitle": "规划您的行程",
+    "bookletsTitle": "手册",
+    "contactTitle": "联系我们",
+    "newsletterTitle": "电子报",
+    "subscribe": "订阅",
+    "startTrip": "设计您的行程",
+    "tourGuideLogin": "导游登录/注册",
+    "poweredBy": "技术支持",
+    "contactUs": "联系我们",
+    "internationalCallCenter": "国际呼叫中心",
+    "followUs": "在社交媒体上关注我们",
+    "copyright": "阿西尔 @ 2026。保留所有权利。",
+    "privacy": "隐私政策",
+    "linkMainDestinations": "主要目的地",
+    "linkAttractions": "景点",
+    "linkExperiences": "旅游体验",
+    "linkSubmitExperience": "添加您的体验",
+    "linkCuisine": "阿西尔美食",
+    "linkCommunity": "阿西尔社区",
+    "linkEventsSeasons": "季节与活动",
+    "linkPlanner": "设计您的行程",
+    "linkAccommodation": "住宿",
+    "linkRestaurants": "餐厅",
+    "linkTourGuides": "导游",
+    "linkGettingHereAndAround": "抵达与出行",
+    "linkTravelTips": "出行必备",
+    "linkDiscoverBooklet": "探索阿西尔",
+    "linkOutdoorGuide": "户外活动指南",
+    "altUnTourism": "UN Tourism",
+    "altPata": "PATA",
+    "altGstc": "GSTC",
+    "identityfiles": "阿西尔形象资料",
+    "tourism-companies": "旅游公司",
+    "media-kit": "媒体资料包"
+  },
+  "pageBanner": {
+    "browseMore": "浏览更多"
+  },
+  "home": {
+    "heroTitle": "热烈欢迎来到阿西尔",
+    "heroSubtitle": "在这里，悠久传统与壮美风光交汇，文化、冒险与无与伦比的美景融为一体。",
+    "heroSlides": {
+      "slide1": {
+        "title": "阿西尔……唤醒奇观",
+        "subtitle": "对比鲜明的自然之美与根深蒂固的本真，在每一处细节中精妙呈现。",
+        "cta": "观看影片"
+      },
+      "slide2": {
+        "title": "阿西尔美食",
+        "subtitle": "探索欧洲以外全球首个美食之都的传统菜肴与独特风味",
+        "cta": "了解更多"
+      }
+    },
+    "welcomeTitle": "探索阿西尔",
+    "welcomeDescription": "阿西尔将山峰与清澈海岸相连，将金色沙丘与翠绿高地相融。在这里，雨水、温暖与薄雾交织成独一无二的景观。",
+    "landmarksTitle": "阿西尔热门景点",
+    "landmarksDescription": "阿西尔拥有丰富的景点与体验",
+    "featuredDestinationsTitle": "主要目的地",
+    "experiencesTitle": "阿西尔体验",
+    "experiencesDescription": "遍布阿西尔的独特本地体验",
+    "experiencesCta": "查看全部",
+    "storiesTitle": "来自阿西尔的故事",
+    "playVideoPrefix": "播放视频",
+    "storyVideo1Title": "阿西尔探险",
+    "storyVideo2Title": "阿西尔厨房"
+  },
+  "storiesFromAseer": {
+    "story1": "一起去阿西尔——入围中东与北非的美食目的地。",
+    "story2": "来自阿西尔腹地的故事——遗产、自然与热情好客，将过去与现在交融。"
+  },
+  "destinations": {
+    "breadcrumbDestinations": "目的地",
+    "pageIndexHeroTitle": "阿西尔的目的地",
+    "pageIndexIntroTitle": "探索该地区的城市",
+    "pageIndexIntroP1": "阿西尔汇聚多样的城市与省份——在下方选择目的地，发现当地亮点与体验。",
+    "pageIndexMapAreaLabel": "阿西尔地区",
+    "landmarksSectionIndexTitle": "阿西尔精选目的地",
+    "landmarksSectionCityTitle": "{city}的目的地",
+    "heroTitleAbha": "艾卜哈",
+    "heroSubtitleAbha": "活动与体验如此丰富，一次到访远远不够",
+    "introTitle": "云雾之城",
+    "introBody": "在沙特阿拉伯西南部的萨拉瓦特山巅，艾卜哈如一颗被薄雾与美景加冕的宝石，四季云雾环绕。",
+    "introP1": "在沙特阿拉伯西南部的萨拉瓦特山巅，艾卜哈如一颗被薄雾与美景加冕的宝石，四季云雾环绕。它是通往阿西尔的明亮门户，四面八方皆富于多样性。凉爽多雨的夏季使其成为领先的可持续目的地，并拥有深厚的文化、艺术与遗产资源。",
+    "introP2": "历史堡垒讲述数百年的故事——从沙姆桑和达拉，到大小达格尔堡垒。坐落于修复宅邸中的遗产博物馆，如法蒂玛博物馆和拉奇迪博物馆，向访客介绍阿西尔的珍宝。",
+    "introP3": "沿艾卜哈谷地延伸着最著名的民间市场之一——周二集市，旁边是富有艺术气息的穆夫塔哈村——艺术之地，也是塔拉勒·马达赫的遗产所在。",
+    "introP4": "艾卜哈遍布的绿色田野出产花卉、谷物、水果和蔬菜；当地人从事贸易、工业和农业。",
+    "introP5": "古老却如夏日梦境般宁静，艾卜哈在现代服务、餐饮、咖啡馆、娱乐、体育以及全年节日与论坛方面与全球目的地比肩。",
+    "introP6": "艾卜哈——一座丰饶永不枯竭、奇观永不褪色的宝藏。",
+    "landmarksSectionTitle": "发现{area}的热门地标",
+    "famousLandmarksTitle": "{area}的热门景点",
+    "mapViewOnMap": "在地图上查看{area}",
+    "mapAlt": "{area}地图"
+  },
+  "eventsInfo": {
+    "headingStart": "开启",
+    "headingTrip": "您的旅程",
+    "cardVisa": "签证与入境要求",
+    "cardTravel": "前往阿西尔",
+    "cardStay": "规划您的住宿",
+    "cardDestination": "选择您的目的地"
+  },
+  "events": {
+    "breadcrumb": "活动",
+    "title": "活动",
+    "subtitle": "艺术、文化、社区与户外体验，全年满足每一种兴趣",
+    "addYourEvent": "添加您的活动",
+    "interestAdventure": "冒险",
+    "interestHeritage": "遗产与艺术",
+    "interestCulinary": "烹饪艺术",
+    "interestNature": "自然",
+    "seasonsPageTitle": "季节与活动",
+    "seasonsPageBody": "发现阿西尔全年的季节与活动。"
+  },
+  "eventSeasons": {
+    "breadcrumb": "季节与活动",
+    "heroTitle": "季节与活动",
+    "heroSubtitle": "艺术、文化、社区、环境与体育体验——以及为每一种兴趣设计的众多其他活动，全年不断",
+    "addYourEvent": "添加您的活动",
+    "sectionTitle": "季节与活动",
+    "currentSeasonsTitle": "季节与活动",
+    "yearFilterPlaceholder": "选择抵达与离开日期",
+    "yearFilterSelected": "{year}季",
+    "yearFilterClear": "清除筛选",
+    "previousSeasonsTitle": "往季活动",
+    "details": "详情",
+    "dayLabel": "日期",
+    "scrollDaysPrev": "前几天",
+    "scrollDaysNext": "后几天",
+    "noEventsForDay": "当天没有活动",
+    "noEventsInSeason": "本季没有活动",
+    "filterAll": "全部",
+    "filterNature": "自然",
+    "filterSports": "体育",
+    "filterCultural": "文化",
+    "filterTech": "科技",
+    "filterEntertainment": "娱乐",
+    "filterCreative": "创意",
+    "kidFriendly": "适合儿童",
+    "imagePrev": "上一张图片",
+    "imageNext": "下一张图片",
+    "eventOver": "活动已结束",
+    "eventAboutTitle": "关于活动",
+    "eventNoDescription": "更多活动详情即将公布。",
+    "eventCategory": "类别",
+    "eventDates": "日期",
+    "eventTime": "时间",
+    "eventPrice": "价格",
+    "eventLocation": "地点",
+    "eventBooking": "预订",
+    "eventBookingLink": "预订链接",
+    "eventAudience": "观众",
+    "backToSeason": "返回本季",
+    "openEventDetails": "查看活动详情",
+    "bookNow": "立即预订"
+  },
+  "experiencesPage": {
+    "breadcrumb": "旅游体验",
+    "title": "阿西尔等待您的体验",
+    "subtitle": "活动与体验如此丰富，一次到访远远不够",
+    "costSection": "费用"
+  },
+  "experienceSubmit": {
+    "metaTitle": "添加您的体验 | 探索阿西尔",
+    "metaDescription": "提交您的活动或体验，供探索阿西尔团队审核。",
+    "back": "返回",
+    "breadcrumbLabel": "面包屑导航",
+    "home": "首页",
+    "experiences": "体验",
+    "currentPage": "添加您的体验",
+    "formTitle": "添加您的体验",
+    "formSubtitle": "与我们的团队分享活动详情以供审核。一经通过，您的体验可能会登上探索阿西尔。",
+    "form": {
+      "sectionDetails": "体验详情",
+      "sectionScheduleLocation": "时间与地点",
+      "sectionMedia": "媒体与文件",
+      "sectionCompany": "公司信息",
+      "sectionContact": "联系方式",
+      "titleAr": "体验名称（阿拉伯语）",
+      "titleEn": "体验名称（英语）",
+      "category": "体验类别",
+      "descriptionAr": "体验描述（阿拉伯语）",
+      "descriptionEn": "体验描述（英语）",
+      "period": "体验周期",
+      "address": "地址",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "locationLink": "通过 Google Maps 获取活动地点链接",
+      "locationLinkHint": "粘贴体验地点的 Google Maps 链接。",
+      "operatingHoursFrom": "营业时间（起）",
+      "operatingHoursTo": "营业时间（止）",
+      "entranceFees": "门票费用",
+      "childrenEntranceFees": "儿童门票费用",
+      "suitableForChildren": "该体验是否适合儿童？",
+      "ticketBookingLink": "门票预订链接",
+      "eventLogo": "体验标志",
+      "eventPhotos": "体验照片",
+      "eventProfile": "体验简介文件",
+      "permitFile": "相关许可证",
+      "companyName": "公司名称",
+      "commercialRegistration": "商业登记",
+      "companyProfile": "公司简介文件",
+      "contactName": "姓名",
+      "email": "电子邮件",
+      "contactPhone": "联系电话",
+      "contactPhoneHint": "号码至少须为 9 位数字。",
+      "permitCommitmentTitle": "声明",
+      "permitCommitment": "执行该体验的公司承诺，在开始任何运营工作、开放场地或接待访客之前，从相关主管部门取得所有必要的法律许可与执照。",
+      "select": "请选择",
+      "chooseFile": "选择文件",
+      "noFileChosen": "未选择文件",
+      "fileTypesLogo": "JPG, JPEG, PNG, PDF, SVG, AI",
+      "fileTypesPhotos": "JPG, JPEG, PNG",
+      "fileTypesProfile": "PDF, PPT, DOC",
+      "fileTypesPermit": "JPG, JPEG, PNG, PDF",
+      "fileTypesCommercial": "JPG, JPEG, PNG, PDF",
+      "fileTypesCompanyProfile": "PDF, PPT, DOC",
+      "formActionsAria": "表单操作",
+      "submit": "添加您的体验",
+      "success": "感谢您。我们已收到您的提交，团队将进行审核。",
+      "errorRequired": "请在提交前填写所有必填字段。",
+      "categories": {
+        "cultural": "文化与遗产",
+        "adventure": "冒险与户外",
+        "gastronomy": "美食与烹饪",
+        "business": "商务",
+        "entertainment": "娱乐",
+        "sports": "体育",
+        "other": "其他"
+      },
+      "periods": {
+        "temporary": "临时（在活动日期内）",
+        "seasonal": "季节性",
+        "permanent": "长期 / 持续"
+      },
+      "fees": {
+        "free": "免费",
+        "paid": "收费"
+      },
+      "childSuitable": {
+        "yes": "是",
+        "no": "否",
+        "supervised": "是，需有监护"
+      }
+    }
+  },
+  "accommodationPage": {
+    "breadcrumb": "住宿",
+    "title": "住宿",
+    "subtitle": "精致入住，选择多样"
+  },
+  "restaurantsPage": {
+    "breadcrumb": "餐厅",
+    "title": "餐厅",
+    "subtitle": "阿西尔餐厅：愉悦感官，满足味蕾",
+    "credibilityLine": "阿西尔 2024 世界美食之都",
+    "credibilityDescription": "阿西尔是欧洲以外首个获得国际烹饪艺术、文化、艺术与旅游研究所（IGCAT）称号的地区（2024）",
+    "credibilityCta": "探索阿西尔美食",
+    "headerSubtitle": "阿西尔拥有丰富的景点与体验"
+  },
+  "attractionsPage": {
+    "breadcrumb": "景点",
+    "title": "景点",
+    "subtitle": "在阿西尔，从一处地标到另一处；每一次选择都会以不断焕新的奇观吸引您",
+    "innerTitle": "阿布西拉宫殿",
+    "introTitle": "阿布西拉宫殿",
+    "introBody": "阿西尔的历史与文化地标将本真与自然之美融为一体。",
+    "innerIntroP1": "阿布西拉宫殿矗立于苏达村落中宁静的阿齐扎村之上，汇聚数百年遗产与别处难寻的场所感。建筑群由三座相邻的设防宫殿组成，各有其名称与象征——体现在数十个房间和三十余间厅室之中，意义追随命名，彰显地道的阿西尔传统。四楼共用的东向阳台连接其中两座宫殿，眺望绿色农田与巍峨山峰。",
+    "innerIntroP2": "堡垒以山石砌成，厚实防护墙专为抵御袭击与严酷天气而建。巧妙布局使其在和平时期成为庇护所，在冲突中成为要塞，并以一座宏伟大门统一整个建筑群，气度静穆庄严。",
+    "innerIntroP3": "对访客而言，阿布西拉是一处出色的文化地标：厅室入口的二维码步道深化叙事，展览与私密陈列让手工艺与艺术鲜活呈现，季节性演出充满庭院。在宫殿旁小憩品咖啡，或在宁静的山风中共享一顿难忘的餐食。",
+    "chooseYourGuide": "选择您的向导",
+    "mapPalacesCta": "在地图上查看阿布西拉宫殿",
+    "mapViewOnMap": "在地图上查看{area}",
+    "mapPalacesAlt": "阿布西拉宫殿地图预览",
+    "galleryTitle": "图片廊",
+    "relatedAttractionsTitle": "其他景点",
+    "browseTitle": "目的地",
+    "browseSubtitle": "体验自然与气候的和谐，与遗产的丰厚和文化的本真无缝交融",
+    "contributeDestinations": "推荐目的地"
+  },
+  "travelTips": {
+    "breadcrumb": "出行必备",
+    "title": "出行必备",
+    "subtitle": "活动与体验如此丰富，一次到访远远不够",
+    "faqTitle": "常见问题",
+    "emergencyTitle": "紧急联系方式",
+    "emergencyPolice": "警察",
+    "emergencyCivilDefense": "民防",
+    "emergencyAmbulance": "急救",
+    "emergencyRoadSecurity": "道路安全",
+    "emergencyTraffic": "交通",
+    "emergencyTourism": "旅游",
+    "emergencyFire": "消防",
+    "emergencyGeneralSecurity": "综合治安",
+    "faq": {
+      "items": {
+        "1": {
+          "question": "阿西尔作为旅游目的地有何特色？",
+          "answer": "阿西尔是沙特阿拉伯的杰出地区之一，地貌多样——山地、平原、河谷与海岸——四季天气各不相同。它融合遗产建筑、节日、现代城市枢纽以及美食、艺术与时尚等文化体验，住宿选择覆盖多种预算，全年都有活动。"
+        },
+        "2": {
+          "question": "访问阿西尔的最佳时间是什么时候？",
+          "answer": "春季和夏季，高地天气更温和，活动也更热闹。冬季山区可能凉爽多雾；秋季则常适合从容徒步。"
+        },
+        "3": {
+          "question": "去阿西尔应携带什么？",
+          "answer": "请准备可应对海岸与山地温差的分层衣物、舒适鞋履、防晒用品和身份证件。并查看您计划参加的节日或景点是否有额外要求。"
+        }
+      }
+    }
+  },
+  "experiencesDetail": {
+    "backToExperiences": "返回体验",
+    "aboutExperience": "关于体验",
+    "providerLabel": "提供者",
+    "priceLabel": "价格",
+    "groupSizeLabel": "团体人数",
+    "interestsHeading": "匹配兴趣",
+    "travelersHeading": "适合的旅行者类型",
+    "bookingTitle": "开始预订",
+    "groupMinimum": "最低团体人数：x{size}",
+    "bookNow": "立即预订",
+    "currencyFallback": "SAR",
+    "travelerFemale": "女性独自旅行",
+    "travelerIndividual": "独自旅行",
+    "travelerCouple": "情侣",
+    "travelerFamily": "带儿童的家庭",
+    "travelerGroups": "团体旅行"
+  },
+  "aboutAseer": {
+    "title": "关于阿西尔",
+    "breadcrumbAbout": "关于阿西尔",
+    "heroSubtitle": "千次欢迎，来到令人屏息的自然之巅",
+    "story": {
+      "sectionTitle": "为其多样性而着迷",
+      "sectionSubtitle": "在沙特阿拉伯西南部绵延数千公里的土地上，阿西尔如一部传奇故事缓缓展开，篇章令人惊叹：云雾加冕、薄雾披身的山峰，全年丰饶的绿色平原，纯净海边的温暖岸线，以及静穆庄严的壮丽沙漠——一幅浸润着古老历史、本真文化、独特遗产与慷慨好客的自然织锦。在这里，您可以编织属于自己的体验、冒险、探索与美的故事。",
+      "sectionCaption": "探索阿西尔，重新发现沙特阿拉伯。",
+      "highlights": {
+        "h1": "山峰",
+        "h2": "蒂哈玛平原",
+        "h3": "沿海海滩",
+        "h4": "沙漠自然"
+      },
+      "slides": {
+        "heritage3": {
+          "title": "自豪的传承",
+          "description": "沙特阿拉伯的阿西尔是一处文化底蕴深厚的目的地，历史跨越七百余年。雄伟的堡垒、城堡与遗产宫殿，以及四千多座传统村落，彰显该地区根深蒂固的文化与本真艺术。阿西尔人民以热情好客与自豪品格著称，让每一次到访都成为穿越沙特遗产、历史与传统的独特旅程。"
+        },
+        "nature2": {
+          "title": "令人屏息的自然",
+          "description": "探索阿西尔地区令人屏息的自然风光，它是沙特阿拉伯最多样的目的地之一。从海拔 3,000 米的山峰，到红海沿岸 125 公里的海岸线，阿西尔拥有风景如画的河谷、平原与高原。这里拥有沙特阿拉伯半数以上的绿色景观，气候温和、降雨频繁，野生动物独特，包括珍稀的阿西尔喜鹊与火烈鸟。凭借卓越的生物多样性与壮丽景色，阿西尔是自然爱好者与户外探险的理想目的地。"
+        },
+        "culture1": {
+          "title": "文化与艺术",
+          "description": "探索阿西尔丰富的文化与艺术，本真传统映照着该地区的自然多样性。阿西尔的文化遗产包括被 UNESCO 列为人类非物质文化遗产的阿西尔卡特纹样（Al-Qatt Al-Aseeri），以及传统沙特民间舞蹈、表演艺术与地方音乐。该地区还以其独特的圆形卡萨布建筑著称，历史上用作堡垒与粮仓。这些鲜活传统使阿西尔成为寻求本真沙特遗产、艺术与建筑的独特文化旅游目的地。"
+        },
+        "architectural4": {
+          "title": "建筑遗产",
+          "description": "阿西尔常被形容为「一座广阔的露天博物馆」，拥有九千余处建筑遗产资产和数十座博物馆。其独特建筑历经数百年演变，由该地区的自然景观与社区需求塑造而成。如今，这些历史建筑作为阿西尔独特建筑遗产的永恒象征，为访客提供穿越沙特遗产与历史的启迪之旅。"
+        },
+        "culinaryArts5": {
+          "title": "烹饪艺术",
+          "description": "探索阿西尔的烹饪艺术：地方美食从该地区的农产品、牲畜、蜂蜜与新鲜水果中汲取独特风味。传统阿西尔菜肴的制作本身就是一门艺术，体现世代相传的地方知识与烹饪遗产。正是这份丰厚的饮食文化，使阿西尔于 2024 年成为欧洲以外首个获封世界美食之都的地区。"
+        }
+      }
+    }
+  },
+  "servicesSupport": {
+    "title": "服务与支持",
+    "subtitle": "访问期间的信息与协助。",
+    "bannerCrumb": "配套服务",
+    "bannerDescription": "覆盖阿西尔各城市与省份的安全、治安与支持服务。",
+    "filterServices": "筛选服务",
+    "chooseDestination": "选择目的地",
+    "chooseServiceType": "选择配套服务类型",
+    "internationalCallCenter": "国际呼叫中心：",
+    "noServicesFilter": "没有符合所选筛选条件的服务。",
+    "noServicesData": "目前暂无配套服务数据。请检查 API 设置或稍后再试。",
+    "paginationAria": "服务分页",
+    "previous": "上一页",
+    "next": "下一页"
+  },
+  "tourGuides": {
+    "title": "导游",
+    "subtitle": "与阿西尔精选导游一起规划您的行程",
+    "filterGuides": "筛选导游",
+    "specializations": "专长",
+    "gender": "性别",
+    "transportation": "交通",
+    "transportAvailable": "提供交通",
+    "contactWhatsApp": "通过 WhatsApp 联系",
+    "registerAsGuide": "注册成为导游",
+    "noGuidesFilter": "没有符合筛选条件的导游。",
+    "aboutGuide": "关于{name}",
+    "services": "服务",
+    "pricePerHour": "每小时价格",
+    "maxPersons": "最多宾客数",
+    "availabilityLabel": "可预约时间",
+    "defaultAbout": "专业导游",
+    "defaultTransport": "未指定",
+    "defaultAvailability": "灵活"
+  },
+  "tourGuidesRegister": {
+    "title": "导游注册",
+    "subtitle": "加入阿西尔导游网络。",
+    "metaTitle": "导游注册表 | 探索阿西尔",
+    "metaDescription": "注册成为阿西尔导游。",
+    "back": "返回",
+    "breadcrumbLabel": "面包屑导航",
+    "home": "首页",
+    "correntPage": "导游注册",
+    "tourGuides": "导游",
+    "formTitle": "导游注册表",
+    "formSubtitle": "我们邀请持证导游提交信息，以便纳入我们的数据库。符合条件的导游将登上探索阿西尔网站。此收录将为您在我们的平台上提供公平的曝光与营销机会。",
+    "notes": "注意：以下信息将显示在您于探索阿西尔网站上的个人资料中。信息质量越高，推广您服务的效果越好。",
+    "stepProgress": "第 {step} 步，共 {total} 步",
+    "formProgressAria": "表单完成进度",
+    "form": {
+      "personalInfo": "个人信息",
+      "licenseInfo": "导游执照信息",
+      "generalInfo": "一般信息",
+      "contactInfo": "联系信息",
+      "socialAccounts": "网站与社交媒体账号",
+      "residence": "居住地",
+      "residenceAseer": "阿西尔",
+      "residenceOther": "其他",
+      "nameAr": "阿拉伯语姓名",
+      "nameEn": "英语姓名",
+      "gender": "性别",
+      "nationalId": "国民身份证号码",
+      "aboutMe": "关于我（导游）",
+      "licenseNumber": "执照号码",
+      "licenseExpiry": "执照到期日期",
+      "arabicLanguage": "阿拉伯语",
+      "englishLanguage": "英语",
+      "otherLanguages": "其他语言",
+      "otherLanguagesLevel": "语言水平",
+      "otherLanguagesPlaceholder": "例如法语、西班牙语",
+      "specialization": "专长",
+      "transportation": "您是否有交通工具？",
+      "email": "电子邮件",
+      "mobile": "手机号码",
+      "mobileHint": "请输入以 05 开头的 10 位数字，或以 +966 开头的 13 位数字",
+      "whatsapp": "WhatsApp 号码",
+      "website": "网站",
+      "instagram": "Instagram",
+      "xPlatform": "X",
+      "tiktok": "TikTok",
+      "snapchat": "Snapchat",
+      "commitmentsTitle": "声明",
+      "commitment1": "我确认以上提供的所有信息及所附文件准确无误，并完整反映我作为导游的个人详情与经验。我理解本申请中任何不正确或不完整的信息可能导致我无法登上探索阿西尔网站。",
+      "commitment2": "我同意探索阿西尔电子渠道及阿西尔地区发展局使用以上提供的信息，用于将阿西尔打造并推广为旅游目的地。",
+      "commitment3": "我承诺通过任何方式（网站个人账号、电子邮件、电话或 WhatsApp）充分提供游客提出的导游服务，并及时回复。游客将对我的服务评分，任何延误或未能提供令人满意的服务，都足以成为降低评分并可能将我从网站移除的理由。",
+      "commitment4": "我同意隐私政策",
+      "profilePhoto": "个人照片",
+      "licenseAttachment": "执照附件（PDF 或图片）",
+      "browsePhoto": "上传照片",
+      "browseAttachment": "上传执照",
+      "photoGuidelinesTitle": "我们建议上传清晰、近期的个人照片，因为它将出现在您的公开资料中，帮助访客认出您，从而提高被联系的机会。",
+      "photoGuidelinesDoNot": "请不要：",
+      "photoGuidelinesList1": "上传身份证或其他文件。",
+      "photoGuidelinesList2": "上传截图、标志或图形。",
+      "photoGuidelinesList3": "上传他人照片或任何模糊图像。",
+      "photoGuidelinesList4": "上传竖向图像。",
+      "addLanguageLevel": "添加语言水平",
+      "hideLanguageLevel": "隐藏语言水平",
+      "fileTypesImage": "JPG, JPEG, PNG, WEBP",
+      "fileTypesLicense": "JPG, JPEG, PDF",
+      "select": "选择",
+      "yes": "是",
+      "no": "否",
+      "genderMale": "男",
+      "genderFemale": "女",
+      "levelBeginner": "初级",
+      "levelIntermediate": "中级",
+      "levelAdvanced": "高级",
+      "otherSpecializationPlaceholder": "描述您的其他专长",
+      "formActionsAria": "表单操作",
+      "submit": "提交申请",
+      "submitting": "正在提交…",
+      "success": "您的申请已成功提交。",
+      "errorGeneric": "发生意外错误。",
+      "errorSubmit": "无法提交您的申请。请稍后再试。",
+      "specializations": {
+        "land": "陆地与户外体验",
+        "marine": "海洋体验",
+        "aerial": "空中体验",
+        "heritage": "遗产与文化体验",
+        "recreational": "休闲旅游",
+        "other": "其他"
+      }
+    }
+  },
+  "tourGuidePortal": {
+    "title": "导游门户",
+    "subtitle": "登录以创建或更新您的导游资料。更改将保存为草稿，直至我们的团队审核并发布。",
+    "metaTitle": "导游门户 | 探索阿西尔",
+    "metaDescription": "登录或注册成为导游，并在探索阿西尔管理您的资料。",
+    "breadcrumbLabel": "面包屑导航",
+    "home": "首页",
+    "tourGuides": "导游",
+    "back": "返回",
+    "loading": "加载中…",
+    "signedInAs": "已登录为 {email}",
+    "logout": "退出登录",
+    "auth": {
+      "loginTitle": "登录",
+      "registerTitle": "创建账户",
+      "loginSubtitle": "使用您的 Directus 账户管理导游资料。",
+      "registerSubtitle": "创建账户以提交和更新您的导游资料。",
+      "tabLogin": "登录",
+      "tabRegister": "注册",
+      "firstName": "名",
+      "lastName": "姓",
+      "email": "电子邮件",
+      "password": "密码",
+      "loginButton": "登录",
+      "registerButton": "创建账户",
+      "submitting": "请稍候…",
+      "errorGeneric": "出现问题。请再试一次。",
+      "modeSwitcherAria": "登录或注册",
+      "passwordHint": "至少 8 个字符",
+      "verifyTitle": "验证您的电子邮件",
+      "verifyLoading": "正在确认您的电子邮件地址…",
+      "verifySuccess": "电子邮件验证成功。您可以登录。",
+      "verifyFailed": "无法验证此链接。它可能无效或已过期。",
+      "verifyMissingToken": "验证链接无效或缺失。",
+      "verifyGoToSignIn": "前往登录",
+      "resendVerify": "重发验证邮件",
+      "resendVerifySent": "如果该电子邮件存在未验证账户，新的验证链接已发送。"
+    },
+    "profile": {
+      "createHint": "填写以下表格，提交您的导游资料以供审核。",
+      "statusDraft": "您的资料目前为草稿。提交表格以送审。",
+      "statusUnderReview": "您的申请正在审核中。在管理员发布之前，它不会出现在公开列表中。",
+      "statusPublished": "您的资料已发布，并在导游页面可见。保存更改将使其重新进入审核。",
+      "statusRejected": "您的申请已被拒绝。请更新详情后再次提交，或联系支持寻求帮助。",
+      "currentFileKept": "当前已存档文件——仅在需要替换时上传。",
+      "viewCurrentPhoto": "当前个人照片",
+      "viewCurrentLicense": "查看执照文件",
+      "saveDraft": "提交申请以供审核",
+      "saving": "正在保存…",
+      "savedDraft": "资料已保存为草稿。管理员将审核并发布。",
+      "savedUnderReview": "申请已提交审核。管理员将审核并发布。",
+      "sessionExpired": "您的会话已过期。请重新登录。",
+      "errorGeneric": "无法保存您的资料。请再试一次。",
+      "commitmentsRequired": "请在保存前接受所有声明。",
+      "specializationRequired": "请至少选择一项专长。",
+      "errorRequired": "请在保存前填写所有必填字段。",
+      "errorInvalidMobile": "手机号码无效。须为以 05 开头的 10 位数字，或以 +9665 开头的 12 个字符。",
+      "errorInvalidNationalId": "国民身份证无效。必须恰好为 10 位数字。",
+      "errorInvalidLicense": "执照号码无效。必须恰好为 8 位数字。",
+      "lockedFieldsHint": "姓名、性别、国民身份证和执照号码在您创建资料时已设定，无法在此更改。如需更正，请联系支持。"
+    }
+  },
+  "aseerCommunity": {
+    "breadcrumb": "阿西尔社区",
+    "title": "阿西尔社区",
+    "subtitle": "真诚高贵、非凡好客与本真勇气的价值观，在阿西尔迎接您",
+    "slider": {
+      "sectionTitle": "阿西尔人民",
+      "sectionSubtitle": "阿西尔地域广阔，是沙特各地区中人口密度最高的地区之一，居住着一百多万人口。",
+      "slides": {
+        "slide1": {
+          "title": "阿西尔的文化织锦",
+          "description": "在阿西尔山地、沿海、贝都因与城市景观中的定居，并未削弱根深蒂固的习俗、传统，以及定义该地区的人文品质。对进步与现代的开放，与慷慨、忠诚和善良并存，并伴随着文化与专业成长。"
+        },
+        "slide2": {
+          "title": "社区纽带",
+          "description": "家庭是阿西尔社会生活的核心——是培养本真与成长的第一摇篮。这些纽带延伸至因温暖与忠诚而团结的亲友；咖啡将他们聚在休憩与晚间相聚的时刻。"
+        },
+        "slide3": {
+          "title": "生机勃勃的生活",
+          "description": "阿西尔社会植根于对艺术的热爱，体现在服饰、建筑、饮食、音乐、诗歌、知识，以及贸易与农耕的生计之中。地理多样性丰富了这些艺术，同时保存了遗产与对传统的自豪。"
+        }
+      }
+    }
+  },
+  "aseerCuisine": {
+    "title": "阿西尔美食",
+    "subtitle": "来自南方的本真风味。",
+    "dishesSection": {
+      "title": "品尝传统阿西尔菜肴",
+      "description": "阿西尔烹饪将山地、河谷与农场汇于一桌：高地咖啡豆、比沙椰枣、山地小麦与河谷谷物、新鲜乳品，以及野花蜂蜜——常常以当地牧群慢炖的哈尼斯收尾。探索哈尼斯、阿里卡、马什古萨、阿西达、用坦努尔烤制的迈法饼、马尔库什饼、马布苏萨等更多菜肴。",
+      "browseAll": "查看全部菜肴",
+      "cards": {
+        "dish1": "哈尼斯",
+        "dish2": "阿里卡",
+        "dish3": "马什古萨",
+        "dish4": "阿西达"
+      }
+    },
+    "restaurantsSection": {
+      "title": "热门餐厅",
+      "ctaLabel": "发现全部餐厅",
+      "cards": {
+        "r1": {
+          "title": "哈尼斯之家",
+          "location": "艾卜哈 — 法赫德国王路",
+          "cuisineType": "阿西尔美食",
+          "priceRange": "SAR 50–120"
+        },
+        "r2": {
+          "title": "阿里卡角落",
+          "location": "海米斯穆谢特 — 机场区",
+          "cuisineType": "休闲餐饮",
+          "priceRange": "SAR 35–90"
+        },
+        "r3": {
+          "title": "迈法饼坊",
+          "location": "塔努马 — 市场街",
+          "cuisineType": "阿西尔烘焙",
+          "priceRange": "SAR 25–70"
+        },
+        "r4": {
+          "title": "马尔库什之家",
+          "location": "纳马斯 — 哈立德国王路",
+          "cuisineType": "遗产美食",
+          "priceRange": "SAR 40–110"
+        },
+        "r5": {
+          "title": "阿西尔码头",
+          "location": "比沙 — 市中心",
+          "cuisineType": "地方菜肴",
+          "priceRange": "SAR 30–85"
+        },
+        "r6": {
+          "title": "山地餐桌",
+          "location": "里贾勒阿尔马 — 历史街区",
+          "cuisineType": "高地厨房",
+          "priceRange": "SAR 60–140"
+        }
+      }
+    },
+    "heritageRestaurantsSection": {
+      "title": "遗产餐厅",
+      "ctaLabel": "发现全部餐厅"
+    },
+    "localFlavorsSection": {
+      "title": "地方风味",
+      "subtitle": "一扇通往阿西尔最独特味道的窗口",
+      "browseAll": "查看全部风味",
+      "cards": {
+        "flavor1": "哈尼斯",
+        "flavor2": "阿里卡",
+        "flavor3": "马什古萨",
+        "flavor4": "迈法饼"
+      }
+    },
+    "cookingExperiencesSection": {
+      "title": "旅游体验",
+      "description": "",
+      "ctaLabel": "发现全部体验",
+      "cards": {
+        "cookExp1": {
+          "category": "烹饪",
+          "title": "以阿西尔方式烹制哈尼斯",
+          "duration": "3 小时",
+          "description": "选择肉块、香料与慢炖步骤，制作地道的阿西尔哈尼斯。",
+          "provider": "Bayt Al Nakaat"
+        },
+        "cookExp2": {
+          "category": "遗产烘焙",
+          "title": "迈法饼工坊",
+          "duration": "2.5 小时",
+          "description": "用传统坦努尔方法揉面、塑形并烤制迈法饼。",
+          "provider": "Heritage Aseer Kitchen"
+        },
+        "cookExp3": {
+          "category": "甜品",
+          "title": "阿里卡与马什古萨",
+          "duration": "2 小时",
+          "description": "互动式备餐与摆盘，体验两道深受喜爱的阿西尔家常菜。",
+          "provider": "Pioneers of Taste"
+        },
+        "cookExp4": {
+          "category": "咖啡与蜂蜜",
+          "title": "阿西尔咖啡圈",
+          "duration": "1.5 小时",
+          "description": "烘焙、冲泡并品尝本地咖啡，搭配蜂蜜与比沙椰枣。",
+          "provider": "Mountain Coffee"
+        }
+      }
+    },
+    "chefsVideoSection": {
+      "title": "认识阿西尔的主厨",
+      "subtitle": "来自传承该地区风味的厨房故事"
+    },
+    "breadcrumbCuisine": "阿西尔美食",
+    "back": "返回",
+    "dishesBrowse": {
+      "title": "传统阿西尔菜肴"
+    },
+    "flavorsBrowse": {
+      "title": "地方风味"
+    }
+  },
+  "planner": {
+    "title": "规划您的行程",
+    "subtitle": "轻松规划您的访问。",
+    "formTitle": "写下您的行程描述",
+    "formPlaceholder": "建议：规划一次为期 7 天的阿西尔之旅，早餐 10:00，午餐 15:00，晚餐 20:00。",
+    "dateFrom": "从",
+    "dateTo": "至",
+    "timePeriod": "时间段",
+    "planning": "规划中...",
+    "createPlan": "创建计划",
+    "parseError": "无法解析服务器返回的计划，请再试一次。",
+    "generateError": "生成日程时发生错误"
+  },
+  "interactiveMap": {
+    "title": "互动地图",
+    "subtitle": "在地图上探索目的地。",
+    "all": "选择您的目的地",
+    "allCategories": "全部分类",
+    "discover": "探索阿西尔",
+    "filterLabel": "筛选",
+    "search": "搜索...",
+    "locations": "地点",
+    "clearFilters": "清除筛选",
+    "noGeo": "地图上目前无法提供位置坐标。",
+    "showOnMap": "在地图上显示",
+    "directions": "路线",
+    "viewMore": "查看更多",
+    "viewLess": "收起",
+    "noResults": "没有符合当前搜索的地点。",
+    "loadingLocations": "正在加载地点",
+    "openListings": "打开地点列表",
+    "closeListings": "关闭地点列表",
+    "tokenHint": "在环境文件中添加 `NEXT_PUBLIC_MAPBOX_API_KEY` 以启用地图。",
+    "categories": {
+      "events": "活动",
+      "experiences": "体验",
+      "attractions": "景点",
+      "camping": "露营与房车",
+      "restaurants": "餐厅与咖啡馆",
+      "accommodation": "住宿"
+    }
+  },
+  "film": {
+    "title": "银幕上的阿西尔",
+    "subtitle": "介绍该地区的影像故事。",
+    "introTitle": "开启一段充满多样性与独特之美的电影之旅。",
+    "introBody": "阿西尔以多样的自然景观著称：山峰、平原、广袤沙漠与红海海岸线，以及四千多座反映深厚文化、历史与本真地方身份的遗产村落。",
+    "bannerTitle": "就在阿西尔！",
+    "bannerSubtitle": "我们在此为您提供所需支持",
+    "ctaFormPrompt": "请填写以下表格。",
+    "ctaFormButton": "打开表格",
+    "registerNow": "立即注册",
+    "orEmailUs": "或发送电子邮件至：",
+    "whyAseer": "为何选择阿西尔？",
+    "whyAseerNaturalTitle": "自然多样性",
+    "whyAseerNaturalDesc": "阿西尔以其独特的自然多样性吸引电影人，多样景观展现自然之美，从巍峨山峰直至海底深处，延伸至平原与沙漠。这使阿西尔以凉爽多雨的夏季和全年适宜的气候著称。因此，阿西尔地区是制作展现美、并需要自然与气候多样性的影片与艺术作品的理想环境。",
+    "whyAseerCulturalTitle": "文化多样性",
+    "whyAseerCulturalDesc": "阿西尔地区的丰厚与文化多样性有助于启发电影人、激发其创造感官。它以独特建筑承载根深蒂固的本真，体现在四千多座遗产村落中；拥有塑造历史、勾勒未来的本真而富有启发性的社区；以及深深植根于迷人手工艺与艺术中的传统与习俗，它们打动审美品味，并志在获得全球认可。",
+    "services": "服务",
+    "filmedWorks": "在阿西尔拍摄的作品",
+    "filterAll": "全部",
+    "filterFilms": "电影",
+    "filterPromo": "宣传片",
+    "filterSeries": "剧集",
+    "filterMusic": "音乐影片",
+    "serviceCrewTitle": "剧组",
+    "serviceCrewDesc": "协助从阿西尔地区本地社区获取电影制作领域的多样人力资源与能力。",
+    "serviceLocationsTitle": "拍摄地点",
+    "serviceLocationsDesc": "根据艺术作品的性质与要求，支持并协助识别和进入合适的拍摄地点。",
+    "servicePermitsTitle": "官方批准",
+    "servicePermitsDesc": "支持并协助完成从阿西尔地区电影制作相关官方机构获得批准所需的程序。",
+    "landscapes": {
+      "mountains": "山峰",
+      "plains": "蒂哈玛平原",
+      "beaches": "沿海海滩",
+      "desert": "沙漠自然",
+      "viewAttractions": "查看{label}的景点",
+      "viewDestinations": "查看{label}的目的地",
+      "filteredBy": "正在显示与{label}相关的景点"
+    }
+  },
+  "igcat": {
+    "banner": {
+      "titleLine1": "阿西尔世界美食之都",
+      "titleLine2": "2024",
+      "titleLine3": "颂扬传统与创新",
+      "cta": "参与手册",
+      "imageAlt": "阿西尔世界美食之都"
+    },
+    "background": {
+      "badge": "称号",
+      "section1Title": "阿西尔：欧洲以外首个 2024 世界美食之都",
+      "section1Body": "2022 年 9 月，阿西尔被宣布为「2024 世界烹饪艺术之都」称号的获得者，成为欧洲以外首个赢得该称号的地区。该称号由国际烹饪艺术、文化、艺术与旅游研究所（IGCAT）授予加入该平台并满足研究所制定标准的地区。这些标准包括通过烹饪艺术领域跨经济、文化、社会与环境发展部门开展工作，以支持可持续的区域发展。该奖项由研究所主席 Diane Dodd 于 2022 年 9 月 24 日在意大利都灵举行的正式仪式上颁发。此次获奖是在研究所专家评审团于 2022 年 2 月 27 日至 3 月 1 日访问该地区、并与当地利益相关方会面以评估阿西尔举办该称号的准备情况之后。此次访问体现了该地区支持地方文化与饮食多样性的努力，以及确保区域生物多样性与环境保护、保存遗产与传统知识、并赋能年轻一代创造独特产品与服务以吸引可持续旅游的追求。",
+      "mocAlt": "烹饪艺术委员会",
+      "mocCaption": "在烹饪艺术委员会监督下",
+      "section1ImageAlt": "食物准备",
+      "section2Title": "阿西尔 2024 世界美食之都",
+      "section2Body": "IGCAT 的世界美食之都称号表彰致力于通过美食保护文化遗产并发展旅游的地区。它奖励文化与环境多样性、社区支持，以及年轻一代通过烹饪创新与综合访客服务所作出的贡献。",
+      "section2ImageAlt": "阿西尔菜肴",
+      "brochure": "手册"
+    },
+    "events": {
+      "badge": "全球聚会",
+      "title": "精选活动",
+      "discription": "阿西尔地区主办了世界美食之都平台第 27 次会议，来自 11 个获奖地区的 20 位国际专家齐聚一堂，交流最佳实践并探索地方文化。这一独特活动首次在欧洲以外举行，围绕烹饪艺术在地方发展与促进可持续性中的作用展开讨论与工作坊。",
+      "items": {
+        "1": {
+          "tabTop": "4 月 22 日",
+          "tabBottom": "12 月 18 日",
+          "title": "阿西尔第十次专家会议",
+          "description": "阿西尔主办了世界美食之都平台第 27 次会议，汇聚来自 11 个获奖地区的 20 位国际专家，通过关于美食与可持续发展的工作坊交流最佳实践并探索地方文化。"
+        },
+        "2": {
+          "tabTop": "4 月 23 日",
+          "tabBottom": "12 月 18 日",
+          "card1": {
+            "title": "蜂蜜研究中心 - 哈立德国王大学",
+            "description": "访客可了解该中心为保护作为阿西尔环境组成部分的本地蜂蜜品种所做的努力。展出关于养蜂、蜂蜜生产与环境可持续性的研究，并凸显年轻一代如何参与这一重要产业。"
+          },
+          "card2": {
+            "title": "丰饶保护协会",
+            "description": "访客可了解旨在减少食物浪费的倡议：该协会回收餐厅与家庭的剩余食物，并重新分配给有需要的家庭。协会拥有超过 16,000 名志愿者的成功故事，体现了阿西尔的慷慨精神与社区合作。"
+          },
+          "card3": {
+            "title": "南方妇女协会",
+            "description": "该协会推出创新培训项目，支持本地女性投身烹饪与接待领域。这些项目旨在通过提供管理自有项目或加入劳动力所需的技能，在经济上赋能女性，从而增强其独立性并为地方发展作出贡献。"
+          },
+          "card4": {
+            "title": "味道街",
+            "description": "在味道街沉浸体验，访客可享用来自本地餐厅与家庭的多种传统菜肴。活动提供在充满活力的氛围中探索阿西尔风味的机会，促进社会与文化交流。"
+          },
+          "card5": {
+            "title": "Wine Farm",
+            "description": "探索阿西尔首个旅游农场，了解保护本地植物的努力。农场为客人提供互动体验，包括导览与新鲜菜肴，是自然爱好者与冒险寻求者的理想目的地。"
+          }
+        },
+        "3": {
+          "tabTop": "4 月 24 日",
+          "tabBottom": "2026",
+          "card1": {
+            "title": "蜂蜜小屋",
+            "description": "在一家专注养蜂与蜂蜜生产的家族蜂蜜农场获得启发体验。「蜂蜜小屋」以传统与创新交融而著称，在阿西尔各地拥有 3,000 个蜂箱。访客可品尝本地蜂蜜，同时了解体现该地区价值观的可持续生产方法。"
+          },
+          "card2": {
+            "title": "里贾勒阿尔马村",
+            "description": "探访王国最著名的遗产村落之一，探索以石与土建造的独特村落建筑。访客通过地方博物馆与导览了解该地区的文化遗产，一窥日常生活与古老的阿西尔传统。"
+          }
+        },
+        "4": {
+          "tabTop": "4 月 25 日",
+          "tabBottom": "2026",
+          "card1": {
+            "title": "美食礼品挑战",
+            "description": "在活动最后一天，部分研究所成员加入了在哈立德国王大学举行的「全球美食礼品挑战」评审团。比赛评估来自世界各地的独特食品，并根据创新、可持续性与故事讲述等标准选出获奖者。活动特别表彰体现地方遗产与文化精神的产品。"
+          },
+          "card2": {
+            "title": "阿西尔发展局工作坊",
+            "description": "最后一天，其余研究所成员在沙特旅游局与遗产局代表陪同下访问了阿西尔发展局。工作坊包括阿西尔发展总体规划的介绍，包括支持本地杜松树的苏达发展保护计划，以及与烹饪艺术委员会合作记录野生植物在烹饪中的使用。工作坊旨在凸显保护阿西尔环境与文化遗产的策略。"
+          },
+          "card3": {
+            "title": "闭幕式",
+            "description": "世界烹饪艺术地区平台第 27 次会议活动以哈立德国王大学的正式仪式落下帷幕。仪式表彰活动期间地方与国际利益相关方的努力，颁发表彰奖项，并凸显阿西尔地区作为推广烹饪艺术与可持续旅游项目的一部分所取得的关键成就。"
+          }
+        },
+        "5": {
+          "tabTop": "7 月 3 日",
+          "tabBottom": "2026",
+          "title": "激活利益相关方角色的工作坊",
+          "description": "烹饪艺术委员会在法拉阿的哈立德国王大学举办了「阿西尔 2024 世界美食之都」工作坊，政府机构、协会与企业主齐聚一堂，共同提升阿西尔作为全球美食目的地的地位。工作坊重点展示成就、凸显该地区通过烹饪艺术吸引访客的潜力，并为 2024 年和 2025 年制定创新计划与可持续倡议，使阿西尔成为风味与文化爱好者的重要目的地。"
+        }
+      }
+    },
+    "quotes": {
+      "items": {
+        "0": {
+          "name": "Professor Diane Dodd",
+          "role": "主席，IGCAT",
+          "quote": "教育与国际合作是赋能社区并确保烹饪遗产可持续性的关键。"
+        },
+        "1": {
+          "name": "Mayada Badr",
+          "role": "首席执行官，烹饪艺术委员会",
+          "quote": "阿西尔美食是风味、质地与香气的生动调色板，深受其地理多样性与社区农业奉献的影响。从梯田到翠绿河谷，每一处景观都为该地区的烹饪谱系作出独特贡献。这里的菜肴不仅仅是食物；它们是代代相传的历史、文化与创新叙事。本土香草、谷物与水果等食材，经由历经时间考验的方法，转化为呼应阿西尔精神的精致餐食。"
+        }
+      }
+    },
+    "winners": {
+      "title": "世界美食礼品挑战获奖者 2023 - 2024 - 2025",
+      "videoAlt": "获奖者视频",
+      "items": {
+        "1": {
+          "title": "Abdulrahman Al-Aboudi - 当代椰枣碗",
+          "description": "带有当代设计与传统雕刻的木质椰枣碗。",
+          "year": "2024",
+          "image": "/assets/igcat/winners/1.png"
+        },
+        "2": {
+          "title": "Hanan Al-Qahhtani - 苏伊卡篮",
+          "description": "盛放传统阿西尔菜肴食材的篮子，代表该地区的遗产。",
+          "year": "2024",
+          "image": "/assets/igcat/winners/2.png"
+        },
+        "3": {
+          "title": "Zainab Al-Khalib - 沙特咖啡豆袋",
+          "description": "盛放沙特咖啡食材的手工艺袋，体现该地区的遗产。",
+          "year": "2024",
+          "image": "/assets/igcat/winners/3.png"
+        },
+        "4": {
+          "title": "Marouj Al-Shatari - 奢华木盒",
+          "description": "受咖啡豆启发的优雅木质咖啡器具盒。",
+          "year": "2024",
+          "image": "/assets/igcat/winners/4.png"
+        },
+        "5": {
+          "title": "Abdullah Al-Jarashi (Tahallal) - 「阿西尔之味」蜂蜜",
+          "description": "将手工艺与地道阿西尔蜂蜜融合的礼品。",
+          "year": "2023",
+          "image": "/assets/igcat/winners/5.png"
+        },
+        "6": {
+          "title": "Palm Cups Set ",
+          "description": "",
+          "year": "2025",
+          "image": "/assets/igcat/winners/6.jpeg"
+        },
+        "7": {
+          "title": "受卡萨巴塔启发的椰枣碗",
+          "description": "",
+          "year": "2025",
+          "image": "/assets/igcat/winners/7.png"
+        }
+      }
+    },
+    "foodFilm": {
+      "badge": "竞赛",
+      "title": "美食电影菜单竞赛",
+      "description": "每年举办，展示推广世界各地文化与自然地标的视频。阿西尔于 2022 年和 2024 年两度获奖，影片凸显该地区的自然、热情好客与传统菜肴。",
+      "items": {
+        "1": {
+          "title": "沙特阿拉伯探险：阿西尔之味"
+        },
+        "2": {
+          "title": "一起去阿西尔——中东与北非美食候选地区"
+        }
+      }
+    },
+    "initiatives": {
+      "title": "哈立德国王大学倡议",
+      "universityAlt": "哈立德国王大学",
+      "items": {
+        "1": {
+          "title": "达喀尔拉力赛",
+          "image": "/assets/igcat/1.jpg"
+        },
+        "2": {
+          "title": "沙特旅游论坛 (STF)",
+          "image": "/assets/igcat/2.jpg"
+        },
+        "3": {
+          "title": "阿拉伯旅游市场 (ATM)",
+          "image": "/assets/igcat/3.jpg"
+        }
+      }
+    },
+    "igcatDishes": {
+      "items": {
+        "1": {
+          "title": "哈尼斯",
+          "description": "在整个地区，尤其是马哈伊勒和里贾勒阿尔马等沿海地带，哈尼斯不仅仅是一餐；它是热情好客与共同体喜悦的象征，是特殊聚会中分享的珍宝。经文化部所属烹饪艺术委员会正式认可，哈尼斯不仅是地区自豪的源泉，也是珍贵的传承，是为后代保存的文化身份象征。",
+          "image": "/assets/igcat/food/1.jpg",
+          "innerImage": "/assets/igcat/food/1.1.jpg"
+        },
+        "2": {
+          "title": "阿里卡",
+          "description": "阿里卡在本质上捕捉了阿西尔冬季的灵魂，在清爽的清晨如温暖的拥抱。它的魅力已织入地方与区域美食的肌理，出现在众多餐馆的菜单上，有时点缀奶油或坚果，成为快捷而走心的早餐。\n但正是在阿西尔的省份与质朴村落，如海米斯穆谢特、萨拉特阿比达和阿哈德鲁法伊达，阿里卡才真正作为好客的灯塔闪耀。在这里，它在餐与餐之间的瓦索尔时段昂然呈现，体现温暖与欢迎的传统，这正是典型的阿西尔风格，使阿里卡不仅是一道菜，更是亲友共享的珍贵时刻。",
+          "image": "/assets/igcat/food/2.jpg",
+          "innerImage": "/assets/igcat/food/2.2.jpg"
+        },
+        "3": {
+          "title": "迈法饼",
+          "description": "迈法饼取材于萨拉瓦特山脉丰饶的麦田，体现传统与滋养的精髓；部分变体加入红玉米粒（称为扎伊尔），在种植该作物的蒂哈玛地区尤为常见。\n迈法饼被尊为阿西尔不可或缺的主食，取代商业面包种类，以其健康美味征服所有品尝者的味蕾。它的魅力在斋月尤为显著，在餐桌上占据至高地位。",
+          "image": "/assets/igcat/food/3.jpg",
+          "innerImage": "/assets/igcat/food/3.3.jpg"
+        },
+        "4": {
+          "title": "马什古萨",
+          "description": "作为典型的冬季美味，马什古萨以其高热量令人着迷，成为儿童、长者、病患以及节日季节的钟爱之选，因其易于食用与营养丰富而受到称颂。这道备受推崇的菜肴是慷慨与好客的象征，尤其受到阿西尔哈杰尔地区人民的珍视，包括纳马斯、巴拉斯马尔、巴拉赫马尔和塔努马。",
+          "image": "/assets/igcat/food/4.jpg",
+          "innerImage": "/assets/igcat/food/4.4.jpg"
+        }
+      }
+    },
+    "igcatRestaurants": {
+      "items": {
+        "1": {
+          "title": "艾卜哈堡",
+          "description": "传统氛围中的南方民间菜肴",
+          "image": "/assets/igcat/restaurants/1.jpg"
+        },
+        "2": {
+          "title": "Sadaf",
+          "description": "带有独特当代风格的南方菜肴",
+          "image": "/assets/igcat/restaurants/2.png"
+        },
+        "3": {
+          "title": "阿萨斯聚会",
+          "description": "现场烹饪体验，呈现传统阿西尔菜肴",
+          "image": "/assets/igcat/restaurants/3.png"
+        }
+      }
+    },
+    "food": {
+      "dishesTitle": "阿西尔传统菜肴",
+      "dishesCta": "探索阿西尔美食",
+      "restaurantsTitle": "热门餐厅",
+      "restaurantsCta": "发现餐厅",
+      "noRestaurants": "目前暂无餐厅信息。",
+      "close": "关闭"
+    }
+  },
+  "contactUs": {
+    "metaTitle": "联系我们 | 探索阿西尔",
+    "metaDescription": "与探索阿西尔团队取得联系。",
+    "back": "返回",
+    "breadcrumbLabel": "面包屑导航",
+    "home": "首页",
+    "breadcrumb": "联系我们",
+    "title": "联系我们",
+    "formSubtitle": "向我们发送您的请求，我们的团队将尽快回复。",
+    "form": {
+      "sectionTitle": "您的信息",
+      "name": "姓名",
+      "phone": "电话号码",
+      "phoneHint": "如在沙特阿拉伯境外，请包含国家区号。",
+      "email": "电子邮件",
+      "fromAseer": "您来自阿西尔吗？",
+      "description": "您的请求或留言",
+      "submit": "提交",
+      "success": "感谢您——我们已收到您的留言。",
+      "errorRequired": "请填写所有必填字段。",
+      "formActionsAria": "表单操作",
+      "fromAseerOptions": {
+        "yes": "是",
+        "no": "否"
+      }
+    }
+  },
+  "filmmakerForm": {
+    "metaTitle": "电影人表格 | 探索阿西尔",
+    "metaDescription": "向探索阿西尔影视团队提供您的信息与留言。",
+    "backToFilm": "返回影视",
+    "title": "电影人咨询",
+    "description": "分享您的信息，我们将就在阿西尔拍摄与您联系。",
+    "firstName": "名",
+    "lastName": "姓",
+    "email": "电子邮件",
+    "phone": "电话号码",
+    "message": "留言",
+    "submit": "提交",
+    "submitting": "正在发送…",
+    "success": "感谢您——您的留言已成功发送。",
+    "errorGeneric": "出现问题。请稍后再试。"
+  },
+  "gettingHere": {
+    "title": "抵达与出行",
+    "subtitle": "阿西尔的交通与道路。",
+    "banner": {
+      "home": "首页",
+      "crumbExperiences": "体验",
+      "crumbGettingHere": "抵达与出行",
+      "title": "抵达与出行",
+      "subtitle": "阿西尔，多样路线，独特冒险"
+    },
+    "air": {
+      "flyByAir": "乘飞机抵达",
+      "abhaAirportTitle": "艾卜哈国际机场 (AHB)",
+      "abhaAirportBody": "阿西尔访客的主要抵达点",
+      "bishaAirportTitle": "比沙国内机场 (BHH)",
+      "bishaAirportBody": "前往比沙及周边地区访客的主要抵达点",
+      "viewOnMap": "位置 ",
+      "domesticFlights": "国内航班",
+      "internationalFlights": "国际航班",
+      "bookNow": "立即预订",
+      "bookingSite": "立即预订",
+      "featured": "精选",
+      "budget": "经济",
+      "saudiLabel": "Saudia",
+      "saudiCarrier": "国家承运人",
+      "flyNasLabel": "Flynas",
+      "flyNasTagline": "领先的经济航空公司",
+      "flyadealLabel": "Flyadeal",
+      "flyadealTagline": "智慧出行",
+      "flyDubai": "Flydubai",
+      "airArabia": "Air Arabia",
+      "nileAir": "Nile Air",
+      "airCairo": "Air Cairo",
+      "qatarAirways": "Qatar Airways",
+      "salamAir": "SalamAir",
+      "jazeeraAirways": "Jazeera Airways"
+    },
+    "map": {
+      "eyebrow": "路线图",
+      "title": "在阿西尔找到您的路",
+      "description": "使用这张快速参考地图了解该地区方位，并规划最实用的路线。",
+      "alt": "阿西尔抵达与出行部分地图",
+      "viewInteractiveMap": "查看互动地图"
+    },
+    "land": {
+      "travelByRoad": "驾车前往",
+      "roadLead": "了解通往阿西尔的公路，以及与主要城市之间的大致行程距离。",
+      "drivingToAseer": "驾车前往阿西尔",
+      "distancesFromMajorCities": "与主要城市的距离",
+      "distance": "距离",
+      "drivingTime": "驾驶时间",
+      "aseer": "阿西尔",
+      "jeddah": "吉达",
+      "riyadh": "利雅得",
+      "madinah": "麦地那",
+      "dammam": "达曼",
+      "fromRiyadh": "从利雅得",
+      "fromJeddah": "从吉达",
+      "fromDammam": "从达曼",
+      "fromMadinah": "从麦地那",
+      "hours900": "840 km",
+      "hours650": "530 km",
+      "hours1039": "450 km",
+      "hours1200": "1,200 km",
+      "time10": "~13 小时",
+      "time8": "~9 小时",
+      "time11": "~7 小时",
+      "time13": "~21 小时",
+      "saptcoTitle": "公共交通巴士",
+      "saptcoBody": "定期班次连接艾卜哈中心站与王国各地主要城市。",
+      "saptcoAlt": "SAPTCO",
+      "saptcoLink": "https://saptco.com.sa/en",
+      "bookOnWebsite": "立即预订",
+      "downloadApp": "下载应用",
+      "gettingAroundTitle": "在阿西尔出行",
+      "airportTaxiTitle": "出租车",
+      "airportTaxiAlt": "机场出租车",
+      "airportTaxiBody": "艾卜哈国际机场抵达大厅外随时可乘坐出租车。",
+      "rideAppsTitle": "交通服务与应用",
+      "downloadAppShort": "下载应用",
+      "bolt": "Bolt",
+      "careem": "Careem",
+      "uber": "Uber",
+      "jeeny": "Jeeny",
+      "rehla": "Rehla",
+      "ctc": "首都运输公司",
+      "visitWebsite": "访问网站",
+      "boltLink": "https://bolt.eu/en-sa/",
+      "careemLink": "https://www.careem.com/en-AE/",
+      "uberLink": "https://www.uber.com/sa/en/",
+      "jeenyLink": "https://www.jeeny.me/en/",
+      "rehlaLink": "https://rehlacar.com/",
+      "ctcLink": "https://ctc-ksa.co/",
+      "carRentalTitle": "租车服务",
+      "carRentalLead": "探索租车选项，按自己的节奏自由发现阿西尔。",
+      "theebTitle": "Theeb",
+      "yeloTitle": "Yelo",
+      "ajarTitle": "Ajar",
+      "keyCarRentalTitle": "Key Car Rental",
+      "abuDiyabTitle": "Abu Diyab Rent Car",
+      "alRehailiTitle": "AlRehaili Car Rental",
+      "alFarisTitle": "AlFaris Rent Car",
+      "binHadiTitle": "Bin Hadi Rent Car",
+      "alRehilyEastTitle": "AlRehaili Car Rental",
+      "theebLink": "https://www.theebonline.com/",
+      "seeAlso": "另见",
+      "visaTitle": "签证与入境要求",
+      "visaAlt": "签证要求",
+      "planStayTitle": "规划您的住宿",
+      "planStayAlt": "规划您的住宿",
+      "pickDestinationAlt": "选择您的目的地",
+      "pickDestinationTitle": "选择您的目的地",
+      "discoverMoreTitle": "发现更多",
+      "discoverMoreExperiencesTitle": "体验",
+      "discoverMoreExperiencesDesc": "值得尝试的冒险与活动",
+      "discoverMoreExperiencesBtn": "显示更多",
+      "discoverMoreMapTitle": "互动地图",
+      "discoverMoreMapDesc": "您发现阿西尔的指南",
+      "discoverMoreMapBtn": "查看地图"
+    },
+    "experiences": {
+      "title": "阿西尔体验",
+      "subtitle": "在阿西尔停留期间，发现卓越活动与难忘体验。"
+    },
+    "attractions": {
+      "title": "阿西尔景点",
+      "subtitle": "探索标志性地标与自然奇观，感受阿西尔为何值得发现。"
+    }
+  },
+  "notFound": {
+    "title": "抱歉，此页面不存在",
+    "description": "您可以返回上一页或回到首页。",
+    "goBack": "返回",
+    "goHome": "前往首页"
+  },
+  "landmarks": {
+    "redirectNote": "重定向至景点"
+  },
+  "tourismCompanies": {
+    "navigation": {
+      "home": "首页",
+      "companies": "旅游公司"
+    },
+    "title": "旅游公司"
+  },
+  "identityfiles": {
+    "navigation": {
+      "home": "首页",
+      "companies": "配套服务"
+    },
+    "title": "阿西尔形象资料"
+  },
+  "media-kit": {
+    "navigation": {
+      "home": "首页",
+      "companies": "配套服务"
+    },
+    "title": "媒体"
+  }
+}

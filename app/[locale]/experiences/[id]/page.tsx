@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { fetchExperienceById } from "@/components/experiences/data";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 interface ExperienceDetailsPageProps {
   params: Promise<{ locale: string; id: string }>;
@@ -27,7 +28,7 @@ export default async function ExperienceDetailsPage({
   params,
 }: ExperienceDetailsPageProps) {
   const { id } = await params;
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const t = await getTranslations("experiencesDetail");
   const experience = await fetchExperienceById(id, locale);
 
@@ -35,7 +36,7 @@ export default async function ExperienceDetailsPage({
     notFound();
   }
 
-  const splitRegex = locale === "en" ? /[.!?]+/ : /[.!?؟]+/;
+  const splitRegex = locale === "ar" ? /[.!?؟]+/ : /[.!?]+/;
   const detailsParagraphs = experience.description
     .split(splitRegex)
     .map((part) => part.trim())
@@ -45,7 +46,7 @@ export default async function ExperienceDetailsPage({
 
   const getDisplayCategory = () => {
     const rawCategory =
-      locale === "en" && experience.type_en
+      locale !== "ar" && experience.type_en
         ? experience.type_en
         : experience.type;
     if (Array.isArray(rawCategory)) {

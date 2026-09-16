@@ -9,7 +9,7 @@ import {
   translateRestaurantLabel,
 } from "./restaurantLocale";
 import type { Restaurant } from "./types";
-import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import { pickLocalizedField, pickBilingualLabel, prefersLatinContent, type LocaleCode } from "@/lib/i18n/localized";
 import {
   catalogTotalPages,
   fetchDirectusCollectionAll,
@@ -196,17 +196,20 @@ export const transformLocationToRestaurant = (
 
   const cityNameRaw =
     pickLocalizedField(row, "city", locale) || (loc.city || "").trim();
-  const cityName =
-    locale === "en"
-      ? translateRestaurantCity(cityNameRaw, locale)
-      : cityNameRaw;
+  const cityName = prefersLatinContent(locale)
+    ? translateRestaurantCity(cityNameRaw, locale)
+    : cityNameRaw;
   const location = cityName
     ? locale === "ar"
       ? `${cityName}، عسير`
-      : `${cityName}, Aseer`
+      : locale === "zh"
+        ? `${cityName}，阿西尔`
+        : `${cityName}, Aseer`
     : locale === "ar"
       ? "عسير"
-      : "Aseer";
+      : locale === "zh"
+        ? "阿西尔"
+        : "Aseer";
 
   const image = resolveRestaurantImageUrl(loc.image_new, loc.image);
   const mapsUrl =
@@ -223,11 +226,15 @@ export const transformLocationToRestaurant = (
     pickLocalizedField(row, "category", locale) ||
     pickLocalizedField(row, "type", locale) ||
     (loc.categories || loc.type || loc.tags || "").trim() ||
-    (locale === "ar" ? "مطعم" : "Restaurant");
+    (pickBilingualLabel(
+      { ar: "مطعم", en: "Restaurant", zh: "餐厅" },
+      locale,
+    ));
 
   const category = translateRestaurantLabel(categoryRaw, locale);
   const nationality = translateRestaurantLabel(
-    nationalityRaw || (locale === "ar" ? "سعودي" : "Saudi"),
+    nationalityRaw ||
+      pickBilingualLabel({ ar: "سعودي", en: "Saudi", zh: "沙特" }, locale),
     locale,
   );
 
@@ -235,13 +242,20 @@ export const transformLocationToRestaurant = (
 
   const restaurant: Restaurant = {
     id: String(loc.id),
-    name: name || (locale === "ar" ? "بدون اسم" : "Untitled"),
+    name:
+      name ||
+      pickBilingualLabel({ ar: "بدون اسم", en: "Untitled", zh: "未命名" }, locale),
     location,
     ...(cityId ? { cityId } : {}),
     distanceKm: toFiniteNumber(loc.distance_km, 0),
     rating: clampRating(loc.rating),
     reviewsCount: toNonNegativeInt(loc.reviews_count, 0),
-    priceRange: priceRangeRaw || (locale === "ar" ? "غير محدد" : "Not specified"),
+    priceRange:
+      priceRangeRaw ||
+      pickBilingualLabel(
+        { ar: "غير محدد", en: "Not specified", zh: "未指定" },
+        locale,
+      ),
     nationality,
     category,
     ...(cuisineTypes.length > 0 ? { cuisineTypes } : {}),

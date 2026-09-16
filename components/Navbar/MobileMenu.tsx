@@ -18,7 +18,7 @@ interface MobileMenuProps {
 const LOCALE_OPTIONS = [
   { code: "ar", labelKey: "nav.localeArabic" as const },
   { code: "en", labelKey: "nav.localeEnglish" as const },
-  { code: "zh", labelKey: "nav.localeChinese" as const, comingSoon: true },
+  { code: "zh", labelKey: "nav.localeChinese" as const },
 ] as const;
 
 const GlobeSvg = () => (
@@ -95,12 +95,12 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         : t("nav.localeChinese");
 
   const switchLocale = (nextLocale: string) => {
-    if (nextLocale === "zh" || nextLocale === locale) {
+    if (nextLocale === locale) {
       setLangOpen(false);
       return;
     }
     const currentPath = window.location.pathname;
-    const newPath = currentPath.replace(/^\/(ar|en)(?=\/|$)/, `/${nextLocale}`);
+    const newPath = currentPath.replace(/^\/(ar|en|zh)(?=\/|$)/, `/${nextLocale}`);
     window.location.href = newPath + window.location.search;
   };
 
@@ -380,15 +380,12 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                         >
                           {LOCALE_OPTIONS.map((option) => {
                             const selected = option.code === locale;
-                            const disabled =
-                              "comingSoon" in option && option.comingSoon;
                             return (
                               <button
                                 key={option.code}
                                 type="button"
                                 role="option"
                                 aria-selected={selected}
-                                disabled={disabled}
                                 onClick={() => switchLocale(option.code)}
                                 style={{
                                   display: "flex",
@@ -398,12 +395,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                   padding: "10px 12px",
                                   borderRadius: 9,
                                   fontSize: 15,
-                                  color: disabled
-                                    ? "rgba(44,26,72,.35)"
-                                    : "#2C1A48",
-                                  cursor: disabled
-                                    ? "not-allowed"
-                                    : "pointer",
+                                  color: "#2C1A48",
+                                  cursor: "pointer",
                                   background: selected
                                     ? "#F3F1EA"
                                     : "transparent",
@@ -411,13 +404,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                 }}
                               >
                                 <span>{t(option.labelKey)}</span>
-                                {disabled ? (
-                                  <span style={{ fontSize: 10 }}>
-                                    {t("nav.localeComingSoon")}
-                                  </span>
-                                ) : selected ? (
-                                  <CheckSvg />
-                                ) : null}
+                                {selected ? <CheckSvg /> : null}
                               </button>
                             );
                           })}

@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import FilterDropdown from "../landmarks/FilterDropdown";
 import InterestsFilter from "../landmarks/InterestsFilter";
 import { DayPicker } from "react-day-picker";
-import { ar, enUS } from "date-fns/locale";
+import { ar, enUS, zhCN } from "date-fns/locale";
 import "react-day-picker/dist/style.css";
 import {
   LocationIcon,
@@ -216,7 +216,7 @@ const PlannerForm = ({ onSubmit, isLoading }: PlannerFormProps) => {
 
                     <DayPicker
                       mode="range"
-                      locale={locale === "ar" ? ar : enUS}
+                      locale={locale === "ar" ? ar : locale === "zh" ? zhCN : enUS}
                       selected={{
                         from: arrivalDate
                           ? fromLocalISODate(arrivalDate)

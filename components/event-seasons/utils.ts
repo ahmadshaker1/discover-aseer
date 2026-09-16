@@ -87,6 +87,7 @@ export function toIsoDateString(date: Date): string {
 
 /** Gregorian calendar everywhere — avoids server (Hijri) vs browser mismatch on ar-SA. */
 export function getDateFormatLocale(locale: LocaleCode): string {
+  if (locale === "zh") return "zh-CN";
   return locale === "ar" ? "ar-SA-u-ca-gregory" : "en-US";
 }
 

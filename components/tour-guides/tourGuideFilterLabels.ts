@@ -10,22 +10,27 @@ export const FIXED_SPECIALIZATION_FILTERS = [
   {
     id: "تجارب وأنشطة تراثية وثقافية",
     en: "Heritage & cultural experiences",
+    zh: "遗产与文化体验",
   },
   {
     id: "تجارب وأنشطة برية",
     en: "Land & outdoor experiences",
+    zh: "陆地与户外体验",
   },
   {
     id: "سياحة الاستجمام",
     en: "Recreational tourism",
+    zh: "休闲旅游",
   },
   {
     id: "تجارب وأنشطة بحرية",
     en: "Marine experiences",
+    zh: "海洋体验",
   },
   {
     id: "تجارب وأنشطة هوائية",
     en: "Aerial experiences",
+    zh: "空中体验",
   },
 ] as const;
 
@@ -56,6 +61,15 @@ const GENDER_MAP: Record<string, string> = {
   ذكر: "Male",
   أنثى: "Female",
 };
+
+const GENDER_MAP_ZH: Record<string, string> = {
+  ذكر: "男",
+  أنثى: "女",
+};
+
+const SPEC_MAP_ZH: Record<string, string> = Object.fromEntries(
+  FIXED_SPECIALIZATION_FILTERS.map((item) => [item.id, item.zh]),
+);
 
 export function parseSpecializationTokens(
   raw: string | null | undefined,
@@ -178,6 +192,15 @@ export function localizeTourGuideFilterLabel(
   locale: string,
   specLabelMap?: Map<string, string>,
 ): string {
+  if (locale === "zh") {
+    const canonical = canonicalizeSpecializationToken(raw) ?? raw.trim();
+    return (
+      SPEC_MAP_ZH[canonical] ??
+      GENDER_MAP_ZH[canonical] ??
+      GENDER_MAP_ZH[normalizeGuideGender(canonical)] ??
+      raw
+    );
+  }
   if (locale !== "en") {
     return canonicalizeSpecializationToken(raw) ?? raw;
   }

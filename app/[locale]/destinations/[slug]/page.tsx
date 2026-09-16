@@ -12,13 +12,14 @@ import {
 import EventsInfo from "@/components/EventsInfo/EventsInfo";
 import AttractionsLandmarksSection from "@/components/attractions/AttractionsLandmarksSection";
 import { fetchAttractions } from "@/components/attractions/data";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 interface DestinationSlugPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
 const DestinationSlugPage = async ({ params }: DestinationSlugPageProps) => {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const tCommon = await getTranslations("common");
   const tDest = await getTranslations("destinations");
   const { slug } = await params;

@@ -6,16 +6,18 @@ const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 const DEFAULT_ICON_CODE = "10d";
 const DEFAULT_ICON_URL = `https://openweathermap.org/img/wn/${DEFAULT_ICON_CODE}@2x.png`;
 
-function resolveWeatherLang(locale: string | null): "en" | "ar" {
+function resolveWeatherLang(locale: string | null): "en" | "ar" | "zh_cn" {
+  if (locale === "zh" || locale === "cn" || locale === "zh_cn") return "zh_cn";
   return locale === "en" ? "en" : "ar";
 }
 
-function defaultCondition(lang: "en" | "ar"): string {
+function defaultCondition(lang: "en" | "ar" | "zh_cn"): string {
+  if (lang === "zh_cn") return "雨";
   return lang === "en" ? "Rain" : "أمطار";
 }
 
 function buildFallbackPayload(
-  lang: "en" | "ar",
+  lang: "en" | "ar" | "zh_cn",
   source: string,
   area: string,
   lat: string,

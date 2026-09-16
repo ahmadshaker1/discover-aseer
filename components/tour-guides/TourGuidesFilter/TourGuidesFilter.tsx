@@ -38,7 +38,7 @@ const TourGuidesFilter = ({
 
   const specializationOptions = FIXED_SPECIALIZATION_FILTERS.map((item) => ({
     id: item.id,
-    label: locale === "en" ? item.en : item.id,
+    label: locale === "zh" ? item.zh : locale === "en" ? item.en : item.id,
     count: specializationCounts.get(item.id) ?? 0,
   }));
 

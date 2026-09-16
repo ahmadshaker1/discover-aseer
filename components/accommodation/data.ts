@@ -146,6 +146,27 @@ const normalizeCity = (city: string, locale: LocaleCode): string => {
     };
     return map[c] || c;
   }
+  if (locale === "zh") {
+    const map: Record<string, string> = {
+      أبها: "艾卜哈",
+      Abha: "艾卜哈",
+      "خميس مشيط": "海米斯穆谢特",
+      "Khamis Mushait": "海米斯穆谢特",
+      السودة: "苏达",
+      "Al Soudah": "苏达",
+      بيشة: "比沙",
+      Bisha: "比沙",
+      تنومة: "塔努马",
+      Tanomah: "塔努马",
+      النماص: "纳马斯",
+      "Al Namas": "纳马斯",
+      "محايل عسير": "迈哈伊勒阿西尔",
+      "Mahayil Aseer": "迈哈伊勒阿西尔",
+      "رجال ألمع": "里贾勒阿尔马",
+      "Rijal Almaa": "里贾勒阿尔马",
+    };
+    return map[c] || c;
+  }
   if (locale === "ar") {
     const map: Record<string, string> = {
       Abha: "أبها",

@@ -13,6 +13,7 @@ import { fetchRestaurants } from "@/components/restaurants/data";
 import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsCredibilitySection";
 import { getLocale, getTranslations } from "next-intl/server";
 import { fetchGlobalAssets } from "@/lib/directus/globalAssets";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 export const revalidate = 300;
 
@@ -22,7 +23,7 @@ const FALLBACK_POSTER = "/assets/activities/aseer-cuisine.jpg";
 const AseerCuisinePage = async () => {
   const t = await getTranslations("aseerCuisine");
   const tCommon = await getTranslations("common");
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
 
   const [dishCards, flavorCards, restaurantsResult, experiencesResult, globalAssets] =
     await Promise.all([

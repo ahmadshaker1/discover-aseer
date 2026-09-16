@@ -3,6 +3,7 @@ import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsC
 import RestaurantsListing from "@/components/restaurants/RestaurantsListing";
 import { fetchRestaurants } from "@/components/restaurants/data";
 import { parseCatalogPage } from "@/lib/directus/collectionCache";
+import type { LocaleCode } from "@/lib/i18n/localized";
 import { getLocale } from "next-intl/server";
 
 /**
@@ -14,7 +15,7 @@ interface RestaurantsPageProps {
 }
 
 const RestaurantsPage = async ({ searchParams }: RestaurantsPageProps) => {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
   const { items: restaurants } = await fetchRestaurants(locale);

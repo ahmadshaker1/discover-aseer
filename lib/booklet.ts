@@ -1,6 +1,6 @@
 import { directusCollectionFetch, directusItemsUrl } from "@/lib/directus/collectionCache";
 import { getDirectusPublicUrl } from "@/lib/directus/config";
-import { pickLocalizedField } from "@/lib/i18n/localized";
+import { parseLocaleCode, pickLocalizedField } from "@/lib/i18n/localized";
 
 export type BookletKind = "discover" | "outdoor";
 
@@ -19,7 +19,7 @@ export async function getBookletAssetUrl(options?: {
   locale?: string;
   kind?: BookletKind;
 }): Promise<string | null> {
-  const locale = options?.locale === "en" ? "en" : "ar";
+  const locale = parseLocaleCode(options?.locale) === "ar" ? "ar" : "en";
   const kind = options?.kind ?? "discover";
   const baseUrl = getDirectusPublicUrl();
 
@@ -58,7 +58,9 @@ export async function getBookletAssetUrl(options?: {
 export function bookletHref(kind: BookletKind = "discover", locale?: string): string {
   const params = new URLSearchParams();
   if (kind === "outdoor") params.set("type", "outdoor");
-  if (locale === "en" || locale === "ar") params.set("locale", locale);
+  if (locale === "en" || locale === "ar" || locale === "zh") {
+    params.set("locale", locale);
+  }
   const query = params.toString();
   return query ? `/booklet?${query}` : "/booklet";
 }
@@ -68,7 +70,7 @@ export function localizeBookletHref(href: string, locale: string): string {
   if (!href.startsWith("/booklet")) return href;
   const query = href.includes("?") ? href.slice(href.indexOf("?") + 1) : "";
   const params = new URLSearchParams(query);
-  params.set("locale", locale === "en" ? "en" : "ar");
+  params.set("locale", parseLocaleCode(locale) === "ar" ? "ar" : "en");
   return `/booklet?${params.toString()}`;
 }
 
@@ -80,18 +82,26 @@ export function bookletKindFromSearchParams(
 
 export function bookletLocaleFromRequest(request: Request): "ar" | "en" {
   const { searchParams } = new URL(request.url);
-  const queried = searchParams.get("locale");
-  if (queried === "en" || queried === "ar") return queried;
+  const queried = parseLocaleCode(searchParams.get("locale"));
+  if (queried !== "ar") return "en";
 
   const cookie = request.headers.get("cookie") ?? "";
-  const cookieLocale = cookie.match(/(?:^|;\s*)NEXT_LOCALE=(en|ar)/)?.[1];
-  if (cookieLocale === "en" || cookieLocale === "ar") return cookieLocale;
+  const cookieLocale = cookie.match(/(?:^|;\s*)NEXT_LOCALE=(en|ar|zh)/)?.[1];
+  if (cookieLocale === "en" || cookieLocale === "zh") return "en";
+  if (cookieLocale === "ar") return "ar";
 
   const referer = request.headers.get("referer");
   if (referer) {
     try {
       const path = new URL(referer).pathname;
-      if (path === "/en" || path.startsWith("/en/")) return "en";
+      if (
+        path === "/en" ||
+        path.startsWith("/en/") ||
+        path === "/zh" ||
+        path.startsWith("/zh/")
+      ) {
+        return "en";
+      }
     } catch {
       // Ignore malformed referers and fall back to Arabic.
     }

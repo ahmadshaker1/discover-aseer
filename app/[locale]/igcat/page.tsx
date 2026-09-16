@@ -11,11 +11,12 @@ import AseerCuisineHeritageRestaurantsSection from "@/components/aseer-cuisine/A
 import { fetchRestaurants } from "@/components/restaurants/data";
 import { getLocale, getTranslations } from "next-intl/server";
 import { fetchSiteAssets } from "@/lib/siteAssets";
+import type { LocaleCode } from "@/lib/i18n/localized";
 
 export const revalidate = 300;
 
 export default async function IGCatPage() {
-  const locale = (await getLocale()) as "ar" | "en";
+  const locale = (await getLocale()) as LocaleCode;
   const t = await getTranslations("aseerCuisine");
   const tCommon = await getTranslations("common");
   const assets = await fetchSiteAssets("igcat");

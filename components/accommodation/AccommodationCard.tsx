@@ -53,15 +53,15 @@ const AccommodationCard = ({
           {showBadge ? (
             <img
               src={
-                locale === "en"
+                locale !== "ar"
                   ? EN_EXCEPTIONAL_NAME_BADGE
                   : EXCEPTIONAL_NAME_BADGE
               }
               alt=""
-              width={locale === "en" ? 85 : 55}
-              height={locale === "en" ? 44 : 28}
+              width={locale !== "ar" ? 85 : 55}
+              height={locale !== "ar" ? 44 : 28}
               className={`shrink-0 object-contain [unicode-bidi:isolate] dark:brightness-0 dark:invert ${
-                locale === "en" ? "h-[44px] w-[85px]" : "h-7 w-[55px]"
+                locale !== "ar" ? "h-[44px] w-[85px]" : "h-7 w-[55px]"
               }`}
             />
           ) : null}

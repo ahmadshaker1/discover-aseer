@@ -3,7 +3,7 @@
  * Env: `NEXT_PUBLIC_DIRECTUS_APP_URL`
  */
 
-import { pickLocalizedField, type LocaleCode } from "@/lib/i18n/localized";
+import { pickLocalizedField, parseLocaleCode, type LocaleCode } from "@/lib/i18n/localized";
 import { DIRECTUS_COLLECTION_REVALIDATE } from "@/lib/directus/collectionCache";
 
 const CUISINE_FIELDS = [
@@ -303,7 +303,7 @@ export async function getCuisineBySlug(
 export async function fetchAseerCuisineDishes(options?: {
   locale?: string;
 }): Promise<AseerCuisineDish[]> {
-  const locale = (options?.locale === "en" ? "en" : "ar") as LocaleCode;
+  const locale = parseLocaleCode(options?.locale);
   const items = await fetchFeaturedCuisineCards({
     locale,
     cuisineType: "dish",
@@ -315,7 +315,7 @@ export async function fetchAseerCuisineDishes(options?: {
     title: item.title,
     image: item.image,
     mainIngredient: item.title,
-    timeText: locale === "en" ? "30 min" : "30 دقيقة",
+    timeText: locale === "zh" ? "30 分钟" : locale === "en" ? "30 min" : "30 دقيقة",
     rating: 4.8,
     reviews: 233,
   }));
