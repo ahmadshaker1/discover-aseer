@@ -15,19 +15,25 @@ const ATTRACTION_FIELDS = [
   "id",
   "name_en",
   "name_ar",
+  "name_cn",
   "address",
   "content",
   "content_ar",
+  "content_cn",
   "content_home_page_card_content",
   "content_home_page_card_content_ar",
+  "content_home_page_card_content_cn",
   "hero_image",
   "hero_image_new",
   "city",
   "city_ar",
+  "city_cn",
   "type",
   "type_en",
+  "type_cn",
   "sub_title",
   "sub_title_ar",
+  "sub_title_cn",
   "latitude",
   "longitude",
   "map_link",
@@ -74,29 +80,35 @@ export interface ApiLandmark {
   name?: string | null;
   name_en?: string | null;
   name_ar?: string | null;
+  name_cn?: string | null;
   location?: string | null;
   address?: string | null;
   description?: string | null;
   content?: string | null;
   content_ar?: string | null;
+  content_cn?: string | null;
   content_home_page_card_content?: string | null;
   content_home_page_card_content_ar?: string | null;
+  content_home_page_card_content_cn?: string | null;
   cover_image?: string | null;
   hero_image?: string | null;
   hero_image_new?: string | null;
   destination_image?: string | null;
   city?: string | null;
   city_ar?: string | null;
+  city_cn?: string | null;
   traveller_types?: string[] | null;
   tags?: string | null;
   type?: string | null;
   type_en?: string | null;
+  type_cn?: string | null;
   price_range_from?: number | null;
   price_range_to?: number | null;
   interest_tags?: string[] | null;
   slug?: string | null;
   sub_title?: string | null;
   sub_title_ar?: string | null;
+  sub_title_cn?: string | null;
   latitude?: number | string | null;
   longitude?: number | string | null;
   map_link?: string | null;
@@ -229,32 +241,23 @@ const toLocalizedRecord = (row: ApiLandmark): Record<string, unknown> =>
   row as unknown as Record<string, unknown>;
 
 function pickContentHtml(apiLandmark: ApiLandmark, locale: LocaleCode): string {
+  const record = toLocalizedRecord(apiLandmark);
+  const localized = pickLocalizedField(record, "content", locale) || "";
+  if (localized) return localized;
+
   const contentEn = (apiLandmark.content || "").trim();
   const contentAr = (apiLandmark.content_ar || "").trim();
-
   if (prefersLatinContent(locale)) {
     return contentEn || contentAr;
   }
-
   return contentAr || contentEn;
 }
 
 function pickTitle(apiLandmark: ApiLandmark, locale: LocaleCode): string {
   const record = toLocalizedRecord(apiLandmark);
-  if (prefersLatinContent(locale)) {
-    return (
-      apiLandmark.name_en?.trim() ||
-      apiLandmark.name_ar?.trim() ||
-      pickLocalizedField(record, "title", locale) ||
-      pickLocalizedField(record, "name", locale) ||
-      ""
-    );
-  }
   return (
-    apiLandmark.name_ar?.trim() ||
-    apiLandmark.name_en?.trim() ||
-    pickLocalizedField(record, "title", locale) ||
     pickLocalizedField(record, "name", locale) ||
+    pickLocalizedField(record, "title", locale) ||
     ""
   );
 }
@@ -366,8 +369,11 @@ export const transformLandmark = (
     interestTags.push("culture");
   }
 
-  let rawAttractionType = (apiLandmark.type || "").trim();
+  let rawAttractionType =
+    pickLocalizedField(record, "type", locale) ||
+    (apiLandmark.type || "").trim();
   if (
+    locale !== "zh" &&
     prefersLatinContent(locale) &&
     apiLandmark.type_en &&
     apiLandmark.type_en.trim() !== ""

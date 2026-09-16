@@ -24,13 +24,17 @@ export const DESTINATION_FIELDS = [
   "id",
   "title_en",
   "title_ar",
+  "title_cn",
   "title_section_2",
   "content",
   "content_ar",
+  "content_cn",
   "content_of_home_page",
   "content_of_home_page_en",
+  "content_of_home_page_cn",
   "subtitle_en",
   "subtitle_ar",
+  "subtitle_cn",
   "hero_image",
   "hero_image_1",
   "hero_image_new",
@@ -41,6 +45,7 @@ export const DESTINATION_FIELDS = [
   "city",
   "tda",
   "destination_filter",
+  "destination_filter_cn",
 ] as const;
 
 export const DEFAULT_ABHA_MAP_CENTER = {
@@ -80,6 +85,7 @@ export interface ApiDestination {
   title?: string | null;
   title_en?: string | null;
   title_ar?: string | null;
+  title_cn?: string | null;
   title_section_2?: string | null;
   title_section_2_en?: string | null;
   title_section_2_ar?: string | null;
@@ -97,9 +103,11 @@ export interface ApiDestination {
   content?: string | null;
   content_en?: string | null;
   content_ar?: string | null;
+  content_cn?: string | null;
   content_of_home_page?: string | null;
   content_of_home_page_en?: string | null;
   content_of_home_page_ar?: string | null;
+  content_of_home_page_cn?: string | null;
   destination_content?: string | null;
   destination_content_en?: string | null;
   destination_content_ar?: string | null;
@@ -112,6 +120,7 @@ export interface ApiDestination {
   sub_title_ar?: string | null;
   subtitle_en?: string | null;
   subtitle_ar?: string | null;
+  subtitle_cn?: string | null;
   cover_image?: string | null;
   hero_image?: string | null;
   hero_image_1?: string | null;
@@ -129,6 +138,7 @@ export interface ApiDestination {
   /** Terrain / area label shown under destination name on the home POI carousel. */
   tda?: string | null;
   destination_filter?: string | null;
+  destination_filter_cn?: string | null;
   tags?: string | null;
   interest_tags?: string[] | null;
 }
@@ -254,8 +264,17 @@ const pickDisplayCity = (
   );
 };
 
-/** Hero tagline — EN uses `*_en` fields; AR uses `sub_title` + `sub_title_orange`. */
+/** Hero tagline — ZH uses `*_cn`; EN uses `*_en`; AR uses `sub_title` + `sub_title_orange`. */
 const pickSubtitle = (row: ApiDestination, locale: LocaleCode): string => {
+  if (locale === "zh") {
+    const record = toLocalizedRecord(row);
+    return (
+      pickLocalizedField(record, "subtitle", locale) ||
+      pickLocalizedField(record, "sub_title", locale) ||
+      ""
+    );
+  }
+
   if (prefersLatinContent(locale)) {
     const line1 =
       readApiText(row, "sub_title_en") || readApiText(row, "subtitle_en");
@@ -347,6 +366,16 @@ export const resolveDestinationHeroImageUrl = (
   );
 
 const pickDescription = (row: ApiDestination, locale: LocaleCode): string => {
+  if (locale === "zh") {
+    const record = toLocalizedRecord(row);
+    const localized =
+      pickLocalizedField(record, "content", locale) ||
+      pickLocalizedField(record, "content_of_home_page", locale) ||
+      "";
+    if (localized && !isMostlyArabicText(localized)) return localized;
+    return "";
+  }
+
   if (prefersLatinContent(locale)) {
     const candidates: (keyof ApiDestination)[] = [
       "content_en",
