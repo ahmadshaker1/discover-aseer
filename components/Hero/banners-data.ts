@@ -14,10 +14,13 @@ export interface ApiBanner {
   logo?: string | null;
   title?: string | null;
   title_ar?: string | null;
+  title_cn?: string | null;
   subtitle?: string | null;
   subtitle_ar?: string | null;
+  subtitle_cn?: string | null;
   button_text?: string | null;
   button_text_ar?: string | null;
+  button_text_cn?: string | null;
   button_link?: string | null;
   [key: string]: unknown;
 }
@@ -101,7 +104,7 @@ async function fetchBannersFromCms(directusUrl: string): Promise<ApiBanner[]> {
     url.searchParams.set("filter[status][_eq]", "published");
     url.searchParams.set(
       "fields",
-      "id,status,image,logo,title,title_ar,subtitle,subtitle_ar,button_text,button_text_ar,button_link",
+      "id,status,image,logo,title,title_ar,title_cn,subtitle,subtitle_ar,subtitle_cn,button_text,button_text_ar,button_text_cn,button_link",
     );
     url.searchParams.set("limit", "10");
 
