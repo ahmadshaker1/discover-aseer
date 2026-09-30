@@ -12,6 +12,7 @@ import PointsOfInterest from "@/components/PointsOfInterest/PointsOfInterest";
 import FloatingAmbientSound from "@/components/FloatingAmbientSound/FloatingAmbientSound";
 import type { AppLocale } from "@/i18n/routing";
 import { shufflePick } from "@/lib/shufflePick";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
 
 const HOME_LANDMARK_COUNT = 4;
 const HOME_EXPERIENCE_COUNT = 6;
@@ -20,13 +21,14 @@ export default async function LocalizedHomePage() {
   await connection();
   const locale = (await getLocale()) as AppLocale;
   const tHome = await getTranslations("home");
-  const [landmarksResult, experiencesResult] = await Promise.all([
-    fetchLandmarks(locale),
-    fetchExperiences({ locale }),
-  ]);
+  const hideExperiences = isExperiencesHiddenForLocale(locale);
+  const landmarksResult = await fetchLandmarks(locale);
+  const experiencesResult = hideExperiences
+    ? null
+    : await fetchExperiences({ locale });
   const landmarks = shufflePick(landmarksResult.items, HOME_LANDMARK_COUNT);
   const homeExperiences = shufflePick(
-    experiencesResult.experiences,
+    experiencesResult?.experiences ?? [],
     HOME_EXPERIENCE_COUNT,
   );
 
@@ -42,16 +44,18 @@ export default async function LocalizedHomePage() {
         description={tHome("landmarksDescription")}
         decorationImageSrc="/assets/landing/landmarks-zigzag.png"
       />
-      <AseerExperiencesSection
-        decorationImageSrc="/assets/landing/landmarks-zigzag.png"
-        data={{
-          title: tHome("experiencesTitle"),
-          description: tHome("experiencesDescription"),
-          ctaLabel: tHome("experiencesCta"),
-          ctaHref: "/experiences",
-          cards: homeExperiences,
-        }}
-      />
+      {hideExperiences ? null : (
+        <AseerExperiencesSection
+          decorationImageSrc="/assets/landing/landmarks-zigzag.png"
+          data={{
+            title: tHome("experiencesTitle"),
+            description: tHome("experiencesDescription"),
+            ctaLabel: tHome("experiencesCta"),
+            ctaHref: "/experiences",
+            cards: homeExperiences,
+          }}
+        />
+      )}
 
       <LandingStoriesFromAseerSection />
       <EventsInfo />

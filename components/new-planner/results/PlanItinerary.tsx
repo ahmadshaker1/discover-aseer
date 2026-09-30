@@ -8,6 +8,7 @@ import { transformApiEventToListingItem } from "@/components/events/data";
 import { transformExperience } from "@/components/experiences/data";
 import { formatCuisineTypes } from "@/components/restaurants/restaurantLocale";
 import { transformLocationToRestaurant } from "@/components/restaurants/data";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
 
 interface PlanItineraryProps {
   data: any;
@@ -250,14 +251,19 @@ const PlannerExperienceCardNew = ({
         </span>
       </div>
       <div
-        onClick={() =>
+        onClick={() => {
+          if (isExperiencesHiddenForLocale(locale)) return;
           window.open(
             `/${locale}/experiences/${experience.id}`,
             "_blank",
             "noopener,noreferrer",
-          )
-        }
-        className="flex flex-col md:flex-row p-4 items-start md:items-center rounded-xl bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0 cursor-pointer hover:border-[#6027D2] transition-colors"
+          );
+        }}
+        className={`flex flex-col md:flex-row p-4 items-start md:items-center rounded-xl bg-white border border-[rgba(204,204,204,0.37)] dark:bg-[#1C0F2A] dark:border-white/10 w-full gap-4 md:gap-0 ${
+          isExperiencesHiddenForLocale(locale)
+            ? ""
+            : "cursor-pointer hover:border-[#6027D2] transition-colors"
+        }`}
       >
         <div className="w-full md:w-[140px] h-[200px] md:h-40 shrink-0 rounded-lg overflow-hidden">
           <img

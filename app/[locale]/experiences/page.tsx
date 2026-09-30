@@ -3,6 +3,8 @@ import ExperiencesWithFilter from "@/components/experiences/ExperiencesWithFilte
 import { fetchExperiences } from "@/components/experiences/data";
 import type { AppLocale } from "@/i18n/routing";
 import { parseCatalogPage } from "@/lib/directus/collectionCache";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
+import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
 
 interface ExperiencesPageProps {
@@ -11,6 +13,9 @@ interface ExperiencesPageProps {
 
 const ExperiencesPage = async ({ searchParams }: ExperiencesPageProps) => {
   const locale = (await getLocale()) as AppLocale;
+  if (isExperiencesHiddenForLocale(locale)) {
+    redirect("/zh");
+  }
   const { page: pageParam } = await searchParams;
   const page = parseCatalogPage(pageParam);
   const { experiences, filterOptions } = await fetchExperiences({

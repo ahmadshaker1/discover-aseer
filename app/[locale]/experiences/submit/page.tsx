@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import ExperienceSubmitFlow from "@/components/experiences/submit/ExperienceSubmitFlow";
-import { getTranslations } from "next-intl/server";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
+import { redirect } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export const generateMetadata = async (): Promise<Metadata> => {
   const t = await getTranslations("experienceSubmit");
@@ -10,7 +12,11 @@ export const generateMetadata = async (): Promise<Metadata> => {
   };
 };
 
-const ExperienceSubmitPage = () => {
+const ExperienceSubmitPage = async () => {
+  const locale = await getLocale();
+  if (isExperiencesHiddenForLocale(locale)) {
+    redirect("/zh");
+  }
   return <ExperienceSubmitFlow />;
 };
 

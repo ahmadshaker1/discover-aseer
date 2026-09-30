@@ -208,7 +208,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                                     paddingBottom: 8,
                                   }}
                                 >
-                                  {getNavbarDropdownLinks(link.labelKey).map(
+                                  {getNavbarDropdownLinks(link.labelKey, locale).map(
                                     (item) => {
                                       const inner = (
                                         <span

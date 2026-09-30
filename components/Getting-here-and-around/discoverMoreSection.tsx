@@ -1,11 +1,14 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { MapPinOutlineIcon } from "./Icons";
 import { fetchSiteAssets, getAssetUrl } from "@/lib/siteAssets";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
 
 export default async function DiscoverMoreSection() {
   const t = await getTranslations("gettingHere.land");
+  const locale = await getLocale();
   const assets = await fetchSiteAssets("getting-here-and-around");
+  const hideExperiences = isExperiencesHiddenForLocale(locale);
 
   return (
     <div className="container mx-auto px-6 mb-12">
@@ -23,7 +26,7 @@ export default async function DiscoverMoreSection() {
         </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Card 1: Experiences */}
+        {hideExperiences ? null : (
         <div
           className="bg-[#F8F8F8] dark:bg-surface border-[rgba(204,204,204,0.37)] dark:border-border overflow-hidden"
           style={{
@@ -86,6 +89,7 @@ export default async function DiscoverMoreSection() {
             {t("discoverMoreExperiencesBtn")}
           </Link>
         </div>
+        )}
 
         {/* Card 2: Interactive map */}
         <div

@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { AseerSocialIcon } from "@/components/social/AseerSocialIcon";
 import { discoverAseerLinks } from "@/lib/discoverAseerLinks";
 import { bookletHref } from "@/lib/booklet";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
 import { BookletSmallArrowIcon } from "./Icons";
 
 const Footer = () => {
@@ -65,12 +66,14 @@ const Footer = () => {
                   >
                     {t("footer.linkAttractions")}
                   </Link>
-                  <Link
-                    href="/experiences"
-                    className="block w-full text-start hover:opacity-80"
-                  >
-                    {t("footer.linkExperiences")}
-                  </Link>
+                  {isExperiencesHiddenForLocale(locale) ? null : (
+                    <Link
+                      href="/experiences"
+                      className="block w-full text-start hover:opacity-80"
+                    >
+                      {t("footer.linkExperiences")}
+                    </Link>
+                  )}
                   <Link
                     href="/aseer-cuisine"
                     className="block w-full text-start hover:opacity-80"

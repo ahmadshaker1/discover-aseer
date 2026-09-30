@@ -6,6 +6,7 @@
  * - End side: language, booklets, theme
  */
 import { GlobeIcon, CrescentMoonIcon, BookletIcon } from "./Icons";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
 
 export type NavbarBadge = "pdf" | "new" | "beta";
 
@@ -151,12 +152,40 @@ export const megaMenus: Record<string, NavbarMegaMenu> = {
   },
 };
 
-export const getNavbarDropdownLinks = (labelKey: string) => {
-  return megaMenus[labelKey]?.links ?? ([] as NavbarDropdownLink[]);
+export const getNavbarDropdownLinks = (
+  labelKey: string,
+  locale?: string,
+) => {
+  return getNavbarMegaMenu(labelKey, locale)?.links ?? ([] as NavbarDropdownLink[]);
 };
 
-export const getNavbarMegaMenu = (labelKey: string) => {
-  return megaMenus[labelKey] ?? null;
+export const getNavbarMegaMenu = (
+  labelKey: string,
+  locale?: string,
+): NavbarMegaMenu | null => {
+  const menu = megaMenus[labelKey] ?? null;
+  if (!menu) return null;
+  if (
+    labelKey !== "common.discoverAseer" ||
+    !isExperiencesHiddenForLocale(locale ?? "")
+  ) {
+    return menu;
+  }
+
+  const links = menu.links.filter((link) => link.href !== "/experiences");
+  const cuisineIndex = links.findIndex((link) => link.href === "/aseer-cuisine");
+  const attractionsIndex = links.findIndex(
+    (link) => link.href === "/attractions",
+  );
+
+  return {
+    ...menu,
+    links,
+    featuredIndices: [
+      cuisineIndex >= 0 ? cuisineIndex : 0,
+      attractionsIndex >= 0 ? attractionsIndex : Math.min(1, links.length - 1),
+    ],
+  };
 };
 
 /** Start → end within the text-link group (logo sits before these). */

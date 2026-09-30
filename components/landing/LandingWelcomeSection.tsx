@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
 
 const OVERLAY_GRADIENT =
   "linear-gradient(179.52deg, rgba(0, 0, 0, 0) 5.53%, #000000 99.58%)";
@@ -29,11 +30,12 @@ const LandingWelcomeSection = ({
 }: LandingWelcomeSectionProps) => {
   const tHome = useTranslations("home");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const resolvedTitle = title ?? tHome("welcomeTitle");
   const resolvedDescription = description ?? tHome("welcomeDescription");
 
-  const resolvedCards: LocalizedLandingCard[] = cards ?? [
+  const defaultCards: LocalizedLandingCard[] = [
     {
       title: tCommon("eventsSeasonsCard"),
       href: "/event-seasons",
@@ -65,6 +67,11 @@ const LandingWelcomeSection = ({
       image: "/assets/landing/attractions-card.png",
     },
   ];
+  const resolvedCards: LocalizedLandingCard[] =
+    cards ??
+    (isExperiencesHiddenForLocale(locale)
+      ? defaultCards.filter((card) => card.href !== "/experiences")
+      : defaultCards);
 
   return (
     <section className="mx-auto w-full max-w-[1440px] bg-background px-4 py-12 text-foreground md:px-[130px] md:py-[86px]">

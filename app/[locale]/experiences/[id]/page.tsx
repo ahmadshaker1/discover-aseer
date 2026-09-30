@@ -4,6 +4,8 @@ import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { fetchExperienceById } from "@/components/experiences/data";
 import type { LocaleCode } from "@/lib/i18n/localized";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
+import { redirect } from "next/navigation";
 
 interface ExperienceDetailsPageProps {
   params: Promise<{ locale: string; id: string }>;
@@ -29,6 +31,9 @@ export default async function ExperienceDetailsPage({
 }: ExperienceDetailsPageProps) {
   const { id } = await params;
   const locale = (await getLocale()) as LocaleCode;
+  if (isExperiencesHiddenForLocale(locale)) {
+    redirect("/zh");
+  }
   const t = await getTranslations("experiencesDetail");
   const experience = await fetchExperienceById(id, locale);
 

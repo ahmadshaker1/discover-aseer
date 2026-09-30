@@ -14,6 +14,7 @@ import RestaurantsCredibilitySection from "@/components/restaurants/RestaurantsC
 import { getLocale, getTranslations } from "next-intl/server";
 import { fetchGlobalAssets } from "@/lib/directus/globalAssets";
 import type { LocaleCode } from "@/lib/i18n/localized";
+import { isExperiencesHiddenForLocale } from "@/lib/experiencesAvailability";
 
 export const revalidate = 300;
 
@@ -25,13 +26,16 @@ const AseerCuisinePage = async () => {
   const tCommon = await getTranslations("common");
   const locale = (await getLocale()) as LocaleCode;
 
+  const hideExperiences = isExperiencesHiddenForLocale(locale);
+
   const [dishCards, flavorCards, restaurantsResult, experiencesResult, globalAssets] =
     await Promise.all([
       fetchFeaturedCuisineCards({ locale, cuisineType: "dish", count: 100 }),
       fetchFeaturedCuisineCards({ locale, cuisineType: "flavour", count: 100 }),
       fetchRestaurants(locale),
-      // Same idea as restaurants: page shows cooking experiences; CTA opens all.
-      fetchExperiences({ type: COOKING_EXPERIENCE_TYPE, locale }),
+      hideExperiences
+        ? Promise.resolve({ experiences: [] })
+        : fetchExperiences({ type: COOKING_EXPERIENCE_TYPE, locale }),
       fetchGlobalAssets(),
     ]);
   const restaurants = restaurantsResult.items;
@@ -114,15 +118,17 @@ const AseerCuisinePage = async () => {
         }}
       />
 
-      <AseerCuisineCookingExperiencesSection
-        data={{
-          title: t("cookingExperiencesSection.title"),
-          description: t("cookingExperiencesSection.description"),
-          ctaLabel: t("cookingExperiencesSection.ctaLabel"),
-          ctaHref: "/experiences",
-          cards: cuisineExperiences,
-        }}
-      />
+      {hideExperiences ? null : (
+        <AseerCuisineCookingExperiencesSection
+          data={{
+            title: t("cookingExperiencesSection.title"),
+            description: t("cookingExperiencesSection.description"),
+            ctaLabel: t("cookingExperiencesSection.ctaLabel"),
+            ctaHref: "/experiences",
+            cards: cuisineExperiences,
+          }}
+        />
+      )}
 
       <AseerCuisineRestaurantsSection
         data={{

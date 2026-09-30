@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import DesktopNavigationLinks from "./DesktopNavigationLinks";
 import DesktopActionLinks from "./DesktopActionLinks";
@@ -13,6 +13,7 @@ import { getNavbarMegaMenu, navigationLinks } from "./navbarData";
 
 const Navbar = () => {
   const t = useTranslations();
+  const locale = useLocale();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMenuKey, setOpenMenuKey] = useState<string | null>(null);
   const baseId = useId();
@@ -100,7 +101,7 @@ const Navbar = () => {
 
           <div className="hidden lg:block">
             {dropdownLinks.map((link) => {
-              const menu = getNavbarMegaMenu(link.labelKey);
+              const menu = getNavbarMegaMenu(link.labelKey, locale);
               if (!menu) return null;
               return (
                 <MegaMenuPanel
